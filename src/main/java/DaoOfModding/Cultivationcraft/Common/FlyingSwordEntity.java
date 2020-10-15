@@ -98,6 +98,11 @@ public class FlyingSwordEntity extends ItemEntity
     // Check if owner is null, try to update if it is
     private void updateOwner()
     {
+        // If owner has disconnected, clear the owner instance
+        if (stats != null)
+            if (stats.isDisconnected())
+                owner = null;
+
         if (owner == null)
         {
             UUID ownerID = getItem().getTag().getUniqueId("Owner");
@@ -115,6 +120,12 @@ public class FlyingSwordEntity extends ItemEntity
                 }
             }
         }
+    }
+
+    // Sets the owner to null in order to update it later
+    public void clearOwner()
+    {
+        owner = null;
     }
 
     private void calculatePitchAndYaw()
@@ -272,7 +283,7 @@ public class FlyingSwordEntity extends ItemEntity
             return false;
 
         // If colliding with a living entity
-        if (collisionEntity.isLiving())
+        if (collisionEntity instanceof LivingEntity)
         {
             attackTargetEntity(collisionEntity);
 

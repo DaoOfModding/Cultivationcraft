@@ -4,10 +4,13 @@ import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public class FlyingSwordController
 {
+    static List<FlyingSwordEntity> FlyingSwords = new ArrayList<FlyingSwordEntity>();
 
     public static void addFlyingItem(ItemStack item, UUID owner)
     {

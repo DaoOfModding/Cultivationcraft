@@ -25,6 +25,8 @@ public class CultivatorStats implements ICultivatorStats
 
     private boolean recallOn = false;
 
+    private boolean disconnected = false;
+
     public double getFlyingItemSpeed()
     {
         return  flyingItemSpeed;
@@ -188,5 +190,16 @@ public class CultivatorStats implements ICultivatorStats
     public static ICultivatorStats getCultivatorStats(PlayerEntity player)
     {
         return player.getCapability(CultivatorStatsCapability.CULTIVATOR_STATS_CAPABILITY).orElseThrow(() -> new IllegalArgumentException("getting cultivator stats"));
+    }
+
+
+    public void setDisconnected(boolean value)
+    {
+        disconnected = value;
+    }
+
+    public boolean isDisconnected()
+    {
+        return disconnected;
     }
 }

@@ -33,7 +33,7 @@ public class ClientItemControl
 
         keyBindings = new KeyBinding[3];
         keyBindings[0] = new KeyBinding("Create Flying Sword", GLFW_KEY_Y, "Cultivation");
-        keyBindings[1] = new KeyBinding("Flying Sword Target", GLFW_KEY_Q, "Cultivation");
+        keyBindings[1] = new KeyBinding("Flying Sword Target", GLFW_KEY_R, "Cultivation");
         keyBindings[2] = new KeyBinding("Flying Sword Recall", GLFW_KEY_O, "Cultivation");
 
         for (KeyBinding binding : keyBindings)

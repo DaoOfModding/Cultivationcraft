@@ -1,6 +1,7 @@
 package DaoOfModding.Cultivationcraft;
 
 import DaoOfModding.Cultivationcraft.Client.ClientItemControl;
+import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStats;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStatsCapability;
 import DaoOfModding.Cultivationcraft.Common.FlyingSwordController;
 import DaoOfModding.Cultivationcraft.Common.FlyingSwordEntity;
@@ -161,6 +162,8 @@ public class Cultivationcraft
     @SubscribeEvent
     public void playerJoinsWorld(PlayerEvent.PlayerLoggedInEvent event)
     {
+        CultivatorStats.getCultivatorStats(event.getPlayer()).setDisconnected(false);
+
         if (!event.getEntity().getEntityWorld().isRemote)
             ServerItemControl.sendPlayerStats(event.getPlayer(), (PlayerEntity)event.getPlayer());
     }
@@ -169,6 +172,8 @@ public class Cultivationcraft
     @SubscribeEvent
     public void playerRespawns(PlayerEvent.PlayerRespawnEvent event)
     {
+        CultivatorStats.getCultivatorStats(event.getPlayer()).setDisconnected(false);
+
         if (!event.getEntity().getEntityWorld().isRemote)
             ServerItemControl.sendPlayerStats(event.getPlayer(), (PlayerEntity)event.getPlayer());
     }
@@ -177,6 +182,8 @@ public class Cultivationcraft
     @SubscribeEvent
     public void playerChangesDimension(PlayerEvent.PlayerChangedDimensionEvent event)
     {
+        CultivatorStats.getCultivatorStats(event.getPlayer()).setDisconnected(false);
+
         if (!event.getEntity().getEntityWorld().isRemote)
             ServerItemControl.sendPlayerStats(event.getPlayer(), (PlayerEntity)event.getPlayer());
     }
@@ -188,6 +195,12 @@ public class Cultivationcraft
         if (!event.getEntity().getEntityWorld().isRemote)
             if (event.getTarget() instanceof PlayerEntity)
                 ServerItemControl.sendPlayerStats(event.getPlayer(), (PlayerEntity)event.getTarget());
+    }
+
+    @SubscribeEvent
+    public void playerDisconnects(PlayerEvent.PlayerLoggedOutEvent event)
+    {
+        CultivatorStats.getCultivatorStats(event.getPlayer()).setDisconnected(true);
     }
 
     // Fired off when an entity joins the world, this happens on both the client and the server

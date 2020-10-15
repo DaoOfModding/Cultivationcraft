@@ -28,4 +28,7 @@ public interface ICultivatorStats
 
     public boolean getRecall();
     public void setRecall(boolean recall);
+
+    public void setDisconnected(boolean value);
+    public boolean isDisconnected();
 }
