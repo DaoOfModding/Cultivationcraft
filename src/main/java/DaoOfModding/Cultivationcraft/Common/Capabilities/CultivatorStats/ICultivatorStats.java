@@ -21,6 +21,8 @@ public interface ICultivatorStats
     public void setFlyingControlRange(double newRange);
 
     public Vector3d getTarget();
+    public RayTraceResult.Type getTargetType();
+    public UUID getTargetID();
     public boolean hasTarget(World world);
     public void setTarget(Vector3d pos, RayTraceResult.Type type, World targetWorld, UUID targetID);
 

@@ -1,6 +1,7 @@
 package DaoOfModding.Cultivationcraft.Network;
 
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStats;
+import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.ICultivatorStats;
 import DaoOfModding.Cultivationcraft.Network.CultivatorStats.CultivatorStatsPacket;
 import DaoOfModding.Cultivationcraft.Network.CultivatorStats.CultivatorTargetPacket;
 import DaoOfModding.Cultivationcraft.Network.CultivatorStats.RecallFlyingSwordPacket;
@@ -12,6 +13,7 @@ import net.minecraft.util.math.vector.Vector3d;
 import net.minecraftforge.fml.network.NetworkRegistry;
 import net.minecraftforge.fml.network.PacketDistributor;
 import net.minecraftforge.fml.network.simple.SimpleChannel;
+import net.minecraftforge.fml.server.ServerLifecycleHooks;
 
 import java.util.UUID;
 
@@ -54,7 +56,7 @@ public class PacketHandler
     public static void sendRecallFlyingToClient(boolean recall, UUID playerID)
     {
         RecallFlyingSwordPacket pack = new RecallFlyingSwordPacket(recall, playerID);
-        channel.send(PacketDistributor.ALL.noArg(), pack);
+        channel.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> ServerLifecycleHooks.getCurrentServer().getPlayerList().getPlayerByUUID(playerID)), pack);
     }
 
     public static void sendCultivatorTargetToServer(UUID playerID, RayTraceResult.Type type, Vector3d pos, UUID targetID)
@@ -66,12 +68,12 @@ public class PacketHandler
     public static void sendCultivatorTargetToClient(UUID playerID, RayTraceResult.Type type, Vector3d pos, UUID targetID)
     {
         CultivatorTargetPacket pack = new CultivatorTargetPacket(playerID, type, pos, targetID);
-        channel.send(PacketDistributor.ALL.noArg(), pack);
+        channel.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> ServerLifecycleHooks.getCurrentServer().getPlayerList().getPlayerByUUID(playerID)), pack);
     }
 
     public static void sendCultivatorStatsToClient(PlayerEntity player)
     {
-        PacketDistributor.PacketTarget target = PacketDistributor.ALL.noArg();
+        PacketDistributor.PacketTarget target = PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> player);
 
         sendCultivatorStatsToClient(player, target);
     }
@@ -86,9 +88,14 @@ public class PacketHandler
 
     private static void sendCultivatorStatsToClient(PlayerEntity player, PacketDistributor.PacketTarget distribute)
     {
-        CultivatorStatsPacket pack = new CultivatorStatsPacket(player.getUniqueID(), CultivatorStats.getCultivatorStats(player));
+        ICultivatorStats stats = CultivatorStats.getCultivatorStats(player);
+
+        // Send the cultivator's stats to the client
+        CultivatorStatsPacket pack = new CultivatorStatsPacket(player.getUniqueID(), stats);
         channel.send(distribute, pack);
 
-        // TO DO send cultivator target
+        // Send the cultivator's current target to the client
+        CultivatorTargetPacket pack2 = new CultivatorTargetPacket(player.getUniqueID(), stats.getTargetType(), stats.getTarget(), stats.getTargetID());
+        channel.send(distribute, pack2);
     }
 }

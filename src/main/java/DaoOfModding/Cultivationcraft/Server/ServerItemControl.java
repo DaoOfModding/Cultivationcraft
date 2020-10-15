@@ -49,4 +49,9 @@ public class ServerItemControl
                 PacketHandler.sendCultivatorStatsToSpecificClient(player, (ServerPlayerEntity)event.getPlayer());
         }
     }
+
+    public static void sendPlayerStats(PlayerEntity player, PlayerEntity target)
+    {
+        PacketHandler.sendCultivatorStatsToSpecificClient(target, (ServerPlayerEntity)player);
+    }
 }

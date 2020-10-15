@@ -84,6 +84,20 @@ public class CultivatorStats implements ICultivatorStats
         }
     }
 
+    public RayTraceResult.Type getTargetType()
+    {
+        return targetType;
+    }
+
+    // Returns the UUID of the target if it is an entity
+    public UUID getTargetID()
+    {
+        if (targetType == RayTraceResult.Type.ENTITY)
+            return targetEntity.getUniqueID();
+
+        return null;
+    }
+
     public void setTarget(Vector3d pos, RayTraceResult.Type type, World targetWorld, UUID targetID)
     {
         targetType = RayTraceResult.Type.MISS;

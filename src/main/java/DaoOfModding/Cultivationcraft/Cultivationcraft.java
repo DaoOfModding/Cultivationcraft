@@ -162,9 +162,32 @@ public class Cultivationcraft
     public void playerJoinsWorld(PlayerEvent.PlayerLoggedInEvent event)
     {
         if (!event.getEntity().getEntityWorld().isRemote)
-            ServerItemControl.playerLogsIn(event);
+            ServerItemControl.sendPlayerStats(event.getPlayer(), (PlayerEntity)event.getPlayer());
+    }
 
-        // TO DO, relink flying swords to player
+    // Fired off when an player respawns into the world
+    @SubscribeEvent
+    public void playerRespawns(PlayerEvent.PlayerRespawnEvent event)
+    {
+        if (!event.getEntity().getEntityWorld().isRemote)
+            ServerItemControl.sendPlayerStats(event.getPlayer(), (PlayerEntity)event.getPlayer());
+    }
+
+    // Fired off when an player changes dimension
+    @SubscribeEvent
+    public void playerChangesDimension(PlayerEvent.PlayerChangedDimensionEvent event)
+    {
+        if (!event.getEntity().getEntityWorld().isRemote)
+            ServerItemControl.sendPlayerStats(event.getPlayer(), (PlayerEntity)event.getPlayer());
+    }
+
+    // Fired off when an player starts tracking a target
+    @SubscribeEvent
+    public void playerStartsTracking(PlayerEvent.StartTracking event)
+    {
+        if (!event.getEntity().getEntityWorld().isRemote)
+            if (event.getTarget() instanceof PlayerEntity)
+                ServerItemControl.sendPlayerStats(event.getPlayer(), (PlayerEntity)event.getTarget());
     }
 
     // Fired off when an entity joins the world, this happens on both the client and the server

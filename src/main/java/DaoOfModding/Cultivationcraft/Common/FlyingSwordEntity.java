@@ -46,7 +46,6 @@ public class FlyingSwordEntity extends ItemEntity
     private final double idleDistance = 3;
 
     private int age = 0;
-    private int pickupDelay;
     public Vector3d direction = new Vector3d(1, 0, 0);
     public Vector3d movement = new Vector3d(0, 0 ,0);
     private PlayerEntity owner = null;
@@ -327,9 +326,9 @@ public class FlyingSwordEntity extends ItemEntity
 
             if (owner != null && stats != null)
             {
-                /*if (!this.world.isRemote) {
+                if (!this.world.isRemote) {
                     this.setFlag(6, this.isGlowing());
-                }*/
+                }
 
                 this.baseTick();
 
