@@ -2,6 +2,7 @@ package DaoOfModding.Cultivationcraft.Common;
 
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStats;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.ICultivatorStats;
+import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import DaoOfModding.Cultivationcraft.Register;
 import net.minecraft.block.*;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -31,6 +32,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.GameType;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ChunkManager;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.fml.network.NetworkHooks;
 
@@ -52,6 +54,7 @@ public class FlyingSwordEntity extends ItemEntity
     private ICultivatorStats stats = null;
 
     private boolean recall = false;
+
 
     // Testing thing
     private boolean orbit = false;
@@ -325,6 +328,31 @@ public class FlyingSwordEntity extends ItemEntity
         this.movement = direction.scale(stats.getFlyingItemMaxSpeed() * -power);
     }
 
+    // Return true if Flying Sword is in control range of owner
+    public boolean isInRange()
+    {
+        if (owner != null && getDistance(owner) < stats.getFlyingControlRange())
+            return true;
+
+        return false;
+    }
+
+    // Return true if Flying Sword is in control range of supplied vector
+    private boolean isInRange(Vector3d pos)
+    {
+        if (getPositionVec().distanceTo(pos) < stats.getFlyingControlRange())
+            return true;
+
+        return false;
+    }
+
+    // Make the flying Sword fall to the ground
+    private void fall()
+    {
+        direction = new Vector3d(0, -1, 0);
+        moveForwards();
+    }
+
     @Override
     public void tick() {
 
@@ -335,26 +363,23 @@ public class FlyingSwordEntity extends ItemEntity
         {
             updateOwner();
 
-            if (owner != null && stats != null)
-            {
-                if (!this.world.isRemote) {
-                    this.setFlag(6, this.isGlowing());
-                }
+            moveDecay();
 
+            // If the flying sword is in range of it's owner then do normal movement, otherwise fall to the ground
+            if (stats != null && isInRange())
+            {
                 this.baseTick();
 
                 this.prevPosX = this.getPosX();
                 this.prevPosY = this.getPosY();
                 this.prevPosZ = this.getPosZ();
 
-                moveDecay();
-
                 // Set entity to be recalled if recall has been called
                 if (stats.getRecall())
                     recall = true;
 
                 // Move towards target if it exists, otherwise move towards owner
-                if (stats.hasTarget(owner.getEntityWorld()) && !recall)
+                if (stats.hasTarget(owner.getEntityWorld()) && isInRange(stats.getTarget()) && !recall)
                     moveToTarget();
                 else
                     moveToOwner();
@@ -364,10 +389,12 @@ public class FlyingSwordEntity extends ItemEntity
 
                 // Handle any collisions made by this entity
                 handleCollisions();
-
-                // Calculate the item's motion based on it's movement vectors
-                updateMotion();
             }
+            else
+                fall();
+
+            // Calculate the item's motion based on it's movement vectors
+            updateMotion();
 
             // Calculate items Pitch and Yaw for rendering purposes, only on client
             if (this.world.isRemote)

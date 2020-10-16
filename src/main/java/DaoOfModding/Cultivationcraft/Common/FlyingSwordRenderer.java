@@ -47,7 +47,8 @@ public class FlyingSwordRenderer extends EntityRenderer<FlyingSwordEntity>
         return i;
     }
 
-    public void render(FlyingSwordEntity entityIn, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn) {
+    public void render(FlyingSwordEntity entityIn, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn)
+    {
         matrixStackIn.push();
         ItemStack itemstack = entityIn.getItem();
         int i = itemstack.isEmpty() ? 187 : Item.getIdFromItem(itemstack.getItem()) + itemstack.getDamage();
@@ -58,7 +59,11 @@ public class FlyingSwordRenderer extends EntityRenderer<FlyingSwordEntity>
         float f = 0.25F;
 
         // Bobbing up and down
-        float f1 = shouldBob() ? MathHelper.sin(((float)entityIn.getAge() + partialTicks) / 10.0F + entityIn.hoverStart) * 0.1F + 0.1F : 0;
+        float f1 = 0;
+
+        // Only bob if Flying Sword is in control range
+        if (entityIn.isInRange())
+            f1 = shouldBob() ? MathHelper.sin(((float)entityIn.getAge() + partialTicks) / 10.0F + entityIn.hoverStart) * 0.1F + 0.1F : 0;
 
 
         float f2 = ibakedmodel.getItemCameraTransforms().getTransform(ItemCameraTransforms.TransformType.GROUND).scale.getY();

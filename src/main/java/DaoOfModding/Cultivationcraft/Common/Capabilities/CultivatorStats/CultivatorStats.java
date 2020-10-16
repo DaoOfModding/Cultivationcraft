@@ -17,7 +17,7 @@ public class CultivatorStats implements ICultivatorStats
     private double flyingItemSpeed = 0.06;
     private double flyingItemMAXSpeed = 2;
     private double flyingItemturnSpeed = 0.4;
-    private double flyingItemControlRange = 50;
+    private double flyingItemControlRange = 25;
 
     private RayTraceResult.Type targetType = RayTraceResult.Type.MISS;
     private Entity targetEntity = null;
