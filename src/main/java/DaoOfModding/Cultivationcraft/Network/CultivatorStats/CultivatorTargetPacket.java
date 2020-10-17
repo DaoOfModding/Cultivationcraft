@@ -106,7 +106,7 @@ public class CultivatorTargetPacket extends Packet
         // Process the packet
         processPacket(ownerEntity);
 
-        // Send packet to all clients (TODO: in range?, maybe later)
+        // Send packet to all clients
         PacketHandler.sendCultivatorTargetToClient(player, targetType, targetPos, target);
     }
 

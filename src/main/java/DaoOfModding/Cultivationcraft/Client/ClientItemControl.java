@@ -2,9 +2,12 @@ package DaoOfModding.Cultivationcraft.Client;
 
 import static org.lwjgl.glfw.GLFW.*;
 
+import DaoOfModding.Cultivationcraft.Client.GUI.FlyingSwordContainerScreen;
 import DaoOfModding.Cultivationcraft.Common.Misc;
 import DaoOfModding.Cultivationcraft.Network.PacketHandler;
+import DaoOfModding.Cultivationcraft.Register;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.projectile.ProjectileHelper;
@@ -31,13 +34,16 @@ public class ClientItemControl
     {
         MinecraftForge.EVENT_BUS.register(ClientItemControl.class);
 
-        keyBindings = new KeyBinding[3];
+        keyBindings = new KeyBinding[4];
         keyBindings[0] = new KeyBinding("Create Flying Sword", GLFW_KEY_Y, "Cultivation");
         keyBindings[1] = new KeyBinding("Flying Sword Target", GLFW_KEY_R, "Cultivation");
         keyBindings[2] = new KeyBinding("Flying Sword Recall", GLFW_KEY_O, "Cultivation");
+        keyBindings[3] = new KeyBinding("Flying Sword Screen Test", GLFW_KEY_L, "Cultivation");
 
         for (KeyBinding binding : keyBindings)
             ClientRegistry.registerKeyBinding(binding);
+
+        ScreenManager.registerFactory(Register.ContainerTypeFlyingSword, FlyingSwordContainerScreen::new);
     }
 
     @SubscribeEvent
@@ -85,6 +91,12 @@ public class ClientItemControl
             if (keyBindings[2].isPressed())
             {
                 PacketHandler.sendRecallFlyingToServer(true, Minecraft.getInstance().player.getUniqueID());
+            }
+
+
+            if (keyBindings[3].isPressed())
+            {
+                PacketHandler.sendKeypressToServer(Register.keyPresses.FLYINGSWORDSCREEN);
             }
         }
     }

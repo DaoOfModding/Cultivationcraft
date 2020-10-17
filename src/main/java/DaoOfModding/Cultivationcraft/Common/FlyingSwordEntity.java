@@ -2,7 +2,6 @@ package DaoOfModding.Cultivationcraft.Common;
 
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStats;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.ICultivatorStats;
-import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import DaoOfModding.Cultivationcraft.Register;
 import net.minecraft.block.*;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -22,6 +21,7 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.network.play.server.SEntityVelocityPacket;
 import net.minecraft.particles.ParticleTypes;
+import net.minecraft.potion.Effects;
 import net.minecraft.stats.Stats;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.DamageSource;
@@ -32,7 +32,6 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.GameType;
 import net.minecraft.world.World;
-import net.minecraft.world.server.ChunkManager;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.fml.network.NetworkHooks;
 
@@ -486,7 +485,7 @@ public class FlyingSwordEntity extends ItemEntity
                 }
 
                 entityIn.addStat(Stats.ITEM_PICKED_UP.get(item), i);
-                entityIn.func_233630_a_(this);
+                entityIn.triggerItemPickupTrigger(this);
             }
 
         }
@@ -555,7 +554,7 @@ public class FlyingSwordEntity extends ItemEntity
         if (!net.minecraftforge.common.ForgeHooks.onPlayerAttackTarget(owner, targetEntity)) return;
         if (targetEntity.canBeAttackedWithItem()) {
             if (!targetEntity.hitByEntity(owner)) {
-                float f = (float)owner.func_233637_b_(Attributes.field_233823_f_);
+                float f = (float)owner.getAttributeValue(Attributes.ATTACK_DAMAGE);
                 float f1;
                 if (targetEntity instanceof LivingEntity) {
                     f1 = EnchantmentHelper.getModifierForCreature(this.getItem(), ((LivingEntity)targetEntity).getCreatureAttribute());
@@ -573,13 +572,13 @@ public class FlyingSwordEntity extends ItemEntity
                         flag1 = true;
                     }
 
-                    /*boolean flag2 = flag && owner.fallDistance > 0.0F && !owner.onGround && !owner.isOnLadder() && !owner.isInWater() && !owner.isPotionActive(Effects.BLINDNESS) && !owner.isPassenger() && targetEntity instanceof LivingEntity;
+                    boolean flag2 = owner.fallDistance > 0.0F && !owner.isOnGround() && !owner.isOnLadder() && !owner.isInWater() && !owner.isPotionActive(Effects.BLINDNESS) && !owner.isPassenger() && targetEntity instanceof LivingEntity;
                     flag2 = flag2 && !owner.isSprinting();
                     net.minecraftforge.event.entity.player.CriticalHitEvent hitResult = net.minecraftforge.common.ForgeHooks.getCriticalHit(owner, targetEntity, flag2, flag2 ? 1.5F : 1.0F);
                     flag2 = hitResult != null;
                     if (flag2) {
                         f *= hitResult.getDamageModifier();
-                    }*/
+                    }
 
                     f = f + f1;
                     boolean flag3 = false;
@@ -607,7 +606,7 @@ public class FlyingSwordEntity extends ItemEntity
                     if (flag5) {
                         if (i > 0) {
                             if (targetEntity instanceof LivingEntity) {
-                                ((LivingEntity)targetEntity).func_233627_a_((float)i * 0.5F, (double) MathHelper.sin(owner.rotationYaw * ((float)Math.PI / 180F)), (double)(-MathHelper.cos(owner.rotationYaw * ((float)Math.PI / 180F))));
+                                ((LivingEntity)targetEntity).applyKnockback((float)i * 0.5F, (double) MathHelper.sin(owner.rotationYaw * ((float)Math.PI / 180F)), (double)(-MathHelper.cos(owner.rotationYaw * ((float)Math.PI / 180F))));
                             } else {
                                 targetEntity.addVelocity((double)(-MathHelper.sin(owner.rotationYaw * ((float)Math.PI / 180F)) * (float)i * 0.5F), 0.1D, (double)(MathHelper.cos(owner.rotationYaw * ((float)Math.PI / 180F)) * (float)i * 0.5F));
                             }
@@ -621,7 +620,7 @@ public class FlyingSwordEntity extends ItemEntity
 
                             for(LivingEntity livingentity : owner.world.getEntitiesWithinAABB(LivingEntity.class, targetEntity.getBoundingBox().grow(1.0D, 0.25D, 1.0D))) {
                                 if (livingentity != owner && livingentity != targetEntity && !owner.isOnSameTeam(livingentity) && (!(livingentity instanceof ArmorStandEntity) || !((ArmorStandEntity)livingentity).hasMarker()) && owner.getDistanceSq(livingentity) < 9.0D) {
-                                    livingentity.func_233627_a_(0.4F, (double)MathHelper.sin(owner.rotationYaw * ((float)Math.PI / 180F)), (double)(-MathHelper.cos(owner.rotationYaw * ((float)Math.PI / 180F))));
+                                    livingentity.applyKnockback(0.4F, (double)MathHelper.sin(owner.rotationYaw * ((float)Math.PI / 180F)), (double)(-MathHelper.cos(owner.rotationYaw * ((float)Math.PI / 180F))));
                                     livingentity.attackEntityFrom(DamageSource.causePlayerDamage(owner), f3);
                                 }
                             }

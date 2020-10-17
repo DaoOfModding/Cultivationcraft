@@ -3,6 +3,7 @@ package DaoOfModding.Cultivationcraft;
 import DaoOfModding.Cultivationcraft.Client.ClientItemControl;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStats;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStatsCapability;
+import DaoOfModding.Cultivationcraft.Common.Containers.FlyingSwordContainer;
 import DaoOfModding.Cultivationcraft.Common.FlyingSwordController;
 import DaoOfModding.Cultivationcraft.Common.FlyingSwordEntity;
 import DaoOfModding.Cultivationcraft.Common.FlyingSwordRenderer;
@@ -12,8 +13,10 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.extensions.IForgeContainerType;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.TickEvent;
@@ -85,6 +88,14 @@ public class Cultivationcraft
         public static void onBlocksRegistry(final RegistryEvent.Register<Block> blockRegistryEvent)
         {
             // register a new block here
+        }
+
+        @SubscribeEvent
+        public static void registerContainers(final RegistryEvent.Register<ContainerType<?>> event)
+        {
+            Register.ContainerTypeFlyingSword = IForgeContainerType.create(FlyingSwordContainer::createContainerClientSide);
+            Register.ContainerTypeFlyingSword.setRegistryName("flyingswordcontainer");
+            event.getRegistry().register(Register.ContainerTypeFlyingSword);
         }
     }
 

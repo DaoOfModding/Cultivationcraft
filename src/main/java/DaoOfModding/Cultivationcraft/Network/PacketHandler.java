@@ -5,6 +5,7 @@ import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.ICultiv
 import DaoOfModding.Cultivationcraft.Network.CultivatorStats.CultivatorStatsPacket;
 import DaoOfModding.Cultivationcraft.Network.CultivatorStats.CultivatorTargetPacket;
 import DaoOfModding.Cultivationcraft.Network.CultivatorStats.RecallFlyingSwordPacket;
+import DaoOfModding.Cultivationcraft.Register;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.util.ResourceLocation;
@@ -20,6 +21,7 @@ import java.util.UUID;
 public class PacketHandler
 {
 
+    private static final byte KEYPRESS = 07;
     private static final byte FLYING_SWORD_NBT_ID = 35;
     private static final byte FLYING_SWORD_RECALL = 36;
     private static final byte CULTIVATOR_TARGET_ID = 76;
@@ -35,10 +37,18 @@ public class PacketHandler
 
     public static void init()
     {
+        channel.registerMessage(KEYPRESS, keypressPacket.class, keypressPacket::encode, keypressPacket::decode, keypressPacket::handle);
         channel.registerMessage(FLYING_SWORD_NBT_ID, ConvertToFlyingPacket.class, ConvertToFlyingPacket::encode, ConvertToFlyingPacket::decode, ConvertToFlyingPacket::handle);
         channel.registerMessage(FLYING_SWORD_RECALL, RecallFlyingSwordPacket.class, RecallFlyingSwordPacket::encode, RecallFlyingSwordPacket::decode, RecallFlyingSwordPacket::handle);
         channel.registerMessage(CULTIVATOR_TARGET_ID, CultivatorTargetPacket.class, CultivatorTargetPacket::encode, CultivatorTargetPacket::decode, CultivatorTargetPacket::handle);
         channel.registerMessage(CULTIVATOR_STATS, CultivatorStatsPacket.class, CultivatorStatsPacket::encode, CultivatorStatsPacket::decode, CultivatorStatsPacket::handle);
+        channel.registerMessage(CULTIVATOR_STATS, CultivatorStatsPacket.class, CultivatorStatsPacket::encode, CultivatorStatsPacket::decode, CultivatorStatsPacket::handle);
+    }
+
+    public static void sendKeypressToServer(Register.keyPresses keyPress)
+    {
+        keypressPacket pack = new keypressPacket(keyPress);
+        channel.sendToServer(pack);
     }
 
     public static void sendFlyingSwordConversionToServer(int heldItemID, UUID owner)
