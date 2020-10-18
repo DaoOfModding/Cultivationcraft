@@ -3,6 +3,7 @@ package DaoOfModding.Cultivationcraft;
 import DaoOfModding.Cultivationcraft.Client.ClientItemControl;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStats;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStatsCapability;
+import DaoOfModding.Cultivationcraft.Common.Capabilities.FlyingSwordContainerItemStack.FlyingSwordContainerItemStackCapability;
 import DaoOfModding.Cultivationcraft.Common.Containers.FlyingSwordContainer;
 import DaoOfModding.Cultivationcraft.Common.FlyingSwordController;
 import DaoOfModding.Cultivationcraft.Common.FlyingSwordEntity;
@@ -35,9 +36,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 
-// KNOWN ISSUES: Dolphins trying to 'play' with flying swords, crashing the game. Caused by DolphinEntity::PlayWithItemsGoal
-
-
 // The value here should match an entry in the META-INF/mods.toml file
 @Mod("cultivationcraft")
 public class Cultivationcraft
@@ -47,6 +45,7 @@ public class Cultivationcraft
     public static long lastTickTime;
 
     public static final ResourceLocation CultivatorStatsCapabilityLocation = new ResourceLocation("cultivationcraft", "cultivatorstats");
+    public static final ResourceLocation FSCItemStackCapabilityLocation = new ResourceLocation("cultivationcraft", "fscitemstack");
 
     public Cultivationcraft() {
 
@@ -69,7 +68,7 @@ public class Cultivationcraft
         ServerItemControl.init(event);
         PacketHandler.init();
 
-        CultivatorStatsCapability.register();
+        Register.registerCapabilities();
     }
 
     private void clientInit(final FMLClientSetupEvent event)
@@ -103,7 +102,10 @@ public class Cultivationcraft
     public void attachCapabilitiesEntity(final AttachCapabilitiesEvent<Entity> event)
     {
         if(event.getObject() instanceof PlayerEntity)
+        {
             event.addCapability(CultivatorStatsCapabilityLocation, new CultivatorStatsCapability());
+            event.addCapability(FSCItemStackCapabilityLocation, new FlyingSwordContainerItemStackCapability());
+        }
     }
 
     @SubscribeEvent

@@ -1,5 +1,7 @@
 package DaoOfModding.Cultivationcraft;
 
+import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStatsCapability;
+import DaoOfModding.Cultivationcraft.Common.Capabilities.FlyingSwordContainerItemStack.FlyingSwordContainerItemStackCapability;
 import DaoOfModding.Cultivationcraft.Common.Containers.FlyingSwordContainer;
 import DaoOfModding.Cultivationcraft.Common.FlyingSwordEntity;
 import net.minecraft.entity.EntityClassification;
@@ -20,4 +22,10 @@ public class Register
                                                                                 .build("flyingsword"));
 
     public static ContainerType<FlyingSwordContainer> ContainerTypeFlyingSword;
+
+    public static void registerCapabilities()
+    {
+        CultivatorStatsCapability.register();
+        FlyingSwordContainerItemStackCapability.register();
+    }
 }

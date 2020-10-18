@@ -31,7 +31,7 @@ public class FlyingSwordContainerScreen extends ContainerScreen<FlyingSwordConta
         final float PLAYER_LABEL_DISTANCE_FROM_BOTTOM = (96 - 2);
 
         final float BAG_LABEL_YPOS = 6;
-        float BAG_LABEL_XPOS = (xSize / 2.0F) - font.getStringWidth("Test") / 2.0F;                  // centre the label
+        float BAG_LABEL_XPOS = (xSize / 2.0F) - font.getStringWidth("Test") / 2.0F;
         font.drawString(matrixStack, "Test", BAG_LABEL_XPOS, BAG_LABEL_YPOS, Color.darkGray.getRGB());
 
         float PLAYER_LABEL_YPOS = ySize - PLAYER_LABEL_DISTANCE_FROM_BOTTOM;

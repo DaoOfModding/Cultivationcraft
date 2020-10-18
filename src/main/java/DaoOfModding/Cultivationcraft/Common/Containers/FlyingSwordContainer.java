@@ -1,28 +1,38 @@
 package DaoOfModding.Cultivationcraft.Common.Containers;
 
+import DaoOfModding.Cultivationcraft.Common.BasicContainer;
+import DaoOfModding.Cultivationcraft.Common.Capabilities.FlyingSwordContainerItemStack.FlyingSwordContainerItemStack;
+import DaoOfModding.Cultivationcraft.Common.Capabilities.FlyingSwordContainerItemStack.IFlyingSwordContainerItemStack;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.container.Container;
 import DaoOfModding.Cultivationcraft.Register;
 
 import javax.annotation.Nonnull;
 
-public class FlyingSwordContainer extends Container
+public class FlyingSwordContainer extends BasicContainer
 {
-    public static FlyingSwordContainer createContainerServerSide(int windowID, PlayerInventory playerInventory)
+    public static final int FLYING_SWORD_ITEM_YPOS = 26;
+
+    private final IFlyingSwordContainerItemStack itemStackHandler;
+
+    public static FlyingSwordContainer createContainerServerSide(int windowID, PlayerInventory playerInventory, IFlyingSwordContainerItemStack handler)
     {
-        return new FlyingSwordContainer(windowID, playerInventory);
+        return new FlyingSwordContainer(windowID, playerInventory, handler);
     }
 
 
     public static FlyingSwordContainer createContainerClientSide(int windowID, PlayerInventory playerInventory, net.minecraft.network.PacketBuffer extraData)
     {
-        return new FlyingSwordContainer(windowID, playerInventory);
+        return new FlyingSwordContainer(windowID, playerInventory, new FlyingSwordContainerItemStack());
     }
 
-    private FlyingSwordContainer(int windowId, PlayerInventory playerInv)
+    private FlyingSwordContainer(int windowId, PlayerInventory playerInv, IFlyingSwordContainerItemStack handler)
     {
         super(Register.ContainerTypeFlyingSword, windowId);
+
+        itemStackHandler = handler;
+
+        addPlayerInventory(playerInv);
     }
 
     @Override

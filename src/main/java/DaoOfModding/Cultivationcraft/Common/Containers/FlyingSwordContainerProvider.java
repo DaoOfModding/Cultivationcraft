@@ -1,6 +1,6 @@
-package DaoOfModding.Cultivationcraft.Common.Capabilities.FlyingSwordContainer;
+package DaoOfModding.Cultivationcraft.Common.Containers;
 
-import DaoOfModding.Cultivationcraft.Common.Containers.FlyingSwordContainer;
+import DaoOfModding.Cultivationcraft.Common.Capabilities.FlyingSwordContainerItemStack.FlyingSwordContainerItemStack;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -26,6 +26,6 @@ public class FlyingSwordContainerProvider implements INamedContainerProvider
     @Override
     public FlyingSwordContainer createMenu(int windowID, PlayerInventory playerInventory, PlayerEntity playerEntity)
     {
-        return FlyingSwordContainer.createContainerServerSide(windowID, playerInventory);
+        return FlyingSwordContainer.createContainerServerSide(windowID, playerInventory, FlyingSwordContainerItemStack.getCapability(playerEntity));
     }
 }
