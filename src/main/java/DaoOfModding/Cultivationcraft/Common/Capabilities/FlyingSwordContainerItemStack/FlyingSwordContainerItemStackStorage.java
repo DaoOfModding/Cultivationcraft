@@ -12,7 +12,7 @@ public class FlyingSwordContainerItemStackStorage implements Capability.IStorage
     public INBT writeNBT(Capability<IFlyingSwordContainerItemStack> capability, IFlyingSwordContainerItemStack instance, Direction side)
     {
 
-        CompoundNBT nbt = instance.getItem().serializeNBT();
+        CompoundNBT nbt = instance.getItemStackHandler().serializeNBT();
 
         return nbt;
     }
@@ -23,8 +23,6 @@ public class FlyingSwordContainerItemStackStorage implements Capability.IStorage
         if (!(instance instanceof IFlyingSwordContainerItemStack))
             throw new IllegalArgumentException("Tried to read Cultivator Stats from non CultivatorStats instance");
 
-        ItemStack newItem = ItemStack.EMPTY;
-        newItem.deserializeNBT((CompoundNBT)nbt);
-        instance.setItem(newItem);
+        instance.getItemStackHandler().deserializeNBT((CompoundNBT)nbt);
     }
 }

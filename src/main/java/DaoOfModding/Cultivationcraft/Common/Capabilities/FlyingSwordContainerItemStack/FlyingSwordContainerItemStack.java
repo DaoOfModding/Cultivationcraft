@@ -1,18 +1,17 @@
 package DaoOfModding.Cultivationcraft.Common.Capabilities.FlyingSwordContainerItemStack;
 
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
 
 public class FlyingSwordContainerItemStack implements IFlyingSwordContainerItemStack
 {
-    private ItemStack item = ItemStack.EMPTY;
+    private FlyingSwordContainerItemHandler item = new FlyingSwordContainerItemHandler();
 
-    public ItemStack getItem()
+    public FlyingSwordContainerItemHandler getItemStackHandler()
     {
         return item;
     }
 
-    public void setItem(ItemStack newItem)
+    public void setItemStackHandler(FlyingSwordContainerItemHandler newItem)
     {
         item = newItem;
     }
@@ -20,6 +19,6 @@ public class FlyingSwordContainerItemStack implements IFlyingSwordContainerItemS
     // Return a specified players CultivatorStats
     public static IFlyingSwordContainerItemStack getCapability(PlayerEntity player)
     {
-        return player.getCapability(FlyingSwordContainerItemStackCapability.FSC_ITEM_STACK_CAPABILITY).orElseThrow(() -> new IllegalArgumentException("getting Flying Sword Containter Item Stack"));
+        return player.getCapability(FlyingSwordContainerItemStackCapability.FSC_ITEM_STACK_CAPABILITY).orElseThrow(() -> new IllegalArgumentException("getting Flying Sword Container Item Stack"));
     }
 }

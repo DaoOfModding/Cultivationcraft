@@ -26,6 +26,6 @@ public class FlyingSwordContainerProvider implements INamedContainerProvider
     @Override
     public FlyingSwordContainer createMenu(int windowID, PlayerInventory playerInventory, PlayerEntity playerEntity)
     {
-        return FlyingSwordContainer.createContainerServerSide(windowID, playerInventory, FlyingSwordContainerItemStack.getCapability(playerEntity));
+        return FlyingSwordContainer.createContainerServerSide(windowID, playerInventory, FlyingSwordContainerItemStack.getCapability(playerEntity).getItemStackHandler());
     }
 }

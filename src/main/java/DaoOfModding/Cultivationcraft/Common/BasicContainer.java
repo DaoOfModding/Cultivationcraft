@@ -6,6 +6,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.Slot;
+import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -63,5 +64,12 @@ public class BasicContainer extends Container
     public boolean canInteractWith(@Nonnull PlayerEntity player)
     {
         return true;
+    }
+
+    @Override
+    // What happens when an item is SHIFT-clicked in this container
+    public ItemStack transferStackInSlot(PlayerEntity player, int sourceSlotIndex)
+    {
+        return ItemStack.EMPTY;
     }
 }

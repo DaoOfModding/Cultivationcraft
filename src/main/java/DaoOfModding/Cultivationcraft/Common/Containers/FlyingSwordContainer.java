@@ -1,21 +1,22 @@
 package DaoOfModding.Cultivationcraft.Common.Containers;
 
 import DaoOfModding.Cultivationcraft.Common.BasicContainer;
-import DaoOfModding.Cultivationcraft.Common.Capabilities.FlyingSwordContainerItemStack.FlyingSwordContainerItemStack;
-import DaoOfModding.Cultivationcraft.Common.Capabilities.FlyingSwordContainerItemStack.IFlyingSwordContainerItemStack;
+import DaoOfModding.Cultivationcraft.Common.Capabilities.FlyingSwordContainerItemStack.FlyingSwordContainerItemHandler;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import DaoOfModding.Cultivationcraft.Register;
+import net.minecraftforge.items.SlotItemHandler;
 
 import javax.annotation.Nonnull;
 
 public class FlyingSwordContainer extends BasicContainer
 {
-    public static final int FLYING_SWORD_ITEM_YPOS = 26;
+    public static final int FLYING_SWORD_ITEM_YPOS = 34;
+    public static final int FLYING_SWORD_ITEM_XPOS = 80;
 
-    private final IFlyingSwordContainerItemStack itemStackHandler;
+    private final FlyingSwordContainerItemHandler itemStackHandler;
 
-    public static FlyingSwordContainer createContainerServerSide(int windowID, PlayerInventory playerInventory, IFlyingSwordContainerItemStack handler)
+    public static FlyingSwordContainer createContainerServerSide(int windowID, PlayerInventory playerInventory, FlyingSwordContainerItemHandler handler)
     {
         return new FlyingSwordContainer(windowID, playerInventory, handler);
     }
@@ -23,16 +24,19 @@ public class FlyingSwordContainer extends BasicContainer
 
     public static FlyingSwordContainer createContainerClientSide(int windowID, PlayerInventory playerInventory, net.minecraft.network.PacketBuffer extraData)
     {
-        return new FlyingSwordContainer(windowID, playerInventory, new FlyingSwordContainerItemStack());
+        return new FlyingSwordContainer(windowID, playerInventory, new FlyingSwordContainerItemHandler());
     }
 
-    private FlyingSwordContainer(int windowId, PlayerInventory playerInv, IFlyingSwordContainerItemStack handler)
+    private FlyingSwordContainer(int windowId, PlayerInventory playerInv, FlyingSwordContainerItemHandler handler)
     {
         super(Register.ContainerTypeFlyingSword, windowId);
 
         itemStackHandler = handler;
 
+        // Add the players inventory slots into the container
         addPlayerInventory(playerInv);
+
+        addSlot(new SlotItemHandler(handler, 0, FLYING_SWORD_ITEM_XPOS, FLYING_SWORD_ITEM_YPOS));
     }
 
     @Override
@@ -42,12 +46,4 @@ public class FlyingSwordContainer extends BasicContainer
         //TODO: Check if player cultivation high enough to use flying swords
         return true;
     }
-
-    /*
-    @Override
-    // What happens when an item is SHIFT-clicked in this container
-    public ItemStack transferStackInSlot(PlayerEntity player, int sourceSlotIndex)
-    {
-        return ItemStack.EMPTY;
-    }*/
 }
