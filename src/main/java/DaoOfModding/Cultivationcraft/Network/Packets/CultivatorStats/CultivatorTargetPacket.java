@@ -1,8 +1,8 @@
-package DaoOfModding.Cultivationcraft.Network.CultivatorStats;
+package DaoOfModding.Cultivationcraft.Network.Packets.CultivatorStats;
 
 import DaoOfModding.Cultivationcraft.Client.ClientItemControl;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStats;
-import DaoOfModding.Cultivationcraft.Network.Packet;
+import DaoOfModding.Cultivationcraft.Network.Packets.Packet;
 import DaoOfModding.Cultivationcraft.Network.PacketHandler;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.ICultivatorStats;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;

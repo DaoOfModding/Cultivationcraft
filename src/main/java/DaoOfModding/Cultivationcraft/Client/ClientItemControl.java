@@ -5,7 +5,7 @@ import static org.lwjgl.glfw.GLFW.*;
 import DaoOfModding.Cultivationcraft.Client.GUI.FlyingSwordContainerScreen;
 import DaoOfModding.Cultivationcraft.Common.Misc;
 import DaoOfModding.Cultivationcraft.Network.PacketHandler;
-import DaoOfModding.Cultivationcraft.Register;
+import DaoOfModding.Cultivationcraft.Common.Register;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.client.settings.KeyBinding;

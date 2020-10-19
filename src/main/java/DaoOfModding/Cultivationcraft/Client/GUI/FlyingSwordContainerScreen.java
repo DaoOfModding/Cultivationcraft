@@ -1,10 +1,12 @@
 package DaoOfModding.Cultivationcraft.Client.GUI;
 
 import DaoOfModding.Cultivationcraft.Common.Containers.FlyingSwordContainer;
+import DaoOfModding.Cultivationcraft.Network.PacketHandler;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
+import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
@@ -13,6 +15,8 @@ import java.awt.*;
 
 public class FlyingSwordContainerScreen extends ContainerScreen<FlyingSwordContainer>
 {
+    private Button bindButton;
+
     public FlyingSwordContainerScreen(FlyingSwordContainer container, PlayerInventory playerInv, ITextComponent title)
     {
         super(container, playerInv, title);

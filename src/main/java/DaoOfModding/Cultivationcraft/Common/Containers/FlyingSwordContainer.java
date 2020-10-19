@@ -4,7 +4,7 @@ import DaoOfModding.Cultivationcraft.Common.BasicContainer;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.FlyingSwordContainerItemStack.FlyingSwordContainerItemHandler;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
-import DaoOfModding.Cultivationcraft.Register;
+import DaoOfModding.Cultivationcraft.Common.Register;
 import net.minecraftforge.items.SlotItemHandler;
 
 import javax.annotation.Nonnull;

@@ -1,7 +1,7 @@
-package DaoOfModding.Cultivationcraft.Network;
+package DaoOfModding.Cultivationcraft.Network.Packets;
 
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
-import DaoOfModding.Cultivationcraft.Register;
+import DaoOfModding.Cultivationcraft.Common.Register;
 import DaoOfModding.Cultivationcraft.Server.ServerItemControl;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.network.PacketBuffer;

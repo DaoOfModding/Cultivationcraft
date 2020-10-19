@@ -2,7 +2,6 @@ package DaoOfModding.Cultivationcraft.Common;
 
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStats;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.ICultivatorStats;
-import DaoOfModding.Cultivationcraft.Register;
 import net.minecraft.block.*;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.*;
@@ -181,7 +180,7 @@ public class FlyingSwordEntity extends ItemEntity
     // Move flying sword forwards in specified direction
     private void moveForwards()
     {
-        Vector3d toMove = movement.add(direction.mul(stats.getFlyingItemSpeed(), stats.getFlyingItemSpeed(), stats.getFlyingItemSpeed()));
+        Vector3d toMove = movement.add(direction.scale(stats.getFlyingItemSpeed()));
 
         // If the movement vector is going faster than the item's max speed, lower it to the max speed
         if (toMove.length() > stats.getFlyingItemMaxSpeed())
@@ -349,7 +348,8 @@ public class FlyingSwordEntity extends ItemEntity
     private void fall()
     {
         direction = new Vector3d(0, -1, 0);
-        moveForwards();
+
+        movement = movement.add(direction.scale(2));
     }
 
     @Override

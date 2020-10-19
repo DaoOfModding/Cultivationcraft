@@ -1,6 +1,8 @@
 package DaoOfModding.Cultivationcraft.Common.Capabilities.FlyingSwordContainerItemStack;
 
+import DaoOfModding.Cultivationcraft.Common.Capabilities.FlyingSwordBind.FlyingSwordBind;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.SwordItem;
 import net.minecraftforge.items.ItemStackHandler;
 
 public class FlyingSwordContainerItemHandler extends ItemStackHandler
@@ -19,8 +21,9 @@ public class FlyingSwordContainerItemHandler extends ItemStackHandler
 
         if (stack.isEmpty()) return false;
 
-        // TODO: Valid flying swords only
+        if (FlyingSwordBind.getFlyingSwordBind(stack) != null)
+            return true;
 
-        return true;
+        return false;
     }
 }

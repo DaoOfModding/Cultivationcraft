@@ -1,4 +1,4 @@
-package DaoOfModding.Cultivationcraft.Network;
+package DaoOfModding.Cultivationcraft.Network.Packets;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.PacketBuffer;

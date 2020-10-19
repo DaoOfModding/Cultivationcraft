@@ -3,11 +3,14 @@ package DaoOfModding.Cultivationcraft;
 import DaoOfModding.Cultivationcraft.Client.ClientItemControl;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStats;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStatsCapability;
+import DaoOfModding.Cultivationcraft.Common.Capabilities.FlyingSwordBind.FlyingSwordBind;
+import DaoOfModding.Cultivationcraft.Common.Capabilities.FlyingSwordBind.FlyingSwordBindCapability;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.FlyingSwordContainerItemStack.FlyingSwordContainerItemStackCapability;
 import DaoOfModding.Cultivationcraft.Common.Containers.FlyingSwordContainer;
 import DaoOfModding.Cultivationcraft.Common.FlyingSwordController;
 import DaoOfModding.Cultivationcraft.Common.FlyingSwordEntity;
 import DaoOfModding.Cultivationcraft.Common.FlyingSwordRenderer;
+import DaoOfModding.Cultivationcraft.Common.Register;
 import DaoOfModding.Cultivationcraft.Network.PacketHandler;
 import DaoOfModding.Cultivationcraft.Server.ServerItemControl;
 import net.minecraft.block.Block;
@@ -15,6 +18,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.container.ContainerType;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.SwordItem;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.extensions.IForgeContainerType;
@@ -22,6 +27,7 @@ import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.event.entity.item.ItemEvent;
 import net.minecraftforge.event.entity.item.ItemTossEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.world.WorldEvent;
@@ -35,6 +41,8 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.concurrent.TimeUnit;
+
 
 // The value here should match an entry in the META-INF/mods.toml file
 @Mod("cultivationcraft")
@@ -42,10 +50,12 @@ public class Cultivationcraft
 {
     // Directly reference a log4j logger.
     public static final Logger LOGGER = LogManager.getLogger();
-    public static long lastTickTime;
+    public static long lastTickTime = System.nanoTime();
+    public static long lastServerTickTime = System.nanoTime();
 
     public static final ResourceLocation CultivatorStatsCapabilityLocation = new ResourceLocation("cultivationcraft", "cultivatorstats");
     public static final ResourceLocation FSCItemStackCapabilityLocation = new ResourceLocation("cultivationcraft", "fscitemstack");
+    public static final ResourceLocation FLyingSwordBindLocation = new ResourceLocation("cultivationcraft", "flyingswordbind");
 
     public Cultivationcraft() {
 
@@ -109,6 +119,17 @@ public class Cultivationcraft
     }
 
     @SubscribeEvent
+    public void attachCapabilitiesItem(final AttachCapabilitiesEvent<ItemStack> event)
+    {
+        // Attach bind capability to items capable of being bound
+        if (event.getObject().getItem() instanceof SwordItem)
+        {
+            FlyingSwordBindCapability newCapability = new FlyingSwordBindCapability();
+            event.addCapability(FLyingSwordBindLocation, newCapability);
+        }
+    }
+
+    @SubscribeEvent
     public void gameTick(TickEvent.ClientTickEvent event)
     {
         if (event.phase == TickEvent.Phase.END)
@@ -129,7 +150,10 @@ public class Cultivationcraft
             if(ServerItemControl.thisWorld != null)
             {
                 ServerItemControl.checkForRecalls();
+                ServerItemControl.bindFlyingSword(System.nanoTime() - lastServerTickTime);
             }
+
+            lastServerTickTime = System.nanoTime();
         }
     }
 

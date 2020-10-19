@@ -1,7 +1,5 @@
 package DaoOfModding.Cultivationcraft.Common;
 
-import DaoOfModding.Cultivationcraft.Common.Capabilities.FlyingSwordContainerItemStack.IFlyingSwordContainerItemStack;
-import DaoOfModding.Cultivationcraft.Register;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;

@@ -1,4 +1,4 @@
-package DaoOfModding.Cultivationcraft.Network;
+package DaoOfModding.Cultivationcraft.Network.Packets;
 
 import DaoOfModding.Cultivationcraft.Common.FlyingSwordController;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;

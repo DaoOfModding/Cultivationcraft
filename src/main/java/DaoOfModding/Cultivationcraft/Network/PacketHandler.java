@@ -2,10 +2,10 @@ package DaoOfModding.Cultivationcraft.Network;
 
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStats;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.ICultivatorStats;
-import DaoOfModding.Cultivationcraft.Network.CultivatorStats.CultivatorStatsPacket;
-import DaoOfModding.Cultivationcraft.Network.CultivatorStats.CultivatorTargetPacket;
-import DaoOfModding.Cultivationcraft.Network.CultivatorStats.RecallFlyingSwordPacket;
-import DaoOfModding.Cultivationcraft.Register;
+import DaoOfModding.Cultivationcraft.Network.Packets.*;
+import DaoOfModding.Cultivationcraft.Network.Packets.CultivatorStats.*;
+import DaoOfModding.Cultivationcraft.Common.Register;
+import DaoOfModding.Cultivationcraft.Network.Packets.keypressPacket;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.util.ResourceLocation;
@@ -41,7 +41,6 @@ public class PacketHandler
         channel.registerMessage(FLYING_SWORD_NBT_ID, ConvertToFlyingPacket.class, ConvertToFlyingPacket::encode, ConvertToFlyingPacket::decode, ConvertToFlyingPacket::handle);
         channel.registerMessage(FLYING_SWORD_RECALL, RecallFlyingSwordPacket.class, RecallFlyingSwordPacket::encode, RecallFlyingSwordPacket::decode, RecallFlyingSwordPacket::handle);
         channel.registerMessage(CULTIVATOR_TARGET_ID, CultivatorTargetPacket.class, CultivatorTargetPacket::encode, CultivatorTargetPacket::decode, CultivatorTargetPacket::handle);
-        channel.registerMessage(CULTIVATOR_STATS, CultivatorStatsPacket.class, CultivatorStatsPacket::encode, CultivatorStatsPacket::decode, CultivatorStatsPacket::handle);
         channel.registerMessage(CULTIVATOR_STATS, CultivatorStatsPacket.class, CultivatorStatsPacket::encode, CultivatorStatsPacket::decode, CultivatorStatsPacket::handle);
     }
 
@@ -90,7 +89,6 @@ public class PacketHandler
 
     public static void sendCultivatorStatsToSpecificClient(PlayerEntity player, ServerPlayerEntity toSend)
     {
-
         PacketDistributor.PacketTarget target = PacketDistributor.PLAYER.with(() -> toSend);
 
         sendCultivatorStatsToClient(player, target);

@@ -1,7 +1,10 @@
 package DaoOfModding.Cultivationcraft.Common;
 
+import DaoOfModding.Cultivationcraft.Common.Capabilities.FlyingSwordBind.FlyingSwordBind;
+import DaoOfModding.Cultivationcraft.Common.Capabilities.FlyingSwordBind.IFlyingSwordBind;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.SwordItem;
 import net.minecraft.nbt.CompoundNBT;
 
 import java.util.ArrayList;
@@ -43,5 +46,39 @@ public class FlyingSwordController
         FlyingSwordEntity test = new FlyingSwordEntity(item.world, item.getPosX(), item.getPosY(), item.getPosZ(), item.getItem());
 
         item.world.addEntity(test);
+    }
+
+    // Start binding to the specified flying sword
+    public static boolean startFlyingSwordBind(ItemStack item, UUID playerID)
+    {
+        // Don't do anything if the itemStack is empty
+        if (item == ItemStack.EMPTY)
+            return false;
+
+        IFlyingSwordBind bindStatus = FlyingSwordBind.getFlyingSwordBind(item);
+
+        // Don't do anything if the itemStack isn't bindable
+        if(bindStatus == null)
+            return false;
+
+        // Don't do anything if the item is already bound to this player
+        if(bindStatus.isBound() && bindStatus.getOwner() == playerID)
+            return false;
+
+        // If another player has made any binding progress, reset the bind time
+        // (Unless that time is still negative)
+        if (bindStatus.getBindingPlayer() != null)
+            if (bindStatus.getBindingPlayer().compareTo(playerID) != 0)
+                if (bindStatus.getBindTime() > 0)
+                    bindStatus.setBindTime(0);
+
+        // Set this player as the binding player and start binding item
+        bindStatus.setBindingPlayer(playerID);
+
+        // If item is bound to another player then set the bind time to negative the original bind time
+        if (bindStatus.isBound() && bindStatus.getOwner() != playerID)
+            bindStatus.setBindTime(bindStatus.getBindTime() * -1);
+
+        return true;
     }
 }

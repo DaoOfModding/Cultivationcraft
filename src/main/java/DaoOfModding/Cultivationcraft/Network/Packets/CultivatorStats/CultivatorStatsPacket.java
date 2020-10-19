@@ -1,10 +1,10 @@
-package DaoOfModding.Cultivationcraft.Network.CultivatorStats;
+package DaoOfModding.Cultivationcraft.Network.Packets.CultivatorStats;
 
 import DaoOfModding.Cultivationcraft.Client.ClientItemControl;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStats;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.ICultivatorStats;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
-import DaoOfModding.Cultivationcraft.Network.Packet;
+import DaoOfModding.Cultivationcraft.Network.Packets.Packet;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.network.NetworkEvent;
