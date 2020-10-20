@@ -120,7 +120,7 @@ public class FlyingSwordRenderer extends EntityRenderer<FlyingSwordEntity>
      * @return If items should spread out when rendered in 3D
      */
     public boolean shouldSpreadItems() {
-        return true;
+        return false;
     }
 
     /**
