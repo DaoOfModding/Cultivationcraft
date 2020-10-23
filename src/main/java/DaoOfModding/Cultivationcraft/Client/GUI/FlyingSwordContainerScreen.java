@@ -10,7 +10,7 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 
-import java.awt.*;import java.util.ArrayList;
+import java.awt.*;
 
 public class FlyingSwordContainerScreen extends ContainerScreen<FlyingSwordContainer>
 {
@@ -40,6 +40,7 @@ public class FlyingSwordContainerScreen extends ContainerScreen<FlyingSwordConta
         super.render(matrixStack, mouseX, mouseY, partialTicks);
         this.func_230459_a_(matrixStack, mouseX, mouseY);
     }
+
     @Override
     protected void drawGuiContainerForegroundLayer(MatrixStack matrixStack, int mouseX, int mouseY)
     {
@@ -95,6 +96,8 @@ public class FlyingSwordContainerScreen extends ContainerScreen<FlyingSwordConta
             this.blit(matrixStack, edgeSpacingX + PROGRESS_BAR_X_POS + 100 - (int)(progress * -1), edgeSpacingY + PROGRESS_BAR_Y_POS,
                     PROGRESS_BAR_U, PROGRESS_BAR_V - PROGRESS_BAR_Y_SIZE,
                     (int)progress * -1, PROGRESS_BAR_Y_SIZE);
+
+        ScreenTabControl.highlightTabs(matrixStack, 2, mouseX, mouseY, edgeSpacingX, edgeSpacingY, this);
     }
 
     private static final ResourceLocation TEXTURE = new ResourceLocation("cultivationcraft", "textures/gui/bindingcontainer.png");
