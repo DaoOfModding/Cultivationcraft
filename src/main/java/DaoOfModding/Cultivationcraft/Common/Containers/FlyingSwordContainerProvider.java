@@ -6,6 +6,7 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 
 public class FlyingSwordContainerProvider implements INamedContainerProvider
 {
@@ -19,7 +20,7 @@ public class FlyingSwordContainerProvider implements INamedContainerProvider
     @Override
     public ITextComponent getDisplayName()
     {
-        return ITextComponent.func_244388_a("Test3");
+        return (ITextComponent)(new StringTextComponent("Test3"));
     }
 
     // Creating container on the server

@@ -43,6 +43,10 @@ public class FlyingSwordEntity extends ItemEntity
     private static final DataParameter<ItemStack> ITEM = EntityDataManager.createKey(FlyingSwordEntity.class, DataSerializers.ITEMSTACK);
     private static final DataParameter<Float> decaySpeed = EntityDataManager.createKey(FlyingSwordEntity.class, DataSerializers.FLOAT);
 
+    private static final DataParameter<Float> movementX = EntityDataManager.createKey(FlyingSwordEntity.class, DataSerializers.FLOAT);
+    private static final DataParameter<Float> movementY = EntityDataManager.createKey(FlyingSwordEntity.class, DataSerializers.FLOAT);
+    private static final DataParameter<Float> movementZ = EntityDataManager.createKey(FlyingSwordEntity.class, DataSerializers.FLOAT);
+
     private final double idleDistance = 3;
 
     private int age = 0;
@@ -118,6 +122,8 @@ public class FlyingSwordEntity extends ItemEntity
                     movement = owner.getLookVec().normalize();
                     direction = owner.getLookVec().normalize();
                     stats = CultivatorStats.getCultivatorStats(owner);
+
+                    storeMovement();
                 }
             }
         }
@@ -362,6 +368,8 @@ public class FlyingSwordEntity extends ItemEntity
         {
             updateOwner();
 
+            retrieveMovement();
+
             moveDecay();
 
             // If the flying sword is in range of it's owner then do normal movement, otherwise fall to the ground
@@ -409,7 +417,23 @@ public class FlyingSwordEntity extends ItemEntity
             if (this.getItem().isEmpty()) {
                 this.remove();
             }
+
+            storeMovement();
         }
+    }
+
+    // Store the movement vector in the data manager
+    private void storeMovement()
+    {
+        getDataManager().set(movementX, (float)movement.x);
+        getDataManager().set(movementY, (float)movement.y);
+        getDataManager().set(movementZ, (float)movement.z);
+    }
+
+    // Updated the movement vector to match the values in the data manager
+    private void retrieveMovement()
+    {
+        movement = new Vector3d(getDataManager().get(movementX).floatValue(), getDataManager().get(movementY).floatValue(), getDataManager().get(movementZ).floatValue());
     }
 
     @Override
@@ -417,6 +441,10 @@ public class FlyingSwordEntity extends ItemEntity
     {
         getDataManager().register(ITEM, ItemStack.EMPTY);
         getDataManager().register(decaySpeed, 0.5f);
+
+        getDataManager().register(movementX, 0f);
+        getDataManager().register(movementY, 0f);
+        getDataManager().register(movementZ, 0f);
     }
 
     @Override
@@ -475,7 +503,7 @@ public class FlyingSwordEntity extends ItemEntity
                 copy.setCount(copy.getCount() - getItem().getCount());
                 net.minecraftforge.fml.hooks.BasicEventHooks.firePlayerItemPickupEvent(entityIn, this, copy);
 
-                // This crashes everything, why, dunno. Seems to work without it, I'll LOOK AT THIS later
+                // This crashes everything, why, dunno. Seems to work without it TODO: LOOK AT THIS
                // entityIn.onItemPickup(this, i);
 
                 if (itemstack.isEmpty())
@@ -507,6 +535,8 @@ public class FlyingSwordEntity extends ItemEntity
             } else {
                 TileEntity tileentity = this.world.getTileEntity(pos);
                 Block block = blockstate.getBlock();
+
+
                 if ((block instanceof CommandBlockBlock || block instanceof StructureBlock || block instanceof JigsawBlock) && !owner.canUseCommandBlock()) {
                     this.world.notifyBlockUpdate(pos, blockstate, blockstate, 3);
                     return false;
@@ -550,6 +580,7 @@ public class FlyingSwordEntity extends ItemEntity
 
     // Ripped almost word for word from PlayerEntity.attackEntityWithCurrentItem. Stupid minecraft
     // Removed cooldown and some crit stuff
+    // TODO: LOOK AT THIS, make it work properly and clear out random shit
     public void attackTargetEntity(Entity targetEntity) {
         if (!net.minecraftforge.common.ForgeHooks.onPlayerAttackTarget(owner, targetEntity)) return;
         if (targetEntity.canBeAttackedWithItem()) {
@@ -567,7 +598,7 @@ public class FlyingSwordEntity extends ItemEntity
                     int i = 0;
                     i = i + EnchantmentHelper.getKnockbackModifier(owner);
                     if (owner.isSprinting()) {
-                        owner.world.playSound((PlayerEntity)null, owner.getPosX(), owner.getPosY(), owner.getPosZ(), SoundEvents.ENTITY_PLAYER_ATTACK_KNOCKBACK, owner.getSoundCategory(), 1.0F, 1.0F);
+                        owner.world.playSound((PlayerEntity)null, getPosX(), getPosY(), getPosZ(), SoundEvents.ENTITY_PLAYER_ATTACK_KNOCKBACK, owner.getSoundCategory(), 1.0F, 1.0F);
                         ++i;
                         flag1 = true;
                     }
@@ -625,7 +656,7 @@ public class FlyingSwordEntity extends ItemEntity
                                 }
                             }
 
-                            owner.world.playSound((PlayerEntity)null, owner.getPosX(), owner.getPosY(), owner.getPosZ(), SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, owner.getSoundCategory(), 1.0F, 1.0F);
+                            owner.world.playSound((PlayerEntity)null, getPosX(), getPosY(), getPosZ(), SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, owner.getSoundCategory(), 1.0F, 1.0F);
                             owner.spawnSweepParticles();
                         }
 
@@ -636,7 +667,7 @@ public class FlyingSwordEntity extends ItemEntity
                         }
 
                         if (!flag3)
-                            owner.world.playSound((PlayerEntity)null, owner.getPosX(), owner.getPosY(), owner.getPosZ(), SoundEvents.ENTITY_PLAYER_ATTACK_STRONG, owner.getSoundCategory(), 1.0F, 1.0F);
+                            owner.world.playSound((PlayerEntity)null, getPosX(), getPosY(), getPosZ(), SoundEvents.ENTITY_PLAYER_ATTACK_STRONG, owner.getSoundCategory(), 1.0F, 1.0F);
 
 
                         if (f1 > 0.0F)
@@ -678,7 +709,7 @@ public class FlyingSwordEntity extends ItemEntity
 
                         owner.addExhaustion(0.1F);
                     } else {
-                        owner.world.playSound((PlayerEntity)null, owner.getPosX(), owner.getPosY(), owner.getPosZ(), SoundEvents.ENTITY_PLAYER_ATTACK_NODAMAGE, owner.getSoundCategory(), 1.0F, 1.0F);
+                        owner.world.playSound((PlayerEntity)null, getPosX(), getPosY(), getPosZ(), SoundEvents.ENTITY_PLAYER_ATTACK_NODAMAGE, owner.getSoundCategory(), 1.0F, 1.0F);
                         if (flag4) {
                             targetEntity.extinguish();
                         }
