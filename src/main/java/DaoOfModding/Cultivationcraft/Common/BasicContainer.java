@@ -22,9 +22,9 @@ public class BasicContainer extends Container
     private static final int SLOT_X_SPACING = 18;
     private static final int SLOT_Y_SPACING = 18;
     private static final int HOTBAR_XPOS = 8;
-    private static final int HOTBAR_YPOS = 142;
+    private static final int HOTBAR_YPOS = 155;
 
-    private static final int PLAYER_INVENTORY_YPOS = 84;
+    private static final int PLAYER_INVENTORY_YPOS = 97;
 
 
     public static final int FIRST_FREE_SLOT_INDEX = VANILLA_FIRST_SLOT_INDEX + VANILLA_SLOT_COUNT;

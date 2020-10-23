@@ -12,6 +12,7 @@ import DaoOfModding.Cultivationcraft.Common.FlyingSwordEntity;
 import DaoOfModding.Cultivationcraft.Common.FlyingSwordRenderer;
 import DaoOfModding.Cultivationcraft.Common.Register;
 import DaoOfModding.Cultivationcraft.Network.PacketHandler;
+import DaoOfModding.Cultivationcraft.Server.FlyingSwordBindProgresser;
 import DaoOfModding.Cultivationcraft.Server.ServerItemControl;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -152,7 +153,7 @@ public class Cultivationcraft
             if(ServerItemControl.thisWorld != null)
             {
                 ServerItemControl.checkForRecalls();
-                ServerItemControl.bindFlyingSword(System.nanoTime() - lastServerTickTime);
+                FlyingSwordBindProgresser.bindFlyingSword(System.nanoTime() - lastServerTickTime);
             }
 
             lastServerTickTime = System.nanoTime();

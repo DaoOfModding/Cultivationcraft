@@ -5,13 +5,14 @@ import DaoOfModding.Cultivationcraft.Common.Capabilities.FlyingSwordContainerIte
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import DaoOfModding.Cultivationcraft.Common.Register;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.SlotItemHandler;
 
 import javax.annotation.Nonnull;
 
 public class FlyingSwordContainer extends BasicContainer
 {
-    public static final int FLYING_SWORD_ITEM_YPOS = 34;
+    public static final int FLYING_SWORD_ITEM_YPOS = 43;
     public static final int FLYING_SWORD_ITEM_XPOS = 80;
 
     private final FlyingSwordContainerItemHandler itemStackHandler;
@@ -37,6 +38,27 @@ public class FlyingSwordContainer extends BasicContainer
         addPlayerInventory(playerInv);
 
         addSlot(new SlotItemHandler(handler, 0, FLYING_SWORD_ITEM_XPOS, FLYING_SWORD_ITEM_YPOS));
+    }
+
+    public float getBindTime()
+    {
+        return getNbt("BindRemaining");
+    }
+
+    public float getBindPercent()
+    {
+        return getNbt("BindPercent");
+    }
+
+    private float getNbt(String tag)
+    {
+        if (itemStackHandler.getStackInSlot(0) == ItemStack.EMPTY)
+            return 0;
+
+        if (!itemStackHandler.getStackInSlot(0).getTag().contains(tag))
+            return 0;
+
+        return itemStackHandler.getStackInSlot(0).getTag().getFloat(tag);
     }
 
     @Override

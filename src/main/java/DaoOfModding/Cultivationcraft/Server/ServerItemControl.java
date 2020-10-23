@@ -73,47 +73,4 @@ public class ServerItemControl
             NetworkHooks.openGui(pressedBy, flyingSwordContainerProvider);
         }
     }
-
-    // Progress any ongoing flying sword bindings
-    public static void bindFlyingSword(long time)
-    {
-        // Cycle through list of all players, dealing with any flying swords they are currently binding
-
-        for(PlayerEntity player : ServerLifecycleHooks.getCurrentServer().getPlayerList().getPlayers())
-        {
-            ItemStack testItem = FlyingSwordContainerItemStack.getCapability(player).getItemStackHandler().getStackInSlot(0);
-
-            // If the item in the binding slot exists
-            if (!testItem.isEmpty())
-            {
-                // If the item int the binding slot is able to be bound, try to bind it
-                if (FlyingSwordController.startFlyingSwordBind(testItem, player.getUniqueID()))
-                {
-                    IFlyingSwordBind bindData = FlyingSwordBind.getFlyingSwordBind(testItem);
-
-                    bindData.setBindTime(bindData.getBindTime() + time);
-
-                    System.out.println(bindData.getBindTime());
-
-                    // If the bind item is already bound to someone else but the bind time is now greater than 0
-                    // Mark the item as unbound
-                    if (bindData.isBound() && bindData.getBindTime() > 0)
-                    {
-                        bindData.setBound(false);
-                        bindData.setOwner(null);
-                    }
-
-                    // If the bind time has reached the max bind time then mark this item as bound to its new owner
-                    // And convert it into a flying sword
-                    if (bindData.getBindTime() > bindData.getBindTimeMax())
-                    {
-                        bindData.setOwner(bindData.getBindingPlayer());
-                        bindData.setBound(true);
-
-                        FlyingSwordController.addFlyingItem(testItem, player.getUniqueID());
-                    }
-                }
-            }
-        }
-    }
 }
