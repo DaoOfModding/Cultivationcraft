@@ -63,7 +63,8 @@ public class CultivatorStats implements ICultivatorStats {
         if (targetType == RayTraceResult.Type.BLOCK) {
             return Misc.getVector3dFromBlockPos(targetBlock);
         } else if (targetType == RayTraceResult.Type.ENTITY) {
-            return targetEntity.getPositionVec();
+            // Return new vector of the target's location, targeting the middle of the target rather than it's feet
+            return new Vector3d(targetEntity.getPosX(), targetEntity.getPosY() + (targetEntity.getHeight() / 2), targetEntity.getPosZ());
         } else {
             // THIS SHOULD NEVER BE REACHED
 

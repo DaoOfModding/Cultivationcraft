@@ -19,7 +19,9 @@ public class Register
 
     public static RegistryObject<EntityType<FlyingSwordEntity>> FLYINGSWORD = ENTITY_TYPES.register("flyingsword", () ->
                                                                                 EntityType.Builder.<FlyingSwordEntity>create(FlyingSwordEntity::new, EntityClassification.MISC)
-                                                                                .build("flyingsword"));
+                                                                                        .size(0.5f, 0.5f)
+                                                                                        .setUpdateInterval(3)
+                                                                                        .build("flyingsword"));
 
     public static ContainerType<FlyingSwordContainer> ContainerTypeFlyingSword;
 

@@ -26,6 +26,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Hand;
 import net.minecraft.util.SoundEvents;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
@@ -398,6 +399,7 @@ public class FlyingSwordEntity extends ItemEntity
                 handleCollisions();
             }
             else
+                // TODO: Falling correctly when players log off, but don't work visually?
                 fall();
 
             // Calculate the item's motion based on it's movement vectors
@@ -581,6 +583,7 @@ public class FlyingSwordEntity extends ItemEntity
     // Ripped almost word for word from PlayerEntity.attackEntityWithCurrentItem. Stupid minecraft
     // Removed cooldown and some crit stuff
     // TODO: LOOK AT THIS, make it work properly and clear out random shit
+    // ERRORS: Attacking with item from main hand, knocking back from player
     public void attackTargetEntity(Entity targetEntity) {
         if (!net.minecraftforge.common.ForgeHooks.onPlayerAttackTarget(owner, targetEntity)) return;
         if (targetEntity.canBeAttackedWithItem()) {

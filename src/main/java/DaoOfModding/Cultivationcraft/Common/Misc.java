@@ -41,9 +41,9 @@ public class Misc
 
         List<Entity> entities = targetWorld.getEntitiesWithinAABB(Entity.class, scan);
 
-        // If entities have been found, search through and try to find one with the targetID
         if (!entities.isEmpty())
-            return entities.get(0);
+            if (entities.get(0).canBeAttackedWithItem())
+                return entities.get(0);
 
         return null;
     }
