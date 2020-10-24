@@ -5,6 +5,7 @@ import DaoOfModding.Cultivationcraft.Common.Capabilities.FlyingSwordBind.IFlying
 import DaoOfModding.Cultivationcraft.Common.Capabilities.FlyingSwordContainerItemStack.FlyingSwordContainerItemStack;
 import DaoOfModding.Cultivationcraft.Common.FlyingSwordController;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.INBT;
@@ -16,6 +17,8 @@ public class FlyingSwordBindProgresser
     // Progress any ongoing flying sword bindings
     public static void bindFlyingSword(long time)
     {
+        // TODO: Binding already bound swords bugged, instantly forgets it's been bound
+
         // Cycle through list of all players, dealing with any flying swords they are currently binding
 
         for(PlayerEntity player : ServerLifecycleHooks.getCurrentServer().getPlayerList().getPlayers())
@@ -30,7 +33,7 @@ public class FlyingSwordBindProgresser
                 {
                     IFlyingSwordBind bindData = FlyingSwordBind.getFlyingSwordBind(testItem);
 
-                    setBindTime(testItem, bindData.getBindTime() + time);
+                    increaseBindTime(testItem, time);
 
                     // If the bind item is already bound to someone else but the bind time is now greater than 0
                     // Mark the item as unbound
@@ -52,6 +55,23 @@ public class FlyingSwordBindProgresser
                 }
             }
         }
+    }
+
+    public static void increaseBindTime(ItemStack item, long time)
+    {
+        IFlyingSwordBind bindData = FlyingSwordBind.getFlyingSwordBind(item);
+
+        long newTime = bindData.getBindTime() + time;
+
+        // If item is bound to another player and bind time is > 0 then unbind the item
+        if (newTime > 0 && bindData.isBound() && bindData.getOwner().compareTo(bindData.getBindingPlayer()) == 0)
+        {
+            bindData.setBound(false);
+            bindData.setOwner(null);
+            FlyingSwordController.removeFlyingItem(item);
+        }
+
+        setBindTime(item, newTime);
     }
 
     public static void setBindTime(ItemStack item, long time)

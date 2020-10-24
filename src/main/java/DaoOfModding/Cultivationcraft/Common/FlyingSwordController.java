@@ -32,6 +32,17 @@ public class FlyingSwordController
         item.setTag(nbt);
     }
 
+    public static void removeFlyingItem(ItemStack item)
+    {
+        CompoundNBT nbt = item.getTag();
+        if (nbt == null)
+            nbt = new CompoundNBT();
+
+        nbt.putBoolean("Flying", false);
+
+        item.setTag(nbt);
+    }
+
     // Returns true if the passed item is set as a flying item
     public static boolean isFlying(ItemStack item)
     {
@@ -65,21 +76,20 @@ public class FlyingSwordController
             return false;
 
         // Don't do anything if the item is already bound to this player
-        if(bindStatus.isBound() && bindStatus.getOwner() == playerID)
+        if(bindStatus.isBound() && bindStatus.getOwner().compareTo(playerID) == 0)
             return false;
 
         // If another player has made any binding progress, reset the bind time
-        // (Unless that time is still negative)
-        if (bindStatus.getBindingPlayer() != null)
+        // (Unless the time is already bound to another player)
+        if (!bindStatus.isBound() && bindStatus.getBindingPlayer() != null)
             if (bindStatus.getBindingPlayer().compareTo(playerID) != 0)
-                if (bindStatus.getBindTime() > 0)
-                    bindStatus.setBindTime(0);
+                bindStatus.setBindTime(0);
 
         // Set this player as the binding player and start binding item
         bindStatus.setBindingPlayer(playerID);
 
         // If item is bound to another player then set the bind time to negative the original bind time
-        if (bindStatus.isBound() && bindStatus.getOwner() != playerID)
+        if (bindStatus.isBound() && bindStatus.getBindTime() > 0)
             bindStatus.setBindTime(bindStatus.getBindTime() * -1);
 
         return true;
