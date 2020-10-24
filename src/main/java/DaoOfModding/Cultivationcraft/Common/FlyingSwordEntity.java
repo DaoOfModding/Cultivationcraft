@@ -4,13 +4,16 @@ import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.Cultiva
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.ICultivatorStats;
 import net.minecraft.block.*;
 import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.Attributes;
+import net.minecraft.entity.ai.attributes.ModifiableAttributeInstance;
 import net.minecraft.entity.boss.dragon.EnderDragonPartEntity;
 import net.minecraft.entity.item.ArmorStandEntity;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.SwordItem;
@@ -24,6 +27,7 @@ import net.minecraft.potion.Effects;
 import net.minecraft.stats.Stats;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EntityDamageSource;
 import net.minecraft.util.Hand;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -41,6 +45,8 @@ import java.util.UUID;
 
 public class FlyingSwordEntity extends ItemEntity
 {
+    protected static final UUID ATTACK_DAMAGE_MODIFIER = UUID.fromString("CB3F55D3-645C-4F38-A497-9C13A33DB5CF");
+
     private static final DataParameter<ItemStack> ITEM = EntityDataManager.createKey(FlyingSwordEntity.class, DataSerializers.ITEMSTACK);
     private static final DataParameter<Float> decaySpeed = EntityDataManager.createKey(FlyingSwordEntity.class, DataSerializers.FLOAT);
 
@@ -105,8 +111,8 @@ public class FlyingSwordEntity extends ItemEntity
     private void updateOwner()
     {
         // If owner has disconnected, clear the owner instance
-        if (stats != null)
-            if (stats.isDisconnected())
+        if (owner != null && stats != null)
+            if (stats.isDisconnected() || !owner.isAlive())
                 owner = null;
 
         if (owner == null)
@@ -336,7 +342,7 @@ public class FlyingSwordEntity extends ItemEntity
     // Return true if Flying Sword is in control range of owner
     public boolean isInRange()
     {
-        if (owner != null && getDistance(owner) < stats.getFlyingControlRange())
+        if (owner != null && owner.isAlive() && getDistance(owner) < stats.getFlyingControlRange())
             return true;
 
         return false;
@@ -581,49 +587,37 @@ public class FlyingSwordEntity extends ItemEntity
     }
 
     // Ripped almost word for word from PlayerEntity.attackEntityWithCurrentItem. Stupid minecraft
-    // Removed cooldown and some crit stuff
-    // TODO: LOOK AT THIS, make it work properly and clear out random shit
-    // ERRORS: Attacking with item from main hand, knocking back from player
-    public void attackTargetEntity(Entity targetEntity) {
+    // Removed cooldown and some crit stuff, edited to attack from flying sword instead of player
+    public void attackTargetEntity(Entity targetEntity)
+    {
         if (!net.minecraftforge.common.ForgeHooks.onPlayerAttackTarget(owner, targetEntity)) return;
-        if (targetEntity.canBeAttackedWithItem()) {
-            if (!targetEntity.hitByEntity(owner)) {
-                float f = (float)owner.getAttributeValue(Attributes.ATTACK_DAMAGE);
+
+        if (targetEntity.canBeAttackedWithItem())
+        {
+            if (!targetEntity.hitByEntity(this))
+            {
+                // Get the amount of damage to deal
+                float f = 1;
+                if (getItem().getItem() instanceof SwordItem)
+                    f = ((SwordItem)getItem().getItem()).getAttackDamage();
+
                 float f1;
-                if (targetEntity instanceof LivingEntity) {
+
+                if (targetEntity instanceof LivingEntity)
                     f1 = EnchantmentHelper.getModifierForCreature(this.getItem(), ((LivingEntity)targetEntity).getCreatureAttribute());
-                } else {
+                else
                     f1 = EnchantmentHelper.getModifierForCreature(this.getItem(), CreatureAttribute.UNDEFINED);
-                }
+
+                f = f + f1;
+
+                // Knockback
+                int i = EnchantmentHelper.getEnchantmentLevel(Enchantments.KNOCKBACK, getItem());
+                owner.world.playSound((PlayerEntity)null, getPosX(), getPosY(), getPosZ(), SoundEvents.ENTITY_PLAYER_ATTACK_KNOCKBACK, owner.getSoundCategory(), 1.0F, 1.0F);
+                ++i;
 
 
-                    boolean flag1 = false;
-                    int i = 0;
-                    i = i + EnchantmentHelper.getKnockbackModifier(owner);
-                    if (owner.isSprinting()) {
-                        owner.world.playSound((PlayerEntity)null, getPosX(), getPosY(), getPosZ(), SoundEvents.ENTITY_PLAYER_ATTACK_KNOCKBACK, owner.getSoundCategory(), 1.0F, 1.0F);
-                        ++i;
-                        flag1 = true;
-                    }
-
-                    boolean flag2 = owner.fallDistance > 0.0F && !owner.isOnGround() && !owner.isOnLadder() && !owner.isInWater() && !owner.isPotionActive(Effects.BLINDNESS) && !owner.isPassenger() && targetEntity instanceof LivingEntity;
-                    flag2 = flag2 && !owner.isSprinting();
-                    net.minecraftforge.event.entity.player.CriticalHitEvent hitResult = net.minecraftforge.common.ForgeHooks.getCriticalHit(owner, targetEntity, flag2, flag2 ? 1.5F : 1.0F);
-                    flag2 = hitResult != null;
-                    if (flag2) {
-                        f *= hitResult.getDamageModifier();
-                    }
-
-                    f = f + f1;
-                    boolean flag3 = false;
-                    double d0 = (double)(owner.distanceWalkedModified - owner.prevDistanceWalkedModified);
-                    if (!flag1 && d0 < (double)owner.getAIMoveSpeed()) {
-                        ItemStack itemstack = owner.getHeldItem(Hand.MAIN_HAND);
-                        if (itemstack.getItem() instanceof SwordItem) {
-                            flag3 = true;
-                        }
-                    }
-
+                // lets not set things on fire right now...
+                /*
                     float f4 = 0.0F;
                     boolean flag4 = false;
                     int j = EnchantmentHelper.getFireAspectModifier(owner);
@@ -633,90 +627,78 @@ public class FlyingSwordEntity extends ItemEntity
                             flag4 = true;
                             targetEntity.setFire(1);
                         }
+                    }*/
+
+                // Knockback target
+                Vector3d vector3d = targetEntity.getMotion();
+                boolean flag5 = targetEntity.attackEntityFrom(new EntityDamageSource("player", this), f);
+
+                if (flag5)
+                {
+                    if (targetEntity instanceof LivingEntity)
+                        ((LivingEntity) targetEntity).applyKnockback((float) i * 0.5F, (double) MathHelper.sin(rotationYaw * ((float) Math.PI / 180F)), (double) (-MathHelper.cos(rotationYaw * ((float) Math.PI / 180F))));
+                    else
+                        targetEntity.addVelocity((double)(-MathHelper.sin(rotationYaw * ((float)Math.PI / 180F)) * (float)i * 0.5F), 0.1D, (double)(MathHelper.cos(rotationYaw * ((float)Math.PI / 180F)) * (float)i * 0.5F));
+
+                    // Tell client player has been knocked back if knocking back a player
+                    if (targetEntity instanceof ServerPlayerEntity && targetEntity.velocityChanged)
+                    {
+                        ((ServerPlayerEntity)targetEntity).connection.sendPacket(new SEntityVelocityPacket(targetEntity));
+                        targetEntity.velocityChanged = false;
+                        targetEntity.setMotion(vector3d);
                     }
 
-                    Vector3d vector3d = targetEntity.getMotion();
-                    boolean flag5 = targetEntity.attackEntityFrom(DamageSource.causePlayerDamage(owner), f);
-                    if (flag5) {
-                        if (i > 0) {
-                            if (targetEntity instanceof LivingEntity) {
-                                ((LivingEntity)targetEntity).applyKnockback((float)i * 0.5F, (double) MathHelper.sin(owner.rotationYaw * ((float)Math.PI / 180F)), (double)(-MathHelper.cos(owner.rotationYaw * ((float)Math.PI / 180F))));
-                            } else {
-                                targetEntity.addVelocity((double)(-MathHelper.sin(owner.rotationYaw * ((float)Math.PI / 180F)) * (float)i * 0.5F), 0.1D, (double)(MathHelper.cos(owner.rotationYaw * ((float)Math.PI / 180F)) * (float)i * 0.5F));
-                            }
-
-                            owner.setMotion(owner.getMotion().mul(0.6D, 1.0D, 0.6D));
-                            owner.setSprinting(false);
-                        }
-
-                        if (flag3) {
-                            float f3 = 1.0F + EnchantmentHelper.getSweepingDamageRatio(owner) * f;
-
-                            for(LivingEntity livingentity : owner.world.getEntitiesWithinAABB(LivingEntity.class, targetEntity.getBoundingBox().grow(1.0D, 0.25D, 1.0D))) {
-                                if (livingentity != owner && livingentity != targetEntity && !owner.isOnSameTeam(livingentity) && (!(livingentity instanceof ArmorStandEntity) || !((ArmorStandEntity)livingentity).hasMarker()) && owner.getDistanceSq(livingentity) < 9.0D) {
-                                    livingentity.applyKnockback(0.4F, (double)MathHelper.sin(owner.rotationYaw * ((float)Math.PI / 180F)), (double)(-MathHelper.cos(owner.rotationYaw * ((float)Math.PI / 180F))));
-                                    livingentity.attackEntityFrom(DamageSource.causePlayerDamage(owner), f3);
-                                }
-                            }
-
-                            owner.world.playSound((PlayerEntity)null, getPosX(), getPosY(), getPosZ(), SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, owner.getSoundCategory(), 1.0F, 1.0F);
-                            owner.spawnSweepParticles();
-                        }
-
-                        if (targetEntity instanceof ServerPlayerEntity && targetEntity.velocityChanged) {
-                            ((ServerPlayerEntity)targetEntity).connection.sendPacket(new SEntityVelocityPacket(targetEntity));
-                            targetEntity.velocityChanged = false;
-                            targetEntity.setMotion(vector3d);
-                        }
-
-                        if (!flag3)
-                            owner.world.playSound((PlayerEntity)null, getPosX(), getPosY(), getPosZ(), SoundEvents.ENTITY_PLAYER_ATTACK_STRONG, owner.getSoundCategory(), 1.0F, 1.0F);
+                    owner.world.playSound((PlayerEntity)null, getPosX(), getPosY(), getPosZ(), SoundEvents.ENTITY_PLAYER_ATTACK_STRONG, owner.getSoundCategory(), 1.0F, 1.0F);
 
 
-                        if (f1 > 0.0F)
-                            owner.onEnchantmentCritical(targetEntity);
+                    if (f1 > 0.0F)
+                        owner.onEnchantmentCritical(targetEntity);
 
-                        owner.setLastAttackedEntity(targetEntity);
-                        if (targetEntity instanceof LivingEntity) {
-                            EnchantmentHelper.applyThornEnchantments((LivingEntity)targetEntity, owner);
-                        }
+                    owner.setLastAttackedEntity(targetEntity);
 
-                        EnchantmentHelper.applyArthropodEnchantments(owner, targetEntity);
-                        ItemStack itemstack1 = this.getItem();
-                        Entity entity = targetEntity;
-                        if (targetEntity instanceof EnderDragonPartEntity) {
-                            entity = ((EnderDragonPartEntity)targetEntity).dragon;
-                        }
+                    // Ignore enchantmnets for now
+                    /*
+                    if (targetEntity instanceof LivingEntity) {
+                         EnchantmentHelper.applyThornEnchantments((LivingEntity)targetEntity, owner);
+                    }
 
-                        if (!owner.world.isRemote && !itemstack1.isEmpty() && entity instanceof LivingEntity) {
-                            ItemStack copy = itemstack1.copy();
-                            itemstack1.hitEntity((LivingEntity)entity, owner);
-                            if (itemstack1.isEmpty()) {
-                                net.minecraftforge.event.ForgeEventFactory.onPlayerDestroyItem(owner, copy, Hand.MAIN_HAND);
-                                owner.setHeldItem(Hand.MAIN_HAND, ItemStack.EMPTY);
-                            }
-                        }
+                    EnchantmentHelper.applyArthropodEnchantments(owner, targetEntity);*/
 
-                        if (targetEntity instanceof LivingEntity) {
-                            float f5 = f4 - ((LivingEntity)targetEntity).getHealth();
-                            owner.addStat(Stats.DAMAGE_DEALT, Math.round(f5 * 10.0F));
+                    Entity entity = targetEntity;
+                    if (targetEntity instanceof EnderDragonPartEntity)
+                        entity = ((EnderDragonPartEntity)targetEntity).dragon;
+
+
+                    // I think this is the code the adds damage to an item
+                    /*ItemStack itemstack1 = this.getItem();
+
+                    if (!owner.world.isRemote && entity instanceof LivingEntity)
+                    {
+                        ItemStack copy = itemstack1.copy();
+                        itemstack1.hitEntity((LivingEntity)entity, owner);
+                    }*/
+
+                    if (targetEntity instanceof LivingEntity)
+                    {
+                        float f5 = 0 - ((LivingEntity)targetEntity).getHealth();
+                        owner.addStat(Stats.DAMAGE_DEALT, Math.round(f5 * 10.0F));
+
+                        /*
                             if (j > 0) {
                                 targetEntity.setFire(j * 4);
-                            }
+                            }*/
 
-                            if (owner.world instanceof ServerWorld && f5 > 2.0F) {
-                                int k = (int)((double)f5 * 0.5D);
-                                ((ServerWorld)owner.world).spawnParticle(ParticleTypes.DAMAGE_INDICATOR, targetEntity.getPosX(), targetEntity.getPosYHeight(0.5D), targetEntity.getPosZ(), k, 0.1D, 0.0D, 0.1D, 0.2D);
-                            }
-                        }
-
-                        owner.addExhaustion(0.1F);
-                    } else {
-                        owner.world.playSound((PlayerEntity)null, getPosX(), getPosY(), getPosZ(), SoundEvents.ENTITY_PLAYER_ATTACK_NODAMAGE, owner.getSoundCategory(), 1.0F, 1.0F);
-                        if (flag4) {
-                            targetEntity.extinguish();
+                        if (owner.world instanceof ServerWorld && f5 > 2.0F)
+                        {
+                            int k = (int)((double)f5 * 0.5D);
+                            ((ServerWorld)owner.world).spawnParticle(ParticleTypes.DAMAGE_INDICATOR, targetEntity.getPosX(), targetEntity.getPosYHeight(0.5D), targetEntity.getPosZ(), k, 0.1D, 0.0D, 0.1D, 0.2D);
                         }
                     }
+                }
+                else
+                {
+                    owner.world.playSound((PlayerEntity)null, getPosX(), getPosY(), getPosZ(), SoundEvents.ENTITY_PLAYER_ATTACK_NODAMAGE, owner.getSoundCategory(), 1.0F, 1.0F);
+                }
 
             }
         }

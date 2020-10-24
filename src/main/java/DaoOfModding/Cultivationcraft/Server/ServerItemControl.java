@@ -47,19 +47,6 @@ public class ServerItemControl
         }
     }
 
-    public static void playerLogsIn(PlayerEvent.PlayerLoggedInEvent event)
-    {
-        // Cycle through list of all players, sending their info to the new player
-        for(PlayerEntity player : ServerLifecycleHooks.getCurrentServer().getPlayerList().getPlayers())
-        {
-            // if the player that's info is being sent is the player that joined, send that info to everyone
-            if (player == event.getPlayer())
-                PacketHandler.sendCultivatorStatsToClient(player);
-            else
-                PacketHandler.sendCultivatorStatsToSpecificClient(player, (ServerPlayerEntity)event.getPlayer());
-        }
-    }
-
     public static void sendPlayerStats(PlayerEntity player, PlayerEntity target)
     {
         PacketHandler.sendCultivatorStatsToSpecificClient(target, (ServerPlayerEntity)player);

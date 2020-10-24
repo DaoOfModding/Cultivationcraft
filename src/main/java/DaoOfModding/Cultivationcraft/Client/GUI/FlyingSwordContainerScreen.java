@@ -93,7 +93,7 @@ public class FlyingSwordContainerScreen extends ContainerScreen<FlyingSwordConta
             this.blit(matrixStack, edgeSpacingX + PROGRESS_BAR_X_POS, edgeSpacingY + PROGRESS_BAR_Y_POS, PROGRESS_BAR_U, PROGRESS_BAR_V, (int)progress, PROGRESS_BAR_Y_SIZE);
         // If progress is less than 0 draw the progress to unbind bar
         else
-            this.blit(matrixStack, edgeSpacingX + PROGRESS_BAR_X_POS + 100 - (int)(progress * -1), edgeSpacingY + PROGRESS_BAR_Y_POS,
+            this.blit(matrixStack, edgeSpacingX + PROGRESS_BAR_X_POS + PROGRESS_BAR_X_SIZE - (int)(progress * -1), edgeSpacingY + PROGRESS_BAR_Y_POS,
                     PROGRESS_BAR_U, PROGRESS_BAR_V - PROGRESS_BAR_Y_SIZE,
                     (int)progress * -1, PROGRESS_BAR_Y_SIZE);
 
