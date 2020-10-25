@@ -1,0 +1,5 @@
+{
+  "cultivationcraft.gui.bind": "Bind Item",
+  "cultivationcraft.gui.done": "Done",
+  "cultivationcraft.gui.remaining": "Remaining: %s seconds"
+}

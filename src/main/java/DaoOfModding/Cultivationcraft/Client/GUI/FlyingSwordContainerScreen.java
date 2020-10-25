@@ -9,6 +9,7 @@ import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 
 import java.awt.*;
 
@@ -52,7 +53,7 @@ public class FlyingSwordContainerScreen extends ContainerScreen<FlyingSwordConta
         final float PROGRESS_LABEL_XPOS = 42;
         final float PROGRESS_LABEL_YPOS = 64;
 
-        String testString = "Bind item";
+        String testString = new TranslationTextComponent("cultivationcraft.gui.bind").getString();
 
         float BAG_LABEL_XPOS = (xSize / 2.0F) - font.getStringWidth(testString) / 2.0F;
         font.drawString(matrixStack, testString, BAG_LABEL_XPOS, BAG_LABEL_YPOS, Color.darkGray.getRGB());
@@ -65,11 +66,11 @@ public class FlyingSwordContainerScreen extends ContainerScreen<FlyingSwordConta
         String progress;
 
         if (container.getBindPercent() == 1)
-            progress = "Done";
+            progress = new TranslationTextComponent("cultivationcraft.gui.done").getString();
         else if (container.getBindPercent() == 0)
             progress = "";
         else
-            progress = "Remaining: " + (int)container.getBindTime() + " seconds";
+            progress = new TranslationTextComponent("cultivationcraft.gui.remaining", (int)container.getBindTime()).getString();
 
         font.drawString(matrixStack, progress, PROGRESS_LABEL_XPOS, PROGRESS_LABEL_YPOS, Color.darkGray.getRGB());
     }

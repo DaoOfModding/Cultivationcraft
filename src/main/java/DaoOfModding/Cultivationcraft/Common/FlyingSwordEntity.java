@@ -405,7 +405,6 @@ public class FlyingSwordEntity extends ItemEntity
                 handleCollisions();
             }
             else
-                // TODO: Falling correctly when players log off, but don't work visually?
                 fall();
 
             // Calculate the item's motion based on it's movement vectors
