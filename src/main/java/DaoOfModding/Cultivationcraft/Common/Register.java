@@ -1,5 +1,6 @@
 package DaoOfModding.Cultivationcraft.Common;
 
+import DaoOfModding.Cultivationcraft.Common.Capabilities.ChunkQiSources.ChunkQiSourcesCapability;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStatsCapability;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.FlyingSwordBind.FlyingSwordBindCapability;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.FlyingSwordContainerItemStack.FlyingSwordContainerItemStackCapability;
@@ -30,5 +31,6 @@ public class Register
         CultivatorStatsCapability.register();
         FlyingSwordContainerItemStackCapability.register();
         FlyingSwordBindCapability.register();
+        ChunkQiSourcesCapability.register();
     }
 }

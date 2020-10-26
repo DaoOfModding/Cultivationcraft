@@ -1,9 +1,11 @@
 package DaoOfModding.Cultivationcraft;
 
 import DaoOfModding.Cultivationcraft.Client.ClientItemControl;
+import DaoOfModding.Cultivationcraft.Common.Capabilities.ChunkQiSources.ChunkQiSources;
+import DaoOfModding.Cultivationcraft.Common.Capabilities.ChunkQiSources.ChunkQiSourcesCapability;
+import DaoOfModding.Cultivationcraft.Common.Capabilities.ChunkQiSources.IChunkQiSources;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStats;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStatsCapability;
-import DaoOfModding.Cultivationcraft.Common.Capabilities.FlyingSwordBind.FlyingSwordBind;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.FlyingSwordBind.FlyingSwordBindCapability;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.FlyingSwordContainerItemStack.FlyingSwordContainerItemStackCapability;
 import DaoOfModding.Cultivationcraft.Common.Containers.FlyingSwordContainer;
@@ -15,7 +17,6 @@ import DaoOfModding.Cultivationcraft.Network.PacketHandler;
 import DaoOfModding.Cultivationcraft.Server.FlyingSwordBindProgresser;
 import DaoOfModding.Cultivationcraft.Server.ServerItemControl;
 import net.minecraft.block.Block;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -23,19 +24,20 @@ import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.SwordItem;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.extensions.IForgeContainerType;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
-import net.minecraftforge.event.entity.item.ItemEvent;
 import net.minecraftforge.event.entity.item.ItemTossEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.event.world.ChunkEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.DeferredWorkQueue;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
@@ -43,8 +45,6 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import java.util.concurrent.TimeUnit;
 
 
 // The value here should match an entry in the META-INF/mods.toml file
@@ -58,22 +58,20 @@ public class Cultivationcraft
 
     public static final ResourceLocation CultivatorStatsCapabilityLocation = new ResourceLocation("cultivationcraft", "cultivatorstats");
     public static final ResourceLocation FSCItemStackCapabilityLocation = new ResourceLocation("cultivationcraft", "fscitemstack");
-    public static final ResourceLocation FLyingSwordBindLocation = new ResourceLocation("cultivationcraft", "flyingswordbind");
+    public static final ResourceLocation FlyingSwordBindLocation = new ResourceLocation("cultivationcraft", "flyingswordbind");
+    public static final ResourceLocation ChunkQiSourcesLocation = new ResourceLocation("cultivationcraft", "chunkqisources");
 
     public Cultivationcraft() {
 
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
-        // Register the setup method for modloading
         modEventBus.addListener(this::commonInit);
-        // Register the doClientStuff method for modloading
         modEventBus.addListener(this::clientInit);
 
         Register.ENTITY_TYPES.register(modEventBus);
 
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
-
     }
 
     private void commonInit(final FMLCommonSetupEvent event)
@@ -112,6 +110,13 @@ public class Cultivationcraft
     }
 
     @SubscribeEvent
+    public void attachCapabilitiesChunk(final AttachCapabilitiesEvent<Chunk> event)
+    {
+        ChunkQiSourcesCapability newCapability = new ChunkQiSourcesCapability();
+        event.addCapability(ChunkQiSourcesLocation, newCapability);
+    }
+
+    @SubscribeEvent
     public void attachCapabilitiesEntity(final AttachCapabilitiesEvent<Entity> event)
     {
         if(event.getObject() instanceof PlayerEntity)
@@ -128,7 +133,7 @@ public class Cultivationcraft
         if (event.getObject().getItem() instanceof SwordItem)
         {
             FlyingSwordBindCapability newCapability = new FlyingSwordBindCapability();
-            event.addCapability(FLyingSwordBindLocation, newCapability);
+            event.addCapability(FlyingSwordBindLocation, newCapability);
         }
     }
 
@@ -174,6 +179,21 @@ public class Cultivationcraft
             ClientItemControl.thisWorld = event.getWorld();
         else
             ServerItemControl.thisWorld = event.getWorld();
+    }
+
+    @SubscribeEvent
+    public void chunkLoad(ChunkEvent.Load event)
+    {
+        // If the Chunk's Qi sources have no been generated yet, generate them
+        IChunkQiSources sources = ChunkQiSources.getChunkQiSources((Chunk)event.getChunk());
+        if (sources.getChunkPos() == null)
+        {
+            sources.setChunkPos(event.getChunk().getPos());
+            sources.generateQiSources();
+
+            // Mark the chunk as dirty so it will save the updated capability
+            ((Chunk) event.getChunk()).markDirty();
+        }
     }
 
     // Fired off when an item is thrown, server only
