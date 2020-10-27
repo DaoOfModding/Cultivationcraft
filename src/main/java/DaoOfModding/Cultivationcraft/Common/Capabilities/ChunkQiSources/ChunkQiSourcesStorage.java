@@ -19,8 +19,7 @@ public class ChunkQiSourcesStorage implements Capability.IStorage<IChunkQiSource
 
         if (instance.getChunkPos() != null)
         {
-            nbt.putInt("QiSourceXPos", instance.getChunkPos().x);
-            nbt.putInt("QiSourceZPos", instance.getChunkPos().z);
+            nbt.putLong("QiSource", instance.getChunkPos().asLong());
 
             int count = 0;
             // Add NBT data for each QiSource
@@ -42,10 +41,7 @@ public class ChunkQiSourcesStorage implements Capability.IStorage<IChunkQiSource
 
         if (((CompoundNBT)nbt).contains("QiSourceXPos"))
         {
-            int xPos = ((CompoundNBT) nbt).getInt("QiSourceXPos");
-            int zPos = ((CompoundNBT) nbt).getInt("QiSourceZPos");
-
-            instance.setChunkPos(new ChunkPos(xPos, zPos));
+            instance.setChunkPos(new ChunkPos(((CompoundNBT) nbt).getLong("QiSource")));
 
             List<QiSource> sourceList = new ArrayList<QiSource>();
 

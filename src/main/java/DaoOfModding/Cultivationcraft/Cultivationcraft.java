@@ -34,6 +34,7 @@ import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.item.ItemTossEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.world.ChunkEvent;
+import net.minecraftforge.event.world.ChunkWatchEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -184,15 +185,21 @@ public class Cultivationcraft
     @SubscribeEvent
     public void chunkLoad(ChunkEvent.Load event)
     {
-        // If the Chunk's Qi sources have no been generated yet, generate them
-        IChunkQiSources sources = ChunkQiSources.getChunkQiSources((Chunk)event.getChunk());
-        if (sources.getChunkPos() == null)
+        // Only on server
+        if (!event.getWorld().isRemote())
         {
-            sources.setChunkPos(event.getChunk().getPos());
-            sources.generateQiSources();
+            // If the Chunk's Qi sources have no been generated yet, generate them
+            IChunkQiSources sources = ChunkQiSources.getChunkQiSources((Chunk) event.getChunk());
+            if (sources.getChunkPos() == null) {
+                sources.setChunkPos(event.getChunk().getPos());
+                sources.generateQiSources();
 
-            // Mark the chunk as dirty so it will save the updated capability
-            ((Chunk) event.getChunk()).markDirty();
+                // Mark the chunk as dirty so it will save the updated capability
+                ((Chunk) event.getChunk()).markDirty();
+
+                // Send the new capability data to all tracking clients
+                PacketHandler.sendChunkQiSourcesToClient((Chunk) event.getChunk());
+            }
         }
     }
 
@@ -255,6 +262,14 @@ public class Cultivationcraft
         if (!event.getEntity().getEntityWorld().isRemote)
             if (event.getTarget() instanceof PlayerEntity)
                 ServerItemControl.sendPlayerStats(event.getPlayer(), (PlayerEntity)event.getTarget());
+    }
+
+    // Fired off when an player starts watching a chunk
+    @SubscribeEvent
+    public void onChunkWatch(ChunkWatchEvent event)
+    {
+        if (!event.getWorld().isRemote)
+            PacketHandler.sendChunkQiSourcesToClient(event.getWorld().getChunk(event.getPos().x, event.getPos().z), event.getPlayer());
     }
 
     @SubscribeEvent

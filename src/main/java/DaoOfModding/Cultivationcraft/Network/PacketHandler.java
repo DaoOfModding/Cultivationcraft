@@ -1,5 +1,7 @@
 package DaoOfModding.Cultivationcraft.Network;
 
+import DaoOfModding.Cultivationcraft.Common.Capabilities.ChunkQiSources.ChunkQiSources;
+import DaoOfModding.Cultivationcraft.Common.Capabilities.ChunkQiSources.IChunkQiSources;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStats;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.ICultivatorStats;
 import DaoOfModding.Cultivationcraft.Network.Packets.*;
@@ -11,6 +13,7 @@ import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.fml.network.NetworkRegistry;
 import net.minecraftforge.fml.network.PacketDistributor;
 import net.minecraftforge.fml.network.simple.SimpleChannel;
@@ -22,6 +25,7 @@ public class PacketHandler
 {
 
     private static final byte KEYPRESS = 07;
+    private static final byte CHUNK_QI_SOURCES = 10;
     private static final byte FLYING_SWORD_NBT_ID = 35;
     private static final byte FLYING_SWORD_RECALL = 36;
     private static final byte CULTIVATOR_TARGET_ID = 76;
@@ -38,6 +42,7 @@ public class PacketHandler
     public static void init()
     {
         channel.registerMessage(KEYPRESS, keypressPacket.class, keypressPacket::encode, keypressPacket::decode, keypressPacket::handle);
+        channel.registerMessage(CHUNK_QI_SOURCES, ChunkQiSourcesPacket.class, ChunkQiSourcesPacket::encode, ChunkQiSourcesPacket::decode, ChunkQiSourcesPacket::handle);
         channel.registerMessage(FLYING_SWORD_NBT_ID, ConvertToFlyingPacket.class, ConvertToFlyingPacket::encode, ConvertToFlyingPacket::decode, ConvertToFlyingPacket::handle);
         channel.registerMessage(FLYING_SWORD_RECALL, RecallFlyingSwordPacket.class, RecallFlyingSwordPacket::encode, RecallFlyingSwordPacket::decode, RecallFlyingSwordPacket::handle);
         channel.registerMessage(CULTIVATOR_TARGET_ID, CultivatorTargetPacket.class, CultivatorTargetPacket::encode, CultivatorTargetPacket::decode, CultivatorTargetPacket::handle);
@@ -86,6 +91,23 @@ public class PacketHandler
 
         sendCultivatorStatsToClient(player, target);
     }
+
+    public static void sendChunkQiSourcesToClient(Chunk chunk)
+    {
+        IChunkQiSources sources = ChunkQiSources.getChunkQiSources(chunk);
+        ChunkQiSourcesPacket pack = new ChunkQiSourcesPacket(sources.getChunkPos(), sources.getQiSources());
+
+        channel.send(PacketDistributor.TRACKING_CHUNK.with(() -> chunk), pack);
+    }
+
+    public static void sendChunkQiSourcesToClient(Chunk chunk, ServerPlayerEntity player)
+    {
+        IChunkQiSources sources = ChunkQiSources.getChunkQiSources(chunk);
+        ChunkQiSourcesPacket pack = new ChunkQiSourcesPacket(sources.getChunkPos(), sources.getQiSources());
+
+        channel.send(PacketDistributor.PLAYER.with(() -> player), pack);
+    }
+
 
     public static void sendCultivatorStatsToSpecificClient(PlayerEntity player, ServerPlayerEntity toSend)
     {

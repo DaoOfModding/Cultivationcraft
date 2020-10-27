@@ -17,8 +17,6 @@ public class FlyingSwordBindProgresser
     // Progress any ongoing flying sword bindings
     public static void bindFlyingSword(long time)
     {
-        // TODO: Binding already bound swords bugged, instantly forgets it's been bound
-
         // Cycle through list of all players, dealing with any flying swords they are currently binding
 
         for(PlayerEntity player : ServerLifecycleHooks.getCurrentServer().getPlayerList().getPlayers())
