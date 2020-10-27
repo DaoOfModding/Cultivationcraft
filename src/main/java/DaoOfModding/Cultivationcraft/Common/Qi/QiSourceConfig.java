@@ -2,10 +2,12 @@ package DaoOfModding.Cultivationcraft.Common.Qi;
 
 public class QiSourceConfig
 {
-    // Todo: Scaling, more likely to be 0, but possible to be more than 1
+    final static int MaxSources = 3;
+
     // Return the number of QiSources to spawn
+    // Much more likely to be 0, but has a chance to be up to MaxSources
     public static int getQiSourceInChunk()
     {
-        return (int)(Math.random() * 3);
+        return (int)(Math.pow(Math.random(), 10) * (MaxSources + 1));
     }
 }

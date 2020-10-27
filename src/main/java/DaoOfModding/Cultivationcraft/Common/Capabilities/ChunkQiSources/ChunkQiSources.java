@@ -2,6 +2,7 @@ package DaoOfModding.Cultivationcraft.Common.Capabilities.ChunkQiSources;
 
 import DaoOfModding.Cultivationcraft.Common.Qi.QiSource;
 import DaoOfModding.Cultivationcraft.Common.Qi.QiSourceConfig;
+import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.chunk.Chunk;
@@ -11,6 +12,8 @@ import java.util.List;
 
 public class ChunkQiSources implements IChunkQiSources
 {
+    // TODO: Different dimension spawning
+
     ChunkPos chunkPos;
     List<QiSource> QiSources = new ArrayList<QiSource>();
 
@@ -48,9 +51,11 @@ public class ChunkQiSources implements IChunkQiSources
 
         // TODO: Fix this equation to be at ground level rather than 100
         // Generate a random yPos, more likely to be at ground level (0.32)
-        int yPos = (int)((0.5 + 4 * Math.pow((Math.random() - 0.5), 3)) * 200);
+        double x = Math.random();
 
-        //Cultivationcraft.LOGGER.info("X: " + xPos + " Y: " + yPos + " Z: " + zPos + " At " + chunkPos.toString());
+        int yPos = (int)(((4 * Math.pow(x, 3)) - (5.28 * Math.pow(x, 2)) + (2.28 * x)) * 200);
+
+        Cultivationcraft.LOGGER.info("X: " + xPos + " Y: " + yPos + " Z: " + zPos + " At " + chunkPos.toString());
 
         QiSources.add(new QiSource(new BlockPos(xPos, yPos, zPos)));
     }
