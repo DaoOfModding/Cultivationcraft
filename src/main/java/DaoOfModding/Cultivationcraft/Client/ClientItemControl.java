@@ -3,9 +3,12 @@ package DaoOfModding.Cultivationcraft.Client;
 import static org.lwjgl.glfw.GLFW.*;
 
 import DaoOfModding.Cultivationcraft.Client.GUI.FlyingSwordContainerScreen;
+import DaoOfModding.Cultivationcraft.Client.GUI.SkillHotbarOverlay;
 import DaoOfModding.Cultivationcraft.Common.Misc;
+import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import DaoOfModding.Cultivationcraft.Network.PacketHandler;
 import DaoOfModding.Cultivationcraft.Common.Register;
+import cpw.mods.modlauncher.serviceapi.ILaunchPluginService;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.client.settings.KeyBinding;
@@ -35,7 +38,7 @@ public class ClientItemControl
         MinecraftForge.EVENT_BUS.register(ClientItemControl.class);
 
         keyBindings = new KeyBinding[4];
-        keyBindings[0] = new KeyBinding("Create Flying Sword", GLFW_KEY_Y, "Cultivation");
+        keyBindings[0] = new KeyBinding("Switch Hotbar", GLFW_KEY_GRAVE_ACCENT, "Cultivation");
         keyBindings[1] = new KeyBinding("Flying Sword Target", GLFW_KEY_R, "Cultivation");
         keyBindings[2] = new KeyBinding("Flying Sword Recall", GLFW_KEY_O, "Cultivation");
         keyBindings[3] = new KeyBinding("Flying Sword Screen Test", GLFW_KEY_L, "Cultivation");
@@ -46,19 +49,68 @@ public class ClientItemControl
         ScreenManager.registerFactory(Register.ContainerTypeFlyingSword, FlyingSwordContainerScreen::new);
     }
 
+    // Handle hotbar keys being pressed
+    private static void handleHotbarKeybinds()
+    {
+        // Don't do anything if the Skill Hotbar isn't active
+        if (!SkillHotbarOverlay.isActive())
+            return;
+
+        // Cancel the hotbar key press and change the skill hotbar selection to the pressed button
+        for (int i = 0; i < 9; i++)
+            if(Minecraft.getInstance().gameSettings.keyBindsHotbar[i].isPressed())
+            {
+                SkillHotbarOverlay.setSelection(i);
+
+                Minecraft.getInstance().gameSettings.keyBindsHotbar[i].setPressed(false);
+            }
+    }
+
+    public static void handleHotbarInteracts()
+    {
+        // If the skill hotbar isn't active do nothing
+        if (!SkillHotbarOverlay.isActive())
+            return;
+
+        if (Minecraft.getInstance().gameSettings.keyBindAttack.isPressed())
+        {
+            //Minecraft.getInstance().gameSettings.keyBindAttack.setPressed(false);
+        }
+
+        if (Minecraft.getInstance().gameSettings.keyBindUseItem.isPressed())
+        {
+            SkillHotbarOverlay.useSkill();
+
+            Minecraft.getInstance().gameSettings.keyBindUseItem.setPressed(false);
+        }
+    }
+
     @SubscribeEvent
-    public static void onKeyPress(InputEvent.KeyInputEvent event)
+    public static void mouseScroll(InputEvent.MouseScrollEvent event)
+    {
+        // If the skill hotbar is active
+        if (SkillHotbarOverlay.isActive())
+        {
+            // Scroll the skill hotbar
+            SkillHotbarOverlay.changeCurrentSelection(event.getScrollDelta());
+
+            // Cancel this scroll action if the Skill Hotbar is active
+            event.setCanceled(true);
+        }
+    }
+
+    @SubscribeEvent
+    public static void onInput(InputEvent event)
     {
         // Only perform if the world is loaded
         if (thisWorld != null)
         {
+            handleHotbarKeybinds();
+            handleHotbarInteracts();
+
             if (keyBindings[0].isPressed())
             {
-                ItemStack selected = Minecraft.getInstance().player.inventory.getCurrentItem();
-
-                // If the selected stack isn't empty then send a message to the server converting this item to a flying sword
-                if (!selected.isEmpty())
-                    PacketHandler.sendFlyingSwordConversionToServer(Minecraft.getInstance().player.inventory.currentItem, Minecraft.getInstance().player.getUniqueID());
+                SkillHotbarOverlay.switchActive();
             }
 
             if (keyBindings[1].isPressed())

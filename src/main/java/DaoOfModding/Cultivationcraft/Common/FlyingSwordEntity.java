@@ -47,8 +47,6 @@ public class FlyingSwordEntity extends ItemEntity
 {
     // TODO: Make not die to explosions
 
-    protected static final UUID ATTACK_DAMAGE_MODIFIER = UUID.fromString("CB3F55D3-645C-4F38-A497-9C13A33DB5CF");
-
     private static final DataParameter<ItemStack> ITEM = EntityDataManager.createKey(FlyingSwordEntity.class, DataSerializers.ITEMSTACK);
     private static final DataParameter<Float> decaySpeed = EntityDataManager.createKey(FlyingSwordEntity.class, DataSerializers.FLOAT);
 

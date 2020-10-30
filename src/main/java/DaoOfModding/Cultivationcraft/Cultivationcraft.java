@@ -1,6 +1,7 @@
 package DaoOfModding.Cultivationcraft;
 
 import DaoOfModding.Cultivationcraft.Client.ClientItemControl;
+import DaoOfModding.Cultivationcraft.Client.GUI.SkillHotbarOverlay;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.ChunkQiSources.ChunkQiSources;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.ChunkQiSources.ChunkQiSourcesCapability;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.ChunkQiSources.IChunkQiSources;
@@ -25,6 +26,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.SwordItem;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraftforge.client.event.InputEvent;
+import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.extensions.IForgeContainerType;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
@@ -38,7 +41,6 @@ import net.minecraftforge.event.world.ChunkWatchEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.DeferredWorkQueue;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
@@ -135,6 +137,24 @@ public class Cultivationcraft
         {
             FlyingSwordBindCapability newCapability = new FlyingSwordBindCapability();
             event.addCapability(FlyingSwordBindLocation, newCapability);
+        }
+    }
+
+    @SubscribeEvent
+    public void gameTick(RenderGameOverlayEvent.Pre event)
+    {
+        if (event.getType() == RenderGameOverlayEvent.ElementType.HOTBAR)
+        {
+            SkillHotbarOverlay.PreRenderSkillHotbar(event.getMatrixStack());
+        }
+    }
+
+    @SubscribeEvent
+    public void gameTick(RenderGameOverlayEvent.Post event)
+    {
+        if (event.getType() == RenderGameOverlayEvent.ElementType.HOTBAR)
+        {
+            SkillHotbarOverlay.PostRenderSkillHotbar(event.getMatrixStack());
         }
     }
 

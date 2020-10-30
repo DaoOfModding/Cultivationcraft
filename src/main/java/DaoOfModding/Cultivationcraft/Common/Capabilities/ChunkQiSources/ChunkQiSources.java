@@ -49,13 +49,10 @@ public class ChunkQiSources implements IChunkQiSources
         int xPos = (int)(Math.random() * 15) + (chunkPos.x << 4);
         int zPos = (int)(Math.random() * 15) + (chunkPos.z << 4);
 
-        // TODO: Fix this equation to be at ground level rather than 100
         // Generate a random yPos, more likely to be at ground level (0.32)
         double x = Math.random();
 
         int yPos = (int)(((4 * Math.pow(x, 3)) - (5.28 * Math.pow(x, 2)) + (2.28 * x)) * 200);
-
-        Cultivationcraft.LOGGER.info("X: " + xPos + " Y: " + yPos + " Z: " + zPos + " At " + chunkPos.toString());
 
         QiSources.add(new QiSource(new BlockPos(xPos, yPos, zPos)));
     }
