@@ -13,6 +13,7 @@ import DaoOfModding.Cultivationcraft.Common.Containers.FlyingSwordContainer;
 import DaoOfModding.Cultivationcraft.Common.FlyingSwordController;
 import DaoOfModding.Cultivationcraft.Common.FlyingSwordEntity;
 import DaoOfModding.Cultivationcraft.Common.FlyingSwordRenderer;
+import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
 import DaoOfModding.Cultivationcraft.Common.Register;
 import DaoOfModding.Cultivationcraft.Network.PacketHandler;
 import DaoOfModding.Cultivationcraft.Server.FlyingSwordBindProgresser;
@@ -83,6 +84,8 @@ public class Cultivationcraft
         PacketHandler.init();
 
         Register.registerCapabilities();
+
+        Elements.init();
     }
 
     private void clientInit(final FMLClientSetupEvent event)

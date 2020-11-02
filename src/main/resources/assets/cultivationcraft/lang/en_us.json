@@ -1,4 +1,12 @@
 {
+  "cultivationcraft.elements.none": "Qi",
+  "cultivationcraft.elements.fire": "Fire",
+  "cultivationcraft.elements.earth": "Earth",
+  "cultivationcraft.elements.wood": "Wood",
+  "cultivationcraft.elements.water": "Water",
+  "cultivationcraft.elements.ice": "Ice",
+  "cultivationcraft.elements.lightning": "Lightning",
+
   "cultivationcraft.gui.bind": "Bind Item",
   "cultivationcraft.gui.done": "Done",
   "cultivationcraft.gui.remaining": "Remaining: %s seconds"
