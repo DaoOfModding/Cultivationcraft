@@ -72,10 +72,10 @@ public class ClientItemControl
         if (!SkillHotbarOverlay.isActive())
             return;
 
-        if (Minecraft.getInstance().gameSettings.keyBindAttack.isPressed())
+        /*if (Minecraft.getInstance().gameSettings.keyBindAttack.isPressed())
         {
-            //Minecraft.getInstance().gameSettings.keyBindAttack.setPressed(false);
-        }
+            Minecraft.getInstance().gameSettings.keyBindAttack.setPressed(false);
+        }*/
 
         if (Minecraft.getInstance().gameSettings.keyBindUseItem.isPressed())
         {
