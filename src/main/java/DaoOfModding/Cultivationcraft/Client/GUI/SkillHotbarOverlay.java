@@ -1,5 +1,8 @@
 package DaoOfModding.Cultivationcraft.Client.GUI;
 
+import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.CultivatorTechniques;
+import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.CultivatorTechniquesCapability;
+import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.ICultivatorTechniques;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -61,6 +64,19 @@ public class SkillHotbarOverlay
         // Draw the selection box
         gui.blit(stack, scaledWidth - 83 - 1 + skillSelected * 20, scaledHeight - 30 - 1, 0, 22, 24, 22);
 
+        ICultivatorTechniques techs = CultivatorTechniques.getCultivatorTechniques(playerentity);
+
+        // Draw icons in the selection box
+        for (int i = 0; i < 10; i++)
+            if (techs.getTechnique(i) != null)
+            {
+                Minecraft.getInstance().getTextureManager().bindTexture(techs.getTechnique(i).getIcon());
+
+                // Stupid unobfuscated code
+                // Okay so it's MatrixStack, xPos, yPos, zPos, TextureXPos, TextureYPos, width, height, textureWidth, textureHeight
+                gui.blit(stack, scaledWidth + 3 - 83 + i * 20, scaledHeight + 3 - 30, gui.getBlitOffset(), 0, 0, 16, 16, 16, 16);
+            }
+
 
         // Reset the Z layer to its original value
         gui.setBlitOffset(blitOffset);
@@ -69,7 +85,7 @@ public class SkillHotbarOverlay
     // Called when the use item button is pressed and the hotbar is active
     public static void useSkill()
     {
-
+        // TODO: send message to server to use this skill
     }
 
     public static void setSelection(int selection)

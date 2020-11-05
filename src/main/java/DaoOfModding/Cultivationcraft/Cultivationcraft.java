@@ -7,6 +7,7 @@ import DaoOfModding.Cultivationcraft.Common.Capabilities.ChunkQiSources.ChunkQiS
 import DaoOfModding.Cultivationcraft.Common.Capabilities.ChunkQiSources.IChunkQiSources;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStats;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStatsCapability;
+import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.CultivatorTechniques;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.CultivatorTechniquesCapability;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.FlyingSwordBind.FlyingSwordBindCapability;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.FlyingSwordContainerItemStack.FlyingSwordContainerItemStackCapability;
@@ -15,6 +16,7 @@ import DaoOfModding.Cultivationcraft.Common.FlyingSwordController;
 import DaoOfModding.Cultivationcraft.Common.FlyingSwordEntity;
 import DaoOfModding.Cultivationcraft.Common.FlyingSwordRenderer;
 import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
+import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.Technique;
 import DaoOfModding.Cultivationcraft.Common.Register;
 import DaoOfModding.Cultivationcraft.Network.PacketHandler;
 import DaoOfModding.Cultivationcraft.Server.FlyingSwordBindProgresser;
@@ -23,6 +25,7 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.SwordItem;
@@ -258,7 +261,13 @@ public class Cultivationcraft
         CultivatorStats.getCultivatorStats(event.getPlayer()).setDisconnected(false);
 
         if (!event.getEntity().getEntityWorld().isRemote)
-            ServerItemControl.sendPlayerStats(event.getPlayer(), (PlayerEntity)event.getPlayer());
+        {
+            // TESTING
+            CultivatorTechniques.getCultivatorTechniques(event.getPlayer()).setTechnique(0, new Technique());
+
+            ServerItemControl.sendPlayerStats(event.getPlayer(), (PlayerEntity) event.getPlayer());
+
+        }
     }
 
     // Fired off when an player respawns into the world

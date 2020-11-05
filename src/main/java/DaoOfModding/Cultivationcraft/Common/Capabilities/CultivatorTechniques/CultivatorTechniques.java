@@ -1,7 +1,5 @@
 package DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques;
 
-import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStatsCapability;
-import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.ICultivatorStats;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.Technique;
 import net.minecraft.entity.player.PlayerEntity;
 

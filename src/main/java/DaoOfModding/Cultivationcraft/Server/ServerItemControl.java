@@ -1,12 +1,7 @@
 package DaoOfModding.Cultivationcraft.Server;
 
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStats;
-import DaoOfModding.Cultivationcraft.Common.Capabilities.FlyingSwordBind.FlyingSwordBind;
-import DaoOfModding.Cultivationcraft.Common.Capabilities.FlyingSwordBind.IFlyingSwordBind;
-import DaoOfModding.Cultivationcraft.Common.Capabilities.FlyingSwordContainerItemStack.FlyingSwordContainerItemHandler;
-import DaoOfModding.Cultivationcraft.Common.Capabilities.FlyingSwordContainerItemStack.FlyingSwordContainerItemStack;
 import DaoOfModding.Cultivationcraft.Common.Containers.FlyingSwordContainerProvider;
-import DaoOfModding.Cultivationcraft.Common.FlyingSwordController;
 import DaoOfModding.Cultivationcraft.Network.PacketHandler;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.ICultivatorStats;
 import DaoOfModding.Cultivationcraft.Common.Register;
