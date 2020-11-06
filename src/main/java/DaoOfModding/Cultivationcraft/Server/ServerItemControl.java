@@ -52,5 +52,10 @@ public class ServerItemControl
             INamedContainerProvider flyingSwordContainerProvider = new FlyingSwordContainerProvider(pressedBy);
             NetworkHooks.openGui(pressedBy, flyingSwordContainerProvider);
         }
+
+        if (keyPressed == Register.keyPresses.SKILLHOTBARSWITCH)
+        {
+            SkillHotbarServer.switchActive(pressedBy.getUniqueID());
+        }
     }
 }

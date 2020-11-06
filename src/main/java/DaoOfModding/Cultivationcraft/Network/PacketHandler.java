@@ -28,6 +28,7 @@ public class PacketHandler
 
     private static final byte KEYPRESS = 07;
     private static final byte CHUNK_QI_SOURCES = 10;
+    private static final byte TECHNIQUE_USE = 20;
     private static final byte FLYING_SWORD_NBT_ID = 35;
     private static final byte FLYING_SWORD_RECALL = 36;
     private static final byte CULTIVATOR_TARGET_ID = 76;
@@ -46,6 +47,7 @@ public class PacketHandler
     {
         channel.registerMessage(KEYPRESS, keypressPacket.class, keypressPacket::encode, keypressPacket::decode, keypressPacket::handle);
         channel.registerMessage(CHUNK_QI_SOURCES, ChunkQiSourcesPacket.class, ChunkQiSourcesPacket::encode, ChunkQiSourcesPacket::decode, ChunkQiSourcesPacket::handle);
+        channel.registerMessage(TECHNIQUE_USE, TechniqueUsePacket.class, TechniqueUsePacket::encode, TechniqueUsePacket::decode, TechniqueUsePacket::handle);
         channel.registerMessage(FLYING_SWORD_NBT_ID, ConvertToFlyingPacket.class, ConvertToFlyingPacket::encode, ConvertToFlyingPacket::decode, ConvertToFlyingPacket::handle);
         channel.registerMessage(FLYING_SWORD_RECALL, RecallFlyingSwordPacket.class, RecallFlyingSwordPacket::encode, RecallFlyingSwordPacket::decode, RecallFlyingSwordPacket::handle);
         channel.registerMessage(CULTIVATOR_TARGET_ID, CultivatorTargetPacket.class, CultivatorTargetPacket::encode, CultivatorTargetPacket::decode, CultivatorTargetPacket::handle);
@@ -56,6 +58,12 @@ public class PacketHandler
     public static void sendKeypressToServer(Register.keyPresses keyPress)
     {
         keypressPacket pack = new keypressPacket(keyPress);
+        channel.sendToServer(pack);
+    }
+
+    public static void sendTechniqueUseToServer(int slot, boolean keyDown)
+    {
+        TechniqueUsePacket pack = new TechniqueUsePacket(slot, keyDown);
         channel.sendToServer(pack);
     }
 

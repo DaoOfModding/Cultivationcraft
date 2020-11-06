@@ -29,6 +29,8 @@ import java.util.UUID;
 
 public class ClientItemControl
 {
+    private static boolean usePressed = false;
+
     public static IWorld thisWorld;
 
     public static KeyBinding[] keyBindings;
@@ -70,18 +72,29 @@ public class ClientItemControl
     {
         // If the skill hotbar isn't active do nothing
         if (!SkillHotbarOverlay.isActive())
+        {
+            usePressed = false;
             return;
+        }
 
         /*if (Minecraft.getInstance().gameSettings.keyBindAttack.isPressed())
         {
             Minecraft.getInstance().gameSettings.keyBindAttack.setPressed(false);
         }*/
 
-        if (Minecraft.getInstance().gameSettings.keyBindUseItem.isPressed())
+        // Is the use button is pressed, use currently selected skill and set usePressed to true
+        // If the button isn't pressed but usePressed is true, tell the selected skill that the button has been released
+        if (Minecraft.getInstance().gameSettings.keyBindUseItem.getKeyBinding().isPressed())
         {
-            SkillHotbarOverlay.useSkill();
+            usePressed = true;
 
-            Minecraft.getInstance().gameSettings.keyBindUseItem.setPressed(false);
+            SkillHotbarOverlay.useSkill(true);
+        }
+        else if (usePressed && !Minecraft.getInstance().gameSettings.keyBindUseItem.isKeyDown())
+        {
+            usePressed = false;
+
+            SkillHotbarOverlay.useSkill(Minecraft.getInstance().gameSettings.keyBindUseItem.isKeyDown());
         }
     }
 
@@ -111,6 +124,7 @@ public class ClientItemControl
             if (keyBindings[0].isPressed())
             {
                 SkillHotbarOverlay.switchActive();
+                PacketHandler.sendKeypressToServer(Register.keyPresses.SKILLHOTBARSWITCH);
             }
 
             if (keyBindings[1].isPressed())

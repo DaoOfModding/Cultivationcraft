@@ -21,6 +21,7 @@ import DaoOfModding.Cultivationcraft.Common.Register;
 import DaoOfModding.Cultivationcraft.Network.PacketHandler;
 import DaoOfModding.Cultivationcraft.Server.FlyingSwordBindProgresser;
 import DaoOfModding.Cultivationcraft.Server.ServerItemControl;
+import DaoOfModding.Cultivationcraft.Server.SkillHotbarServer;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.ItemEntity;
@@ -41,6 +42,7 @@ import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.item.ItemTossEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.ChunkEvent;
 import net.minecraftforge.event.world.ChunkWatchEvent;
 import net.minecraftforge.event.world.WorldEvent;
@@ -268,6 +270,9 @@ public class Cultivationcraft
             ServerItemControl.sendPlayerStats(event.getPlayer(), (PlayerEntity) event.getPlayer());
 
         }
+
+        if (!event.getPlayer().getEntityWorld().isRemote)
+            SkillHotbarServer.addPlayer(event.getPlayer().getUniqueID());
     }
 
     // Fired off when an player respawns into the world
@@ -311,6 +316,34 @@ public class Cultivationcraft
     public void playerDisconnects(PlayerEvent.PlayerLoggedOutEvent event)
     {
         CultivatorStats.getCultivatorStats(event.getPlayer()).setDisconnected(true);
+
+        if (!event.getPlayer().getEntityWorld().isRemote)
+            SkillHotbarServer.removePlayer(event.getPlayer().getUniqueID());
+    }
+
+    @SubscribeEvent
+    public void playerInteract(PlayerInteractEvent.RightClickBlock event)
+    {
+        cancelPlacement(event);
+    }
+
+    @SubscribeEvent
+    public void playerInteract(PlayerInteractEvent.RightClickItem event)
+    {
+        cancelPlacement(event);
+    }
+
+    private void cancelPlacement(PlayerInteractEvent event)
+    {
+        // Cancel placing item is the SkillHotbar is active
+        if (event.getWorld().isRemote)
+        {
+            if (SkillHotbarOverlay.isActive())
+                event.setCanceled(true);
+        }
+        else
+        if (SkillHotbarServer.isActive(event.getPlayer().getUniqueID()))
+            event.setCanceled(true);
     }
 
     // Fired off when an entity joins the world, this happens on both the client and the server

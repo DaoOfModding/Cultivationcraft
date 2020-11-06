@@ -60,6 +60,15 @@ public class Technique
         return nbt;
     }
 
+    // What to do when the use key for this technique is pressed
+    // keyDown = true when the key is pressed down, false when the key is released
+    public void useKeyPressed(boolean keyDown)
+    {
+        // Example usage for a channeled technique
+        // Skill is turned on while the key is held down, turned off when key is released
+        active = keyDown;
+    }
+
     public void writeBuffer(PacketBuffer buffer)
     {
         buffer.writeBoolean(active);

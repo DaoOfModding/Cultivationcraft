@@ -4,6 +4,7 @@ import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.Cu
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.CultivatorTechniquesCapability;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.ICultivatorTechniques;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
+import DaoOfModding.Cultivationcraft.Network.PacketHandler;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
@@ -83,9 +84,11 @@ public class SkillHotbarOverlay
     }
 
     // Called when the use item button is pressed and the hotbar is active
-    public static void useSkill()
+    public static void useSkill(boolean keyDown)
     {
-        // TODO: send message to server to use this skill
+        // Send message to server to use this skill
+        if (isActive())
+            PacketHandler.sendTechniqueUseToServer(skillSelected, keyDown);
     }
 
     public static void setSelection(int selection)

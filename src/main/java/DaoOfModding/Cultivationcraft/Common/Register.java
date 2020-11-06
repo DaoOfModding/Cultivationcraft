@@ -15,7 +15,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 public class Register
 {
-    public enum keyPresses { FLYINGSWORDSCREEN }
+    public enum keyPresses { FLYINGSWORDSCREEN, SKILLHOTBARSWITCH }
 
     public static DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.ENTITIES, "cultivationcraft");
 
