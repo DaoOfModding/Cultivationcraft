@@ -16,6 +16,7 @@ import DaoOfModding.Cultivationcraft.Common.FlyingSwordController;
 import DaoOfModding.Cultivationcraft.Common.FlyingSwordEntity;
 import DaoOfModding.Cultivationcraft.Common.FlyingSwordRenderer;
 import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
+import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.DivineSenseTechnique;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.Technique;
 import DaoOfModding.Cultivationcraft.Common.Register;
 import DaoOfModding.Cultivationcraft.Network.PacketHandler;
@@ -265,7 +266,7 @@ public class Cultivationcraft
         if (!event.getEntity().getEntityWorld().isRemote)
         {
             // TESTING
-            CultivatorTechniques.getCultivatorTechniques(event.getPlayer()).setTechnique(0, new Technique());
+            CultivatorTechniques.getCultivatorTechniques(event.getPlayer()).setTechnique(0, new DivineSenseTechnique());
 
             ServerItemControl.sendPlayerStats(event.getPlayer(), (PlayerEntity) event.getPlayer());
 

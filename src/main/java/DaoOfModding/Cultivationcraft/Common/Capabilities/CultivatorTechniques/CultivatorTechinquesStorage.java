@@ -34,6 +34,6 @@ public class CultivatorTechinquesStorage implements Capability.IStorage<ICultiva
 
         for (int i = 0; i < 10; i++)
             if (((CompoundNBT)nbt).contains(Integer.toString(i)))
-                instance.setTechnique(i, Technique.readNBT((CompoundNBT)nbt));
+                instance.setTechnique(i, Technique.readNBT(((CompoundNBT)nbt).getCompound(Integer.toString(i))));
     }
 }

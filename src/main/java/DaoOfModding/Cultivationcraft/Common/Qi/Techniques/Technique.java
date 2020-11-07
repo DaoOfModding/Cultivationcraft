@@ -1,6 +1,7 @@
 package DaoOfModding.Cultivationcraft.Common.Qi.Techniques;
 
 import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
+import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.ResourceLocation;
@@ -55,6 +56,10 @@ public class Technique
     {
         CompoundNBT nbt = new CompoundNBT();
 
+        String className = this.getClass().getName();
+
+        nbt.putString("className", className);
+
         nbt.putBoolean("active", active);
 
         return nbt;
@@ -71,26 +76,60 @@ public class Technique
 
     public void writeBuffer(PacketBuffer buffer)
     {
+        buffer.writeString(this.getClass().getName());
         buffer.writeBoolean(active);
     }
 
     // Read a Technique stored in NBT and create a technique from it
     public static Technique readNBT(CompoundNBT nbt)
     {
-        Technique newTech = new Technique();
+        String className = nbt.getString("className");
+        Technique newTech;
 
-        newTech.setActive(nbt.getBoolean("active"));
+        try
+        {
+            Class test = Class.forName(className);
+            newTech = (Technique)test.newInstance();
+        }
+        catch (Exception e)
+        {
+            Cultivationcraft.LOGGER.error(className + " not found when loading Technique");
+            return null;
+        }
+
+        newTech.readNBTData(nbt);
 
         return newTech;
     }
 
+    public void readNBTData(CompoundNBT nbt)
+    {
+        setActive(nbt.getBoolean("active"));
+    }
+
     public static Technique readBuffer(PacketBuffer buffer)
     {
-        Technique newTech = new Technique();
+        Technique newTech;
+        String className = buffer.readString();
 
-        newTech.setActive(buffer.readBoolean());
+        try
+        {
+            Class test = Class.forName(className);
+            newTech = (Technique)test.newInstance();
+        }
+        catch (Exception e)
+        {
+            Cultivationcraft.LOGGER.error(className + " not found when loading Technique");
+            return null;
+        }
+        newTech.readBufferData(buffer);
 
         return newTech;
+    }
+
+    public void readBufferData(PacketBuffer buffer)
+    {
+        setActive(buffer.readBoolean());
     }
 
     public void render() {}
