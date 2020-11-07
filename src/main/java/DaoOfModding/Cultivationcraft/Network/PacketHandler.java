@@ -6,6 +6,7 @@ import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.Cultiva
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.ICultivatorStats;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.CultivatorTechniques;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.ICultivatorTechniques;
+import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import DaoOfModding.Cultivationcraft.Network.Packets.*;
 import DaoOfModding.Cultivationcraft.Network.Packets.CultivatorStats.*;
 import DaoOfModding.Cultivationcraft.Common.Register;
@@ -142,7 +143,7 @@ public class PacketHandler
         channel.send(distribute, pack2);
     }
 
-    private static void sendCultivatorTechniquesToClient(PlayerEntity player)
+    public static void sendCultivatorTechniquesToClient(PlayerEntity player)
     {
         ICultivatorTechniques techs = CultivatorTechniques.getCultivatorTechniques(player);
 
@@ -150,7 +151,7 @@ public class PacketHandler
         channel.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> player), pack);
     }
 
-    private static void sendCultivatorTechniquesToSpecificClient(PlayerEntity player, ServerPlayerEntity toSend)
+    public static void sendCultivatorTechniquesToSpecificClient(PlayerEntity player, ServerPlayerEntity toSend)
     {
         ICultivatorTechniques techs = CultivatorTechniques.getCultivatorTechniques(player);
 

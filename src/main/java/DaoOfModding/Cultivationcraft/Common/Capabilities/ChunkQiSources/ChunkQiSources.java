@@ -39,7 +39,9 @@ public class ChunkQiSources implements IChunkQiSources
 
     public void generateQiSources()
     {
-        for (int i = 0; i < QiSourceConfig.getQiSourceInChunk(); i++)
+        int number = QiSourceConfig.getQiSourceInChunk();
+
+        for (int i = 0; i < number; i++)
             generateQiSource();
     }
 
@@ -58,7 +60,8 @@ public class ChunkQiSources implements IChunkQiSources
     }
 
     // Return a specified players CultivatorStats
-    public static IChunkQiSources getChunkQiSources(Chunk chunk) {
+    public static IChunkQiSources getChunkQiSources(Chunk chunk)
+    {
         return chunk.getCapability(ChunkQiSourcesCapability.CULTIVATOR_STATS_CAPABILITY).orElseThrow(() -> new IllegalArgumentException("getting chunk Qi sources"));
     }
 }

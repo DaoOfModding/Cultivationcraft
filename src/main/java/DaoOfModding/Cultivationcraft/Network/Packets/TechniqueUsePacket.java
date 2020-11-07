@@ -3,6 +3,8 @@ package DaoOfModding.Cultivationcraft.Network.Packets;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.CultivatorTechniques;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.Technique;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
+import DaoOfModding.Cultivationcraft.Network.PacketHandler;
+import DaoOfModding.Cultivationcraft.Server.ServerItemControl;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.network.PacketBuffer;
@@ -83,6 +85,8 @@ public class TechniqueUsePacket extends Packet
 
         if (tech != null)
             tech.useKeyPressed(isKeyDown);
+
+        PacketHandler.sendCultivatorTechniquesToClient((ServerPlayerEntity)player);
     }
 }
 

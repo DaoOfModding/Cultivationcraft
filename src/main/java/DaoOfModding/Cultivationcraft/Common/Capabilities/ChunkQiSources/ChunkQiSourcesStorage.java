@@ -1,6 +1,7 @@
 package DaoOfModding.Cultivationcraft.Common.Capabilities.ChunkQiSources;
 
 import DaoOfModding.Cultivationcraft.Common.Qi.QiSource;
+import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.INBT;
 import net.minecraft.util.Direction;
@@ -39,7 +40,7 @@ public class ChunkQiSourcesStorage implements Capability.IStorage<IChunkQiSource
         if (!(instance instanceof IChunkQiSources))
             throw new IllegalArgumentException("Tried to read Chunk Qi Sources from non ChunkQiSources instance");
 
-        if (((CompoundNBT)nbt).contains("QiSourceXPos"))
+        if (((CompoundNBT)nbt).contains("QiSource"))
         {
             instance.setChunkPos(new ChunkPos(((CompoundNBT) nbt).getLong("QiSource")));
 

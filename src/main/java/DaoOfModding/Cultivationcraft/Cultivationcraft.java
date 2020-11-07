@@ -1,5 +1,6 @@
 package DaoOfModding.Cultivationcraft;
 
+import DaoOfModding.Cultivationcraft.Client.AddChunkQiSourceToClient;
 import DaoOfModding.Cultivationcraft.Client.ClientItemControl;
 import DaoOfModding.Cultivationcraft.Client.GUI.SkillHotbarOverlay;
 import DaoOfModding.Cultivationcraft.Client.Renderer;
@@ -179,6 +180,8 @@ public class Cultivationcraft
         {
             if(ClientItemControl.thisWorld != null)
             {
+                // Attempt to process any ChunkQiSource packets pending
+                AddChunkQiSourceToClient.processPackets();
             }
 
             lastTickTime = System.nanoTime();
@@ -225,7 +228,8 @@ public class Cultivationcraft
         {
             // If the Chunk's Qi sources have no been generated yet, generate them
             IChunkQiSources sources = ChunkQiSources.getChunkQiSources((Chunk) event.getChunk());
-            if (sources.getChunkPos() == null) {
+            if (sources.getChunkPos() == null)
+            {
                 sources.setChunkPos(event.getChunk().getPos());
                 sources.generateQiSources();
 
@@ -310,7 +314,7 @@ public class Cultivationcraft
 
     // Fired off when an player starts watching a chunk
     @SubscribeEvent
-    public void onChunkWatch(ChunkWatchEvent event)
+    public void onChunkWatch(ChunkWatchEvent.Watch event)
     {
         if (!event.getWorld().isRemote)
             PacketHandler.sendChunkQiSourcesToClient(event.getWorld().getChunk(event.getPos().x, event.getPos().z), event.getPlayer());

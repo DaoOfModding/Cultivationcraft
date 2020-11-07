@@ -1,5 +1,6 @@
 package DaoOfModding.Cultivationcraft.Network.Packets;
 
+import DaoOfModding.Cultivationcraft.Client.AddChunkQiSourceToClient;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.ChunkQiSources.ChunkQiSources;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.ChunkQiSources.IChunkQiSources;
 import DaoOfModding.Cultivationcraft.Common.Qi.QiSource;
@@ -19,7 +20,7 @@ import java.util.function.Supplier;
 public class ChunkQiSourcesPacket extends Packet
 {
     ChunkPos chunkPos;
-    List<QiSource> QiSources = new ArrayList<QiSource>();
+    List<QiSource> QiSources;
 
     public ChunkQiSourcesPacket(ChunkPos chunk,  List<QiSource> Qi)
     {
@@ -56,7 +57,7 @@ public class ChunkQiSourcesPacket extends Packet
 
             int numberOfSources = buffer.readInt();
 
-            List<QiSource> NewQiSources = new ArrayList<QiSource>();
+            List<QiSource> NewQiSources = new ArrayList<>();
 
             for (int i = 0; i < numberOfSources; i++)
             {
@@ -87,12 +88,22 @@ public class ChunkQiSourcesPacket extends Packet
             return;
         }
 
-        ctx.enqueueWork(() -> processPacket());
+        ctx.enqueueWork(() -> setToProcess());
     }
 
-    // Process received packet on the client
-    private void processPacket()
+    // Set this packet to try and process, will repeat until successful
+    private void setToProcess()
     {
+        AddChunkQiSourceToClient.addPacket(this);
+    }
+
+    // Try to process received packet on the client, will fail if the chunk is not yet loaded
+    public boolean processPacket()
+    {
+        // If the current chunk isn't loaded return false
+        if (!Minecraft.getInstance().world.getChunkProvider().isChunkLoaded(chunkPos))
+            return false;
+
         // Get the specified chunk from the world
         Chunk chunk = Minecraft.getInstance().world.getChunk(chunkPos.x, chunkPos.z);
 
@@ -100,7 +111,9 @@ public class ChunkQiSourcesPacket extends Packet
         IChunkQiSources sources = ChunkQiSources.getChunkQiSources(chunk);
 
         // Set the new values
-        sources.setChunkPos(chunkPos);
-        sources.setQiSources(QiSources);
+        sources.setChunkPos(new ChunkPos(chunkPos.x, chunkPos.z));
+        sources.setQiSources(new ArrayList(QiSources));
+
+        return true;
     }
 }
