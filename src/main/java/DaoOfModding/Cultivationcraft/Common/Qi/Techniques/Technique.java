@@ -8,11 +8,11 @@ import net.minecraft.util.ResourceLocation;
 
 public class Technique
 {
-    private final ResourceLocation icon;
-    private final String name;
+    protected ResourceLocation icon;
+    protected String name;
 
-    private int elementID;
-    private boolean active = false;
+    protected int elementID;
+    protected boolean active = false;
 
 
     public Technique()
@@ -132,5 +132,11 @@ public class Technique
         setActive(buffer.readBoolean());
     }
 
+    // Rendering as the player who owns the technique
+    // Put code here for things only the person using the technique can see
+    public void renderPlayerView() {}
+
+    // Generic rendering for all players
+    // Put code here for things everyone can see when looking at the player using the technique
     public void render() {}
 }

@@ -2,6 +2,7 @@ package DaoOfModding.Cultivationcraft;
 
 import DaoOfModding.Cultivationcraft.Client.ClientItemControl;
 import DaoOfModding.Cultivationcraft.Client.GUI.SkillHotbarOverlay;
+import DaoOfModding.Cultivationcraft.Client.Renderer;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.ChunkQiSources.ChunkQiSources;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.ChunkQiSources.ChunkQiSourcesCapability;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.ChunkQiSources.IChunkQiSources;
@@ -24,6 +25,7 @@ import DaoOfModding.Cultivationcraft.Server.FlyingSwordBindProgresser;
 import DaoOfModding.Cultivationcraft.Server.ServerItemControl;
 import DaoOfModding.Cultivationcraft.Server.SkillHotbarServer;
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -201,8 +203,9 @@ public class Cultivationcraft
     @SubscribeEvent
     public void renderTick(TickEvent.RenderTickEvent event)
     {
-
-
+        if (event.phase == TickEvent.Phase.END)
+            if (Minecraft.getInstance().world != null)
+                Renderer.renderTechniques();
     }
 
     @SubscribeEvent
