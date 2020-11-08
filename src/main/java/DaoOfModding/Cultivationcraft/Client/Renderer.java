@@ -1,5 +1,6 @@
 package DaoOfModding.Cultivationcraft.Client;
 
+import DaoOfModding.Cultivationcraft.Client.Renderers.QiSourceRenderer;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.CultivatorTechniques;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.ICultivatorTechniques;
 import net.minecraft.client.Minecraft;
@@ -7,6 +8,16 @@ import net.minecraft.entity.player.PlayerEntity;
 
 public class Renderer
 {
+    public static boolean QiSourcesVisable = false;
+
+    public static void render()
+    {
+        if (QiSourcesVisable)
+            QiSourceRenderer.renderQiSources();
+
+        renderTechniques();
+    }
+
     public static void renderTechniques()
     {
         // Loop through all players in the world

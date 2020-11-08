@@ -56,7 +56,10 @@ public class ChunkQiSources implements IChunkQiSources
 
         int yPos = (int)(((4 * Math.pow(x, 3)) - (5.28 * Math.pow(x, 2)) + (2.28 * x)) * 200);
 
-        QiSources.add(new QiSource(new BlockPos(xPos, yPos, zPos)));
+        // Generate a random size for the QiSource
+        int size = QiSourceConfig.generateRandomSize();
+
+        QiSources.add(new QiSource(new BlockPos(xPos, yPos, zPos), size));
     }
 
     // Return a specified players CultivatorStats

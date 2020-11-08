@@ -3,6 +3,8 @@ package DaoOfModding.Cultivationcraft;
 import DaoOfModding.Cultivationcraft.Client.AddChunkQiSourceToClient;
 import DaoOfModding.Cultivationcraft.Client.ClientItemControl;
 import DaoOfModding.Cultivationcraft.Client.GUI.SkillHotbarOverlay;
+import DaoOfModding.Cultivationcraft.Client.Particles.QiParticle;
+import DaoOfModding.Cultivationcraft.Client.Particles.QiParticleType;
 import DaoOfModding.Cultivationcraft.Client.Renderer;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.ChunkQiSources.ChunkQiSources;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.ChunkQiSources.ChunkQiSourcesCapability;
@@ -19,7 +21,6 @@ import DaoOfModding.Cultivationcraft.Common.FlyingSwordEntity;
 import DaoOfModding.Cultivationcraft.Common.FlyingSwordRenderer;
 import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.DivineSenseTechnique;
-import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.Technique;
 import DaoOfModding.Cultivationcraft.Common.Register;
 import DaoOfModding.Cultivationcraft.Network.PacketHandler;
 import DaoOfModding.Cultivationcraft.Server.FlyingSwordBindProgresser;
@@ -27,16 +28,17 @@ import DaoOfModding.Cultivationcraft.Server.ServerItemControl;
 import DaoOfModding.Cultivationcraft.Server.SkillHotbarServer;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.SwordItem;
+import net.minecraft.particles.ParticleType;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.chunk.Chunk;
-import net.minecraftforge.client.event.InputEvent;
+import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.extensions.IForgeContainerType;
@@ -65,6 +67,9 @@ import org.apache.logging.log4j.Logger;
 @Mod("cultivationcraft")
 public class Cultivationcraft
 {
+    // TODO: Add all these random listeners to a proper listener class
+    // TODO: Add MODID
+
     // Directly reference a log4j logger.
     public static final Logger LOGGER = LogManager.getLogger();
     public static long lastTickTime = System.nanoTime();
@@ -76,12 +81,14 @@ public class Cultivationcraft
     public static final ResourceLocation ChunkQiSourcesLocation = new ResourceLocation("cultivationcraft", "chunkqisources");
     public static final ResourceLocation CultivatorTechniquesCapabilityLocation = new ResourceLocation("cultivationcraft", "cultivatortechniques");
 
-    public Cultivationcraft() {
+    public Cultivationcraft()
+    {
 
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
         modEventBus.addListener(this::commonInit);
         modEventBus.addListener(this::clientInit);
+        modEventBus.addListener(this::onParticleFactoryRegistration);
 
         Register.ENTITY_TYPES.register(modEventBus);
 
@@ -106,6 +113,12 @@ public class Cultivationcraft
         RenderingRegistry.registerEntityRenderingHandler(Register.FLYINGSWORD.get(), FlyingSwordRenderer::new);
     }
 
+    @SubscribeEvent
+    public void onParticleFactoryRegistration(ParticleFactoryRegisterEvent event)
+    {
+        Minecraft.getInstance().particles.registerFactory(Register.qiParticleType, QiParticle.Factory::new);
+    }
+
     // You can use EventBusSubscriber to automatically subscribe events on the contained class (this is subscribing to the MOD
     // Event bus for receiving Registry Events)
     @Mod.EventBusSubscriber(bus=Mod.EventBusSubscriber.Bus.MOD)
@@ -123,6 +136,14 @@ public class Cultivationcraft
             Register.ContainerTypeFlyingSword = IForgeContainerType.create(FlyingSwordContainer::createContainerClientSide);
             Register.ContainerTypeFlyingSword.setRegistryName("flyingswordcontainer");
             event.getRegistry().register(Register.ContainerTypeFlyingSword);
+        }
+
+        @SubscribeEvent
+        public static void onIParticleTypeRegistration(final RegistryEvent.Register<ParticleType<?>> event)
+        {
+            Register.qiParticleType = new QiParticleType();
+            Register.qiParticleType.setRegistryName("cultivationcraft", "qiparticle");
+            event.getRegistry().register(Register.qiParticleType);
         }
     }
 
@@ -208,7 +229,7 @@ public class Cultivationcraft
     {
         if (event.phase == TickEvent.Phase.END)
             if (Minecraft.getInstance().world != null)
-                Renderer.renderTechniques();
+                Renderer.render();
     }
 
     @SubscribeEvent

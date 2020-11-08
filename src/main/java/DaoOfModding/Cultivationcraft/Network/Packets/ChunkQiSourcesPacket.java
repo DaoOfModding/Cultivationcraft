@@ -41,7 +41,7 @@ public class ChunkQiSourcesPacket extends Packet
             // Add data for each QiSource
             for (QiSource source : QiSources)
             {
-                buffer.writeLong(source.getPos().toLong());
+                source.WriteBuffer(buffer);
             }
         }
     }
@@ -60,10 +60,7 @@ public class ChunkQiSourcesPacket extends Packet
             List<QiSource> NewQiSources = new ArrayList<>();
 
             for (int i = 0; i < numberOfSources; i++)
-            {
-                BlockPos newPos = BlockPos.fromLong(buffer.readLong());
-                NewQiSources.add(new QiSource(newPos));
-            }
+                NewQiSources.add(QiSource.ReadBuffer(buffer));
 
             return new ChunkQiSourcesPacket(chunk, NewQiSources);
 

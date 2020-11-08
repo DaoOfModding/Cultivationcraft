@@ -26,6 +26,7 @@ import java.util.UUID;
 
 public class PacketHandler
 {
+    // TODO: Go through and add Read and Write buffer classes along with with Read and Write NBT classes to everything
 
     private static final byte KEYPRESS = 07;
     private static final byte CHUNK_QI_SOURCES = 10;

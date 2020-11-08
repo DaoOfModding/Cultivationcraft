@@ -73,9 +73,15 @@ public class SkillHotbarOverlay
             {
                 Minecraft.getInstance().getTextureManager().bindTexture(techs.getTechnique(i).getIcon());
 
+                // Dull the skill if it isn't active
+                if (!techs.getTechnique(i).isActive())
+                    RenderSystem.color4f(0.75f, 0.75f, 0.75f, 1f);
+
                 // Stupid unobfuscated code
                 // Okay so it's MatrixStack, xPos, yPos, zPos, TextureXPos, TextureYPos, width, height, textureWidth, textureHeight
                 gui.blit(stack, scaledWidth + 3 - 83 + i * 20, scaledHeight + 3 - 30, gui.getBlitOffset(), 0, 0, 16, 16, 16, 16);
+
+                RenderSystem.color4f(1f, 1f, 1f, 1f);
             }
 
 
