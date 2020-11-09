@@ -2,6 +2,7 @@ package DaoOfModding.Cultivationcraft.Common.Qi.Elements;
 
 import net.minecraft.util.text.TranslationTextComponent;
 
+import java.awt.*;
 import java.util.ArrayList;
 
 public class Elements
@@ -24,13 +25,13 @@ public class Elements
 
     private static void createElements()
     {
-        noElementID = addElement(new TranslationTextComponent("cultivationcraft.elements.none").getString());
-        fireElementID = addElement(new TranslationTextComponent("cultivationcraft.elements.fire").getString());
-        earthElementID = addElement(new TranslationTextComponent("cultivationcraft.elements.earth").getString());
-        woodElementID = addElement(new TranslationTextComponent("cultivationcraft.elements.wood").getString());
-        waterElementID = addElement(new TranslationTextComponent("cultivationcraft.elements.water").getString());
-        iceElementID = addElement(new TranslationTextComponent("cultivationcraft.elements.ice").getString());
-        lightningElementID = addElement(new TranslationTextComponent("cultivationcraft.elements.lightning").getString());
+        noElementID = addElement(new TranslationTextComponent("cultivationcraft.elements.none").getString(), new Color(1f, 1f, 1f));
+        fireElementID = addElement(new TranslationTextComponent("cultivationcraft.elements.fire").getString(), new Color(1f, 0, 0));
+        earthElementID = addElement(new TranslationTextComponent("cultivationcraft.elements.earth").getString(), new Color(1f, 0.5f, 0));
+        woodElementID = addElement(new TranslationTextComponent("cultivationcraft.elements.wood").getString(), new Color(0, 1f, 0));
+        waterElementID = addElement(new TranslationTextComponent("cultivationcraft.elements.water").getString(), new Color(0, 0, 1f));
+        iceElementID = addElement(new TranslationTextComponent("cultivationcraft.elements.ice").getString(), new Color(0, 1f, 1f));
+        lightningElementID = addElement(new TranslationTextComponent("cultivationcraft.elements.lightning").getString(), new Color(1f, 1f, 0));
     }
 
     private static void createElementRelationships()
@@ -74,13 +75,18 @@ public class Elements
 
     // Adds a new elements of the specified name to the Elements list
     // Returns the elements ID
-    public static int addElement(String name)
+    public static int addElement(String name, Color color)
     {
         // As elements should NEVER be removed from the Elements list, the size before adding the element should always be the elements ID
         int id = Elements.size();
-        Elements.add(new Element(id, name));
+        Elements.add(new Element(id, name, color));
 
         return id;
+    }
+
+    public static ArrayList<Element> getElements()
+    {
+        return Elements;
     }
 
     // Returns the element of the supplied id

@@ -2,6 +2,7 @@ package DaoOfModding.Cultivationcraft.Common.Qi.Techniques;
 
 import DaoOfModding.Cultivationcraft.Client.Renderer;
 import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
+import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.ResourceLocation;
@@ -13,7 +14,8 @@ public class DivineSenseTechnique extends Technique
         name = "Divine Sense";
         elementID = Elements.noElementID;
 
-        icon = new ResourceLocation("cultivationcraft", "textures/techniques/icons/divinesense.png");
+        icon = new ResourceLocation(Cultivationcraft.MODID, "textures/techniques/icons/divinesense.png");
+        setOverlay(new ResourceLocation(Cultivationcraft.MODID, "textures/techniques/overlays/divinesense.png"));
     }
 
     @Override
@@ -51,10 +53,5 @@ public class DivineSenseTechnique extends Technique
     public void readBufferData(PacketBuffer buffer)
     {
         super.readBufferData(buffer);
-    }
-
-    @Override
-    public void renderPlayerView()
-    {
     }
 }

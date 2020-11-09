@@ -1,6 +1,7 @@
 package DaoOfModding.Cultivationcraft.Client.GUI;
 
 import DaoOfModding.Cultivationcraft.Common.Containers.FlyingSwordContainer;
+import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.Minecraft;
@@ -101,5 +102,5 @@ public class FlyingSwordContainerScreen extends ContainerScreen<FlyingSwordConta
         ScreenTabControl.highlightTabs(matrixStack, 2, mouseX, mouseY, edgeSpacingX, edgeSpacingY, this);
     }
 
-    private static final ResourceLocation TEXTURE = new ResourceLocation("cultivationcraft", "textures/gui/bindingcontainer.png");
+    private static final ResourceLocation TEXTURE = new ResourceLocation(Cultivationcraft.MODID, "textures/gui/bindingcontainer.png");
 }

@@ -97,6 +97,10 @@ public class ChunkQiSourcesPacket extends Packet
     // Try to process received packet on the client, will fail if the chunk is not yet loaded
     public boolean processPacket()
     {
+        // Disregard this packet if the world is unloaded
+        if (Minecraft.getInstance().world == null)
+            return true;
+
         // If the current chunk isn't loaded return false
         if (!Minecraft.getInstance().world.getChunkProvider().isChunkLoaded(chunkPos))
             return false;

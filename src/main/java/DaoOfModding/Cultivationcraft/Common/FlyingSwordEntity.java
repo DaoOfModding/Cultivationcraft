@@ -45,8 +45,6 @@ import java.util.UUID;
 
 public class FlyingSwordEntity extends ItemEntity
 {
-    // TODO: Make not die to explosions
-
     private static final DataParameter<ItemStack> ITEM = EntityDataManager.createKey(FlyingSwordEntity.class, DataSerializers.ITEMSTACK);
     private static final DataParameter<Float> decaySpeed = EntityDataManager.createKey(FlyingSwordEntity.class, DataSerializers.FLOAT);
 
@@ -94,6 +92,12 @@ public class FlyingSwordEntity extends ItemEntity
             this.noClip = true;
 
         generateDecay();
+    }
+
+    @Override
+    public boolean isImmuneToExplosions()
+    {
+        return true;
     }
 
     private void generateDecay()
@@ -509,9 +513,6 @@ public class FlyingSwordEntity extends ItemEntity
             {
                 copy.setCount(copy.getCount() - getItem().getCount());
                 net.minecraftforge.fml.hooks.BasicEventHooks.firePlayerItemPickupEvent(entityIn, this, copy);
-
-                // This crashes everything, why, dunno. Seems to work without it TODO: LOOK AT THIS
-               // entityIn.onItemPickup(this, i);
 
                 if (itemstack.isEmpty())
                 {

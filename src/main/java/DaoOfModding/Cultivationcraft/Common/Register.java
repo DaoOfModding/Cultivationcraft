@@ -8,6 +8,7 @@ import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.Cu
 import DaoOfModding.Cultivationcraft.Common.Capabilities.FlyingSwordBind.FlyingSwordBindCapability;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.FlyingSwordContainerItemStack.FlyingSwordContainerItemStackCapability;
 import DaoOfModding.Cultivationcraft.Common.Containers.FlyingSwordContainer;
+import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
 import net.minecraft.inventory.container.ContainerType;
@@ -22,7 +23,7 @@ public class Register
 {
     public enum keyPresses { FLYINGSWORDSCREEN, SKILLHOTBARSWITCH }
 
-    public static DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.ENTITIES, "cultivationcraft");
+    public static DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.ENTITIES, Cultivationcraft.MODID);
 
     public static RegistryObject<EntityType<FlyingSwordEntity>> FLYINGSWORD = ENTITY_TYPES.register("flyingsword", () ->
                                                                                 EntityType.Builder.<FlyingSwordEntity>create(FlyingSwordEntity::new, EntityClassification.MISC)

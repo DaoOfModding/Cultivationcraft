@@ -2,6 +2,11 @@ package DaoOfModding.Cultivationcraft.Common.Qi.Techniques;
 
 import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
+import com.mojang.blaze3d.platform.GlStateManager;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.ResourceLocation;
@@ -9,18 +14,21 @@ import net.minecraft.util.ResourceLocation;
 public class Technique
 {
     protected ResourceLocation icon;
+    protected ResourceLocation overlay;
+
     protected String name;
 
     protected int elementID;
     protected boolean active = false;
 
+    protected boolean overlayOn = false;
 
     public Technique()
     {
         name = "Example name";
         elementID = Elements.noElementID;
 
-        icon = new ResourceLocation("cultivationcraft", "textures/techniques/icons/example.png");
+        icon = new ResourceLocation(Cultivationcraft.MODID, "textures/techniques/icons/example.png");
     }
 
     public int getElementID()
@@ -72,6 +80,12 @@ public class Technique
         // Example usage for a channeled technique
         // Skill is turned on while the key is held down, turned off when key is released
         active = keyDown;
+    }
+
+    protected void setOverlay(ResourceLocation location)
+    {
+        overlay = location;
+        overlayOn = true;
     }
 
     public void writeBuffer(PacketBuffer buffer)
@@ -139,4 +153,28 @@ public class Technique
     // Generic rendering for all players
     // Put code here for things everyone can see when looking at the player using the technique
     public void render() {}
+
+    // Render overlay if it has been enabled
+    public void renderOverlay()
+    {
+        // Do nothing if the overlay isn't activated
+        if (!overlayOn)
+            return;
+
+        int scaledWidth = Minecraft.getInstance().getMainWindow().getScaledWidth();
+        int scaledHeight = Minecraft.getInstance().getMainWindow().getScaledHeight();
+
+        Minecraft.getInstance().getTextureManager().bindTexture(overlay);
+
+        GlStateManager.enableBlend();
+
+        Tessellator tessellator = Tessellator.getInstance();
+        BufferBuilder bufferbuilder = tessellator.getBuffer();
+        bufferbuilder.begin(7, DefaultVertexFormats.POSITION_TEX);
+        bufferbuilder.pos(0.0D, scaledHeight, -90.0D).tex(0.0f, 1.0f).endVertex();
+        bufferbuilder.pos(scaledWidth, scaledHeight, -90.0D).tex(1.0f, 1.0f).endVertex();
+        bufferbuilder.pos(scaledWidth, 0.0D, -90.0D).tex(1.0f, 0.0f).endVertex();
+        bufferbuilder.pos(0.0D, 0.0D, -90.0D).tex(0.0f, 0.0f).endVertex();
+        tessellator.draw();
+    }
 }

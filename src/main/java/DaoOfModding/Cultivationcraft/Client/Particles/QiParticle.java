@@ -2,11 +2,17 @@ package DaoOfModding.Cultivationcraft.Client.Particles;
 
 import DaoOfModding.Cultivationcraft.Client.Renderer;
 import DaoOfModding.Cultivationcraft.Client.Renderers.QiSourceRenderer;
+import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
+import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.particle.*;
+import net.minecraft.client.renderer.ActiveRenderInfo;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+
+import java.awt.*;
 
 public class QiParticle extends SpriteTexturedParticle
 {
@@ -70,6 +76,13 @@ public class QiParticle extends SpriteTexturedParticle
             this.setExpired();
     }
 
+    @Override
+    public void renderParticle(IVertexBuilder buffer, ActiveRenderInfo renderInfo, float partialTicks)
+    {
+        GlStateManager.disableDepthTest();
+        super.renderParticle(buffer, renderInfo, partialTicks);
+    }
+
 
     @OnlyIn(Dist.CLIENT)
     public static class Factory implements IParticleFactory<QiParticleData>
@@ -81,6 +94,9 @@ public class QiParticle extends SpriteTexturedParticle
         {
             QiParticle particle = new QiParticle(world, xPos, yPos, zPos, xVelocity, yVelocity, zVelocity, (int)(particleData.source.getSize() * ( 1 / QiSourceRenderer.speed)), sprites);
             particle.selectSpriteRandomly(sprites);
+
+            Color color = Elements.getElement(particleData.source.getElementID()).color;
+            particle.setColor(color.getRed() / 255f, color.getGreen() / 255f, color.getBlue() / 255f);
 
             return particle;
         }

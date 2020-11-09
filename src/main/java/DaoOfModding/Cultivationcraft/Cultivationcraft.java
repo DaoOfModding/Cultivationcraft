@@ -6,6 +6,7 @@ import DaoOfModding.Cultivationcraft.Client.GUI.SkillHotbarOverlay;
 import DaoOfModding.Cultivationcraft.Client.Particles.QiParticle;
 import DaoOfModding.Cultivationcraft.Client.Particles.QiParticleType;
 import DaoOfModding.Cultivationcraft.Client.Renderer;
+import DaoOfModding.Cultivationcraft.Client.Renderers.QiSourceRenderer;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.ChunkQiSources.ChunkQiSources;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.ChunkQiSources.ChunkQiSourcesCapability;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.ChunkQiSources.IChunkQiSources;
@@ -20,6 +21,7 @@ import DaoOfModding.Cultivationcraft.Common.FlyingSwordController;
 import DaoOfModding.Cultivationcraft.Common.FlyingSwordEntity;
 import DaoOfModding.Cultivationcraft.Common.FlyingSwordRenderer;
 import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
+import DaoOfModding.Cultivationcraft.Common.Qi.QiSource;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.DivineSenseTechnique;
 import DaoOfModding.Cultivationcraft.Common.Register;
 import DaoOfModding.Cultivationcraft.Network.PacketHandler;
@@ -68,18 +70,19 @@ import org.apache.logging.log4j.Logger;
 public class Cultivationcraft
 {
     // TODO: Add all these random listeners to a proper listener class
-    // TODO: Add MODID
+
+    public static final String MODID = "cultivationcraft";
 
     // Directly reference a log4j logger.
     public static final Logger LOGGER = LogManager.getLogger();
     public static long lastTickTime = System.nanoTime();
     public static long lastServerTickTime = System.nanoTime();
 
-    public static final ResourceLocation CultivatorStatsCapabilityLocation = new ResourceLocation("cultivationcraft", "cultivatorstats");
-    public static final ResourceLocation FSCItemStackCapabilityLocation = new ResourceLocation("cultivationcraft", "fscitemstack");
-    public static final ResourceLocation FlyingSwordBindLocation = new ResourceLocation("cultivationcraft", "flyingswordbind");
-    public static final ResourceLocation ChunkQiSourcesLocation = new ResourceLocation("cultivationcraft", "chunkqisources");
-    public static final ResourceLocation CultivatorTechniquesCapabilityLocation = new ResourceLocation("cultivationcraft", "cultivatortechniques");
+    public static final ResourceLocation CultivatorStatsCapabilityLocation = new ResourceLocation(Cultivationcraft.MODID, "cultivatorstats");
+    public static final ResourceLocation FSCItemStackCapabilityLocation = new ResourceLocation(Cultivationcraft.MODID, "fscitemstack");
+    public static final ResourceLocation FlyingSwordBindLocation = new ResourceLocation(Cultivationcraft.MODID, "flyingswordbind");
+    public static final ResourceLocation ChunkQiSourcesLocation = new ResourceLocation(Cultivationcraft.MODID, "chunkqisources");
+    public static final ResourceLocation CultivatorTechniquesCapabilityLocation = new ResourceLocation(Cultivationcraft.MODID, "cultivatortechniques");
 
     public Cultivationcraft()
     {
@@ -142,7 +145,7 @@ public class Cultivationcraft
         public static void onIParticleTypeRegistration(final RegistryEvent.Register<ParticleType<?>> event)
         {
             Register.qiParticleType = new QiParticleType();
-            Register.qiParticleType.setRegistryName("cultivationcraft", "qiparticle");
+            Register.qiParticleType.setRegistryName(Cultivationcraft.MODID, "qiparticle");
             event.getRegistry().register(Register.qiParticleType);
         }
     }
@@ -182,6 +185,10 @@ public class Cultivationcraft
         if (event.getType() == RenderGameOverlayEvent.ElementType.HOTBAR)
         {
             SkillHotbarOverlay.PreRenderSkillHotbar(event.getMatrixStack());
+        }
+        else if(event.getType() == RenderGameOverlayEvent.ElementType.ALL)
+        {
+            Renderer.renderTechniqueOverlays();
         }
     }
 

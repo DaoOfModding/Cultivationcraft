@@ -1,18 +1,21 @@
 package DaoOfModding.Cultivationcraft.Common.Qi.Elements;
 
+import java.awt.*;
 import java.util.ArrayList;
 
 public class Element
 {
     public final String name;
     public final int ID;
+    public final Color color;
 
     private ArrayList<ElementRelationship> relationships = new ArrayList<ElementRelationship>();
 
-    public Element (int elementID, String elementName)
+    public Element (int elementID, String elementName, Color elementColor)
     {
         ID = elementID;
         name = elementName;
+        color = elementColor;
     }
 
     // Adds an attack modifier of the specified value for the specified element

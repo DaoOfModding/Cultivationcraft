@@ -1,6 +1,7 @@
 package DaoOfModding.Cultivationcraft.Mixin;
 
 import DaoOfModding.Cultivationcraft.Common.FlyingSwordController;
+import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
@@ -27,7 +28,7 @@ import javax.annotation.Nullable;
 @Implements(@Interface(iface = IResourceManagerReloadListener.class, prefix = "ItemRenderer$"))
 public abstract class MixinItemRenderer
 {
-    private static final ResourceLocation FLYINGSWORDICON = new ResourceLocation("cultivationcraft", "textures/gui/flyingswordicon.png");
+    private static final ResourceLocation FLYINGSWORDICON = new ResourceLocation(Cultivationcraft.MODID, "textures/gui/flyingswordicon.png");
 
     @Shadow
     public float zLevel;

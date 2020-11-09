@@ -1,5 +1,7 @@
 package DaoOfModding.Cultivationcraft.Common.Capabilities.ChunkQiSources;
 
+import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Element;
+import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
 import DaoOfModding.Cultivationcraft.Common.Qi.QiSource;
 import DaoOfModding.Cultivationcraft.Common.Qi.QiSourceConfig;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
@@ -59,7 +61,22 @@ public class ChunkQiSources implements IChunkQiSources
         // Generate a random size for the QiSource
         int size = QiSourceConfig.generateRandomSize();
 
-        QiSources.add(new QiSource(new BlockPos(xPos, yPos, zPos), size));
+        // TODO: Generate different elemental spawns BETTER THAN THIS
+        int element = (int)(Math.random() * Elements.getElements().size());
+
+        int count = 0;
+        for (Element el : Elements.getElements())
+        {
+            if (count != element)
+                count++;
+            else
+            {
+                element = el.ID;
+                break;
+            }
+        }
+
+        QiSources.add(new QiSource(new BlockPos(xPos, yPos, zPos), size, element));
     }
 
     // Return a specified players CultivatorStats
