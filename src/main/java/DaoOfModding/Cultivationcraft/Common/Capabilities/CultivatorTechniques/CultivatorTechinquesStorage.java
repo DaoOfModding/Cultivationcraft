@@ -15,7 +15,7 @@ public class CultivatorTechinquesStorage implements Capability.IStorage<ICultiva
 
         CompoundNBT nbt = new CompoundNBT();
 
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < CultivatorTechniques.numberOfTechniques; i++)
         {
             Technique sending = instance.getTechnique(i);
 
@@ -32,7 +32,7 @@ public class CultivatorTechinquesStorage implements Capability.IStorage<ICultiva
         if (!(instance instanceof ICultivatorTechniques))
             throw new IllegalArgumentException("Tried to read Cultivator Techniques from non CultivatorTechniques instance");
 
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < CultivatorTechniques.numberOfTechniques; i++)
             if (((CompoundNBT)nbt).contains(Integer.toString(i)))
                 instance.setTechnique(i, Technique.readNBT(((CompoundNBT)nbt).getCompound(Integer.toString(i))));
     }

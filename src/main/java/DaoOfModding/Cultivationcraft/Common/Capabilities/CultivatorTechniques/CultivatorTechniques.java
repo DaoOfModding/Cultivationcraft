@@ -5,7 +5,9 @@ import net.minecraft.entity.player.PlayerEntity;
 
 public class CultivatorTechniques implements ICultivatorTechniques
 {
-    private Technique[] techniques = new Technique[10];
+    public static final int numberOfTechniques = 9;
+
+    private Technique[] techniques = new Technique[numberOfTechniques];
 
     public Technique getTechnique(int slot)
     {

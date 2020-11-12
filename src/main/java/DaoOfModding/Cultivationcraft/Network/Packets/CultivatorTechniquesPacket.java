@@ -15,14 +15,14 @@ import java.util.function.Supplier;
 public class CultivatorTechniquesPacket extends Packet
 {
     UUID owner;
-    Technique[] techniques = new Technique[10];
+    Technique[] techniques = new Technique[CultivatorTechniques.numberOfTechniques];
 
     public CultivatorTechniquesPacket(UUID player, ICultivatorTechniques techs)
     {
         owner = player;
 
         if (techs != null)
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < CultivatorTechniques.numberOfTechniques; i++)
                 techniques[i] = techs.getTechnique(i);
     }
 
@@ -31,7 +31,7 @@ public class CultivatorTechniquesPacket extends Packet
     {
         buffer.writeUniqueId(owner);
 
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < CultivatorTechniques.numberOfTechniques; i++)
         {
             if(techniques[i] != null)
             {
@@ -53,7 +53,7 @@ public class CultivatorTechniquesPacket extends Packet
 
             UUID owner = buffer.readUniqueId();
 
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < CultivatorTechniques.numberOfTechniques; i++)
                 if (buffer.readBoolean())
                     techs.setTechnique(i, Technique.readBuffer(buffer));
                 else
@@ -94,7 +94,7 @@ public class CultivatorTechniquesPacket extends Packet
         // Get the stats for the specified player
         ICultivatorTechniques techs = CultivatorTechniques.getCultivatorTechniques(ClientItemControl.thisWorld.getPlayerByUuid(owner));
 
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < CultivatorTechniques.numberOfTechniques; i++)
              techs.setTechnique(i, techniques[i]);
     }
 }

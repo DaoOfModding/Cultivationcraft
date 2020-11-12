@@ -26,6 +26,7 @@ public class TechniqueScreen extends Screen
         this.renderBackground(matrixStack);
         drawGuiBackgroundLayer(matrixStack, partialTicks, mouseX, mouseY);
         super.render(matrixStack, mouseX, mouseY, partialTicks);
+        drawGuiForgroundLayer(matrixStack, partialTicks, mouseX, mouseY);
     }
 
     @Override
@@ -37,10 +38,30 @@ public class TechniqueScreen extends Screen
         if (ScreenTabControl.mouseClick((int)mouseX, (int)mouseY, edgeSpacingX, edgeSpacingY, buttonPressed))
             return true;
 
+        if (buttonPressed == 0)
+        {
+            int techniqueSelected = TechniqueIcons.mouseOver(edgeSpacingX + 8, edgeSpacingY + 155, (int) mouseX, (int) mouseY, 18);
+
+            if (techniqueSelected != -1) {
+                // TODO: Something when technique is clicked here
+            }
+        }
+
         if (super.mouseClicked(mouseX, mouseY, buttonPressed))
             return true;
 
         return false;
+    }
+
+    protected void drawGuiForgroundLayer(MatrixStack matrixStack, float partialTicks, int mouseX, int mouseY)
+    {
+        int edgeSpacingX = (this.width - this.xSize) / 2;
+        int edgeSpacingY = (this.height - this.ySize) / 2;
+
+        // Draw icons in the selection box
+        TechniqueIcons.renderIcons(matrixStack, edgeSpacingX + 8,edgeSpacingY + 155, this, 18);
+
+        TechniqueIcons.mouseOverHighlight(matrixStack, edgeSpacingX + 8,edgeSpacingY + 155, this, 18, mouseX, mouseY);
     }
 
     protected void drawGuiBackgroundLayer(MatrixStack matrixStack, float partialTicks, int mouseX, int mouseY)

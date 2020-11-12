@@ -32,7 +32,7 @@ public class Renderer
             // Grab the players technique list and try to render them
             ICultivatorTechniques techniques = CultivatorTechniques.getCultivatorTechniques(player);
 
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < CultivatorTechniques.numberOfTechniques; i++)
                 if (techniques.getTechnique(i) != null && techniques.getTechnique(i).isActive())
                     techniques.getTechnique(i).render();
         }
@@ -42,7 +42,7 @@ public class Renderer
         {
             ICultivatorTechniques techniques = CultivatorTechniques.getCultivatorTechniques(Minecraft.getInstance().player);
 
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < CultivatorTechniques.numberOfTechniques; i++)
                 if (techniques.getTechnique(i) != null && techniques.getTechnique(i).isActive())
                     techniques.getTechnique(i).renderPlayerView();
         }
@@ -55,7 +55,7 @@ public class Renderer
         {
             ICultivatorTechniques techniques = CultivatorTechniques.getCultivatorTechniques(Minecraft.getInstance().player);
 
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < CultivatorTechniques.numberOfTechniques; i++)
                 if (techniques.getTechnique(i) != null && techniques.getTechnique(i).isActive())
                     techniques.getTechnique(i).renderOverlay();
         }
