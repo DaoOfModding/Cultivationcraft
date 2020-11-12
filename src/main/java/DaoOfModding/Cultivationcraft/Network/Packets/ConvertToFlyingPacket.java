@@ -14,35 +14,32 @@ import java.util.function.Supplier;
 public class ConvertToFlyingPacket extends Packet
 {
     int heldItem;
-    UUID owner;
+    PlayerEntity owner;
 
-    public ConvertToFlyingPacket(int heldItemID, UUID newOwner)
+    public ConvertToFlyingPacket(int heldItemID)
     {
         heldItem = heldItemID;
-        owner = newOwner;
     }
 
     @Override
     public void encode(PacketBuffer buffer)
     {
-        if (heldItem > -1 && owner != null)
+        if (heldItem > -1)
         {
             buffer.writeInt(heldItem);
-            buffer.writeUniqueId(owner);
         }
     }
 
     public static ConvertToFlyingPacket decode(PacketBuffer buffer)
     {
-        ConvertToFlyingPacket returnValue = new ConvertToFlyingPacket(-1, null);
+        ConvertToFlyingPacket returnValue = new ConvertToFlyingPacket(-1);
 
         try
         {
             // Read in the send values
             int readingHeld = buffer.readInt();
-            UUID readingOwner = buffer.readUniqueId();
 
-            return new ConvertToFlyingPacket(readingHeld, readingOwner);
+            return new ConvertToFlyingPacket(readingHeld);
 
         }
         catch (IllegalArgumentException | IndexOutOfBoundsException e)
@@ -66,22 +63,20 @@ public class ConvertToFlyingPacket extends Packet
         }
 
         // Check to ensure that the packet has valid data values
-        if (heldItem == -1 || owner == null)
+        if (heldItem == -1)
         {
             Cultivationcraft.LOGGER.warn("ConvertToFlyingPacket was invalid: " + this.toString());
             return;
         }
 
+        owner = ctx.getSender();
         ctx.enqueueWork(() -> processPacket());
     }
 
     // Process received packet on the Server
     private void processPacket()
     {
-        // Grab the player entity based on the read UUID
-        PlayerEntity ownerEntity = ServerLifecycleHooks.getCurrentServer().getPlayerList().getPlayerByUUID(owner);
-
         // Convert the specified item to the flying item owned by the specified player entity
-        FlyingSwordController.addFlyingItem(ownerEntity.inventory.getStackInSlot(heldItem), owner);
+        FlyingSwordController.addFlyingItem(owner.inventory.getStackInSlot(heldItem), owner.getUniqueID());
     }
 }

@@ -91,7 +91,12 @@ public class CultivatorTargetPacket extends Packet
         ctx.setPacketHandled(true);
 
         if (sideReceived.isServer())
-            ctx.enqueueWork(() -> processServerPacket());
+        {
+            if (ctx.getSender().getUniqueID().compareTo(player) != 0)
+                Cultivationcraft.LOGGER.warn("Client sent target message for other player");
+            else
+                ctx.enqueueWork(() -> processServerPacket());
+        }
         else
             ctx.enqueueWork(() -> processClientPacket());
     }

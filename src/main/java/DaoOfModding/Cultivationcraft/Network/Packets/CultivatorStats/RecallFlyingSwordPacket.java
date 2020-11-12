@@ -69,7 +69,12 @@ public class RecallFlyingSwordPacket extends Packet
             return;
         }
         if (sideReceived.isServer())
-            ctx.enqueueWork(() -> processServerPacket());
+        {
+            if (ctx.getSender().getUniqueID().compareTo(owner) != 0)
+                Cultivationcraft.LOGGER.warn("Client sent recall message for other player - Client=" + ctx.getSender().getUniqueID().toString() + " Player=" + owner.toString());
+            else
+                ctx.enqueueWork(() -> processServerPacket());
+        }
         else
             ctx.enqueueWork(() -> processClientPacket());
     }

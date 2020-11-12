@@ -67,9 +67,9 @@ public class PacketHandler
         channel.sendToServer(pack);
     }
 
-    public static void sendFlyingSwordConversionToServer(int heldItemID, UUID owner)
+    public static void sendFlyingSwordConversionToServer(int heldItemID)
     {
-        ConvertToFlyingPacket pack = new ConvertToFlyingPacket(heldItemID, owner);
+        ConvertToFlyingPacket pack = new ConvertToFlyingPacket(heldItemID);
         channel.sendToServer(pack);
     }
 

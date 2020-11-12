@@ -76,7 +76,7 @@ public class TechniqueIcons
         Minecraft.getInstance().getTextureManager().bindTexture(HIGHLIGHT);
 
         // Set the texture to be semi-transparent
-        RenderSystem.color4f(1f, 1f, 1f, 0.33f);
+        RenderSystem.color4f(1f, 1f, 1f, 0.5f);
 
         gui.blit(stack, xpos + icon * spacing, ypos, gui.getBlitOffset(), 0, 0, 16, 16, 16, 16);
 
