@@ -20,7 +20,7 @@ public class FlyingSwordContainerProvider implements INamedContainerProvider
     @Override
     public ITextComponent getDisplayName()
     {
-        return (ITextComponent)(new StringTextComponent("Test3"));
+        return (ITextComponent)(new StringTextComponent("Bind Item"));
     }
 
     // Creating container on the server

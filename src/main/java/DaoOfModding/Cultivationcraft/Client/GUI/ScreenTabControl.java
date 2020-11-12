@@ -1,6 +1,9 @@
 package DaoOfModding.Cultivationcraft.Client.GUI;
 
+import DaoOfModding.Cultivationcraft.Common.Register;
+import DaoOfModding.Cultivationcraft.Network.PacketHandler;
 import com.mojang.blaze3d.matrix.MatrixStack;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
 
 public class ScreenTabControl
@@ -24,6 +27,30 @@ public class ScreenTabControl
             if (tabSelected != i)
                 if (mouseOver(mouseX, mouseY, i))
                     drawTo.blit(matrixStack, screenX + TAB_BAR_X_POS[i], screenY + TAB_BAR_Y_POS[i], TAB_BAR_U, TAB_BAR_V, TAB_BAR_X_SIZE, TAB_BAR_Y_SIZE);
+    }
+
+    public static boolean mouseClick(int mouseX, int mouseY, int screenX, int screenY, int buttonPressed)
+    {
+        // If not a left click, ignore
+        if (buttonPressed != 0)
+            return false;
+
+        mouseX = mouseX - screenX;
+        mouseY = mouseY - screenY;
+
+        // Loop through each tab, checking if the mouse is over it and switching to it if so
+        for (int i = 0; i < TAB_BAR_X_POS.length; i++)
+            if (mouseOver(mouseX, mouseY, i))
+            {
+                if (i == 1)
+                    Minecraft.getInstance().displayGuiScreen(new TechniqueScreen());
+                else if (i == 2)
+                    PacketHandler.sendKeypressToServer(Register.keyPresses.FLYINGSWORDSCREEN);
+
+                return true;
+            }
+
+        return false;
     }
 
     public static boolean mouseOver(int mouseX, int mouseY, int tab)

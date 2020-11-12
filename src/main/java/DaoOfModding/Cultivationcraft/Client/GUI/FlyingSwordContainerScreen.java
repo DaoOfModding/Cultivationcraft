@@ -44,6 +44,21 @@ public class FlyingSwordContainerScreen extends ContainerScreen<FlyingSwordConta
     }
 
     @Override
+    public boolean mouseClicked(double mouseX, double mouseY, int buttonPressed)
+    {
+        int edgeSpacingX = (this.width - this.xSize) / 2;
+        int edgeSpacingY = (this.height - this.ySize) / 2;
+
+        if (ScreenTabControl.mouseClick((int)mouseX, (int)mouseY, edgeSpacingX, edgeSpacingY, buttonPressed))
+            return true;
+
+        if (super.mouseClicked(mouseX, mouseY, buttonPressed))
+            return true;
+
+        return false;
+    }
+
+    @Override
     protected void drawGuiContainerForegroundLayer(MatrixStack matrixStack, int mouseX, int mouseY)
     {
         final float PLAYER_LABEL_XPOS = 8;
