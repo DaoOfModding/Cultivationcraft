@@ -15,6 +15,8 @@ public class TechniqueScreen extends Screen
     private final int xSize = 175;
     private final int ySize = 178;
 
+    public static int selected = 0;
+
     public TechniqueScreen()
     {
         super(new TranslationTextComponent("cultivationcraft.gui.technique"));
@@ -42,9 +44,8 @@ public class TechniqueScreen extends Screen
         {
             int techniqueSelected = TechniqueIcons.mouseOver(edgeSpacingX + 8, edgeSpacingY + 155, (int) mouseX, (int) mouseY, 18);
 
-            if (techniqueSelected != -1) {
-                // TODO: Something when technique is clicked here
-            }
+            if (techniqueSelected != -1)
+                selected = techniqueSelected;
         }
 
         if (super.mouseClicked(mouseX, mouseY, buttonPressed))
@@ -61,7 +62,9 @@ public class TechniqueScreen extends Screen
         // Draw icons in the selection box
         TechniqueIcons.renderIcons(matrixStack, edgeSpacingX + 8,edgeSpacingY + 155, this, 18);
 
+        // Hilight the selected technique and the technique the mouse is hovering over
         TechniqueIcons.mouseOverHighlight(matrixStack, edgeSpacingX + 8,edgeSpacingY + 155, this, 18, mouseX, mouseY);
+        TechniqueIcons.highlightIcon(matrixStack, edgeSpacingX + 8,edgeSpacingY + 155, this, 18, selected);
     }
 
     protected void drawGuiBackgroundLayer(MatrixStack matrixStack, float partialTicks, int mouseX, int mouseY)
