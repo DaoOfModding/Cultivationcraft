@@ -6,4 +6,6 @@ public interface ICultivatorTechniques
 {
     public Technique getTechnique(int slot);
     public void setTechnique(int slot, Technique tech);
+
+    public boolean techniqueExists(Technique exist);
 }

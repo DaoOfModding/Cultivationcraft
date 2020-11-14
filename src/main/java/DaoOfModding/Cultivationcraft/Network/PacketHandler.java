@@ -11,6 +11,7 @@ import DaoOfModding.Cultivationcraft.Network.Packets.*;
 import DaoOfModding.Cultivationcraft.Network.Packets.CultivatorStats.*;
 import DaoOfModding.Cultivationcraft.Common.Register;
 import DaoOfModding.Cultivationcraft.Network.Packets.keypressPacket;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.util.ResourceLocation;
@@ -88,6 +89,14 @@ public class PacketHandler
     public static void sendCultivatorTargetToServer(UUID playerID, RayTraceResult.Type type, Vector3d pos, UUID targetID)
     {
         CultivatorTargetPacket pack = new CultivatorTargetPacket(playerID, type, pos, targetID);
+        channel.sendToServer(pack);
+    }
+
+    public static void sendCultivatorTechniquesToServer()
+    {
+        ICultivatorTechniques techs = CultivatorTechniques.getCultivatorTechniques(Minecraft.getInstance().player);
+
+        CultivatorTechniquesPacket pack = new CultivatorTechniquesPacket(Minecraft.getInstance().player.getUniqueID(), techs);
         channel.sendToServer(pack);
     }
 

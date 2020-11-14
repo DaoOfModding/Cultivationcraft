@@ -6,7 +6,6 @@ import DaoOfModding.Cultivationcraft.Client.GUI.SkillHotbarOverlay;
 import DaoOfModding.Cultivationcraft.Client.Particles.QiParticle;
 import DaoOfModding.Cultivationcraft.Client.Particles.QiParticleType;
 import DaoOfModding.Cultivationcraft.Client.Renderer;
-import DaoOfModding.Cultivationcraft.Client.Renderers.QiSourceRenderer;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.ChunkQiSources.ChunkQiSources;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.ChunkQiSources.ChunkQiSourcesCapability;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.ChunkQiSources.IChunkQiSources;
@@ -21,7 +20,7 @@ import DaoOfModding.Cultivationcraft.Common.FlyingSwordController;
 import DaoOfModding.Cultivationcraft.Common.FlyingSwordEntity;
 import DaoOfModding.Cultivationcraft.Common.FlyingSwordRenderer;
 import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
-import DaoOfModding.Cultivationcraft.Common.Qi.QiSource;
+import DaoOfModding.Cultivationcraft.Common.Qi.TechniqueControl;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.DivineSenseTechnique;
 import DaoOfModding.Cultivationcraft.Common.Register;
 import DaoOfModding.Cultivationcraft.Network.PacketHandler;
@@ -30,7 +29,6 @@ import DaoOfModding.Cultivationcraft.Server.ServerItemControl;
 import DaoOfModding.Cultivationcraft.Server.SkillHotbarServer;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -107,6 +105,7 @@ public class Cultivationcraft
         Register.registerCapabilities();
 
         Elements.init();
+        TechniqueControl.init();
     }
 
     private void clientInit(final FMLClientSetupEvent event)
@@ -300,11 +299,7 @@ public class Cultivationcraft
 
         if (!event.getEntity().getEntityWorld().isRemote)
         {
-            // TESTING
-            CultivatorTechniques.getCultivatorTechniques(event.getPlayer()).setTechnique(0, new DivineSenseTechnique());
-
             ServerItemControl.sendPlayerStats(event.getPlayer(), (PlayerEntity) event.getPlayer());
-
         }
 
         if (!event.getPlayer().getEntityWorld().isRemote)

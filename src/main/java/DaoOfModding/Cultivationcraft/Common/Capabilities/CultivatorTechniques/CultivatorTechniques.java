@@ -19,6 +19,14 @@ public class CultivatorTechniques implements ICultivatorTechniques
         techniques[slot] = tech;
     }
 
+    public boolean techniqueExists(Technique exist)
+    {
+        for (Technique tech : techniques)
+            if (tech != null && tech.getClass() == exist.getClass())
+                return true;
+
+        return false;
+    }
 
     // Return a specified players CultivatorTechniques
     public static ICultivatorTechniques getCultivatorTechniques(PlayerEntity player) {

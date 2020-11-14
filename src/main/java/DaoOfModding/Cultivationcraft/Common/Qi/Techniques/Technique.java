@@ -7,6 +7,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.ResourceLocation;
@@ -29,6 +30,12 @@ public class Technique
         elementID = Elements.noElementID;
 
         icon = new ResourceLocation(Cultivationcraft.MODID, "textures/techniques/icons/example.png");
+    }
+
+    // Returns whether this technique can be used by the specified player
+    public boolean isValid(PlayerEntity player)
+    {
+        return false;
     }
 
     public int getElementID()
@@ -71,6 +78,12 @@ public class Technique
         nbt.putBoolean("active", active);
 
         return nbt;
+    }
+
+    // Allow multiple copies of this technique to be equipped at once
+    public boolean allowMultiple()
+    {
+        return true;
     }
 
     // What to do when the use key for this technique is pressed

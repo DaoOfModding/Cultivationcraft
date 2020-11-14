@@ -11,5 +11,8 @@
   "cultivationcraft.gui.done": "Done",
   "cultivationcraft.gui.remaining": "Remaining: %s seconds",
 
-  "cultivationcraft.gui.technique": "Techniques"
+  "cultivationcraft.gui.technique": "Techniques",
+  "cultivationcraft.gui.notechnique": "None",
+
+  "cultivationcraft.technique.divinesense": "Divine Sense"
 }

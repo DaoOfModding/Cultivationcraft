@@ -5,6 +5,9 @@ import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.Cu
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.ICultivatorTechniques;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.Technique;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
+import DaoOfModding.Cultivationcraft.Network.PacketHandler;
+import DaoOfModding.Cultivationcraft.Server.ServerItemControl;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.network.NetworkEvent;
@@ -85,7 +88,14 @@ public class CultivatorTechniquesPacket extends Packet
         if (sideReceived.isClient())
             ctx.enqueueWork(() -> processPacket());
         else
-            Cultivationcraft.LOGGER.warn("CultivatorTechniquesPacket was received by server, THIS SHOULD NOT HAPPEN: " + this.toString());
+        {
+            if (owner.compareTo(ctx.getSender().getUniqueID()) != 0)
+            {
+                Cultivationcraft.LOGGER.warn("Client sent CultivatorTechniquesPacket for a different player: " + this.toString());
+                return;
+            }
+            ctx.enqueueWork(() -> processPacketServer(ctx.getSender()));
+        }
     }
 
     // Process received packet on client
@@ -96,5 +106,29 @@ public class CultivatorTechniquesPacket extends Packet
 
         for (int i = 0; i < CultivatorTechniques.numberOfTechniques; i++)
              techs.setTechnique(i, techniques[i]);
+    }
+
+    // Process received packet on server
+    private void processPacketServer(PlayerEntity player)
+    {
+        // Get the stats for the specified player
+        ICultivatorTechniques techs = CultivatorTechniques.getCultivatorTechniques(player);
+
+        // Clear the stored techniques
+        for (int i = 0; i < CultivatorTechniques.numberOfTechniques; i++)
+            techs.setTechnique(i, null);
+
+        for (int i = 0; i < CultivatorTechniques.numberOfTechniques; i++)
+        {
+            // Ensure the technique is valid
+            // Only add mutliple copies of a technique if the technique allows it
+            if (techniques[i] == null || (techniques[i].isValid(player) && (techniques[i].allowMultiple() || !techs.techniqueExists(techniques[i]))))
+                techs.setTechnique(i, techniques[i]);
+            else
+                Cultivationcraft.LOGGER.warn("Client tried to set invalid technique: " + techniques[i].toString());
+        }
+
+        // Send the updated techniques to clients
+        PacketHandler.sendCultivatorTechniquesToClient(player);
     }
 }

@@ -45,7 +45,7 @@ public class TechniqueIcons
     // Returns -1 if mouse isn't over a technique
     public static int mouseOver(int xpos, int ypos, int mouseX, int mouseY, int spacing)
     {
-        if (mouseY < ypos || ypos > ypos + 16)
+        if (mouseY < ypos || mouseY > ypos + 16)
             return  -1;
 
         for (int i = 0; i < CultivatorTechniques.numberOfTechniques; i++)
@@ -66,7 +66,7 @@ public class TechniqueIcons
     }
 
     // Highlight the selected icon
-    // Remember to rebind texture aftwards
+    // Remember to rebind texture afterwards
     public static void highlightIcon(MatrixStack stack, int xpos, int ypos, AbstractGui gui, int spacing, int icon)
     {
         RenderSystem.enableBlend();
