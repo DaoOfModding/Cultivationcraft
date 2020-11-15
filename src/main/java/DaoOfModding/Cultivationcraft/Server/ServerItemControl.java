@@ -12,17 +12,15 @@ import net.minecraft.world.IWorld;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 
+import net.minecraftforge.fml.event.lifecycle.FMLDedicatedServerSetupEvent;
+import net.minecraftforge.fml.event.server.FMLServerStartedEvent;
+import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.network.NetworkHooks;
 import net.minecraftforge.fml.server.ServerLifecycleHooks;
 
 public class ServerItemControl
 {
-    public static IWorld thisWorld;
-
-    public static void init(FMLCommonSetupEvent event)
-    {
-        MinecraftForge.EVENT_BUS.register(ServerItemControl.class);
-    }
+    public static boolean loaded = false;
 
 
     // Check for any FlyingSword recalls on the server, set them to false and update clients

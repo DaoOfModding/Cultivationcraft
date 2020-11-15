@@ -1,5 +1,6 @@
 package DaoOfModding.Cultivationcraft.Common;
 
+import DaoOfModding.Cultivationcraft.Client.Particles.QiParticle;
 import DaoOfModding.Cultivationcraft.Client.Particles.QiParticleData;
 import DaoOfModding.Cultivationcraft.Client.Particles.QiParticleType;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.ChunkQiSources.ChunkQiSourcesCapability;
@@ -9,13 +10,19 @@ import DaoOfModding.Cultivationcraft.Common.Capabilities.FlyingSwordBind.FlyingS
 import DaoOfModding.Cultivationcraft.Common.Capabilities.FlyingSwordContainerItemStack.FlyingSwordContainerItemStackCapability;
 import DaoOfModding.Cultivationcraft.Common.Containers.FlyingSwordContainer;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
+import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.particles.ParticleType;
+import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
+import net.minecraftforge.common.extensions.IForgeContainerType;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.RegistryObject;
+import net.minecraftforge.fml.client.registry.RenderingRegistry;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -42,5 +49,43 @@ public class Register
         FlyingSwordBindCapability.register();
         ChunkQiSourcesCapability.register();
         CultivatorTechniquesCapability.register();
+    }
+
+    public static void registerRenderers()
+    {
+        RenderingRegistry.registerEntityRenderingHandler(Register.FLYINGSWORD.get(), FlyingSwordRenderer::new);
+    }
+
+
+    @Mod.EventBusSubscriber(bus=Mod.EventBusSubscriber.Bus.MOD)
+    public static class RegistryEvents
+    {
+        @SubscribeEvent
+        public static void onBlocksRegistry(final RegistryEvent.Register<Block> blockRegistryEvent)
+        {
+            // register a new block here
+        }
+
+        @SubscribeEvent
+        public static void registerContainers(final RegistryEvent.Register<ContainerType<?>> event)
+        {
+            Register.ContainerTypeFlyingSword = IForgeContainerType.create(FlyingSwordContainer::createContainerClientSide);
+            Register.ContainerTypeFlyingSword.setRegistryName("flyingswordcontainer");
+            event.getRegistry().register(Register.ContainerTypeFlyingSword);
+        }
+
+        @SubscribeEvent
+        public static void onIParticleTypeRegistration(final RegistryEvent.Register<ParticleType<?>> event)
+        {
+            Register.qiParticleType = new QiParticleType();
+            Register.qiParticleType.setRegistryName(Cultivationcraft.MODID, "qiparticle");
+            event.getRegistry().register(Register.qiParticleType);
+        }
+
+        @SubscribeEvent
+        public static void onParticleFactoryRegistration(final ParticleFactoryRegisterEvent event)
+        {
+            Minecraft.getInstance().particles.registerFactory(Register.qiParticleType, QiParticle.Factory::new);
+        }
     }
 }
