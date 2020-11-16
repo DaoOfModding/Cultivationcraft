@@ -11,9 +11,14 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.event.TickEvent;
 
 public class Technique
 {
+    enum useType {Toggle, Channel};
+
+    useType type;
+
     protected ResourceLocation icon;
     protected ResourceLocation overlay;
 
@@ -24,10 +29,13 @@ public class Technique
 
     protected boolean overlayOn = false;
 
+    protected boolean multiple = true;
+
     public Technique()
     {
         name = "Example name";
         elementID = Elements.noElementID;
+        type = useType.Toggle;
 
         icon = new ResourceLocation(Cultivationcraft.MODID, "textures/techniques/icons/example.png");
     }
@@ -83,16 +91,23 @@ public class Technique
     // Allow multiple copies of this technique to be equipped at once
     public boolean allowMultiple()
     {
-        return true;
+        return multiple;
     }
 
     // What to do when the use key for this technique is pressed
     // keyDown = true when the key is pressed down, false when the key is released
     public void useKeyPressed(boolean keyDown)
     {
-        // Example usage for a channeled technique
         // Skill is turned on while the key is held down, turned off when key is released
-        active = keyDown;
+        if (type == useType.Channel)
+            active = keyDown;
+        else if (type == useType.Toggle)
+        {
+            // Toggle skill when key pressed
+            if (!keyDown) {
+                active = !active;
+            }
+        }
     }
 
     protected void setOverlay(ResourceLocation location)
@@ -157,6 +172,16 @@ public class Technique
     public void readBufferData(PacketBuffer buffer)
     {
         setActive(buffer.readBoolean());
+    }
+
+    public void tickServer(TickEvent.PlayerTickEvent event)
+    {
+
+    }
+
+    public void tickClient(TickEvent.PlayerTickEvent event)
+    {
+
     }
 
     // Rendering as the player who owns the technique

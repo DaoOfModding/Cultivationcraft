@@ -1,5 +1,7 @@
 package DaoOfModding.Cultivationcraft.Server;
 
+import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.CultivatorTechniques;
+import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.ICultivatorTechniques;
 import DaoOfModding.Cultivationcraft.Common.FlyingSwordController;
 import DaoOfModding.Cultivationcraft.Common.FlyingSwordEntity;
 import net.minecraft.entity.item.ItemEntity;
@@ -11,6 +13,15 @@ public class ServerListeners
 {
     public static long lastServerTickTime = System.nanoTime();
 
+    public static void playerTick(TickEvent.PlayerTickEvent event)
+    {
+        ICultivatorTechniques techs = CultivatorTechniques.getCultivatorTechniques(event.player);
+
+        for (int i = 0; i < CultivatorTechniques.numberOfTechniques; i++)
+            if (techs.getTechnique(i) != null && techs.getTechnique(i).isActive())
+                techs.getTechnique(i).tickServer(event);
+    }
+
     @SubscribeEvent
     public static void serverTick(TickEvent.ServerTickEvent event)
     {
@@ -21,6 +32,8 @@ public class ServerListeners
                 ServerItemControl.checkForRecalls();
                 FlyingSwordBindProgresser.bindFlyingSword(System.nanoTime() - lastServerTickTime);
             }
+
+
 
             lastServerTickTime = System.nanoTime();
         }

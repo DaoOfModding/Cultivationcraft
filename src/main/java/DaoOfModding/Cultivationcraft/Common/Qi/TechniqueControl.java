@@ -12,6 +12,7 @@ public class TechniqueControl
     public static void init()
     {
         TechniqueControl.addTecnique(DivineSenseTechnique.class);
+        TechniqueControl.addTecnique(IceWalkTechnique.class);
     }
 
     // List of all techniques available in the game

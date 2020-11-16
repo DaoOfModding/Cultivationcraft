@@ -1,15 +1,18 @@
 package DaoOfModding.Cultivationcraft.Common;
 
 import DaoOfModding.Cultivationcraft.Client.ClientItemControl;
+import DaoOfModding.Cultivationcraft.Client.ClientListeners;
 import DaoOfModding.Cultivationcraft.Client.GUI.SkillHotbarOverlay;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.ChunkQiSources.ChunkQiSources;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.ChunkQiSources.IChunkQiSources;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStats;
 import DaoOfModding.Cultivationcraft.Network.PacketHandler;
 import DaoOfModding.Cultivationcraft.Server.ServerItemControl;
+import DaoOfModding.Cultivationcraft.Server.ServerListeners;
 import DaoOfModding.Cultivationcraft.Server.SkillHotbarServer;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
@@ -20,6 +23,15 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 public class CommonListeners
 {
+    @SubscribeEvent
+    public static void playerTick(TickEvent.PlayerTickEvent event)
+    {
+        if (event.player.getEntityWorld().isRemote)
+            ClientListeners.playerTick(event);
+        else
+            ServerListeners.playerTick(event);
+    }
+
     @SubscribeEvent
     public static void worldLoad(WorldEvent.Load event)
     {

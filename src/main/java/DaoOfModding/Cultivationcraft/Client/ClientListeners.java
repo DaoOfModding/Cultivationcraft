@@ -1,13 +1,9 @@
 package DaoOfModding.Cultivationcraft.Client;
 
 import DaoOfModding.Cultivationcraft.Client.GUI.SkillHotbarOverlay;
-import DaoOfModding.Cultivationcraft.Common.Misc;
-import DaoOfModding.Cultivationcraft.Common.Register;
-import DaoOfModding.Cultivationcraft.Network.PacketHandler;
+import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.CultivatorTechniques;
+import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.ICultivatorTechniques;
 import net.minecraft.client.Minecraft;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -17,6 +13,15 @@ import java.util.UUID;
 public class ClientListeners
 {
     public static long lastTickTime = System.nanoTime();
+
+    public static void playerTick(TickEvent.PlayerTickEvent event)
+    {
+        ICultivatorTechniques techs = CultivatorTechniques.getCultivatorTechniques(event.player);
+
+        for (int i = 0; i < CultivatorTechniques.numberOfTechniques; i++)
+            if (techs.getTechnique(i) != null && techs.getTechnique(i).isActive())
+                techs.getTechnique(i).tickClient(event);
+    }
 
     @SubscribeEvent
     public static void overlayRender(RenderGameOverlayEvent.Pre event)

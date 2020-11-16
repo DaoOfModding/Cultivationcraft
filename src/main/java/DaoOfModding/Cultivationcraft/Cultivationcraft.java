@@ -3,6 +3,7 @@ package DaoOfModding.Cultivationcraft;
 import DaoOfModding.Cultivationcraft.Client.ClientItemControl;
 import DaoOfModding.Cultivationcraft.Client.ClientListeners;
 import DaoOfModding.Cultivationcraft.Client.KeybindingControl;
+import DaoOfModding.Cultivationcraft.Common.BlockRegister;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CapabilityListeners;
 import DaoOfModding.Cultivationcraft.Common.CommonListeners;
 import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
@@ -37,6 +38,7 @@ public class Cultivationcraft {
         Register.ENTITY_TYPES.register(modEventBus);
 
         MinecraftForge.EVENT_BUS.register(Register.class);
+        MinecraftForge.EVENT_BUS.register(BlockRegister.class);
         MinecraftForge.EVENT_BUS.register(CapabilityListeners.class);
         MinecraftForge.EVENT_BUS.register(CommonListeners.class);
         MinecraftForge.EVENT_BUS.register(ClientListeners.class);

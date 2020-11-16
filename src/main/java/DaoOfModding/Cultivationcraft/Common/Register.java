@@ -3,6 +3,7 @@ package DaoOfModding.Cultivationcraft.Common;
 import DaoOfModding.Cultivationcraft.Client.Particles.QiParticle;
 import DaoOfModding.Cultivationcraft.Client.Particles.QiParticleData;
 import DaoOfModding.Cultivationcraft.Client.Particles.QiParticleType;
+import DaoOfModding.Cultivationcraft.Common.Blocks.FrozenBlock;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.ChunkQiSources.ChunkQiSourcesCapability;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStatsCapability;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.CultivatorTechniquesCapability;
@@ -12,6 +13,8 @@ import DaoOfModding.Cultivationcraft.Common.Containers.FlyingSwordContainer;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
 import net.minecraft.inventory.container.ContainerType;
@@ -54,17 +57,14 @@ public class Register
     public static void registerRenderers()
     {
         RenderingRegistry.registerEntityRenderingHandler(Register.FLYINGSWORD.get(), FlyingSwordRenderer::new);
+
+        BlockRegister.registerBlockRenderers();
     }
 
 
     @Mod.EventBusSubscriber(bus=Mod.EventBusSubscriber.Bus.MOD)
     public static class RegistryEvents
     {
-        @SubscribeEvent
-        public static void onBlocksRegistry(final RegistryEvent.Register<Block> blockRegistryEvent)
-        {
-            // register a new block here
-        }
 
         @SubscribeEvent
         public static void registerContainers(final RegistryEvent.Register<ContainerType<?>> event)
