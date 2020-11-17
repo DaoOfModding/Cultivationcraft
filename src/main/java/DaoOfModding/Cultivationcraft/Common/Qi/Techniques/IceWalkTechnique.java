@@ -34,7 +34,7 @@ public class IceWalkTechnique extends Technique
     public void tickClient(TickEvent.PlayerTickEvent event)
     {
         // TODO: Better way of sliding
-        Vector3d test = event.player.getMotion().scale(0.03);
+        Vector3d test = event.player.getMotion().scale(0.04);
         event.player.addVelocity(test.x, 0, test.z);
 
         // Freeze the ground directly below the player

@@ -11,9 +11,12 @@ import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.client.model.data.IModelData;
 import net.minecraftforge.client.model.data.ModelDataMap;
+import net.minecraftforge.client.model.data.ModelProperty;
 
 public class FrozenTileEntity extends TileEntity implements ITickableTileEntity
 {
+    public static final ModelProperty<BlockState> FROZEN_BLOCK = new ModelProperty<>();
+
     private int unfreezeTicks = -1;
     private BlockState frozenBlock = Blocks.AIR.getDefaultState();
     private TileEntity frozenEntity = null;
@@ -45,9 +48,6 @@ public class FrozenTileEntity extends TileEntity implements ITickableTileEntity
         if (!this.hasWorld())
             return;
 
-        /*if (world.isRemote)
-            return;*/
-
         // Do nothing if tile entity has infinite freeze duration
         if (unfreezeTicks == -1)
             return;
@@ -65,13 +65,12 @@ public class FrozenTileEntity extends TileEntity implements ITickableTileEntity
             world.setTileEntity(pos, frozenEntity);
     }
 
-    // TODO: Texture for frozen block to be added here
-    /*
+
     @Override
     public IModelData getModelData()
     {
-
-    }*/
+        return new ModelDataMap.Builder().withInitial(FROZEN_BLOCK, frozenBlock).build();
+    }
 
     @Override
     public SUpdateTileEntityPacket getUpdatePacket()

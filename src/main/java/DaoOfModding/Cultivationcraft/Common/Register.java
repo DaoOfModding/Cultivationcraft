@@ -15,10 +15,16 @@ import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
+import net.minecraft.client.renderer.color.BlockColors;
+import net.minecraft.client.renderer.color.IBlockColor;
+import net.minecraft.client.renderer.color.IItemColor;
+import net.minecraft.client.renderer.color.ItemColors;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
 import net.minecraft.inventory.container.ContainerType;
+import net.minecraft.item.BlockItem;
 import net.minecraft.particles.ParticleType;
+import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
 import net.minecraftforge.common.extensions.IForgeContainerType;
 import net.minecraftforge.event.RegistryEvent;
@@ -60,6 +66,23 @@ public class Register
 
         BlockRegister.registerBlockRenderers();
     }
+
+    // TODO: Block color handler
+/*
+    @SubscribeEvent
+    public static void registerItemColourHandlers(final ColorHandlerEvent.Item event)
+    {
+        final BlockColors blockColors = event.getBlockColors();
+
+        // Use the Block's colour handler for an ItemBlock
+        final IBlockColor BlockColourHandler = (stack, tintIndex) -> {
+            @SuppressWarnings("deprecation")
+            final IBlockState state = ((BlockItem)(stack.getItem())).getBlock().getStateFromMeta(stack.getMetadata());
+            return blockColors..colorMultiplier(state, null, null, tintIndex);
+        };
+
+        blockColors.register(BlockColourHandler, BlockRegister.frozenBlock);
+    }*/
 
 
     @Mod.EventBusSubscriber(bus=Mod.EventBusSubscriber.Bus.MOD)

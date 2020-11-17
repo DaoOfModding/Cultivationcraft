@@ -16,6 +16,9 @@ public class Freeze
         BlockState toFreeze = world.getBlockState(pos);
         TileEntity tileEntity = world.getTileEntity(pos);
 
+        if (toFreeze == null)
+            return;
+
         // If the block at the specified position is a frozen block refresh the freeze and finish
         if (tileEntity!= null && tileEntity instanceof FrozenTileEntity)
         {

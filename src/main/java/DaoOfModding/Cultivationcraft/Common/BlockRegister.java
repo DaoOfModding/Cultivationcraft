@@ -1,12 +1,16 @@
 package DaoOfModding.Cultivationcraft.Common;
 
+import DaoOfModding.Cultivationcraft.Client.Renderers.BakedModels.FrozenBlockBakedModel;
 import DaoOfModding.Cultivationcraft.Common.Blocks.FrozenBlock;
 import DaoOfModding.Cultivationcraft.Common.Blocks.FrozenTileEntity;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.client.renderer.BlockModelShapes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.tileentity.TileEntityType;
+import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -20,7 +24,14 @@ public class BlockRegister
 
     public static void registerBlockRenderers()
     {
-        RenderTypeLookup.setRenderLayer(frozenBlock, RenderType.getSolid());
+        RenderTypeLookup.setRenderLayer(frozenBlock, RenderType.getTranslucent());
+    }
+
+    @SubscribeEvent
+    public static void onModelBakeEvent(ModelBakeEvent event)
+    {
+        for (BlockState blockState : frozenBlock.getStateContainer().getValidStates())
+            event.getModelRegistry().put(BlockModelShapes.getModelLocation(blockState), new FrozenBlockBakedModel());
     }
 
     @SubscribeEvent
