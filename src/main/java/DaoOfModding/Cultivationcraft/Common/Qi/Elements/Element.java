@@ -34,6 +34,4 @@ public class Element
         // If there is no modifier for the specified element in the relationship list return a modifier of 1
         return 1;
     }
-
-    // TODO: getIcon()
 }

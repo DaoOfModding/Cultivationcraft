@@ -36,6 +36,7 @@ public class Technique
         name = "Example name";
         elementID = Elements.noElementID;
         type = useType.Toggle;
+        multiple = true;
 
         icon = new ResourceLocation(Cultivationcraft.MODID, "textures/techniques/icons/example.png");
     }

@@ -10,7 +10,18 @@ import net.minecraft.world.World;
 
 public class Freeze
 {
-    public static void Freeze(World world, BlockPos pos, boolean freezeAir)
+    // Freeze all blocks in an area around center for range blocks
+    public static void FreezeArea(World world, BlockPos center, int range, int forTicks)
+    {
+        for (int x = -range; x < range; x++)
+            for (int y = -range; y < range; y++)
+                for (int z = -range; z < range; z++)
+                    if (Math.abs(x) + Math.abs(y) + Math.abs(z) <= range)
+                        Freeze(world, new BlockPos(center.getX() + x, center.getY() + y, center.getZ() + z), false, forTicks);
+    }
+
+
+    public static void Freeze(World world, BlockPos pos, boolean freezeAir, int forTicks)
     {
         // Get the block and tile entity at the freeze location
         BlockState toFreeze = world.getBlockState(pos);
@@ -22,7 +33,7 @@ public class Freeze
         // If the block at the specified position is a frozen block refresh the freeze and finish
         if (tileEntity!= null && tileEntity instanceof FrozenTileEntity)
         {
-            ((FrozenTileEntity)tileEntity).setUnfreezeTicks(20);
+            ((FrozenTileEntity)tileEntity).setUnfreezeTicks(forTicks);
             return;
         }
 

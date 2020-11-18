@@ -33,26 +33,26 @@ public class BakedModelUtils
         normal.cross(normal2);
         normal.normalize();
 
-        putVertex(build, normal, vertices[0].getX(), vertices[0].getY(), vertices[0].getZ(), 0, 0, texture, 1f, 1f, 1f);
-        putVertex(build, normal, vertices[1].getX(), vertices[1].getY(), vertices[1].getZ(), 0, 16, texture, 1f, 1f, 1f);
-        putVertex(build, normal, vertices[2].getX(), vertices[2].getY(), vertices[2].getZ(), 16, 16, texture, 1f, 1f, 1f);
-        putVertex(build, normal, vertices[3].getX(), vertices[3].getY(), vertices[3].getZ(), 16, 0, texture, 1f, 1f, 1f);
+        putVertex(build, normal, vertices[0], 0, 0, texture, 1f, 1f, 1f, 1f);
+        putVertex(build, normal, vertices[1], 0, 16, texture, 1f, 1f, 1f, 1f);
+        putVertex(build, normal, vertices[2], 16, 16, texture, 1f, 1f, 1f, 1f);
+        putVertex(build, normal, vertices[3], 16, 0, texture, 1f, 1f, 1f, 1f);
 
         return build.build();
     }
 
     private static void putVertex(BakedQuadBuilder builder, Vector3f normal,
-                           double x, double y, double z, float u, float v, TextureAtlasSprite sprite, float r, float g, float b) {
+                           Vector3f pos, float u, float v, TextureAtlasSprite sprite, float r, float g, float b, float a) {
 
         ImmutableList<VertexFormatElement> elements = builder.getVertexFormat().getElements().asList();
         for (int j = 0 ; j < elements.size() ; j++) {
             VertexFormatElement e = elements.get(j);
             switch (e.getUsage()) {
                 case POSITION:
-                    builder.put(j, (float) x, (float) y, (float) z, 1.0f);
+                    builder.put(j, pos.getX(), pos.getY(), pos.getZ(), 1.0f);
                     break;
                 case COLOR:
-                    builder.put(j, r, g, b, 1.0f);
+                    builder.put(j, r, g, b, a);
                     break;
                 case UV:
                     switch (e.getIndex()) {

@@ -11,6 +11,9 @@ import net.minecraftforge.event.TickEvent;
 
 public class IceWalkTechnique extends Technique
 {
+    // TODO: This is temporary
+    private int power = 20;
+
     public IceWalkTechnique()
     {
         name = new TranslationTextComponent("cultivationcraft.technique.icewalk").getString();
@@ -25,9 +28,12 @@ public class IceWalkTechnique extends Technique
     @Override
     public void tickServer(TickEvent.PlayerTickEvent event)
     {
+        Vector3d test = event.player.getMotion().scale(0.04);
+        event.player.addVelocity(test.x, 0, test.z);
+
         // TODO: Something better than crouching to cancel ice
         // Freeze the ground directly below the player
-        Freeze.Freeze(event.player.getEntityWorld(), event.player.getPosition().down(), !event.player.isCrouching());
+        Freeze.Freeze(event.player.getEntityWorld(), event.player.getPosition().down(), !event.player.isCrouching(), power);
     }
 
     @Override
@@ -36,12 +42,6 @@ public class IceWalkTechnique extends Technique
         // TODO: Better way of sliding
         Vector3d test = event.player.getMotion().scale(0.04);
         event.player.addVelocity(test.x, 0, test.z);
-
-        // Freeze the ground directly below the player
-        // Yes, I KNOW I shouldn't mess with blocks on the client
-        // But this ensures there is always an ice block underneath the player when moving
-        // And as they revert after 1 second it SHOULDN'T create any desyncs
-        Freeze.Freeze(event.player.getEntityWorld(), event.player.getPosition().down(), !event.player.isCrouching());
     }
 
     @Override

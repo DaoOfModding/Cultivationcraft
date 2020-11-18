@@ -48,6 +48,10 @@ public class FrozenTileEntity extends TileEntity implements ITickableTileEntity
         if (!this.hasWorld())
             return;
 
+        // Do nothing on client
+        if (this.world.isRemote)
+            return;
+
         // Do nothing if tile entity has infinite freeze duration
         if (unfreezeTicks == -1)
             return;

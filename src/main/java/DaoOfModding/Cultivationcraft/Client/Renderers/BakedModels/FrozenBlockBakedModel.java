@@ -47,7 +47,8 @@ public class FrozenBlockBakedModel implements IDynamicBakedModel
         {
             // Loop though each quad, first adding it to the list to be drawn
             // Then adding a copy of it textured in ice on top
-            for (BakedQuad quad : quads) {
+            for (BakedQuad quad : quads)
+            {
                 frozenQuads.add(quad);
                 frozenQuads.add(BakedModelUtils.retextureQuad(quad, getTexture()));
             }
