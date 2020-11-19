@@ -1,29 +1,23 @@
 package DaoOfModding.Cultivationcraft.Client.Renderers.BakedModels;
 
-import com.google.common.collect.ImmutableList;
 import net.minecraft.client.renderer.model.BakedQuad;
 import net.minecraft.client.renderer.model.FaceBakery;
+import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.renderer.vertex.VertexFormatElement;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.vector.Vector3f;
+import net.minecraft.util.math.vector.Vector4f;
 import net.minecraftforge.client.model.pipeline.BakedQuadBuilder;
+import net.minecraftforge.client.model.pipeline.IVertexConsumer;
+import net.minecraftforge.client.model.pipeline.VertexTransformer;
 
 public class BakedModelUtils
 {
-    public static BakedQuad retextureQuad(BakedQuad Quad, TextureAtlasSprite texture)
-    {
-        Direction face = FaceBakery.getFacingFromVertexData(Quad.getVertexData());
-
-        Vector3f[] vertices = getVertices(Quad);
-
-        return buildQuad(vertices, texture, face);
-    }
-
+/*
     private static BakedQuad buildQuad(Vector3f[] vertices, TextureAtlasSprite texture, Direction face)
     {
-        BakedQuadBuilder build = new BakedQuadBuilder();
-        build.setTexture(texture);
+        BakedQuadBuilder build = new BakedQuadBuilder(texture);
         build.setQuadOrientation(face);
 
         Vector3f normal = vertices[2].copy();
@@ -33,50 +27,29 @@ public class BakedModelUtils
         normal.cross(normal2);
         normal.normalize();
 
-        putVertex(build, normal, vertices[0], 0, 0, texture, 1f, 1f, 1f, 1f);
-        putVertex(build, normal, vertices[1], 0, 16, texture, 1f, 1f, 1f, 1f);
-        putVertex(build, normal, vertices[2], 16, 16, texture, 1f, 1f, 1f, 1f);
-        putVertex(build, normal, vertices[3], 16, 0, texture, 1f, 1f, 1f, 1f);
+        Vector4f color = new Vector4f(1f, 1f, 1f, 1f);
+
+        makeVertex(build, normal2, vertices[0], 0, 0, texture, color);
+        makeVertex(build, normal2, vertices[1], 0, 16, texture, color);
+        makeVertex(build, normal2, vertices[2], 16, 16, texture, color);
+        makeVertex(build, normal2, vertices[3], 16, 0, texture, color);
 
         return build.build();
     }
 
-    private static void putVertex(BakedQuadBuilder builder, Vector3f normal,
-                           Vector3f pos, float u, float v, TextureAtlasSprite sprite, float r, float g, float b, float a) {
+    private static void makeVertex(BakedQuadBuilder build, Vector3f normal, Vector3f pos, float u, float v, TextureAtlasSprite texture, Vector4f color)
+    {
+        u = texture.getInterpolatedU(u);
+        v = texture.getInterpolatedV(v);
 
-        ImmutableList<VertexFormatElement> elements = builder.getVertexFormat().getElements().asList();
-        for (int j = 0 ; j < elements.size() ; j++) {
-            VertexFormatElement e = elements.get(j);
-            switch (e.getUsage()) {
-                case POSITION:
-                    builder.put(j, pos.getX(), pos.getY(), pos.getZ(), 1.0f);
-                    break;
-                case COLOR:
-                    builder.put(j, r, g, b, a);
-                    break;
-                case UV:
-                    switch (e.getIndex()) {
-                        case 0:
-                            float iu = sprite.getInterpolatedU(u);
-                            float iv = sprite.getInterpolatedV(v);
-                            builder.put(j, iu, iv);
-                            break;
-                        case 2:
-                            builder.put(j, 0f, 1f);
-                            break;
-                        default:
-                            builder.put(j);
-                            break;
-                    }
-                    break;
-                case NORMAL:
-                    builder.put(j, normal.getX(), normal.getY(), normal.getZ());
-                    break;
-                default:
-                    builder.put(j);
-                    break;
-            }
-        }
+        build.put(0, pos.getX(), pos.getY(), pos.getZ());
+        build.put(1, color.getX(), color.getY(), color.getZ(), color.getW());
+        build.put(2, u, v);
+        build.put(3, 0f, 1f);
+        build.put(4, normal.getX(), normal.getY(), normal.getZ());
+
+        // What the hell is PADDING? I don't know...
+        build.put(5, 0f);
     }
 
     private static Vector3f[] getVertices(BakedQuad Quad)
@@ -92,9 +65,69 @@ public class BakedModelUtils
             float y = Float.intBitsToFloat(vertexData[pos + 1]);
             float z = Float.intBitsToFloat(vertexData[pos + 2]);
 
+            //float color? = Float.intBitsToFloat(vertexData[pos + 3]);
+
+            float u = Float.intBitsToFloat(vertexData[pos + 4]);
+            float v = Float.intBitsToFloat(vertexData[pos + 5]);
+
+            float test1 = Float.intBitsToFloat(vertexData[pos + 6]);
+            float test2 = Float.intBitsToFloat(vertexData[pos + 7]);
+
+
+            //System.out.println(x + ", " + y + ", " + z + ", " + u + ", " + v + ", " + test1 + ", " + test2);
+
             vertex[i] = new Vector3f(x, y, z);
         }
 
         return vertex;
+    }*/
+
+
+    // Retexture an existing BakedQuad
+    public static BakedQuad retextureQuad(BakedQuad quad, TextureAtlasSprite texture)
+    {
+        BakedQuadBuilder build = new BakedQuadBuilder(texture);
+        TextureAtlasSprite originalTexture = quad.func_187508_a();
+
+        final IVertexConsumer transformer = new VertexTransformer(build)
+        {
+
+            @Override
+            public void put(int element, float... data)
+            {
+                if (element == 2)
+                {
+                    // UnInterpolate the texture coordinates and apply them to the new texture
+                    float u = getUnInterpolatedU(originalTexture, data[0]);
+                    float v = getUnInterpolatedV(originalTexture, data[1]);
+
+                    parent.put(2, texture.getInterpolatedU(u), texture.getInterpolatedV(v));
+                }
+                else
+                    parent.put(element, data);
+            }
+        };
+
+        // Pipe the new texture transformer through to the BakedQuad and return the result of the new build
+        quad.pipe(transformer);
+        return build.build();
+    }
+
+    // Functions to UnInterpolate texture values from TextureAtlasSprites
+    private static int getUnInterpolatedV(TextureAtlasSprite texture, float v)
+    {
+        float f = texture.getMaxV() - texture.getMinV();
+        float result = (((v - texture.getMinV()) * 16) / f);
+
+        // The + 0.1 fixes rounding errors
+        return (int)(result + 0.1);
+    }
+
+    private static int getUnInterpolatedU(TextureAtlasSprite texture, float u)
+    {
+        float f = texture.getMaxU() - texture.getMinU();
+        float result = (((u - texture.getMinU()) * 16) / f);
+
+        return (int)(result + 0.1);
     }
 }

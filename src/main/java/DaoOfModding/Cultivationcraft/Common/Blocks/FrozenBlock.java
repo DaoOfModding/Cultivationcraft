@@ -9,7 +9,7 @@ public class FrozenBlock extends Block
 {
     public FrozenBlock()
     {
-        super(AbstractBlock.Properties.create(Material.ICE).hardnessAndResistance(-1.0F, 3600000.0F).slipperiness(0.99f).noDrops().notSolid().variableOpacity());
+        super(AbstractBlock.Properties.create(Material.ICE).hardnessAndResistance(-1.0F, 3600000.0F).slipperiness(0.989f).noDrops().notSolid());
     }
 
     @Override

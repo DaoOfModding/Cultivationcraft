@@ -1,9 +1,9 @@
 package DaoOfModding.Cultivationcraft.Client.Renderers.BakedModels;
 
 import DaoOfModding.Cultivationcraft.Common.Blocks.FrozenTileEntity;
-import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.FlowingFluidBlock;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.model.*;
 import net.minecraft.client.renderer.texture.AtlasTexture;
@@ -29,6 +29,8 @@ public class FrozenBlockBakedModel implements IDynamicBakedModel
     @Override
     public List<BakedQuad> getQuads(BlockState state, Direction side, Random rand, IModelData extraData)
     {
+        // TODO: Sometimes treats normal blocks as air
+
         BlockState frozenBlock = extraData.getData(FrozenTileEntity.FROZEN_BLOCK);
 
         IBakedModel model = Minecraft.getInstance().getBlockRendererDispatcher().getModelForState(frozenBlock);
@@ -37,14 +39,29 @@ public class FrozenBlockBakedModel implements IDynamicBakedModel
         if (model instanceof FrozenBlockBakedModel)
             return new ArrayList<>();
 
-        List<BakedQuad> quads = model.getQuads(frozenBlock, side, rand, extraData);
         List<BakedQuad> frozenQuads = new ArrayList<>();
 
-        // If there are no quads for this model, use the default ice model instead
-        if (quads.size() == 0)
+        // If the frozen block is air, use the default ice model instead
+        if (frozenBlock.getBlock() == Blocks.AIR || frozenBlock.getBlock() == Blocks.VOID_AIR || frozenBlock.getBlock() == Blocks.CAVE_AIR)
             frozenQuads = Minecraft.getInstance().getBlockRendererDispatcher().getModelForState(Blocks.ICE.getDefaultState()).getQuads(frozenBlock, side, rand, extraData);
+        // If the frozen block is a liquid, use the default ice model textured as that liquid, then frozen
+        else if (frozenBlock.getBlock() instanceof FlowingFluidBlock)
+        {
+            List<BakedQuad> quads = Minecraft.getInstance().getBlockRendererDispatcher().getModelForState(Blocks.ICE.getDefaultState()).getQuads(frozenBlock, side, rand, extraData);
+
+            ResourceLocation liquidLocation = ((FlowingFluidBlock)frozenBlock.getBlock()).getFluid().getAttributes().getStillTexture();
+            TextureAtlasSprite liquidTexture = Minecraft.getInstance().getAtlasSpriteGetter(AtlasTexture.LOCATION_BLOCKS_TEXTURE).apply(liquidLocation);
+
+            for (BakedQuad quad : quads)
+            {
+                frozenQuads.add(BakedModelUtils.retextureQuad(quad, liquidTexture));
+                frozenQuads.add(quad);
+            }
+        }
         else
         {
+            List<BakedQuad> quads = model.getQuads(frozenBlock, side, rand, extraData);
+
             // Loop though each quad, first adding it to the list to be drawn
             // Then adding a copy of it textured in ice on top
             for (BakedQuad quad : quads)
@@ -75,22 +92,26 @@ public class FrozenBlockBakedModel implements IDynamicBakedModel
     }
 
     @Override
-    public boolean isBuiltInRenderer() {
+    public boolean isBuiltInRenderer()
+    {
         return false;
     }
 
     @Override
-    public TextureAtlasSprite getParticleTexture() {
+    public TextureAtlasSprite getParticleTexture()
+    {
         return getTexture();
     }
 
     @Override
-    public ItemOverrideList getOverrides() {
+    public ItemOverrideList getOverrides()
+    {
         return ItemOverrideList.EMPTY;
     }
 
     @Override
-    public ItemCameraTransforms getItemCameraTransforms() {
+    public ItemCameraTransforms getItemCameraTransforms()
+    {
         return ItemCameraTransforms.DEFAULT;
     }
 }
