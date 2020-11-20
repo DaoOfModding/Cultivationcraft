@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 public class Element
 {
-    public final int id;
+    public final int ID;
     public final String name;
     public final Color color;
 
@@ -15,7 +15,7 @@ public class Element
 
     public Element (int elementID, String elementName, Color elementColor)
     {
-        id = elementID;
+        ID = elementID;
         name = elementName;
         color = elementColor;
     }

@@ -5,10 +5,14 @@ import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.FlowingFluidBlock;
+import net.minecraft.block.StairsBlock;
+import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.model.*;
 import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.state.properties.Half;
+import net.minecraft.state.properties.StairsShape;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.data.IDynamicBakedModel;
@@ -42,10 +46,21 @@ public class FrozenBlockBakedModel implements IDynamicBakedModel
 
         List<BakedQuad> frozenQuads = new ArrayList<>();
 
+        boolean half = extraData.getData(FrozenTileEntity.RAMP_BLOCK);
         // If the frozen block is air, use the default ice model instead
-        if (frozenBlock.getBlock() == Blocks.AIR || frozenBlock.getBlock() == Blocks.VOID_AIR || frozenBlock.getBlock() == Blocks.CAVE_AIR)
+        if (frozenBlock.getMaterial() == Material.AIR)
         {
-            frozenQuads = Minecraft.getInstance().getBlockRendererDispatcher().getModelForState(Blocks.ICE.getDefaultState()).getQuads(frozenBlock, side, rand, extraData);
+            if (!half)
+                frozenQuads = Minecraft.getInstance().getBlockRendererDispatcher().getModelForState(Blocks.ICE.getDefaultState()).getQuads(frozenBlock, side, rand, extraData);
+            // If the frozen block is a ramp, use a retextured slab model instead
+            else
+            {
+                BlockState StairState = Blocks.BRICK_SLAB.getDefaultState();
+                List<BakedQuad> quads = Minecraft.getInstance().getBlockRendererDispatcher().getModelForState(StairState).getQuads(frozenBlock, side, rand, extraData);
+
+                for (BakedQuad quad : quads)
+                    frozenQuads.add(BakedModelUtils.retextureQuad(quad, getTexture()));
+            }
         }
         // If the frozen block is a liquid, use the default ice model textured as that liquid, then frozen
         else if (frozenBlock.getBlock() instanceof FlowingFluidBlock)

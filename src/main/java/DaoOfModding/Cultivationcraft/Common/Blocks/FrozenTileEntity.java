@@ -1,7 +1,6 @@
 package DaoOfModding.Cultivationcraft.Common.Blocks;
 
 import DaoOfModding.Cultivationcraft.Common.BlockRegister;
-import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -11,6 +10,7 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.Direction;
 import net.minecraftforge.client.model.data.IModelData;
 import net.minecraftforge.client.model.data.ModelDataMap;
 import net.minecraftforge.client.model.data.ModelProperty;
@@ -18,10 +18,14 @@ import net.minecraftforge.client.model.data.ModelProperty;
 public class FrozenTileEntity extends TileEntity implements ITickableTileEntity
 {
     public static final ModelProperty<BlockState> FROZEN_BLOCK = new ModelProperty<>();
+    public static final ModelProperty<Boolean> RAMP_BLOCK = new ModelProperty<>();
 
     private int unfreezeTicks = -1;
     private BlockState frozenBlock = Blocks.AIR.getDefaultState();
     private TileEntity frozenEntity = null;
+    private Boolean ramp = false;
+
+    private Boolean isClient = false;
 
     public FrozenTileEntity()
     {
@@ -41,6 +45,11 @@ public class FrozenTileEntity extends TileEntity implements ITickableTileEntity
         markDirty();
     }
 
+    public void setIsClient()
+    {
+        isClient = true;
+    }
+
     public BlockState getFrozenBlock()
     {
         return frozenBlock;
@@ -52,8 +61,8 @@ public class FrozenTileEntity extends TileEntity implements ITickableTileEntity
         if (!this.hasWorld())
             return;
 
-        // Do nothing on client
-        if (this.world.isRemote)
+        // Do nothing on client unless this is a client instance
+        if (this.world.isRemote && !isClient)
             return;
 
         // Do nothing if tile entity has infinite freeze duration
@@ -73,11 +82,15 @@ public class FrozenTileEntity extends TileEntity implements ITickableTileEntity
             world.setTileEntity(pos, frozenEntity);
     }
 
+    public void setRamp()
+    {
+        ramp = true;
+    }
 
     @Override
     public IModelData getModelData()
     {
-        return new ModelDataMap.Builder().withInitial(FROZEN_BLOCK, frozenBlock).build();
+        return new ModelDataMap.Builder().withInitial(FROZEN_BLOCK, frozenBlock).withInitial(RAMP_BLOCK, ramp).build();
     }
 
     @Override
@@ -103,6 +116,11 @@ public class FrozenTileEntity extends TileEntity implements ITickableTileEntity
         return nbtTagCompound;
     }
 
+    public boolean isRamp()
+    {
+        return ramp;
+    }
+
     @Override
     public void handleUpdateTag(BlockState state, CompoundNBT tag)
     {
@@ -114,6 +132,7 @@ public class FrozenTileEntity extends TileEntity implements ITickableTileEntity
     {
         super.write(NBT);
         NBT.putInt("unfreezeTicks", unfreezeTicks);
+        NBT.putBoolean("ramp", ramp);
         NBT.put("FrozenBlock", NBTUtil.writeBlockState(frozenBlock));
 
         if (frozenEntity != null)
@@ -127,6 +146,7 @@ public class FrozenTileEntity extends TileEntity implements ITickableTileEntity
     {
         super.read(state, NBT);
         unfreezeTicks = NBT.getInt("unfreezeTicks");
+        ramp = NBT.getBoolean("ramp");
 
         Block oldFreeze = frozenBlock.getBlock();
 

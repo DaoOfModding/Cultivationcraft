@@ -9,6 +9,7 @@ import net.minecraft.block.IGrowable;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -21,43 +22,87 @@ public class Freeze
             for (int y = -range; y < range; y++)
                 for (int z = -range; z < range; z++)
                     if (Math.abs(x) + Math.abs(y) + Math.abs(z) <= range)
-                        Freeze(world, new BlockPos(center.getX() + x, center.getY() + y, center.getZ() + z), false, forTicks);
+                        Freeze(world, new BlockPos(center.getX() + x, center.getY() + y, center.getZ() + z), forTicks);
     }
 
-
-    public static void Freeze(World world, BlockPos pos, boolean freezeAir, int forTicks)
+    private static boolean tryExtinguish(World world, BlockPos pos)
     {
-        // Don't freeze air if told not to
-        if (!freezeAir)
-            if (world.isAirBlock(pos))
-                return;
-
-        // Get the block and tile entity at the freeze location
-        BlockState toFreeze = world.getBlockState(pos);
-        TileEntity tileEntity = world.getTileEntity(pos);
-
-        if (toFreeze == null)
-            return;
-
-        // If the block is fire, extinguish the fire
-        if (toFreeze.getBlock() instanceof FireBlock)
+        if (world.getBlockState(pos).getBlock() instanceof FireBlock)
         {
-            toFreeze = Blocks.AIR.getDefaultState();
-            world.setBlockState(pos, toFreeze);
+            world.setBlockState(pos, Blocks.AIR.getDefaultState());
 
-            if (!freezeAir)
-                return;
+            return true;
         }
+
+        return false;
+    }
+
+    public static boolean tryUpdateFreeze(World world, BlockPos pos, int ticks)
+    {
+        TileEntity tileEntity = world.getTileEntity(pos);
 
         // If the block at the specified position is a frozen block refresh the freeze and finish
         if (tileEntity!= null && tileEntity instanceof FrozenTileEntity)
         {
-            ((FrozenTileEntity)tileEntity).setUnfreezeTicks(forTicks);
-            return;
+            ((FrozenTileEntity)tileEntity).setUnfreezeTicks(ticks);
+            return true;
         }
+
+        return false;
+    }
+
+    // Try to freeze the block at the specified location
+    public static void Freeze(World world, BlockPos pos, int forTicks)
+    {
+        // Don't freeze air
+        if (world.isAirBlock(pos))
+            return;
+
+        // If the block is fire, extinguish the fire instead of freezing
+        if (tryExtinguish(world, pos))
+            return;
+
+        FreezeBlock(world, pos, forTicks, false, false);
+    }
+
+
+    // Freeze blocks including air
+    public static void FreezeAir(World world, BlockPos pos, int forTicks, boolean half)
+    {
+        // Extinguish any fires at location
+        tryExtinguish(world, pos);
+
+        FreezeBlock(world, pos, forTicks, half, false);
+    }
+
+    public static void FreezeAirAsClient(World world, BlockPos pos, int forTicks, boolean half)
+    {
+        // Extinguish any fires at location
+        tryExtinguish(world, pos);
+
+        FreezeBlock(world, pos, forTicks, half, true);
+    }
+
+    // Freeze the block at the specified location
+    private static void FreezeBlock(World world, BlockPos pos, int forTicks, boolean half, boolean client)
+    {
+        // Get the block and tile entity at the freeze location
+        BlockState toFreeze = world.getBlockState(pos);
+        TileEntity tileEntity = world.getTileEntity(pos);
+
+        // If the block is already frozen, update the freeze duration and do nothing more
+        if (tryUpdateFreeze(world, pos, forTicks))
+            return;
 
         world.setBlockState(pos, BlockRegister.frozenBlock.getDefaultState(), 1 + 2 + 16 + 32);
         FrozenTileEntity frozen = (FrozenTileEntity)world.getTileEntity(pos);
+
+        // Only set half blocks for air blocks
+        if (toFreeze.getMaterial() == Material.AIR && half)
+            frozen.setRamp();
+
+        if (client)
+            frozen.setIsClient();
 
         frozen.setUnfreezeTicks(20);
         frozen.setFrozenBlock(toFreeze, tileEntity);
