@@ -3,7 +3,7 @@ package DaoOfModding.Cultivationcraft.Common.Qi.Techniques;
 
 public class AuraTechnique extends Technique
 {
-    protected int range = 5;
+    protected int range = 10;
 
     public AuraTechnique()
     {

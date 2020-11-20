@@ -1,6 +1,8 @@
 package DaoOfModding.Cultivationcraft.Common.Blocks;
 
 import DaoOfModding.Cultivationcraft.Common.BlockRegister;
+import DaoOfModding.Cultivationcraft.Cultivationcraft;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.nbt.CompoundNBT;
@@ -35,6 +37,8 @@ public class FrozenTileEntity extends TileEntity implements ITickableTileEntity
     {
         frozenBlock = state;
         frozenEntity = entity;
+
+        markDirty();
     }
 
     public BlockState getFrozenBlock()
@@ -62,8 +66,8 @@ public class FrozenTileEntity extends TileEntity implements ITickableTileEntity
         if (unfreezeTicks > 0)
             return;
 
-        // Replace this block with its unfrozen version
-        world.setBlockState(pos, frozenBlock);
+        // Replace this block with its unfrozen version (Don't update neighbouring blocks so grass and things don't break)
+        world.setBlockState(pos, frozenBlock, 1 + 2 + 16 + 32);
 
         if (frozenEntity != null)
             world.setTileEntity(pos, frozenEntity);
@@ -123,9 +127,16 @@ public class FrozenTileEntity extends TileEntity implements ITickableTileEntity
     {
         super.read(state, NBT);
         unfreezeTicks = NBT.getInt("unfreezeTicks");
+
+        Block oldFreeze = frozenBlock.getBlock();
+
         frozenBlock = NBTUtil.readBlockState(NBT.getCompound("FrozenBlock"));
 
         if (NBT.hasUniqueId("FrozenEntity"))
             frozenEntity = readTileEntity(frozenBlock, NBT);
+
+        // If the frozen block has changed, refresh the model data
+        if (this.world != null && this.world.isRemote && oldFreeze != frozenBlock.getBlock())
+            net.minecraftforge.client.model.ModelDataManager.requestModelDataRefresh(this);
     }
 }

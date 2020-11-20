@@ -1,19 +1,21 @@
 package DaoOfModding.Cultivationcraft.Common.Qi.Elements;
 
+import DaoOfModding.Cultivationcraft.Common.Qi.QiSource;
+
 import java.awt.*;
 import java.util.ArrayList;
 
 public class Element
 {
+    public final int id;
     public final String name;
-    public final int ID;
     public final Color color;
 
     private ArrayList<ElementRelationship> relationships = new ArrayList<ElementRelationship>();
 
     public Element (int elementID, String elementName, Color elementColor)
     {
-        ID = elementID;
+        id = elementID;
         name = elementName;
         color = elementColor;
     }
@@ -33,5 +35,10 @@ public class Element
 
         // If there is no modifier for the specified element in the relationship list return a modifier of 1
         return 1;
+    }
+
+    public void QiSourceTick(QiSource source)
+    {
+
     }
 }

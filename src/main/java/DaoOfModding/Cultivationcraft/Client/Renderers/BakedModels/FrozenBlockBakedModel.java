@@ -1,6 +1,7 @@
 package DaoOfModding.Cultivationcraft.Client.Renderers.BakedModels;
 
 import DaoOfModding.Cultivationcraft.Common.Blocks.FrozenTileEntity;
+import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.FlowingFluidBlock;
@@ -43,7 +44,9 @@ public class FrozenBlockBakedModel implements IDynamicBakedModel
 
         // If the frozen block is air, use the default ice model instead
         if (frozenBlock.getBlock() == Blocks.AIR || frozenBlock.getBlock() == Blocks.VOID_AIR || frozenBlock.getBlock() == Blocks.CAVE_AIR)
+        {
             frozenQuads = Minecraft.getInstance().getBlockRendererDispatcher().getModelForState(Blocks.ICE.getDefaultState()).getQuads(frozenBlock, side, rand, extraData);
+        }
         // If the frozen block is a liquid, use the default ice model textured as that liquid, then frozen
         else if (frozenBlock.getBlock() instanceof FlowingFluidBlock)
         {

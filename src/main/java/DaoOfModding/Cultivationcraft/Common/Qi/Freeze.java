@@ -5,6 +5,9 @@ import DaoOfModding.Cultivationcraft.Common.Blocks.FrozenTileEntity;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.FireBlock;
+import net.minecraft.block.IGrowable;
+import net.minecraft.block.material.Material;
+import net.minecraft.client.Minecraft;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -53,10 +56,10 @@ public class Freeze
             return;
         }
 
-        world.setBlockState(pos, BlockRegister.frozenBlock.getDefaultState());
+        world.setBlockState(pos, BlockRegister.frozenBlock.getDefaultState(), 1 + 2 + 16 + 32);
         FrozenTileEntity frozen = (FrozenTileEntity)world.getTileEntity(pos);
 
-        frozen.setFrozenBlock(toFreeze, tileEntity);
         frozen.setUnfreezeTicks(20);
+        frozen.setFrozenBlock(toFreeze, tileEntity);
     }
 }
