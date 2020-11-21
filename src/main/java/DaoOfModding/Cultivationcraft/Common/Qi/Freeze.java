@@ -5,9 +5,7 @@ import DaoOfModding.Cultivationcraft.Common.Blocks.FrozenTileEntity;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.FireBlock;
-import net.minecraft.block.IGrowable;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.Minecraft;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
@@ -15,6 +13,8 @@ import net.minecraft.world.World;
 
 public class Freeze
 {
+    // TODO: Freeze logic for containers
+
     // Freeze all blocks in an area around center for range blocks
     public static void FreezeArea(World world, BlockPos center, int range, int forTicks)
     {
@@ -63,6 +63,10 @@ public class Freeze
     // Try to freeze the block at the specified location
     public static void Freeze(World world, BlockPos pos, int forTicks)
     {
+        // Don't freeze blocks above build height
+        if (pos.getY() > 255)
+            return;
+
         // Don't freeze air
         if (world.isAirBlock(pos))
             return;

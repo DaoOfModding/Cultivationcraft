@@ -153,7 +153,7 @@ public class Technique
     public static Technique readBuffer(PacketBuffer buffer)
     {
         Technique newTech;
-        String className = buffer.readString();
+        String className = buffer.readString(256);
 
         try
         {

@@ -1,5 +1,6 @@
 package DaoOfModding.Cultivationcraft;
 
+import DaoOfModding.Cultivationcraft.Client.ClientBlockRegister;
 import DaoOfModding.Cultivationcraft.Client.ClientItemControl;
 import DaoOfModding.Cultivationcraft.Client.ClientListeners;
 import DaoOfModding.Cultivationcraft.Client.KeybindingControl;
@@ -36,14 +37,6 @@ public class Cultivationcraft {
         modEventBus.addListener(this::commonInit);
         modEventBus.addListener(this::clientInit);
         Register.ENTITY_TYPES.register(modEventBus);
-
-        MinecraftForge.EVENT_BUS.register(Register.class);
-        MinecraftForge.EVENT_BUS.register(BlockRegister.class);
-        MinecraftForge.EVENT_BUS.register(CapabilityListeners.class);
-        MinecraftForge.EVENT_BUS.register(CommonListeners.class);
-        MinecraftForge.EVENT_BUS.register(ClientListeners.class);
-        MinecraftForge.EVENT_BUS.register(KeybindingControl.class);
-        MinecraftForge.EVENT_BUS.register(ServerListeners.class);
     }
 
     private void commonInit(final FMLCommonSetupEvent event)

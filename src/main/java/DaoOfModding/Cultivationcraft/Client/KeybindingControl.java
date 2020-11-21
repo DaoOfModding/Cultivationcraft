@@ -3,6 +3,7 @@ package DaoOfModding.Cultivationcraft.Client;
 import DaoOfModding.Cultivationcraft.Client.GUI.SkillHotbarOverlay;
 import DaoOfModding.Cultivationcraft.Common.Misc;
 import DaoOfModding.Cultivationcraft.Common.Register;
+import DaoOfModding.Cultivationcraft.Network.ClientPacketHandler;
 import DaoOfModding.Cultivationcraft.Network.PacketHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
@@ -12,15 +13,18 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.EntityRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.vector.Vector3d;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
+import net.minecraftforge.fml.common.Mod;
 
 import java.util.UUID;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_L;
 
+@Mod.EventBusSubscriber(value = Dist.CLIENT)
 public class KeybindingControl
 {
     public static KeyBinding[] keyBindings;
@@ -108,7 +112,7 @@ public class KeybindingControl
             if (keyBindings[0].isPressed())
             {
                 SkillHotbarOverlay.switchActive();
-                PacketHandler.sendKeypressToServer(Register.keyPresses.SKILLHOTBARSWITCH);
+                ClientPacketHandler.sendKeypressToServer(Register.keyPresses.SKILLHOTBARSWITCH);
             }
 
             if (keyBindings[1].isPressed())
@@ -135,18 +139,18 @@ public class KeybindingControl
                         type = RayTraceResult.Type.MISS;
                 }
 
-                PacketHandler.sendCultivatorTargetToServer(Minecraft.getInstance().player.getUniqueID(), type, pos, targetID);
+                ClientPacketHandler.sendCultivatorTargetToServer(Minecraft.getInstance().player.getUniqueID(), type, pos, targetID);
             }
 
             if (keyBindings[2].isPressed())
             {
-                PacketHandler.sendRecallFlyingToServer(true, Minecraft.getInstance().player.getUniqueID());
+                ClientPacketHandler.sendRecallFlyingToServer(true, Minecraft.getInstance().player.getUniqueID());
             }
 
 
             if (keyBindings[3].isPressed())
             {
-                PacketHandler.sendKeypressToServer(Register.keyPresses.FLYINGSWORDSCREEN);
+                ClientPacketHandler.sendKeypressToServer(Register.keyPresses.FLYINGSWORDSCREEN);
             }
         }
     }

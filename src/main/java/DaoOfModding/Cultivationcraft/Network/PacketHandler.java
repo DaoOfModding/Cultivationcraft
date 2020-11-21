@@ -6,7 +6,6 @@ import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.Cultiva
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.ICultivatorStats;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.CultivatorTechniques;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.ICultivatorTechniques;
-import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import DaoOfModding.Cultivationcraft.Network.Packets.*;
 import DaoOfModding.Cultivationcraft.Network.Packets.CultivatorStats.*;
 import DaoOfModding.Cultivationcraft.Common.Register;
@@ -56,48 +55,10 @@ public class PacketHandler
         channel.registerMessage(CULTIVATOR_STATS, CultivatorStatsPacket.class, CultivatorStatsPacket::encode, CultivatorStatsPacket::decode, CultivatorStatsPacket::handle);
     }
 
-    public static void sendKeypressToServer(Register.keyPresses keyPress)
-    {
-        keypressPacket pack = new keypressPacket(keyPress);
-        channel.sendToServer(pack);
-    }
-
-    public static void sendTechniqueUseToServer(int slot, boolean keyDown)
-    {
-        TechniqueUsePacket pack = new TechniqueUsePacket(slot, keyDown);
-        channel.sendToServer(pack);
-    }
-
-    public static void sendFlyingSwordConversionToServer(int heldItemID)
-    {
-        ConvertToFlyingPacket pack = new ConvertToFlyingPacket(heldItemID);
-        channel.sendToServer(pack);
-    }
-
-    public static void sendRecallFlyingToServer(boolean recall, UUID playerID)
-    {
-        RecallFlyingSwordPacket pack = new RecallFlyingSwordPacket(recall, playerID);
-        channel.sendToServer(pack);
-    }
-
     public static void sendRecallFlyingToClient(boolean recall, UUID playerID)
     {
         RecallFlyingSwordPacket pack = new RecallFlyingSwordPacket(recall, playerID);
         channel.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> ServerLifecycleHooks.getCurrentServer().getPlayerList().getPlayerByUUID(playerID)), pack);
-    }
-
-    public static void sendCultivatorTargetToServer(UUID playerID, RayTraceResult.Type type, Vector3d pos, UUID targetID)
-    {
-        CultivatorTargetPacket pack = new CultivatorTargetPacket(playerID, type, pos, targetID);
-        channel.sendToServer(pack);
-    }
-
-    public static void sendCultivatorTechniquesToServer()
-    {
-        ICultivatorTechniques techs = CultivatorTechniques.getCultivatorTechniques(Minecraft.getInstance().player);
-
-        CultivatorTechniquesPacket pack = new CultivatorTechniquesPacket(Minecraft.getInstance().player.getUniqueID(), techs);
-        channel.sendToServer(pack);
     }
 
     public static void sendCultivatorTargetToClient(UUID playerID, RayTraceResult.Type type, Vector3d pos, UUID targetID)

@@ -1,6 +1,7 @@
 package DaoOfModding.Cultivationcraft.Client.GUI;
 
 import DaoOfModding.Cultivationcraft.Common.Register;
+import DaoOfModding.Cultivationcraft.Network.ClientPacketHandler;
 import DaoOfModding.Cultivationcraft.Network.PacketHandler;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.Minecraft;
@@ -45,7 +46,7 @@ public class ScreenTabControl
                 if (i == 1)
                     Minecraft.getInstance().displayGuiScreen(new TechniqueScreen());
                 else if (i == 2)
-                    PacketHandler.sendKeypressToServer(Register.keyPresses.FLYINGSWORDSCREEN);
+                    ClientPacketHandler.sendKeypressToServer(Register.keyPresses.FLYINGSWORDSCREEN);
 
                 return true;
             }

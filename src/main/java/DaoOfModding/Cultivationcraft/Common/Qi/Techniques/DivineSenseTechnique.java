@@ -1,5 +1,6 @@
 package DaoOfModding.Cultivationcraft.Common.Qi.Techniques;
 
+import DaoOfModding.Cultivationcraft.Client.ClientItemControl;
 import DaoOfModding.Cultivationcraft.Client.Renderer;
 import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
@@ -26,7 +27,9 @@ public class DivineSenseTechnique extends Technique
     {
         super.useKeyPressed(keyDown);
 
-        Renderer.QiSourcesVisable = active;
+        // Only do this on the client
+        if (ClientItemControl.thisWorld != null)
+            Renderer.QiSourcesVisable = active;
     }
 
     @Override

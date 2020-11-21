@@ -22,17 +22,6 @@ public class BlockRegister
     public static FrozenBlock frozenBlock;
     public static TileEntityType<FrozenTileEntity> frozenTileEntityType;
 
-    public static void registerBlockRenderers()
-    {
-        RenderTypeLookup.setRenderLayer(frozenBlock, RenderType.getTranslucent());
-    }
-
-    @SubscribeEvent
-    public static void onModelBakeEvent(ModelBakeEvent event)
-    {
-        for (BlockState blockState : frozenBlock.getStateContainer().getValidStates())
-            event.getModelRegistry().put(BlockModelShapes.getModelLocation(blockState), new FrozenBlockBakedModel());
-    }
 
     @SubscribeEvent
     public static void registerBlocks(final RegistryEvent.Register<Block> blockRegistryEvent)

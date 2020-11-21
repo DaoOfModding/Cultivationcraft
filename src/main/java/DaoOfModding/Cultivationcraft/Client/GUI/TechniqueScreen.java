@@ -5,6 +5,7 @@ import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.IC
 import DaoOfModding.Cultivationcraft.Common.Qi.TechniqueControl;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.Technique;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
+import DaoOfModding.Cultivationcraft.Network.ClientPacketHandler;
 import DaoOfModding.Cultivationcraft.Network.PacketHandler;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GlStateManager;
@@ -120,7 +121,7 @@ public class TechniqueScreen extends Screen
         techs.setTechnique(selected, newTechnique);
         updateTechniqueList();
 
-        PacketHandler.sendCultivatorTechniquesToServer();
+        ClientPacketHandler.sendCultivatorTechniquesToServer();
     }
 
     @Override

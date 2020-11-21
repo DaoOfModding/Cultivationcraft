@@ -102,9 +102,8 @@ public class FrozenBlockBakedModel implements IDynamicBakedModel
         return false;
     }
 
-    // WHAT IS THIS!? STUPID OBFUSCATED CODE >:(
     @Override
-    public boolean func_230044_c_()
+    public boolean isSideLit()
     {
         return false;
     }

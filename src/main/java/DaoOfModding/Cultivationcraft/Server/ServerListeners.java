@@ -5,10 +5,13 @@ import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.IC
 import DaoOfModding.Cultivationcraft.Common.FlyingSwordController;
 import DaoOfModding.Cultivationcraft.Common.FlyingSwordEntity;
 import net.minecraft.entity.item.ItemEntity;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.item.ItemTossEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
 
+@Mod.EventBusSubscriber()
 public class ServerListeners
 {
     public static long lastServerTickTime = System.nanoTime();

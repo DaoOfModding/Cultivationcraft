@@ -13,6 +13,7 @@ import DaoOfModding.Cultivationcraft.Server.ServerListeners;
 import DaoOfModding.Cultivationcraft.Server.SkillHotbarServer;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
@@ -21,12 +22,17 @@ import net.minecraftforge.event.world.ChunkEvent;
 import net.minecraftforge.event.world.ChunkWatchEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
 
+@Mod.EventBusSubscriber()
 public class CommonListeners
 {
     @SubscribeEvent
     public static void playerTick(TickEvent.PlayerTickEvent event)
     {
+        if (!event.player.isAlive())
+            return;
+
         if (event.player.getEntityWorld().isRemote)
             ClientListeners.playerTick(event);
         else

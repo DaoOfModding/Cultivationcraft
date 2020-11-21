@@ -4,6 +4,7 @@ import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.Cu
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.CultivatorTechniquesCapability;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.ICultivatorTechniques;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
+import DaoOfModding.Cultivationcraft.Network.ClientPacketHandler;
 import DaoOfModding.Cultivationcraft.Network.PacketHandler;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -78,7 +79,7 @@ public class SkillHotbarOverlay
     {
         // Send message to server to use this skill
         if (isActive())
-            PacketHandler.sendTechniqueUseToServer(skillSelected, keyDown);
+            ClientPacketHandler.sendTechniqueUseToServer(skillSelected, keyDown);
     }
 
     public static void setSelection(int selection)

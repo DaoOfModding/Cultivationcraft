@@ -4,12 +4,15 @@ import DaoOfModding.Cultivationcraft.Client.GUI.SkillHotbarOverlay;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.CultivatorTechniques;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.ICultivatorTechniques;
 import net.minecraft.client.Minecraft;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
 
 import java.util.UUID;
 
+@Mod.EventBusSubscriber(value = Dist.CLIENT)
 public class ClientListeners
 {
     public static long lastTickTime = System.nanoTime();
@@ -29,6 +32,10 @@ public class ClientListeners
     @SubscribeEvent
     public static void overlayRender(RenderGameOverlayEvent.Pre event)
     {
+        // Do nothing if the player is dead
+        if (!Minecraft.getInstance().player.isAlive())
+            return;
+
         if (event.getType() == RenderGameOverlayEvent.ElementType.HOTBAR)
         {
             SkillHotbarOverlay.PreRenderSkillHotbar(event.getMatrixStack());
@@ -42,6 +49,10 @@ public class ClientListeners
     @SubscribeEvent
     public static void overlayRender(RenderGameOverlayEvent.Post event)
     {
+        // Do nothing if the player is dead
+        if (!Minecraft.getInstance().player.isAlive())
+            return;
+
         if (event.getType() == RenderGameOverlayEvent.ElementType.HOTBAR)
         {
             SkillHotbarOverlay.PostRenderSkillHotbar(event.getMatrixStack());

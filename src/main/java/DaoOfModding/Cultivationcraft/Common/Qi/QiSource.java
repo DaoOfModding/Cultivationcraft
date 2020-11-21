@@ -1,5 +1,6 @@
 package DaoOfModding.Cultivationcraft.Common.Qi;
 
+import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.math.BlockPos;

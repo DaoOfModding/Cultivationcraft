@@ -1,13 +1,7 @@
 package DaoOfModding.Cultivationcraft.Client.Renderers.BakedModels;
 
 import net.minecraft.client.renderer.model.BakedQuad;
-import net.minecraft.client.renderer.model.FaceBakery;
-import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.vector.Vector3f;
-import net.minecraft.util.math.vector.Vector4f;
 import net.minecraftforge.client.model.pipeline.BakedQuadBuilder;
 import net.minecraftforge.client.model.pipeline.IVertexConsumer;
 import net.minecraftforge.client.model.pipeline.VertexTransformer;
@@ -87,7 +81,7 @@ public class BakedModelUtils
     public static BakedQuad retextureQuad(BakedQuad quad, TextureAtlasSprite texture)
     {
         BakedQuadBuilder build = new BakedQuadBuilder(texture);
-        TextureAtlasSprite originalTexture = quad.func_187508_a();
+        TextureAtlasSprite originalTexture = quad.getSprite();
 
         final IVertexConsumer transformer = new VertexTransformer(build)
         {
