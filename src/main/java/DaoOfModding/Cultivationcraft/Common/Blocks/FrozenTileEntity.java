@@ -18,12 +18,12 @@ import net.minecraftforge.client.model.data.ModelProperty;
 public class FrozenTileEntity extends TileEntity implements ITickableTileEntity
 {
     public static final ModelProperty<BlockState> FROZEN_BLOCK = new ModelProperty<>();
-    public static final ModelProperty<Boolean> RAMP_BLOCK = new ModelProperty<>();
+    public static final ModelProperty<Integer> RAMP_BLOCK = new ModelProperty<>();
 
     private int unfreezeTicks = -1;
     private BlockState frozenBlock = Blocks.AIR.getDefaultState();
     private TileEntity frozenEntity = null;
-    private Boolean ramp = false;
+    private Direction ramp = Direction.DOWN;
 
     private Boolean isClient = false;
 
@@ -82,15 +82,15 @@ public class FrozenTileEntity extends TileEntity implements ITickableTileEntity
             world.setTileEntity(pos, frozenEntity);
     }
 
-    public void setRamp()
+    public void setRamp(Direction dir)
     {
-        ramp = true;
+        ramp = dir;
     }
 
     @Override
     public IModelData getModelData()
     {
-        return new ModelDataMap.Builder().withInitial(FROZEN_BLOCK, frozenBlock).withInitial(RAMP_BLOCK, ramp).build();
+        return new ModelDataMap.Builder().withInitial(FROZEN_BLOCK, frozenBlock).withInitial(RAMP_BLOCK, ramp.getIndex()).build();
     }
 
     @Override
@@ -116,7 +116,7 @@ public class FrozenTileEntity extends TileEntity implements ITickableTileEntity
         return nbtTagCompound;
     }
 
-    public boolean isRamp()
+    public Direction getRamp()
     {
         return ramp;
     }
@@ -132,7 +132,7 @@ public class FrozenTileEntity extends TileEntity implements ITickableTileEntity
     {
         super.write(NBT);
         NBT.putInt("unfreezeTicks", unfreezeTicks);
-        NBT.putBoolean("ramp", ramp);
+        NBT.putInt("ramp", ramp.getIndex());
         NBT.put("FrozenBlock", NBTUtil.writeBlockState(frozenBlock));
 
         if (frozenEntity != null)
@@ -146,17 +146,19 @@ public class FrozenTileEntity extends TileEntity implements ITickableTileEntity
     {
         super.read(state, NBT);
         unfreezeTicks = NBT.getInt("unfreezeTicks");
-        ramp = NBT.getBoolean("ramp");
+
+        Direction oldRamp = ramp;
+        ramp = Direction.byIndex(NBT.getInt("ramp"));
 
         Block oldFreeze = frozenBlock.getBlock();
-
         frozenBlock = NBTUtil.readBlockState(NBT.getCompound("FrozenBlock"));
 
         if (NBT.hasUniqueId("FrozenEntity"))
             frozenEntity = readTileEntity(frozenBlock, NBT);
 
-        // If the frozen block has changed, refresh the model data
-        if (this.world != null && this.world.isRemote && oldFreeze != frozenBlock.getBlock())
-            net.minecraftforge.client.model.ModelDataManager.requestModelDataRefresh(this);
+        // If the frozen block or ramp status has changed, refresh the model data
+        if (this.world != null && this.world.isRemote)
+            if (oldFreeze != frozenBlock.getBlock() || oldRamp != ramp)
+                net.minecraftforge.client.model.ModelDataManager.requestModelDataRefresh(this);
     }
 }

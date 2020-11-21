@@ -46,16 +46,16 @@ public class FrozenBlockBakedModel implements IDynamicBakedModel
 
         List<BakedQuad> frozenQuads = new ArrayList<>();
 
-        boolean half = extraData.getData(FrozenTileEntity.RAMP_BLOCK);
+        Direction dir = Direction.byIndex(extraData.getData(FrozenTileEntity.RAMP_BLOCK));
         // If the frozen block is air, use the default ice model instead
         if (frozenBlock.getMaterial() == Material.AIR)
         {
-            if (!half)
+            if (dir == Direction.DOWN)
                 frozenQuads = Minecraft.getInstance().getBlockRendererDispatcher().getModelForState(Blocks.ICE.getDefaultState()).getQuads(frozenBlock, side, rand, extraData);
-            // If the frozen block is a ramp, use a retextured slab model instead
+            // If the frozen block is a ramp, use a retextured stair model instead
             else
             {
-                BlockState StairState = Blocks.BRICK_SLAB.getDefaultState();
+                BlockState StairState = Blocks.COBBLESTONE_STAIRS.getDefaultState().with(StairsBlock.FACING, dir).with(StairsBlock.HALF, Half.BOTTOM).with(StairsBlock.SHAPE, StairsShape.STRAIGHT).with(StairsBlock.WATERLOGGED, false);
                 List<BakedQuad> quads = Minecraft.getInstance().getBlockRendererDispatcher().getModelForState(StairState).getQuads(frozenBlock, side, rand, extraData);
 
                 for (BakedQuad quad : quads)

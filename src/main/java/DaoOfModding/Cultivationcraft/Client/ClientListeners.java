@@ -16,11 +16,14 @@ public class ClientListeners
 
     public static void playerTick(TickEvent.PlayerTickEvent event)
     {
-        ICultivatorTechniques techs = CultivatorTechniques.getCultivatorTechniques(event.player);
+        if (event.phase == TickEvent.Phase.START)
+        {
+            ICultivatorTechniques techs = CultivatorTechniques.getCultivatorTechniques(event.player);
 
-        for (int i = 0; i < CultivatorTechniques.numberOfTechniques; i++)
-            if (techs.getTechnique(i) != null && techs.getTechnique(i).isActive())
-                techs.getTechnique(i).tickClient(event);
+            for (int i = 0; i < CultivatorTechniques.numberOfTechniques; i++)
+                if (techs.getTechnique(i) != null && techs.getTechnique(i).isActive())
+                    techs.getTechnique(i).tickClient(event);
+        }
     }
 
     @SubscribeEvent

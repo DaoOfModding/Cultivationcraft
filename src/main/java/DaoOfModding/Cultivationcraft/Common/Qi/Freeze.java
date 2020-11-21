@@ -37,14 +37,23 @@ public class Freeze
         return false;
     }
 
-    public static boolean tryUpdateFreeze(World world, BlockPos pos, int ticks)
+    public static boolean isFrozen(World world, BlockPos pos)
     {
         TileEntity tileEntity = world.getTileEntity(pos);
 
         // If the block at the specified position is a frozen block refresh the freeze and finish
         if (tileEntity!= null && tileEntity instanceof FrozenTileEntity)
+            return true;
+
+        return false;
+    }
+
+    public static boolean tryUpdateFreeze(World world, BlockPos pos, int ticks)
+    {
+        // If the block at the specified position is a frozen block refresh the freeze and finish
+        if (isFrozen(world, pos))
         {
-            ((FrozenTileEntity)tileEntity).setUnfreezeTicks(ticks);
+            ((FrozenTileEntity)world.getTileEntity(pos)).setUnfreezeTicks(ticks);
             return true;
         }
 
@@ -62,29 +71,29 @@ public class Freeze
         if (tryExtinguish(world, pos))
             return;
 
-        FreezeBlock(world, pos, forTicks, false, false);
+        FreezeBlock(world, pos, forTicks, Direction.DOWN, false);
     }
 
 
     // Freeze blocks including air
-    public static void FreezeAir(World world, BlockPos pos, int forTicks, boolean half)
+    public static void FreezeAir(World world, BlockPos pos, int forTicks, Direction dir)
     {
         // Extinguish any fires at location
         tryExtinguish(world, pos);
 
-        FreezeBlock(world, pos, forTicks, half, false);
+        FreezeBlock(world, pos, forTicks, dir, false);
     }
 
-    public static void FreezeAirAsClient(World world, BlockPos pos, int forTicks, boolean half)
+    public static void FreezeAirAsClient(World world, BlockPos pos, int forTicks, Direction dir)
     {
         // Extinguish any fires at location
         tryExtinguish(world, pos);
 
-        FreezeBlock(world, pos, forTicks, half, true);
+        FreezeBlock(world, pos, forTicks, dir, true);
     }
 
     // Freeze the block at the specified location
-    private static void FreezeBlock(World world, BlockPos pos, int forTicks, boolean half, boolean client)
+    private static void FreezeBlock(World world, BlockPos pos, int forTicks, Direction dir, boolean client)
     {
         // Get the block and tile entity at the freeze location
         BlockState toFreeze = world.getBlockState(pos);
@@ -98,8 +107,8 @@ public class Freeze
         FrozenTileEntity frozen = (FrozenTileEntity)world.getTileEntity(pos);
 
         // Only set half blocks for air blocks
-        if (toFreeze.getMaterial() == Material.AIR && half)
-            frozen.setRamp();
+        if (toFreeze.getMaterial() == Material.AIR && dir != Direction.DOWN)
+            frozen.setRamp(dir);
 
         if (client)
             frozen.setIsClient();
