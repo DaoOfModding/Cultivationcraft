@@ -60,6 +60,9 @@ public class IceWalkTechnique extends Technique
             // If the block is already frozen, just update the freeze and do nothing more
             if(Freeze.tryUpdateFreeze(event.player.getEntityWorld(), pos, power))
                 return;
+
+            //float y = pos.getY() + 0.5f;
+            //event.player.setPosition(event.player.getPosX(), y, event.player.getPosZ());
         }
 
         // Freeze the ground directly below the player

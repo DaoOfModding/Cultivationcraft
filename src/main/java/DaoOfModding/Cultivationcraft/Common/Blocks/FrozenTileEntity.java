@@ -160,5 +160,8 @@ public class FrozenTileEntity extends TileEntity implements ITickableTileEntity
         if (this.world != null && this.world.isRemote)
             if (oldFreeze != frozenBlock.getBlock() || oldRamp != ramp)
                 net.minecraftforge.client.model.ModelDataManager.requestModelDataRefresh(this);
+
+        // As soon as data is read in for this block, mark it as not being a client block
+        isClient = false;
     }
 }
