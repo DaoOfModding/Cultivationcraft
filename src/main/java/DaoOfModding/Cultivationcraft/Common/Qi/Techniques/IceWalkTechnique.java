@@ -1,5 +1,6 @@
 package DaoOfModding.Cultivationcraft.Common.Qi.Techniques;
 
+import DaoOfModding.Cultivationcraft.Common.PlayerPose;
 import DaoOfModding.Cultivationcraft.Common.PlayerUtils;
 import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
 import DaoOfModding.Cultivationcraft.Common.Qi.Freeze;
@@ -26,6 +27,9 @@ public class IceWalkTechnique extends Technique
         multiple = false;
 
         icon = new ResourceLocation(Cultivationcraft.MODID, "textures/techniques/icons/icewalk.png");
+
+        pose.setAngle(PlayerPose.Limb.LEFTARM, new Vector3d(0, 1.5, -1.5), 1);
+        pose.setAngle(PlayerPose.Limb.RIGHTARM, new Vector3d(0, 1.5, 1.5), 1);
     }
 
     public boolean calculateStairOrNot(PlayerEntity player)
@@ -39,6 +43,8 @@ public class IceWalkTechnique extends Technique
     @Override
     public void tickServer(TickEvent.PlayerTickEvent event)
     {
+        super.tickServer(event);
+
         BlockPos pos = event.player.getPosition().down();
 
         // If the block is already frozen, just update the freeze and do nothing more
@@ -72,6 +78,8 @@ public class IceWalkTechnique extends Technique
     @Override
     public void tickClient(TickEvent.PlayerTickEvent event)
     {
+        super.tickClient(event);
+
         // TODO: Better way of sliding
         Vector3d test = event.player.getMotion().scale(0.04);
         event.player.addVelocity(test.x, 0, test.z);

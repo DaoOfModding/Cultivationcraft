@@ -1,5 +1,7 @@
 package DaoOfModding.Cultivationcraft.Common.Qi.Techniques;
 
+import DaoOfModding.Cultivationcraft.Client.Renderers.PoseHandler;
+import DaoOfModding.Cultivationcraft.Common.PlayerPose;
 import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import com.mojang.blaze3d.platform.GlStateManager;
@@ -30,6 +32,8 @@ public class Technique
     protected boolean overlayOn = false;
 
     protected boolean multiple = true;
+
+    protected PlayerPose pose = new PlayerPose();
 
     public Technique()
     {
@@ -175,14 +179,15 @@ public class Technique
         setActive(buffer.readBoolean());
     }
 
+    // Ticks on server side, only called if Technique is active and owned by the player
     public void tickServer(TickEvent.PlayerTickEvent event)
     {
-
     }
 
+    // Ticks on client side, only called if Technique is active
     public void tickClient(TickEvent.PlayerTickEvent event)
     {
-
+        PoseHandler.addPose(event.player.getUniqueID(), pose);
     }
 
     // Rendering as the player who owns the technique

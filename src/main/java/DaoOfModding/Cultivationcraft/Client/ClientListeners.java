@@ -1,11 +1,15 @@
 package DaoOfModding.Cultivationcraft.Client;
 
 import DaoOfModding.Cultivationcraft.Client.GUI.SkillHotbarOverlay;
+import DaoOfModding.Cultivationcraft.Client.Renderers.CultivatorRenderer;
+import DaoOfModding.Cultivationcraft.Client.Renderers.PoseHandler;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.CultivatorTechniques;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.ICultivatorTechniques;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -26,7 +30,16 @@ public class ClientListeners
             for (int i = 0; i < CultivatorTechniques.numberOfTechniques; i++)
                 if (techs.getTechnique(i) != null && techs.getTechnique(i).isActive())
                     techs.getTechnique(i).tickClient(event);
+
+            PoseHandler.updatePoses();
         }
+    }
+
+    @SubscribeEvent
+    public static void renderPlayer(RenderPlayerEvent.Pre event)
+    {
+        // If CultivatorRenderer returns true, cancel the render event
+        event.setCanceled(CultivatorRenderer.render(event.getRenderer(), (ClientPlayerEntity)event.getPlayer(), event.getPartialRenderTick(), event.getMatrixStack(), event.getBuffers(), event.getLight()));
     }
 
     @SubscribeEvent
