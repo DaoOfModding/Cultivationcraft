@@ -19,6 +19,8 @@ import java.util.UUID;
 
 public class PoseHandler
 {
+    private static final double animationSpeed = 0.2;
+
     private static List<PlayerPoseHandler> poses = new ArrayList<PlayerPoseHandler>();
 
     public static PlayerPoseHandler getPlayerPoseHandler(UUID playerID)
@@ -69,8 +71,9 @@ public class PoseHandler
     public static void doPose(PlayerEntity entityIn, PlayerModel modelIn)
     {
         PlayerPoseHandler handler = getPlayerPoseHandler(entityIn.getUniqueID());
+        handler.animateLimbs(modelIn);
 
-        PlayerPose pose = handler.getRenderPose();
+        PlayerPose pose = handler.getAnimatingPose();
 
         if (pose.hasAngle(PlayerPose.Limb.LEFTARM))
             applyPose(modelIn.bipedLeftArm, pose.getAngle(PlayerPose.Limb.LEFTARM));
