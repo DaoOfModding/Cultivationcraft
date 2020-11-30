@@ -1,8 +1,5 @@
-package DaoOfModding.Cultivationcraft.Client.Renderers;
+package DaoOfModding.Cultivationcraft.Client.AnimationFramework;
 
-import DaoOfModding.Cultivationcraft.Common.PlayerPose;
-import DaoOfModding.Cultivationcraft.Common.PlayerPoseHandler;
-import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.renderer.entity.model.PlayerModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
@@ -19,7 +16,7 @@ import java.util.UUID;
 
 public class PoseHandler
 {
-    private static final double animationSpeed = 0.2;
+    public static final double defaultAnimationSpeed = 0.25;
 
     private static List<PlayerPoseHandler> poses = new ArrayList<PlayerPoseHandler>();
 
@@ -68,10 +65,10 @@ public class PoseHandler
             handlers.updateRenderPose();
     }
 
-    public static void doPose(PlayerEntity entityIn, PlayerModel modelIn)
+    public static void doPose(PlayerEntity entityIn, PlayerModel modelIn, float partialTicks)
     {
         PlayerPoseHandler handler = getPlayerPoseHandler(entityIn.getUniqueID());
-        handler.animateLimbs(modelIn);
+        handler.animateLimbs(modelIn, partialTicks);
 
         PlayerPose pose = handler.getAnimatingPose();
 

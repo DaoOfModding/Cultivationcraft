@@ -1,5 +1,6 @@
 package DaoOfModding.Cultivationcraft.Client.Renderers;
 
+import DaoOfModding.Cultivationcraft.Client.AnimationFramework.PoseHandler;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.Minecraft;
@@ -8,11 +9,9 @@ import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.LivingRenderer;
 import net.minecraft.client.renderer.entity.PlayerRenderer;
-import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.client.renderer.entity.model.PlayerModel;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.Pose;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
@@ -94,7 +93,7 @@ public class CultivatorRenderer
         entityModel.setLivingAnimations(entityIn, f5, f8, partialTicks);
         entityModel.setRotationAngles(entityIn, f5, f8, totalTicks, f2, f6);
 
-        PoseHandler.doPose(entityIn, entityModel);
+        PoseHandler.doPose(entityIn, entityModel, partialTicks);
 
         Minecraft minecraft = Minecraft.getInstance();
         RenderType rendertype = getRenderType(entityModel, entityIn);

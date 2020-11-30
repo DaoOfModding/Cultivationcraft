@@ -2,7 +2,7 @@ package DaoOfModding.Cultivationcraft.Client;
 
 import DaoOfModding.Cultivationcraft.Client.GUI.SkillHotbarOverlay;
 import DaoOfModding.Cultivationcraft.Client.Renderers.CultivatorRenderer;
-import DaoOfModding.Cultivationcraft.Client.Renderers.PoseHandler;
+import DaoOfModding.Cultivationcraft.Client.AnimationFramework.PoseHandler;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.CultivatorTechniques;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.ICultivatorTechniques;
 import net.minecraft.client.Minecraft;
@@ -13,8 +13,6 @@ import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-
-import java.util.UUID;
 
 @Mod.EventBusSubscriber(value = Dist.CLIENT)
 public class ClientListeners
