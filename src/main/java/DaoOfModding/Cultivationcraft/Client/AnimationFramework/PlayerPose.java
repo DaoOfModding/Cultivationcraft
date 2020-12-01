@@ -10,6 +10,9 @@ public class PlayerPose
 
     private int[] priorities = new int[4];
 
+    // X = Depth, positive goes backwards, negative goes forward
+    // Y = Rotation
+    // Z = Left and Right, Positive goes right, negative goes left
     private ArrayList<Vector3d>[] angles = new ArrayList[4];
     private ArrayList<Double>[] speed = new ArrayList[4];
 
@@ -89,5 +92,15 @@ public class PlayerPose
     public int getPriority(Limb limb)
     {
         return priorities[limb.ordinal()];
+    }
+
+    public PlayerPose clone()
+    {
+        PlayerPose copyPose = new PlayerPose();
+
+        for (Limb limb : Limb.values())
+            copyPose.setAngles(limb, (ArrayList<Vector3d>)angles[limb.ordinal()].clone(), (ArrayList<Double>)speed[limb.ordinal()].clone(), priorities[limb.ordinal()]);
+
+        return copyPose;
     }
 }

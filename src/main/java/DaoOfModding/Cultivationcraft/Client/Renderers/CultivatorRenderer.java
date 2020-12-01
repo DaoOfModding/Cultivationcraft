@@ -39,7 +39,8 @@ public class CultivatorRenderer
         float f1 = MathHelper.interpolateAngle(partialTicks, entityIn.prevRotationYawHead, entityIn.rotationYawHead);
 
         float f2 = f1 - f;
-        if (shouldSit && entityIn.getRidingEntity() instanceof LivingEntity) {
+        if (shouldSit && entityIn.getRidingEntity() instanceof LivingEntity)
+        {
             LivingEntity livingentity = (LivingEntity)entityIn.getRidingEntity();
             f = MathHelper.interpolateAngle(partialTicks, livingentity.prevRenderYawOffset, livingentity.renderYawOffset);
             f2 = f1 - f;
@@ -73,8 +74,10 @@ public class CultivatorRenderer
 
         PoseHandler.applyRotations(entityIn, matrixStackIn, totalTicks, f, partialTicks);
 
+        double height = PoseHandler.getHeightAdjustment(entityModel);
+
         matrixStackIn.scale(-1.0F, -1.0F, 1.0F);
-        matrixStackIn.translate(0.0D, (double)-1.501F, 0.0D);
+        matrixStackIn.translate(0.0D, (double)-1.501F + height, 0.0D);
 
         float f8 = 0.0F;
         float f5 = 0.0F;
@@ -95,7 +98,6 @@ public class CultivatorRenderer
 
         PoseHandler.doPose(entityIn, entityModel, partialTicks);
 
-        Minecraft minecraft = Minecraft.getInstance();
         RenderType rendertype = getRenderType(entityModel, entityIn);
 
         if (rendertype != null)

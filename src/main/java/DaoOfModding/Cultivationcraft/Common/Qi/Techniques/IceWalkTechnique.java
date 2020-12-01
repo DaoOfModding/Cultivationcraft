@@ -1,5 +1,6 @@
 package DaoOfModding.Cultivationcraft.Common.Qi.Techniques;
 
+import DaoOfModding.Cultivationcraft.Client.AnimationFramework.GenericPoses;
 import DaoOfModding.Cultivationcraft.Client.AnimationFramework.PlayerPose;
 import DaoOfModding.Cultivationcraft.Common.PlayerUtils;
 import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
@@ -28,12 +29,10 @@ public class IceWalkTechnique extends Technique
 
         icon = new ResourceLocation(Cultivationcraft.MODID, "textures/techniques/icons/icewalk.png");
 
-        pose.addAngle(PlayerPose.Limb.LEFTARM, new Vector3d(0, 0, -1.5), 1);
+        pose = GenericPoses.HandsBehind.clone();
 
-        pose.addAngle(PlayerPose.Limb.RIGHTARM, new Vector3d(0, 0, Math.toRadians(180)), 1);
-        pose.addAngle(PlayerPose.Limb.RIGHTARM, new Vector3d(Math.toRadians(-90), 0, Math.toRadians(90)), 1);
-        pose.addAngle(PlayerPose.Limb.RIGHTARM, new Vector3d(0, 0, 0), 1);
-        pose.addAngle(PlayerPose.Limb.RIGHTARM, new Vector3d(Math.toRadians(90), 0, Math.toRadians(90)), 1);
+        pose.addAngle(PlayerPose.Limb.LEFTLEG, new Vector3d(Math.toRadians(-30), 0, Math.toRadians(-10)), 10);
+        pose.addAngle(PlayerPose.Limb.RIGHTLEG, new Vector3d(Math.toRadians(30), 0, Math.toRadians(10)), 10);
     }
 
     public boolean calculateStairOrNot(PlayerEntity player)

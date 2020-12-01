@@ -14,6 +14,7 @@ public class TechniqueControl
         TechniqueControl.addTecnique(DivineSenseTechnique.class);
         TechniqueControl.addTecnique(IceWalkTechnique.class);
         TechniqueControl.addTecnique(IceAuraTechnique.class);
+        TechniqueControl.addTecnique(MeditateTechnique.class);
     }
 
     // List of all techniques available in the game

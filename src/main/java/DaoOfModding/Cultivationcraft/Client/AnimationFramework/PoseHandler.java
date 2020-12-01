@@ -16,7 +16,7 @@ import java.util.UUID;
 
 public class PoseHandler
 {
-    public static final double defaultAnimationSpeed = 0.25;
+    public static final double defaultAnimationSpeed = 0.1;
 
     private static List<PlayerPoseHandler> poses = new ArrayList<PlayerPoseHandler>();
 
@@ -100,6 +100,31 @@ public class PoseHandler
     public static boolean shouldSit(PlayerEntity entityIn)
     {
         return entityIn.isPassenger() && (entityIn.getRidingEntity() != null && entityIn.getRidingEntity().shouldRiderSit());
+    }
+
+    public static double getHeightAdjustment(PlayerModel entityModel)
+    {
+        double MaxAdjustment = 0.65;
+
+        // Get the largest angle change for both legs
+        float largestLeft = Math.abs(entityModel.bipedLeftLeg.rotateAngleX);
+        if (largestLeft < Math.abs(entityModel.bipedLeftLeg.rotateAngleZ))
+            largestLeft = Math.abs(entityModel.bipedLeftLeg.rotateAngleZ);
+
+        float largestRight = Math.abs(entityModel.bipedRightLeg.rotateAngleX);
+        if (largestRight < Math.abs(entityModel.bipedRightLeg.rotateAngleZ))
+            largestRight = Math.abs(entityModel.bipedRightLeg.rotateAngleZ);
+
+        // Determine which leg has the smallest angle change
+        float smallest = largestLeft;
+
+        if (smallest > largestRight)
+            smallest = largestRight;
+
+        if (smallest >= Math.toRadians(90))
+            return MaxAdjustment;
+
+        return Math.pow(smallest / Math.toRadians(90), 2) * MaxAdjustment;
     }
 
     private static float getFacingAngle(Direction facingIn)

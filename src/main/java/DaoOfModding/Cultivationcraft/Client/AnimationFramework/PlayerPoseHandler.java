@@ -1,5 +1,6 @@
 package DaoOfModding.Cultivationcraft.Client.AnimationFramework;
 
+import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import net.minecraft.client.renderer.entity.model.PlayerModel;
 import net.minecraft.util.math.vector.Vector3d;
 
