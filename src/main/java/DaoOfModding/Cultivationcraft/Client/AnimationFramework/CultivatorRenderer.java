@@ -8,7 +8,6 @@ import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.LivingRenderer;
 import net.minecraft.client.renderer.entity.PlayerRenderer;
-import net.minecraft.client.renderer.entity.model.PlayerModel;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.Pose;
 import net.minecraft.util.Direction;
@@ -30,12 +29,10 @@ public class CultivatorRenderer
     public static void render2(MultiLimbedModel entityModel, ClientPlayerEntity entityIn, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn)
     {
         matrixStackIn.push();
-        //entityIn.swingProgress = this.getSwingProgress(entityIn, partialTicks);
 
         boolean shouldSit = PoseHandler.shouldSit(entityIn);
 
         entityModel.baseModel.isSitting = shouldSit;
-        entityModel.baseModel.isChild = entityIn.isChild();
 
         float f = MathHelper.interpolateAngle(partialTicks, entityIn.prevRenderYawOffset, entityIn.renderYawOffset);
         float f1 = MathHelper.interpolateAngle(partialTicks, entityIn.prevRotationYawHead, entityIn.rotationYawHead);

@@ -25,6 +25,19 @@ public class PlayerPoseHandler
     {
         playerID = id;
         model = new MultiLimbedModel(playerModel);
+
+        // TEMP TESTING STUFF
+        ModelRenderer lowerRightArm = new ModelRenderer(playerModel, 40, 16);
+        lowerRightArm.addBox(-2.0F, 4.0F, -2.0F, 3.0F, 12.0F, 4.0F, 0.5F);
+        lowerRightArm.setRotationPoint(-5.0F, 2.0F, 0.0F);
+
+        model.addLimb("lowerRightArm", lowerRightArm);
+
+        ModelRenderer lowerLeftArm = new ModelRenderer(playerModel, 32, 48);
+        lowerLeftArm.addBox(-1.0F, 4.0F, -2.0F, 3.0F, 12.0F, 4.0F, 0.5F);
+        lowerLeftArm.setRotationPoint(5.0F, 2.5F, 0.0F);
+
+        model.addLimb("lowerLeftArm", lowerLeftArm);
     }
 
     public UUID getID()
@@ -48,6 +61,11 @@ public class PlayerPoseHandler
         lock();
 
         renderPose = currentPose;
+
+        // TEMP TESTING STUFF
+        renderPose.addOffset("LEFTARM", new Vector3d(0, 0, Math.toRadians(-45)));
+        renderPose.addOffset("RIGHTARM", new Vector3d(0, 0, Math.toRadians(45)));
+
         currentPose = new PlayerPose();
 
         unlock();
@@ -69,10 +87,12 @@ public class PlayerPoseHandler
     // Animate the model as defined in the animatingPose
     public void doPose(float partialTicks)
     {
+        // Generate the animating pose based on the the target angles in the render pose
         animateLimbs(partialTicks);
 
+        // Rotate each limb to the angle stored in the animating pose plus any offset angles
         for(String limb : animatingPose.getLimbs())
-            model.rotateLimb(limb, animatingPose.getAngle(limb));
+            model.rotateLimb(limb, animatingPose.getAngle(limb).add(animatingPose.getOffset(limb)));
     }
 
     // Move each limb towards the currentPose by the animation speed
@@ -84,17 +104,21 @@ public class PlayerPoseHandler
 
         // If renderPose has a pose for a limb, move to that position, otherwise move to the base model pose
         for (String limb : model.getLimbs())
+        {
             if (renderPose.hasAngle(limb))
                 newRender.addAngle(limb, animateLimb(limb, getLimbPos(limb), partialTicks), 1);
             else
                 newRender.addAngle(limb, animateLimb(getLimbPos(limb), modelFromLimb(limb), PoseHandler.defaultAnimationSpeed, partialTicks), 1);
+
+            newRender.addOffset(limb, renderPose.getOffset(limb));
+        }
 
         unlock();
 
         animatingPose = newRender;
     }
 
-    // Get the limb angles at for the specified limb. If the animating pose does not contain any data for the limb, get it from the model
+    // Get the limb angles for the specified limb. If the animating pose does not contain any data for the limb, get it from the model
     public Vector3d getLimbPos(String limb)
     {
         if (animatingPose.hasAngle(limb))

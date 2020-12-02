@@ -16,6 +16,9 @@ public class PlayerPose
     private HashMap<String, ArrayList<Vector3d>> angles = new HashMap<String, ArrayList<Vector3d>>();
     private HashMap<String, ArrayList<Double>> speed = new HashMap<String, ArrayList<Double>>();
 
+
+    private HashMap<String, Vector3d> offset = new HashMap<String, Vector3d>();
+
     public PlayerPose()
     {
     }
@@ -26,6 +29,24 @@ public class PlayerPose
         angles.put(limb, newAngles);
         speed.put(limb, newSpeeds);
         priorities.put(limb, priority);
+    }
+
+    // Add the specified offset into the offset vector for the specified limb
+    // The offset will be added to the angle at render time
+    public void addOffset(String limb, Vector3d offsetVector)
+    {
+        if (offset.containsKey(limb))
+            offsetVector = offset.get(limb).add(offsetVector);
+
+        offset.put(limb, offsetVector);
+    }
+
+    public Vector3d getOffset(String limb)
+    {
+        if (offset.containsKey(limb))
+            return offset.get(limb);
+
+        return new Vector3d(0, 0, 0);
     }
 
     // Returns a list of all limbs used in this pose
