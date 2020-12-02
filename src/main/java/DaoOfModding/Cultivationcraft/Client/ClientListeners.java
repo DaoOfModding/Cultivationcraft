@@ -1,7 +1,7 @@
 package DaoOfModding.Cultivationcraft.Client;
 
 import DaoOfModding.Cultivationcraft.Client.GUI.SkillHotbarOverlay;
-import DaoOfModding.Cultivationcraft.Client.Renderers.CultivatorRenderer;
+import DaoOfModding.Cultivationcraft.Client.AnimationFramework.CultivatorRenderer;
 import DaoOfModding.Cultivationcraft.Client.AnimationFramework.PoseHandler;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.CultivatorTechniques;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.ICultivatorTechniques;

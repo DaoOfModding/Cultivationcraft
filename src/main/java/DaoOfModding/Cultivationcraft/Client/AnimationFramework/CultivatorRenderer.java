@@ -1,6 +1,5 @@
-package DaoOfModding.Cultivationcraft.Client.Renderers;
+package DaoOfModding.Cultivationcraft.Client.AnimationFramework;
 
-import DaoOfModding.Cultivationcraft.Client.AnimationFramework.PoseHandler;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.Minecraft;
@@ -20,6 +19,8 @@ public class CultivatorRenderer
 {
     public static boolean render(PlayerRenderer renderer, ClientPlayerEntity entityIn, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn)
     {
+        PoseHandler.setupPoseHandler(entityIn.getUniqueID(), renderer.getEntityModel());
+
         render2(renderer.getEntityModel(), entityIn, partialTicks, matrixStackIn, bufferIn, packedLightIn);
 
         return true;
@@ -96,7 +97,7 @@ public class CultivatorRenderer
         entityModel.setLivingAnimations(entityIn, f5, f8, partialTicks);
         entityModel.setRotationAngles(entityIn, f5, f8, totalTicks, f2, f6);
 
-        PoseHandler.doPose(entityIn, entityModel, partialTicks);
+        PoseHandler.doPose(entityIn.getUniqueID(), partialTicks);
 
         RenderType rendertype = getRenderType(entityModel, entityIn);
 

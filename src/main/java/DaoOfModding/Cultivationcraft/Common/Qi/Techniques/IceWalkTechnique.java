@@ -31,8 +31,8 @@ public class IceWalkTechnique extends Technique
 
         pose = GenericPoses.HandsBehind.clone();
 
-        pose.addAngle(PlayerPose.Limb.LEFTLEG, new Vector3d(Math.toRadians(-30), 0, Math.toRadians(-10)), 10);
-        pose.addAngle(PlayerPose.Limb.RIGHTLEG, new Vector3d(Math.toRadians(30), 0, Math.toRadians(10)), 10);
+        pose.addAngle("LEFTLEG", new Vector3d(Math.toRadians(-30), 0, Math.toRadians(-10)), 10);
+        pose.addAngle("RIGHTLEG", new Vector3d(Math.toRadians(30), 0, Math.toRadians(10)), 10);
     }
 
     public boolean calculateStairOrNot(PlayerEntity player)

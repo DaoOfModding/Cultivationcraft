@@ -20,16 +20,24 @@ public class PoseHandler
 
     private static List<PlayerPoseHandler> poses = new ArrayList<PlayerPoseHandler>();
 
+    public static void setupPoseHandler(UUID playerID, PlayerModel model)
+    {
+        // Do nothing if pose handler for this player already exists
+        for (PlayerPoseHandler handler : poses)
+            if (handler.getID().compareTo(playerID) == 0)
+                return;
+
+        PlayerPoseHandler newHandler = new PlayerPoseHandler(playerID, model);
+        poses.add(newHandler);
+    }
+
     public static PlayerPoseHandler getPlayerPoseHandler(UUID playerID)
     {
         for (PlayerPoseHandler handler : poses)
             if (handler.getID().compareTo(playerID) == 0)
                 return handler;
 
-        PlayerPoseHandler newHandler = new PlayerPoseHandler(playerID);
-        poses.add(newHandler);
-
-        return newHandler;
+        return null;
     }
 
     public static void applyRotations(PlayerEntity entityLiving, MatrixStack matrixStackIn, float ageInTicks, float rotationYaw, float partialTicks)
@@ -65,36 +73,20 @@ public class PoseHandler
             handlers.updateRenderPose();
     }
 
-    public static void doPose(PlayerEntity entityIn, PlayerModel modelIn, float partialTicks)
+    public static void doPose(UUID playerID, float partialTicks)
     {
-        PlayerPoseHandler handler = getPlayerPoseHandler(entityIn.getUniqueID());
-        handler.animateLimbs(modelIn, partialTicks);
+        PlayerPoseHandler handler = getPlayerPoseHandler(playerID);
 
-        PlayerPose pose = handler.getAnimatingPose();
-
-        if (pose.hasAngle(PlayerPose.Limb.LEFTARM))
-            applyPose(modelIn.bipedLeftArm, pose.getAngle(PlayerPose.Limb.LEFTARM));
-
-        if (pose.hasAngle(PlayerPose.Limb.RIGHTARM))
-            applyPose(modelIn.bipedRightArm, pose.getAngle(PlayerPose.Limb.RIGHTARM));
-
-        if (pose.hasAngle(PlayerPose.Limb.LEFTLEG))
-            applyPose(modelIn.bipedLeftLeg, pose.getAngle(PlayerPose.Limb.LEFTLEG));
-
-        if (pose.hasAngle(PlayerPose.Limb.RIGHTLEG))
-            applyPose(modelIn.bipedRightLeg, pose.getAngle(PlayerPose.Limb.RIGHTLEG));
-    }
-
-    private static void applyPose(ModelRenderer limb, Vector3d angles)
-    {
-        limb.rotateAngleX = (float)angles.x;
-        limb.rotateAngleY = (float)angles.y;
-        limb.rotateAngleZ = (float)angles.z;
+        if (handler != null)
+            handler.doPose(partialTicks);
     }
 
     public static void addPose(UUID PlayerID, PlayerPose pose)
     {
-        getPlayerPoseHandler(PlayerID).addPose(pose);
+        PlayerPoseHandler handler = getPlayerPoseHandler(PlayerID);
+
+        if (handler != null)
+            handler.addPose(pose);
     }
 
     public static boolean shouldSit(PlayerEntity entityIn)
