@@ -20,21 +20,22 @@ public class CultivatorRenderer
     public static boolean render(PlayerRenderer renderer, ClientPlayerEntity entityIn, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn)
     {
         PoseHandler.setupPoseHandler(entityIn.getUniqueID(), renderer.getEntityModel());
+        PlayerPoseHandler handler = PoseHandler.getPlayerPoseHandler(entityIn.getUniqueID());
 
-        render2(renderer.getEntityModel(), entityIn, partialTicks, matrixStackIn, bufferIn, packedLightIn);
+        render2(handler.model, entityIn, partialTicks, matrixStackIn, bufferIn, packedLightIn);
 
         return true;
     }
 
-    public static void render2(PlayerModel entityModel, ClientPlayerEntity entityIn, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn)
+    public static void render2(MultiLimbedModel entityModel, ClientPlayerEntity entityIn, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn)
     {
         matrixStackIn.push();
         //entityIn.swingProgress = this.getSwingProgress(entityIn, partialTicks);
 
         boolean shouldSit = PoseHandler.shouldSit(entityIn);
 
-        entityModel.isSitting = shouldSit;
-        entityModel.isChild = entityIn.isChild();
+        entityModel.baseModel.isSitting = shouldSit;
+        entityModel.baseModel.isChild = entityIn.isChild();
 
         float f = MathHelper.interpolateAngle(partialTicks, entityIn.prevRenderYawOffset, entityIn.renderYawOffset);
         float f1 = MathHelper.interpolateAngle(partialTicks, entityIn.prevRotationYawHead, entityIn.rotationYawHead);
@@ -75,7 +76,7 @@ public class CultivatorRenderer
 
         PoseHandler.applyRotations(entityIn, matrixStackIn, totalTicks, f, partialTicks);
 
-        double height = PoseHandler.getHeightAdjustment(entityModel);
+        double height = entityModel.getHeightAdjustment();
 
         matrixStackIn.scale(-1.0F, -1.0F, 1.0F);
         matrixStackIn.translate(0.0D, (double)-1.501F + height, 0.0D);
@@ -111,7 +112,7 @@ public class CultivatorRenderer
         matrixStackIn.pop();
     }
 
-    private static RenderType getRenderType(PlayerModel entityModel, ClientPlayerEntity entityIn)
+    private static RenderType getRenderType(MultiLimbedModel entityModel, ClientPlayerEntity entityIn)
     {
         ResourceLocation resourcelocation = getSkin(entityIn);
 
