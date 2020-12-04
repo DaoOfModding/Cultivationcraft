@@ -20,15 +20,43 @@ public class MultiLimbedModel
     PlayerModel baseModel;
 
     HashMap<String, ModelRenderer> limbs = new HashMap<String, ModelRenderer>();
+    ArrayList<String> toRender = new ArrayList<String>();
 
     public MultiLimbedModel(PlayerModel model)
     {
+        // TODO: Setup so armor displays on player
         baseModel = model;
+
+        ExtendableModelRenderer rightArm = new ExtendableModelRenderer(model, 40, 16);
+        baseModel.bipedRightArm = rightArm;
+
+        ExtendableModelRenderer leftArm = new ExtendableModelRenderer(model, 32, 48);
+        baseModel.bipedLeftArm = leftArm;
+        leftArm.mirror = true;
+
+        ExtendableModelRenderer rightLeg = new ExtendableModelRenderer(model, 0, 16);
+        baseModel.bipedRightLeg = rightLeg;
+
+        ExtendableModelRenderer leftLeg = new ExtendableModelRenderer(model, 0, 16);
+        baseModel.bipedLeftLeg = leftLeg;
+        leftLeg.mirror = true;
 
         addLimb("LEFTARM", baseModel.bipedLeftArm);
         addLimb("RIGHTARM", baseModel.bipedRightArm);
         addLimb("LEFTLEG", baseModel.bipedLeftLeg);
         addLimb("RIGHTLEG", baseModel.bipedRightLeg);
+
+        rightArm.setRotationPoint(-5.0F, 2.0F, 0.0F);
+        addNonRenderingLimb("LOWERRIGHTARM", rightArm.extend(2, new Vector3d(0, 1, 0), new Vector3d(-3, -2, -2), new Vector3d(4, 12, 4), new Vector3d(1, 1, 0), 0));
+
+        leftArm.setRotationPoint(5.0F, 2.0F, 0.0F);
+        addNonRenderingLimb("LOWERLEFTARM", leftArm.extend(2, new Vector3d(0, 1, 0), new Vector3d(-1, -2, -2), new Vector3d(4, 12, 4), new Vector3d(-1, 1, 0), 0));
+
+        rightLeg.setRotationPoint(-1.9F, 12.0F, 0.0F);
+        addNonRenderingLimb("LOWERRIGHTLEG", rightLeg.extend(2, new Vector3d(0, 1, 0), new Vector3d(-2, 0, -2), new Vector3d(4, 12, 4), new Vector3d(0, 1, 1), 0));
+
+        leftLeg.setRotationPoint(1.9F, 12.0F, 0.0F);
+        addNonRenderingLimb("LOWERLEFTLEG", leftLeg.extend(2, new Vector3d(0, 1, 0), new Vector3d(-2, 0, -2), new Vector3d(4, 12, 4), new Vector3d(0, 1, 1), 0));
     }
 
     // Returns a list of all limbs on this model
@@ -63,6 +91,14 @@ public class MultiLimbedModel
 
     public void addLimb(String limb, ModelRenderer limbModel)
     {
+        toRender.add(limb);
+        limbs.put(limb, limbModel);
+    }
+
+    // Add a limb for reference purposes, don't render it
+    // Usually used for referencing child limbs
+    public void addNonRenderingLimb(String limb, ModelRenderer limbModel)
+    {
         limbs.put(limb, limbModel);
     }
 
@@ -92,8 +128,9 @@ public class MultiLimbedModel
         baseModel.bipedHead.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
         baseModel.bipedBody.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
 
-        for (ModelRenderer limb : limbs.values())
-            limb.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+        for (Map.Entry<String, ModelRenderer> limb: limbs.entrySet())
+            if (toRender.contains(limb.getKey()))
+                limb.getValue().render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
 
         baseModel.bipedHeadwear.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
 
@@ -110,12 +147,12 @@ public class MultiLimbedModel
 
         // Get the largest angle change for both legs
         float largestLeft = Math.abs(LeftLeg.rotateAngleX);
-        if (largestLeft < Math.abs(LeftLeg.rotateAngleZ))
-            largestLeft = Math.abs(LeftLeg.rotateAngleZ);
+        /*if (largestLeft < Math.abs(LeftLeg.rotateAngleZ))
+            largestLeft = Math.abs(LeftLeg.rotateAngleZ);*/
 
         float largestRight = Math.abs(RightLeg.rotateAngleX);
-        if (largestRight < Math.abs(RightLeg.rotateAngleZ))
-            largestRight = Math.abs(RightLeg.rotateAngleZ);
+        /*if (largestRight < Math.abs(RightLeg.rotateAngleZ))
+            largestRight = Math.abs(RightLeg.rotateAngleZ);*/
 
         // Determine which leg has the smallest angle change
         float smallest = largestLeft;

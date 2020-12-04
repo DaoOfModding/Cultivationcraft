@@ -25,19 +25,6 @@ public class PlayerPoseHandler
     {
         playerID = id;
         model = new MultiLimbedModel(playerModel);
-
-        // TEMP TESTING STUFF
-        ModelRenderer lowerRightArm = new ModelRenderer(playerModel, 40, 16);
-        lowerRightArm.addBox(-2.0F, 4.0F, -2.0F, 3.0F, 12.0F, 4.0F, 0.5F);
-        lowerRightArm.setRotationPoint(-5.0F, 2.0F, 0.0F);
-
-        model.addLimb("lowerRightArm", lowerRightArm);
-
-        ModelRenderer lowerLeftArm = new ModelRenderer(playerModel, 32, 48);
-        lowerLeftArm.addBox(-1.0F, 4.0F, -2.0F, 3.0F, 12.0F, 4.0F, 0.5F);
-        lowerLeftArm.setRotationPoint(5.0F, 2.5F, 0.0F);
-
-        model.addLimb("lowerLeftArm", lowerLeftArm);
     }
 
     public UUID getID()
@@ -61,11 +48,6 @@ public class PlayerPoseHandler
         lock();
 
         renderPose = currentPose;
-
-        // TEMP TESTING STUFF
-        renderPose.addOffset("LEFTARM", new Vector3d(0, 0, Math.toRadians(-45)));
-        renderPose.addOffset("RIGHTARM", new Vector3d(0, 0, Math.toRadians(45)));
-
         currentPose = new PlayerPose();
 
         unlock();
@@ -108,7 +90,7 @@ public class PlayerPoseHandler
             if (renderPose.hasAngle(limb))
                 newRender.addAngle(limb, animateLimb(limb, getLimbPos(limb), partialTicks), 1);
             else
-                newRender.addAngle(limb, animateLimb(getLimbPos(limb), modelFromLimb(limb), PoseHandler.defaultAnimationSpeed, partialTicks), 1);
+                newRender.addAngle(limb, animateLimb(getLimbPos(limb), new Vector3d(0, 0, 0), PoseHandler.defaultAnimationSpeed, partialTicks), 1);
 
             newRender.addOffset(limb, renderPose.getOffset(limb));
         }
@@ -131,7 +113,7 @@ public class PlayerPoseHandler
     {
         ModelRenderer limbModel = model.getLimb(limb);
 
-        return  new Vector3d(limbModel.rotateAngleX, limbModel.rotateAngleY, limbModel.rotateAngleZ);
+        return new Vector3d(limbModel.rotateAngleX, limbModel.rotateAngleY, limbModel.rotateAngleZ);
     }
 
     // Return a vector moving the specified vector towards the renderPose
