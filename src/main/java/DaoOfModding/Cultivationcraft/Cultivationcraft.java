@@ -1,6 +1,7 @@
 package DaoOfModding.Cultivationcraft;
 
 import DaoOfModding.Cultivationcraft.Client.AnimationFramework.GenericPoses;
+import DaoOfModding.Cultivationcraft.Client.Animations.GenericQiPoses;
 import DaoOfModding.Cultivationcraft.Client.ClientBlockRegister;
 import DaoOfModding.Cultivationcraft.Client.ClientItemControl;
 import DaoOfModding.Cultivationcraft.Client.ClientListeners;
@@ -49,6 +50,7 @@ public class Cultivationcraft {
         Elements.init();
         TechniqueControl.init();
         GenericPoses.init();
+        GenericQiPoses.init();
     }
 
     private void clientInit(final FMLClientSetupEvent event)

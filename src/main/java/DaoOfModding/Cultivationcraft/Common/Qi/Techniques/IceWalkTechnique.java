@@ -2,6 +2,7 @@ package DaoOfModding.Cultivationcraft.Common.Qi.Techniques;
 
 import DaoOfModding.Cultivationcraft.Client.AnimationFramework.GenericPoses;
 import DaoOfModding.Cultivationcraft.Client.AnimationFramework.PlayerPose;
+import DaoOfModding.Cultivationcraft.Client.Animations.GenericQiPoses;
 import DaoOfModding.Cultivationcraft.Common.PlayerUtils;
 import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
 import DaoOfModding.Cultivationcraft.Common.Qi.Freeze;
@@ -29,7 +30,7 @@ public class IceWalkTechnique extends Technique
 
         icon = new ResourceLocation(Cultivationcraft.MODID, "textures/techniques/icons/icewalk.png");
 
-        pose = GenericPoses.HandsBehind.clone();
+        pose = GenericQiPoses.HandsBehind.clone();
 
         pose.addAngle("LEFTLEG", new Vector3d(Math.toRadians(-30), 0, Math.toRadians(-10)), 10);
         pose.addAngle("RIGHTLEG", new Vector3d(Math.toRadians(30), 0, Math.toRadians(10)), 10);

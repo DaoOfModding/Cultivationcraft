@@ -1,6 +1,5 @@
 package DaoOfModding.Cultivationcraft.Client.AnimationFramework;
 
-import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.renderer.RenderType;
@@ -28,35 +27,35 @@ public class MultiLimbedModel
         baseModel = model;
 
         ExtendableModelRenderer rightArm = new ExtendableModelRenderer(model, 40, 16);
+        rightArm.setRotationPoint(-5.0F, 2.0F, 0.0F);
+        rightArm.extend(GenericResizers.getRightArmResizer());
         baseModel.bipedRightArm = rightArm;
 
         ExtendableModelRenderer leftArm = new ExtendableModelRenderer(model, 32, 48);
+        leftArm.setRotationPoint(5.0F, 2.0F, 0.0F);
+        leftArm.extend(GenericResizers.getLeftArmResizer());
         baseModel.bipedLeftArm = leftArm;
         leftArm.mirror = true;
 
         ExtendableModelRenderer rightLeg = new ExtendableModelRenderer(model, 0, 16);
+        rightLeg.setRotationPoint(-1.9F, 12.0F, 0.0F);
+        rightLeg.extend(GenericResizers.getRightLegResizer());
         baseModel.bipedRightLeg = rightLeg;
 
         ExtendableModelRenderer leftLeg = new ExtendableModelRenderer(model, 0, 16);
+        leftLeg.setRotationPoint(1.9F, 12.0F, 0.0F);
+        leftLeg.extend(GenericResizers.getLeftLegResizer());
         baseModel.bipedLeftLeg = leftLeg;
         leftLeg.mirror = true;
 
-        addLimb("LEFTARM", baseModel.bipedLeftArm);
-        addLimb("RIGHTARM", baseModel.bipedRightArm);
-        addLimb("LEFTLEG", baseModel.bipedLeftLeg);
-        addLimb("RIGHTLEG", baseModel.bipedRightLeg);
-
-        rightArm.setRotationPoint(-5.0F, 2.0F, 0.0F);
-        addNonRenderingLimb("LOWERRIGHTARM", rightArm.extend(2, new Vector3d(0, 1, 0), new Vector3d(-3, -2, -2), new Vector3d(4, 12, 4), new Vector3d(1, 1, 0), 0));
-
-        leftArm.setRotationPoint(5.0F, 2.0F, 0.0F);
-        addNonRenderingLimb("LOWERLEFTARM", leftArm.extend(2, new Vector3d(0, 1, 0), new Vector3d(-1, -2, -2), new Vector3d(4, 12, 4), new Vector3d(-1, 1, 0), 0));
-
-        rightLeg.setRotationPoint(-1.9F, 12.0F, 0.0F);
-        addNonRenderingLimb("LOWERRIGHTLEG", rightLeg.extend(2, new Vector3d(0, 1, 0), new Vector3d(-2, 0, -2), new Vector3d(4, 12, 4), new Vector3d(0, 1, 1), 0));
-
-        leftLeg.setRotationPoint(1.9F, 12.0F, 0.0F);
-        addNonRenderingLimb("LOWERLEFTLEG", leftLeg.extend(2, new Vector3d(0, 1, 0), new Vector3d(-2, 0, -2), new Vector3d(4, 12, 4), new Vector3d(0, 1, 1), 0));
+        addLimb("LEFT_ARM", baseModel.bipedLeftArm);
+        addLimb("RIGHT_ARM", baseModel.bipedRightArm);
+        addLimb("LEFT_LEG", baseModel.bipedLeftLeg);
+        addLimb("RIGHT_LEG", baseModel.bipedRightLeg);
+        addNonRenderingLimb("LOWER_LEFT_ARM", leftArm.getChild(2));
+        addNonRenderingLimb("LOWER_RIGHT_ARM", rightArm.getChild(2));
+        addNonRenderingLimb("LOWER_LEFT_LEG", leftLeg.getChild(2));
+        addNonRenderingLimb("LOWER_RIGHT_LEG", rightLeg.getChild(2));
     }
 
     // Returns a list of all limbs on this model
@@ -117,6 +116,14 @@ public class MultiLimbedModel
         return baseModel.getRenderType(resourcelocation);
     }
 
+    public boolean isRenderingLimb(String limb)
+    {
+        if (toRender.contains(limb))
+            return true;
+
+        return false;
+    }
+
     public void render(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha)
     {
         matrixStackIn.push();
@@ -129,7 +136,7 @@ public class MultiLimbedModel
         baseModel.bipedBody.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
 
         for (Map.Entry<String, ModelRenderer> limb: limbs.entrySet())
-            if (toRender.contains(limb.getKey()))
+            if (isRenderingLimb(limb.getKey()))
                 limb.getValue().render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
 
         baseModel.bipedHeadwear.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
@@ -137,13 +144,13 @@ public class MultiLimbedModel
         matrixStackIn.pop();
     }
 
-
+    // TODO: Fix this
     public double getHeightAdjustment()
     {
         double MaxAdjustment = defaultHeight / 2.3 * sizeScale;
 
-        ModelRenderer LeftLeg = getLimb("LEFTLEG");
-        ModelRenderer RightLeg = getLimb("RIGHTLEG");
+        ModelRenderer LeftLeg = getLimb("LEFT_LEG");
+        ModelRenderer RightLeg = getLimb("RIGHT_LEG");
 
         // Get the largest angle change for both legs
         float largestLeft = Math.abs(LeftLeg.rotateAngleX);

@@ -1,5 +1,6 @@
 package DaoOfModding.Cultivationcraft.Client;
 
+import DaoOfModding.Cultivationcraft.Client.AnimationFramework.GenericPoses;
 import DaoOfModding.Cultivationcraft.Client.GUI.SkillHotbarOverlay;
 import DaoOfModding.Cultivationcraft.Client.AnimationFramework.CultivatorRenderer;
 import DaoOfModding.Cultivationcraft.Client.AnimationFramework.PoseHandler;
@@ -28,6 +29,9 @@ public class ClientListeners
             for (int i = 0; i < CultivatorTechniques.numberOfTechniques; i++)
                 if (techs.getTechnique(i) != null && techs.getTechnique(i).isActive())
                     techs.getTechnique(i).tickClient(event);
+
+            if (Math.abs(event.player.getMotion().x) + Math.abs(event.player.getMotion().z) > 0)
+                PoseHandler.addPose(event.player.getUniqueID(), GenericPoses.Walking);
 
             PoseHandler.updatePoses();
         }

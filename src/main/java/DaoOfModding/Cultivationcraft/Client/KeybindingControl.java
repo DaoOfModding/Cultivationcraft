@@ -1,5 +1,6 @@
 package DaoOfModding.Cultivationcraft.Client;
 
+import DaoOfModding.Cultivationcraft.Client.AnimationFramework.GenericPoses;
 import DaoOfModding.Cultivationcraft.Client.AnimationFramework.MultiLimbedModel;
 import DaoOfModding.Cultivationcraft.Client.GUI.SkillHotbarOverlay;
 import DaoOfModding.Cultivationcraft.Common.Misc;
@@ -33,9 +34,13 @@ public class KeybindingControl
 
     private static boolean usePressed = false;
 
+    public static double x = 0;
+    public static double y = 0;
+    public static double z = 0;
+
     public static void init()
     {
-        keyBindings = new KeyBinding[5];
+        keyBindings = new KeyBinding[10];
         keyBindings[0] = new KeyBinding("Switch Hotbar", GLFW_KEY_GRAVE_ACCENT, "Cultivation");
         keyBindings[1] = new KeyBinding("Flying Sword Target", GLFW_KEY_R, "Cultivation");
         keyBindings[2] = new KeyBinding("Flying Sword Recall", GLFW_KEY_O, "Cultivation");

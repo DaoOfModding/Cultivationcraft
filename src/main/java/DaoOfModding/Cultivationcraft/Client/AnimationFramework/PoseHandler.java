@@ -14,8 +14,6 @@ import java.util.UUID;
 
 public class PoseHandler
 {
-    public static final double defaultAnimationSpeed = 0.1;
-
     private static List<PlayerPoseHandler> poses = new ArrayList<PlayerPoseHandler>();
 
     public static void setupPoseHandler(UUID playerID, PlayerModel model)
