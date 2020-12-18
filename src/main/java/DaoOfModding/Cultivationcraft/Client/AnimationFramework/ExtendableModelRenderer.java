@@ -53,7 +53,7 @@ public class ExtendableModelRenderer extends ModelRenderer
 
     public ModelRenderer getChild(int depth)
     {
-        if (depth == 1)
+        if (depth == 0)
             return this;
 
         if (child == null)

@@ -1,8 +1,8 @@
 package DaoOfModding.Cultivationcraft.Client;
 
 import DaoOfModding.Cultivationcraft.Client.AnimationFramework.GenericPoses;
+import DaoOfModding.Cultivationcraft.Client.AnimationFramework.MultiLimbedRenderer;
 import DaoOfModding.Cultivationcraft.Client.GUI.SkillHotbarOverlay;
-import DaoOfModding.Cultivationcraft.Client.AnimationFramework.CultivatorRenderer;
 import DaoOfModding.Cultivationcraft.Client.AnimationFramework.PoseHandler;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.CultivatorTechniques;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.ICultivatorTechniques;
@@ -40,8 +40,8 @@ public class ClientListeners
     @SubscribeEvent
     public static void renderPlayer(RenderPlayerEvent.Pre event)
     {
-        // If CultivatorRenderer returns true, cancel the render event
-        event.setCanceled(CultivatorRenderer.render(event.getRenderer(), (ClientPlayerEntity)event.getPlayer(), event.getPartialRenderTick(), event.getMatrixStack(), event.getBuffers(), event.getLight()));
+        // If MultiLimbedRenderer returns true, cancel the render event
+        event.setCanceled(MultiLimbedRenderer.render(event.getRenderer(), (ClientPlayerEntity)event.getPlayer(), event.getPartialRenderTick(), event.getMatrixStack(), event.getBuffers(), event.getLight()));
     }
 
     @SubscribeEvent

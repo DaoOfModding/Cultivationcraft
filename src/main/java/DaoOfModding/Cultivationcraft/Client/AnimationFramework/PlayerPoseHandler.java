@@ -16,11 +16,13 @@ public class PlayerPoseHandler
 
     PlayerPose currentPose = new PlayerPose();
     PlayerPose renderPose = new PlayerPose();
+    PlayerPose oldRenderPose = new PlayerPose();
     PlayerPose animatingPose = new PlayerPose();
 
     boolean locked = false;
 
     private HashMap<String, Integer> frame = new HashMap<String, Integer>();
+    private HashMap<String, Float> animationTime = new HashMap<String, Float>();
     private HashMap<Integer, Integer> aLockedFrame = new HashMap<Integer, Integer>();
 
     public PlayerPoseHandler(UUID id, PlayerModel playerModel)
@@ -49,6 +51,7 @@ public class PlayerPoseHandler
     {
         lock();
 
+        oldRenderPose = renderPose;
         renderPose = currentPose;
 
         currentPose = new PlayerPose();
@@ -89,17 +92,16 @@ public class PlayerPoseHandler
 
         PlayerPose newRender = new PlayerPose();
 
+        // Reset stored animation data for any limbs whose target position have changed
+        for (String limb : model.getLimbs())
+            if (!(renderPose.hasAngle(limb) && oldRenderPose.hasAngle(limb) && renderPose.getAngle(limb).equals(oldRenderPose.getAngle(limb))))
+                animationTime.put(limb, 0f);
+
+
         // Calculate animation locks
         for (String limb : model.getLimbs())
             if (renderPose.hasAngle(limb))
                 calculateAnimationLocks(limb, getLimbPos(limb), partialTicks);
-
-            int i = 0;
-        for (int frame : aLockedFrame.values())
-        {
-            Cultivationcraft.LOGGER.info(i + ": " + frame);
-            i++;
-        }
 
         // If renderPose has a pose for a limb, move to that position, otherwise move to the base model pose
         for (String limb : model.getLimbs())
@@ -111,6 +113,10 @@ public class PlayerPoseHandler
 
             newRender.addOffset(limb, animatingPose.getOffset(limb));
         }
+
+        // Add the ticks that have passed into the animationTime map
+        for (String limb : model.getLimbs())
+            animationTime.put(limb, animationTime.get(limb) + partialTicks);
 
         unlock();
 
@@ -228,11 +234,21 @@ public class PlayerPoseHandler
                 currentFrame++;
                 frame.put(limb, currentFrame);
 
+                // Reset the time stored in this frame
+                animationTime.put(limb, 0f);
+
                 return(animateLimb(limb, current, partialTicks));
             }
         }
 
-        double aSpeed = renderPose.getAnimationSpeed(limb, currentFrame) * partialTicks;
+        // Calculate the amount of ticks remaining for this animation
+        float TicksRemaining = renderPose.getAnimationSpeed(limb, currentFrame) - animationTime.get(limb);
+
+        // If no ticks remaining then instantly move to the specified position
+        if (TicksRemaining < 0)
+            return moveTo;
+
+        double aSpeed = AnimationSpeedCalculator.ticksToSpeed(current, moveTo, TicksRemaining) * partialTicks;
 
         // If the limbs have to move more that the animation speed, reduce the amount to the animation speed
         if (moveAmount > aSpeed)

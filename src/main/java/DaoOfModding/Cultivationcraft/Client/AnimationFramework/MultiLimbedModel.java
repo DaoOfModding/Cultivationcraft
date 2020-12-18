@@ -48,14 +48,14 @@ public class MultiLimbedModel
         baseModel.bipedLeftLeg = leftLeg;
         leftLeg.mirror = true;
 
-        addLimb("LEFT_ARM", baseModel.bipedLeftArm);
-        addLimb("RIGHT_ARM", baseModel.bipedRightArm);
-        addLimb("LEFT_LEG", baseModel.bipedLeftLeg);
-        addLimb("RIGHT_LEG", baseModel.bipedRightLeg);
-        addNonRenderingLimb("LOWER_LEFT_ARM", leftArm.getChild(2));
-        addNonRenderingLimb("LOWER_RIGHT_ARM", rightArm.getChild(2));
-        addNonRenderingLimb("LOWER_LEFT_LEG", leftLeg.getChild(2));
-        addNonRenderingLimb("LOWER_RIGHT_LEG", rightLeg.getChild(2));
+        addLimb(GenericLimbNames.leftArm, baseModel.bipedLeftArm);
+        addLimb(GenericLimbNames.rightArm, baseModel.bipedRightArm);
+        addLimb(GenericLimbNames.leftLeg, baseModel.bipedLeftLeg);
+        addLimb(GenericLimbNames.rightLeg, baseModel.bipedRightLeg);
+        addNonRenderingLimb(GenericLimbNames.lowerLeftArm, leftArm.getChild(1));
+        addNonRenderingLimb(GenericLimbNames.lowerRightArm, rightArm.getChild(1));
+        addNonRenderingLimb(GenericLimbNames.lowerLeftLeg, leftLeg.getChild(1));
+        addNonRenderingLimb(GenericLimbNames.lowerRightLeg, rightLeg.getChild(1));
     }
 
     // Returns a list of all limbs on this model
@@ -149,8 +149,8 @@ public class MultiLimbedModel
     {
         double MaxAdjustment = defaultHeight / 2.3 * sizeScale;
 
-        ModelRenderer LeftLeg = getLimb("LEFT_LEG");
-        ModelRenderer RightLeg = getLimb("RIGHT_LEG");
+        ModelRenderer LeftLeg = getLimb(GenericLimbNames.leftLeg);
+        ModelRenderer RightLeg = getLimb(GenericLimbNames.rightLeg);
 
         // Get the largest angle change for both legs
         float largestLeft = Math.abs(LeftLeg.rotateAngleX);

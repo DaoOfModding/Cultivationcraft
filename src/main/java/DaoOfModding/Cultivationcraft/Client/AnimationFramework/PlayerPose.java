@@ -14,7 +14,7 @@ public class PlayerPose
     // Y = Rotation
     // Z = Left and Right, Positive goes right, negative goes left
     private HashMap<String, ArrayList<Vector3d>> angles = new HashMap<String, ArrayList<Vector3d>>();
-    private HashMap<String, ArrayList<Double>> speed = new HashMap<String, ArrayList<Double>>();
+    private HashMap<String, ArrayList<Float>> speed = new HashMap<String, ArrayList<Float>>();
 
 
     private HashMap<String, Vector3d> offset = new HashMap<String, Vector3d>();
@@ -25,7 +25,7 @@ public class PlayerPose
     }
 
     // Set all angles on the specified limb to the specified values
-    public void setAngles(String limb, ArrayList<Vector3d> newAngles, ArrayList<Double> newSpeeds, int priority, Vector3d off, int animationLock)
+    public void setAngles(String limb, ArrayList<Vector3d> newAngles, ArrayList<Float> newSpeeds, int priority, Vector3d off, int animationLock)
     {
         angles.put(limb, newAngles);
         speed.put(limb, newSpeeds);
@@ -74,7 +74,7 @@ public class PlayerPose
     }
 
     // Get all angle frames for the specified limb
-    public ArrayList<Double> getSpeeds(String limb)
+    public ArrayList<Float> getSpeeds(String limb)
     {
         return speed.get(limb);
     }
@@ -86,23 +86,23 @@ public class PlayerPose
     }
 
     // Adds angle to specified limb with the specified priority level, speed and animation lock
-    public void addAngle(String limb, Vector3d angle, int priority, double aSpeed, int animationLock)
+    public void addAngle(String limb, Vector3d angle, int priority, Float speedInTicks, int animationLock)
     {
         // If the specified limb has not been initialised, initialise it
         if (!angles.containsKey(limb))
         {
             angles.put(limb, new ArrayList<Vector3d>());
-            speed.put(limb, new ArrayList<Double>());
+            speed.put(limb, new ArrayList<Float>());
         }
 
         angles.get(limb).add(angle);
-        speed.get(limb).add(aSpeed);
+        speed.get(limb).add(speedInTicks);
 
         priorities.put(limb, priority);
         aLock.put(limb, animationLock);
     }
 
-    public double getAnimationSpeed(String limb, int frame)
+    public float getAnimationSpeed(String limb, int frame)
     {
         return speed.get(limb).get(frame);
     }
@@ -155,7 +155,7 @@ public class PlayerPose
         PlayerPose copyPose = new PlayerPose();
 
         for (String limb : angles.keySet())
-            copyPose.setAngles(limb, (ArrayList<Vector3d>)angles.get(limb).clone(), (ArrayList<Double>)speed.get(limb).clone(), priorities.get(limb), offset.get(limb), aLock.get(limb));
+            copyPose.setAngles(limb, (ArrayList<Vector3d>)angles.get(limb).clone(), (ArrayList<Float>)speed.get(limb).clone(), priorities.get(limb), offset.get(limb), aLock.get(limb));
 
         return copyPose;
     }
