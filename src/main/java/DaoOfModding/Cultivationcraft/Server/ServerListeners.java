@@ -36,8 +36,6 @@ public class ServerListeners
                 FlyingSwordBindProgresser.bindFlyingSword(System.nanoTime() - lastServerTickTime);
             }
 
-
-
             lastServerTickTime = System.nanoTime();
         }
     }

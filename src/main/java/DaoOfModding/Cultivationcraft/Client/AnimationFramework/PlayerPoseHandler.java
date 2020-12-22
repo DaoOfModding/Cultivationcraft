@@ -31,6 +31,16 @@ public class PlayerPoseHandler
         model = new MultiLimbedModel(playerModel);
     }
 
+    public MultiLimbedModel getPlayerModel()
+    {
+        return model;
+    }
+
+    public void setPlayerModel(MultiLimbedModel newModel)
+    {
+        model = newModel;
+    }
+
     public UUID getID()
     {
         return playerID;

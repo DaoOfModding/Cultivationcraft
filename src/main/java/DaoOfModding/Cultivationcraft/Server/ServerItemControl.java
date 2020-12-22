@@ -41,6 +41,7 @@ public class ServerItemControl
     public static void sendPlayerStats(PlayerEntity player, PlayerEntity target)
     {
         PacketHandler.sendCultivatorStatsToSpecificClient(target, (ServerPlayerEntity)player);
+        PacketHandler.sendBodyModificationsToSpecificClient(target, (ServerPlayerEntity)player);
     }
 
     public static void handleKeyPress(Register.keyPresses keyPressed, ServerPlayerEntity pressedBy)

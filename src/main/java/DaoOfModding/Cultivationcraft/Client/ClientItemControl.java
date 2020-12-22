@@ -2,6 +2,7 @@ package DaoOfModding.Cultivationcraft.Client;
 
 import static org.lwjgl.glfw.GLFW.*;
 
+import DaoOfModding.Cultivationcraft.Client.Animations.BodyPartModels;
 import DaoOfModding.Cultivationcraft.Client.GUI.FlyingSwordContainerScreen;
 import DaoOfModding.Cultivationcraft.Client.GUI.SkillHotbarOverlay;
 import DaoOfModding.Cultivationcraft.Common.Misc;

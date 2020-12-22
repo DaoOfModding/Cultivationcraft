@@ -1,5 +1,6 @@
 package DaoOfModding.Cultivationcraft.Client.AnimationFramework;
 
+import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.renderer.RenderType;
@@ -26,32 +27,41 @@ public class MultiLimbedModel
         // TODO: Setup so armor displays on player
         baseModel = model;
 
-        ExtendableModelRenderer rightArm = new ExtendableModelRenderer(model, 40, 16);
+        setupDefaultLimbs();
+    }
+
+    public MultiLimbedModel(PlayerModel model, boolean withLimbs)
+    {
+        baseModel = model;
+
+        if (withLimbs)
+            setupDefaultLimbs();
+    }
+
+    private void setupDefaultLimbs()
+    {
+        ExtendableModelRenderer rightArm = new ExtendableModelRenderer(baseModel, 40, 16);
         rightArm.setRotationPoint(-5.0F, 2.0F, 0.0F);
         rightArm.extend(GenericResizers.getRightArmResizer());
-        baseModel.bipedRightArm = rightArm;
 
-        ExtendableModelRenderer leftArm = new ExtendableModelRenderer(model, 32, 48);
+        ExtendableModelRenderer leftArm = new ExtendableModelRenderer(baseModel, 32, 48);
         leftArm.setRotationPoint(5.0F, 2.0F, 0.0F);
         leftArm.extend(GenericResizers.getLeftArmResizer());
-        baseModel.bipedLeftArm = leftArm;
         leftArm.mirror = true;
 
-        ExtendableModelRenderer rightLeg = new ExtendableModelRenderer(model, 0, 16);
+        ExtendableModelRenderer rightLeg = new ExtendableModelRenderer(baseModel, 0, 16);
         rightLeg.setRotationPoint(-1.9F, 12.0F, 0.0F);
         rightLeg.extend(GenericResizers.getRightLegResizer());
-        baseModel.bipedRightLeg = rightLeg;
 
-        ExtendableModelRenderer leftLeg = new ExtendableModelRenderer(model, 0, 16);
+        ExtendableModelRenderer leftLeg = new ExtendableModelRenderer(baseModel, 0, 16);
         leftLeg.setRotationPoint(1.9F, 12.0F, 0.0F);
         leftLeg.extend(GenericResizers.getLeftLegResizer());
-        baseModel.bipedLeftLeg = leftLeg;
         leftLeg.mirror = true;
 
-        addLimb(GenericLimbNames.leftArm, baseModel.bipedLeftArm);
-        addLimb(GenericLimbNames.rightArm, baseModel.bipedRightArm);
-        addLimb(GenericLimbNames.leftLeg, baseModel.bipedLeftLeg);
-        addLimb(GenericLimbNames.rightLeg, baseModel.bipedRightLeg);
+        addLimb(GenericLimbNames.leftArm, leftArm);
+        addLimb(GenericLimbNames.rightArm, rightArm);
+        addLimb(GenericLimbNames.leftLeg, leftLeg);
+        addLimb(GenericLimbNames.rightLeg, rightLeg);
         addNonRenderingLimb(GenericLimbNames.lowerLeftArm, leftArm.getChild(1));
         addNonRenderingLimb(GenericLimbNames.lowerRightArm, rightArm.getChild(1));
         addNonRenderingLimb(GenericLimbNames.lowerLeftLeg, leftLeg.getChild(1));
@@ -92,6 +102,12 @@ public class MultiLimbedModel
     {
         toRender.add(limb);
         limbs.put(limb, limbModel);
+    }
+
+    public void removeLimb(String limb)
+    {
+        toRender.remove(limb);
+        limbs.remove(limb);
     }
 
     // Add a limb for reference purposes, don't render it
@@ -151,6 +167,11 @@ public class MultiLimbedModel
 
         ModelRenderer LeftLeg = getLimb(GenericLimbNames.leftLeg);
         ModelRenderer RightLeg = getLimb(GenericLimbNames.rightLeg);
+
+        if (LeftLeg == null)
+            return 0;
+        if (RightLeg == null)
+            return 0;
 
         // Get the largest angle change for both legs
         float largestLeft = Math.abs(LeftLeg.rotateAngleX);

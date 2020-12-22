@@ -4,6 +4,8 @@ import DaoOfModding.Cultivationcraft.Client.ClientBlockRegister;
 import DaoOfModding.Cultivationcraft.Client.Particles.QiParticle;
 import DaoOfModding.Cultivationcraft.Client.Particles.QiParticleData;
 import DaoOfModding.Cultivationcraft.Client.Particles.QiParticleType;
+import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.BodyModifications;
+import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.BodyModificationsCapability;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.ChunkQiSources.ChunkQiSourcesCapability;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStatsCapability;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.CultivatorTechniquesCapability;
@@ -45,6 +47,7 @@ public class Register
     public static void registerCapabilities()
     {
         CultivatorStatsCapability.register();
+        BodyModificationsCapability.register();
         FlyingSwordContainerItemStackCapability.register();
         FlyingSwordBindCapability.register();
         ChunkQiSourcesCapability.register();

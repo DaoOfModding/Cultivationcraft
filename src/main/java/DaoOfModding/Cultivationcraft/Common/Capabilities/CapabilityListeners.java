@@ -1,5 +1,6 @@
 package DaoOfModding.Cultivationcraft.Common.Capabilities;
 
+import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.BodyModificationsCapability;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.ChunkQiSources.ChunkQiSourcesCapability;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStatsCapability;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.CultivatorTechniquesCapability;
@@ -24,6 +25,7 @@ public class CapabilityListeners
     public static final ResourceLocation FlyingSwordBindLocation = new ResourceLocation(Cultivationcraft.MODID, "flyingswordbind");
     public static final ResourceLocation ChunkQiSourcesLocation = new ResourceLocation(Cultivationcraft.MODID, "chunkqisources");
     public static final ResourceLocation CultivatorTechniquesCapabilityLocation = new ResourceLocation(Cultivationcraft.MODID, "cultivatortechniques");
+    public static final ResourceLocation BodyModificationsCapabilityLocation = new ResourceLocation(Cultivationcraft.MODID, "bodymodification");
 
     @SubscribeEvent
     public static void attachCapabilitiesChunk(final AttachCapabilitiesEvent<Chunk> event)
@@ -38,6 +40,7 @@ public class CapabilityListeners
         if(event.getObject() instanceof PlayerEntity)
         {
             event.addCapability(CultivatorStatsCapabilityLocation, new CultivatorStatsCapability());
+            event.addCapability(BodyModificationsCapabilityLocation, new BodyModificationsCapability());
             event.addCapability(CultivatorTechniquesCapabilityLocation, new CultivatorTechniquesCapability());
             event.addCapability(FSCItemStackCapabilityLocation, new FlyingSwordContainerItemStackCapability());
         }

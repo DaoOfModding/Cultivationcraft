@@ -10,8 +10,6 @@ public class GenericQiPoses
     public static PlayerPose HandsBehind = new PlayerPose();
     public static PlayerPose CrossLegs = new PlayerPose();
 
-    // Rotates around Z, then Y, then X
-
     public static void init()
     {
         setupHandsBehind();

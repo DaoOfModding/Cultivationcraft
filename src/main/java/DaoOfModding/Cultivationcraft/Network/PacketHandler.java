@@ -1,5 +1,7 @@
 package DaoOfModding.Cultivationcraft.Network;
 
+import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.BodyModifications;
+import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.IBodyModifications;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.ChunkQiSources.ChunkQiSources;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.ChunkQiSources.IChunkQiSources;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStats;
@@ -32,6 +34,7 @@ public class PacketHandler
     private static final byte FLYING_SWORD_NBT_ID = 35;
     private static final byte FLYING_SWORD_RECALL = 36;
     private static final byte CULTIVATOR_TARGET_ID = 76;
+    private static final byte BODY_MODIFICATIONS = 97;
     private static final byte CULTIVATOR_TECHNIQUES = 98;
     private static final byte CULTIVATOR_STATS = 99;
     private static final String PROTOCOL_VERSION = "1";
@@ -53,6 +56,7 @@ public class PacketHandler
         channel.registerMessage(CULTIVATOR_TARGET_ID, CultivatorTargetPacket.class, CultivatorTargetPacket::encode, CultivatorTargetPacket::decode, CultivatorTargetPacket::handle);
         channel.registerMessage(CULTIVATOR_TECHNIQUES, CultivatorTechniquesPacket.class, CultivatorTechniquesPacket::encode, CultivatorTechniquesPacket::decode, CultivatorTechniquesPacket::handle);
         channel.registerMessage(CULTIVATOR_STATS, CultivatorStatsPacket.class, CultivatorStatsPacket::encode, CultivatorStatsPacket::decode, CultivatorStatsPacket::handle);
+        channel.registerMessage(BODY_MODIFICATIONS, BodyModificationsPacket.class, BodyModificationsPacket::encode, BodyModificationsPacket::decode, BodyModificationsPacket::handle);
     }
 
     public static void sendRecallFlyingToClient(boolean recall, UUID playerID)
@@ -110,6 +114,22 @@ public class PacketHandler
         // Send the cultivator's current target to the client
         CultivatorTargetPacket pack2 = new CultivatorTargetPacket(player.getUniqueID(), stats.getTargetType(), stats.getTarget(), stats.getTargetID());
         channel.send(distribute, pack2);
+    }
+
+    public static void sendBodyModificationsToSpecificClient(PlayerEntity player, ServerPlayerEntity toSend)
+    {
+        PacketDistributor.PacketTarget target = PacketDistributor.PLAYER.with(() -> toSend);
+
+        sendBodyModificationsToClient(player, target);
+    }
+
+    private static void sendBodyModificationsToClient(PlayerEntity player, PacketDistributor.PacketTarget distribute)
+    {
+        IBodyModifications modifications = BodyModifications.getBodyModifications(player);
+
+        // Send the cultivator's stats to the client
+        BodyModificationsPacket pack = new BodyModificationsPacket(player.getUniqueID(), modifications);
+        channel.send(distribute, pack);
     }
 
     public static void sendCultivatorTechniquesToClient(PlayerEntity player)
