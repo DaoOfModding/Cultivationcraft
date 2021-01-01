@@ -29,7 +29,7 @@ public class DivineSenseTechnique extends Technique
 
         // Only do this on the client
         if (ClientItemControl.thisWorld != null)
-            Renderer.QiSourcesVisable = active;
+            Renderer.QiSourcesVisible = active;
     }
 
     @Override

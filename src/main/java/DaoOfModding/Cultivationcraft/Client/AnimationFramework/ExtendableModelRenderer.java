@@ -13,10 +13,13 @@ public class ExtendableModelRenderer extends ModelRenderer
     protected int textureOffsetX;
     protected int textureOffsetY;
 
-    protected Vector3d rotationTarget = new Vector3d(0, 0, 0);
-
     protected ExtendableModelRenderer parent = null;
     protected ExtendableModelRenderer child = null;
+
+    protected Vector3d[] points = new Vector3d[8];
+
+    protected double minHeight = 0;
+
 
     public ExtendableModelRenderer(Model model)
     {
@@ -51,7 +54,7 @@ public class ExtendableModelRenderer extends ModelRenderer
         this.parent = parent;
     }
 
-    public ModelRenderer getChild(int depth)
+    public ExtendableModelRenderer getChild(int depth)
     {
         if (depth == 0)
             return this;
@@ -59,7 +62,7 @@ public class ExtendableModelRenderer extends ModelRenderer
         if (child == null)
             return null;
 
-        return ((ExtendableModelRenderer)child).getChild(depth - 1);
+        return child.getChild(depth - 1);
     }
 
     // Extend the model, creating depth amount of boxes equaling a total of fullSize extending towards direction
@@ -72,7 +75,7 @@ public class ExtendableModelRenderer extends ModelRenderer
         Vector2f texModifier = resizer.getTextureModifier();
 
         // Add a box of the appropriate size to this model
-        addBox((float)position.x, (float)position.y, (float)position.z, (float)thisSize.x, (float)thisSize.y, (float)thisSize.z, resizer.getDelta());
+        generateCube((float)position.x, (float)position.y, (float)position.z, (float)thisSize.x, (float)thisSize.y, (float)thisSize.z, resizer.getDelta());
 
         // Return this model if at max depth
         if (!resizer.continueResizing())
@@ -90,5 +93,56 @@ public class ExtendableModelRenderer extends ModelRenderer
 
         // Continue the extension
         newModel.extend(resizer.nextLevel());
+    }
+
+    // Generate the cube for this model
+    public void generateCube(float x, float y, float z, float width, float height, float depth, float delta)
+    {
+        float x2 = x + width;
+        float y2 = y + height;
+        float z2 = z + depth;
+
+        points[0] = new Vector3d(x, y, z);
+        points[1] = new Vector3d(x, y, z2);
+        points[2] = new Vector3d(x, y2, z);
+        points[3] = new Vector3d(x, y2, z2);
+        points[4] = new Vector3d(x2, y, z);
+        points[5] = new Vector3d(x2, y, z2);
+        points[6] = new Vector3d(x2, y2, z);
+        points[7] = new Vector3d(x2, y2, z2);
+
+        addBox(x, y, z, width, height, depth, delta);
+    }
+
+    // Get the minimum height of any point on this model
+    public double getMinHeight()
+    {
+        return minHeight;
+    }
+
+    public void calculateMinHeight(Vector3d rotation)
+    {
+        double min = Double.MAX_VALUE;
+
+        for (Vector3d point : points)
+        {
+            Vector3d rotated = point;
+            rotated = rotated.subtract(rotationPointX, 0, 0);
+            rotated = rotated.rotateRoll((float)rotation.x);
+            rotated = rotated.add(rotationPointX, 0, 0);
+
+            rotated = rotated.add(0, rotationPointY, 0);
+            rotated = rotated.rotateYaw((float)rotation.y);
+            rotated.subtract(0, rotationPointY, 0);
+
+            rotated = rotated.subtract(0, 0, rotationPointZ);
+            rotated = rotated.rotatePitch((float)rotation.z);
+            rotated = rotated.add(0, 0, rotationPointZ);
+
+            if (rotated.getY() < min)
+                min = rotated.getY();
+        }
+
+        minHeight = min;
     }
 }

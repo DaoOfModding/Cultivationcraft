@@ -30,7 +30,7 @@ public class CultivatorModelHandler
                 {
                     newModel.removeLimb(GenericLimbNames.rightArm);
                     newModel.removeLimb(GenericLimbNames.leftArm);
-                    newModel.removeLimb(GenericLimbNames.lowerRightLeg);
+                    newModel.removeLimb(GenericLimbNames.lowerRightArm);
                     newModel.removeLimb(GenericLimbNames.lowerLeftArm);
                 }
                 else if (part.getPosition().equalsIgnoreCase(BodyPartNames.legPosition))

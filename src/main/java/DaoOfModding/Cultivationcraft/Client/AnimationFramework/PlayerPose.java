@@ -82,7 +82,7 @@ public class PlayerPose
     // Adds angle to specified limb with the specified priority level
     public void addAngle(String limb, Vector3d angle, int priority)
     {
-        addAngle(limb, angle, priority, AnimationSpeedCalculator.defaultSpeed, -1);
+        addAngle(limb, angle, priority, AnimationSpeedCalculator.defaultSpeedInTicks, -1);
     }
 
     // Adds angle to specified limb with the specified priority level, speed and animation lock

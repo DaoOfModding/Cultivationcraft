@@ -90,6 +90,10 @@ public class PlayerPoseHandler
 
         // Generate the animating pose based on the the target angles in the render pose
         animateLimbs(partialTicks);
+
+        // Calculate the model height adjustment based on the animating pose
+        model.calculateHeightAdjustment(animatingPose);
+
         // Rotate each limb to the angle stored in the animating pose plus any offset angles
         for(String limb : animatingPose.getLimbs())
             model.rotateLimb(limb, animatingPose.getAngle(limb).add(animatingPose.getOffset(limb)));
@@ -119,7 +123,7 @@ public class PlayerPoseHandler
             if (renderPose.hasAngle(limb))
                 newRender.addAngle(limb, animateLimb(limb, getLimbPos(limb), partialTicks), 1);
             else
-                newRender.addAngle(limb, animateLimb(getLimbPos(limb), new Vector3d(0, 0, 0), AnimationSpeedCalculator.defaultSpeed, partialTicks), 1);
+                newRender.addAngle(limb, animateLimb(getLimbPos(limb), new Vector3d(0, 0, 0), AnimationSpeedCalculator.defaultSpeedPerTick, partialTicks), 1);
 
             newRender.addOffset(limb, animatingPose.getOffset(limb));
         }
@@ -285,7 +289,7 @@ public class PlayerPoseHandler
         if (moveAmount > aSpeed)
             toMove = toMove.normalize().scale(aSpeed);
 
-        // Return a vector of the current positions moved towards moveTo by the animation speed
+        // Return a vector of the current position moved towards moveTo by the animation speed
         return new Vector3d(current.x - toMove.x, current.y - toMove.y, current.z - toMove.z);
     }
 }

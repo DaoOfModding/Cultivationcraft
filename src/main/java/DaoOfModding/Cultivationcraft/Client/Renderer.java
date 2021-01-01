@@ -8,11 +8,11 @@ import net.minecraft.entity.player.PlayerEntity;
 
 public class Renderer
 {
-    public static boolean QiSourcesVisable = false;
+    public static boolean QiSourcesVisible = false;
 
     public static void render()
     {
-        if (QiSourcesVisable)
+        if (QiSourcesVisible)
             QiSourceRenderer.renderQiSources();
 
         renderTechniques();

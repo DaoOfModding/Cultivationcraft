@@ -72,7 +72,7 @@ public class QiParticle extends SpriteTexturedParticle
             this.setExpired();
         }
 
-        if (!Renderer.QiSourcesVisable)
+        if (!Renderer.QiSourcesVisible)
             this.setExpired();
     }
 

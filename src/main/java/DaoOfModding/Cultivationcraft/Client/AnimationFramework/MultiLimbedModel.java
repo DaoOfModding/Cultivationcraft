@@ -19,7 +19,7 @@ public class MultiLimbedModel
 
     PlayerModel baseModel;
 
-    HashMap<String, ModelRenderer> limbs = new HashMap<String, ModelRenderer>();
+    HashMap<String, ExtendableModelRenderer> limbs = new HashMap<String, ExtendableModelRenderer>();
     ArrayList<String> toRender = new ArrayList<String>();
 
     public MultiLimbedModel(PlayerModel model)
@@ -93,12 +93,12 @@ public class MultiLimbedModel
         return limbs.containsKey(limb);
     }
 
-    public ModelRenderer getLimb(String limb)
+    public ExtendableModelRenderer getLimb(String limb)
     {
         return limbs.get(limb);
     }
 
-    public void addLimb(String limb, ModelRenderer limbModel)
+    public void addLimb(String limb, ExtendableModelRenderer limbModel)
     {
         toRender.add(limb);
         limbs.put(limb, limbModel);
@@ -112,7 +112,7 @@ public class MultiLimbedModel
 
     // Add a limb for reference purposes, don't render it
     // Usually used for referencing child limbs
-    public void addNonRenderingLimb(String limb, ModelRenderer limbModel)
+    public void addNonRenderingLimb(String limb, ExtendableModelRenderer limbModel)
     {
         limbs.put(limb, limbModel);
     }
@@ -151,7 +151,7 @@ public class MultiLimbedModel
         baseModel.bipedHead.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
         baseModel.bipedBody.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
 
-        for (Map.Entry<String, ModelRenderer> limb: limbs.entrySet())
+        for (Map.Entry<String, ExtendableModelRenderer> limb: limbs.entrySet())
             if (isRenderingLimb(limb.getKey()))
                 limb.getValue().render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
 
@@ -160,37 +160,46 @@ public class MultiLimbedModel
         matrixStackIn.pop();
     }
 
-    // TODO: Fix this
+    // Calculate the height adjustment for each limb based on the supplied pose
+    public void calculateHeightAdjustment(PlayerPose pose)
+    {
+        for (String limb : getLimbs())
+        {
+            ExtendableModelRenderer limbModel = getLimb(limb);
+
+            Vector3d rotation;
+            if (pose.hasAngle(limb))
+                rotation = pose.getAngle(limb);
+            else
+                rotation = new Vector3d(0, 0, 0);
+
+            limbModel.calculateMinHeight(rotation);
+        }
+    }
+
+    // Find the limb at the lowest height and return it's height
     public double getHeightAdjustment()
     {
-        double MaxAdjustment = defaultHeight / 2.3 * sizeScale;
+        double lowest = Double.MAX_VALUE;
 
-        ModelRenderer LeftLeg = getLimb(GenericLimbNames.leftLeg);
-        ModelRenderer RightLeg = getLimb(GenericLimbNames.rightLeg);
+        for (String limb : getLimbs())
+        {
+            ExtendableModelRenderer limbModel = getLimb(limb);
 
-        if (LeftLeg == null)
-            return 0;
-        if (RightLeg == null)
-            return 0;
+            // Cycle through the limb and any child limbs
+            while (limbModel != null)
+            {
+                double limbHeight = limbModel.getMinHeight();
 
-        // Get the largest angle change for both legs
-        float largestLeft = Math.abs(LeftLeg.rotateAngleX);
-        /*if (largestLeft < Math.abs(LeftLeg.rotateAngleZ))
-            largestLeft = Math.abs(LeftLeg.rotateAngleZ);*/
+                if (limbHeight < lowest)
+                    lowest = limbHeight;
 
-        float largestRight = Math.abs(RightLeg.rotateAngleX);
-        /*if (largestRight < Math.abs(RightLeg.rotateAngleZ))
-            largestRight = Math.abs(RightLeg.rotateAngleZ);*/
+                limbModel = limbModel.child;
+            }
+        }
 
-        // Determine which leg has the smallest angle change
-        float smallest = largestLeft;
+        Cultivationcraft.LOGGER.info(lowest / 3);
 
-        if (smallest > largestRight)
-            smallest = largestRight;
-
-        if (smallest >= Math.toRadians(90))
-            return MaxAdjustment;
-
-        return Math.pow(smallest / Math.toRadians(90), 2) * MaxAdjustment;
+        return lowest * sizeScale / 3;
     }
 }
