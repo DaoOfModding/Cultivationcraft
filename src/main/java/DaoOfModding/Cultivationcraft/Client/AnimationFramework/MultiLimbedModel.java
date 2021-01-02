@@ -74,6 +74,11 @@ public class MultiLimbedModel
         return limbs.keySet();
     }
 
+    public ArrayList<String> getRenderingLimbs()
+    {
+        return toRender;
+    }
+
     // Apply the supplied rotations to the specified limb
     public void rotateLimb(String limb, Vector3d angles)
     {
@@ -163,6 +168,18 @@ public class MultiLimbedModel
     // Calculate the height adjustment for each limb based on the supplied pose
     public void calculateHeightAdjustment(PlayerPose pose)
     {
+        for (String limb : getRenderingLimbs())
+        {
+            ExtendableModelRenderer limbModel = getLimb(limb);
+
+            // Cycle through the limb and any child limbs, resetting their height adjustments
+            while (limbModel != null)
+            {
+                limbModel.resetHeightAdjustment();
+                limbModel = limbModel.child;
+            }
+        }
+
         for (String limb : getLimbs())
         {
             ExtendableModelRenderer limbModel = getLimb(limb);
@@ -180,9 +197,9 @@ public class MultiLimbedModel
     // Find the limb at the lowest height and return it's height
     public double getHeightAdjustment()
     {
-        double lowest = Double.MAX_VALUE;
+        double lowest = Double.MAX_VALUE * -1;
 
-        for (String limb : getLimbs())
+        for (String limb : getRenderingLimbs())
         {
             ExtendableModelRenderer limbModel = getLimb(limb);
 
@@ -191,15 +208,15 @@ public class MultiLimbedModel
             {
                 double limbHeight = limbModel.getMinHeight();
 
-                if (limbHeight < lowest)
+                if (limbHeight > lowest)
                     lowest = limbHeight;
 
                 limbModel = limbModel.child;
             }
         }
 
-        Cultivationcraft.LOGGER.info(lowest / 3);
+        Cultivationcraft.LOGGER.info(lowest / 48);
 
-        return lowest * sizeScale / 3;
+        return lowest * sizeScale / 48;
     }
 }

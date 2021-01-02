@@ -6,6 +6,8 @@ import net.minecraft.util.math.vector.Vector3d;
 public class defaultResizeModule implements resizeModule
 {
     int depth;
+
+    Vector3d usedSize;
     Vector3d size;
     Vector3d direction;
     Vector3d rotationPoint;
@@ -19,10 +21,18 @@ public class defaultResizeModule implements resizeModule
         depth = maxDepth;
         size = fullSize;
 
+        usedSize = new Vector3d(0, 0, 0);
+
         // Ensure the direction vector is normalized
         this.direction = direction.normalize();
         this.rotationPoint = rotationPoint;
         this.position = position;
+    }
+
+    // Return the raw position coordinates for the current model
+    public Vector3d getRawPosition()
+    {
+        return usedSize.mul(direction).add(position);
     }
 
     public Vector3d getPosition()
@@ -35,6 +45,11 @@ public class defaultResizeModule implements resizeModule
         // Calculate the size of this model, and the size remaining to make models for
         Vector3d thisSize = size.subtract(direction.mul(size).scale((double)(depth-1)/(double)depth));
         size = size.subtract(direction.mul(size).scale((double)1/(double)depth));
+
+        if (usedSize.length() == 0)
+            usedSize = thisSize;
+        else
+            usedSize = usedSize.add(thisSize.mul(direction));
 
 
         // Calculate the new models rotation point vector to be connected to the 'bottom' of this model

@@ -4,8 +4,8 @@ import net.minecraft.util.math.vector.Vector3d;
 
 public class AnimationSpeedCalculator
 {
-    public static final float defaultSpeedInTicks = 10;
-    public static final float defaultSpeedPerTick = 0.2f;
+    public static final float defaultSpeedInTicks = 100;
+    public static final float defaultSpeedPerTick = 0.02f;
 
     // Convert a movement in ticks to a speed value
     // Ticks is the amount of ticks it should take for position to change into destination

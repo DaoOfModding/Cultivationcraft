@@ -2,8 +2,7 @@ package DaoOfModding.Cultivationcraft.Client.AnimationFramework;
 
 import net.minecraft.client.renderer.model.Model;
 import net.minecraft.client.renderer.model.ModelRenderer;
-import net.minecraft.util.math.vector.Vector2f;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.util.math.vector.*;
 
 public class ExtendableModelRenderer extends ModelRenderer
 {
@@ -17,8 +16,11 @@ public class ExtendableModelRenderer extends ModelRenderer
     protected ExtendableModelRenderer child = null;
 
     protected Vector3d[] points = new Vector3d[8];
+    protected Vector3d[] rotatedPoints = new Vector3d[8];
 
     protected double minHeight = 0;
+
+    protected Vector3d rotatedRotationPoint = new Vector3d(0, 0, 0);
 
 
     public ExtendableModelRenderer(Model model)
@@ -69,13 +71,14 @@ public class ExtendableModelRenderer extends ModelRenderer
     // Each Model will rotate around the midpoint of the previous model, a 1 or -1 in the rotationPoint will move that point to the edge of the specified side
     public void extend(resizeModule resizer)
     {
+        Vector3d rawPosition = resizer.getRawPosition();
         Vector3d position = resizer.getPosition();
         Vector3d thisSize = resizer.getSize();
         Vector3d rotation = resizer.getNextRotation();
         Vector2f texModifier = resizer.getTextureModifier();
 
         // Add a box of the appropriate size to this model
-        generateCube((float)position.x, (float)position.y, (float)position.z, (float)thisSize.x, (float)thisSize.y, (float)thisSize.z, resizer.getDelta());
+        generateCube(position, (float)thisSize.x, (float)thisSize.y, (float)thisSize.z, resizer.getDelta());
 
         // Return this model if at max depth
         if (!resizer.continueResizing())
@@ -96,22 +99,26 @@ public class ExtendableModelRenderer extends ModelRenderer
     }
 
     // Generate the cube for this model
-    public void generateCube(float x, float y, float z, float width, float height, float depth, float delta)
+    public void generateCube(Vector3d pos, float width, float height, float depth, float delta)
     {
-        float x2 = x + width;
-        float y2 = y + height;
-        float z2 = z + depth;
+        float x1 = (float)pos.x;
+        float y1 = (float)pos.y;
+        float z1 = (float)pos.z;
 
-        points[0] = new Vector3d(x, y, z);
-        points[1] = new Vector3d(x, y, z2);
-        points[2] = new Vector3d(x, y2, z);
-        points[3] = new Vector3d(x, y2, z2);
-        points[4] = new Vector3d(x2, y, z);
-        points[5] = new Vector3d(x2, y, z2);
-        points[6] = new Vector3d(x2, y2, z);
+        float x2 = x1 + width;
+        float y2 = y1 + height;
+        float z2 = z1 + depth;
+
+        points[0] = new Vector3d(x1, y1, z1);
+        points[1] = new Vector3d(x1, y1, z2);
+        points[2] = new Vector3d(x1, y2, z1);
+        points[3] = new Vector3d(x1, y2, z2);
+        points[4] = new Vector3d(x2, y1, z1);
+        points[5] = new Vector3d(x2, y1, z2);
+        points[6] = new Vector3d(x2, y2, z1);
         points[7] = new Vector3d(x2, y2, z2);
 
-        addBox(x, y, z, width, height, depth, delta);
+        addBox((float)pos.x, (float)pos.y, (float)pos.z, width, height, depth, delta);
     }
 
     // Get the minimum height of any point on this model
@@ -122,27 +129,65 @@ public class ExtendableModelRenderer extends ModelRenderer
 
     public void calculateMinHeight(Vector3d rotation)
     {
-        double min = Double.MAX_VALUE;
+        double min = Double.MAX_VALUE * -1;
 
-        for (Vector3d point : points)
-        {
-            Vector3d rotated = point;
-            rotated = rotated.subtract(rotationPointX, 0, 0);
-            rotated = rotated.rotateRoll((float)rotation.x);
-            rotated = rotated.add(rotationPointX, 0, 0);
+        rotatePoints(rotation, rotatedRotationPoint);
 
-            rotated = rotated.add(0, rotationPointY, 0);
-            rotated = rotated.rotateYaw((float)rotation.y);
-            rotated.subtract(0, rotationPointY, 0);
-
-            rotated = rotated.subtract(0, 0, rotationPointZ);
-            rotated = rotated.rotatePitch((float)rotation.z);
-            rotated = rotated.add(0, 0, rotationPointZ);
-
-            if (rotated.getY() < min)
-                min = rotated.getY();
-        }
+        for (Vector3d point : rotatedPoints)
+            if (point.getY() > min)
+                min = point.getY();
 
         minHeight = min;
+
+        // Conduct this rotation on all children
+        ExtendableModelRenderer children = child;
+
+        while (children != null)
+        {
+            child.adjustRotations(rotation, rotatedRotationPoint);
+            children = children.child;
+        }
+    }
+
+    // Rotate the model based on the specified rotation and rotationPoint
+    protected void adjustRotations(Vector3d rotation, Vector3d rotationPoint)
+    {
+        rotatedRotationPoint = rotateAroundPoint(rotatedRotationPoint, rotation, rotationPoint);
+
+        rotatePoints(rotation, rotationPoint);
+    }
+
+    // Rotate the models points based on the specified rotation and rotationPoint
+    protected void rotatePoints(Vector3d rotation, Vector3d rotationPoint)
+    {
+        for (int i = 0; i < 8; i++)
+            rotatedPoints[i] = rotateAroundPoint(rotatedPoints[i], rotation, rotationPoint);
+    }
+
+    // Reset any adjustments height calculations
+    public void resetHeightAdjustment()
+    {
+        rotatedRotationPoint = new Vector3d(rotationPointX, rotationPointY, rotationPointZ);
+        rotatedPoints = points.clone();
+    }
+
+    // Rotate supplied vector around rotationPoint by specified rotation
+    protected Vector3d rotateAroundPoint(Vector3d point, Vector3d rotation, Vector3d rotationPoint)
+    {
+        Vector3d rotated = point;
+
+        rotated = rotated.add(rotationPoint);
+
+        if (rotation.z != 0)
+            rotated = rotated.rotatePitch((float)rotation.z);
+        
+        if (rotation.y != 0)
+            rotated = rotated.rotateYaw((float)rotation.y);
+
+        if (rotation.x != 0)
+            rotated = rotated.rotateRoll((float)rotation.x);
+
+
+        return rotated;
     }
 }

@@ -65,7 +65,7 @@ public class MultiLimbedRenderer
             Direction direction = entityIn.getBedDirection();
             if (direction != null) {
                 float f4 = entityIn.getEyeHeight(Pose.STANDING) - 0.1F;
-                matrixStackIn.translate((double)((float)(-direction.getXOffset()) * f4), 0.0D, (double)((float)(-direction.getZOffset()) * f4));
+                matrixStackIn.translate((-direction.getXOffset() * f4), 0.0D, (-direction.getZOffset() * f4));
             }
         }
 
@@ -76,7 +76,7 @@ public class MultiLimbedRenderer
         double height = entityModel.getHeightAdjustment();
 
         matrixStackIn.scale(-1.0F, -1.0F, 1.0F);
-        matrixStackIn.translate(0.0D, -1.5001f - height, 0.0D);
+        matrixStackIn.translate(0.0D, -0.75f - height, 0.0D);
 
         float f8 = 0.0F;
         float f5 = 0.0F;
