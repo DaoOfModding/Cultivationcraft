@@ -91,9 +91,6 @@ public class PlayerPoseHandler
         // Generate the animating pose based on the the target angles in the render pose
         animateLimbs(partialTicks);
 
-        // Calculate the model height adjustment based on the animating pose
-        model.calculateHeightAdjustment(animatingPose);
-
         // Rotate each limb to the angle stored in the animating pose plus any offset angles
         for(String limb : animatingPose.getLimbs())
             model.rotateLimb(limb, animatingPose.getAngle(limb).add(animatingPose.getOffset(limb)));

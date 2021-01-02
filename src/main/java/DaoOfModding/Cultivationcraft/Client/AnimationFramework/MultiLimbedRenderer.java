@@ -32,7 +32,7 @@ public class MultiLimbedRenderer
 
         boolean shouldSit = PoseHandler.shouldSit(entityIn);
 
-        entityModel.baseModel.isSitting = shouldSit;
+       entityModel.baseModel.isSitting = shouldSit;
 
         float f = MathHelper.interpolateAngle(partialTicks, entityIn.prevRenderYawOffset, entityIn.renderYawOffset);
         float f1 = MathHelper.interpolateAngle(partialTicks, entityIn.prevRotationYawHead, entityIn.rotationYawHead);
@@ -71,13 +71,6 @@ public class MultiLimbedRenderer
 
         float totalTicks = (float)entityIn.ticksExisted + partialTicks;
 
-        PoseHandler.applyRotations(entityIn, matrixStackIn, totalTicks, f, partialTicks);
-
-        double height = entityModel.getHeightAdjustment();
-
-        matrixStackIn.scale(-1.0F, -1.0F, 1.0F);
-        matrixStackIn.translate(0.0D, -0.75f - height, 0.0D);
-
         float f8 = 0.0F;
         float f5 = 0.0F;
         if (!shouldSit && entityIn.isAlive()) {
@@ -92,10 +85,20 @@ public class MultiLimbedRenderer
             }
         }
 
+
+        PoseHandler.applyRotations(entityIn, matrixStackIn, totalTicks, f, partialTicks);
+
         entityModel.setLivingAnimations(entityIn, f5, f8, partialTicks);
         entityModel.setRotationAngles(entityIn, f5, f8, totalTicks, f2, f6);
 
+
         PoseHandler.doPose(entityIn.getUniqueID(), partialTicks);
+
+        entityModel.calculateHeightAdjustment();
+        double height = entityModel.getHeightAdjustment();
+
+        matrixStackIn.scale(-1.0F, -1.0F, 1.0F);
+        matrixStackIn.translate(0.0D, 0 - height, 0.0D);
 
         RenderType rendertype = getRenderType(entityModel, entityIn);
 

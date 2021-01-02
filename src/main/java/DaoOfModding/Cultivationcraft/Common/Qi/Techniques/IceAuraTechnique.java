@@ -24,14 +24,6 @@ public class IceAuraTechnique extends AuraTechnique
         elementID = Elements.iceElementID;
 
         icon = new ResourceLocation(Cultivationcraft.MODID, "textures/techniques/icons/iceaura.png");
-
-
-        pose = GenericQiPoses.HandsBehind.clone();
-
-        pose.addAngle(GenericLimbNames.leftLeg, new Vector3d(Math.toRadians(-90), 0, Math.toRadians(0)), GenericPoses.walkLegPriority + 2);
-        pose.addAngle(GenericLimbNames.rightLeg, new Vector3d(Math.toRadians(-90), 0, Math.toRadians(0)), GenericPoses.walkLegPriority + 2);
-        pose.addAngle(GenericLimbNames.lowerLeftLeg, new Vector3d(Math.toRadians(90), 0, Math.toRadians(0)), GenericPoses.walkLegPriority + 2);
-        pose.addAngle(GenericLimbNames.lowerRightLeg, new Vector3d(Math.toRadians(90), 0, Math.toRadians(0)), GenericPoses.walkLegPriority + 2);
     }
 
     public void tickServer(TickEvent.PlayerTickEvent event)

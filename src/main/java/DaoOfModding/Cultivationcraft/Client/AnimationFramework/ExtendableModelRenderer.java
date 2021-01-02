@@ -1,5 +1,6 @@
 package DaoOfModding.Cultivationcraft.Client.AnimationFramework;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.renderer.model.Model;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.math.vector.*;
@@ -15,12 +16,9 @@ public class ExtendableModelRenderer extends ModelRenderer
     protected ExtendableModelRenderer parent = null;
     protected ExtendableModelRenderer child = null;
 
-    protected Vector3d[] points = new Vector3d[8];
-    protected Vector3d[] rotatedPoints = new Vector3d[8];
+    protected Vector3f[] points = new Vector3f[8];
 
-    protected double minHeight = 0;
-
-    protected Vector3d rotatedRotationPoint = new Vector3d(0, 0, 0);
+    protected float minHeight = 0;
 
 
     public ExtendableModelRenderer(Model model)
@@ -109,85 +107,66 @@ public class ExtendableModelRenderer extends ModelRenderer
         float y2 = y1 + height;
         float z2 = z1 + depth;
 
-        points[0] = new Vector3d(x1, y1, z1);
-        points[1] = new Vector3d(x1, y1, z2);
-        points[2] = new Vector3d(x1, y2, z1);
-        points[3] = new Vector3d(x1, y2, z2);
-        points[4] = new Vector3d(x2, y1, z1);
-        points[5] = new Vector3d(x2, y1, z2);
-        points[6] = new Vector3d(x2, y2, z1);
-        points[7] = new Vector3d(x2, y2, z2);
+        points[0] = new Vector3f(x1, y1, z1);
+        points[1] = new Vector3f(x1, y1, z2);
+        points[2] = new Vector3f(x1, y2, z1);
+        points[3] = new Vector3f(x1, y2, z2);
+        points[4] = new Vector3f(x2, y1, z1);
+        points[5] = new Vector3f(x2, y1, z2);
+        points[6] = new Vector3f(x2, y2, z1);
+        points[7] = new Vector3f(x2, y2, z2);
 
         addBox((float)pos.x, (float)pos.y, (float)pos.z, width, height, depth, delta);
     }
 
     // Get the minimum height of any point on this model
-    public double getMinHeight()
+    public float getMinHeight()
     {
         return minHeight;
     }
 
-    public void calculateMinHeight(Vector3d rotation)
+    public void calculateMinHeight(MatrixStack matrixStackIn)
     {
-        double min = Double.MAX_VALUE * -1;
+        matrixStackIn.push();
 
-        rotatePoints(rotation, rotatedRotationPoint);
+        float min = Float.MAX_VALUE * -1;
 
-        for (Vector3d point : rotatedPoints)
-            if (point.getY() > min)
-                min = point.getY();
+        rotateMatrix(matrixStackIn);
+
+        Matrix4f rotator = matrixStackIn.getLast().getMatrix();
+
+        for (Vector3f point : points)
+        {
+            Vector4f vector4f = new Vector4f(point.getX(), point.getY(), point.getZ(), 1.0F);
+            vector4f.transform(rotator);
+
+            if (vector4f.getY() > min)
+                min = vector4f.getY();
+        }
 
         minHeight = min;
 
-        // Conduct this rotation on all children
-        ExtendableModelRenderer children = child;
+        // Calculate the min height of children
+        if (child != null)
+            child.calculateMinHeight(matrixStackIn);
 
-        while (children != null)
-        {
-            child.adjustRotations(rotation, rotatedRotationPoint);
-            children = children.child;
+        matrixStackIn.pop();
+    }
+
+
+    public void rotateMatrix(MatrixStack matrixStackIn) {
+        matrixStackIn.translate((double)(this.rotationPointX), (double)(this.rotationPointY), (double)(this.rotationPointZ));
+        if (this.rotateAngleZ != 0.0F) {
+            matrixStackIn.rotate(Vector3f.ZP.rotation(this.rotateAngleZ));
         }
-    }
 
-    // Rotate the model based on the specified rotation and rotationPoint
-    protected void adjustRotations(Vector3d rotation, Vector3d rotationPoint)
-    {
-        rotatedRotationPoint = rotateAroundPoint(rotatedRotationPoint, rotation, rotationPoint);
+        if (this.rotateAngleY != 0.0F) {
+            matrixStackIn.rotate(Vector3f.YP.rotation(this.rotateAngleY));
+        }
 
-        rotatePoints(rotation, rotationPoint);
-    }
+        if (this.rotateAngleX != 0.0F) {
+            matrixStackIn.rotate(Vector3f.XP.rotation(this.rotateAngleX));
+        }
 
-    // Rotate the models points based on the specified rotation and rotationPoint
-    protected void rotatePoints(Vector3d rotation, Vector3d rotationPoint)
-    {
-        for (int i = 0; i < 8; i++)
-            rotatedPoints[i] = rotateAroundPoint(rotatedPoints[i], rotation, rotationPoint);
-    }
-
-    // Reset any adjustments height calculations
-    public void resetHeightAdjustment()
-    {
-        rotatedRotationPoint = new Vector3d(rotationPointX, rotationPointY, rotationPointZ);
-        rotatedPoints = points.clone();
-    }
-
-    // Rotate supplied vector around rotationPoint by specified rotation
-    protected Vector3d rotateAroundPoint(Vector3d point, Vector3d rotation, Vector3d rotationPoint)
-    {
-        Vector3d rotated = point;
-
-        rotated = rotated.add(rotationPoint);
-
-        if (rotation.z != 0)
-            rotated = rotated.rotatePitch((float)rotation.z);
-        
-        if (rotation.y != 0)
-            rotated = rotated.rotateYaw((float)rotation.y);
-
-        if (rotation.x != 0)
-            rotated = rotated.rotateRoll((float)rotation.x);
-
-
-        return rotated;
     }
 }
