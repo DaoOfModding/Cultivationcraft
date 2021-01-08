@@ -25,8 +25,6 @@ public class TechniqueIcons
             {
                 Minecraft.getInstance().getTextureManager().bindTexture(techs.getTechnique(i).getIcon());
 
-                // Stupid unobfuscated code
-                // Okay so it's MatrixStack, xPos, yPos, zPos, TextureXPos, TextureYPos, width, height, textureWidth, textureHeight
                 gui.blit(stack, xpos + i * spacing, ypos, gui.getBlitOffset(), 0, 0, 16, 16, 16, 16);
             }
     }

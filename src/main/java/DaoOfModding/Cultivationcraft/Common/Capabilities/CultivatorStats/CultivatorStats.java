@@ -1,6 +1,7 @@
 package DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats;
 
 import DaoOfModding.Cultivationcraft.Common.Misc;
+import DaoOfModding.Cultivationcraft.Common.Qi.CultivationTypes;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -12,7 +13,10 @@ import net.minecraft.world.World;
 import java.util.List;
 import java.util.UUID;
 
-public class CultivatorStats implements ICultivatorStats {
+public class CultivatorStats implements ICultivatorStats
+{
+    private int cultivationType = CultivationTypes.BODY_CULTIVATOR;
+
     private double flyingItemSpeed = 0.06;
     private double flyingItemMAXSpeed = 2;
     private double flyingItemturnSpeed = 0.4;
@@ -56,6 +60,16 @@ public class CultivatorStats implements ICultivatorStats {
 
     public void setFlyingControlRange(double newRange) {
         flyingItemControlRange = newRange;
+    }
+
+    public int getCultivationType()
+    {
+        return cultivationType;
+    }
+
+    public void setCultivationType(int newType)
+    {
+        cultivationType = newType;
     }
 
     // Returns a Vector3d containing the location of the target, should ONLY be called if hasTarget is true

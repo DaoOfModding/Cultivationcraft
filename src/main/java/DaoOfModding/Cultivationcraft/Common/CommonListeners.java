@@ -13,6 +13,7 @@ import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.Cultiva
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPart;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import DaoOfModding.Cultivationcraft.Network.PacketHandler;
+import DaoOfModding.Cultivationcraft.Server.BodyPartControl;
 import DaoOfModding.Cultivationcraft.Server.ServerItemControl;
 import DaoOfModding.Cultivationcraft.Server.ServerListeners;
 import DaoOfModding.Cultivationcraft.Server.SkillHotbarServer;
@@ -92,11 +93,7 @@ public class CommonListeners
             SkillHotbarServer.addPlayer(event.getPlayer().getUniqueID());
 
 
-            // temp testing stuff
-            ArrayList<String> testList = new ArrayList<String>();
-            testList.add(BodyPartNames.TestPart);
-
-            BodyModifications.getBodyModifications(event.getPlayer()).setModification(new BodyPart(testList, BodyPartNames.armPosition));
+            BodyPartControl.setupBodyParts(event.getPlayer());
         }
     }
 

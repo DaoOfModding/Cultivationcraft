@@ -1,5 +1,8 @@
 package DaoOfModding.Cultivationcraft.Client.GUI;
 
+import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStats;
+import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStatsCapability;
+import DaoOfModding.Cultivationcraft.Common.Qi.CultivationTypes;
 import DaoOfModding.Cultivationcraft.Common.Register;
 import DaoOfModding.Cultivationcraft.Network.ClientPacketHandler;
 import DaoOfModding.Cultivationcraft.Network.PacketHandler;
@@ -46,7 +49,14 @@ public class ScreenTabControl
                 if (i == 1)
                     Minecraft.getInstance().displayGuiScreen(new TechniqueScreen());
                 else if (i == 2)
-                    ClientPacketHandler.sendKeypressToServer(Register.keyPresses.FLYINGSWORDSCREEN);
+                {
+                    int cultivationType = CultivatorStats.getCultivatorStats(Minecraft.getInstance().player).getCultivationType();
+
+                    if (cultivationType == CultivationTypes.QI_CONDENSER)
+                        ClientPacketHandler.sendKeypressToServer(Register.keyPresses.FLYINGSWORDSCREEN);
+                    else if (cultivationType == CultivationTypes.BODY_CULTIVATOR)
+                        Minecraft.getInstance().displayGuiScreen(new BodyforgeScreen());
+                }
 
                 return true;
             }

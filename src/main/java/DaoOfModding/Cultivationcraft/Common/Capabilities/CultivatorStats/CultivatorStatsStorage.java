@@ -12,6 +12,7 @@ public class CultivatorStatsStorage implements Capability.IStorage<ICultivatorSt
     {
 
         CompoundNBT nbt = new CompoundNBT();
+        nbt.putInt("TYPE", instance.getCultivationType());
         nbt.putDouble("FIS", instance.getFlyingItemSpeed());
         nbt.putDouble("FITS", instance.getFlyingItemTurnSpeed());
         nbt.putDouble("FIMS", instance.getFlyingItemMaxSpeed());
@@ -26,6 +27,7 @@ public class CultivatorStatsStorage implements Capability.IStorage<ICultivatorSt
         if (!(instance instanceof ICultivatorStats))
             throw new IllegalArgumentException("Tried to read Cultivator Stats from non CultivatorStats instance");
 
+        instance.setCultivationType(((CompoundNBT)nbt).getInt("TYPE"));
         instance.setFlyingItemSpeed(((CompoundNBT)nbt).getDouble("FIS"));
         instance.setFlyingItemTurnSpeed(((CompoundNBT)nbt).getDouble("FITS"));
         instance.setFlyingItemMaxSpeed(((CompoundNBT)nbt).getDouble("FIMS"));

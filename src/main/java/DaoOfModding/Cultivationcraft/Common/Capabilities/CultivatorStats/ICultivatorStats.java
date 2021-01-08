@@ -20,6 +20,9 @@ public interface ICultivatorStats
     public double getFlyingControlRange();
     public void setFlyingControlRange(double newRange);
 
+    public int getCultivationType();
+    public void setCultivationType(int newType);
+
     public Vector3d getTarget();
     public RayTraceResult.Type getTargetType();
     public UUID getTargetID();
