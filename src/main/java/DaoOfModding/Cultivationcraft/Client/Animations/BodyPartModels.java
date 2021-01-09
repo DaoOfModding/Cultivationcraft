@@ -16,10 +16,10 @@ public class BodyPartModels
         testPart.setRotationPoint(-5.0F, 2.0F, 0.0F);
         testPart.extend(GenericResizers.getRightArmResizer());
 
-        addModel(BodyPartNames.TestPart, BodyPartNames.armPosition, testPart);
+        addModel(BodyPartNames.TestPart, testPart);
     }
 
-    public void addModel(String ID, String limbPosition, ExtendableModelRenderer model)
+    public void addModel(String ID, ExtendableModelRenderer model)
     {
         models.put(ID, model);
     }

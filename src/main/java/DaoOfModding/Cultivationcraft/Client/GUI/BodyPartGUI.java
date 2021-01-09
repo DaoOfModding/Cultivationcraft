@@ -1,13 +1,10 @@
 package DaoOfModding.Cultivationcraft.Client.GUI;
 
-import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPart;
-import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.AbstractGui;
-import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.MathHelper;
 
 public class BodyPartGUI
 {
@@ -45,15 +42,21 @@ public class BodyPartGUI
         return textureY;
     }
 
-    public void render(MatrixStack matrixStack, int xPos, int yPos, AbstractGui gui)
+    public void render(MatrixStack matrixStack, int xPos, int yPos, boolean highlight, AbstractGui gui)
     {
         Minecraft.getInstance().getTextureManager().bindTexture(TEXTURE);
 
+        if (highlight)
+            RenderSystem.color4f(0.5f, 1, 0.75f, 1);
+
         gui.blit(matrixStack, xPos, yPos, gui.getBlitOffset(), 0, 0, textureX, textureY, textureY, textureX);
+
+
+        RenderSystem.color4f(1, 1, 1, 1);
     }
 
     // Render based on base part
-    public void render(MatrixStack matrixStack, int xPos, int yPos, AbstractGui gui, BodyPartGUI base)
+    public void render(MatrixStack matrixStack, int xPos, int yPos, boolean highlight, AbstractGui gui, BodyPartGUI base)
     {
         float maxWidth = base.getTextureWidth() - getTextureWidth();
         float maxHeight = base.getTextureHeight() - getTextureHeight();
@@ -73,6 +76,6 @@ public class BodyPartGUI
         else if (y > 0)
             yPos += maxHeight + getTextureHeight() * (y - 1) * 2 - 1;
 
-        render(matrixStack, xPos, yPos, gui);
+        render(matrixStack, xPos, yPos, highlight, gui);
     }
 }

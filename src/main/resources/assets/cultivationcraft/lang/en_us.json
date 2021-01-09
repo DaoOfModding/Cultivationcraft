@@ -16,6 +16,11 @@
 
   "cultivationcraft.gui.bodyforge": "Forge Body",
 
+  "cultivationcraft.gui.headpart": "Head",
+  "cultivationcraft.gui.bodypart": "Body",
+  "cultivationcraft.gui.armpart": "Arms",
+  "cultivationcraft.gui.legpart": "Legs",
+
   "cultivationcraft.technique.meditate": "Meditate",
   "cultivationcraft.technique.divinesense": "Divine Sense",
   "cultivationcraft.technique.icewalk": "Ice Walk"

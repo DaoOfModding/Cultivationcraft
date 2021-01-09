@@ -1,5 +1,7 @@
 package DaoOfModding.Cultivationcraft.Common.Qi.BodyParts;
 
+import DaoOfModding.Cultivationcraft.Client.Animations.BodyPartNames;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 
 import java.util.ArrayList;
@@ -9,10 +11,12 @@ public class BodyPart
     ArrayList<String> modelIDs = new ArrayList<String>();
     String limbPosition;
 
-    public BodyPart(ArrayList<String> IDs, String position)
+    public BodyPart(ArrayList<String> IDs)
     {
         modelIDs = (ArrayList<String>)IDs.clone();
-        limbPosition = position;
+
+        // Set the limbPosition to be equal to the position of the FIRST modelID
+        limbPosition = BodyPartNames.getPartPosition(IDs.get(0));
     }
 
     public String getPosition()
@@ -23,6 +27,12 @@ public class BodyPart
     public ArrayList<String> getModelIDs()
     {
         return modelIDs;
+    }
+
+    // TODO: This
+    public boolean canBeForged(PlayerEntity player)
+    {
+        return true;
     }
 
     public CompoundNBT write()
@@ -53,7 +63,7 @@ public class BodyPart
             i++;
         }
 
-        BodyPart newPart = new BodyPart(modelIDs, nbt.getString("limbPosition"));
+        BodyPart newPart = new BodyPart(modelIDs);
 
         return newPart;
     }

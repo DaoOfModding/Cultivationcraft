@@ -1,6 +1,7 @@
 package DaoOfModding.Cultivationcraft;
 
 import DaoOfModding.Cultivationcraft.Client.AnimationFramework.GenericPoses;
+import DaoOfModding.Cultivationcraft.Client.Animations.BodyPartNames;
 import DaoOfModding.Cultivationcraft.Client.Animations.GenericQiPoses;
 import DaoOfModding.Cultivationcraft.Client.ClientBlockRegister;
 import DaoOfModding.Cultivationcraft.Client.ClientItemControl;
@@ -57,5 +58,6 @@ public class Cultivationcraft {
     {
         ClientItemControl.init(event);
         Register.registerRenderers();
+        BodyPartNames.init();
     }
 }

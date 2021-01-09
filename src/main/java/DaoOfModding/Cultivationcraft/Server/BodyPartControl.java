@@ -16,6 +16,6 @@ public class BodyPartControl
         ArrayList<String> testList = new ArrayList<String>();
         testList.add(BodyPartNames.TestPart);
 
-        BodyModifications.getBodyModifications(player).setModification(new BodyPart(testList, BodyPartNames.armPosition));*/
+        BodyModifications.getBodyModifications(player).setModification(new BodyPart(testList));*/
     }
 }
