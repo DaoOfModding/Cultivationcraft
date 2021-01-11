@@ -8,23 +8,25 @@ import java.util.HashMap;
 
 public class BodyPartNames
 {
-    public static String TestPart = "test";
+    public static final String TestPart = "test";
+    public static final String startingEyesPart = "QiSight";
 
-    public static String DefaultLeftArm = "armleft";
-    public static String DefaultRightArm = "armright";
-    public static String DefaultRightLeg = "legright";
-    public static String DefaultLeftLeg = "legleft";
-    public static String DefaultHead = "head";
-    public static String DefaultBody = "body";
+    public static final String DefaultLeftArm = "armleft";
+    public static final String DefaultRightArm = "armright";
+    public static final String DefaultRightLeg = "legright";
+    public static final String DefaultLeftLeg = "legleft";
+    public static final String DefaultHead = "head";
+    public static final String DefaultBody = "body";
 
-    public static String headPosition = "HEAD";
-    public static String bodyPosition = "BODY";
-    public static String armPosition = "ARM";
-    public static String legPosition = "LEG";
+    public static final String headPosition = "HEAD";
+    public static final String bodyPosition = "BODY";
+    public static final String armPosition = "ARM";
+    public static final String legPosition = "LEG";
+
+    public static final String EyeSubPosition = "EYE";
 
     private static ArrayList<BodyPart> parts = new ArrayList<BodyPart>();
     private static HashMap<String, String> displayNames = new HashMap<String, String>();
-    private static HashMap<String, String> partPositions = new HashMap<String, String>();
 
     public static void init()
     {
@@ -33,11 +35,11 @@ public class BodyPartNames
         addDisplayName(armPosition, "cultivationcraft.gui.armpart");
         addDisplayName(legPosition, "cultivationcraft.gui.legpart");
 
-        addPartPosition(TestPart, armPosition);
-
         ArrayList<String> testList = new ArrayList<String>();
-        testList.add(BodyPartNames.TestPart);
-        addPart(new BodyPart(testList));
+        testList.add(BodyPartModelNames.TestPartModel);
+        addPart(new BodyPart(TestPart, testList, armPosition, "test"));
+
+        addPart(new BodyPart(startingEyesPart, new ArrayList<String>(), headPosition, EyeSubPosition));
     }
 
     public static String getDisplayName(String position)
@@ -58,7 +60,7 @@ public class BodyPartNames
     public static BodyPart getPart(String part)
     {
         for (BodyPart searchPart : parts)
-            if (searchPart.getModelIDs().contains(part))
+            if (searchPart.getID() == part)
                 return searchPart;
 
         return null;
@@ -67,15 +69,5 @@ public class BodyPartNames
     public static ArrayList<BodyPart> getParts()
     {
         return parts;
-    }
-
-    public static String getPartPosition(String part)
-    {
-        return partPositions.get(part);
-    }
-
-    public static void addPartPosition(String part, String position)
-    {
-        partPositions.put(part, position);
     }
 }

@@ -184,7 +184,7 @@ public class BodyforgeScreen extends Screen
                 {
                     highlight = false;
 
-                    if (selectedPosition == BodyPartNames.getPartPosition(ID))
+                    if (selectedPosition == BodyPartNames.getPart(ID).getPosition())
                         highlight = true;
 
                     BodyPartGUI gui = BodyPartGUIs.getGUI(ID);

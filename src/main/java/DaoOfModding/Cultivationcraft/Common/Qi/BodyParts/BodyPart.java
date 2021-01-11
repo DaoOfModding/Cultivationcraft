@@ -1,6 +1,6 @@
 package DaoOfModding.Cultivationcraft.Common.Qi.BodyParts;
 
-import DaoOfModding.Cultivationcraft.Client.Animations.BodyPartNames;
+import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.BodyModifications;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 
@@ -8,20 +8,34 @@ import java.util.ArrayList;
 
 public class BodyPart
 {
+    String ID;
     ArrayList<String> modelIDs = new ArrayList<String>();
     String limbPosition;
+    String limbSubPosition;
 
-    public BodyPart(ArrayList<String> IDs)
+    public BodyPart(String partID, ArrayList<String> IDs, String position, String subPosition)
     {
+        ID = partID;
+
         modelIDs = (ArrayList<String>)IDs.clone();
 
-        // Set the limbPosition to be equal to the position of the FIRST modelID
-        limbPosition = BodyPartNames.getPartPosition(IDs.get(0));
+        limbPosition = position;
+        limbSubPosition = subPosition;
+    }
+
+    public String getID()
+    {
+        return ID;
     }
 
     public String getPosition()
     {
         return limbPosition;
+    }
+
+    public String getSubPosition()
+    {
+        return limbSubPosition;
     }
 
     public ArrayList<String> getModelIDs()
@@ -32,39 +46,12 @@ public class BodyPart
     // TODO: This
     public boolean canBeForged(PlayerEntity player)
     {
+        // Loop through all player body modifications, return false if a modification for this subPosition already exists
+        for (BodyPart part : BodyModifications.getBodyModifications(player).getModifications().values())
+            if (part.getPosition() == limbPosition && limbSubPosition == part.getSubPosition())
+                return false;
+
         return true;
     }
 
-    public CompoundNBT write()
-    {
-        CompoundNBT nbt = new CompoundNBT();
-
-        nbt.putString("limbPosition", limbPosition);
-
-        int i = 0;
-
-        for (String ID : modelIDs)
-        {
-            nbt.putString("modelID" + i, ID);
-            i++;
-        }
-
-        return nbt;
-    }
-
-    public static BodyPart read(CompoundNBT nbt)
-    {
-        ArrayList<String> modelIDs = new ArrayList<String>();
-
-        int i = 0;
-        while (nbt.contains("modelID" + i))
-        {
-            modelIDs.add(nbt.getString("modelID" + i));
-            i++;
-        }
-
-        BodyPart newPart = new BodyPart(modelIDs);
-
-        return newPart;
-    }
 }

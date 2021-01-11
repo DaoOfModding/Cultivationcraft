@@ -1,5 +1,6 @@
 package DaoOfModding.Cultivationcraft.Network.Packets;
 
+import DaoOfModding.Cultivationcraft.Client.Animations.BodyPartNames;
 import DaoOfModding.Cultivationcraft.Client.ClientItemControl;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.BodyModifications;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.IBodyModifications;
@@ -35,7 +36,7 @@ public class BodyModificationsPacket extends Packet
         buffer.writeInt(modificationsParts.size());
 
         for (BodyPart part : modificationsParts.values())
-            buffer.writeCompoundTag(part.write());
+            buffer.writeString(part.getID());
     }
 
     public static BodyModificationsPacket decode(PacketBuffer buffer)
@@ -52,7 +53,7 @@ public class BodyModificationsPacket extends Packet
             int numberOfModifications = buffer.readInt();
 
             for (int i = 0; i < numberOfModifications; i++)
-                modifications.setModification(BodyPart.read(buffer.readCompoundTag()));
+                modifications.setModification(BodyPartNames.getPart(buffer.readString()));
 
             return new BodyModificationsPacket(readingOwner, modifications);
         }

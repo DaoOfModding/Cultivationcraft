@@ -16,7 +16,7 @@ public class BodyPartModels
         testPart.setRotationPoint(-5.0F, 2.0F, 0.0F);
         testPart.extend(GenericResizers.getRightArmResizer());
 
-        addModel(BodyPartNames.TestPart, testPart);
+        addModel(BodyPartModelNames.TestPartModel, testPart);
     }
 
     public void addModel(String ID, ExtendableModelRenderer model)

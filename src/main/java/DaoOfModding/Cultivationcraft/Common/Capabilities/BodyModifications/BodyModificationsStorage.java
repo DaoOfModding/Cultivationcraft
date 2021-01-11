@@ -1,5 +1,6 @@
 package DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications;
 
+import DaoOfModding.Cultivationcraft.Client.Animations.BodyPartNames;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPart;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.INBT;
@@ -16,7 +17,7 @@ public class BodyModificationsStorage implements Capability.IStorage<IBodyModifi
         CompoundNBT nbt = new CompoundNBT();
 
         for(Map.Entry<String, BodyPart> entry : instance.getModifications().entrySet())
-            nbt.put(entry.getKey(), entry.getValue().write());
+            nbt.putString(entry.getKey(), entry.getValue().getID());
 
         return nbt;
     }
@@ -30,7 +31,7 @@ public class BodyModificationsStorage implements Capability.IStorage<IBodyModifi
         CompoundNBT NBT = (CompoundNBT)nbt;
 
         for (String limb : NBT.keySet())
-            instance.setModification(BodyPart.read(NBT.getCompound(limb)));
+            instance.setModification(BodyPartNames.getPart(NBT.getString(limb)));
 
         instance.setUpdated(false);
     }
