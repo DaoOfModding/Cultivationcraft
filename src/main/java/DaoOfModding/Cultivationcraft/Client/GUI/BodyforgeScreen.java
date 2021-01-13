@@ -22,8 +22,13 @@ public class BodyforgeScreen extends Screen
     private static final ResourceLocation TEXTURE = new ResourceLocation(Cultivationcraft.MODID, "textures/gui/bodyforge.png");
 
     private DropdownList bodyParts;
+    private DropdownList bodySubParts;
+
     private final int bodyPartListXPos = 75;
     private final int bodyPartListYPos = 50;
+
+    private final int bodySubPartListXPos = 75;
+    private final int bodySubPartListYPos = 75;
 
     private final int xSize = 175;
     private final int ySize = 178;
@@ -54,6 +59,27 @@ public class BodyforgeScreen extends Screen
         // Add all valid positions into the DropdownList with the appropriate display name
         for (String pos : positions)
             bodyParts.addItem(BodyPartNames.getDisplayName(pos), pos);
+
+        updateBodySubPartList();
+    }
+
+    private void updateBodySubPartList()
+    {
+        bodySubParts = new DropdownList();
+
+        ClientPlayerEntity player = Minecraft.getInstance().player;
+        ArrayList<String> positions = new ArrayList<String>();
+
+        for (BodyPart part : BodyPartNames.getParts())
+            if (part.getPosition() == selectedPosition && !positions.contains(part.getSubPosition()) && part.canBeForged(player))
+                positions.add(part.getSubPosition());
+
+        for (String pos : positions)
+            bodySubParts.addItem(BodyPartNames.getDisplayName(selectedPosition, pos), pos);
+
+        // If no sub-positions are found make dropdown list blank
+        if (positions.size() == 0)
+            bodySubParts.addItem("", "");
     }
 
     @Override
@@ -71,8 +97,12 @@ public class BodyforgeScreen extends Screen
         if (changed != null)
         {
             selectedPosition = changed;
+            updateBodySubPartList();
             return true;
         }
+
+        if (bodySubParts.mouseClick((int)mouseX - (edgeSpacingX + bodySubPartListXPos), (int)mouseY - (edgeSpacingY + bodySubPartListYPos), buttonPressed) != null)
+            return true;
 
         if (super.mouseClicked(mouseX, mouseY, buttonPressed))
             return true;
@@ -88,6 +118,9 @@ public class BodyforgeScreen extends Screen
 
         // Scroll through the bodyPart list
         if (bodyParts.mouseScroll((int)mouseX - (edgeSpacingX + bodyPartListXPos), (int)mouseY - (edgeSpacingY + bodyPartListYPos), direction))
+            return true;
+
+        if (bodySubParts.mouseScroll((int)mouseX - (edgeSpacingX + bodySubPartListXPos), (int)mouseY - (edgeSpacingY + bodySubPartListYPos), direction))
             return true;
 
         return false;
@@ -108,6 +141,7 @@ public class BodyforgeScreen extends Screen
         int edgeSpacingY = (this.height - this.ySize) / 2;
 
         // Render the BodyPart dropdown list
+        bodySubParts.render(matrixStack, edgeSpacingX + bodySubPartListXPos, edgeSpacingY + bodySubPartListYPos, mouseX, mouseY, this);
         bodyParts.render(matrixStack, edgeSpacingX + bodyPartListXPos, edgeSpacingY + bodyPartListYPos, mouseX, mouseY, this);
     }
 

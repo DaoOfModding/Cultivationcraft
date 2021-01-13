@@ -21,7 +21,11 @@
   "cultivationcraft.gui.armpart": "Arms",
   "cultivationcraft.gui.legpart": "Legs",
 
+  "cultivationcraft.gui.headpart.eye": "Eyes",
+
   "cultivationcraft.technique.meditate": "Meditate",
   "cultivationcraft.technique.divinesense": "Divine Sense",
-  "cultivationcraft.technique.icewalk": "Ice Walk"
+  "cultivationcraft.technique.icewalk": "Ice Walk",
+
+  "cultivationcraft.test": "TEST"
 }
