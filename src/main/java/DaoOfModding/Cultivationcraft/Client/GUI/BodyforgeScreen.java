@@ -24,11 +24,18 @@ public class BodyforgeScreen extends Screen
     private DropdownList bodyParts;
     private DropdownList bodySubParts;
 
+    private ArrayList<GUIButton> buttons = new ArrayList<GUIButton>();
+
     private final int bodyPartListXPos = 75;
     private final int bodyPartListYPos = 50;
 
     private final int bodySubPartListXPos = 75;
     private final int bodySubPartListYPos = 75;
+
+    private final int buttonMinXPos = 75;
+    private final int buttonMaxXPos = 170;
+
+    private final int buttonMinYPos = 100;
 
     private final int xSize = 175;
     private final int ySize = 178;
@@ -80,6 +87,19 @@ public class BodyforgeScreen extends Screen
         // If no sub-positions are found make dropdown list blank
         if (positions.size() == 0)
             bodySubParts.addItem("", "");
+
+        updateButtons();
+    }
+
+    private void updateButtons()
+    {
+        buttons.clear();
+
+        ClientPlayerEntity player = Minecraft.getInstance().player;
+
+        for (BodyPart part : BodyPartNames.getParts())
+            if (part.getPosition() == selectedPosition && part.getSubPosition() == bodySubParts.getSelected() && part.canBeForged(player))
+                buttons.add(new GUIButton(part.getID(), part.getDisplayName()));
     }
 
     @Override
@@ -102,12 +122,47 @@ public class BodyforgeScreen extends Screen
         }
 
         if (bodySubParts.mouseClick((int)mouseX - (edgeSpacingX + bodySubPartListXPos), (int)mouseY - (edgeSpacingY + bodySubPartListYPos), buttonPressed) != null)
+        {
+            updateButtons();
             return true;
+        }
+
+        int xpos = buttonMinXPos;
+        int ypos = 0;
+        for (GUIButton button : buttons)
+        {
+            // If there is not enough space for this button, move onto the next line
+            if (xpos + button.width > buttonMaxXPos)
+            {
+                ypos++;
+                xpos = buttonMinXPos;
+            }
+
+            int currentY = buttonMinYPos + ypos * (4 + GUIButton.height);
+
+            if (button.mouseClick((int)mouseX - (edgeSpacingX + xpos), (int)mouseY - (edgeSpacingY + currentY), buttonPressed))
+            {
+                changeSelection(button);
+                return true;
+            }
+
+            // Move the xpos next to this button
+            xpos += button.width + 3;
+        }
 
         if (super.mouseClicked(mouseX, mouseY, buttonPressed))
             return true;
 
         return false;
+    }
+
+    public void changeSelection(GUIButton selected)
+    {
+        for (GUIButton button : buttons)
+            if (button != selected)
+                button.unselect();
+
+        // TODO: Send new selection to server
     }
 
     @Override
@@ -140,6 +195,26 @@ public class BodyforgeScreen extends Screen
         int edgeSpacingX = (this.width - this.xSize) / 2;
         int edgeSpacingY = (this.height - this.ySize) / 2;
 
+        // Render part buttons
+        int xpos = buttonMinXPos;
+        int ypos = 0;
+        for (GUIButton button : buttons)
+        {
+            // If there is not enough space for this button, move onto the next line
+            if (xpos + button.width > buttonMaxXPos)
+            {
+                ypos++;
+                xpos = buttonMinXPos;
+            }
+
+            int currentY = buttonMinYPos + ypos * (4 + GUIButton.height);
+
+            button.render(matrixStack, edgeSpacingX + xpos, edgeSpacingY + currentY, mouseX, mouseY, this);
+
+            // Move the xpos next to this button
+            xpos += button.width + 3;
+        }
+
         // Render the BodyPart dropdown list
         bodySubParts.render(matrixStack, edgeSpacingX + bodySubPartListXPos, edgeSpacingY + bodySubPartListYPos, mouseX, mouseY, this);
         bodyParts.render(matrixStack, edgeSpacingX + bodyPartListXPos, edgeSpacingY + bodyPartListYPos, mouseX, mouseY, this);
@@ -158,7 +233,7 @@ public class BodyforgeScreen extends Screen
 
 
         // Draw the players body parts
-        int bodyPosX = edgeSpacingX + 40;
+        int bodyPosX = edgeSpacingX + 20;
         int bodyPosY = edgeSpacingY + 60;
 
         IBodyModifications modifications = BodyModifications.getBodyModifications(Minecraft.getInstance().player);

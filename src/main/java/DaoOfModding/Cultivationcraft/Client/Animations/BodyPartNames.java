@@ -37,13 +37,13 @@ public class BodyPartNames
         addDisplayName(legPosition, "cultivationcraft.gui.legpart");
         addSubPartDisplayName(headPosition, eyeSubPosition, "cultivationcraft.gui.headpart.eye");
 
-        addSubPartDisplayName(armPosition, "test", "cultivationcraft.test");
+        //addSubPartDisplayName(armPosition, "test", "cultivationcraft.test");
 
-        ArrayList<String> testList = new ArrayList<String>();
-        testList.add(BodyPartModelNames.TestPartModel);
-        addPart(new BodyPart(TestPart, testList, armPosition, "test"));
+        //ArrayList<String> testList = new ArrayList<String>();
+        //testList.add(BodyPartModelNames.TestPartModel);
+        //addPart(new BodyPart(TestPart, testList, armPosition, "test"));
 
-        addPart(new BodyPart(startingEyesPart, new ArrayList<String>(), headPosition, eyeSubPosition));
+        addPart(new BodyPart(startingEyesPart, new ArrayList<String>(), headPosition, eyeSubPosition, "cultivationcraft.gui.headpart.eye.QiSight"));
     }
 
     public static String getDisplayName(String position)

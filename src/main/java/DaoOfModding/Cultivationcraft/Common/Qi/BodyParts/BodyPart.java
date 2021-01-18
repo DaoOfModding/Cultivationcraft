@@ -2,7 +2,7 @@ package DaoOfModding.Cultivationcraft.Common.Qi.BodyParts;
 
 import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.BodyModifications;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.text.TranslationTextComponent;
 
 import java.util.ArrayList;
 
@@ -12,8 +12,9 @@ public class BodyPart
     ArrayList<String> modelIDs = new ArrayList<String>();
     String limbPosition;
     String limbSubPosition;
+    String displayNamePosition;
 
-    public BodyPart(String partID, ArrayList<String> IDs, String position, String subPosition)
+    public BodyPart(String partID, ArrayList<String> IDs, String position, String subPosition, String displayNamePos)
     {
         ID = partID;
 
@@ -21,6 +22,12 @@ public class BodyPart
 
         limbPosition = position;
         limbSubPosition = subPosition;
+        displayNamePosition = displayNamePos;
+    }
+
+    public String getDisplayName()
+    {
+        return new TranslationTextComponent(displayNamePosition).getString();
     }
 
     public String getID()
