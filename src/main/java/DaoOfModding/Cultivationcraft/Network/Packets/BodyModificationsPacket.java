@@ -20,19 +20,24 @@ public class BodyModificationsPacket extends Packet
 {
     private UUID owner;
     HashMap<String, BodyPart> modificationsParts = new HashMap<String, BodyPart>();
+    String selection = "";
 
     public BodyModificationsPacket(UUID ownerID, IBodyModifications modifications)
     {
         owner = ownerID;
 
         if (modifications != null)
+        {
             modificationsParts = modifications.getModifications();
+            selection = modifications.getSelection();
+        }
     }
 
     @Override
     public void encode(PacketBuffer buffer)
     {
         buffer.writeUniqueId(owner);
+        buffer.writeString(selection);
         buffer.writeInt(modificationsParts.size());
 
         for (BodyPart part : modificationsParts.values())
@@ -49,6 +54,8 @@ public class BodyModificationsPacket extends Packet
             UUID readingOwner = buffer.readUniqueId();
 
             IBodyModifications modifications = new BodyModifications();
+
+            modifications.setSelection(buffer.readString());
 
             int numberOfModifications = buffer.readInt();
 
@@ -88,6 +95,8 @@ public class BodyModificationsPacket extends Packet
     {
         // Get the modifications for the specified player
         IBodyModifications modifications = BodyModifications.getBodyModifications(ClientItemControl.thisWorld.getPlayerByUuid(owner));
+
+        modifications.setSelection(selection);
 
         for (BodyPart part : modificationsParts.values())
             modifications.setModification(part);

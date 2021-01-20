@@ -16,8 +16,13 @@ public class BodyModificationsStorage implements Capability.IStorage<IBodyModifi
     {
         CompoundNBT nbt = new CompoundNBT();
 
+        nbt.putString("selection", instance.getSelection());
+
+        CompoundNBT modifications = new CompoundNBT();
         for(Map.Entry<String, BodyPart> entry : instance.getModifications().entrySet())
-            nbt.putString(entry.getKey(), entry.getValue().getID());
+            modifications.putString(entry.getKey(), entry.getValue().getID());
+
+        nbt.put("modifications", modifications);
 
         return nbt;
     }
@@ -30,8 +35,12 @@ public class BodyModificationsStorage implements Capability.IStorage<IBodyModifi
 
         CompoundNBT NBT = (CompoundNBT)nbt;
 
-        for (String limb : NBT.keySet())
-            instance.setModification(BodyPartNames.getPart(NBT.getString(limb)));
+        instance.setSelection(NBT.getString("selection"));
+
+        CompoundNBT modifications = NBT.getCompound("modifications");
+
+        for (String limb : modifications.keySet())
+            instance.setModification(BodyPartNames.getPart(modifications.getString(limb)));
 
         instance.setUpdated(false);
     }

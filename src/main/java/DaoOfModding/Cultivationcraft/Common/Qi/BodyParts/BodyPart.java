@@ -1,6 +1,9 @@
 package DaoOfModding.Cultivationcraft.Common.Qi.BodyParts;
 
 import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.BodyModifications;
+import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStats;
+import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.ICultivatorStats;
+import DaoOfModding.Cultivationcraft.Common.Qi.CultivationTypes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.text.TranslationTextComponent;
 
@@ -53,9 +56,16 @@ public class BodyPart
     // TODO: This
     public boolean canBeForged(PlayerEntity player)
     {
+        // Ensure the player is a body cultivator
+        ICultivatorStats stats = CultivatorStats.getCultivatorStats(player);
+
+        if (stats.getCultivationType() != CultivationTypes.BODY_CULTIVATOR)
+            return false;
+
         // Loop through all player body modifications, return false if a modification for this subPosition already exists
+        // Or if this body part is already forged
         for (BodyPart part : BodyModifications.getBodyModifications(player).getModifications().values())
-            if (part.getPosition() == limbPosition && limbSubPosition == part.getSubPosition())
+            if (part.ID == ID || (part.getPosition() == limbPosition && limbSubPosition == part.getSubPosition()))
                 return false;
 
         return true;

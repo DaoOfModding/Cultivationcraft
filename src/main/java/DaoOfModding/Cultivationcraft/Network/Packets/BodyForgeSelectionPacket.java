@@ -1,0 +1,85 @@
+package DaoOfModding.Cultivationcraft.Network.Packets;
+
+import DaoOfModding.Cultivationcraft.Client.Animations.BodyPartList;
+import DaoOfModding.Cultivationcraft.Client.Animations.BodyPartNames;
+import DaoOfModding.Cultivationcraft.Client.ClientItemControl;
+import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.BodyModifications;
+import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.IBodyModifications;
+import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPart;
+import DaoOfModding.Cultivationcraft.Cultivationcraft;
+import DaoOfModding.Cultivationcraft.Network.PacketHandler;
+import DaoOfModding.Cultivationcraft.Server.ServerItemControl;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.network.PacketBuffer;
+import net.minecraftforge.fml.LogicalSide;
+import net.minecraftforge.fml.network.NetworkEvent;
+
+import java.util.HashMap;
+import java.util.UUID;
+import java.util.function.Supplier;
+
+public class BodyForgeSelectionPacket extends Packet
+{
+    private String selectionID;
+
+    public BodyForgeSelectionPacket(String ID)
+    {
+        selectionID = ID;
+    }
+
+    @Override
+    public void encode(PacketBuffer buffer)
+    {
+        buffer.writeString(selectionID);
+    }
+
+    public static BodyForgeSelectionPacket decode(PacketBuffer buffer)
+    {
+        BodyForgeSelectionPacket returnValue = new BodyForgeSelectionPacket("");
+
+        try
+        {
+            // Read in the sent values
+            String readingID = buffer.readString();
+
+            return new BodyForgeSelectionPacket(readingID);
+        }
+        catch (IllegalArgumentException | IndexOutOfBoundsException e)
+        {
+            Cultivationcraft.LOGGER.warn("Exception while reading BodyForgeSelection message: " + e);
+            return returnValue;
+        }
+    }
+
+    // Read the packet received over the network
+    public void handle(Supplier<NetworkEvent.Context> ctxSupplier)
+    {
+        NetworkEvent.Context ctx = ctxSupplier.get();
+        LogicalSide sideReceived = ctx.getDirection().getReceptionSide();
+        ctx.setPacketHandled(true);
+
+        if (!sideReceived.isClient())
+            ctx.enqueueWork(() -> processPacket(ctx.getSender()));
+        else
+            Cultivationcraft.LOGGER.warn("BodyForgeSelection Packet was received by client, THIS SHOULD NOT HAPPEN: " + this.toString());
+    }
+
+    // Process received packet on server
+    private void processPacket(PlayerEntity player)
+    {
+        // Ensure that this is a valid selection for this player
+        BodyPart part = BodyPartNames.getPart(selectionID);
+
+        if (part == null || !part.canBeForged(player))
+        {
+            Cultivationcraft.LOGGER.warn(player.getName().getString() + " tried to forge an invalid bodyPart: " + selectionID);
+            return;
+        }
+
+        // Set the new selection and update all clients
+        IBodyModifications modifications = BodyModifications.getBodyModifications(player);
+        modifications.setSelection(selectionID);
+
+        PacketHandler.sendBodyModificationsToClient(player);
+    }
+}

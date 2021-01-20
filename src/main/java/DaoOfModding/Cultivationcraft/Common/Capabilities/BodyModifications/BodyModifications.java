@@ -7,8 +7,20 @@ import java.util.HashMap;
 
 public class BodyModifications implements IBodyModifications
 {
+    String selected = "";
     HashMap<String, BodyPart> modifications = new HashMap<String, BodyPart>();
     boolean hasUpdated = false;
+
+
+    public String getSelection()
+    {
+        return selected;
+    }
+
+    public void setSelection(String selection)
+    {
+        selected = selection;
+    }
 
     // Does this player have a modification for the supplied limb?
     public boolean hasModification(String limb)

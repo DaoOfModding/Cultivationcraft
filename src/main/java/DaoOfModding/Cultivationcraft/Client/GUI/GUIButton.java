@@ -53,9 +53,19 @@ public class GUIButton
         return false;
     }
 
+    public boolean isSelected()
+    {
+        return selected;
+    }
+
     public void unselect()
     {
         selected = false;
+    }
+
+    public void select()
+    {
+        selected = true;
     }
 
     public boolean mouseOver(int mouseX, int mouseY)

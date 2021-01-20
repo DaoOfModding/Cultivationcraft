@@ -1,11 +1,13 @@
 package DaoOfModding.Cultivationcraft.Client.GUI;
 
 import DaoOfModding.Cultivationcraft.Client.Animations.BodyPartGUIs;
+import DaoOfModding.Cultivationcraft.Client.Animations.BodyPartList;
 import DaoOfModding.Cultivationcraft.Client.Animations.BodyPartNames;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.BodyModifications;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.IBodyModifications;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPart;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
+import DaoOfModding.Cultivationcraft.Network.ClientPacketHandler;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.Minecraft;
@@ -40,8 +42,6 @@ public class BodyforgeScreen extends Screen
     private final int xSize = 175;
     private final int ySize = 178;
 
-    private String selectedPosition = null;
-
     public BodyforgeScreen()
     {
         super(new TranslationTextComponent("cultivationcraft.gui.bodyforge"));
@@ -51,7 +51,6 @@ public class BodyforgeScreen extends Screen
     private void updateBodyPartList()
     {
         bodyParts = new DropdownList();
-        bodyParts.addItem("", "");
 
         ClientPlayerEntity player = Minecraft.getInstance().player;
 
@@ -67,6 +66,19 @@ public class BodyforgeScreen extends Screen
         for (String pos : positions)
             bodyParts.addItem(BodyPartNames.getDisplayName(pos), pos);
 
+        // If there are no valid positions make dropdown list blank
+        if (positions.size() == 0)
+        {
+            bodyParts.addItem("", "");
+            return;
+        }
+
+        String Selection = BodyModifications.getBodyModifications(Minecraft.getInstance().player).getSelection();
+        BodyPart part = BodyPartNames.getPart(Selection);
+
+        if (part != null)
+            bodyParts.changeSelection(BodyPartNames.getDisplayName(part.getPosition()));
+
         updateBodySubPartList();
     }
 
@@ -78,15 +90,27 @@ public class BodyforgeScreen extends Screen
         ArrayList<String> positions = new ArrayList<String>();
 
         for (BodyPart part : BodyPartNames.getParts())
-            if (part.getPosition() == selectedPosition && !positions.contains(part.getSubPosition()) && part.canBeForged(player))
+            if (equalsSelectedPosition(part.getPosition()) && !positions.contains(part.getSubPosition()) && part.canBeForged(player))
                 positions.add(part.getSubPosition());
 
         for (String pos : positions)
-            bodySubParts.addItem(BodyPartNames.getDisplayName(selectedPosition, pos), pos);
+            bodySubParts.addItem(BodyPartNames.getDisplayName((String)bodyParts.getSelected(), pos), pos);
 
         // If no sub-positions are found make dropdown list blank
         if (positions.size() == 0)
+        {
             bodySubParts.addItem("", "");
+            return;
+        }
+
+        String Selection = BodyModifications.getBodyModifications(Minecraft.getInstance().player).getSelection();
+        BodyPart part = BodyPartNames.getPart(Selection);
+
+        // If the selected part's position and the BodyforgeScreens position are equal
+        // Change to the selected part's subposition
+        if (part != null)
+            if (equalsSelectedPosition(part.getPosition()))
+                bodySubParts.changeSelection(BodyPartNames.getDisplayName(part.getPosition(), part.getSubPosition()));
 
         updateButtons();
     }
@@ -97,9 +121,20 @@ public class BodyforgeScreen extends Screen
 
         ClientPlayerEntity player = Minecraft.getInstance().player;
 
+        String Selection = BodyModifications.getBodyModifications(player).getSelection();
+        BodyPart selectedPart = BodyPartNames.getPart(Selection);
+
+        // Add a button for each part that can be forged in the selected subposition
         for (BodyPart part : BodyPartNames.getParts())
-            if (part.getPosition() == selectedPosition && part.getSubPosition() == bodySubParts.getSelected() && part.canBeForged(player))
-                buttons.add(new GUIButton(part.getID(), part.getDisplayName()));
+            if (equalsSelectedPosition(part.getPosition()) && equalsSelectedSubPosition(part.getSubPosition()) && part.canBeForged(player))
+            {
+                GUIButton button = new GUIButton(part.getID(), part.getDisplayName());
+                buttons.add(button);
+
+                // If the bodypart is the currently selected bodypart then select this button
+                if (part == selectedPart)
+                    button.select();
+            }
     }
 
     @Override
@@ -116,7 +151,6 @@ public class BodyforgeScreen extends Screen
 
         if (changed != null)
         {
-            selectedPosition = changed;
             updateBodySubPartList();
             return true;
         }
@@ -158,11 +192,19 @@ public class BodyforgeScreen extends Screen
 
     public void changeSelection(GUIButton selected)
     {
+        // If the button has been turned off
+        // Turn it back on and do nothing else
+        if (!selected.isSelected())
+        {
+            selected.select();
+            return;
+        }
+
         for (GUIButton button : buttons)
             if (button != selected)
                 button.unselect();
 
-        // TODO: Send new selection to server
+        ClientPacketHandler.sendBodyForgeSelectionToServer(selected.getID());
     }
 
     @Override
@@ -231,6 +273,13 @@ public class BodyforgeScreen extends Screen
 
         ScreenTabControl.highlightTabs(matrixStack, 2, mouseX, mouseY, edgeSpacingX, edgeSpacingY, this);
 
+        drawBody(matrixStack);
+    }
+
+    protected void drawBody(MatrixStack matrixStack)
+    {
+        int edgeSpacingX = (this.width - this.xSize) / 2;
+        int edgeSpacingY = (this.height - this.ySize) / 2;
 
         // Draw the players body parts
         int bodyPosX = edgeSpacingX + 20;
@@ -247,7 +296,7 @@ public class BodyforgeScreen extends Screen
             base = BodyPartGUIs.getGUI(BodyPartNames.DefaultBody);
 
         boolean highlight = false;
-        if (selectedPosition == BodyPartNames.bodyPosition)
+        if (equalsSelectedPosition(BodyPartNames.bodyPosition))
             highlight = true;
 
         base.render(matrixStack, bodyPosX, bodyPosY, highlight, this);
@@ -257,7 +306,7 @@ public class BodyforgeScreen extends Screen
         highlight = false;
         if (!modifications.hasModification(BodyPartNames.headPosition))
         {
-            if (selectedPosition == BodyPartNames.headPosition)
+            if (equalsSelectedPosition(BodyPartNames.headPosition))
                 highlight = true;
 
             BodyPartGUIs.getGUI(BodyPartNames.DefaultHead).render(matrixStack, bodyPosX, bodyPosY, highlight, this, base);
@@ -267,7 +316,7 @@ public class BodyforgeScreen extends Screen
         highlight = false;
         if (!modifications.hasModification(BodyPartNames.armPosition))
         {
-            if (selectedPosition == BodyPartNames.armPosition)
+            if (equalsSelectedPosition(BodyPartNames.armPosition))
                 highlight = true;
 
             BodyPartGUIs.getGUI(BodyPartNames.DefaultRightArm).render(matrixStack, bodyPosX, bodyPosY, highlight, this, base);
@@ -277,7 +326,7 @@ public class BodyforgeScreen extends Screen
         highlight = false;
         if (!modifications.hasModification(BodyPartNames.legPosition))
         {
-            if (selectedPosition == BodyPartNames.legPosition)
+            if (equalsSelectedPosition(BodyPartNames.legPosition))
                 highlight = true;
 
             BodyPartGUIs.getGUI(BodyPartNames.DefaultRightLeg).render(matrixStack, bodyPosX, bodyPosY, highlight, this, base);
@@ -293,7 +342,7 @@ public class BodyforgeScreen extends Screen
                 {
                     highlight = false;
 
-                    if (selectedPosition == BodyPartNames.getPart(ID).getPosition())
+                    if (equalsSelectedPosition(BodyPartNames.getPart(ID).getPosition()))
                         highlight = true;
 
                     BodyPartGUI gui = BodyPartGUIs.getGUI(ID);
@@ -302,5 +351,39 @@ public class BodyforgeScreen extends Screen
                         gui.render(matrixStack, bodyPosX, bodyPosY, highlight, this, base);
                 }
         }
+    }
+
+    private String getSelectedPosition()
+    {
+        String selected = ((String)bodyParts.getSelected());
+        if (selected == null)
+            selected = "";
+
+        return selected;
+    }
+
+    private String getSelectedSubPosition()
+    {
+        String selected = ((String)bodySubParts.getSelected());
+        if (selected == null)
+            selected = "";
+
+        return selected;
+    }
+
+    private Boolean equalsSelectedPosition(String compare)
+    {
+        if (getSelectedPosition().compareTo(compare) == 0)
+            return true;
+
+        return false;
+    }
+
+    private Boolean equalsSelectedSubPosition(String compare)
+    {
+        if (getSelectedSubPosition().compareTo(compare) == 0)
+            return true;
+
+        return false;
     }
 }

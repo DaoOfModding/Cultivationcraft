@@ -6,6 +6,9 @@ import java.util.HashMap;
 
 public interface IBodyModifications
 {
+    public String getSelection();
+    public void setSelection(String selection);
+
     public boolean hasModification(String limb);
     public BodyPart getModification(String limb);
     public void setModification(BodyPart part);

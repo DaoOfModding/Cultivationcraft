@@ -52,12 +52,12 @@ public class Cultivationcraft {
         TechniqueControl.init();
         GenericPoses.init();
         GenericQiPoses.init();
+        BodyPartNames.init();
     }
 
     private void clientInit(final FMLClientSetupEvent event)
     {
         ClientItemControl.init(event);
         Register.registerRenderers();
-        BodyPartNames.init();
     }
 }

@@ -77,7 +77,7 @@ public class BodyPartNames
     public static BodyPart getPart(String part)
     {
         for (BodyPart searchPart : parts)
-            if (searchPart.getID() == part)
+            if (searchPart.getID().compareTo(part) == 0)
                 return searchPart;
 
         return null;

@@ -34,6 +34,7 @@ public class PacketHandler
     private static final byte FLYING_SWORD_NBT_ID = 35;
     private static final byte FLYING_SWORD_RECALL = 36;
     private static final byte CULTIVATOR_TARGET_ID = 76;
+    private static final byte BODY_FORGE_SELECTION = 96;
     private static final byte BODY_MODIFICATIONS = 97;
     private static final byte CULTIVATOR_TECHNIQUES = 98;
     private static final byte CULTIVATOR_STATS = 99;
@@ -56,6 +57,7 @@ public class PacketHandler
         channel.registerMessage(CULTIVATOR_TARGET_ID, CultivatorTargetPacket.class, CultivatorTargetPacket::encode, CultivatorTargetPacket::decode, CultivatorTargetPacket::handle);
         channel.registerMessage(CULTIVATOR_TECHNIQUES, CultivatorTechniquesPacket.class, CultivatorTechniquesPacket::encode, CultivatorTechniquesPacket::decode, CultivatorTechniquesPacket::handle);
         channel.registerMessage(CULTIVATOR_STATS, CultivatorStatsPacket.class, CultivatorStatsPacket::encode, CultivatorStatsPacket::decode, CultivatorStatsPacket::handle);
+        channel.registerMessage(BODY_FORGE_SELECTION, BodyForgeSelectionPacket.class, BodyForgeSelectionPacket::encode, BodyForgeSelectionPacket::decode, BodyForgeSelectionPacket::handle);
         channel.registerMessage(BODY_MODIFICATIONS, BodyModificationsPacket.class, BodyModificationsPacket::encode, BodyModificationsPacket::decode, BodyModificationsPacket::handle);
     }
 
@@ -119,6 +121,13 @@ public class PacketHandler
     public static void sendBodyModificationsToSpecificClient(PlayerEntity player, ServerPlayerEntity toSend)
     {
         PacketDistributor.PacketTarget target = PacketDistributor.PLAYER.with(() -> toSend);
+
+        sendBodyModificationsToClient(player, target);
+    }
+
+    public static void sendBodyModificationsToClient(PlayerEntity player)
+    {
+        PacketDistributor.PacketTarget target = PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> player);
 
         sendBodyModificationsToClient(player, target);
     }
