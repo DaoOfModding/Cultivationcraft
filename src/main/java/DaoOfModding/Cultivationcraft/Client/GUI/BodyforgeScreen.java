@@ -16,6 +16,7 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TranslationTextComponent;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -27,6 +28,7 @@ public class BodyforgeScreen extends Screen
     private DropdownList bodySubParts;
 
     private ArrayList<GUIButton> buttons = new ArrayList<GUIButton>();
+    private GUIButton forge;
 
     private final int bodyPartListXPos = 75;
     private final int bodyPartListYPos = 50;
@@ -34,18 +36,35 @@ public class BodyforgeScreen extends Screen
     private final int bodySubPartListXPos = 75;
     private final int bodySubPartListYPos = 75;
 
+    private int forgeXPos = 80;
+    private final int forgeYPos = 150;
+
     private final int buttonMinXPos = 75;
     private final int buttonMaxXPos = 170;
 
     private final int buttonMinYPos = 100;
 
+    private final int selectedTextXPos = 122;
+    private final int selectedTextYPos = 70;
+
     private final int xSize = 175;
     private final int ySize = 178;
+
+    private String selectedPart = null;
 
     public BodyforgeScreen()
     {
         super(new TranslationTextComponent("cultivationcraft.gui.bodyforge"));
+
+
+        String Selection = BodyModifications.getBodyModifications(Minecraft.getInstance().player).getSelection();
         updateBodyPartList();
+
+        String forgeString = new TranslationTextComponent("cultivationcraft.gui.forge").getString();
+        forge = new GUIButton("FORGE", forgeString);
+
+        // Centre the forge button
+        forgeXPos -= Minecraft.getInstance().fontRenderer.getStringWidth(forgeString) / 2;
     }
 
     private void updateBodyPartList()
@@ -55,7 +74,6 @@ public class BodyforgeScreen extends Screen
         ClientPlayerEntity player = Minecraft.getInstance().player;
 
         // Create a list of all body part positions that can currently be modified
-        // TODO: Or have already been modified
         ArrayList<String> positions = new ArrayList<String>();
 
         for (BodyPart part : BodyPartNames.getParts())
@@ -73,17 +91,12 @@ public class BodyforgeScreen extends Screen
             return;
         }
 
-        String Selection = BodyModifications.getBodyModifications(Minecraft.getInstance().player).getSelection();
-        BodyPart part = BodyPartNames.getPart(Selection);
-
-        if (part != null)
-            bodyParts.changeSelection(BodyPartNames.getDisplayName(part.getPosition()));
-
         updateBodySubPartList();
     }
 
     private void updateBodySubPartList()
-    {
+    {        selectedPart = null;
+
         bodySubParts = new DropdownList();
 
         ClientPlayerEntity player = Minecraft.getInstance().player;
@@ -103,26 +116,15 @@ public class BodyforgeScreen extends Screen
             return;
         }
 
-        String Selection = BodyModifications.getBodyModifications(Minecraft.getInstance().player).getSelection();
-        BodyPart part = BodyPartNames.getPart(Selection);
-
-        // If the selected part's position and the BodyforgeScreens position are equal
-        // Change to the selected part's subposition
-        if (part != null)
-            if (equalsSelectedPosition(part.getPosition()))
-                bodySubParts.changeSelection(BodyPartNames.getDisplayName(part.getPosition(), part.getSubPosition()));
-
         updateButtons();
     }
 
     private void updateButtons()
     {
+        selectedPart = null;
         buttons.clear();
 
         ClientPlayerEntity player = Minecraft.getInstance().player;
-
-        String Selection = BodyModifications.getBodyModifications(player).getSelection();
-        BodyPart selectedPart = BodyPartNames.getPart(Selection);
 
         // Add a button for each part that can be forged in the selected subposition
         for (BodyPart part : BodyPartNames.getParts())
@@ -130,10 +132,6 @@ public class BodyforgeScreen extends Screen
             {
                 GUIButton button = new GUIButton(part.getID(), part.getDisplayName());
                 buttons.add(button);
-
-                // If the bodypart is the currently selected bodypart then select this button
-                if (part == selectedPart)
-                    button.select();
             }
     }
 
@@ -158,6 +156,15 @@ public class BodyforgeScreen extends Screen
         if (bodySubParts.mouseClick((int)mouseX - (edgeSpacingX + bodySubPartListXPos), (int)mouseY - (edgeSpacingY + bodySubPartListYPos), buttonPressed) != null)
         {
             updateButtons();
+            return true;
+        }
+
+        // Send the selected part to the server if a part is selected and the forge button is pressed
+        if (forge.mouseClick((int)mouseX - (edgeSpacingX + forgeXPos), (int)mouseY - (edgeSpacingY + forgeYPos), buttonPressed))
+        {
+            if (selectedPart != null)
+                ClientPacketHandler.sendBodyForgeSelectionToServer(selectedPart);
+
             return true;
         }
 
@@ -200,11 +207,11 @@ public class BodyforgeScreen extends Screen
             return;
         }
 
+        selectedPart = selected.getID();
+
         for (GUIButton button : buttons)
             if (button != selected)
                 button.unselect();
-
-        ClientPacketHandler.sendBodyForgeSelectionToServer(selected.getID());
     }
 
     @Override
@@ -234,6 +241,33 @@ public class BodyforgeScreen extends Screen
 
     protected void drawGuiForgroundLayer(MatrixStack matrixStack, float partialTicks, int mouseX, int mouseY)
     {
+        // If a part has already been selected then draw information on that selection
+        // Otherwise draw the part selection menu
+        String Selection = BodyModifications.getBodyModifications(Minecraft.getInstance().player).getSelection();
+        BodyPart part = BodyPartNames.getPart(Selection);
+
+        if (part == null)
+            drawSelection(matrixStack, mouseX, mouseY);
+        else
+            drawSelected(matrixStack, part, mouseX, mouseY);
+    }
+
+    protected void drawGuiBackgroundLayer(MatrixStack matrixStack, float partialTicks, int mouseX, int mouseY)
+    {
+        GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+        Minecraft.getInstance().getTextureManager().bindTexture(TEXTURE);
+
+        int edgeSpacingX = (this.width - this.xSize) / 2;
+        int edgeSpacingY = (this.height - this.ySize) / 2;
+        this.blit(matrixStack, edgeSpacingX, edgeSpacingY, 0, 0, this.xSize, this.ySize);
+
+        ScreenTabControl.highlightTabs(matrixStack, 2, mouseX, mouseY, edgeSpacingX, edgeSpacingY, this);
+
+        drawBody(matrixStack);
+    }
+
+    private void drawSelection(MatrixStack matrixStack, int mouseX, int mouseY)
+    {
         int edgeSpacingX = (this.width - this.xSize) / 2;
         int edgeSpacingY = (this.height - this.ySize) / 2;
 
@@ -257,23 +291,26 @@ public class BodyforgeScreen extends Screen
             xpos += button.width + 3;
         }
 
+        forge.render(matrixStack, edgeSpacingX + forgeXPos, edgeSpacingY + forgeYPos, mouseX, mouseY, this);
+
         // Render the BodyPart dropdown list
         bodySubParts.render(matrixStack, edgeSpacingX + bodySubPartListXPos, edgeSpacingY + bodySubPartListYPos, mouseX, mouseY, this);
         bodyParts.render(matrixStack, edgeSpacingX + bodyPartListXPos, edgeSpacingY + bodyPartListYPos, mouseX, mouseY, this);
     }
 
-    protected void drawGuiBackgroundLayer(MatrixStack matrixStack, float partialTicks, int mouseX, int mouseY)
+    private void drawSelected(MatrixStack matrixStack, BodyPart part, int mouseX, int mouseY)
     {
-        GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-        Minecraft.getInstance().getTextureManager().bindTexture(TEXTURE);
-
         int edgeSpacingX = (this.width - this.xSize) / 2;
         int edgeSpacingY = (this.height - this.ySize) / 2;
-        this.blit(matrixStack, edgeSpacingX, edgeSpacingY, 0, 0, this.xSize, this.ySize);
 
-        ScreenTabControl.highlightTabs(matrixStack, 2, mouseX, mouseY, edgeSpacingX, edgeSpacingY, this);
+        String position = BodyPartNames.getDisplayName(part.getPosition());
+        String subPosition = BodyPartNames.getDisplayName(part.getPosition(), part.getSubPosition());
 
-        drawBody(matrixStack);
+        font.drawString(matrixStack, position,edgeSpacingX + selectedTextXPos - font.getStringWidth(position) / 2, edgeSpacingY + selectedTextYPos, Color.GRAY.getRGB());
+        font.drawString(matrixStack, subPosition, edgeSpacingX + selectedTextXPos- font.getStringWidth(subPosition) / 2, edgeSpacingY + selectedTextYPos + font.FONT_HEIGHT, Color.GRAY.getRGB());
+        font.drawString(matrixStack,part.getDisplayName(), edgeSpacingX + selectedTextXPos - font.getStringWidth(part.getDisplayName()) / 2, edgeSpacingY + selectedTextYPos + font.FONT_HEIGHT*2, Color.BLACK.getRGB());
+
+        // TODO: Add progress bar, cancel button
     }
 
     protected void drawBody(MatrixStack matrixStack)
@@ -282,7 +319,7 @@ public class BodyforgeScreen extends Screen
         int edgeSpacingY = (this.height - this.ySize) / 2;
 
         // Draw the players body parts
-        int bodyPosX = edgeSpacingX + 20;
+        int bodyPosX = edgeSpacingX + 30;
         int bodyPosY = edgeSpacingY + 60;
 
         IBodyModifications modifications = BodyModifications.getBodyModifications(Minecraft.getInstance().player);
