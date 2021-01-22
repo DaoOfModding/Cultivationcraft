@@ -9,6 +9,7 @@
 
   "cultivationcraft.gui.bind": "Bind Item",
   "cultivationcraft.gui.done": "Done",
+  "cultivationcraft.gui.cancel": "Cancel",
   "cultivationcraft.gui.remaining": "Remaining: %s seconds",
 
   "cultivationcraft.gui.technique": "Techniques",

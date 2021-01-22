@@ -10,7 +10,7 @@ public class BodyModifications implements IBodyModifications
     String selected = "";
     HashMap<String, BodyPart> modifications = new HashMap<String, BodyPart>();
     boolean hasUpdated = false;
-
+    int progress = 0;
 
     public String getSelection()
     {
@@ -20,6 +20,16 @@ public class BodyModifications implements IBodyModifications
     public void setSelection(String selection)
     {
         selected = selection;
+    }
+
+    public void setProgress(int number)
+    {
+        progress = number;
+    }
+
+    public int getProgress()
+    {
+        return progress;
     }
 
     // Does this player have a modification for the supplied limb?

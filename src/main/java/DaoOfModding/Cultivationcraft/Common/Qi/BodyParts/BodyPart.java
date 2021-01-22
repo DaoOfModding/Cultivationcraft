@@ -16,8 +16,9 @@ public class BodyPart
     String limbPosition;
     String limbSubPosition;
     String displayNamePosition;
+    int qiNeeded;
 
-    public BodyPart(String partID, ArrayList<String> IDs, String position, String subPosition, String displayNamePos)
+    public BodyPart(String partID, ArrayList<String> IDs, String position, String subPosition, String displayNamePos, int qiToForge)
     {
         ID = partID;
 
@@ -26,6 +27,8 @@ public class BodyPart
         limbPosition = position;
         limbSubPosition = subPosition;
         displayNamePosition = displayNamePos;
+
+        qiNeeded = qiToForge;
     }
 
     public String getDisplayName()
@@ -46,6 +49,11 @@ public class BodyPart
     public String getSubPosition()
     {
         return limbSubPosition;
+    }
+
+    public int getQiNeeded()
+    {
+        return qiNeeded;
     }
 
     public ArrayList<String> getModelIDs()

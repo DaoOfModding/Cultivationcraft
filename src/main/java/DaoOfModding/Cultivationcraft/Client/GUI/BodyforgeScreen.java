@@ -29,6 +29,7 @@ public class BodyforgeScreen extends Screen
 
     private ArrayList<GUIButton> buttons = new ArrayList<GUIButton>();
     private GUIButton forge;
+    private GUIButton cancel;
 
     private final int bodyPartListXPos = 75;
     private final int bodyPartListYPos = 50;
@@ -36,8 +37,11 @@ public class BodyforgeScreen extends Screen
     private final int bodySubPartListXPos = 75;
     private final int bodySubPartListYPos = 75;
 
-    private int forgeXPos = 80;
+    private int forgeXPos = 83;
     private final int forgeYPos = 150;
+
+    private int cancelXPos = 118;
+    private final int cancelYPos = 110;
 
     private final int buttonMinXPos = 75;
     private final int buttonMaxXPos = 170;
@@ -63,8 +67,12 @@ public class BodyforgeScreen extends Screen
         String forgeString = new TranslationTextComponent("cultivationcraft.gui.forge").getString();
         forge = new GUIButton("FORGE", forgeString);
 
-        // Centre the forge button
+        String cancelString = new TranslationTextComponent("cultivationcraft.gui.cancel").getString();
+        cancel = new GUIButton("CANCEL", cancelString);
+
+        // Centre the buttons
         forgeXPos -= Minecraft.getInstance().fontRenderer.getStringWidth(forgeString) / 2;
+        cancelXPos -= Minecraft.getInstance().fontRenderer.getStringWidth(cancelString) / 2;
     }
 
     private void updateBodyPartList()
@@ -159,11 +167,22 @@ public class BodyforgeScreen extends Screen
             return true;
         }
 
+        // Cancel the selection if the cancel button is pressed
+        if (cancel.mouseClick((int)mouseX - (edgeSpacingX + cancelXPos), (int)mouseY - (edgeSpacingY + cancelYPos), buttonPressed))
+        {
+            ClientPacketHandler.sendBodyForgeSelectionToServer("");
+            cancel.unselect();
+
+            return true;
+        }
+
         // Send the selected part to the server if a part is selected and the forge button is pressed
         if (forge.mouseClick((int)mouseX - (edgeSpacingX + forgeXPos), (int)mouseY - (edgeSpacingY + forgeYPos), buttonPressed))
         {
             if (selectedPart != null)
                 ClientPacketHandler.sendBodyForgeSelectionToServer(selectedPart);
+
+            forge.unselect();
 
             return true;
         }
@@ -310,7 +329,16 @@ public class BodyforgeScreen extends Screen
         font.drawString(matrixStack, subPosition, edgeSpacingX + selectedTextXPos- font.getStringWidth(subPosition) / 2, edgeSpacingY + selectedTextYPos + font.FONT_HEIGHT, Color.GRAY.getRGB());
         font.drawString(matrixStack,part.getDisplayName(), edgeSpacingX + selectedTextXPos - font.getStringWidth(part.getDisplayName()) / 2, edgeSpacingY + selectedTextYPos + font.FONT_HEIGHT*2, Color.BLACK.getRGB());
 
-        // TODO: Add progress bar, cancel button
+        // Render the progress bar
+        IBodyModifications modifications = BodyModifications.getBodyModifications(Minecraft.getInstance().player);
+        float progress = modifications.getProgress() / part.getQiNeeded();
+
+        Minecraft.getInstance().getTextureManager().bindTexture(TEXTURE);
+
+        this.blit(matrixStack, edgeSpacingX + 9, edgeSpacingY + 160, 0, 246, 157, 6);
+        this.blit(matrixStack, edgeSpacingX + 10, edgeSpacingY + 161, 1, 252, (int)(155 * progress), 4);
+
+        cancel.render(matrixStack, edgeSpacingX + cancelXPos, edgeSpacingY + cancelYPos, mouseX, mouseY, this);
     }
 
     protected void drawBody(MatrixStack matrixStack)
@@ -392,7 +420,15 @@ public class BodyforgeScreen extends Screen
 
     private String getSelectedPosition()
     {
+        // Check against the position selected in the drop down menu
         String selected = ((String)bodyParts.getSelected());
+
+        // Change the position to check to the selected part's position if one exists
+        String Selection = BodyModifications.getBodyModifications(Minecraft.getInstance().player).getSelection();
+        BodyPart part = BodyPartNames.getPart(Selection);
+        if (part != null)
+            selected = part.getPosition();
+
         if (selected == null)
             selected = "";
 
@@ -407,7 +443,6 @@ public class BodyforgeScreen extends Screen
 
         return selected;
     }
-
     private Boolean equalsSelectedPosition(String compare)
     {
         if (getSelectedPosition().compareTo(compare) == 0)

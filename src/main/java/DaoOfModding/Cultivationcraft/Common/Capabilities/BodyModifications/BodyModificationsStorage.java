@@ -17,6 +17,7 @@ public class BodyModificationsStorage implements Capability.IStorage<IBodyModifi
         CompoundNBT nbt = new CompoundNBT();
 
         nbt.putString("selection", instance.getSelection());
+        nbt.putInt("progress", instance.getProgress());
 
         CompoundNBT modifications = new CompoundNBT();
         for(Map.Entry<String, BodyPart> entry : instance.getModifications().entrySet())
@@ -36,6 +37,7 @@ public class BodyModificationsStorage implements Capability.IStorage<IBodyModifi
         CompoundNBT NBT = (CompoundNBT)nbt;
 
         instance.setSelection(NBT.getString("selection"));
+        instance.setProgress(NBT.getInt("progress"));
 
         CompoundNBT modifications = NBT.getCompound("modifications");
 

@@ -43,7 +43,7 @@ public class BodyPartNames
         //testList.add(BodyPartModelNames.TestPartModel);
         //addPart(new BodyPart(TestPart, testList, armPosition, "test"));
 
-        addPart(new BodyPart(startingEyesPart, new ArrayList<String>(), headPosition, eyeSubPosition, "cultivationcraft.gui.headpart.eye.QiSight"));
+        addPart(new BodyPart(startingEyesPart, new ArrayList<String>(), headPosition, eyeSubPosition, "cultivationcraft.gui.headpart.eye.QiSight", 200));
     }
 
     public static String getDisplayName(String position)

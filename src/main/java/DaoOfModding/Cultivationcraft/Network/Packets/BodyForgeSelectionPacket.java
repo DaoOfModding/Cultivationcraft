@@ -67,19 +67,34 @@ public class BodyForgeSelectionPacket extends Packet
     // Process received packet on server
     private void processPacket(PlayerEntity player)
     {
-        // Ensure that this is a valid selection for this player
-        BodyPart part = BodyPartNames.getPart(selectionID);
-
-        if (part == null || !part.canBeForged(player))
-        {
-            Cultivationcraft.LOGGER.warn(player.getName().getString() + " tried to forge an invalid bodyPart: " + selectionID);
+        // Do nothing if the received selection is already selected
+        IBodyModifications modifications = BodyModifications.getBodyModifications(player);
+        if (modifications.getSelection().compareTo(selectionID) == 0)
             return;
+
+        // Reset the body forge progress
+        modifications.setProgress(0);
+
+        // Set the current selection to nothing if nothing was passed through
+        if (selectionID.compareTo("") == 0)
+        {
+            modifications.setSelection(selectionID);
+        }
+        else
+        {
+            // Ensure that this is a valid selection for this player
+            BodyPart part = BodyPartNames.getPart(selectionID);
+
+            if (part == null || !part.canBeForged(player)) {
+                Cultivationcraft.LOGGER.warn(player.getName().getString() + " tried to forge an invalid bodyPart: " + selectionID);
+                return;
+            }
+
+            // Set the new selection
+            modifications.setSelection(selectionID);
         }
 
-        // Set the new selection and update all clients
-        IBodyModifications modifications = BodyModifications.getBodyModifications(player);
-        modifications.setSelection(selectionID);
-
+        // Update clients with new selection
         PacketHandler.sendBodyModificationsToClient(player);
     }
 }

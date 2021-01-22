@@ -9,6 +9,9 @@ public interface IBodyModifications
     public String getSelection();
     public void setSelection(String selection);
 
+    public void setProgress(int number);
+    public int getProgress();
+
     public boolean hasModification(String limb);
     public BodyPart getModification(String limb);
     public void setModification(BodyPart part);
