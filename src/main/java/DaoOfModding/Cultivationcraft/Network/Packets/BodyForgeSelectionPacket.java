@@ -84,6 +84,8 @@ public class BodyForgeSelectionPacket extends Packet
         {
             // Ensure that this is a valid selection for this player
             BodyPart part = BodyPartNames.getPart(selectionID);
+            if (part == null)
+                part = BodyPartNames.getOption(selectionID);
 
             if (part == null || !part.canBeForged(player)) {
                 Cultivationcraft.LOGGER.warn(player.getName().getString() + " tried to forge an invalid bodyPart: " + selectionID);

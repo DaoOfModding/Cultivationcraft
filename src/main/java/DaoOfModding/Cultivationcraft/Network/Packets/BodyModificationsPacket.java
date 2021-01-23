@@ -19,29 +19,20 @@ import java.util.function.Supplier;
 public class BodyModificationsPacket extends Packet
 {
     private UUID owner;
-    HashMap<String, BodyPart> modificationsParts = new HashMap<String, BodyPart>();
-    String selection = "";
+    private IBodyModifications mods;
 
     public BodyModificationsPacket(UUID ownerID, IBodyModifications modifications)
     {
         owner = ownerID;
 
-        if (modifications != null)
-        {
-            modificationsParts = modifications.getModifications();
-            selection = modifications.getSelection();
-        }
+        mods = modifications;
     }
 
     @Override
     public void encode(PacketBuffer buffer)
     {
         buffer.writeUniqueId(owner);
-        buffer.writeString(selection);
-        buffer.writeInt(modificationsParts.size());
-
-        for (BodyPart part : modificationsParts.values())
-            buffer.writeString(part.getID());
+        buffer.writeCompoundTag(mods.write());
     }
 
     public static BodyModificationsPacket decode(PacketBuffer buffer)
@@ -55,12 +46,7 @@ public class BodyModificationsPacket extends Packet
 
             IBodyModifications modifications = new BodyModifications();
 
-            modifications.setSelection(buffer.readString());
-
-            int numberOfModifications = buffer.readInt();
-
-            for (int i = 0; i < numberOfModifications; i++)
-                modifications.setModification(BodyPartNames.getPart(buffer.readString()));
+            modifications.read(buffer.readCompoundTag());
 
             return new BodyModificationsPacket(readingOwner, modifications);
         }
@@ -96,9 +82,6 @@ public class BodyModificationsPacket extends Packet
         // Get the modifications for the specified player
         IBodyModifications modifications = BodyModifications.getBodyModifications(ClientItemControl.thisWorld.getPlayerByUuid(owner));
 
-        modifications.setSelection(selection);
-
-        for (BodyPart part : modificationsParts.values())
-            modifications.setModification(part);
+        modifications.copy(mods);
     }
 }

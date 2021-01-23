@@ -25,13 +25,11 @@ public class QiSourceRenderer
 
     public static void renderQiSources()
     {
-        //Vector3d test = Minecraft.getInstance().gameRenderer.getActiveRenderInfo().getProjectedView();
-
         int chunks = Minecraft.getInstance().gameSettings.renderDistanceChunks-1;
         int chunkX = Minecraft.getInstance().player.getPosition().getX() >> 4;
         int chunkZ = Minecraft.getInstance().player.getPosition().getZ() >> 4;
 
-        Chunk QiChunk = Minecraft.getInstance().world.getChunk(chunkX, chunkZ);
+        Chunk QiChunk;
 
         // Cycle through all the chunks in render distance, rendering all the QI sources they contain
         for (int x = -chunks; x < chunks; x++)

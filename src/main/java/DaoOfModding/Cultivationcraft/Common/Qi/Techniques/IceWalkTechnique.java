@@ -4,7 +4,10 @@ import DaoOfModding.Cultivationcraft.Client.AnimationFramework.GenericLimbNames;
 import DaoOfModding.Cultivationcraft.Client.AnimationFramework.GenericPoses;
 import DaoOfModding.Cultivationcraft.Client.AnimationFramework.PlayerPose;
 import DaoOfModding.Cultivationcraft.Client.Animations.GenericQiPoses;
+import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStats;
+import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.ICultivatorStats;
 import DaoOfModding.Cultivationcraft.Common.PlayerUtils;
+import DaoOfModding.Cultivationcraft.Common.Qi.CultivationTypes;
 import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
 import DaoOfModding.Cultivationcraft.Common.Qi.Freeze;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
@@ -123,6 +126,11 @@ public class IceWalkTechnique extends Technique
     @Override
     public boolean isValid(PlayerEntity player)
     {
+        ICultivatorStats stats = CultivatorStats.getCultivatorStats(player);
+
+        if (stats.getCultivationType() != CultivationTypes.QI_CONDENSER)
+            return false;
+
         return true;
     }
 }

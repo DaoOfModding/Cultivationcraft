@@ -14,18 +14,16 @@ public class BodyPart
     String ID;
     ArrayList<String> modelIDs = new ArrayList<String>();
     String limbPosition;
-    String limbSubPosition;
     String displayNamePosition;
     int qiNeeded;
 
-    public BodyPart(String partID, ArrayList<String> IDs, String position, String subPosition, String displayNamePos, int qiToForge)
+    public BodyPart(String partID, ArrayList<String> IDs, String position, String displayNamePos, int qiToForge)
     {
         ID = partID;
 
         modelIDs = (ArrayList<String>)IDs.clone();
 
         limbPosition = position;
-        limbSubPosition = subPosition;
         displayNamePosition = displayNamePos;
 
         qiNeeded = qiToForge;
@@ -44,11 +42,6 @@ public class BodyPart
     public String getPosition()
     {
         return limbPosition;
-    }
-
-    public String getSubPosition()
-    {
-        return limbSubPosition;
     }
 
     public int getQiNeeded()
@@ -70,10 +63,9 @@ public class BodyPart
         if (stats.getCultivationType() != CultivationTypes.BODY_CULTIVATOR)
             return false;
 
-        // Loop through all player body modifications, return false if a modification for this subPosition already exists
-        // Or if this body part is already forged
+        // Loop through all player body modifications, return false if a modification for this position already exists
         for (BodyPart part : BodyModifications.getBodyModifications(player).getModifications().values())
-            if (part.ID == ID || (part.getPosition() == limbPosition && limbSubPosition == part.getSubPosition()))
+            if (part.getPosition().compareTo(limbPosition) == 0)
                 return false;
 
         return true;

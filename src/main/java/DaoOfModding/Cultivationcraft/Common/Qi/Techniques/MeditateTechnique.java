@@ -2,8 +2,14 @@ package DaoOfModding.Cultivationcraft.Common.Qi.Techniques;
 
 import DaoOfModding.Cultivationcraft.Client.AnimationFramework.GenericPoses;
 import DaoOfModding.Cultivationcraft.Client.Animations.GenericQiPoses;
+import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.BodyModifications;
+import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.IBodyModifications;
+import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStats;
+import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.ICultivatorStats;
+import DaoOfModding.Cultivationcraft.Common.Qi.CultivationTypes;
 import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
+import DaoOfModding.Cultivationcraft.Server.BodyPartControl;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -26,17 +32,46 @@ public class MeditateTechnique extends Technique
 
     public void tickServer(TickEvent.PlayerTickEvent event)
     {
+        increaseProgress(event);
+        BodyPartControl.checkForgeProgress(event.player);
+
         super.tickServer(event);
     }
 
     public void tickClient(TickEvent.PlayerTickEvent event)
     {
+        // We can increase the progress on the client, as it will just be overridden later
+        increaseProgress(event);
+
         super.tickClient(event);
+    }
+
+    // Increase the bodyforge progress
+    private void increaseProgress(TickEvent.PlayerTickEvent event)
+    {
+        ICultivatorStats stats = CultivatorStats.getCultivatorStats(event.player);
+
+        // TODO: Get QI from QI sources
+        int toAdd = 5;
+
+        if (stats.getCultivationType() == CultivationTypes.BODY_CULTIVATOR)
+        {
+            IBodyModifications modifications = BodyModifications.getBodyModifications(event.player);
+
+            // Only progress if a part has been selected
+            if (modifications.getSelection().compareTo("") != 0)
+                modifications.addProgress(toAdd);
+        }
     }
 
     @Override
     public boolean isValid(PlayerEntity player)
     {
-        return true;
+        ICultivatorStats stats = CultivatorStats.getCultivatorStats(player);
+
+        if (stats.getCultivationType() == CultivationTypes.BODY_CULTIVATOR || stats.getCultivationType() == CultivationTypes.QI_CONDENSER)
+            return true;
+
+        return false;
     }
 }

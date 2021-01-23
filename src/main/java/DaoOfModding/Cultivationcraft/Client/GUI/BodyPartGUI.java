@@ -20,7 +20,9 @@ public class BodyPartGUI
     int textureX = 0;
     int textureY = 0;
 
-    public BodyPartGUI(ResourceLocation texture, float xOffset, float yOffset, int textureWidth, int textureHeight)
+    boolean overrideBase = false;
+
+    public BodyPartGUI(ResourceLocation texture, float xOffset, float yOffset, int textureWidth, int textureHeight, boolean base)
     {
         TEXTURE = texture;
 
@@ -30,6 +32,13 @@ public class BodyPartGUI
 
         textureX = textureWidth;
         textureY = textureHeight;
+
+        overrideBase = base;
+    }
+
+    public boolean isBase()
+    {
+        return overrideBase;
     }
 
     public int getTextureWidth()

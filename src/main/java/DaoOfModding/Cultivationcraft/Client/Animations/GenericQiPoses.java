@@ -29,8 +29,8 @@ public class GenericQiPoses
 
     private static void setupCrossLegs()
     {
-        CrossLegs.addAngle(GenericLimbNames.leftArm, new Vector3d(Math.toRadians(30), Math.toRadians(-180), 0), GenericPoses.walkArmPriority + 4);
-        CrossLegs.addAngle(GenericLimbNames.rightArm, new Vector3d(Math.toRadians(30), Math.toRadians(180), 0), GenericPoses.walkArmPriority + 4);
+        CrossLegs.addAngle(GenericLimbNames.leftArm, new Vector3d(Math.toRadians(30), Math.toRadians(180), 0), GenericPoses.walkArmPriority + 4);
+        CrossLegs.addAngle(GenericLimbNames.rightArm, new Vector3d(Math.toRadians(30), Math.toRadians(-180), 0), GenericPoses.walkArmPriority + 4);
 
         CrossLegs.addAngle(GenericLimbNames.lowerLeftArm, new Vector3d(0, 0, Math.toRadians(30)), GenericPoses.walkArmPriority + 4);
         CrossLegs.addAngle(GenericLimbNames.lowerRightArm, new Vector3d(0, 0, Math.toRadians(-30)), GenericPoses.walkArmPriority + 4);

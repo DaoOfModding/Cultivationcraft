@@ -63,7 +63,7 @@ public class CommonListeners
         // Only on server
         if (!event.getWorld().isRemote())
         {
-            // If the Chunk's Qi sources have no been generated yet, generate them
+            // If the Chunk's Qi sources have not been generated yet, generate them
             IChunkQiSources sources = ChunkQiSources.getChunkQiSources((Chunk) event.getChunk());
             if (sources.getChunkPos() == null)
             {
