@@ -9,7 +9,8 @@ import java.util.HashMap;
 
 public class BodyPartNames
 {
-    public static final String TestPart = "test";
+    public static final String jawPart = "jaw";
+
     public static final String startingEyesPart = "QiSight";
 
     public static final String DefaultLeftArm = "armleft";
@@ -44,12 +45,20 @@ public class BodyPartNames
 
         addSubPartDisplayName(headPosition, eyeSubPosition, "cultivationcraft.gui.headpart.eye");
 
-        //addSubPartDisplayName(armPosition, "test", "cultivationcraft.test");
+        setupHeadParts();
+        setupHeadOptions();
+    }
 
-        //ArrayList<String> testList = new ArrayList<String>();
-        //testList.add(BodyPartModelNames.TestPartModel);
-        //addPart(new BodyPart(TestPart, testList, armPosition, "test"));
+    private static void setupHeadParts()
+    {
+        ArrayList<String> jawList = new ArrayList<String>();
+        jawList.add(BodyPartModelNames.jawModel);
 
+        addPart(new BodyPart(jawPart, jawList, headPosition, "cultivationcraft.gui.headpart.jaw", 6000));
+    }
+
+    private static void setupHeadOptions()
+    {
         addOption(new BodyPartOption(startingEyesPart, headPosition, eyeSubPosition, "cultivationcraft.gui.headpart.eye.QiSight", 1000));
     }
 

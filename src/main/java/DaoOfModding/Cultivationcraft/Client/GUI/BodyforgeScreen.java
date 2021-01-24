@@ -352,7 +352,7 @@ public class BodyforgeScreen extends Screen
 
         String position = BodyPartNames.getDisplayName(part.getPosition());
 
-        String subPosition = BodyPartNames.basePosition;
+        String subPosition = BodyPartNames.getDisplayName(BodyPartNames.basePosition);
         if (part instanceof BodyPartOption)
             subPosition = BodyPartNames.getDisplayName(part.getPosition(), ((BodyPartOption)part).getSubPosition());
 
@@ -374,6 +374,8 @@ public class BodyforgeScreen extends Screen
 
     protected void drawBody(MatrixStack matrixStack)
     {
+        // TODO: Lock and unlock the body whilst drawing to prevent crashes from changing body parts
+
         int edgeSpacingX = (this.width - this.xSize) / 2;
         int edgeSpacingY = (this.height - this.ySize) / 2;
 
@@ -436,18 +438,17 @@ public class BodyforgeScreen extends Screen
         {
             // Don't redraw the body
             if (entry.getKey() != BodyPartNames.bodyPosition)
-                for (String ID : entry.getValue().getModelIDs())
-                {
-                    highlight = false;
+            {
+                 highlight = false;
 
-                    if (equalsSelectedPosition(BodyPartNames.getPart(ID).getPosition()))
-                        highlight = true;
+                 if (equalsSelectedPosition(entry.getValue().getPosition()))
+                    highlight = true;
 
-                    BodyPartGUI gui = BodyPartGUIs.getGUI(ID);
+                 BodyPartGUI gui = BodyPartGUIs.getGUI(entry.getValue().getID());
 
-                    if (gui != null)
-                        gui.render(matrixStack, bodyPosX, bodyPosY, highlight, this, base);
-                }
+                 if (gui != null)
+                    gui.render(matrixStack, bodyPosX, bodyPosY, highlight, this, base);
+            }
         }
     }
 

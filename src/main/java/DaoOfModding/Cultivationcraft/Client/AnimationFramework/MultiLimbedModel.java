@@ -22,6 +22,8 @@ public class MultiLimbedModel
     HashMap<String, ExtendableModelRenderer> limbs = new HashMap<String, ExtendableModelRenderer>();
     ArrayList<String> toRender = new ArrayList<String>();
 
+    private boolean lock = false;
+
     public MultiLimbedModel(PlayerModel model)
     {
         // TODO: Setup so armor displays on player
@@ -40,6 +42,11 @@ public class MultiLimbedModel
 
     private void setupDefaultLimbs()
     {
+        //TODO: Setup armor models
+        ExtendableModelRenderer head = new ExtendableModelRenderer(baseModel, 0, 0);
+        head.setRotationPoint(0, 0, 0);
+        head.extend(GenericResizers.getHeadResizer());
+
         ExtendableModelRenderer rightArm = new ExtendableModelRenderer(baseModel, 40, 16);
         rightArm.setRotationPoint(-5.0F, 2.0F, 0.0F);
         rightArm.extend(GenericResizers.getRightArmResizer());
@@ -58,6 +65,7 @@ public class MultiLimbedModel
         leftLeg.extend(GenericResizers.getLeftLegResizer());
         leftLeg.mirror = true;
 
+        addLimb(GenericLimbNames.head, head);
         addLimb(GenericLimbNames.leftArm, leftArm);
         addLimb(GenericLimbNames.rightArm, rightArm);
         addLimb(GenericLimbNames.leftLeg, leftLeg);
@@ -66,6 +74,19 @@ public class MultiLimbedModel
         addNonRenderingLimb(GenericLimbNames.lowerRightArm, rightArm.getChild(1));
         addNonRenderingLimb(GenericLimbNames.lowerLeftLeg, leftLeg.getChild(1));
         addNonRenderingLimb(GenericLimbNames.lowerRightLeg, rightLeg.getChild(1));
+    }
+
+    // Stop multi-threading breaking stuff via locking
+    private void lock()
+    {
+        while (lock) {}
+
+        lock = true;
+    }
+
+    private void unlock()
+    {
+        lock = false;
     }
 
     // Returns a list of all limbs on this model
@@ -105,14 +126,33 @@ public class MultiLimbedModel
 
     public void addLimb(String limb, ExtendableModelRenderer limbModel)
     {
+        lock();
+
+        if (limb.compareTo(GenericLimbNames.head) == 0)
+            baseModel.bipedHead = limbModel;
+        else if (limb.compareTo(GenericLimbNames.leftArm) == 0)
+            baseModel.bipedLeftArm = limbModel;
+        else if (limb.compareTo(GenericLimbNames.rightArm) == 0)
+            baseModel.bipedRightArm = limbModel;
+        else if (limb.compareTo(GenericLimbNames.leftLeg) == 0)
+            baseModel.bipedLeftLeg = limbModel;
+        else if (limb.compareTo(GenericLimbNames.rightLeg) == 0)
+            baseModel.bipedRightLeg = limbModel;
+
         toRender.add(limb);
         limbs.put(limb, limbModel);
+
+        unlock();
     }
 
     public void removeLimb(String limb)
     {
+        lock();
+
         toRender.remove(limb);
         limbs.remove(limb);
+
+        unlock();
     }
 
     // Add a limb for reference purposes, don't render it
@@ -147,22 +187,23 @@ public class MultiLimbedModel
 
     public void render(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha)
     {
+        lock();
+
         matrixStackIn.push();
 
         // Scale the model to match the scale size, and move it up or down so it's standing at the right height
         matrixStackIn.translate(0.0D, (1-sizeScale) * defaultHeight, 0.0D);
         matrixStackIn.scale(sizeScale, sizeScale, sizeScale);
 
-        baseModel.bipedHead.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
         baseModel.bipedBody.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
 
         for (Map.Entry<String, ExtendableModelRenderer> limb: limbs.entrySet())
             if (isRenderingLimb(limb.getKey()))
                 limb.getValue().render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
 
-        baseModel.bipedHeadwear.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
-
         matrixStackIn.pop();
+
+        unlock();
     }
 
     // Calculate the height adjustment for each limb based on the supplied pose

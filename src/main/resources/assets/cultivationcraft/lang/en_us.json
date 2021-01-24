@@ -25,13 +25,13 @@
 
   "cultivationcraft.gui.generic.base": "Base",
 
+  "cultivationcraft.gui.headpart.jaw": "Unhinged Jaw",
+
   "cultivationcraft.gui.headpart.eye": "Eyes",
 
   "cultivationcraft.gui.headpart.eye.QiSight": "Qi Sight",
 
   "cultivationcraft.technique.meditate": "Meditate",
   "cultivationcraft.technique.divinesense": "Divine Sense",
-  "cultivationcraft.technique.icewalk": "Ice Walk",
-
-  "cultivationcraft.test": "TEST"
+  "cultivationcraft.technique.icewalk": "Ice Walk"
 }

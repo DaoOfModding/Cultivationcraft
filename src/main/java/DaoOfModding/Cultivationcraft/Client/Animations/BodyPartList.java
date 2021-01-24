@@ -24,4 +24,9 @@ public class BodyPartList
     {
         return models.get(playerID).getModel(ID);
     }
+
+    public static HashMap<String, ExtendableModelRenderer> getModelReferences(UUID playerID, String ID)
+    {
+        return models.get(playerID).getReferences(ID);
+    }
 }

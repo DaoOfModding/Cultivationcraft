@@ -168,6 +168,8 @@ public class BodyModifications implements IBodyModifications
         modifications = mod.getModifications();
         options = mod.getModificationOptions();
         progress = mod.getProgress();
+
+        setUpdated(false);
     }
 
     // Return a specified players BodyModifications

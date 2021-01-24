@@ -40,5 +40,7 @@ public class GenericQiPoses
 
         CrossLegs.addAngle(GenericLimbNames.lowerLeftLeg, new Vector3d(Math.toRadians(90), 0, 0), GenericPoses.walkLegPriority + 4);
         CrossLegs.addAngle(GenericLimbNames.lowerRightLeg, new Vector3d(Math.toRadians(90), 0, 0), GenericPoses.walkLegPriority + 4);
+
+        //CrossLegs.addAngle(BodyPartModelNames.jawModelLower, new Vector3d(Math.toRadians(45), 0, 0), 5);
     }
 }

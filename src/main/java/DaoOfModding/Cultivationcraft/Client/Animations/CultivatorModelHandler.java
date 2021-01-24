@@ -1,14 +1,12 @@
 package DaoOfModding.Cultivationcraft.Client.Animations;
 
-import DaoOfModding.Cultivationcraft.Client.AnimationFramework.GenericLimbNames;
-import DaoOfModding.Cultivationcraft.Client.AnimationFramework.MultiLimbedModel;
-import DaoOfModding.Cultivationcraft.Client.AnimationFramework.PlayerPoseHandler;
-import DaoOfModding.Cultivationcraft.Client.AnimationFramework.PoseHandler;
+import DaoOfModding.Cultivationcraft.Client.AnimationFramework.*;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.IBodyModifications;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPart;
 import net.minecraft.client.renderer.entity.PlayerRenderer;
 import net.minecraft.entity.player.PlayerEntity;
 
+import java.util.Map;
 import java.util.UUID;
 
 public class CultivatorModelHandler
@@ -40,9 +38,16 @@ public class CultivatorModelHandler
                     newModel.removeLimb(GenericLimbNames.lowerRightLeg);
                     newModel.removeLimb(GenericLimbNames.lowerLeftLeg);
                 }
+                else if (part.getPosition().equalsIgnoreCase(BodyPartNames.headPosition))
+                    newModel.removeLimb(GenericLimbNames.head);
 
                 for (String modelID : part.getModelIDs())
+                {
                     newModel.addLimb(part.getPosition(), BodyPartList.getModel(player.getUniqueID(), modelID));
+
+                    for (Map.Entry<String, ExtendableModelRenderer> entry : BodyPartList.getModelReferences(player.getUniqueID(), modelID).entrySet())
+                        newModel.addNonRenderingLimb(entry.getKey(), entry.getValue());
+                }
             }
 
 

@@ -85,7 +85,7 @@ public class MultiLimbedRenderer
             }
         }
 
-
+        // TODO: Head rotations
         PoseHandler.applyRotations(entityIn, matrixStackIn, totalTicks, f, partialTicks);
 
         entityModel.setLivingAnimations(entityIn, f5, f8, partialTicks);
