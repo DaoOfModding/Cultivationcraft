@@ -388,12 +388,10 @@ public class BodyforgeScreen extends Screen
         // Get the body GUI, this is special as all other GUIs positions are based off this
         BodyPartGUI base;
 
-        base = BodyPartGUIs.getGUI(BodyPartNames.DefaultBody);
+        base = BodyPartGUIs.getGUI(BodyPartNames.DefaultBody).get(0);
 
         if (modifications.hasModification(BodyPartNames.bodyPosition))
-        {
-            base = BodyPartGUIs.getGUI(modifications.getModification(BodyPartNames.bodyPosition).getModelIDs().get(0));
-        }
+            base = BodyPartGUIs.getGUI(modifications.getModification(BodyPartNames.bodyPosition).getID()).get(0);
 
         boolean highlight = false;
         if (equalsSelectedPosition(BodyPartNames.bodyPosition))
@@ -409,7 +407,7 @@ public class BodyforgeScreen extends Screen
             if (equalsSelectedPosition(BodyPartNames.headPosition))
                 highlight = true;
 
-            BodyPartGUIs.getGUI(BodyPartNames.DefaultHead).render(matrixStack, bodyPosX, bodyPosY, highlight, this, base);
+            BodyPartGUIs.getGUI(BodyPartNames.DefaultHead).get(0).render(matrixStack, bodyPosX, bodyPosY, highlight, this, base);
         }
 
 
@@ -419,8 +417,8 @@ public class BodyforgeScreen extends Screen
             if (equalsSelectedPosition(BodyPartNames.armPosition))
                 highlight = true;
 
-            BodyPartGUIs.getGUI(BodyPartNames.DefaultRightArm).render(matrixStack, bodyPosX, bodyPosY, highlight, this, base);
-            BodyPartGUIs.getGUI(BodyPartNames.DefaultLeftArm).render(matrixStack, bodyPosX, bodyPosY, highlight,this, base);
+            BodyPartGUIs.getGUI(BodyPartNames.DefaultRightArm).get(0).render(matrixStack, bodyPosX, bodyPosY, highlight, this, base);
+            BodyPartGUIs.getGUI(BodyPartNames.DefaultLeftArm).get(0).render(matrixStack, bodyPosX, bodyPosY, highlight,this, base);
         }
 
         highlight = false;
@@ -429,8 +427,8 @@ public class BodyforgeScreen extends Screen
             if (equalsSelectedPosition(BodyPartNames.legPosition))
                 highlight = true;
 
-            BodyPartGUIs.getGUI(BodyPartNames.DefaultRightLeg).render(matrixStack, bodyPosX, bodyPosY, highlight, this, base);
-            BodyPartGUIs.getGUI(BodyPartNames.DefaultLeftLeg).render(matrixStack, bodyPosX, bodyPosY, highlight, this, base);
+            BodyPartGUIs.getGUI(BodyPartNames.DefaultRightLeg).get(0).render(matrixStack, bodyPosX, bodyPosY, highlight, this, base);
+            BodyPartGUIs.getGUI(BodyPartNames.DefaultLeftLeg).get(0).render(matrixStack, bodyPosX, bodyPosY, highlight, this, base);
         }
 
         // Loop through and draw all other body part GUIs if they exist
@@ -444,10 +442,11 @@ public class BodyforgeScreen extends Screen
                  if (equalsSelectedPosition(entry.getValue().getPosition()))
                     highlight = true;
 
-                 BodyPartGUI gui = BodyPartGUIs.getGUI(entry.getValue().getID());
+                 ArrayList<BodyPartGUI> guis = BodyPartGUIs.getGUI(entry.getValue().getID());
 
-                 if (gui != null)
-                    gui.render(matrixStack, bodyPosX, bodyPosY, highlight, this, base);
+                 for (BodyPartGUI gui : guis)
+                    if (gui != null)
+                        gui.render(matrixStack, bodyPosX, bodyPosY, highlight, this, base);
             }
         }
     }

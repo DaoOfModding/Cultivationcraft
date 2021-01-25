@@ -1,5 +1,6 @@
 package DaoOfModding.Cultivationcraft.Client.Animations;
 
+import DaoOfModding.Cultivationcraft.Client.AnimationFramework.GenericLimbNames;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPart;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartOption;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -9,10 +10,14 @@ import java.util.HashMap;
 
 public class BodyPartNames
 {
+    // PARTS
     public static final String jawPart = "jaw";
+    public static final String reverseJointLegPart = "rjleg";
 
+    // OPTIONS
     public static final String startingEyesPart = "QiSight";
 
+    // DEFAULTS
     public static final String DefaultLeftArm = "armleft";
     public static final String DefaultRightArm = "armright";
     public static final String DefaultRightLeg = "legright";
@@ -20,11 +25,13 @@ public class BodyPartNames
     public static final String DefaultHead = "head";
     public static final String DefaultBody = "body";
 
+    // POSITIONS
     public static final String headPosition = "HEAD";
     public static final String bodyPosition = "BODY";
     public static final String armPosition = "ARM";
     public static final String legPosition = "LEG";
 
+    // SUB-POSITIONS
     public static final String basePosition = "BASE";
 
     public static final String eyeSubPosition = "EYE";
@@ -47,6 +54,8 @@ public class BodyPartNames
 
         setupHeadParts();
         setupHeadOptions();
+
+        setupLegParts();
     }
 
     private static void setupHeadParts()
@@ -54,12 +63,21 @@ public class BodyPartNames
         ArrayList<String> jawList = new ArrayList<String>();
         jawList.add(BodyPartModelNames.jawModel);
 
-        addPart(new BodyPart(jawPart, jawList, headPosition, "cultivationcraft.gui.headpart.jaw", 6000));
+        addPart(new BodyPart(jawPart, jawList, headPosition, "cultivationcraft.gui.headpart.jaw", 1000));
     }
 
     private static void setupHeadOptions()
     {
         addOption(new BodyPartOption(startingEyesPart, headPosition, eyeSubPosition, "cultivationcraft.gui.headpart.eye.QiSight", 1000));
+    }
+
+    private static void setupLegParts()
+    {
+        ArrayList<String> rjLegList = new ArrayList<String>();
+        rjLegList.add(BodyPartModelNames.reverseJointRightLegModel);
+        rjLegList.add(BodyPartModelNames.reverseJointLeftLegModel);
+
+        addPart(new BodyPart(reverseJointLegPart, rjLegList, legPosition, "cultivationcraft.gui.legpart.reversejoint", 1000));
     }
 
     public static String getDisplayName(String position)

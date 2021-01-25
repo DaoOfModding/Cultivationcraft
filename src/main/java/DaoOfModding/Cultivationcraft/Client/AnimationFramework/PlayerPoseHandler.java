@@ -252,6 +252,7 @@ public class PlayerPoseHandler
             }
         }
 
+        // TODO: Fix crash here when models change in-game
         // Calculate the amount of ticks remaining for this animation
         float TicksRemaining = renderPose.getAnimationSpeed(limb, currentFrame) - animationTime.get(limb);
 

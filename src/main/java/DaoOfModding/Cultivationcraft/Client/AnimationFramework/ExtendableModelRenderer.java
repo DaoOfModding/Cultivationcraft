@@ -89,11 +89,18 @@ public class ExtendableModelRenderer extends ModelRenderer
         newModel.mirror = this.mirror;
         newModel.setParent(this);
 
-        child = newModel;
         addChild(newModel);
 
         // Continue the extension
         newModel.extend(resizer.nextLevel());
+    }
+
+    @Override
+    public void addChild(ModelRenderer c)
+    {
+        super.addChild(c);
+
+        child = (ExtendableModelRenderer)c;
     }
 
     // Generate the cube for this model

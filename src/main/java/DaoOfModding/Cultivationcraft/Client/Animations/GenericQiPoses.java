@@ -1,5 +1,6 @@
 package DaoOfModding.Cultivationcraft.Client.Animations;
 
+import DaoOfModding.Cultivationcraft.Client.AnimationFramework.AnimationBuilder;
 import DaoOfModding.Cultivationcraft.Client.AnimationFramework.GenericLimbNames;
 import DaoOfModding.Cultivationcraft.Client.AnimationFramework.GenericPoses;
 import DaoOfModding.Cultivationcraft.Client.AnimationFramework.PlayerPose;
@@ -7,16 +8,49 @@ import net.minecraft.util.math.vector.Vector3d;
 
 public class GenericQiPoses
 {
+    public static PlayerPose Idle = new PlayerPose();
+    public static PlayerPose Walk = new PlayerPose();
+
     public static PlayerPose HandsBehind = new PlayerPose();
     public static PlayerPose CrossLegs = new PlayerPose();
 
     public static void init()
     {
+        setupIdle();
+        setupWalking();
+
         setupHandsBehind();
         setupCrossLegs();
     }
 
     // TODO: Add walking, swimming, sleeping, sitting, etc poses
+
+    private static void setupIdle()
+    {
+        Idle.addAngle(BodyPartModelNames.reverseJointLeftLegModel, new Vector3d(Math.toRadians(30), 0, 0), 0);
+        Idle.addAngle(BodyPartModelNames.reverseJointLeftLegLowerModel, new Vector3d(Math.toRadians(-60), 0, 0), 0);
+        Idle.addAngle(BodyPartModelNames.reverseJointLeftFootModel, new Vector3d(Math.toRadians(30), 0, 0), 0);
+
+        Idle.addAngle(BodyPartModelNames.reverseJointRightLegModel, new Vector3d(Math.toRadians(30), 0, 0), 0);
+        Idle.addAngle(BodyPartModelNames.reverseJointRightLegLowerModel, new Vector3d(Math.toRadians(-60), 0, 0), 0);
+        Idle.addAngle(BodyPartModelNames.reverseJointRightFootModel, new Vector3d(Math.toRadians(30), 0, 0), 0);
+    }
+
+    private static void setupWalking()
+    {
+        Vector3d[] walkAngle = new Vector3d[2];
+
+        walkAngle[0] = new Vector3d(Math.toRadians(30), Math.toRadians(0), Math.toRadians(0));
+        walkAngle[1] = new Vector3d(Math.toRadians(0), Math.toRadians(0), Math.toRadians(0));
+
+        Walk = AnimationBuilder.generateRepeatingMirroredLimbs(BodyPartModelNames.reverseJointLeftLegModel, BodyPartModelNames.reverseJointRightLegModel, walkAngle, GenericPoses.walkLegPriority, 10, 1);
+
+        Vector3d[] lowerWalkAngle = new Vector3d[2];
+        lowerWalkAngle[0] = new Vector3d(Math.toRadians(-60), Math.toRadians(0), Math.toRadians(0));
+        lowerWalkAngle[1] = new Vector3d(Math.toRadians(-90), Math.toRadians(0), Math.toRadians(0));
+
+        Walk = Walk.combine(AnimationBuilder.generateRepeatingMirroredLimbs(BodyPartModelNames.reverseJointLeftLegLowerModel, BodyPartModelNames.reverseJointRightLegLowerModel, lowerWalkAngle, GenericPoses.walkLegPriority, 10, 1));
+    }
 
     private static void setupHandsBehind()
     {

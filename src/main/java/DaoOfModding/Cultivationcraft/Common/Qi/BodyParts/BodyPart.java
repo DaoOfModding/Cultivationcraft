@@ -8,6 +8,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.text.TranslationTextComponent;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class BodyPart
 {
@@ -21,7 +22,7 @@ public class BodyPart
     {
         ID = partID;
 
-        modelIDs = (ArrayList<String>)IDs.clone();
+        modelIDs = IDs;
 
         limbPosition = position;
         displayNamePosition = displayNamePos;

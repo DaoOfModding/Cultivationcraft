@@ -41,9 +41,9 @@ public class CultivatorModelHandler
                 else if (part.getPosition().equalsIgnoreCase(BodyPartNames.headPosition))
                     newModel.removeLimb(GenericLimbNames.head);
 
-                for (String modelID : part.getModelIDs())
+                for (String modelID  : part.getModelIDs())
                 {
-                    newModel.addLimb(part.getPosition(), BodyPartList.getModel(player.getUniqueID(), modelID));
+                    newModel.addLimb(modelID, BodyPartList.getModel(player.getUniqueID(), modelID));
 
                     for (Map.Entry<String, ExtendableModelRenderer> entry : BodyPartList.getModelReferences(player.getUniqueID(), modelID).entrySet())
                         newModel.addNonRenderingLimb(entry.getKey(), entry.getValue());

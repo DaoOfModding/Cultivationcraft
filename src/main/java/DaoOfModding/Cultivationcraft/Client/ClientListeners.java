@@ -5,6 +5,7 @@ import DaoOfModding.Cultivationcraft.Client.AnimationFramework.MultiLimbedRender
 import DaoOfModding.Cultivationcraft.Client.AnimationFramework.PlayerPoseHandler;
 import DaoOfModding.Cultivationcraft.Client.Animations.BodyPartList;
 import DaoOfModding.Cultivationcraft.Client.Animations.CultivatorModelHandler;
+import DaoOfModding.Cultivationcraft.Client.Animations.GenericQiPoses;
 import DaoOfModding.Cultivationcraft.Client.GUI.SkillHotbarOverlay;
 import DaoOfModding.Cultivationcraft.Client.AnimationFramework.PoseHandler;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.BodyModifications;
@@ -27,6 +28,8 @@ public class ClientListeners
 
     public static void playerTick(TickEvent.PlayerTickEvent event)
     {
+        PoseHandler.addPose(event.player.getUniqueID(), GenericQiPoses.Idle);
+
         if (event.phase == TickEvent.Phase.START)
         {
             ICultivatorTechniques techs = CultivatorTechniques.getCultivatorTechniques(event.player);
@@ -36,7 +39,10 @@ public class ClientListeners
                     techs.getTechnique(i).tickClient(event);
 
             if (Math.abs(event.player.getMotion().x) + Math.abs(event.player.getMotion().z) > 0)
+            {
                 PoseHandler.addPose(event.player.getUniqueID(), GenericPoses.Walking);
+                PoseHandler.addPose(event.player.getUniqueID(), GenericQiPoses.Walk);
+            }
 
             PoseHandler.updatePoses();
         }
