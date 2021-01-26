@@ -1,6 +1,7 @@
 package DaoOfModding.Cultivationcraft.Client.AnimationFramework;
 
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.model.PlayerModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.math.vector.Vector3d;
@@ -20,6 +21,10 @@ public class PlayerPoseHandler
     PlayerPose animatingPose = new PlayerPose();
 
     boolean locked = false;
+
+    private boolean isJumping = false;
+    // Ticks before allowing jump to be set to False
+    private int jumpCooldown = 0;
 
     private HashMap<String, Integer> frame = new HashMap<String, Integer>();
     private HashMap<String, Float> animationTime = new HashMap<String, Float>();
@@ -57,6 +62,26 @@ public class PlayerPoseHandler
                     currentPose.setAngles(limb, pose.getAngles(limb), pose.getSpeeds(limb), pose.getPriority(limb), pose.getOffset(limb), pose.getAnimationLock(limb));
     }
 
+    // Updated each ExtendableModel in the player model to be looking in the direction of the player if it is set to do so
+    protected void updateHeadLook()
+    {
+        // Loop through all limbs and check if they are set to be looking, updated the current pose for them if they are
+        for (String limb : model.getLimbs())
+            if (model.getLimb(limb).isLooking())
+                currentPose.addAngle(limb, new Vector3d(model.baseModel.bipedHead.rotateAngleX, model.baseModel.bipedHead.rotateAngleY, model.baseModel.bipedHead.rotateAngleZ), 0);
+    }
+
+    protected void updateJumping()
+    {
+        if (isJumping)
+        {
+            if (jumpCooldown > 0)
+                jumpCooldown -= 1;
+
+            currentPose = currentPose.combine(GenericPoses.Jumping);
+        }
+    }
+
     public void updateRenderPose()
     {
         lock();
@@ -66,7 +91,22 @@ public class PlayerPoseHandler
 
         currentPose = new PlayerPose();
 
+        updateHeadLook();
+        updateJumping();
+
         unlock();
+    }
+
+    public void setJumping(boolean jump)
+    {
+        if (!jump)
+            if (jumpCooldown > 0)
+                return;
+
+        if (jumpCooldown <= 0 && jump)
+            jumpCooldown = 5;
+
+        isJumping = jump;
     }
 
     // Should be called whenever the renderPose is interacted with to stop multithreading breaking everything
@@ -252,12 +292,15 @@ public class PlayerPoseHandler
             }
         }
 
-        // TODO: Fix crash here when models change in-game
+        // Ensure there is a value stored in animationTime for this limb
+        if (!animationTime.containsKey(limb))
+            animationTime.put(limb, 0f);
+
         // Calculate the amount of ticks remaining for this animation
         float TicksRemaining = renderPose.getAnimationSpeed(limb, currentFrame) - animationTime.get(limb);
 
         // If no ticks remaining then instantly move to the specified position
-        if (TicksRemaining < 0)
+        if (TicksRemaining <= 0)
             return moveTo;
 
         double aSpeed = AnimationSpeedCalculator.ticksToSpeed(current, moveTo, TicksRemaining) * partialTicks;

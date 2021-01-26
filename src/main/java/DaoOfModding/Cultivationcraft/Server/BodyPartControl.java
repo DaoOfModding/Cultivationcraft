@@ -7,22 +7,13 @@ import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.Cultiva
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.ICultivatorStats;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPart;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartOption;
+import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartStatControl;
 import DaoOfModding.Cultivationcraft.Common.Qi.CultivationTypes;
 import DaoOfModding.Cultivationcraft.Network.PacketHandler;
 import net.minecraft.entity.player.PlayerEntity;
 
 public class BodyPartControl
 {
-    public static void setupBodyParts(PlayerEntity player)
-    {
-/*
-        // temp testing stuff
-        ArrayList<String> testList = new ArrayList<String>();
-        testList.add(BodyPartNames.TestPart);
-
-        BodyModifications.getBodyModifications(player).setModification(new BodyPart(testList));*/
-    }
-
     public static void checkForgeProgress(PlayerEntity player)
     {
         ICultivatorStats stats = CultivatorStats.getCultivatorStats(player);
@@ -50,6 +41,8 @@ public class BodyPartControl
                 modifications.setProgress(0);
 
                 PacketHandler.sendBodyModificationsToClient(player);
+
+                BodyPartStatControl.addStats(player.getUniqueID(), toComplete.getStatChanges());
             }
         }
     }

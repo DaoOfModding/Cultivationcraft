@@ -46,6 +46,7 @@ public class MultiLimbedModel
         ExtendableModelRenderer head = new ExtendableModelRenderer(baseModel, 0, 0);
         head.setRotationPoint(0, 0, 0);
         head.extend(GenericResizers.getHeadResizer());
+        head.setLooking(true);
 
         ExtendableModelRenderer rightArm = new ExtendableModelRenderer(baseModel, 40, 16);
         rightArm.setRotationPoint(-5.0F, 2.0F, 0.0F);
@@ -127,17 +128,6 @@ public class MultiLimbedModel
     public void addLimb(String limb, ExtendableModelRenderer limbModel)
     {
         lock();
-
-        if (limb.compareTo(GenericLimbNames.head) == 0)
-            baseModel.bipedHead = limbModel;
-        else if (limb.compareTo(GenericLimbNames.leftArm) == 0)
-            baseModel.bipedLeftArm = limbModel;
-        else if (limb.compareTo(GenericLimbNames.rightArm) == 0)
-            baseModel.bipedRightArm = limbModel;
-        else if (limb.compareTo(GenericLimbNames.leftLeg) == 0)
-            baseModel.bipedLeftLeg = limbModel;
-        else if (limb.compareTo(GenericLimbNames.rightLeg) == 0)
-            baseModel.bipedRightLeg = limbModel;
 
         toRender.add(limb);
         limbs.put(limb, limbModel);

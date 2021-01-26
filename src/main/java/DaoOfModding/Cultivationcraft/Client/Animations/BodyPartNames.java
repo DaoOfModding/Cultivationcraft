@@ -1,6 +1,5 @@
 package DaoOfModding.Cultivationcraft.Client.Animations;
 
-import DaoOfModding.Cultivationcraft.Client.AnimationFramework.GenericLimbNames;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPart;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartOption;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -10,6 +9,8 @@ import java.util.HashMap;
 
 public class BodyPartNames
 {
+    // TODO: Move BodyPart classes to a more appropriate place (in common)
+
     // PARTS
     public static final String jawPart = "jaw";
     public static final String reverseJointLegPart = "rjleg";
@@ -39,7 +40,7 @@ public class BodyPartNames
     private static ArrayList<BodyPart> parts = new ArrayList<BodyPart>();
     private static ArrayList<BodyPartOption> options = new ArrayList<BodyPartOption>();
     private static HashMap<String, String> displayNames = new HashMap<String, String>();
-    private static HashMap<String, HashMap<String, String>> subPartdisplayNames = new HashMap<String, HashMap<String, String>>();
+    private static HashMap<String, HashMap<String, String>> subPartDisplayNames = new HashMap<String, HashMap<String, String>>();
 
     public static void init()
     {
@@ -77,7 +78,10 @@ public class BodyPartNames
         rjLegList.add(BodyPartModelNames.reverseJointRightLegModel);
         rjLegList.add(BodyPartModelNames.reverseJointLeftLegModel);
 
-        addPart(new BodyPart(reverseJointLegPart, rjLegList, legPosition, "cultivationcraft.gui.legpart.reversejoint", 1000));
+        BodyPart rjLegPart = new BodyPart(reverseJointLegPart, rjLegList, legPosition, "cultivationcraft.gui.legpart.reversejoint", 1000);
+        rjLegPart.getStatChanges().setJumpHeight(5);
+
+        addPart(rjLegPart);
     }
 
     public static String getDisplayName(String position)
@@ -90,7 +94,7 @@ public class BodyPartNames
         if (subPosition.compareTo(basePosition) == 0)
             return getDisplayName(subPosition);
 
-        return new TranslationTextComponent(subPartdisplayNames.get(position).get(subPosition)).getString();
+        return new TranslationTextComponent(subPartDisplayNames.get(position).get(subPosition)).getString();
     }
 
     public static void addDisplayName(String position, String name)
@@ -100,10 +104,10 @@ public class BodyPartNames
 
     public static void addSubPartDisplayName(String position, String subPosition, String name)
     {
-        if (!subPartdisplayNames.containsKey(position))
-            subPartdisplayNames.put(position, new HashMap<String, String>());
+        if (!subPartDisplayNames.containsKey(position))
+            subPartDisplayNames.put(position, new HashMap<String, String>());
 
-        subPartdisplayNames.get(position).put(subPosition, name);
+        subPartDisplayNames.get(position).put(subPosition, name);
     }
 
     public static void addPart(BodyPart part)

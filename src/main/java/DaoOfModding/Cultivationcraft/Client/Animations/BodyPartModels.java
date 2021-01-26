@@ -1,9 +1,7 @@
 package DaoOfModding.Cultivationcraft.Client.Animations;
 
 import DaoOfModding.Cultivationcraft.Client.AnimationFramework.ExtendableModelRenderer;
-import DaoOfModding.Cultivationcraft.Client.AnimationFramework.GenericResizers;
 import DaoOfModding.Cultivationcraft.Client.AnimationFramework.defaultResizeModule;
-import DaoOfModding.Cultivationcraft.Client.AnimationFramework.resizeModule;
 import net.minecraft.client.renderer.entity.model.PlayerModel;
 import net.minecraft.util.math.vector.Vector3d;
 
@@ -29,6 +27,7 @@ public class BodyPartModels
         ExtendableModelRenderer semiHeadPart = new ExtendableModelRenderer(base, 0, 0);
         semiHeadPart.setRotationPoint(0.0F, 0.0F, 0.0F);
         semiHeadPart.extend(semiHeadResizer);
+        semiHeadPart.setLooking(true);
 
         // Create the jaw
         ExtendableModelRenderer jawPart = new ExtendableModelRenderer(base, 0, 5);

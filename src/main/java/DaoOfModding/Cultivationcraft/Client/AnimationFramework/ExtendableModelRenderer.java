@@ -20,6 +20,8 @@ public class ExtendableModelRenderer extends ModelRenderer
 
     protected float minHeight = 0;
 
+    protected boolean look = false;
+
 
     public ExtendableModelRenderer(Model model)
     {
@@ -47,6 +49,17 @@ public class ExtendableModelRenderer extends ModelRenderer
         textureHeight = textureHeightIn;
         textureOffsetX = textureOffsetXIn;
         textureOffsetY = textureOffsetYIn;
+    }
+
+    // Set whether this model should be looking in the direction of the player
+    public void setLooking(boolean isLooking)
+    {
+        look = isLooking;
+    }
+
+    public Boolean isLooking()
+    {
+        return look;
     }
 
     public void setParent(ExtendableModelRenderer parent)

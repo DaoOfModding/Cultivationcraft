@@ -11,6 +11,8 @@ import DaoOfModding.Cultivationcraft.Common.Capabilities.ChunkQiSources.ChunkQiS
 import DaoOfModding.Cultivationcraft.Common.Capabilities.ChunkQiSources.IChunkQiSources;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStats;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPart;
+import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartStatControl;
+import DaoOfModding.Cultivationcraft.Common.Qi.PlayerStatModifications;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import DaoOfModding.Cultivationcraft.Network.PacketHandler;
 import DaoOfModding.Cultivationcraft.Server.BodyPartControl;
@@ -23,6 +25,8 @@ import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.event.entity.living.LivingEvent;
+import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.ChunkEvent;
@@ -55,6 +59,25 @@ public class CommonListeners
             ClientItemControl.thisWorld = event.getWorld();
         else
             ServerItemControl.loaded = true;
+    }
+
+    @SubscribeEvent
+    public static void playerJump(LivingEvent.LivingJumpEvent event)
+    {
+        if (event.getEntity() instanceof PlayerEntity)
+        {
+            if (event.getEntity().getEntityWorld().isRemote())
+                ClientListeners.playerJump((PlayerEntity)event.getEntity());
+
+            BodyPartStatControl.getStats(event.getEntity().getUniqueID()).applyJump((PlayerEntity)event.getEntity());
+        }
+    }
+
+    @SubscribeEvent
+    public static void playerFall(LivingFallEvent event)
+    {
+        if (event.getEntity() instanceof PlayerEntity)
+            event.setDistance(BodyPartStatControl.getStats(event.getEntity().getUniqueID()).reduceFallDistance(event.getDistance()));
     }
 
     @SubscribeEvent
@@ -92,9 +115,9 @@ public class CommonListeners
             ServerItemControl.sendPlayerStats(event.getPlayer(), (PlayerEntity) event.getPlayer());
             SkillHotbarServer.addPlayer(event.getPlayer().getUniqueID());
 
-
-            BodyPartControl.setupBodyParts(event.getPlayer());
+            BodyPartStatControl.updateStats((PlayerEntity) event.getPlayer());
         }
+
     }
 
     // Fired off when an player respawns into the world

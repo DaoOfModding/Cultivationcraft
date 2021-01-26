@@ -8,11 +8,15 @@ public class GenericPoses
     public static final int walkArmPriority = 4;
 
     public static PlayerPose Walking = new PlayerPose();
+    public static PlayerPose Jumping = new PlayerPose();
 
     public static void init()
     {
         setupWalking();
+        setupJumping();
     }
+
+    // TODO: Add swimming, sleeping, sitting, etc poses
 
     public static void setupWalking()
     {
@@ -42,5 +46,16 @@ public class GenericPoses
 
         Walking.addAngle(GenericLimbNames.rightArm, new Vector3d(Math.toRadians(-45), Math.toRadians(0), 0), walkArmPriority);
         Walking.addAngle(GenericLimbNames.rightArm, new Vector3d(Math.toRadians(45), Math.toRadians(0), 0), walkArmPriority);
+    }
+
+    public static void setupJumping()
+    {
+        Jumping.addAngle(GenericLimbNames.leftArm, new Vector3d(Math.toRadians(-180), Math.toRadians(0), Math.toRadians(30)), walkArmPriority+1);
+        Jumping.addAngle(GenericLimbNames.rightArm, new Vector3d(Math.toRadians(-180), Math.toRadians(0), Math.toRadians(-30)), walkArmPriority+1);
+
+        Jumping.addAngle(GenericLimbNames.leftLeg, new Vector3d(Math.toRadians(0), Math.toRadians(0), 0), walkLegPriority+1, 1f, -1);
+        Jumping.addAngle(GenericLimbNames.rightLeg, new Vector3d(Math.toRadians(0), Math.toRadians(0), 0), walkLegPriority+1, 1f, -1);
+        Jumping.addAngle(GenericLimbNames.lowerLeftLeg, new Vector3d(Math.toRadians(0), Math.toRadians(0), 0), walkLegPriority+1, 1f, -1);
+        Jumping.addAngle(GenericLimbNames.lowerRightLeg, new Vector3d(Math.toRadians(0), Math.toRadians(0), 0), walkLegPriority+1, 1f, -1);
     }
 }

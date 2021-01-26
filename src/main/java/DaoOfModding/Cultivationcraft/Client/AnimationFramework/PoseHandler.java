@@ -63,6 +63,14 @@ public class PoseHandler
         }
     }
 
+    public static void setJumping(UUID playerID, boolean jump)
+    {
+        PlayerPoseHandler handler = getPlayerPoseHandler(playerID);
+
+        if (handler != null)
+            handler.setJumping(jump);
+    }
+
     public static void updatePoses()
     {
         for (PlayerPoseHandler handlers: poses)

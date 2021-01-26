@@ -4,19 +4,20 @@ import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.BodyM
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStats;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.ICultivatorStats;
 import DaoOfModding.Cultivationcraft.Common.Qi.CultivationTypes;
+import DaoOfModding.Cultivationcraft.Common.Qi.PlayerStatModifications;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.text.TranslationTextComponent;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class BodyPart
 {
-    String ID;
-    ArrayList<String> modelIDs = new ArrayList<String>();
-    String limbPosition;
-    String displayNamePosition;
-    int qiNeeded;
+    private String ID;
+    private ArrayList<String> modelIDs = new ArrayList<String>();
+    private String limbPosition;
+    private String displayNamePosition;
+    private int qiNeeded;
+    private PlayerStatModifications stats;
 
     public BodyPart(String partID, ArrayList<String> IDs, String position, String displayNamePos, int qiToForge)
     {
@@ -28,6 +29,13 @@ public class BodyPart
         displayNamePosition = displayNamePos;
 
         qiNeeded = qiToForge;
+
+        stats = new PlayerStatModifications();
+    }
+
+    public PlayerStatModifications getStatChanges()
+    {
+        return stats;
     }
 
     public String getDisplayName()

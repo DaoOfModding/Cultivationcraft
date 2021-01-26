@@ -14,10 +14,12 @@ import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.Cu
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.ICultivatorTechniques;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
@@ -32,6 +34,9 @@ public class ClientListeners
 
         if (event.phase == TickEvent.Phase.START)
         {
+            if (event.player.isOnGround())
+                PoseHandler.setJumping(event.player.getUniqueID(), false);
+
             ICultivatorTechniques techs = CultivatorTechniques.getCultivatorTechniques(event.player);
 
             for (int i = 0; i < CultivatorTechniques.numberOfTechniques; i++)
@@ -46,6 +51,14 @@ public class ClientListeners
 
             PoseHandler.updatePoses();
         }
+    }
+
+    public static void playerJump(PlayerEntity entity)
+    {
+        PlayerPoseHandler handler = PoseHandler.getPlayerPoseHandler(entity.getUniqueID());
+
+        if (handler != null)
+            handler.setJumping(true);
     }
 
     @SubscribeEvent
