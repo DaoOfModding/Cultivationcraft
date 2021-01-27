@@ -14,15 +14,19 @@ public class GenericQiPoses
     public static PlayerPose HandsBehind = new PlayerPose();
     public static PlayerPose CrossLegs = new PlayerPose();
 
+    public static PlayerPose extendedLegs = new PlayerPose();
+
     public static void init()
     {
+        setupHandsBehind();
+        setupCrossLegs();
+        setupExtendedLegs();
+
         setupIdle();
         setupWalking();
         setupJumping();
-
-        setupHandsBehind();
-        setupCrossLegs();
     }
+
     private static void setupIdle()
     {
         Idle.addAngle(BodyPartModelNames.reverseJointLeftLegModel, new Vector3d(Math.toRadians(30), 0, 0), 0);
@@ -50,14 +54,19 @@ public class GenericQiPoses
         Walk = Walk.combine(AnimationBuilder.generateRepeatingMirroredLimbs(BodyPartModelNames.reverseJointLeftLegLowerModel, BodyPartModelNames.reverseJointRightLegLowerModel, lowerWalkAngle, GenericPoses.walkLegPriority, 10, 1));
     }
 
+    private static void setupExtendedLegs()
+    {
+        extendedLegs.addAngle(BodyPartModelNames.reverseJointLeftLegModel, new Vector3d(Math.toRadians(0), Math.toRadians(0), 0), GenericPoses.walkLegPriority+1, 1f, -1);
+        extendedLegs.addAngle(BodyPartModelNames.reverseJointRightLegModel, new Vector3d(Math.toRadians(0), Math.toRadians(0), 0), GenericPoses.walkLegPriority+1, 1f, -1);
+        extendedLegs.addAngle(BodyPartModelNames.reverseJointLeftLegLowerModel, new Vector3d(Math.toRadians(0), Math.toRadians(0), 0), GenericPoses.walkLegPriority+1, 1f, -1);
+        extendedLegs.addAngle(BodyPartModelNames.reverseJointRightLegLowerModel, new Vector3d(Math.toRadians(0), Math.toRadians(0), 0), GenericPoses.walkLegPriority+1, 1f, -1);
+        extendedLegs.addAngle(BodyPartModelNames.reverseJointLeftFootModel, new Vector3d(Math.toRadians(0), Math.toRadians(0), 0), GenericPoses.walkLegPriority+1, 1f, -1);
+        extendedLegs.addAngle(BodyPartModelNames.reverseJointRightFootModel, new Vector3d(Math.toRadians(0), Math.toRadians(0), 0), GenericPoses.walkLegPriority+1, 1f, -1);
+    }
+
     private static void setupJumping()
     {
-        GenericPoses.Jumping.addAngle(BodyPartModelNames.reverseJointLeftLegModel, new Vector3d(Math.toRadians(0), Math.toRadians(0), 0), GenericPoses.walkLegPriority+1, 1f, -1);
-        GenericPoses.Jumping.addAngle(BodyPartModelNames.reverseJointRightLegModel, new Vector3d(Math.toRadians(0), Math.toRadians(0), 0), GenericPoses.walkLegPriority+1, 1f, -1);
-        GenericPoses.Jumping.addAngle(BodyPartModelNames.reverseJointLeftLegLowerModel, new Vector3d(Math.toRadians(0), Math.toRadians(0), 0), GenericPoses.walkLegPriority+1, 1f, -1);
-        GenericPoses.Jumping.addAngle(BodyPartModelNames.reverseJointRightLegLowerModel, new Vector3d(Math.toRadians(0), Math.toRadians(0), 0), GenericPoses.walkLegPriority+1, 1f, -1);
-        GenericPoses.Jumping.addAngle(BodyPartModelNames.reverseJointLeftFootModel, new Vector3d(Math.toRadians(0), Math.toRadians(0), 0), GenericPoses.walkLegPriority+1, 1f, -1);
-        GenericPoses.Jumping.addAngle(BodyPartModelNames.reverseJointRightFootModel, new Vector3d(Math.toRadians(0), Math.toRadians(0), 0), GenericPoses.walkLegPriority+1, 1f, -1);
+        GenericPoses.Jumping = GenericPoses.Jumping.combine(extendedLegs);
     }
 
     private static void setupHandsBehind()

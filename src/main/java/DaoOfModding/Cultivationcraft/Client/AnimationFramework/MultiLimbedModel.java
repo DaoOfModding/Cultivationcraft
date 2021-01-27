@@ -1,6 +1,5 @@
 package DaoOfModding.Cultivationcraft.Client.AnimationFramework;
 
-import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.renderer.RenderType;
@@ -19,14 +18,13 @@ public class MultiLimbedModel
 
     PlayerModel baseModel;
 
+    ExtendableModelRenderer body;
     HashMap<String, ExtendableModelRenderer> limbs = new HashMap<String, ExtendableModelRenderer>();
-    ArrayList<String> toRender = new ArrayList<String>();
 
     private boolean lock = false;
 
     public MultiLimbedModel(PlayerModel model)
     {
-        // TODO: Setup so armor displays on player
         baseModel = model;
 
         setupDefaultLimbs();
@@ -43,6 +41,11 @@ public class MultiLimbedModel
     private void setupDefaultLimbs()
     {
         //TODO: Setup armor models
+
+        ExtendableModelRenderer body = new ExtendableModelRenderer(baseModel, 16, 16);
+        body.setRotationPoint(0, 0, 0);
+        body.extend(GenericResizers.getBodyResizer());
+
         ExtendableModelRenderer head = new ExtendableModelRenderer(baseModel, 0, 0);
         head.setRotationPoint(0, 0, 0);
         head.extend(GenericResizers.getHeadResizer());
@@ -66,15 +69,16 @@ public class MultiLimbedModel
         leftLeg.extend(GenericResizers.getLeftLegResizer());
         leftLeg.mirror = true;
 
+        addBody(body);
         addLimb(GenericLimbNames.head, head);
         addLimb(GenericLimbNames.leftArm, leftArm);
         addLimb(GenericLimbNames.rightArm, rightArm);
         addLimb(GenericLimbNames.leftLeg, leftLeg);
         addLimb(GenericLimbNames.rightLeg, rightLeg);
-        addNonRenderingLimb(GenericLimbNames.lowerLeftArm, leftArm.getChild(1));
-        addNonRenderingLimb(GenericLimbNames.lowerRightArm, rightArm.getChild(1));
-        addNonRenderingLimb(GenericLimbNames.lowerLeftLeg, leftLeg.getChild(1));
-        addNonRenderingLimb(GenericLimbNames.lowerRightLeg, rightLeg.getChild(1));
+        addLimbReference(GenericLimbNames.lowerLeftArm, leftArm.getChildren().get(0));
+        addLimbReference(GenericLimbNames.lowerRightArm, rightArm.getChildren().get(0));
+        addLimbReference(GenericLimbNames.lowerLeftLeg, leftLeg.getChildren().get(0));
+        addLimbReference(GenericLimbNames.lowerRightLeg, rightLeg.getChildren().get(0));
     }
 
     // Stop multi-threading breaking stuff via locking
@@ -96,9 +100,9 @@ public class MultiLimbedModel
         return limbs.keySet();
     }
 
-    public ArrayList<String> getRenderingLimbs()
+    public ExtendableModelRenderer getBody()
     {
-        return toRender;
+        return body;
     }
 
     // Apply the supplied rotations to the specified limb
@@ -125,12 +129,27 @@ public class MultiLimbedModel
         return limbs.get(limb);
     }
 
+    public void addBody(ExtendableModelRenderer bodyModel)
+    {
+        lock();
+
+        limbs.put(GenericLimbNames.body, bodyModel);
+
+        if (body != null)
+            body.fosterChildren(bodyModel);
+
+        body = bodyModel;
+
+        unlock();
+    }
+
+    // Adds specified limb onto the body
     public void addLimb(String limb, ExtendableModelRenderer limbModel)
     {
         lock();
 
-        toRender.add(limb);
-        limbs.put(limb, limbModel);
+        body.addChild(limbModel);
+        addLimbReference(limb, limbModel);
 
         unlock();
     }
@@ -139,15 +158,15 @@ public class MultiLimbedModel
     {
         lock();
 
-        toRender.remove(limb);
+        body.removeChild(limbs.get(limb));
         limbs.remove(limb);
 
         unlock();
     }
 
-    // Add a limb for reference purposes, don't render it
+    // Add a limb for reference purposes
     // Usually used for referencing child limbs
-    public void addNonRenderingLimb(String limb, ExtendableModelRenderer limbModel)
+    public void addLimbReference(String limb, ExtendableModelRenderer limbModel)
     {
         limbs.put(limb, limbModel);
     }
@@ -167,14 +186,6 @@ public class MultiLimbedModel
         return baseModel.getRenderType(resourcelocation);
     }
 
-    public boolean isRenderingLimb(String limb)
-    {
-        if (toRender.contains(limb))
-            return true;
-
-        return false;
-    }
-
     public void render(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha)
     {
         lock();
@@ -185,51 +196,43 @@ public class MultiLimbedModel
         matrixStackIn.translate(0.0D, (1-sizeScale) * defaultHeight, 0.0D);
         matrixStackIn.scale(sizeScale, sizeScale, sizeScale);
 
-        baseModel.bipedBody.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+        // Render the body, as all limbs are children or sub-children of the body, this should render everything
+        body.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
 
-        for (Map.Entry<String, ExtendableModelRenderer> limb: limbs.entrySet())
-            if (isRenderingLimb(limb.getKey()))
-                limb.getValue().render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+        // TODO: Reverse head rotations (Probably by applying body rotations *-1 to the head rotation
 
         matrixStackIn.pop();
 
         unlock();
     }
 
-    // Calculate the height adjustment for each limb based on the supplied pose
+    // Calculate the height adjustment for each limb
     public void calculateHeightAdjustment()
     {
         MatrixStack stack = new MatrixStack();
 
-        for (String limb : getRenderingLimbs())
-        {
-            ExtendableModelRenderer limbModel = getLimb(limb);
-
-            limbModel.calculateMinHeight(stack);
-        }
+        body.calculateMinHeight(stack);
     }
 
     // Find the limb at the lowest height and return it's height
-    public double getHeightAdjustment()
+    public float getHeightAdjustment()
     {
-        float lowest = Float.MAX_VALUE * -1;
-
-        for (String limb : getRenderingLimbs())
-        {
-            ExtendableModelRenderer limbModel = getLimb(limb);
-
-            // Cycle through the limb and any child limbs
-            while (limbModel != null)
-            {
-                float limbHeight = limbModel.getMinHeight();
-
-                if (limbHeight > lowest)
-                    lowest = limbHeight;
-
-                limbModel = limbModel.child;
-            }
-        }
+        float lowest = getHeightAdjustment(body, Float.MAX_VALUE * -1);
 
         return lowest * sizeScale / 16;
+    }
+
+    // Find the minimum height of the provided limb and all of it's children compared to the provided value
+    private float getHeightAdjustment(ExtendableModelRenderer limbModel, float lowest)
+    {
+        float testHeight = limbModel.getMinHeight();
+
+        if (testHeight > lowest)
+            lowest = testHeight;
+
+        for (ExtendableModelRenderer testLimb : limbModel.getChildren())
+            lowest = getHeightAdjustment(testLimb, lowest);
+
+        return lowest;
     }
 }

@@ -1,26 +1,28 @@
 package DaoOfModding.Cultivationcraft.Client.AnimationFramework;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.renderer.model.Model;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.math.vector.*;
 
+import java.util.ArrayList;
+
 public class ExtendableModelRenderer extends ModelRenderer
 {
-    // STUPID BASE MINECRAFT, STOP MAKING EVERYTHING PRIVATE
-    protected int textureWidth = 64;
-    protected int textureHeight = 32;
-    protected int textureOffsetX;
-    protected int textureOffsetY;
+    private int textureWidth = 64;
+    private int textureHeight = 32;
+    private int textureOffsetX;
+    private int textureOffsetY;
 
-    protected ExtendableModelRenderer parent = null;
-    protected ExtendableModelRenderer child = null;
+    private ExtendableModelRenderer parent = null;
+    private ArrayList<ExtendableModelRenderer> child = new ArrayList<ExtendableModelRenderer>();
 
-    protected Vector3f[] points = new Vector3f[8];
+    private Vector3f[] points = new Vector3f[8];
 
-    protected float minHeight = 0;
+    private float minHeight = 0;
 
-    protected boolean look = false;
+    private boolean look = false;
 
 
     public ExtendableModelRenderer(Model model)
@@ -51,6 +53,15 @@ public class ExtendableModelRenderer extends ModelRenderer
         textureOffsetY = textureOffsetYIn;
     }
 
+    // Move all children from this model to another
+    public void fosterChildren(ExtendableModelRenderer toMove)
+    {
+        for (ExtendableModelRenderer fosterChild : child)
+            toMove.addChild(fosterChild);
+
+        child.clear();
+    }
+
     // Set whether this model should be looking in the direction of the player
     public void setLooking(boolean isLooking)
     {
@@ -62,20 +73,19 @@ public class ExtendableModelRenderer extends ModelRenderer
         return look;
     }
 
+    public ExtendableModelRenderer getParent()
+    {
+        return parent;
+    }
+
     public void setParent(ExtendableModelRenderer parent)
     {
         this.parent = parent;
     }
 
-    public ExtendableModelRenderer getChild(int depth)
+    public ArrayList<ExtendableModelRenderer> getChildren()
     {
-        if (depth == 0)
-            return this;
-
-        if (child == null)
-            return null;
-
-        return child.getChild(depth - 1);
+        return child;
     }
 
     // Extend the model, creating depth amount of boxes equaling a total of fullSize extending towards direction
@@ -113,7 +123,19 @@ public class ExtendableModelRenderer extends ModelRenderer
     {
         super.addChild(c);
 
-        child = (ExtendableModelRenderer)c;
+        child.add((ExtendableModelRenderer)c);
+        ((ExtendableModelRenderer)c).setParent(this);
+    }
+
+    // SERIOUSLY vanilla minecraft, why does this not exist?
+    public void removeChild(ExtendableModelRenderer toRemove)
+    {
+        child.remove(toRemove);
+
+        // AWFUL hack to make this model no longer render, since there is NO WAY to remove a child from the ModelRenderer's childModels list
+        toRemove.showModel = false;
+
+        toRemove.setParent(null);
     }
 
     // Generate the cube for this model
@@ -167,12 +189,11 @@ public class ExtendableModelRenderer extends ModelRenderer
         minHeight = min;
 
         // Calculate the min height of children
-        if (child != null)
-            child.calculateMinHeight(matrixStackIn);
+        for (ExtendableModelRenderer testChild : child)
+            testChild.calculateMinHeight(matrixStackIn);
 
         matrixStackIn.pop();
     }
-
 
     public void rotateMatrix(MatrixStack matrixStackIn) {
         matrixStackIn.translate((double)(this.rotationPointX), (double)(this.rotationPointY), (double)(this.rotationPointZ));

@@ -56,7 +56,7 @@ public class BodyPartModels
         leftFoot.extend(footResizer);
         leftFoot.mirror = true;
 
-        leftReverseJoint.getChild(1).addChild(leftFoot);
+        leftReverseJoint.getChildren().get(0).addChild(leftFoot);
 
         // Reinitialize the resizers
         reverseJointResizer = new defaultResizeModule(2, new Vector3d(0, 1, 0), new Vector3d(-1.99, 0, -1.99), new Vector3d(3.98, 10, 3.98), new Vector3d(0, 1, 1));
@@ -70,14 +70,14 @@ public class BodyPartModels
         rightFoot.setRotationPoint(0F, 5.0F, -4F);
         rightFoot.extend(footResizer);
 
-        rightReverseJoint.getChild(1).addChild(rightFoot);
+        rightReverseJoint.getChildren().get(0).addChild(rightFoot);
 
         addModel(BodyPartModelNames.reverseJointLeftLegModel, leftReverseJoint);
-        addReference(BodyPartModelNames.reverseJointLeftLegModel, BodyPartModelNames.reverseJointLeftLegLowerModel, leftReverseJoint.getChild(1));
+        addReference(BodyPartModelNames.reverseJointLeftLegModel, BodyPartModelNames.reverseJointLeftLegLowerModel, leftReverseJoint.getChildren().get(0));
         addReference(BodyPartModelNames.reverseJointLeftLegModel, BodyPartModelNames.reverseJointLeftFootModel, leftFoot);
 
         addModel(BodyPartModelNames.reverseJointRightLegModel, rightReverseJoint);
-        addReference(BodyPartModelNames.reverseJointRightLegModel, BodyPartModelNames.reverseJointRightLegLowerModel, rightReverseJoint.getChild(1));
+        addReference(BodyPartModelNames.reverseJointRightLegModel, BodyPartModelNames.reverseJointRightLegLowerModel, rightReverseJoint.getChildren().get(0));
         addReference(BodyPartModelNames.reverseJointRightLegModel, BodyPartModelNames.reverseJointRightFootModel, rightFoot);
     }
 

@@ -16,6 +16,7 @@ public interface IBodyModifications
     public int getProgress();
 
     public boolean hasModification(String limb);
+    public boolean hasModification(String limb, String modificationID);
     public boolean hasOption(String limb, String subPosition);
     public BodyPart getModification(String limb);
     public BodyPartOption getOption(String limb, String subPosition);

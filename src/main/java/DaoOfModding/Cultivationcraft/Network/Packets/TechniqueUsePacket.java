@@ -83,7 +83,7 @@ public class TechniqueUsePacket extends Packet
         Technique tech = CultivatorTechniques.getCultivatorTechniques(player).getTechnique(slotNumber);
 
         if (tech != null)
-            tech.useKeyPressed(isKeyDown);
+            tech.useKeyPressed(isKeyDown, player);
 
         PacketHandler.sendCultivatorTechniquesToClient((ServerPlayerEntity)player);
     }

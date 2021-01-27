@@ -1,6 +1,5 @@
 package DaoOfModding.Cultivationcraft.Common.Qi;
 
-import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartStatControl;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.vector.Vector3d;
 
@@ -9,6 +8,15 @@ public class PlayerStatModifications
     private int jumpHeight = 0;
 
     public int getJumpHeight()
+    {
+        if (jumpHeight < 0)
+            return 0;
+
+        // Add 1 to jumpHeight as that is the height that a default player can jump
+        return jumpHeight + 1;
+    }
+
+    private int getRawJumpHeight()
     {
         return jumpHeight;
     }
@@ -24,7 +32,7 @@ public class PlayerStatModifications
         Vector3d currentMotion = player.getMotion();
 
         // Increase not only the height jump but also multiply X and Z momentum
-        player.setMotion(currentMotion.add(currentMotion.x * jumpHeight * 0.2f, jumpHeight * 0.1f, currentMotion.z * jumpHeight * 0.2f));
+        player.setMotion(currentMotion.x + (currentMotion.x * jumpHeight * 0.2f), 0.42f + jumpHeight * 0.1f, currentMotion.z + (currentMotion.z * jumpHeight * 0.2f));
     }
 
     // Increase the distance you can fall without taking damage by the jump height
@@ -40,6 +48,7 @@ public class PlayerStatModifications
 
     public void combine(PlayerStatModifications newStats)
     {
-        setJumpHeight(getJumpHeight() + newStats.getJumpHeight());
+        // Subtract 1 from the combined jump height as jumpHeight starts at 1
+        setJumpHeight(getRawJumpHeight() + newStats.getRawJumpHeight());
     }
 }

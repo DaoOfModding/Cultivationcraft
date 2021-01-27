@@ -17,9 +17,9 @@ import net.minecraftforge.event.TickEvent;
 
 public class Technique
 {
-    enum useType {Toggle, Channel};
+    protected enum useType {Toggle, Channel, Tap};
 
-    useType type;
+    protected useType type;
 
     protected ResourceLocation icon;
     protected ResourceLocation overlay;
@@ -79,6 +79,52 @@ public class Technique
         return name;
     }
 
+    // Allow multiple copies of this technique to be equipped at once
+    public boolean allowMultiple()
+    {
+        return multiple;
+    }
+
+    // What to do when the use key for this technique is pressed
+    // keyDown = true when the key is pressed down, false when the key is released
+    public void useKeyPressed(boolean keyDown, PlayerEntity player)
+    {
+        // Skill is turned on while the key is held down, turned off when key is released
+        if (type == useType.Channel)
+            active = keyDown;
+        else if (type == useType.Toggle)
+        {
+            // Toggle skill when key pressed
+            if (!keyDown)
+            {
+                active = !active;
+            }
+        }
+        // Skill is turned on when the key is pressed (custom code to deactivate)
+        else if (type == useType.Tap)
+            if (keyDown)
+                active = true;
+    }
+
+    protected void setOverlay(ResourceLocation location)
+    {
+        overlay = location;
+        overlayOn = true;
+    }
+
+    public void writeBuffer(PacketBuffer buffer)
+    {
+        buffer.writeCompoundTag(writeNBT());
+    }
+
+    public static Technique readBuffer(PacketBuffer buffer)
+    {
+        Technique newTech;
+        CompoundNBT nbt = buffer.readCompoundTag();
+
+        return readNBT(nbt);
+    }
+
     // Write a techniques data to NBT
     public CompoundNBT writeNBT()
     {
@@ -91,40 +137,6 @@ public class Technique
         nbt.putBoolean("active", active);
 
         return nbt;
-    }
-
-    // Allow multiple copies of this technique to be equipped at once
-    public boolean allowMultiple()
-    {
-        return multiple;
-    }
-
-    // What to do when the use key for this technique is pressed
-    // keyDown = true when the key is pressed down, false when the key is released
-    public void useKeyPressed(boolean keyDown)
-    {
-        // Skill is turned on while the key is held down, turned off when key is released
-        if (type == useType.Channel)
-            active = keyDown;
-        else if (type == useType.Toggle)
-        {
-            // Toggle skill when key pressed
-            if (!keyDown) {
-                active = !active;
-            }
-        }
-    }
-
-    protected void setOverlay(ResourceLocation location)
-    {
-        overlay = location;
-        overlayOn = true;
-    }
-
-    public void writeBuffer(PacketBuffer buffer)
-    {
-        buffer.writeString(this.getClass().getName());
-        buffer.writeBoolean(active);
     }
 
     // Read a Technique stored in NBT and create a technique from it
@@ -152,26 +164,6 @@ public class Technique
     public void readNBTData(CompoundNBT nbt)
     {
         setActive(nbt.getBoolean("active"));
-    }
-
-    public static Technique readBuffer(PacketBuffer buffer)
-    {
-        Technique newTech;
-        String className = buffer.readString(256);
-
-        try
-        {
-            Class test = Class.forName(className);
-            newTech = (Technique)test.newInstance();
-        }
-        catch (Exception e)
-        {
-            Cultivationcraft.LOGGER.error(className + " not found when loading Technique");
-            return null;
-        }
-        newTech.readBufferData(buffer);
-
-        return newTech;
     }
 
     public void readBufferData(PacketBuffer buffer)

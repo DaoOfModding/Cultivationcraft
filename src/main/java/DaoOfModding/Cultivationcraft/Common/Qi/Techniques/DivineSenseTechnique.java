@@ -30,9 +30,9 @@ public class DivineSenseTechnique extends Technique
     }
 
     @Override
-    public void useKeyPressed(boolean keyDown)
+    public void useKeyPressed(boolean keyDown, PlayerEntity player)
     {
-        super.useKeyPressed(keyDown);
+        super.useKeyPressed(keyDown, player);
 
         // Only do this on the client
         if (ClientItemControl.thisWorld != null)

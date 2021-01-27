@@ -49,6 +49,16 @@ public class BodyModifications implements IBodyModifications
         return modifications.containsKey(limb);
     }
 
+    // Does this player have the specified modification for this limb?
+    public boolean hasModification(String limb, String modificationID)
+    {
+        if (modifications.containsKey(limb))
+            if (modifications.get(limb).getID().compareTo(modificationID) == 0)
+                return true;
+
+        return false;
+    }
+
     public boolean hasOption(String limb, String subPosition)
     {
         if (options.containsKey(limb))

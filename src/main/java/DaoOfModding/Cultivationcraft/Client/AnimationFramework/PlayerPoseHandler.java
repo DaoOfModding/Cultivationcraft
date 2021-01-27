@@ -67,8 +67,26 @@ public class PlayerPoseHandler
     {
         // Loop through all limbs and check if they are set to be looking, updated the current pose for them if they are
         for (String limb : model.getLimbs())
-            if (model.getLimb(limb).isLooking())
-                currentPose.addAngle(limb, new Vector3d(model.baseModel.bipedHead.rotateAngleX, model.baseModel.bipedHead.rotateAngleY, model.baseModel.bipedHead.rotateAngleZ), 0);
+        {
+            ExtendableModelRenderer limbModel = model.getLimb(limb);
+
+            if (limbModel.isLooking())
+            {
+                Vector3d angles = new Vector3d(0, 0, 0);
+
+                // Go through all parents and negate their rotations for this limb
+                while (limbModel.getParent() != null)
+                {
+                    limbModel = limbModel.getParent();
+                    angles = angles.subtract(limbModel.rotateAngleX, limbModel.rotateAngleY, limbModel.rotateAngleZ);
+                }
+
+                // Add the base head's angles to this model
+                angles = angles.add(model.baseModel.bipedHead.rotateAngleX, model.baseModel.bipedHead.rotateAngleY, model.baseModel.bipedHead.rotateAngleZ);
+
+                currentPose.addAngle(limb, angles, 0, 1f, -1);
+            }
+        }
     }
 
     protected void updateJumping()
@@ -80,6 +98,14 @@ public class PlayerPoseHandler
 
             currentPose = currentPose.combine(GenericPoses.Jumping);
         }
+    }
+
+    public boolean isJumping()
+    {
+        if (jumpCooldown > 0)
+            return true;
+
+        return isJumping;
     }
 
     public void updateRenderPose()
@@ -157,10 +183,14 @@ public class PlayerPoseHandler
         // If renderPose has a pose for a limb, move to that position, otherwise move to the base model pose
         for (String limb : model.getLimbs())
         {
+            Vector3d angles;
+
             if (renderPose.hasAngle(limb))
-                newRender.addAngle(limb, animateLimb(limb, getLimbPos(limb), partialTicks), 1);
+                angles =  animateLimb(limb, getLimbPos(limb), partialTicks);
             else
-                newRender.addAngle(limb, animateLimb(getLimbPos(limb), new Vector3d(0, 0, 0), AnimationSpeedCalculator.defaultSpeedPerTick, partialTicks), 1);
+                angles = animateLimb(getLimbPos(limb), new Vector3d(0, 0, 0), AnimationSpeedCalculator.defaultSpeedPerTick, partialTicks);
+
+            newRender.addAngle(limb, angles, 1);
 
             newRender.addOffset(limb, animatingPose.getOffset(limb));
         }

@@ -7,7 +7,6 @@ import net.minecraft.client.renderer.entity.PlayerRenderer;
 import net.minecraft.entity.player.PlayerEntity;
 
 import java.util.Map;
-import java.util.UUID;
 
 public class CultivatorModelHandler
 {
@@ -46,7 +45,7 @@ public class CultivatorModelHandler
                     newModel.addLimb(modelID, BodyPartList.getModel(player.getUniqueID(), modelID));
 
                     for (Map.Entry<String, ExtendableModelRenderer> entry : BodyPartList.getModelReferences(player.getUniqueID(), modelID).entrySet())
-                        newModel.addNonRenderingLimb(entry.getKey(), entry.getValue());
+                        newModel.addLimbReference(entry.getKey(), entry.getValue());
                 }
             }
 

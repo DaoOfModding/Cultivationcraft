@@ -34,7 +34,7 @@ public class ClientListeners
 
         if (event.phase == TickEvent.Phase.START)
         {
-            if (event.player.isOnGround())
+            if (event.player.isOnGround() || event.player.isInWater())
                 PoseHandler.setJumping(event.player.getUniqueID(), false);
 
             ICultivatorTechniques techs = CultivatorTechniques.getCultivatorTechniques(event.player);
