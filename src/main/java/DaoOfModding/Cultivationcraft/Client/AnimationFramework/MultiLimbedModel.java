@@ -199,8 +199,6 @@ public class MultiLimbedModel
         // Render the body, as all limbs are children or sub-children of the body, this should render everything
         body.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
 
-        // TODO: Reverse head rotations (Probably by applying body rotations *-1 to the head rotation
-
         matrixStackIn.pop();
 
         unlock();

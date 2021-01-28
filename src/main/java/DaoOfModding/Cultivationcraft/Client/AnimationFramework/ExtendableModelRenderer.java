@@ -1,8 +1,10 @@
 package DaoOfModding.Cultivationcraft.Client.AnimationFramework;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.renderer.model.Model;
 import net.minecraft.client.renderer.model.ModelRenderer;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.vector.*;
 
 import java.util.ArrayList;
@@ -22,6 +24,8 @@ public class ExtendableModelRenderer extends ModelRenderer
     private float minHeight = 0;
 
     private boolean look = false;
+
+    private ResourceLocation customTexture = null;
 
 
     public ExtendableModelRenderer(Model model)
@@ -59,6 +63,11 @@ public class ExtendableModelRenderer extends ModelRenderer
             toMove.addChild(fosterChild);
 
         child.clear();
+    }
+
+    public void setCustomTexture(ResourceLocation newLocation)
+    {
+        customTexture = newLocation;
     }
 
     // Set whether this model should be looking in the direction of the player
@@ -158,6 +167,18 @@ public class ExtendableModelRenderer extends ModelRenderer
         points[7] = new Vector3f(x2, y2, z2);
 
         addBox((float)pos.x, (float)pos.y, (float)pos.z, width, height, depth, delta);
+    }
+
+    @Override
+    public void render(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha)
+    {
+        // Grab the vertex builder based on the texture to use for this model
+        if (customTexture == null)
+            bufferIn = MultiLimbedRenderer.getVertexBuilder();
+        else
+            bufferIn = MultiLimbedRenderer.getVertexBuilder(customTexture);
+
+        super.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
     }
 
     // Get the minimum height of any point on this model

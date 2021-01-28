@@ -1,5 +1,6 @@
 package DaoOfModding.Cultivationcraft.Client.AnimationFramework;
 
+import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.Minecraft;
@@ -16,6 +17,14 @@ import net.minecraft.util.math.MathHelper;
 
 public class MultiLimbedRenderer
 {
+    // Yeah, I know this is an AWFUL way to do things
+    // It's a hack to get around the base ModelRenderer render function being full of private variables
+    private static IRenderTypeBuffer currentBuffer;
+    private static MultiLimbedModel currentModel;
+    private static ClientPlayerEntity currentEntity;
+    private static IVertexBuilder currentVertexBuilder;
+    private static ResourceLocation lastSkin = null;
+
     public static boolean render(PlayerRenderer renderer, ClientPlayerEntity entityIn, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn)
     {
         PoseHandler.setupPoseHandler(entityIn.getUniqueID(), renderer.getEntityModel());
@@ -99,25 +108,47 @@ public class MultiLimbedRenderer
         matrixStackIn.scale(-1.0F, -1.0F, 1.0F);
         matrixStackIn.translate(0.0D, 0 - height, 0.0D);
 
-        RenderType rendertype = getRenderType(entityModel, entityIn);
+        currentModel = entityModel;
+        currentEntity = entityIn;
+        currentBuffer = bufferIn;
+
+        RenderType rendertype = getRenderType(getSkin(currentEntity));
 
         if (rendertype != null)
         {
-            IVertexBuilder ivertexbuilder = bufferIn.getBuffer(rendertype);
             int i = LivingRenderer.getPackedOverlay(entityIn, 0);
-            entityModel.render(matrixStackIn, ivertexbuilder, packedLightIn, i, 1.0F, 1.0F, 1.0F, 1.0F);
+            entityModel.render(matrixStackIn, null, packedLightIn, i, 1.0F, 1.0F, 1.0F, 1.0F);
         }
+
+        lastSkin = null;
 
         matrixStackIn.pop();
     }
 
-    private static RenderType getRenderType(MultiLimbedModel entityModel, ClientPlayerEntity entityIn)
+    // Returns the vertex builder for the current entity
+    public static IVertexBuilder getVertexBuilder()
     {
-        ResourceLocation resourcelocation = getSkin(entityIn);
+        return getVertexBuilder(getSkin(currentEntity));
+    }
 
-        boolean invis = entityIn.isInvisible();
-        boolean visible = !invis && !entityIn.isInvisibleToPlayer(Minecraft.getInstance().player);
-        boolean glowing = entityIn.isGlowing();
+    // Returns the vertex builder for the current entity using the supplied skin
+    public static IVertexBuilder getVertexBuilder(ResourceLocation resourceLocation)
+    {
+        // If the last vertexbuilder call used the same skin, then don't bother recreating it
+        if (lastSkin != resourceLocation)
+        {
+            RenderType rendertype = getRenderType(resourceLocation);
+            currentVertexBuilder = currentBuffer.getBuffer(rendertype);
+        }
+
+        return currentVertexBuilder;
+    }
+
+    public static RenderType getRenderType(ResourceLocation resourcelocation)
+    {
+        boolean invis = currentEntity.isInvisible();
+        boolean visible = !invis && !currentEntity.isInvisibleToPlayer(Minecraft.getInstance().player);
+        boolean glowing = currentEntity.isGlowing();
 
         if (invis)
         {
@@ -125,7 +156,7 @@ public class MultiLimbedRenderer
         }
         else if (visible)
         {
-            return entityModel.getRenderType(resourcelocation);
+            return currentModel.getRenderType(resourcelocation);
         }
         else
         {

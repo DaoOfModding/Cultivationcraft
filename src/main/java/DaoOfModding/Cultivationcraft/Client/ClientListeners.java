@@ -62,11 +62,11 @@ public class ClientListeners
     @SubscribeEvent
     public static void renderPlayer(RenderPlayerEvent.Pre event)
     {
+        // TODO: Make modifications work without having to go into 3rd person first
         IBodyModifications modifications = BodyModifications.getBodyModifications(event.getPlayer());
 
         if (!modifications.hasUpdated())
             CultivatorModelHandler.updateModel(event.getRenderer(), event.getPlayer(), modifications);
-
 
         // If MultiLimbedRenderer renders the player, cancel the render event
         event.setCanceled(MultiLimbedRenderer.render(event.getRenderer(), (ClientPlayerEntity)event.getPlayer(), event.getPartialRenderTick(), event.getMatrixStack(), event.getBuffers(), event.getLight()));

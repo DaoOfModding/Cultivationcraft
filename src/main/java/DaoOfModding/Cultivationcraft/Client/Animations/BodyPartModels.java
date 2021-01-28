@@ -2,6 +2,8 @@ package DaoOfModding.Cultivationcraft.Client.Animations;
 
 import DaoOfModding.Cultivationcraft.Client.AnimationFramework.ExtendableModelRenderer;
 import DaoOfModding.Cultivationcraft.Client.AnimationFramework.defaultResizeModule;
+import DaoOfModding.Cultivationcraft.Cultivationcraft;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.vector.Vector3d;
 
 import java.util.HashMap;
