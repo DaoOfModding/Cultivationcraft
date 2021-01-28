@@ -1,6 +1,8 @@
 package DaoOfModding.Cultivationcraft.Common.Qi.BodyParts;
 
 import DaoOfModding.Cultivationcraft.Client.Animations.BodyPartModelNames;
+import DaoOfModding.Cultivationcraft.Client.Animations.BodyPartModels;
+import javafx.util.Pair;
 import net.minecraft.util.text.TranslationTextComponent;
 
 import java.util.ArrayList;
@@ -16,6 +18,7 @@ public class BodyPartNames
 
     // OPTIONS
     public static final String startingEyesPart = "QiSight";
+    public static final String flatTeethPart = "teeth";
 
     // DEFAULTS
     public static final String DefaultLeftArm = "armleft";
@@ -35,6 +38,7 @@ public class BodyPartNames
     public static final String basePosition = "BASE";
 
     public static final String eyeSubPosition = "EYE";
+    public static final String mouthSubPosition = "MOUTH";
 
     private static ArrayList<BodyPart> parts = new ArrayList<BodyPart>();
     private static ArrayList<BodyPartOption> options = new ArrayList<BodyPartOption>();
@@ -51,6 +55,7 @@ public class BodyPartNames
         addDisplayName(basePosition, "cultivationcraft.gui.generic.base");
 
         addSubPartDisplayName(headPosition, eyeSubPosition, "cultivationcraft.gui.headpart.eye");
+        addSubPartDisplayName(headPosition, mouthSubPosition, "cultivationcraft.gui.headpart.mouth");
 
         setupHeadParts();
         setupHeadOptions();
@@ -60,25 +65,33 @@ public class BodyPartNames
 
     private static void setupHeadParts()
     {
-        ArrayList<String> jawList = new ArrayList<String>();
-        jawList.add(BodyPartModelNames.jawModel);
+        BodyPart jaw = new BodyPart(jawPart, headPosition, "cultivationcraft.gui.headpart.jaw", 1000);
+        jaw.addModel(BodyPartModelNames.jawModel);
+        jaw.addNeededPart(BodyPartNames.startingEyesPart);
 
-        addPart(new BodyPart(jawPart, jawList, headPosition, "cultivationcraft.gui.headpart.jaw", 1000));
+        addPart(jaw);
     }
 
     private static void setupHeadOptions()
     {
         addOption(new BodyPartOption(startingEyesPart, headPosition, eyeSubPosition, "cultivationcraft.gui.headpart.eye.QiSight", 1000));
+
+
+        BodyPartOption flatTeeth = new BodyPartOption(flatTeethPart, headPosition, mouthSubPosition, "cultivationcraft.gui.headpart.mouth.flatteeth", 1000);
+        flatTeeth.addModel(BodyPartModelNames.flatToothModel);
+        flatTeeth.addModel(BodyPartModelNames.flatToothLowerModel, BodyPartModelNames.jawModelLower);
+        flatTeeth.addNeededPart(BodyPartNames.jawPart);
+
+        addOption(flatTeeth);
     }
 
     private static void setupLegParts()
     {
-        ArrayList<String> rjLegList = new ArrayList<String>();
-        rjLegList.add(BodyPartModelNames.reverseJointRightLegModel);
-        rjLegList.add(BodyPartModelNames.reverseJointLeftLegModel);
-
-        BodyPart rjLegPart = new BodyPart(reverseJointLegPart, rjLegList, legPosition, "cultivationcraft.gui.legpart.reversejoint", 1000);
+        BodyPart rjLegPart = new BodyPart(reverseJointLegPart, legPosition, "cultivationcraft.gui.legpart.reversejoint", 1000);
         rjLegPart.getStatChanges().setJumpHeight(5);
+        rjLegPart.addModel(BodyPartModelNames.reverseJointRightLegModel);
+        rjLegPart.addModel(BodyPartModelNames.reverseJointLeftLegModel);
+        rjLegPart.addNeededPart(BodyPartNames.startingEyesPart);
 
         addPart(rjLegPart);
     }

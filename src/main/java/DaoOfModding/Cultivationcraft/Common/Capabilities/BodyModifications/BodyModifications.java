@@ -67,6 +67,17 @@ public class BodyModifications implements IBodyModifications
         return false;
     }
 
+
+    public boolean hasOption(String limb, String subPosition, String modificationID)
+    {
+        if (options.containsKey(limb))
+            if (options.get(limb).containsKey(subPosition))
+                if (options.get(limb).get(subPosition).getID().compareTo(modificationID) == 0)
+                    return true;
+
+        return false;
+    }
+
     public BodyPart getModification(String limb)
     {
         return modifications.get(limb);

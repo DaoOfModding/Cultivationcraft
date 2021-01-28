@@ -35,7 +35,9 @@ public class GenericQiPoses
 
         Idle.addAngle(BodyPartModelNames.reverseJointRightLegModel, new Vector3d(Math.toRadians(30), 0, 0), 0);
         Idle.addAngle(BodyPartModelNames.reverseJointRightLegLowerModel, new Vector3d(Math.toRadians(-60), 0, 0), 0);
-        Idle.addAngle(BodyPartModelNames.reverseJointRightFootModel, new Vector3d(Math.toRadians(30), 0, 0), 0);
+
+
+        // Idle.addAngle(BodyPartModelNames.jawModelLower, new Vector3d(Math.toRadians(45), 0, 0), 5);
     }
 
     private static void setupWalking()
@@ -98,7 +100,5 @@ public class GenericQiPoses
 
         CrossLegs.addAngle(BodyPartModelNames.reverseJointLeftLegLowerModel, new Vector3d(Math.toRadians(-60), 0, 0), GenericPoses.walkLegPriority + 4);
         CrossLegs.addAngle(BodyPartModelNames.reverseJointRightLegLowerModel, new Vector3d(Math.toRadians(-60), 0, 0), GenericPoses.walkLegPriority + 4);
-
-        //CrossLegs.addAngle(BodyPartModelNames.jawModelLower, new Vector3d(Math.toRadians(45), 0, 0), 5);
     }
 }

@@ -4,9 +4,12 @@ import DaoOfModding.Cultivationcraft.Client.AnimationFramework.*;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.IBodyModifications;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPart;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartNames;
+import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartOption;
+import javafx.util.Pair;
 import net.minecraft.client.renderer.entity.PlayerRenderer;
 import net.minecraft.entity.player.PlayerEntity;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 public class CultivatorModelHandler
@@ -47,9 +50,39 @@ public class CultivatorModelHandler
 
                     for (Map.Entry<String, ExtendableModelRenderer> entry : BodyPartModels.getReferences(modelID).entrySet())
                         newModel.addLimbReference(entry.getKey(), entry.getValue());
-                }
-            }
 
+                    // Add models for any valid options to this body part
+                    for (BodyPartOption option : modifications.getModificationOptions(part.getPosition()).values())
+                        for (String optionModels : option.getDefaultOptionModels())
+                        {
+                            newModel.addLimb(optionModels, BodyPartModels.getModel(optionModels), newModel.getLimb(modelID));
+
+                            for (Map.Entry<String, ExtendableModelRenderer> entry : BodyPartModels.getReferences(optionModels).entrySet())
+                                newModel.addLimbReference(entry.getKey(), entry.getValue());
+                        }
+                }
+
+                // Add models for any options tied to specific body parts to this body part
+                for (BodyPartOption option : modifications.getModificationOptions(part.getPosition()).values())
+                    for (Map.Entry<String, ArrayList<String>> optionModelCollections : option.getOptionModels().entrySet())
+                    {
+                        // Get the ID of the model this model list is connected to
+                        String baseModelID = optionModelCollections.getKey();
+                        ExtendableModelRenderer baseModel = newModel.getLimb(baseModelID);
+
+                        // If the model this collection is tied to exists
+                        if (baseModel != null)
+                        {
+                            for (String optionModels : optionModelCollections.getValue())
+                            {
+                                newModel.addLimb(optionModels, BodyPartModels.getModel(optionModels), baseModel);
+
+                                for (Map.Entry<String, ExtendableModelRenderer> entry : BodyPartModels.getReferences(optionModels).entrySet())
+                                    newModel.addLimbReference(entry.getKey(), entry.getValue());
+                            }
+                        }
+                    }
+            }
 
             // Lock the handler so it can be modified without other threads messing with it
             handler.lock();

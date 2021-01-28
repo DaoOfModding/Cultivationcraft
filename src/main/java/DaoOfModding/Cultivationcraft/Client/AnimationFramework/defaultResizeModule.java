@@ -16,7 +16,14 @@ public class defaultResizeModule implements resizeModule
     Vector3d position;
     Vector2f textureModifier;
 
+    Vector3d spacing;
+
     public defaultResizeModule(int maxDepth, Vector3d direction, Vector3d position, Vector3d fullSize, Vector3d rotationPoint)
+    {
+        this(maxDepth, direction, position, fullSize, rotationPoint, new Vector3d(0, 0, 0));
+    }
+
+    public defaultResizeModule(int maxDepth, Vector3d direction, Vector3d position, Vector3d fullSize, Vector3d rotationPoint, Vector3d spacing)
     {
         depth = maxDepth;
         size = fullSize;
@@ -27,6 +34,7 @@ public class defaultResizeModule implements resizeModule
         this.direction = direction.normalize();
         this.rotationPoint = rotationPoint;
         this.position = position;
+        this.spacing = spacing;
     }
 
     // Return the raw position coordinates for the current model
@@ -42,14 +50,18 @@ public class defaultResizeModule implements resizeModule
 
     public Vector3d getSize()
     {
+        Vector3d remainingSpacing = direction.mul(spacing).scale(depth-1);
+
+        Vector3d directedSize = size.mul(direction);
+
         // Calculate the size of this model, and the size remaining to make models for
-        Vector3d thisSize = size.subtract(direction.mul(size).scale((double)(depth-1)/(double)depth));
-        size = size.subtract(direction.mul(size).scale((double)1/(double)depth));
+        Vector3d thisSize = size.subtract(directedSize.scale((double)(depth-1)/(double)depth).add(spacing));
+        size = size.subtract(directedSize.scale((double)1/(double)depth));
 
         if (usedSize.length() == 0)
-            usedSize = thisSize;
+            usedSize = thisSize.add(spacing);
         else
-            usedSize = usedSize.add(thisSize.mul(direction));
+            usedSize = usedSize.add(thisSize.mul(direction)).add(spacing);
 
 
         // Calculate the new models rotation point vector to be connected to the 'bottom' of this model
@@ -59,7 +71,7 @@ public class defaultResizeModule implements resizeModule
 
         // Calculate the position of the next model
         Vector3d modifier = thisSize.mul(direction);
-        position = position.add(modifier).subtract(rotation);
+        position = position.add(modifier).subtract(rotation).add(spacing);
 
 
         // TODO: Ensure this texture offset is correct

@@ -146,9 +146,15 @@ public class MultiLimbedModel
     // Adds specified limb onto the body
     public void addLimb(String limb, ExtendableModelRenderer limbModel)
     {
+        addLimb(limb, limbModel, body);
+    }
+
+    // Adds specified limb onto the specified limb
+    public void addLimb(String limb, ExtendableModelRenderer limbModel, ExtendableModelRenderer addTo)
+    {
         lock();
 
-        body.addChild(limbModel);
+        addTo.addChild(limbModel);
         addLimbReference(limb, limbModel);
 
         unlock();

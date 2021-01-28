@@ -1,6 +1,7 @@
 package DaoOfModding.Cultivationcraft.Common.Qi.BodyParts;
 
 import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.BodyModifications;
+import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.IBodyModifications;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStats;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.ICultivatorStats;
 import DaoOfModding.Cultivationcraft.Common.Qi.CultivationTypes;
@@ -19,11 +20,11 @@ public class BodyPart
     private int qiNeeded;
     private PlayerStatModifications stats;
 
-    public BodyPart(String partID, ArrayList<String> IDs, String position, String displayNamePos, int qiToForge)
+    private ArrayList<String> neededToForge = new ArrayList<String>();
+
+    public BodyPart(String partID, String position, String displayNamePos, int qiToForge)
     {
         ID = partID;
-
-        modelIDs = IDs;
 
         limbPosition = position;
         displayNamePosition = displayNamePos;
@@ -31,6 +32,11 @@ public class BodyPart
         qiNeeded = qiToForge;
 
         stats = new PlayerStatModifications();
+    }
+
+    public void addModel(String modelID)
+    {
+        modelIDs.add(modelID);
     }
 
     public PlayerStatModifications getStatChanges()
@@ -63,6 +69,11 @@ public class BodyPart
         return modelIDs;
     }
 
+    public void addNeededPart(String partID)
+    {
+        neededToForge.add(partID);
+    }
+
     // TODO: This
     public boolean canBeForged(PlayerEntity player)
     {
@@ -72,10 +83,38 @@ public class BodyPart
         if (stats.getCultivationType() != CultivationTypes.BODY_CULTIVATOR)
             return false;
 
+        IBodyModifications modifications = BodyModifications.getBodyModifications(player);
+        if (modifications == null)
+            return false;
+
+        if (!hasNeededParts(modifications))
+            return false;
+
         // Loop through all player body modifications, return false if a modification for this position already exists
-        for (BodyPart part : BodyModifications.getBodyModifications(player).getModifications().values())
+        for (BodyPart part : modifications.getModifications().values())
             if (part.getPosition().compareTo(limbPosition) == 0)
                 return false;
+
+        return true;
+    }
+
+    protected boolean hasNeededParts(IBodyModifications modifications)
+    {
+        // Check if the player has all body parts that are needed to forge this part
+        for (String testPart : neededToForge)
+        {
+            BodyPart test = BodyPartNames.getPart(testPart);
+
+            if (test == null)
+            {
+                test = BodyPartNames.getOption(testPart);
+
+                if (!modifications.hasOption(test.getPosition(), ((BodyPartOption) test).getSubPosition(), test.ID))
+                    return false;
+            }
+            else if (!modifications.hasModification(test.getPosition(), test.ID))
+                return false;
+        }
 
         return true;
     }

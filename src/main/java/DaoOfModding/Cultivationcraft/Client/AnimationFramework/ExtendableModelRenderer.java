@@ -46,6 +46,17 @@ public class ExtendableModelRenderer extends ModelRenderer
         textureOffsetY = texOffY;
     }
 
+    // 64 is the default size of Player skin models
+    public ExtendableModelRenderer(int textureOffsetXIn, int textureOffsetYIn)
+    {
+        super(64, 64, textureOffsetXIn, textureOffsetYIn);
+
+        textureWidth = 64;
+        textureHeight = 64;
+        textureOffsetX = textureOffsetXIn;
+        textureOffsetY = textureOffsetYIn;
+    }
+
     public ExtendableModelRenderer(int textureWidthIn, int textureHeightIn, int textureOffsetXIn, int textureOffsetYIn)
     {
         super(textureWidthIn, textureHeightIn, textureOffsetXIn, textureOffsetYIn);
@@ -68,6 +79,15 @@ public class ExtendableModelRenderer extends ModelRenderer
     public void setCustomTexture(ResourceLocation newLocation)
     {
         customTexture = newLocation;
+    }
+
+    // Set this custom texture for this model and all children
+    public void setCustomTextureForFamily(ResourceLocation newLocation)
+    {
+        customTexture = newLocation;
+
+        for (ExtendableModelRenderer childTexture : child)
+            childTexture.setCustomTextureForFamily(newLocation);
     }
 
     // Set whether this model should be looking in the direction of the player
