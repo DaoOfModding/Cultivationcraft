@@ -1,21 +1,16 @@
 package DaoOfModding.Cultivationcraft.Network.Packets;
 
-import DaoOfModding.Cultivationcraft.Client.Animations.BodyPartList;
-import DaoOfModding.Cultivationcraft.Client.Animations.BodyPartNames;
-import DaoOfModding.Cultivationcraft.Client.ClientItemControl;
+import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartNames;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.BodyModifications;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.IBodyModifications;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPart;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import DaoOfModding.Cultivationcraft.Network.PacketHandler;
-import DaoOfModding.Cultivationcraft.Server.ServerItemControl;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.network.NetworkEvent;
 
-import java.util.HashMap;
-import java.util.UUID;
 import java.util.function.Supplier;
 
 public class BodyForgeSelectionPacket extends Packet

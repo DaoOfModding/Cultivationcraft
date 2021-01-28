@@ -1,8 +1,6 @@
 package DaoOfModding.Cultivationcraft.Client.GUI;
 
-import DaoOfModding.Cultivationcraft.Client.Animations.BodyPartGUIs;
-import DaoOfModding.Cultivationcraft.Client.Animations.BodyPartList;
-import DaoOfModding.Cultivationcraft.Client.Animations.BodyPartNames;
+import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartNames;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.BodyModifications;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.IBodyModifications;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPart;

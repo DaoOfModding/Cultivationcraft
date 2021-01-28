@@ -3,7 +3,6 @@ package DaoOfModding.Cultivationcraft.Client;
 import DaoOfModding.Cultivationcraft.Client.AnimationFramework.GenericPoses;
 import DaoOfModding.Cultivationcraft.Client.AnimationFramework.MultiLimbedRenderer;
 import DaoOfModding.Cultivationcraft.Client.AnimationFramework.PlayerPoseHandler;
-import DaoOfModding.Cultivationcraft.Client.Animations.BodyPartList;
 import DaoOfModding.Cultivationcraft.Client.Animations.CultivatorModelHandler;
 import DaoOfModding.Cultivationcraft.Client.Animations.GenericQiPoses;
 import DaoOfModding.Cultivationcraft.Client.GUI.SkillHotbarOverlay;
@@ -19,7 +18,6 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
@@ -64,17 +62,13 @@ public class ClientListeners
     @SubscribeEvent
     public static void renderPlayer(RenderPlayerEvent.Pre event)
     {
-        // Generate BodyPart list for this player if it doesn't already exist
-        if (!BodyPartList.playerExists(event.getPlayer().getUniqueID()))
-            BodyPartList.addPlayer(event.getPlayer().getUniqueID(), event.getRenderer().getEntityModel());
-
         IBodyModifications modifications = BodyModifications.getBodyModifications(event.getPlayer());
 
         if (!modifications.hasUpdated())
             CultivatorModelHandler.updateModel(event.getRenderer(), event.getPlayer(), modifications);
 
 
-        // If MultiLimbedRenderer returns true, cancel the render event
+        // If MultiLimbedRenderer renders the player, cancel the render event
         event.setCanceled(MultiLimbedRenderer.render(event.getRenderer(), (ClientPlayerEntity)event.getPlayer(), event.getPartialRenderTick(), event.getMatrixStack(), event.getBuffers(), event.getLight()));
     }
 

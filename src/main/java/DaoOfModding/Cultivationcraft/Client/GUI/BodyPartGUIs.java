@@ -1,6 +1,4 @@
-package DaoOfModding.Cultivationcraft.Client.Animations;
-
-import DaoOfModding.Cultivationcraft.Client.GUI.BodyPartGUI;
+package DaoOfModding.Cultivationcraft.Client.GUI;
 
 import java.util.ArrayList;
 import java.util.HashMap;

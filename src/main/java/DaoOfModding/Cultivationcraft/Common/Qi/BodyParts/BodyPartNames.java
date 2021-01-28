@@ -1,7 +1,6 @@
-package DaoOfModding.Cultivationcraft.Client.Animations;
+package DaoOfModding.Cultivationcraft.Common.Qi.BodyParts;
 
-import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPart;
-import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartOption;
+import DaoOfModding.Cultivationcraft.Client.Animations.BodyPartModelNames;
 import net.minecraft.util.text.TranslationTextComponent;
 
 import java.util.ArrayList;

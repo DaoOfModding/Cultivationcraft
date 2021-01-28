@@ -4,7 +4,7 @@ import DaoOfModding.Cultivationcraft.Client.AnimationFramework.GenericLimbNames;
 import DaoOfModding.Cultivationcraft.Client.AnimationFramework.PlayerPose;
 import DaoOfModding.Cultivationcraft.Client.AnimationFramework.PlayerPoseHandler;
 import DaoOfModding.Cultivationcraft.Client.AnimationFramework.PoseHandler;
-import DaoOfModding.Cultivationcraft.Client.Animations.BodyPartNames;
+import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartNames;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.BodyModifications;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStats;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartStatControl;

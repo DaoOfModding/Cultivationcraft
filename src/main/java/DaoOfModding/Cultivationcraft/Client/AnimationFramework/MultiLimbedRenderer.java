@@ -32,7 +32,7 @@ public class MultiLimbedRenderer
 
         boolean shouldSit = PoseHandler.shouldSit(entityIn);
 
-       entityModel.baseModel.isSitting = shouldSit;
+        entityModel.baseModel.isSitting = shouldSit;
 
         float f = MathHelper.interpolateAngle(partialTicks, entityIn.prevRenderYawOffset, entityIn.renderYawOffset);
         float f1 = MathHelper.interpolateAngle(partialTicks, entityIn.prevRotationYawHead, entityIn.rotationYawHead);

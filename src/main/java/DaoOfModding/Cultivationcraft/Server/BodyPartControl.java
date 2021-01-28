@@ -1,6 +1,6 @@
 package DaoOfModding.Cultivationcraft.Server;
 
-import DaoOfModding.Cultivationcraft.Client.Animations.BodyPartNames;
+import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartNames;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.BodyModifications;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.IBodyModifications;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStats;

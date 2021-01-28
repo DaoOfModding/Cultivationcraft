@@ -1,21 +1,13 @@
 package DaoOfModding.Cultivationcraft;
 
 import DaoOfModding.Cultivationcraft.Client.AnimationFramework.GenericPoses;
-import DaoOfModding.Cultivationcraft.Client.Animations.BodyPartNames;
+import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartNames;
 import DaoOfModding.Cultivationcraft.Client.Animations.GenericQiPoses;
-import DaoOfModding.Cultivationcraft.Client.ClientBlockRegister;
 import DaoOfModding.Cultivationcraft.Client.ClientItemControl;
-import DaoOfModding.Cultivationcraft.Client.ClientListeners;
-import DaoOfModding.Cultivationcraft.Client.KeybindingControl;
-import DaoOfModding.Cultivationcraft.Common.BlockRegister;
-import DaoOfModding.Cultivationcraft.Common.Capabilities.CapabilityListeners;
-import DaoOfModding.Cultivationcraft.Common.CommonListeners;
 import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
 import DaoOfModding.Cultivationcraft.Common.Qi.TechniqueControl;
 import DaoOfModding.Cultivationcraft.Common.Register;
 import DaoOfModding.Cultivationcraft.Network.PacketHandler;
-import DaoOfModding.Cultivationcraft.Server.ServerListeners;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;

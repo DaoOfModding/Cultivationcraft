@@ -3,6 +3,7 @@ package DaoOfModding.Cultivationcraft.Client.Animations;
 import DaoOfModding.Cultivationcraft.Client.AnimationFramework.*;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.IBodyModifications;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPart;
+import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartNames;
 import net.minecraft.client.renderer.entity.PlayerRenderer;
 import net.minecraft.entity.player.PlayerEntity;
 
@@ -42,9 +43,9 @@ public class CultivatorModelHandler
 
                 for (String modelID  : part.getModelIDs())
                 {
-                    newModel.addLimb(modelID, BodyPartList.getModel(player.getUniqueID(), modelID));
+                    newModel.addLimb(modelID, BodyPartModels.getModel(modelID));
 
-                    for (Map.Entry<String, ExtendableModelRenderer> entry : BodyPartList.getModelReferences(player.getUniqueID(), modelID).entrySet())
+                    for (Map.Entry<String, ExtendableModelRenderer> entry : BodyPartModels.getReferences(modelID).entrySet())
                         newModel.addLimbReference(entry.getKey(), entry.getValue());
                 }
             }
