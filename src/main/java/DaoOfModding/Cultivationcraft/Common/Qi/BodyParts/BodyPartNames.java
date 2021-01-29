@@ -17,8 +17,9 @@ public class BodyPartNames
     public static final String reverseJointLegPart = "rjleg";
 
     // OPTIONS
-    public static final String startingEyesPart = "QiSight";
-    public static final String flatTeethPart = "teeth";
+    public static final String startingEyesPart = "qisight";
+    public static final String flatTeethPart = "flatteeth";
+    public static final String sharpTeethPart = "sharpteeth";
 
     // DEFAULTS
     public static final String DefaultLeftArm = "armleft";
@@ -74,7 +75,7 @@ public class BodyPartNames
 
     private static void setupHeadOptions()
     {
-        addOption(new BodyPartOption(startingEyesPart, headPosition, eyeSubPosition, "cultivationcraft.gui.headpart.eye.QiSight", 1000));
+        addOption(new BodyPartOption(startingEyesPart, headPosition, eyeSubPosition, "cultivationcraft.gui.headpart.eye.qisight", 1000));
 
 
         BodyPartOption flatTeeth = new BodyPartOption(flatTeethPart, headPosition, mouthSubPosition, "cultivationcraft.gui.headpart.mouth.flatteeth", 1000);
@@ -83,6 +84,13 @@ public class BodyPartNames
         flatTeeth.addNeededPart(BodyPartNames.jawPart);
 
         addOption(flatTeeth);
+
+        BodyPartOption sharpTeeth = new BodyPartOption(sharpTeethPart, headPosition, mouthSubPosition, "cultivationcraft.gui.headpart.mouth.sharpteeth", 1000);
+        sharpTeeth.addModel(BodyPartModelNames.sharpToothModel);
+        sharpTeeth.addModel(BodyPartModelNames.sharpToothLowerModel, BodyPartModelNames.jawModelLower);
+        sharpTeeth.addNeededPart(BodyPartNames.jawPart);
+
+        addOption(sharpTeeth);
     }
 
     private static void setupLegParts()

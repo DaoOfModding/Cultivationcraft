@@ -131,9 +131,16 @@ public class BodyModifications implements IBodyModifications
         hasUpdated = updated;
     }
 
+    private void clearModifications()
+    {
+        modifications.clear();
+        options.clear();
+    }
 
     public void read(CompoundNBT NBT)
     {
+        clearModifications();
+
         setSelection(NBT.getString("selection"));
         setProgress(NBT.getInt("progress"));
 
@@ -174,7 +181,7 @@ public class BodyModifications implements IBodyModifications
             CompoundNBT subOptions = new CompoundNBT();
 
             for(Map.Entry<String, BodyPartOption> entry2 : entry.getValue().entrySet())
-                subOptions.putString(entry.getKey(), entry2.getValue().getID());
+                subOptions.putString(entry2.getKey(), entry2.getValue().getID());
 
             options.put(entry.getKey(), subOptions);
         }

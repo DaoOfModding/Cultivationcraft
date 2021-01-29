@@ -8,6 +8,8 @@ public class BodyPartModelNames
     public static final String flatToothModel = "FLAT_TOOTH_MODEL";
     public static final String flatToothLowerModel = "FLAT_TOOTH_LOWER_MODEL";
 
+    public static final String sharpToothModel = "SHARP_TOOTH_MODEL";
+    public static final String sharpToothLowerModel = "SHARP_TOOTH_LOWER_MODEL";
 
     public static final String reverseJointLeftLegModel = "RJL_LEFT_MODEL";
     public static final String reverseJointLeftLegLowerModel = "RJL_LEFT_LOWER_MODEL";

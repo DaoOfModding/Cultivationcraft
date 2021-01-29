@@ -27,6 +27,8 @@ public class ExtendableModelRenderer extends ModelRenderer
 
     private ResourceLocation customTexture = null;
 
+    private Vector3d rotationOffset = new Vector3d(0, 0 ,0);
+
 
     public ExtendableModelRenderer(Model model)
     {
@@ -65,6 +67,11 @@ public class ExtendableModelRenderer extends ModelRenderer
         textureHeight = textureHeightIn;
         textureOffsetX = textureOffsetXIn;
         textureOffsetY = textureOffsetYIn;
+    }
+
+    public void setRotationOffset(Vector3d offset)
+    {
+        rotationOffset = offset;
     }
 
     // Move all children from this model to another
@@ -198,7 +205,15 @@ public class ExtendableModelRenderer extends ModelRenderer
         else
             bufferIn = MultiLimbedRenderer.getVertexBuilder(customTexture);
 
+        rotateAngleX += rotationOffset.x;
+        rotateAngleY += rotationOffset.y;
+        rotateAngleZ += rotationOffset.z;
+
         super.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+
+        rotateAngleX -= rotationOffset.x;
+        rotateAngleY -= rotationOffset.y;
+        rotateAngleZ -= rotationOffset.z;
     }
 
     // Get the minimum height of any point on this model
@@ -235,7 +250,12 @@ public class ExtendableModelRenderer extends ModelRenderer
         matrixStackIn.pop();
     }
 
-    public void rotateMatrix(MatrixStack matrixStackIn) {
+    public void rotateMatrix(MatrixStack matrixStackIn)
+    {
+        rotateAngleX += rotationOffset.x;
+        rotateAngleY += rotationOffset.y;
+        rotateAngleZ += rotationOffset.z;
+
         matrixStackIn.translate((double)(this.rotationPointX), (double)(this.rotationPointY), (double)(this.rotationPointZ));
         if (this.rotateAngleZ != 0.0F) {
             matrixStackIn.rotate(Vector3f.ZP.rotation(this.rotateAngleZ));
@@ -249,5 +269,8 @@ public class ExtendableModelRenderer extends ModelRenderer
             matrixStackIn.rotate(Vector3f.XP.rotation(this.rotateAngleX));
         }
 
+        rotateAngleX -= rotationOffset.x;
+        rotateAngleY -= rotationOffset.y;
+        rotateAngleZ -= rotationOffset.z;
     }
 }
