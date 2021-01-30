@@ -164,7 +164,7 @@ public class MultiLimbedRenderer
         }
     }
 
-    private static ResourceLocation getSkin(ClientPlayerEntity EntityIn)
+    public static ResourceLocation getSkin(ClientPlayerEntity EntityIn)
     {
         return EntityIn.getLocationSkin();
     }

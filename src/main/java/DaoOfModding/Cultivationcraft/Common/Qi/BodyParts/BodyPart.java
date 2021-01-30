@@ -1,5 +1,6 @@
 package DaoOfModding.Cultivationcraft.Common.Qi.BodyParts;
 
+import DaoOfModding.Cultivationcraft.Client.Textures.TextureList;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.BodyModifications;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.IBodyModifications;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStats;
@@ -19,6 +20,7 @@ public class BodyPart
     private String displayNamePosition;
     private int qiNeeded;
     private PlayerStatModifications stats;
+    private String textureID = TextureList.skin;
 
     private ArrayList<String> neededToForge = new ArrayList<String>();
 
@@ -37,6 +39,16 @@ public class BodyPart
     public void addModel(String modelID)
     {
         modelIDs.add(modelID);
+    }
+
+    public void setTexture(String ID)
+    {
+        textureID = ID;
+    }
+
+    public String getTextureID()
+    {
+        return textureID;
     }
 
     public PlayerStatModifications getStatChanges()

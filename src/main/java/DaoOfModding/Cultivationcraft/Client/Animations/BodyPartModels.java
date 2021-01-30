@@ -2,7 +2,6 @@ package DaoOfModding.Cultivationcraft.Client.Animations;
 
 import DaoOfModding.Cultivationcraft.Client.AnimationFramework.ExtendableModelRenderer;
 import DaoOfModding.Cultivationcraft.Client.AnimationFramework.defaultResizeModule;
-import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartNames;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.vector.Vector3d;
@@ -77,8 +76,6 @@ public class BodyPartModels
 
         flatToothPart.addChild(flatToothSidePart);
 
-        flatToothPart.setCustomTextureForFamily(new ResourceLocation(Cultivationcraft.MODID, "textures/models/tooth.png"));
-
         addModel(BodyPartModelNames.flatToothModel, flatToothPart);
 
         // Create row of bottom teeth
@@ -104,8 +101,6 @@ public class BodyPartModels
         flatToothSidePart.extend(flatToothResizer);
 
         flatToothPart.addChild(flatToothSidePart);
-
-        flatToothPart.setCustomTextureForFamily(new ResourceLocation(Cultivationcraft.MODID, "textures/models/tooth.png"));
 
         addModel(BodyPartModelNames.flatToothLowerModel, flatToothPart);
     }
@@ -194,7 +189,7 @@ public class BodyPartModels
         ToothPart.addChild(ToothSidePart);
 
 
-        ToothPart.setCustomTextureForFamily(new ResourceLocation(Cultivationcraft.MODID, "textures/models/tooth.png"));
+        //ToothPart.setCustomTextureForFamily(new ResourceLocation(Cultivationcraft.MODID, "textures/models/tooth.png"));
         addModel(BodyPartModelNames.sharpToothModel, ToothPart);
 
 
@@ -282,7 +277,7 @@ public class BodyPartModels
         ToothPart.addChild(ToothSidePart);
 
 
-        ToothPart.setCustomTextureForFamily(new ResourceLocation(Cultivationcraft.MODID, "textures/models/tooth.png"));
+        //ToothPart.setCustomTextureForFamily(new ResourceLocation(Cultivationcraft.MODID, "textures/models/tooth.png"));
 
         addModel(BodyPartModelNames.sharpToothLowerModel, ToothPart);
     }

@@ -7,6 +7,7 @@ import DaoOfModding.Cultivationcraft.Client.Animations.CultivatorModelHandler;
 import DaoOfModding.Cultivationcraft.Client.Animations.GenericQiPoses;
 import DaoOfModding.Cultivationcraft.Client.GUI.SkillHotbarOverlay;
 import DaoOfModding.Cultivationcraft.Client.AnimationFramework.PoseHandler;
+import DaoOfModding.Cultivationcraft.Client.Textures.TextureManager;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.BodyModifications;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.IBodyModifications;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.CultivatorTechniques;
@@ -67,6 +68,8 @@ public class ClientListeners
 
         if (!modifications.hasUpdated())
             CultivatorModelHandler.updateModel(event.getRenderer(), event.getPlayer(), modifications);
+
+        TextureManager.updateTextures(event.getPlayer());
 
         // If MultiLimbedRenderer renders the player, cancel the render event
         event.setCanceled(MultiLimbedRenderer.render(event.getRenderer(), (ClientPlayerEntity)event.getPlayer(), event.getPartialRenderTick(), event.getMatrixStack(), event.getBuffers(), event.getLight()));

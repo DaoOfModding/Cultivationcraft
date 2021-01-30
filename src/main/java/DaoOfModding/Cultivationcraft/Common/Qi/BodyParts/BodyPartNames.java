@@ -2,6 +2,7 @@ package DaoOfModding.Cultivationcraft.Common.Qi.BodyParts;
 
 import DaoOfModding.Cultivationcraft.Client.Animations.BodyPartModelNames;
 import DaoOfModding.Cultivationcraft.Client.Animations.BodyPartModels;
+import DaoOfModding.Cultivationcraft.Client.Textures.TextureList;
 import javafx.util.Pair;
 import net.minecraft.util.text.TranslationTextComponent;
 
@@ -82,6 +83,7 @@ public class BodyPartNames
         flatTeeth.addModel(BodyPartModelNames.flatToothModel);
         flatTeeth.addModel(BodyPartModelNames.flatToothLowerModel, BodyPartModelNames.jawModelLower);
         flatTeeth.addNeededPart(BodyPartNames.jawPart);
+        flatTeeth.setTexture(TextureList.bone);
 
         addOption(flatTeeth);
 
@@ -89,6 +91,7 @@ public class BodyPartNames
         sharpTeeth.addModel(BodyPartModelNames.sharpToothModel);
         sharpTeeth.addModel(BodyPartModelNames.sharpToothLowerModel, BodyPartModelNames.jawModelLower);
         sharpTeeth.addNeededPart(BodyPartNames.jawPart);
+        sharpTeeth.setTexture(TextureList.bone);
 
         addOption(sharpTeeth);
     }
