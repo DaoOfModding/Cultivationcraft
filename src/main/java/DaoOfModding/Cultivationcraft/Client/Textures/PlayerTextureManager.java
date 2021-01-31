@@ -1,7 +1,6 @@
 package DaoOfModding.Cultivationcraft.Client.Textures;
 
 import DaoOfModding.Cultivationcraft.Client.AnimationFramework.MultiLimbedRenderer;
-import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.util.ResourceLocation;
@@ -17,7 +16,6 @@ public class PlayerTextureManager
     public PlayerTextureManager(UUID playerID)
     {
         addTexture(TextureList.skin, MultiLimbedRenderer.getSkin((ClientPlayerEntity)Minecraft.getInstance().world.getPlayerByUuid(playerID)));
-        addTexture(TextureList.bone, new ResourceLocation(Cultivationcraft.MODID, "textures/models/bone/bone.png"));
     }
 
     public void addModel(String modelID, String textureID)

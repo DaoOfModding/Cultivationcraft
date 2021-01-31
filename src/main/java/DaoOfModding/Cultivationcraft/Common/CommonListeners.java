@@ -3,6 +3,7 @@ package DaoOfModding.Cultivationcraft.Common;
 import DaoOfModding.Cultivationcraft.Client.ClientItemControl;
 import DaoOfModding.Cultivationcraft.Client.ClientListeners;
 import DaoOfModding.Cultivationcraft.Client.GUI.SkillHotbarOverlay;
+import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.BodyModifications;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.ChunkQiSources.ChunkQiSources;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.ChunkQiSources.IChunkQiSources;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStats;
@@ -100,12 +101,11 @@ public class CommonListeners
         // On server
         if (!event.getEntity().getEntityWorld().isRemote)
         {
-            ServerItemControl.sendPlayerStats(event.getPlayer(), (PlayerEntity) event.getPlayer());
+            ServerItemControl.sendPlayerStats(event.getPlayer(), event.getPlayer());
             SkillHotbarServer.addPlayer(event.getPlayer().getUniqueID());
 
-            BodyPartStatControl.updateStats((PlayerEntity) event.getPlayer());
+            BodyPartStatControl.updateStats(event.getPlayer());
         }
-
     }
 
     // Fired off when an player respawns into the world

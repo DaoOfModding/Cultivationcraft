@@ -12,6 +12,8 @@ import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.BodyM
 import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.IBodyModifications;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.CultivatorTechniques;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.ICultivatorTechniques;
+import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPart;
+import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartOption;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -21,6 +23,8 @@ import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+
+import java.util.HashMap;
 
 @Mod.EventBusSubscriber(value = Dist.CLIENT)
 public class ClientListeners
@@ -49,6 +53,16 @@ public class ClientListeners
             }
 
             PoseHandler.updatePoses();
+
+
+            IBodyModifications modifications = BodyModifications.getBodyModifications(event.player);
+
+            for (BodyPart part : modifications.getModifications().values())
+                part.onClientTick(event.player);
+
+            for (HashMap<String, BodyPartOption> parts : modifications.getModificationOptions().values())
+                for (BodyPartOption part : parts.values())
+                    part.onClientTick(event.player);
         }
     }
 

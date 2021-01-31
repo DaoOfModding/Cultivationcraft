@@ -75,6 +75,9 @@ public class BodyPartOption extends BodyPart
         if (modifications == null)
             return false;
 
+        if (!hasNeededPositions(modifications))
+            return false;
+
         if (!hasNeededParts(modifications))
             return false;
 

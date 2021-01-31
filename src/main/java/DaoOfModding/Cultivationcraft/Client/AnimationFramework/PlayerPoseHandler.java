@@ -82,8 +82,7 @@ public class PlayerPoseHandler
                 }
 
                 // Add the base head's angles to this model
-                //angles = angles.add(model.baseModel.bipedHead.rotateAngleX, model.baseModel.bipedHead.rotateAngleY, model.baseModel.bipedHead.rotateAngleZ);
-                //angles = angles.add(0, Math.toRadians(90), 0);
+                angles = angles.add(model.baseModel.bipedHead.rotateAngleX, model.baseModel.bipedHead.rotateAngleY, model.baseModel.bipedHead.rotateAngleZ);
 
                 currentPose.addAngle(limb, angles, 0, 1f, -1);
             }
