@@ -43,8 +43,13 @@ public class ClientListeners
             ICultivatorTechniques techs = CultivatorTechniques.getCultivatorTechniques(event.player);
 
             for (int i = 0; i < CultivatorTechniques.numberOfTechniques; i++)
-                if (techs.getTechnique(i) != null && techs.getTechnique(i).isActive())
-                    techs.getTechnique(i).tickClient(event);
+                if (techs.getTechnique(i) != null)
+                {
+                    if (techs.getTechnique(i).isActive())
+                        techs.getTechnique(i).tickClient(event);
+                    else
+                        techs.getTechnique(i).tickInactiveClient(event);
+                }
 
             if (Math.abs(event.player.getMotion().x) + Math.abs(event.player.getMotion().z) > 0)
             {

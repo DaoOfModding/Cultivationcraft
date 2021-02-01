@@ -8,6 +8,8 @@ import net.minecraft.util.math.vector.Vector3d;
 
 public class GenericQiPoses
 {
+    public static final int attackPriority = 10;
+
     public static PlayerPose Idle = new PlayerPose();
     public static PlayerPose Walk = new PlayerPose();
 

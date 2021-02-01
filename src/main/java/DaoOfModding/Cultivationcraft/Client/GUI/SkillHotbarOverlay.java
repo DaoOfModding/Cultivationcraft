@@ -69,6 +69,7 @@ public class SkillHotbarOverlay
         // Draw icons in the selection box
         TechniqueIcons.renderIcons(stack, scaledWidth + 3 - 83,scaledHeight + 3 - 30, gui, 20);
         TechniqueIcons.highlightActive(stack, scaledWidth + 3 - 83,scaledHeight + 3 - 30, gui, 20);
+        TechniqueIcons.showCooldowns(stack, scaledWidth + 3 - 83,scaledHeight + 3 - 30, gui, 20);
 
         // Reset the Z layer to its original value
         gui.setBlitOffset(blitOffset);

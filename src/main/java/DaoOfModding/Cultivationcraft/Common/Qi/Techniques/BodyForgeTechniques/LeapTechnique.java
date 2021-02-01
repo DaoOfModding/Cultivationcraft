@@ -28,7 +28,7 @@ public class LeapTechnique extends Technique
         name = new TranslationTextComponent("cultivationcraft.technique.leap").getString();
         elementID = Elements.noElementID;
 
-        multiple = false;
+        multiple = true;
 
         icon = new ResourceLocation(Cultivationcraft.MODID, "textures/techniques/icons/leap.png");
 

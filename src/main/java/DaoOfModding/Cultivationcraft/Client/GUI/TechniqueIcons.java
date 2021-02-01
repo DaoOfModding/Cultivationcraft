@@ -12,6 +12,7 @@ import net.minecraft.util.ResourceLocation;
 public class TechniqueIcons
 {
     private static final ResourceLocation HIGHLIGHT = new ResourceLocation(Cultivationcraft.MODID, "textures/techniques/icons/highlight.png");
+    private static final ResourceLocation COOLDOWN = new ResourceLocation(Cultivationcraft.MODID, "textures/techniques/icons/cooldown.png");
 
 
     // Loop through all player icons and draw them from the supplied coordinates
@@ -37,6 +38,16 @@ public class TechniqueIcons
         for (int i = 0; i < CultivatorTechniques.numberOfTechniques; i++)
             if (techs.getTechnique(i) != null && techs.getTechnique(i).isActive())
                 highlightIcon(stack, xpos, ypos, gui, spacing, i);
+    }
+
+    // Highlight all techniques that are currently active
+    public static void showCooldowns(MatrixStack stack, int xpos, int ypos, AbstractGui gui, int spacing)
+    {
+        ICultivatorTechniques techs = CultivatorTechniques.getCultivatorTechniques(Minecraft.getInstance().player);
+
+        for (int i = 0; i < CultivatorTechniques.numberOfTechniques; i++)
+            if (techs.getTechnique(i) != null && techs.getTechnique(i).getCooldown() > 0)
+                cooldownIcon(stack, xpos, ypos, gui, spacing, i);
     }
 
     // Returns the technique number the mouse is over
@@ -69,8 +80,6 @@ public class TechniqueIcons
     {
         RenderSystem.enableBlend();
 
-        ICultivatorTechniques techs = CultivatorTechniques.getCultivatorTechniques(Minecraft.getInstance().player);
-
         Minecraft.getInstance().getTextureManager().bindTexture(HIGHLIGHT);
 
         // Set the texture to be semi-transparent
@@ -79,5 +88,23 @@ public class TechniqueIcons
         gui.blit(stack, xpos + icon * spacing, ypos, gui.getBlitOffset(), 0, 0, 16, 16, 16, 16);
 
         RenderSystem.color4f(1f, 1f, 1f, 1f);
+    }
+
+    // Darken the selected icon
+    // Remember to rebind texture afterwards
+    public static void cooldownIcon(MatrixStack stack, int xpos, int ypos, AbstractGui gui, int spacing, int icon)
+    {
+        RenderSystem.enableBlend();
+
+        Minecraft.getInstance().getTextureManager().bindTexture(COOLDOWN);
+
+        // Set the texture to be semi-transparent
+        RenderSystem.color4f(1f, 1f, 1f, 0.5f);
+
+        gui.blit(stack, xpos + icon * spacing, ypos, gui.getBlitOffset(), 0, 0, 16, 16, 16, 16);
+
+        RenderSystem.color4f(1f, 1f, 1f, 1f);
+
+        // TODO: Display how long left on cooldown?
     }
 }

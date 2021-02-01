@@ -33,6 +33,10 @@ public class Technique
 
     protected boolean multiple = true;
 
+    // Cooldown (in ticks)
+    protected int cooldown = 5;
+    protected int cooldownCount = 0;
+
     protected PlayerPose pose = new PlayerPose();
 
     public Technique()
@@ -89,21 +93,53 @@ public class Technique
     // keyDown = true when the key is pressed down, false when the key is released
     public void useKeyPressed(boolean keyDown, PlayerEntity player)
     {
+        // Do nothing if this skill is on cooldown
+        if (cooldownCount > 0)
+            return;
+
         // Skill is turned on while the key is held down, turned off when key is released
         if (type == useType.Channel)
-            active = keyDown;
+        {
+            if (active && !keyDown)
+                onRelease(player);
+
+            if (!keyDown)
+                deactivate();
+            else if (keyDown && !active)
+                activate();
+        }
         else if (type == useType.Toggle)
         {
             // Toggle skill when key pressed
             if (!keyDown)
             {
-                active = !active;
+                if (active)
+                    deactivate();
+                else
+                    activate();
             }
         }
         // Skill is turned on when the key is pressed (custom code to deactivate)
         else if (type == useType.Tap)
             if (keyDown)
-                active = true;
+                activate();
+    }
+
+    public void activate()
+    {
+        active = true;
+    }
+
+    public void deactivate()
+    {
+        active = false;
+        cooldownCount = cooldown;
+    }
+
+    // Called when the use key is released for a channel skill
+    protected void onRelease(PlayerEntity player)
+    {
+
     }
 
     protected void setOverlay(ResourceLocation location)
@@ -125,6 +161,11 @@ public class Technique
         return readNBT(nbt);
     }
 
+    public void setCooldown(int ticks)
+    {
+        cooldownCount = ticks;
+    }
+
     // Write a techniques data to NBT
     public CompoundNBT writeNBT()
     {
@@ -135,6 +176,7 @@ public class Technique
         nbt.putString("className", className);
 
         nbt.putBoolean("active", active);
+        nbt.putInt("cooldown", cooldownCount);
 
         return nbt;
     }
@@ -164,6 +206,7 @@ public class Technique
     public void readNBTData(CompoundNBT nbt)
     {
         setActive(nbt.getBoolean("active"));
+        setCooldown(nbt.getInt("cooldown"));
     }
 
     public void readBufferData(PacketBuffer buffer)
@@ -180,6 +223,23 @@ public class Technique
     public void tickClient(TickEvent.PlayerTickEvent event)
     {
         PoseHandler.addPose(event.player.getUniqueID(), pose);
+    }
+
+    public void tickInactiveClient(TickEvent.PlayerTickEvent event)
+    {
+        if (cooldownCount > 0)
+            cooldownCount = cooldownCount - 1;
+    }
+
+    public void tickInactiveServer(TickEvent.PlayerTickEvent event)
+    {
+        if (cooldownCount > 0)
+            cooldownCount = cooldownCount - 1;
+    }
+
+    public int getCooldown()
+    {
+        return cooldownCount;
     }
 
     // Rendering as the player who owns the technique

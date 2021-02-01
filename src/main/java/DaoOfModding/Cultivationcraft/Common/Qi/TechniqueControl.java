@@ -1,6 +1,7 @@
 package DaoOfModding.Cultivationcraft.Common.Qi;
 
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.*;
+import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.BodyForgeTechniques.BiteTechnique;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.BodyForgeTechniques.LeapTechnique;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import net.minecraft.entity.player.PlayerEntity;
@@ -17,6 +18,7 @@ public class TechniqueControl
         TechniqueControl.addTechnique(IceAuraTechnique.class);
         TechniqueControl.addTechnique(MeditateTechnique.class);
         TechniqueControl.addTechnique(LeapTechnique.class);
+        TechniqueControl.addTechnique(BiteTechnique.class);
     }
 
     // List of all techniques available in the game
