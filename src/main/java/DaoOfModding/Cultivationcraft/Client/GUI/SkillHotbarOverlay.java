@@ -44,7 +44,6 @@ public class SkillHotbarOverlay
         RenderSystem.enableBlend();
 
         IngameGui gui = Minecraft.getInstance().ingameGUI;
-        PlayerEntity playerentity = Minecraft.getInstance().player;
 
         Minecraft.getInstance().getTextureManager().bindTexture(WIDGETS_TEX_PATH);
 

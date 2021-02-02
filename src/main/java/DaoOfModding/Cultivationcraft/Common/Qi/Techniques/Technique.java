@@ -37,6 +37,10 @@ public class Technique
     protected int cooldown = 5;
     protected int cooldownCount = 0;
 
+    // Length of time until max channel in ticks
+    protected int channelLength = 1;
+    protected int currentChannel = 0;
+
     protected PlayerPose pose = new PlayerPose();
 
     public Technique()
@@ -134,6 +138,7 @@ public class Technique
     {
         active = false;
         cooldownCount = cooldown;
+        currentChannel = 0;
     }
 
     // Called when the use key is released for a channel skill
@@ -217,11 +222,20 @@ public class Technique
     // Ticks on server side, only called if Technique is active and owned by the player
     public void tickServer(TickEvent.PlayerTickEvent event)
     {
+        // While the key is being held down increase the currentChannel duration
+        if (type == useType.Channel)
+            if (currentChannel < channelLength)
+                currentChannel++;
     }
 
     // Ticks on client side, only called if Technique is active
     public void tickClient(TickEvent.PlayerTickEvent event)
     {
+        // While the key is being held down increase the currentChannel duration
+        if (type == useType.Channel)
+            if (currentChannel < channelLength)
+                currentChannel++;
+
         PoseHandler.addPose(event.player.getUniqueID(), pose);
     }
 
@@ -244,7 +258,43 @@ public class Technique
 
     // Rendering as the player who owns the technique
     // Put code here for things only the person using the technique can see
-    public void renderPlayerView() {}
+    public void renderPlayerView()
+    {
+        if (active && type == useType.Channel)
+        {
+            ResourceLocation progress = new ResourceLocation(Cultivationcraft.MODID, "textures/gui/progressbar.png");
+
+            int scaledWidth = Minecraft.getInstance().getMainWindow().getScaledWidth();
+            int scaledHeight = Minecraft.getInstance().getMainWindow().getScaledHeight();
+
+            float minPercent = 0.3f;
+            float maxPercent = 0.675f;
+            float percent = (float)currentChannel / (float)channelLength;
+            float adjustedWidth = minPercent + (maxPercent - minPercent) * percent;
+
+
+            Minecraft.getInstance().getTextureManager().bindTexture(progress);
+
+            GlStateManager.enableBlend();
+
+            Tessellator tessellator = Tessellator.getInstance();
+            BufferBuilder bufferbuilder = tessellator.getBuffer();
+            bufferbuilder.begin(7, DefaultVertexFormats.POSITION_TEX);
+            bufferbuilder.pos(0.0D, scaledHeight, -90.0D).tex(0.0f, 0.5f).endVertex();
+            bufferbuilder.pos(scaledWidth, scaledHeight, -90.0D).tex(1.0f, 0.5f).endVertex();
+            bufferbuilder.pos(scaledWidth, 0.0D, -90.0D).tex(1.0f, 0.0f).endVertex();
+            bufferbuilder.pos(0.0D, 0.0D, -90.0D).tex(0.0f, 0.0f).endVertex();
+            tessellator.draw();
+
+            bufferbuilder = tessellator.getBuffer();
+            bufferbuilder.begin(7, DefaultVertexFormats.POSITION_TEX);
+            bufferbuilder.pos(0.0D, scaledHeight, -90.0D).tex(0.0f, 1f).endVertex();
+            bufferbuilder.pos(adjustedWidth * scaledWidth, scaledHeight, -90.0D).tex(1.0f * adjustedWidth, 1f).endVertex();
+            bufferbuilder.pos(adjustedWidth * scaledWidth, 0.0D, -90.0D).tex(1.0f * adjustedWidth, 0.5f).endVertex();
+            bufferbuilder.pos(0.0D, 0.0D, -90.0D).tex(0.0f, 0.5f).endVertex();
+            tessellator.draw();
+        }
+    }
 
     // Generic rendering for all players
     // Put code here for things everyone can see when looking at the player using the technique

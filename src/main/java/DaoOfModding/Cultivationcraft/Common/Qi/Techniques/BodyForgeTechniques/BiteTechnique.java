@@ -33,6 +33,8 @@ public class BiteTechnique extends Technique
 
         pose.addAngle(BodyPartModelNames.jawModelLower, new Vector3d(Math.toRadians(40), 0, 0), GenericQiPoses.attackPriority, 5f, -1);
         end.addAngle(BodyPartModelNames.jawModelLower, new Vector3d(Math.toRadians(20), 0, 0), GenericQiPoses.attackPriority, 0f, -1);
+
+        channelLength = 10;
     }
 
     @Override
