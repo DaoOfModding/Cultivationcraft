@@ -10,6 +10,8 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
@@ -29,6 +31,8 @@ public class CultivatorStats implements ICultivatorStats
     private boolean recallOn = false;
 
     private boolean disconnected = false;
+
+    private HashMap<String, StatModifier> modifiers = new HashMap<String, StatModifier>();
 
     public double getFlyingItemSpeed() {
         return flyingItemSpeed;
@@ -74,16 +78,27 @@ public class CultivatorStats implements ICultivatorStats
 
     // Returns a Vector3d containing the location of the target, should ONLY be called if hasTarget is true
     public Vector3d getTarget() {
-        if (targetType == RayTraceResult.Type.BLOCK) {
+        if (targetType == RayTraceResult.Type.BLOCK)
             return Misc.getVector3dFromBlockPos(targetBlock);
-        } else if (targetType == RayTraceResult.Type.ENTITY) {
+        else if (targetType == RayTraceResult.Type.ENTITY)
             // Return new vector of the target's location, targeting the middle of the target rather than it's feet
             return new Vector3d(targetEntity.getPosX(), targetEntity.getPosY() + (targetEntity.getHeight() / 2), targetEntity.getPosZ());
-        } else {
-            // THIS SHOULD NEVER BE REACHED
 
-            return new Vector3d(0, 0, 0);
-        }
+        // THIS SHOULD NEVER BE REACHED
+        return new Vector3d(0, 0, 0);
+    }
+
+    public StatModifier getModifier(String id)
+    {
+        if (!modifiers.containsKey(id))
+            modifiers.put(id, new StatModifier(id));
+
+        return modifiers.get(id);
+    }
+
+    public HashMap<String, StatModifier> getModifiers()
+    {
+        return modifiers;
     }
 
     public RayTraceResult.Type getTargetType() {

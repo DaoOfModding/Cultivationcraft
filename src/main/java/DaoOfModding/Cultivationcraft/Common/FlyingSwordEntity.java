@@ -668,16 +668,6 @@ public class FlyingSwordEntity extends ItemEntity
                     if (targetEntity instanceof EnderDragonPartEntity)
                         entity = ((EnderDragonPartEntity)targetEntity).dragon;
 
-
-                    // I think this is the code the adds damage to an item
-                    /*ItemStack itemstack1 = this.getItem();
-
-                    if (!owner.world.isRemote && entity instanceof LivingEntity)
-                    {
-                        ItemStack copy = itemstack1.copy();
-                        itemstack1.hitEntity((LivingEntity)entity, owner);
-                    }*/
-
                     if (targetEntity instanceof LivingEntity)
                     {
                         float f5 = 0 - ((LivingEntity)targetEntity).getHealth();
@@ -695,11 +685,6 @@ public class FlyingSwordEntity extends ItemEntity
                         }
                     }
                 }
-                else
-                {
-                    owner.world.playSound((PlayerEntity)null, getPosX(), getPosY(), getPosZ(), SoundEvents.ENTITY_PLAYER_ATTACK_NODAMAGE, owner.getSoundCategory(), 1.0F, 1.0F);
-                }
-
             }
         }
     }

@@ -4,6 +4,7 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 
+import java.util.HashMap;
 import java.util.UUID;
 
 public interface ICultivatorStats
@@ -28,6 +29,9 @@ public interface ICultivatorStats
     public UUID getTargetID();
     public boolean hasTarget(World world);
     public void setTarget(Vector3d pos, RayTraceResult.Type type, World targetWorld, UUID targetID);
+
+    public StatModifier getModifier(String id);
+    public HashMap<String, StatModifier> getModifiers();
 
     public boolean getRecall();
     public void setRecall(boolean recall);

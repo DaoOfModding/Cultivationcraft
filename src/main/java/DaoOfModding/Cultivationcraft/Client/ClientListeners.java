@@ -33,13 +33,16 @@ public class ClientListeners
 
     public static void playerTick(TickEvent.PlayerTickEvent event)
     {
+        // Add the idle pose to the players poseHandler
         PoseHandler.addPose(event.player.getUniqueID(), GenericQiPoses.Idle);
 
         if (event.phase == TickEvent.Phase.START)
         {
+            // Tell the PoseHandler that the player is not jumping if they are on the ground or in water
             if (event.player.isOnGround() || event.player.isInWater())
                 PoseHandler.setJumping(event.player.getUniqueID(), false);
 
+            // Tick through all active cultivator techniques
             ICultivatorTechniques techs = CultivatorTechniques.getCultivatorTechniques(event.player);
 
             for (int i = 0; i < CultivatorTechniques.numberOfTechniques; i++)
@@ -51,15 +54,17 @@ public class ClientListeners
                         techs.getTechnique(i).tickInactiveClient(event);
                 }
 
+            // If player is moving add the walking pose to the PoseHandler
             if (Math.abs(event.player.getMotion().x) + Math.abs(event.player.getMotion().z) > 0)
             {
                 PoseHandler.addPose(event.player.getUniqueID(), GenericPoses.Walking);
                 PoseHandler.addPose(event.player.getUniqueID(), GenericQiPoses.Walk);
             }
 
+            // Update the PoseHandler
             PoseHandler.updatePoses();
 
-
+            // Tick through all body modifications on the player
             IBodyModifications modifications = BodyModifications.getBodyModifications(event.player);
 
             for (BodyPart part : modifications.getModifications().values())

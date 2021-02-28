@@ -3,11 +3,16 @@ package DaoOfModding.Cultivationcraft.Client;
 import DaoOfModding.Cultivationcraft.Client.AnimationFramework.GenericPoses;
 import DaoOfModding.Cultivationcraft.Client.AnimationFramework.MultiLimbedModel;
 import DaoOfModding.Cultivationcraft.Client.GUI.SkillHotbarOverlay;
+import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.CultivatorTechniques;
+import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.ICultivatorTechniques;
 import DaoOfModding.Cultivationcraft.Common.Misc;
+import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.AttackTechnique;
+import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.Technique;
 import DaoOfModding.Cultivationcraft.Common.Register;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import DaoOfModding.Cultivationcraft.Network.ClientPacketHandler;
 import DaoOfModding.Cultivationcraft.Network.PacketHandler;
+import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.Entity;
@@ -93,6 +98,33 @@ public class KeybindingControl
         }
     }
 
+    public static void handleAttackOverrides()
+    {
+        // If something is held in the players hand do nothing
+        if (!Minecraft.getInstance().player.getHeldItemMainhand().isEmpty())
+            return;
+
+        // Get all cultivator techniques and check if any of them are active attack overrides
+        ICultivatorTechniques techs = CultivatorTechniques.getCultivatorTechniques(Minecraft.getInstance().player);
+
+        for (int i = 0; i < 9; i ++)
+        {
+            Technique testTech = techs.getTechnique(i);
+
+            // If this technique is an active attack override then attack with it and cancel the default attack
+            if (testTech != null && testTech.isActive() && testTech instanceof AttackTechnique)
+            {
+                // If the attack button is not pressed do nothing (calling this cancels the default attack, so it has to be checked here)
+                if (!Minecraft.getInstance().gameSettings.keyBindAttack.getKeyBinding().isPressed())
+                    return;
+
+                ((AttackTechnique) testTech).attack(Minecraft.getInstance().player);
+
+                return;
+            }
+        }
+    }
+
     @SubscribeEvent
     public static void mouseScroll(InputEvent.MouseScrollEvent event)
     {
@@ -115,6 +147,7 @@ public class KeybindingControl
         {
             handleHotbarKeybinds();
             handleHotbarInteracts();
+            handleAttackOverrides();
 
             if (keyBindings[0].isPressed())
             {
