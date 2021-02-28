@@ -6,6 +6,7 @@ import DaoOfModding.Cultivationcraft.Client.GUI.SkillHotbarOverlay;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.CultivatorTechniques;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.ICultivatorTechniques;
 import DaoOfModding.Cultivationcraft.Common.Misc;
+import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.AttackOverrideTechnique;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.AttackTechnique;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.Technique;
 import DaoOfModding.Cultivationcraft.Common.Register;
@@ -112,7 +113,7 @@ public class KeybindingControl
             Technique testTech = techs.getTechnique(i);
 
             // If this technique is an active attack override then attack with it and cancel the default attack
-            if (testTech != null && testTech.isActive() && testTech instanceof AttackTechnique)
+            if (testTech != null && testTech.isActive() && testTech instanceof AttackOverrideTechnique)
             {
                 // If the attack button is not pressed do nothing (calling this cancels the default attack, so it has to be checked here)
                 if (!Minecraft.getInstance().gameSettings.keyBindAttack.getKeyBinding().isPressed())

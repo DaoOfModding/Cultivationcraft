@@ -5,7 +5,7 @@ public class StatModifier
     private String id;
 
     private int attack = 0;
-    private int attackRange = 0;
+    private double attackRange = 0;
 
     public StatModifier(String newID)
     {
@@ -22,12 +22,12 @@ public class StatModifier
         return attack;
     }
 
-    public void setAttackRange(int aRange)
+    public void setAttackRange(double aRange)
     {
         attackRange = aRange;
     }
 
-    public int getAttackRange()
+    public double getAttackRange()
     {
         return attackRange;
     }
