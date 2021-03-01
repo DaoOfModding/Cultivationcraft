@@ -6,6 +6,7 @@ import DaoOfModding.Cultivationcraft.Client.GUI.SkillHotbarOverlay;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.CultivatorTechniques;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.ICultivatorTechniques;
 import DaoOfModding.Cultivationcraft.Common.Misc;
+import DaoOfModding.Cultivationcraft.Common.Qi.CultivatorControl;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.AttackOverrideTechnique;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.AttackTechnique;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.Technique;
@@ -106,24 +107,21 @@ public class KeybindingControl
             return;
 
         // Get all cultivator techniques and check if any of them are active attack overrides
-        ICultivatorTechniques techs = CultivatorTechniques.getCultivatorTechniques(Minecraft.getInstance().player);
+        int slot = CultivatorControl.getAttackOverride(Minecraft.getInstance().player);
 
-        for (int i = 0; i < 9; i ++)
-        {
-            Technique testTech = techs.getTechnique(i);
+        // Do nothing if there is no active attack override
+        if (slot == -1)
+            return;
 
-            // If this technique is an active attack override then attack with it and cancel the default attack
-            if (testTech != null && testTech.isActive() && testTech instanceof AttackOverrideTechnique)
-            {
-                // If the attack button is not pressed do nothing (calling this cancels the default attack, so it has to be checked here)
-                if (!Minecraft.getInstance().gameSettings.keyBindAttack.getKeyBinding().isPressed())
-                    return;
+        AttackOverrideTechnique attackTech = (AttackOverrideTechnique)CultivatorTechniques.getCultivatorTechniques(Minecraft.getInstance().player).getTechnique(slot);
 
-                ((AttackTechnique) testTech).attack(Minecraft.getInstance().player);
+        // If the attack button is not pressed do nothing
+        // (calling this cancels the default attack, so it has to be checked after confirming that there is an active attack override)
+        if (!Minecraft.getInstance().gameSettings.keyBindAttack.getKeyBinding().isPressed())
+            return;
 
-                return;
-            }
-        }
+        // Attack with the attack override
+        attackTech.attack(Minecraft.getInstance().player, slot);
     }
 
     @SubscribeEvent

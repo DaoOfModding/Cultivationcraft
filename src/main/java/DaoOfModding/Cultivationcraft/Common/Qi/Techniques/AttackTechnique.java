@@ -5,7 +5,10 @@ import DaoOfModding.Cultivationcraft.Client.AnimationFramework.PoseHandler;
 import DaoOfModding.Cultivationcraft.Client.KeybindingControl;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStats;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.ICultivatorStats;
+import DaoOfModding.Cultivationcraft.Common.Misc;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
+import DaoOfModding.Cultivationcraft.Network.ClientPacketHandler;
+import net.minecraft.client.Minecraft;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -22,6 +25,7 @@ import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.server.ServerWorld;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class AttackTechnique extends Technique
 {
@@ -45,23 +49,28 @@ public class AttackTechnique extends Technique
     }
 
     // Try to attack with specified player, client only
-    public void attack(PlayerEntity player)
+    public void attack(PlayerEntity player, int slot)
     {
-        // Add the attacking pose to the PoseHandler
-        PoseHandler.addPose(player.getUniqueID(), attack);
+        attackAnimation(player);
 
         // Get attack range
         double range = getRange(player);
 
-        Cultivationcraft.LOGGER.info("Checking range " + range);
-
         // If the mouse is over an entity in range, attack that entity
-        if (KeybindingControl.getMouseOver(range).getType() == RayTraceResult.Type.ENTITY)
-        {
-            Cultivationcraft.LOGGER.info("In range...");
+        RayTraceResult result = KeybindingControl.getMouseOver(range);
 
-            // TODO: Send attack packet to server
-        }
+        UUID targetID = null;
+
+        if (result.getType() == RayTraceResult.Type.ENTITY)
+            targetID = Misc.getEntityAtLocation(result.getHitVec(), Minecraft.getInstance().world).getUniqueID();
+
+        ClientPacketHandler.sendAttackToServer(player.getUniqueID(), result.getType(), result.getHitVec(), targetID, slot);
+    }
+
+    public void attackAnimation(PlayerEntity player)
+    {
+        // Add the attacking pose to the PoseHandler
+        PoseHandler.addPose(player.getUniqueID(), attack);
     }
 
     public double getRange(PlayerEntity player)
@@ -95,11 +104,15 @@ public class AttackTechnique extends Technique
     // Attack specified entity with specified player, server only
     public void attackEntity(PlayerEntity player, Entity toAttack)
     {
+        Cultivationcraft.LOGGER.info("Trying to attack...");
+
         if (!toAttack.canBeAttackedWithItem())
             return;
 
         if (toAttack.hitByEntity(player))
             return;
+
+        Cultivationcraft.LOGGER.info("Attack allowed...");
 
         // Get attack range
         double range = getRange(player);
@@ -126,6 +139,8 @@ public class AttackTechnique extends Technique
             player.world.playSound((PlayerEntity) null, player.getPosX(), player.getPosY(), player.getPosZ(), SoundEvents.ENTITY_PLAYER_ATTACK_NODAMAGE, player.getSoundCategory(), 1.0F, 1.0F);
             return;
         }
+
+        Cultivationcraft.LOGGER.info("Attack succeeded...");
 
         // Play attack sound
         player.world.playSound((PlayerEntity) null, player.getPosX(), player.getPosY(), player.getPosZ(), SoundEvents.ENTITY_PLAYER_ATTACK_STRONG, player.getSoundCategory(), 1.0F, 1.0F);

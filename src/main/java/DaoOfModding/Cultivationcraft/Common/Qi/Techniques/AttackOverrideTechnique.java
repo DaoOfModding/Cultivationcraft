@@ -1,5 +1,6 @@
 package DaoOfModding.Cultivationcraft.Common.Qi.Techniques;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraftforge.event.TickEvent;
 
@@ -15,13 +16,26 @@ public class AttackOverrideTechnique extends AttackTechnique
     }
 
     @Override
-    public void attack(PlayerEntity player)
+    public void attack(PlayerEntity player, int slot)
     {
         // Do nothing if on cooldown
         if (cooldownCount > 0)
             return;
 
-        super.attack(player);
+        super.attack(player, slot);
+
+        // Set the cooldown
+        cooldownCount = cooldown;
+    }
+
+    @Override
+    public void attackEntity(PlayerEntity player, Entity toAttack)
+    {
+        // Do nothing if on cooldown
+        if (cooldownCount > 0)
+            return;
+
+        super.attackEntity(player, toAttack);
 
         // Set the cooldown
         cooldownCount = cooldown;
@@ -37,7 +51,7 @@ public class AttackOverrideTechnique extends AttackTechnique
     }
 
     @Override
-    public void tickInactiveServer(TickEvent.PlayerTickEvent event)
+    public void tickServer(TickEvent.PlayerTickEvent event)
     {
         super.tickServer(event);
 

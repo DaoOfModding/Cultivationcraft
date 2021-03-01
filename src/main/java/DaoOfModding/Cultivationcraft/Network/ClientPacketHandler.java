@@ -9,6 +9,8 @@ import DaoOfModding.Cultivationcraft.Network.Packets.CultivatorStats.RecallFlyin
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.vector.Vector3d;
+import net.minecraftforge.fml.network.PacketDistributor;
+import net.minecraftforge.fml.server.ServerLifecycleHooks;
 
 import java.util.UUID;
 
@@ -29,6 +31,12 @@ public class ClientPacketHandler
     public static void sendFlyingSwordConversionToServer(int heldItemID)
     {
         ConvertToFlyingPacket pack = new ConvertToFlyingPacket(heldItemID);
+        PacketHandler.channel.sendToServer(pack);
+    }
+
+    public static void sendAttackToServer(UUID playerID, RayTraceResult.Type type, Vector3d pos, UUID targetID, int slot)
+    {
+        AttackPacket pack = new AttackPacket(playerID, type, pos, targetID, slot);
         PacketHandler.channel.sendToServer(pack);
     }
 

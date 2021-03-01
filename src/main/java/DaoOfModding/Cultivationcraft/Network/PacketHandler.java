@@ -8,6 +8,7 @@ import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.Cultiva
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.ICultivatorStats;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.CultivatorTechniques;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.ICultivatorTechniques;
+import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import DaoOfModding.Cultivationcraft.Network.Packets.*;
 import DaoOfModding.Cultivationcraft.Network.Packets.CultivatorStats.*;
 import DaoOfModding.Cultivationcraft.Common.Register;
@@ -28,7 +29,8 @@ import java.util.UUID;
 
 public class PacketHandler
 {
-    private static final byte KEYPRESS = 07;
+    private static final byte KEYPRESS = 03;
+    private static final byte ATTACK = 07;
     private static final byte CHUNK_QI_SOURCES = 10;
     private static final byte TECHNIQUE_USE = 20;
     private static final byte FLYING_SWORD_NBT_ID = 35;
@@ -41,7 +43,7 @@ public class PacketHandler
     private static final String PROTOCOL_VERSION = "1";
 
     public static final SimpleChannel channel = NetworkRegistry.newSimpleChannel(
-            new ResourceLocation("examplemod", "main"),
+            new ResourceLocation(Cultivationcraft.MODID, "main"),
             () -> PROTOCOL_VERSION,
             PROTOCOL_VERSION::equals,
             PROTOCOL_VERSION::equals
@@ -50,6 +52,7 @@ public class PacketHandler
     public static void init()
     {
         channel.registerMessage(KEYPRESS, keypressPacket.class, keypressPacket::encode, keypressPacket::decode, keypressPacket::handle);
+        channel.registerMessage(ATTACK, AttackPacket.class, AttackPacket::encode, AttackPacket::decode, AttackPacket::handle);
         channel.registerMessage(CHUNK_QI_SOURCES, ChunkQiSourcesPacket.class, ChunkQiSourcesPacket::encode, ChunkQiSourcesPacket::decode, ChunkQiSourcesPacket::handle);
         channel.registerMessage(TECHNIQUE_USE, TechniqueUsePacket.class, TechniqueUsePacket::encode, TechniqueUsePacket::decode, TechniqueUsePacket::handle);
         channel.registerMessage(FLYING_SWORD_NBT_ID, ConvertToFlyingPacket.class, ConvertToFlyingPacket::encode, ConvertToFlyingPacket::decode, ConvertToFlyingPacket::handle);
@@ -71,6 +74,12 @@ public class PacketHandler
     {
         CultivatorTargetPacket pack = new CultivatorTargetPacket(playerID, type, pos, targetID);
         channel.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> ServerLifecycleHooks.getCurrentServer().getPlayerList().getPlayerByUUID(playerID)), pack);
+    }
+
+    public static void sendAttackToClient(UUID playerID, RayTraceResult.Type type, Vector3d pos, UUID targetID, int slot)
+    {
+        AttackPacket pack = new AttackPacket(playerID, type, pos, targetID, slot);
+        channel.send(PacketDistributor.TRACKING_ENTITY.with(() -> ServerLifecycleHooks.getCurrentServer().getPlayerList().getPlayerByUUID(playerID)), pack);
     }
 
     public static void sendChunkQiSourcesToClient(Chunk chunk)
