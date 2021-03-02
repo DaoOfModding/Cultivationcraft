@@ -1,6 +1,7 @@
 package DaoOfModding.Cultivationcraft;
 
 import DaoOfModding.Cultivationcraft.Client.AnimationFramework.GenericPoses;
+import DaoOfModding.Cultivationcraft.Client.AnimationFramework.MultiLimbedRenderer;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartNames;
 import DaoOfModding.Cultivationcraft.Client.Animations.GenericQiPoses;
 import DaoOfModding.Cultivationcraft.Client.ClientItemControl;
@@ -51,5 +52,6 @@ public class Cultivationcraft {
     {
         ClientItemControl.init(event);
         Register.registerRenderers();
+        MultiLimbedRenderer.setup();
     }
 }

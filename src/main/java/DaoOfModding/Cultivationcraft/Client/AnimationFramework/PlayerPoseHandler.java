@@ -35,7 +35,6 @@ public class PlayerPoseHandler
         playerID = id;
         model = new MultiLimbedModel(playerModel);
     }
-
     public MultiLimbedModel getPlayerModel()
     {
         return model;
@@ -171,7 +170,7 @@ public class PlayerPoseHandler
 
         // Reset stored animation data for any limbs whose target position have changed
         for (String limb : model.getLimbs())
-            if (!(renderPose.hasAngle(limb) && oldRenderPose.hasAngle(limb) && renderPose.getAngle(limb).equals(oldRenderPose.getAngle(limb))))
+            if (!animationTime.containsKey(limb) || !(renderPose.hasAngle(limb) && oldRenderPose.hasAngle(limb) && renderPose.getAngle(limb).equals(oldRenderPose.getAngle(limb))))
                 animationTime.put(limb, 0f);
 
 

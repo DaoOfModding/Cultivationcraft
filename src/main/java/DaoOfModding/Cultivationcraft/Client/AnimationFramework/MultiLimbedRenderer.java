@@ -5,29 +5,149 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
+import net.minecraft.client.renderer.ActiveRenderInfo;
+import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.LivingRenderer;
 import net.minecraft.client.renderer.entity.PlayerRenderer;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.Pose;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.vector.Vector3d;
+import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 
 public class MultiLimbedRenderer
 {
     // Yeah, I know this is an AWFUL way to do things
     // It's a hack to get around the base ModelRenderer render function being full of private variables
-    private static IRenderTypeBuffer currentBuffer;
-    private static MultiLimbedModel currentModel;
-    private static ClientPlayerEntity currentEntity;
-    private static IVertexBuilder currentVertexBuilder;
-    private static ResourceLocation lastSkin = null;
+    protected static IRenderTypeBuffer currentBuffer;
+    protected static MultiLimbedModel currentModel;
+    protected static ClientPlayerEntity currentEntity;
+    protected static IVertexBuilder currentVertexBuilder;
+    protected static ResourceLocation lastSkin = null;
 
-    public static boolean render(PlayerRenderer renderer, ClientPlayerEntity entityIn, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn)
+    private static Field eyeHeightField;
+    private static Field thirdPersonField;
+    private static Method cameraMoveFunction;
+    private static final float defaultEyeHeight = 1.62f;
+
+    private static boolean fakeThird = false;
+
+    private static boolean enableFullBodyFirstPerson = false;
+
+    public static void setup()
     {
-        PoseHandler.setupPoseHandler(entityIn.getUniqueID(), renderer.getEntityModel());
+        eyeHeightField = ObfuscationReflectionHelper.findField(Entity.class,"eyeHeight");
+        thirdPersonField = ObfuscationReflectionHelper.findField(ActiveRenderInfo.class, "thirdPerson");
+        cameraMoveFunction = ObfuscationReflectionHelper.findMethod(ActiveRenderInfo.class, "movePosition", double.class, double.class, double.class);
+    }
+
+    // Toggle on the third person boolean in ActiveRenderInfo to allow the player model to be drawn even when in first person
+    public static void fakeThirdPersonOn()
+    {
+        if (!enableFullBodyFirstPerson)
+            return;
+
+        ActiveRenderInfo rendererInfo = Minecraft.getInstance().gameRenderer.getActiveRenderInfo();
+
+        if (rendererInfo.isThirdPerson())
+            return;
+
+        fakeThird = true;
+
+        try
+        {
+            thirdPersonField.setBoolean(rendererInfo, true);
+        }
+        catch(Exception e)
+        {
+            Cultivationcraft.LOGGER.error("Error adjusting third person toggle");
+        }
+
+        // Move the camera so that it's just in front of the head rather than inside it
+        // TODO: This results in seeing throw blocks you're too close to. This is an issue
+        try
+        {
+            cameraMoveFunction.invoke(rendererInfo, 0.75, 0, 0);
+        }
+        catch(Exception e)
+        {
+            Cultivationcraft.LOGGER.error("Error adjusting camera position");
+        }
+    }
+
+    // Toggle off the third person boolean so that the camera will still render in first person
+    public static void fakeThirdPersonOff()
+    {
+        if (!enableFullBodyFirstPerson)
+            return;
+
+        if (!fakeThird)
+            return;
+
+        ActiveRenderInfo rendererInfo = Minecraft.getInstance().gameRenderer.getActiveRenderInfo();
+
+        try
+        {
+            thirdPersonField.setBoolean(rendererInfo, false);
+        }
+        catch(Exception e)
+        {
+            Cultivationcraft.LOGGER.error("Error adjusting third person toggle");
+        }
+    }
+
+    public static boolean renderFirstPerson(ClientPlayerEntity entityIn, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn)
+    {
+        PoseHandler.setupPoseHandler(entityIn);
+        PlayerPoseHandler handler = PoseHandler.getPlayerPoseHandler(entityIn.getUniqueID());
+
+        if(!enableFullBodyFirstPerson)
+            doModelCalculations(entityIn, matrixStackIn, partialTicks, handler);
+
+        adjustEyeHeight(entityIn, handler);
+
+        //TODO: Render first person models here
+
+        //render2(handler.model, entityIn, partialTicks, matrixStackIn, bufferIn, packedLightIn);
+
+        return enableFullBodyFirstPerson;
+    }
+
+    public static void doModelCalculations(ClientPlayerEntity entityIn, MatrixStack matrixStackIn, float partialTicks, PlayerPoseHandler handler)
+    {
+        PoseHandler.applyRotations(entityIn, matrixStackIn, partialTicks, 0, partialTicks);
+        PoseHandler.doPose(entityIn.getUniqueID(), partialTicks);
+
+        handler.model.calculateHeightAdjustment();
+    }
+
+    public static void adjustEyeHeight(ClientPlayerEntity player, PlayerPoseHandler handler)
+    {
+
+        float eyeHeight = handler.model.calculateEyeHeight() * -1;
+
+        try
+        {
+            eyeHeightField.setFloat(player, eyeHeight);
+        }
+        catch(Exception e)
+        {
+            Cultivationcraft.LOGGER.error("Error adjusting player eye height");
+        }
+    }
+
+    public static boolean render(ClientPlayerEntity entityIn, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn)
+    {
+        PoseHandler.setupPoseHandler(entityIn);
         PlayerPoseHandler handler = PoseHandler.getPlayerPoseHandler(entityIn.getUniqueID());
 
         render2(handler.model, entityIn, partialTicks, matrixStackIn, bufferIn, packedLightIn);

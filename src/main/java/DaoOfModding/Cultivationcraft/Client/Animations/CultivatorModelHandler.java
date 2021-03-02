@@ -1,11 +1,15 @@
 package DaoOfModding.Cultivationcraft.Client.Animations;
 
 import DaoOfModding.Cultivationcraft.Client.AnimationFramework.*;
+import DaoOfModding.Cultivationcraft.Client.Textures.TextureManager;
+import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.BodyModifications;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.IBodyModifications;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPart;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartNames;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartOption;
 import javafx.util.Pair;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.renderer.entity.PlayerRenderer;
 import net.minecraft.entity.player.PlayerEntity;
 
@@ -14,9 +18,20 @@ import java.util.Map;
 
 public class CultivatorModelHandler
 {
-    // Update player model based on the supplied BodyModifications
-    public static void updateModel(PlayerRenderer renderer, PlayerEntity player, IBodyModifications modifications)
+    public static void updateModifications(ClientPlayerEntity player)
     {
+        IBodyModifications modifications = BodyModifications.getBodyModifications(player);
+
+        if (!modifications.hasUpdated())
+            updateModel(player, modifications);
+
+        TextureManager.updateTextures(player);
+    }
+
+    // Update player model based on the supplied BodyModifications
+    public static void updateModel(ClientPlayerEntity player, IBodyModifications modifications)
+    {
+        PlayerRenderer renderer = (PlayerRenderer)Minecraft.getInstance().getRenderManager().getRenderer(player);
         PlayerPoseHandler handler = PoseHandler.getPlayerPoseHandler(player.getUniqueID());
 
         if (handler != null)
@@ -55,7 +70,13 @@ public class CultivatorModelHandler
                     for (BodyPartOption option : modifications.getModificationOptions(part.getPosition()).values())
                         for (String optionModels : option.getDefaultOptionModels())
                         {
-                            newModel.addLimb(optionModels, BodyPartModels.getModel(optionModels), newModel.getLimb(modelID));
+                            ExtendableModelRenderer modelPart = BodyPartModels.getModel(optionModels);
+
+                            newModel.addLimb(optionModels, modelPart, newModel.getLimb(modelID));
+
+                            // If this part is a base head model, set it as the model's view point
+                            if (part.getPosition().equalsIgnoreCase(BodyPartNames.headPosition))
+                                newModel.setViewPoint(modelPart);
 
                             for (Map.Entry<String, ExtendableModelRenderer> entry : BodyPartModels.getReferences(optionModels).entrySet())
                                 newModel.addLimbReference(entry.getKey(), entry.getValue());

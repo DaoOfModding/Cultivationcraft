@@ -1,6 +1,9 @@
 package DaoOfModding.Cultivationcraft.Client.AnimationFramework;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.player.ClientPlayerEntity;
+import net.minecraft.client.renderer.entity.PlayerRenderer;
 import net.minecraft.client.renderer.entity.model.PlayerModel;
 import net.minecraft.entity.Pose;
 import net.minecraft.entity.player.PlayerEntity;
@@ -16,14 +19,17 @@ public class PoseHandler
 {
     private static List<PlayerPoseHandler> poses = new ArrayList<PlayerPoseHandler>();
 
-    public static void setupPoseHandler(UUID playerID, PlayerModel model)
+    public static void setupPoseHandler(ClientPlayerEntity player)
     {
         // Do nothing if pose handler for this player already exists
         for (PlayerPoseHandler handler : poses)
-            if (handler.getID().compareTo(playerID) == 0)
+            if (handler.getID().compareTo(player.getUniqueID()) == 0)
                 return;
 
-        PlayerPoseHandler newHandler = new PlayerPoseHandler(playerID, model);
+
+        PlayerRenderer renderer = (PlayerRenderer)Minecraft.getInstance().getRenderManager().getRenderer(player);
+
+        PlayerPoseHandler newHandler = new PlayerPoseHandler(player.getUniqueID(), renderer.getEntityModel());
         poses.add(newHandler);
     }
 

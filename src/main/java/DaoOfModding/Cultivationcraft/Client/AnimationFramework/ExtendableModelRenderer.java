@@ -1,5 +1,6 @@
 package DaoOfModding.Cultivationcraft.Client.AnimationFramework;
 
+import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.renderer.model.Model;
@@ -248,6 +249,25 @@ public class ExtendableModelRenderer extends ModelRenderer
             testChild.calculateMinHeight(matrixStackIn);
 
         matrixStackIn.pop();
+    }
+
+    // Returns a the height of the topmost point of this model
+    public float getTop(MatrixStack matrixStackIn)
+    {
+        Matrix4f rotator = matrixStackIn.getLast().getMatrix();
+
+        float max = Float.MAX_VALUE;
+
+        for (Vector3f point : points)
+        {
+            Vector4f vector4f = new Vector4f(point.getX(), point.getY(), point.getZ(), 1.0F);
+            vector4f.transform(rotator);
+
+            if (vector4f.getY() < max)
+                max = vector4f.getY();
+        }
+
+        return max;
     }
 
     public void rotateMatrix(MatrixStack matrixStackIn)

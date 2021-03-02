@@ -14,12 +14,15 @@ import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.Cu
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.ICultivatorTechniques;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPart;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartOption;
+import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
+import net.minecraft.client.renderer.ActiveRenderInfo;
+import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.Hand;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
-import net.minecraftforge.client.event.RenderPlayerEvent;
+import net.minecraftforge.client.event.*;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -85,18 +88,49 @@ public class ClientListeners
     }
 
     @SubscribeEvent
-    public static void renderPlayer(RenderPlayerEvent.Pre event)
+    public static void renderFirstPerson(RenderHandEvent event)
     {
-        // TODO: Make modifications work without having to go into 3rd person first
-        IBodyModifications modifications = BodyModifications.getBodyModifications(event.getPlayer());
+        // Do nothing unless this is trying to render the main hand
+        // Otherwise this will run twice a render
+        if (event.getHand() != Hand.MAIN_HAND)
+        {
+            event.setCanceled(true);
+            return;
+        }
 
-        if (!modifications.hasUpdated())
-            CultivatorModelHandler.updateModel(event.getRenderer(), event.getPlayer(), modifications);
-
-        TextureManager.updateTextures(event.getPlayer());
+        CultivatorModelHandler.updateModifications(Minecraft.getInstance().player);
 
         // If MultiLimbedRenderer renders the player, cancel the render event
-        event.setCanceled(MultiLimbedRenderer.render(event.getRenderer(), (ClientPlayerEntity)event.getPlayer(), event.getPartialRenderTick(), event.getMatrixStack(), event.getBuffers(), event.getLight()));
+        event.setCanceled(MultiLimbedRenderer.renderFirstPerson(Minecraft.getInstance().player, event.getPartialTicks(), event.getMatrixStack(), event.getBuffers(), event.getLight()));
+    }
+
+    @SubscribeEvent
+    public static void renderPlayer(RenderPlayerEvent.Pre event)
+    {
+        CultivatorModelHandler.updateModifications((ClientPlayerEntity)event.getPlayer());
+
+        // If MultiLimbedRenderer renders the player, cancel the render event
+        event.setCanceled(MultiLimbedRenderer.render((ClientPlayerEntity)event.getPlayer(), event.getPartialRenderTick(), event.getMatrixStack(), event.getBuffers(), event.getLight()));
+    }
+
+    @SubscribeEvent
+    // Toggle off the third person boolean so that the camera will still render in first person
+    public static void renderWorldLast(RenderWorldLastEvent event)
+    {
+        if (Minecraft.getInstance().world == null)
+            return;
+
+        MultiLimbedRenderer.fakeThirdPersonOff();
+    }
+
+    @SubscribeEvent
+    // Toggle on the third person boolean in ActiveRenderInfo to allow the player model to be drawn even when in first person
+    public static void cameraSetup(EntityViewRenderEvent.CameraSetup event)
+    {
+        if (Minecraft.getInstance().world == null)
+            return;
+
+        MultiLimbedRenderer.fakeThirdPersonOn();
     }
 
     @SubscribeEvent

@@ -2,12 +2,14 @@ package DaoOfModding.Cultivationcraft.Client.AnimationFramework;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.model.PlayerModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.util.math.vector.Vector4f;
 
 import java.util.*;
 
@@ -16,10 +18,16 @@ public class MultiLimbedModel
     private float sizeScale = 1;
     private double defaultHeight = 1.5;
 
+    private static float defaultEyeHeight = 2;
+
+    private float lowestModelHeight = 0;
+
     PlayerModel baseModel;
 
     ExtendableModelRenderer body;
     HashMap<String, ExtendableModelRenderer> limbs = new HashMap<String, ExtendableModelRenderer>();
+
+    ExtendableModelRenderer viewPoint;
 
     private boolean lock = false;
 
@@ -79,6 +87,13 @@ public class MultiLimbedModel
         addLimbReference(GenericLimbNames.lowerRightArm, rightArm.getChildren().get(0));
         addLimbReference(GenericLimbNames.lowerLeftLeg, leftLeg.getChildren().get(0));
         addLimbReference(GenericLimbNames.lowerRightLeg, rightLeg.getChildren().get(0));
+
+        setViewPoint(head);
+    }
+
+    public void setViewPoint(ExtendableModelRenderer model)
+    {
+        viewPoint = model;
     }
 
     // Stop multi-threading breaking stuff via locking
@@ -210,20 +225,47 @@ public class MultiLimbedModel
         unlock();
     }
 
+    public float calculateEyeHeight()
+    {
+        ExtendableModelRenderer viewModel = viewPoint;
+
+        LinkedList<ExtendableModelRenderer> parts = new LinkedList<ExtendableModelRenderer>();
+        parts.push(viewPoint);
+
+        // Cycle through the viewModel and add each element to the linked list
+        while(viewModel.getParent() != null)
+        {
+            viewModel = viewModel.getParent();
+            parts.push(viewModel);
+        }
+
+        // Rotate the MatrixStack around each parent part (but do not apply viewPoint rotations)
+        MatrixStack stack = new MatrixStack();
+
+        while(parts.size() > 1)
+        {
+            viewModel = parts.pop();
+            viewModel.rotateMatrix(stack);
+        }
+
+        viewModel = parts.pop();
+
+        // Return the rotated height (moved down by the default eye height so it's not at the top of the head)
+        return (float)((viewModel.getTop(stack) + defaultEyeHeight) * sizeScale / 16) - getHeightAdjustment();
+    }
+
     // Calculate the height adjustment for each limb
     public void calculateHeightAdjustment()
     {
-        MatrixStack stack = new MatrixStack();
+        body.calculateMinHeight(new MatrixStack());
 
-        body.calculateMinHeight(stack);
+        lowestModelHeight = getHeightAdjustment(body, Float.MAX_VALUE * -1) * sizeScale / 16;
     }
 
     // Find the limb at the lowest height and return it's height
     public float getHeightAdjustment()
     {
-        float lowest = getHeightAdjustment(body, Float.MAX_VALUE * -1);
-
-        return lowest * sizeScale / 16;
+        return lowestModelHeight;
     }
 
     // Find the minimum height of the provided limb and all of it's children compared to the provided value
