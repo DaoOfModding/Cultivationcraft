@@ -18,6 +18,8 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.RayTraceContext;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 
@@ -37,21 +39,23 @@ public class MultiLimbedRenderer
     private static Field eyeHeightField;
     private static Field thirdPersonField;
     private static Method cameraMoveFunction;
-    private static final float defaultEyeHeight = 1.62f;
+
+    private static final double defaultCameraDistance = 0.5f;
+    private static double decayingDistance = defaultCameraDistance;
 
     private static boolean fakeThird = false;
 
-    private static boolean enableFullBodyFirstPerson = false;
+    private static boolean enableFullBodyFirstPerson = true;
 
     public static void setup()
     {
         eyeHeightField = ObfuscationReflectionHelper.findField(Entity.class,"eyeHeight");
         thirdPersonField = ObfuscationReflectionHelper.findField(ActiveRenderInfo.class, "thirdPerson");
-        cameraMoveFunction = ObfuscationReflectionHelper.findMethod(ActiveRenderInfo.class, "movePosition", double.class, double.class, double.class);
+        cameraMoveFunction = ObfuscationReflectionHelper.findMethod(ActiveRenderInfo.class, "setPosition", double.class, double.class, double.class);
     }
 
     // Toggle on the third person boolean in ActiveRenderInfo to allow the player model to be drawn even when in first person
-    public static void fakeThirdPersonOn()
+    public static void fakeThirdPersonOn(double partialTicks)
     {
         if (!enableFullBodyFirstPerson)
             return;
@@ -72,16 +76,92 @@ public class MultiLimbedRenderer
             Cultivationcraft.LOGGER.error("Error adjusting third person toggle");
         }
 
+        pushBackCamera(partialTicks);
+    }
+
+    // Push the camera to be infront of the player, but not so far infront that it sees through blocks
+    private static void pushBackCamera(double partialTicks)
+    {
+        ActiveRenderInfo rendererInfo = Minecraft.getInstance().gameRenderer.getActiveRenderInfo();
+        Entity viewerEntity = rendererInfo.getRenderViewEntity();
+
+        // Calculate the camera position and player direction
+        Vector3d pos = new Vector3d(MathHelper.lerp((double)partialTicks, viewerEntity.prevPosX, viewerEntity.getPosX()), MathHelper.lerp((double)partialTicks, viewerEntity.prevPosY, viewerEntity.getPosY()), MathHelper.lerp((double)partialTicks, viewerEntity.prevPosZ, viewerEntity.getPosZ()));
+        pos = pos.add(0, viewerEntity.getEyeHeight(), 0);
+        Vector3d direction = Vector3d.fromPitchYaw(0, viewerEntity.getYaw((float)partialTicks));
+
+        // Calculate the amount the camera needs to be pushed back to not hit a wall, set decayingDistance to equal that amount if it is smaller than it
+        double cameraPush = calcCameraDistance(rendererInfo.getRenderViewEntity(), defaultCameraDistance + 0.15, direction) - 0.15;
+
+        if (cameraPush < decayingDistance)
+            decayingDistance = cameraPush;
+
+        // Pushing camera position forward by decayingDistance across the X & Z axies
+        pos = pos.add(direction.scale(decayingDistance));
+
         // Move the camera so that it's just in front of the head rather than inside it
-        // TODO: This results in seeing throw blocks you're too close to. This is an issue
+        // Adjust the amount by decayingDistance so that it is pushed back enough to not see through walls
         try
         {
-            cameraMoveFunction.invoke(rendererInfo, 0.75, 0, 0);
+            cameraMoveFunction.invoke(rendererInfo, pos.x, pos.y, pos.z);
         }
         catch(Exception e)
         {
             Cultivationcraft.LOGGER.error("Error adjusting camera position");
         }
+    }
+
+    private static void decayCameraPushback(float partialTick)
+    {
+        if (decayingDistance == defaultCameraDistance)
+            return;
+
+        decayingDistance += partialTick / 40.0;
+
+        if (decayingDistance > defaultCameraDistance)
+            decayingDistance = defaultCameraDistance;
+    }
+
+    // Calculate the distance the camera should be from the specified entity (up to a max of startingDistance)
+    private static double calcCameraDistance(Entity renderViewEntity, double startingDistance, Vector3d direction)
+    {
+        // Get the players position
+        Vector3d pos = renderViewEntity.getPositionVec().add(0, renderViewEntity.getEyeHeight(), 0);
+
+        // Test against 8 seperate points
+        for(int i = 0; i < 8; ++i)
+        {
+            float f = (float) ((i & 1) * 2 - 1);
+            float f1 = (float) ((i >> 1 & 1) * 2 - 1);
+            float f2 = (float) ((i >> 2 & 1) * 2 - 1);
+            f = f * 0.15F;
+            f1 = f1 * 0.15F;
+            f2 = f2 * 0.15F;
+
+            // Calculate the position to test
+            Vector3d modifiedPos = pos.add(f, f1, f2);
+
+            // Calculate the camera position
+            Vector3d testPos = modifiedPos.add(direction.scale(startingDistance));
+
+            // Test the distance between the players and camera position, checking if it's blocked by anything visualy
+            RayTraceResult raytraceresult = renderViewEntity.world.rayTraceBlocks(new RayTraceContext(modifiedPos, testPos, RayTraceContext.BlockMode.VISUAL, RayTraceContext.FluidMode.NONE, renderViewEntity));
+
+            // If it is blocked, check the distance and set that to the new camera distance
+            if (raytraceresult.getType() != RayTraceResult.Type.MISS)
+            {
+                double d0 = raytraceresult.getHitVec().distanceTo(pos);
+                if (d0 < startingDistance)
+                    startingDistance = d0;
+            }
+        }
+
+        return startingDistance;
+    }
+
+    public static boolean isFakeThirdPerson()
+    {
+        return fakeThird;
     }
 
     // Toggle off the third person boolean so that the camera will still render in first person
@@ -103,6 +183,8 @@ public class MultiLimbedRenderer
         {
             Cultivationcraft.LOGGER.error("Error adjusting third person toggle");
         }
+
+        fakeThird = false;
     }
 
     public static boolean renderFirstPerson(ClientPlayerEntity entityIn, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn)
@@ -114,6 +196,9 @@ public class MultiLimbedRenderer
             doModelCalculations(entityIn, matrixStackIn, partialTicks, handler);
 
         adjustEyeHeight(entityIn, handler);
+
+        // Decay the camera pushback so it reverts from being pushed back smoothly rather than being jerked forwards
+        decayCameraPushback(partialTicks);
 
         //TODO: Render first person models here
 

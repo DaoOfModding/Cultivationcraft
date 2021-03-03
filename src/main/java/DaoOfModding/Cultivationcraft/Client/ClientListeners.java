@@ -130,7 +130,7 @@ public class ClientListeners
         if (Minecraft.getInstance().world == null)
             return;
 
-        MultiLimbedRenderer.fakeThirdPersonOn();
+        MultiLimbedRenderer.fakeThirdPersonOn(event.getRenderPartialTicks());
     }
 
     @SubscribeEvent

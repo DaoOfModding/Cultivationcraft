@@ -27,11 +27,13 @@ public class BodyPartModels
         semiHeadPart.setRotationPoint(0.0F, 0.0F, 0.0F);
         semiHeadPart.extend(semiHeadResizer);
         semiHeadPart.setLooking(true);
+        semiHeadPart.setFirstPersonRender(false);
 
         // Create the jaw
         ExtendableModelRenderer jawPart = new ExtendableModelRenderer(0, 5);
         jawPart.setRotationPoint(0.0F, -2F, 2F);
         jawPart.extend(jawResizer);
+        jawPart.setFirstPersonRender(false);
 
         // Attach the jaw to the head
         semiHeadPart.addChild(jawPart);
@@ -185,6 +187,7 @@ public class BodyPartModels
         ToothSidePart.addChild(LowerToothSidePart);
 
         ToothPart.addChild(ToothSidePart);
+        ToothPart.setFirstPersonRenderForSelfAndChildren(false);
 
 
         //ToothPart.setCustomTextureForFamily(new ResourceLocation(Cultivationcraft.MODID, "textures/models/tooth.png"));
@@ -273,6 +276,7 @@ public class BodyPartModels
         ToothSidePart.addChild(LowerToothSidePart);
 
         ToothPart.addChild(ToothSidePart);
+        ToothPart.setFirstPersonRenderForSelfAndChildren(false);
 
         addModel(BodyPartModelNames.sharpToothLowerModel, ToothPart);
     }

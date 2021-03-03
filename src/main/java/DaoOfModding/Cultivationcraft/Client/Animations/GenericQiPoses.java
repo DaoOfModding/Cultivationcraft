@@ -37,6 +37,7 @@ public class GenericQiPoses
 
         Idle.addAngle(BodyPartModelNames.reverseJointRightLegModel, new Vector3d(Math.toRadians(30), 0, 0), 0);
         Idle.addAngle(BodyPartModelNames.reverseJointRightLegLowerModel, new Vector3d(Math.toRadians(-60), 0, 0), 0);
+        Idle.addAngle(BodyPartModelNames.reverseJointRightFootModel, new Vector3d(Math.toRadians(30), 0, 0), 0);
 
 
         //Idle.addAngle(BodyPartModelNames.jawModelLower, new Vector3d(Math.toRadians(45), 0, 0), 1);

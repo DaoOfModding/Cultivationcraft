@@ -58,6 +58,7 @@ public class MultiLimbedModel
         head.setRotationPoint(0, 0, 0);
         head.extend(GenericResizers.getHeadResizer());
         head.setLooking(true);
+        head.setFirstPersonRender(false);
 
         ExtendableModelRenderer rightArm = new ExtendableModelRenderer(baseModel, 40, 16);
         rightArm.setRotationPoint(-5.0F, 2.0F, 0.0F);

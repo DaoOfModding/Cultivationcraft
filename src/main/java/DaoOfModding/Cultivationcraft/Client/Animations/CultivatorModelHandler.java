@@ -61,22 +61,22 @@ public class CultivatorModelHandler
 
                 for (String modelID  : part.getModelIDs())
                 {
-                    newModel.addLimb(modelID, BodyPartModels.getModel(modelID));
+                    ExtendableModelRenderer modelPart = BodyPartModels.getModel(modelID);
+                    newModel.addLimb(modelID, modelPart);
+
+                    // If this part is a base head model, set it as the model's view point
+                    if (part.getPosition().equalsIgnoreCase(BodyPartNames.headPosition))
+                        newModel.setViewPoint(modelPart);
 
                     for (Map.Entry<String, ExtendableModelRenderer> entry : BodyPartModels.getReferences(modelID).entrySet())
                         newModel.addLimbReference(entry.getKey(), entry.getValue());
+
 
                     // Add models for any valid options to this body part
                     for (BodyPartOption option : modifications.getModificationOptions(part.getPosition()).values())
                         for (String optionModels : option.getDefaultOptionModels())
                         {
-                            ExtendableModelRenderer modelPart = BodyPartModels.getModel(optionModels);
-
-                            newModel.addLimb(optionModels, modelPart, newModel.getLimb(modelID));
-
-                            // If this part is a base head model, set it as the model's view point
-                            if (part.getPosition().equalsIgnoreCase(BodyPartNames.headPosition))
-                                newModel.setViewPoint(modelPart);
+                            newModel.addLimb(optionModels, BodyPartModels.getModel(optionModels), newModel.getLimb(modelID));
 
                             for (Map.Entry<String, ExtendableModelRenderer> entry : BodyPartModels.getReferences(optionModels).entrySet())
                                 newModel.addLimbReference(entry.getKey(), entry.getValue());

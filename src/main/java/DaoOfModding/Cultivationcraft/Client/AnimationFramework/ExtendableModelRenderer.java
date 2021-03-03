@@ -30,6 +30,7 @@ public class ExtendableModelRenderer extends ModelRenderer
 
     private Vector3d rotationOffset = new Vector3d(0, 0 ,0);
 
+    private boolean renderFirstPerson = true;
 
     public ExtendableModelRenderer(Model model)
     {
@@ -68,6 +69,19 @@ public class ExtendableModelRenderer extends ModelRenderer
         textureHeight = textureHeightIn;
         textureOffsetX = textureOffsetXIn;
         textureOffsetY = textureOffsetYIn;
+    }
+
+    public void setFirstPersonRender(boolean render)
+    {
+        renderFirstPerson = render;
+    }
+
+    public void setFirstPersonRenderForSelfAndChildren(boolean render)
+    {
+        renderFirstPerson = render;
+
+        for (ExtendableModelRenderer children : child)
+            children.setFirstPersonRenderForSelfAndChildren(render);
     }
 
     public void setRotationOffset(Vector3d offset)
@@ -210,11 +224,33 @@ public class ExtendableModelRenderer extends ModelRenderer
         rotateAngleY += rotationOffset.y;
         rotateAngleZ += rotationOffset.z;
 
-        super.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+        // If rendering in first person and this model is set not to render in first person, just render it's children
+        if (MultiLimbedRenderer.isFakeThirdPerson() && !renderFirstPerson)
+            fakerender(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+        else
+            super.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
 
         rotateAngleX -= rotationOffset.x;
         rotateAngleY -= rotationOffset.y;
         rotateAngleZ -= rotationOffset.z;
+    }
+
+    // Render all children for this model, but not the model itself
+    public void fakerender(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha)
+    {
+        if (this.showModel)
+        {
+            if (child.size() > 0)
+            {
+                matrixStackIn.push();
+                translateRotate(matrixStackIn);
+
+                for(ExtendableModelRenderer children : child)
+                    children.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+
+                matrixStackIn.pop();
+            }
+        }
     }
 
     // Get the minimum height of any point on this model
