@@ -28,6 +28,9 @@ public class MultiLimbedModel
     HashMap<String, ExtendableModelRenderer> limbs = new HashMap<String, ExtendableModelRenderer>();
 
     ExtendableModelRenderer viewPoint;
+    HashMap<String, ExtendableModelRenderer> firstPersonLimbs = new HashMap<String, ExtendableModelRenderer>();
+
+    HashMap<String, ExtendableModelRenderer> allLimbs = new HashMap<String, ExtendableModelRenderer>();
 
     private boolean lock = false;
 
@@ -116,6 +119,12 @@ public class MultiLimbedModel
         return limbs.keySet();
     }
 
+    // Returns a list of all first person limbs on this model
+    public Set<String> getAllLimbs()
+    {
+        return allLimbs.keySet();
+    }
+
     public ExtendableModelRenderer getBody()
     {
         return body;
@@ -124,20 +133,23 @@ public class MultiLimbedModel
     // Apply the supplied rotations to the specified limb
     public void rotateLimb(String limb, Vector3d angles)
     {
-        if (hasLimb(limb))
-        {
-            ModelRenderer limbModel = getLimb(limb);
+        if (!hasLimb(limb))
+            return;
 
-            limbModel.rotateAngleX = (float) angles.x;
-            limbModel.rotateAngleY = (float) angles.y;
-            limbModel.rotateAngleZ = (float) angles.z;
-        }
+        ModelRenderer limbModel = getLimb(limb);
+
+        if (limbModel == null)
+            limbModel = getFirstPersonLimb(limb);
+
+        limbModel.rotateAngleX = (float) angles.x;
+        limbModel.rotateAngleY = (float) angles.y;
+        limbModel.rotateAngleZ = (float) angles.z;
     }
 
     // Returns true if this model contains the specified limb
     public boolean hasLimb(String limb)
     {
-        return limbs.containsKey(limb);
+        return allLimbs.containsKey(limb);
     }
 
     public ExtendableModelRenderer getLimb(String limb)
@@ -182,15 +194,30 @@ public class MultiLimbedModel
 
         body.removeChild(limbs.get(limb));
         limbs.remove(limb);
+        allLimbs.remove(limb);
 
         unlock();
     }
+
+    // Adds specified limb into the first person render list
+    public void addFirstPersonLimb(String limb, ExtendableModelRenderer limbModel)
+    {
+        firstPersonLimbs.put(limb, limbModel);
+        allLimbs.put(limb, limbModel);
+    }
+
+    public ExtendableModelRenderer getFirstPersonLimb(String limb)
+    {
+        return firstPersonLimbs.get(limb);
+    }
+
 
     // Add a limb for reference purposes
     // Usually used for referencing child limbs
     public void addLimbReference(String limb, ExtendableModelRenderer limbModel)
     {
         limbs.put(limb, limbModel);
+        allLimbs.put(limb, limbModel);
     }
 
     public void setLivingAnimations(PlayerEntity entityIn, float limbSwing, float limbSwingAmount, float partialTick)
@@ -206,6 +233,21 @@ public class MultiLimbedModel
     public RenderType getRenderType(ResourceLocation resourcelocation)
     {
         return baseModel.getRenderType(resourcelocation);
+    }
+
+    public void renderFirstPerson(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha)
+    {
+        lock();
+
+        matrixStackIn.push();
+
+        // Render the body, as all limbs are children or sub-children of the body, this should render everything
+        for (ExtendableModelRenderer model : firstPersonLimbs.values())
+            model.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+
+        matrixStackIn.pop();
+
+        unlock();
     }
 
     public void render(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha)

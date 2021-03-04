@@ -32,6 +32,32 @@ public class ExtendableModelRenderer extends ModelRenderer
 
     private boolean renderFirstPerson = true;
 
+    private Vector3d thisPosition;
+    private Vector3d thisSize;
+    private float thisDelta;
+
+    public ExtendableModelRenderer clone()
+    {
+        ExtendableModelRenderer copy = new ExtendableModelRenderer(textureWidth, textureHeight, textureOffsetX, textureOffsetY);
+        copy.setParent(parent);
+
+        copy.points = points.clone();
+        copy.minHeight = minHeight;
+        copy.look = look;
+        copy.customTexture = customTexture;
+        copy.rotationOffset = rotationOffset;
+        copy.renderFirstPerson = renderFirstPerson;
+
+        copy.generateCube(thisPosition, (float)thisSize.x, (float)thisSize.y, (float)thisSize.z, thisDelta);
+
+        copy.copyModelAngles(this);
+
+        for (ExtendableModelRenderer children : child)
+            copy.addChild(children.clone());
+
+        return copy;
+    }
+
     public ExtendableModelRenderer(Model model)
     {
         super(model);
@@ -143,13 +169,14 @@ public class ExtendableModelRenderer extends ModelRenderer
     public void extend(resizeModule resizer)
     {
         Vector3d rawPosition = resizer.getRawPosition();
-        Vector3d position = resizer.getPosition();
-        Vector3d thisSize = resizer.getSize();
+        thisPosition = resizer.getPosition();
+        thisSize = resizer.getSize();
+        thisDelta = resizer.getDelta();
         Vector3d rotation = resizer.getNextRotation();
         Vector2f texModifier = resizer.getTextureModifier();
 
         // Add a box of the appropriate size to this model
-        generateCube(position, (float)thisSize.x, (float)thisSize.y, (float)thisSize.z, resizer.getDelta());
+        generateCube(thisPosition, (float)thisSize.x, (float)thisSize.y, (float)thisSize.z, thisDelta);
 
         // Return this model if at max depth
         if (!resizer.continueResizing())

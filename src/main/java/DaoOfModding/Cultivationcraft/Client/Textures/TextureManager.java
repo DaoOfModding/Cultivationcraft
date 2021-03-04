@@ -49,6 +49,9 @@ public class TextureManager
             for (String modelID : part.getModelIDs())
                 BodyPartModels.getModel(modelID).setCustomTextureForFamily(texture);
 
+            for (String modelID : part.getFirstPersonModelIDs())
+                BodyPartModels.getModel(modelID).setCustomTextureForFamily(texture);
+
             // Loop through each body part option for this modification and set the appropriate texture
             for (BodyPartOption option : modifications.getModificationOptions(part.getPosition()).values())
             {

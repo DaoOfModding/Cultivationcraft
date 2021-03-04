@@ -5,6 +5,9 @@ public class BodyPartModelNames
     public static final String jawModel = "JAW_MODEL";
     public static final String jawModelLower = "JAW_LOWER_MODEL";
 
+    public static final String FPjawModel = "FPJAW_MODEL";
+    public static final String FPjawModelLower = "FPJAW_LOWER_MODEL";
+
     public static final String flatToothModel = "FLAT_TOOTH_MODEL";
     public static final String flatToothLowerModel = "FLAT_TOOTH_LOWER_MODEL";
 

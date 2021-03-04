@@ -186,27 +186,6 @@ public class MultiLimbedRenderer
 
         fakeThird = false;
     }
-
-    public static boolean renderFirstPerson(ClientPlayerEntity entityIn, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn)
-    {
-        PoseHandler.setupPoseHandler(entityIn);
-        PlayerPoseHandler handler = PoseHandler.getPlayerPoseHandler(entityIn.getUniqueID());
-
-        if(!enableFullBodyFirstPerson)
-            doModelCalculations(entityIn, matrixStackIn, partialTicks, handler);
-
-        adjustEyeHeight(entityIn, handler);
-
-        // Decay the camera pushback so it reverts from being pushed back smoothly rather than being jerked forwards
-        decayCameraPushback(partialTicks);
-
-        //TODO: Render first person models here
-
-        //render2(handler.model, entityIn, partialTicks, matrixStackIn, bufferIn, packedLightIn);
-
-        return enableFullBodyFirstPerson;
-    }
-
     public static void doModelCalculations(ClientPlayerEntity entityIn, MatrixStack matrixStackIn, float partialTicks, PlayerPoseHandler handler)
     {
         PoseHandler.applyRotations(entityIn, matrixStackIn, partialTicks, 0, partialTicks);
@@ -228,6 +207,60 @@ public class MultiLimbedRenderer
         {
             Cultivationcraft.LOGGER.error("Error adjusting player eye height");
         }
+    }
+
+    public static boolean renderFirstPerson(ClientPlayerEntity entityIn, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn)
+    {
+        PoseHandler.setupPoseHandler(entityIn);
+        PlayerPoseHandler handler = PoseHandler.getPlayerPoseHandler(entityIn.getUniqueID());
+
+        if(!enableFullBodyFirstPerson)
+            doModelCalculations(entityIn, matrixStackIn, partialTicks, handler);
+
+        adjustEyeHeight(entityIn, handler);
+
+        // Decay the camera pushback so it reverts from being pushed back smoothly rather than being jerked forwards
+        decayCameraPushback(partialTicks);
+
+        render2FirstPerson(handler.model, entityIn, partialTicks, matrixStackIn, bufferIn, packedLightIn);
+
+        return enableFullBodyFirstPerson;
+    }
+
+    public static void render2FirstPerson(MultiLimbedModel entityModel, ClientPlayerEntity entityIn, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn)
+    {
+        matrixStackIn.push();
+
+        /*
+        PoseHandler.applyRotations(entityIn, matrixStackIn, totalTicks, f, partialTicks);
+
+        entityModel.setLivingAnimations(entityIn, f5, f8, partialTicks);
+        entityModel.setRotationAngles(entityIn, f5, f8, totalTicks, f2, f6);
+
+
+        PoseHandler.doPose(entityIn.getUniqueID(), partialTicks);
+
+        entityModel.calculateHeightAdjustment();
+        double height = entityModel.getHeightAdjustment();*/
+
+        matrixStackIn.scale(-1.0F, -1.0F, 1.0F);
+        //matrixStackIn.translate(0.0D, 0, 0.0D);
+
+        currentModel = entityModel;
+        currentEntity = entityIn;
+        currentBuffer = bufferIn;
+
+        RenderType rendertype = getRenderType(getSkin(currentEntity));
+
+        if (rendertype != null)
+        {
+            int i = LivingRenderer.getPackedOverlay(entityIn, 0);
+            entityModel.renderFirstPerson(matrixStackIn, null, packedLightIn, i, 1.0F, 1.0F, 1.0F, 1.0F);
+        }
+
+        lastSkin = null;
+
+        matrixStackIn.pop();
     }
 
     public static boolean render(ClientPlayerEntity entityIn, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn)

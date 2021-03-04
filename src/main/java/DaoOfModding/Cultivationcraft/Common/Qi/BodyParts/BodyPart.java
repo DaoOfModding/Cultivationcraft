@@ -22,6 +22,7 @@ public class BodyPart
 {
     private String ID;
     private ArrayList<String> modelIDs = new ArrayList<String>();
+    private ArrayList<String> firstPersonModelIDs = new ArrayList<String>();
     private String limbPosition;
     private String displayNamePosition;
     private int qiNeeded;
@@ -48,6 +49,11 @@ public class BodyPart
     public void addModel(String modelID)
     {
         modelIDs.add(modelID);
+    }
+
+    public void addFirstPersonModel(String modelID)
+    {
+        firstPersonModelIDs.add(modelID);
     }
 
     public void setTexture(String ID)
@@ -93,6 +99,11 @@ public class BodyPart
     public ArrayList<String> getModelIDs()
     {
         return modelIDs;
+    }
+
+    public ArrayList<String> getFirstPersonModelIDs()
+    {
+        return firstPersonModelIDs;
     }
 
     public void addNeededPart(String partID)

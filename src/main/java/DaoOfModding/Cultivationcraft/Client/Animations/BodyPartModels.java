@@ -42,6 +42,27 @@ public class BodyPartModels
         addReference(BodyPartModelNames.jawModel, BodyPartModelNames.jawModelLower, jawPart);
 
         setupTeethModels();
+
+        // Setup first person jaw models
+        defaultResizeModule FPsemiHeadResizer = new defaultResizeModule(1, new Vector3d(0, 1, 0), new Vector3d(-4, -8, -4), new Vector3d(8, 5, 8), new Vector3d(0, 1, 1));
+        defaultResizeModule FPjawResizer = new defaultResizeModule(1, new Vector3d(0, 0, 0), new Vector3d(-4, -1, -6), new Vector3d(8, 3, 8), new Vector3d(0, 1, 1));
+
+        // Create the top half of the head
+        ExtendableModelRenderer FPsemiHeadPart = new ExtendableModelRenderer(0, 0);
+        FPsemiHeadPart.setRotationPoint(0.0F, 2.5F, -1F);
+        FPsemiHeadPart.extend(FPsemiHeadResizer);
+        FPsemiHeadPart.setLooking(true);
+
+        // Create the jaw
+        ExtendableModelRenderer FPjawPart = new ExtendableModelRenderer(0, 5);
+        FPjawPart.setRotationPoint(0.0F, -2F, 2F);
+        FPjawPart.extend(FPjawResizer);
+
+        // Attach the jaw to the head
+        FPsemiHeadPart.addChild(FPjawPart);
+
+        addModel(BodyPartModelNames.FPjawModel, FPsemiHeadPart);
+        addReference(BodyPartModelNames.FPjawModel, BodyPartModelNames.FPjawModelLower, FPjawPart);
     }
 
     private static void setupTeethModels()
@@ -75,6 +96,7 @@ public class BodyPartModels
         flatToothSidePart.extend(flatToothResizer);
 
         flatToothPart.addChild(flatToothSidePart);
+        flatToothPart.setFirstPersonRenderForSelfAndChildren(false);
 
         addModel(BodyPartModelNames.flatToothModel, flatToothPart);
 
@@ -101,6 +123,7 @@ public class BodyPartModels
         flatToothSidePart.extend(flatToothResizer);
 
         flatToothPart.addChild(flatToothSidePart);
+        flatToothPart.setFirstPersonRenderForSelfAndChildren(false);
 
         addModel(BodyPartModelNames.flatToothLowerModel, flatToothPart);
     }
@@ -342,6 +365,7 @@ public class BodyPartModels
         return nonRenderingModels.get(ID);
     }
 
+    // Returns the specified model
     public static ExtendableModelRenderer getModel(String ID)
     {
         return models.get(ID);

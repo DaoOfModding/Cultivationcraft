@@ -59,7 +59,7 @@ public class CultivatorModelHandler
                 else if (part.getPosition().equalsIgnoreCase(BodyPartNames.headPosition))
                     newModel.removeLimb(GenericLimbNames.head);
 
-                for (String modelID  : part.getModelIDs())
+                for (String modelID : part.getModelIDs())
                 {
                     ExtendableModelRenderer modelPart = BodyPartModels.getModel(modelID);
                     newModel.addLimb(modelID, modelPart);
@@ -83,6 +83,25 @@ public class CultivatorModelHandler
                         }
                 }
 
+                for (String modelID : part.getFirstPersonModelIDs())
+                {
+                    ExtendableModelRenderer modelPart = BodyPartModels.getModel(modelID);
+                    newModel.addFirstPersonLimb(modelID, modelPart);
+
+                    for (Map.Entry<String, ExtendableModelRenderer> entry : BodyPartModels.getReferences(modelID).entrySet())
+                        newModel.addLimbReference(entry.getKey(), entry.getValue());
+
+                    // Add models for any valid options to this body part
+                    for (BodyPartOption option : modifications.getModificationOptions(part.getPosition()).values())
+                        for (String optionModels : option.getDefaultOptionModels())
+                        {
+                            newModel.addLimb(optionModels, BodyPartModels.getModel(optionModels), newModel.getFirstPersonLimb(modelID));
+
+                            for (Map.Entry<String, ExtendableModelRenderer> entry : BodyPartModels.getReferences(optionModels).entrySet())
+                                newModel.addLimbReference(entry.getKey(), entry.getValue());
+                        }
+                }
+
                 // Add models for any options tied to specific body parts to this body part
                 for (BodyPartOption option : modifications.getModificationOptions(part.getPosition()).values())
                     for (Map.Entry<String, ArrayList<String>> optionModelCollections : option.getOptionModels().entrySet())
@@ -90,6 +109,9 @@ public class CultivatorModelHandler
                         // Get the ID of the model this model list is connected to
                         String baseModelID = optionModelCollections.getKey();
                         ExtendableModelRenderer baseModel = newModel.getLimb(baseModelID);
+
+                        if (baseModel == null)
+                            baseModel = newModel.getFirstPersonLimb(baseModelID);
 
                         // If the model this collection is tied to exists
                         if (baseModel != null)

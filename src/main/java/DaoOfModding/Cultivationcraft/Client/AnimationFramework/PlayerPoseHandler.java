@@ -7,6 +7,7 @@ import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.math.vector.Vector3d;
 
 import java.util.HashMap;
+import java.util.Set;
 import java.util.UUID;
 
 public class PlayerPoseHandler
@@ -65,9 +66,12 @@ public class PlayerPoseHandler
     protected void updateHeadLook()
     {
         // Loop through all limbs and check if they are set to be looking, updated the current pose for them if they are
-        for (String limb : model.getLimbs())
+        for (String limb : model.getAllLimbs())
         {
             ExtendableModelRenderer limbModel = model.getLimb(limb);
+
+            if (limbModel == null)
+                limbModel = model.getFirstPersonLimb(limb);
 
             if (limbModel.isLooking())
             {
@@ -168,19 +172,21 @@ public class PlayerPoseHandler
 
         PlayerPose newRender = new PlayerPose();
 
+        Set<String> limbs = model.getAllLimbs();
+
         // Reset stored animation data for any limbs whose target position have changed
-        for (String limb : model.getLimbs())
+        for (String limb : limbs)
             if (!animationTime.containsKey(limb) || !(renderPose.hasAngle(limb) && oldRenderPose.hasAngle(limb) && renderPose.getAngle(limb).equals(oldRenderPose.getAngle(limb))))
                 animationTime.put(limb, 0f);
 
 
         // Calculate animation locks
-        for (String limb : model.getLimbs())
+        for (String limb : limbs)
             if (renderPose.hasAngle(limb))
                 calculateAnimationLocks(limb, getLimbPos(limb), partialTicks);
 
         // If renderPose has a pose for a limb, move to that position, otherwise move to the base model pose
-        for (String limb : model.getLimbs())
+        for (String limb : limbs)
         {
             Vector3d angles;
 
@@ -195,7 +201,7 @@ public class PlayerPoseHandler
         }
 
         // Add the ticks that have passed into the animationTime map
-        for (String limb : model.getLimbs())
+        for (String limb : limbs)
             animationTime.put(limb, animationTime.get(limb) + partialTicks);
 
         unlock();
@@ -215,6 +221,9 @@ public class PlayerPoseHandler
     private Vector3d modelFromLimb(String limb)
     {
         ModelRenderer limbModel = model.getLimb(limb);
+
+        if (limbModel == null)
+            limbModel = model.getFirstPersonLimb(limb);
 
         return new Vector3d(limbModel.rotateAngleX, limbModel.rotateAngleY, limbModel.rotateAngleZ);
     }

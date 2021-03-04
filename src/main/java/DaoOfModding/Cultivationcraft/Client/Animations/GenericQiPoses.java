@@ -40,7 +40,8 @@ public class GenericQiPoses
         Idle.addAngle(BodyPartModelNames.reverseJointRightFootModel, new Vector3d(Math.toRadians(30), 0, 0), 0);
 
 
-        //Idle.addAngle(BodyPartModelNames.jawModelLower, new Vector3d(Math.toRadians(45), 0, 0), 1);
+        Idle.addAngle(BodyPartModelNames.FPjawModel, new Vector3d(Math.toRadians(-80), 0, 0), 1);
+        Idle.addAngle(BodyPartModelNames.FPjawModelLower, new Vector3d(Math.toRadians(160), 0, 0), 1);
     }
 
     private static void setupWalking()
