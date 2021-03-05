@@ -131,6 +131,7 @@ public class ClientListeners
             return;
 
         MultiLimbedRenderer.fakeThirdPersonOn(event.getRenderPartialTicks());
+        MultiLimbedRenderer.rotateCamera(event);
     }
 
     @SubscribeEvent

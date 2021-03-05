@@ -4,6 +4,7 @@ import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.model.PlayerModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
 
 import java.util.HashMap;
@@ -60,10 +61,23 @@ public class PlayerPoseHandler
                 // Then add the limb pose from the new pose to the current pose
                 if (!currentPose.hasAngle(limb) || currentPose.getPriority(limb) < pose.getPriority(limb))
                     currentPose.setAngles(limb, pose.getAngles(limb), pose.getSpeeds(limb), pose.getPriority(limb), pose.getOffset(limb), pose.getAnimationLock(limb));
+
+        currentPose.disableHeadLook(pose.isHeadLookDisabled(), pose.getDisableHeadLookPriority());
+    }
+
+    public boolean isHeadLookDisabled()
+    {
+        lock();
+
+        boolean test = renderPose.isHeadLookDisabled();
+
+        unlock();
+
+        return test;
     }
 
     // Updated each ExtendableModel in the player model to be looking in the direction of the player if it is set to do so
-    protected void updateHeadLook()
+    protected void updateHeadLook(boolean lookWithCamera)
     {
         // Loop through all limbs and check if they are set to be looking, updated the current pose for them if they are
         for (String limb : model.getAllLimbs())
@@ -76,18 +90,30 @@ public class PlayerPoseHandler
             if (limbModel.isLooking())
             {
                 Vector3d angles = new Vector3d(0, 0, 0);
+                Vector3d notLooking = new Vector3d(0, 0, 0);
+
+
+                ExtendableModelRenderer baseModel = limbModel;
 
                 // Go through all parents and negate their rotations for this limb
                 while (limbModel.getParent() != null)
                 {
                     limbModel = limbModel.getParent();
                     angles = angles.subtract(limbModel.rotateAngleX, limbModel.rotateAngleY, limbModel.rotateAngleZ);
+                    notLooking = notLooking.add(limbModel.rotateAngleX, limbModel.rotateAngleY, limbModel.rotateAngleZ);
                 }
 
-                // Add the base head's angles to this model
-                angles = angles.add(model.baseModel.bipedHead.rotateAngleX, model.baseModel.bipedHead.rotateAngleY, model.baseModel.bipedHead.rotateAngleZ);
+                // Add the base head's angles to this model if this limb should currently be looking with the camera
+                if (lookWithCamera)
+                {
+                    angles = angles.add(model.baseModel.bipedHead.rotateAngleX, model.baseModel.bipedHead.rotateAngleY, model.baseModel.bipedHead.rotateAngleZ);
+                    currentPose.addAngle(limb, angles, 0, 1f, -1);
 
-                currentPose.addAngle(limb, angles, 0, 1f, -1);
+                    baseModel.setNotLookingPitch(0);
+                }
+                // Otherwise set the not-looking pitch
+                else
+                    baseModel.setNotLookingPitch((float)Math.toDegrees(notLooking.x));
             }
         }
     }
@@ -120,7 +146,8 @@ public class PlayerPoseHandler
 
         currentPose = new PlayerPose();
 
-        updateHeadLook();
+        updateHeadLook(!renderPose.isHeadLookDisabled());
+
         updateJumping();
 
         unlock();
@@ -333,6 +360,10 @@ public class PlayerPoseHandler
         // Ensure there is a value stored in animationTime for this limb
         if (!animationTime.containsKey(limb))
             animationTime.put(limb, 0f);
+
+        /*// If the animation speed is -1, move immediately to this position and start animating the next phase
+        if (renderPose.getAnimationSpeed(limb, currentFrame) == -1)
+            return animateLimb(limb, moveTo, partialTicks);*/
 
         // Calculate the amount of ticks remaining for this animation
         float TicksRemaining = renderPose.getAnimationSpeed(limb, currentFrame) - animationTime.get(limb);

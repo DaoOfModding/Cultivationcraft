@@ -21,6 +21,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceContext;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.vector.Vector3d;
+import net.minecraftforge.client.event.EntityViewRenderEvent;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 
 import java.lang.reflect.Field;
@@ -52,6 +53,25 @@ public class MultiLimbedRenderer
         eyeHeightField = ObfuscationReflectionHelper.findField(Entity.class,"eyeHeight");
         thirdPersonField = ObfuscationReflectionHelper.findField(ActiveRenderInfo.class, "thirdPerson");
         cameraMoveFunction = ObfuscationReflectionHelper.findMethod(ActiveRenderInfo.class, "setPosition", double.class, double.class, double.class);
+    }
+
+    public static void rotateCamera(EntityViewRenderEvent.CameraSetup event)
+    {
+        if (!fakeThird)
+            return;
+        
+        ClientPlayerEntity player = Minecraft.getInstance().player;
+        PlayerPoseHandler handler = PoseHandler.getPlayerPoseHandler(player.getUniqueID());
+
+        if (handler == null)
+            return;
+
+        // Adjust the camera pitch based on the direction of the models viewPoint
+        double pitch = handler.getPlayerModel().viewPoint.getNotLookingPitch();
+        double oldPitch = handler.getPlayerModel().viewPoint.getOldNotLookingPitch();
+
+        event.setPitch(event.getPitch() + (float)MathHelper.lerp(event.getRenderPartialTicks(), oldPitch, pitch));
+
     }
 
     // Toggle on the third person boolean in ActiveRenderInfo to allow the player model to be drawn even when in first person
@@ -230,18 +250,6 @@ public class MultiLimbedRenderer
     public static void render2FirstPerson(MultiLimbedModel entityModel, ClientPlayerEntity entityIn, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn)
     {
         matrixStackIn.push();
-
-        /*
-        PoseHandler.applyRotations(entityIn, matrixStackIn, totalTicks, f, partialTicks);
-
-        entityModel.setLivingAnimations(entityIn, f5, f8, partialTicks);
-        entityModel.setRotationAngles(entityIn, f5, f8, totalTicks, f2, f6);
-
-
-        PoseHandler.doPose(entityIn.getUniqueID(), partialTicks);
-
-        entityModel.calculateHeightAdjustment();
-        double height = entityModel.getHeightAdjustment();*/
 
         matrixStackIn.scale(-1.0F, -1.0F, 1.0F);
         //matrixStackIn.translate(0.0D, 0, 0.0D);

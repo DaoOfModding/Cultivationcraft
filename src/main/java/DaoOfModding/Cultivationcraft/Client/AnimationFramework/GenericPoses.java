@@ -5,7 +5,10 @@ import net.minecraft.util.math.vector.Vector3d;
 public class GenericPoses
 {
     public static final int walkLegPriority = 10;
-    public static final int walkArmPriority = 4;
+    public static final int walkArmPriority = 5;
+
+    public static final int jumpLegPriority = 15;
+    public static final int jumpArmPriority = 10;
 
     public static PlayerPose Walking = new PlayerPose();
     public static PlayerPose Jumping = new PlayerPose();
@@ -50,12 +53,12 @@ public class GenericPoses
 
     public static void setupJumping()
     {
-        Jumping.addAngle(GenericLimbNames.leftArm, new Vector3d(Math.toRadians(-180), Math.toRadians(0), Math.toRadians(30)), walkArmPriority+1);
-        Jumping.addAngle(GenericLimbNames.rightArm, new Vector3d(Math.toRadians(-180), Math.toRadians(0), Math.toRadians(-30)), walkArmPriority+1);
+        Jumping.addAngle(GenericLimbNames.leftArm, new Vector3d(Math.toRadians(-180), Math.toRadians(0), Math.toRadians(30)), jumpArmPriority);
+        Jumping.addAngle(GenericLimbNames.rightArm, new Vector3d(Math.toRadians(-180), Math.toRadians(0), Math.toRadians(-30)), jumpArmPriority);
 
-        Jumping.addAngle(GenericLimbNames.leftLeg, new Vector3d(Math.toRadians(0), Math.toRadians(0), 0), walkLegPriority+1, 1f, -1);
-        Jumping.addAngle(GenericLimbNames.rightLeg, new Vector3d(Math.toRadians(0), Math.toRadians(0), 0), walkLegPriority+1, 1f, -1);
-        Jumping.addAngle(GenericLimbNames.lowerLeftLeg, new Vector3d(Math.toRadians(0), Math.toRadians(0), 0), walkLegPriority+1, 1f, -1);
-        Jumping.addAngle(GenericLimbNames.lowerRightLeg, new Vector3d(Math.toRadians(0), Math.toRadians(0), 0), walkLegPriority+1, 1f, -1);
+        Jumping.addAngle(GenericLimbNames.leftLeg, new Vector3d(Math.toRadians(0), Math.toRadians(0), 0), jumpLegPriority, 1f, -1);
+        Jumping.addAngle(GenericLimbNames.rightLeg, new Vector3d(Math.toRadians(0), Math.toRadians(0), 0), jumpLegPriority, 1f, -1);
+        Jumping.addAngle(GenericLimbNames.lowerLeftLeg, new Vector3d(Math.toRadians(0), Math.toRadians(0), 0), jumpLegPriority, 1f, -1);
+        Jumping.addAngle(GenericLimbNames.lowerRightLeg, new Vector3d(Math.toRadians(0), Math.toRadians(0), 0), jumpLegPriority, 1f, -1);
     }
 }

@@ -20,6 +20,9 @@ public class PlayerPose
     private HashMap<String, Vector3d> offset = new HashMap<String, Vector3d>();
     private HashMap<String, Integer> aLock = new HashMap<String, Integer>();
 
+    private boolean disableHeadLook = false;
+    private int disableHeadLookPriority = 0;
+
     public PlayerPose()
     {
     }
@@ -59,6 +62,25 @@ public class PlayerPose
             return aLock.get(limb);
 
         return -1;
+    }
+
+    public void disableHeadLook(boolean disable, int priority)
+    {
+        if (priority > disableHeadLookPriority)
+        {
+            disableHeadLookPriority = priority;
+            disableHeadLook = disable;
+        }
+    }
+
+    public boolean isHeadLookDisabled()
+    {
+        return disableHeadLook;
+    }
+
+    public int getDisableHeadLookPriority()
+    {
+        return disableHeadLookPriority;
     }
 
     // Returns a list of all limbs used in this pose
@@ -147,6 +169,8 @@ public class PlayerPose
             if (!copy.hasAngle(limb) || copy.getPriority(limb) < getPriority(limb))
                 copy.setAngles(limb, getAngles(limb), getSpeeds(limb), getPriority(limb), getOffset(limb), getAnimationLock(limb));
 
+        copy.disableHeadLook(disableHeadLook, disableHeadLookPriority);
+
         return copy;
     }
 
@@ -156,6 +180,8 @@ public class PlayerPose
 
         for (String limb : angles.keySet())
             copyPose.setAngles(limb, (ArrayList<Vector3d>)angles.get(limb).clone(), (ArrayList<Float>)speed.get(limb).clone(), priorities.get(limb), offset.get(limb), aLock.get(limb));
+
+        copyPose.disableHeadLook(disableHeadLook, disableHeadLookPriority);
 
         return copyPose;
     }

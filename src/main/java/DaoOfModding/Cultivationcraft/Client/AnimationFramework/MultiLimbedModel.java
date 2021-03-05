@@ -162,6 +162,7 @@ public class MultiLimbedModel
         lock();
 
         limbs.put(GenericLimbNames.body, bodyModel);
+        allLimbs.put(GenericLimbNames.body, bodyModel);
 
         if (body != null)
             body.fosterChildren(bodyModel);

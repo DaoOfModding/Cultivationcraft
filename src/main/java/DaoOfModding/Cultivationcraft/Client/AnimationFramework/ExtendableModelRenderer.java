@@ -25,6 +25,8 @@ public class ExtendableModelRenderer extends ModelRenderer
     private float minHeight = 0;
 
     private boolean look = false;
+    private float notLookingPitch = 0;
+    private float oldNotLookingPitch = 0;
 
     private ResourceLocation customTexture = null;
 
@@ -95,6 +97,22 @@ public class ExtendableModelRenderer extends ModelRenderer
         textureHeight = textureHeightIn;
         textureOffsetX = textureOffsetXIn;
         textureOffsetY = textureOffsetYIn;
+    }
+
+    public void setNotLookingPitch(float pitch)
+    {
+        oldNotLookingPitch = notLookingPitch;
+        notLookingPitch = pitch;
+    }
+
+    public float getNotLookingPitch()
+    {
+        return notLookingPitch;
+    }
+
+    public float getOldNotLookingPitch()
+    {
+        return oldNotLookingPitch;
     }
 
     public void setFirstPersonRender(boolean render)

@@ -1,9 +1,7 @@
 package DaoOfModding.Cultivationcraft.Common.Qi.Techniques.BodyForgeTechniques;
 
-import DaoOfModding.Cultivationcraft.Client.AnimationFramework.GenericLimbNames;
-import DaoOfModding.Cultivationcraft.Client.AnimationFramework.PlayerPose;
-import DaoOfModding.Cultivationcraft.Client.AnimationFramework.PlayerPoseHandler;
-import DaoOfModding.Cultivationcraft.Client.AnimationFramework.PoseHandler;
+import DaoOfModding.Cultivationcraft.Client.AnimationFramework.*;
+import DaoOfModding.Cultivationcraft.Client.Animations.BodyPartModelNames;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartNames;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.BodyModifications;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStats;
@@ -21,6 +19,8 @@ import net.minecraftforge.event.TickEvent;
 
 public class LeapTechnique extends Technique
 {
+    protected PlayerPose defaultLeapLegs = new PlayerPose();
+
     private boolean leaping = false;
 
     public LeapTechnique()
@@ -33,6 +33,14 @@ public class LeapTechnique extends Technique
         icon = new ResourceLocation(Cultivationcraft.MODID, "textures/techniques/icons/leap.png");
 
         pose.addAngle(GenericLimbNames.body, new Vector3d(Math.toRadians(90), 0, 0), 10);
+        defaultLeapLegs.addAngle(BodyPartModelNames.reverseJointLeftLegModel, new Vector3d(Math.toRadians(0), Math.toRadians(0), 0), GenericPoses.jumpLegPriority+3, 1f, -1);
+        defaultLeapLegs.addAngle(BodyPartModelNames.reverseJointRightLegModel, new Vector3d(Math.toRadians(0), Math.toRadians(0), 0), GenericPoses.jumpLegPriority+3, 1f, -1);
+        defaultLeapLegs.addAngle(BodyPartModelNames.reverseJointLeftLegLowerModel, new Vector3d(Math.toRadians(0), Math.toRadians(0), 0), GenericPoses.jumpLegPriority+3, 1f, -1);
+        defaultLeapLegs.addAngle(BodyPartModelNames.reverseJointRightLegLowerModel, new Vector3d(Math.toRadians(0), Math.toRadians(0), 0), GenericPoses.jumpLegPriority+3, 1f, -1);
+        defaultLeapLegs.addAngle(BodyPartModelNames.reverseJointLeftFootModel, new Vector3d(Math.toRadians(0), Math.toRadians(0), 0), GenericPoses.jumpLegPriority+3, 1f, -1);
+        defaultLeapLegs.addAngle(BodyPartModelNames.reverseJointRightFootModel, new Vector3d(Math.toRadians(0), Math.toRadians(0), 0), GenericPoses.jumpLegPriority+3, 1f, -1);
+
+        defaultLeapLegs.disableHeadLook(false, 8);
     }
 
     @Override
@@ -106,7 +114,7 @@ public class LeapTechnique extends Technique
         {
             Vector3d currentMotion = player.getMotion().normalize();
 
-            PlayerPose newPose = new PlayerPose();
+            PlayerPose newPose = defaultLeapLegs.clone();
             newPose.addAngle(GenericLimbNames.body, new Vector3d(Math.toRadians((currentMotion.y - 1) * -90), 0, 0), 10);
 
             pose = newPose;
