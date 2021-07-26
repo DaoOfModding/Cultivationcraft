@@ -1,8 +1,5 @@
 package DaoOfModding.Cultivationcraft.Common.Qi.Techniques;
 
-import DaoOfModding.Cultivationcraft.Client.AnimationFramework.GenericLimbNames;
-import DaoOfModding.Cultivationcraft.Client.AnimationFramework.GenericPoses;
-import DaoOfModding.Cultivationcraft.Client.Animations.GenericQiPoses;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStats;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.ICultivatorStats;
 import DaoOfModding.Cultivationcraft.Common.Qi.CultivationTypes;
@@ -11,7 +8,6 @@ import DaoOfModding.Cultivationcraft.Common.Qi.Freeze;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.vector.Vector3d;
 import net.minecraftforge.event.TickEvent;
 
 public class IceAuraTechnique extends AuraTechnique

@@ -1,6 +1,6 @@
 package DaoOfModding.Cultivationcraft.Client.Animations;
 
-import DaoOfModding.Cultivationcraft.Client.AnimationFramework.defaultResizeModule;
+import DaoOfModding.mlmanimator.Client.Models.defaultResizeModule;
 import net.minecraft.util.math.vector.Vector3d;
 
 public class QiResizers

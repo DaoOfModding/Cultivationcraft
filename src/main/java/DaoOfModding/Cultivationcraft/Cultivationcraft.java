@@ -1,7 +1,5 @@
 package DaoOfModding.Cultivationcraft;
 
-import DaoOfModding.Cultivationcraft.Client.AnimationFramework.GenericPoses;
-import DaoOfModding.Cultivationcraft.Client.AnimationFramework.MultiLimbedRenderer;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartNames;
 import DaoOfModding.Cultivationcraft.Client.Animations.GenericQiPoses;
 import DaoOfModding.Cultivationcraft.Client.ClientItemControl;
@@ -10,6 +8,7 @@ import DaoOfModding.Cultivationcraft.Common.Qi.TechniqueControl;
 import DaoOfModding.Cultivationcraft.Common.Register;
 import DaoOfModding.Cultivationcraft.Network.PacketHandler;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -25,6 +24,8 @@ public class Cultivationcraft {
 
     // Directly reference a log4j logger.
     public static final Logger LOGGER = LogManager.getLogger();
+
+    private static final ModList MOD_LIST = ModList.get();
 
     public Cultivationcraft()
     {
@@ -43,7 +44,6 @@ public class Cultivationcraft {
 
         Elements.init();
         TechniqueControl.init();
-        GenericPoses.init();
         GenericQiPoses.init();
         BodyPartNames.init();
     }
@@ -52,6 +52,5 @@ public class Cultivationcraft {
     {
         ClientItemControl.init(event);
         Register.registerRenderers();
-        MultiLimbedRenderer.setup();
     }
 }

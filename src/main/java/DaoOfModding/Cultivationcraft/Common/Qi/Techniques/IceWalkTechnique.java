@@ -1,8 +1,8 @@
 package DaoOfModding.Cultivationcraft.Common.Qi.Techniques;
 
-import DaoOfModding.Cultivationcraft.Client.AnimationFramework.GenericLimbNames;
-import DaoOfModding.Cultivationcraft.Client.AnimationFramework.GenericPoses;
-import DaoOfModding.Cultivationcraft.Client.AnimationFramework.PlayerPose;
+import DaoOfModding.mlmanimator.Client.Models.GenericLimbNames;
+import DaoOfModding.mlmanimator.Client.Poses.GenericPoses;
+import DaoOfModding.mlmanimator.Client.Poses.PlayerPose;
 import DaoOfModding.Cultivationcraft.Client.Animations.GenericQiPoses;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStats;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.ICultivatorStats;

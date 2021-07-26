@@ -1,6 +1,7 @@
 package DaoOfModding.Cultivationcraft.Common.Qi.Techniques.BodyForgeTechniques;
 
-import DaoOfModding.Cultivationcraft.Client.AnimationFramework.*;
+import DaoOfModding.mlmanimator.Client.Poses.*;
+import DaoOfModding.mlmanimator.Client.Models.GenericLimbNames;
 import DaoOfModding.Cultivationcraft.Client.Animations.BodyPartModelNames;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartNames;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.BodyModifications;

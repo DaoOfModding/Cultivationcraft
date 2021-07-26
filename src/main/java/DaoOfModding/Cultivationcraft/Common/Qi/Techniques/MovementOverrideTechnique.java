@@ -1,7 +1,7 @@
 package DaoOfModding.Cultivationcraft.Common.Qi.Techniques;
 
-import DaoOfModding.Cultivationcraft.Client.AnimationFramework.PlayerPose;
-import DaoOfModding.Cultivationcraft.Client.AnimationFramework.PoseHandler;
+import DaoOfModding.mlmanimator.Client.Poses.PlayerPose;
+import DaoOfModding.mlmanimator.Client.Poses.PoseHandler;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraftforge.event.TickEvent;
 

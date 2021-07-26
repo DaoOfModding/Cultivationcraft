@@ -1,8 +1,8 @@
 package DaoOfModding.Cultivationcraft.Common.Qi.Techniques.BodyForgeTechniques;
 
-import DaoOfModding.Cultivationcraft.Client.AnimationFramework.GenericLimbNames;
-import DaoOfModding.Cultivationcraft.Client.AnimationFramework.GenericPoses;
-import DaoOfModding.Cultivationcraft.Client.AnimationFramework.PlayerPose;
+import DaoOfModding.mlmanimator.Client.Poses.GenericPoses;
+import DaoOfModding.mlmanimator.Client.Models.GenericLimbNames;
+import DaoOfModding.mlmanimator.Client.Poses.PlayerPose;
 import DaoOfModding.Cultivationcraft.Client.Animations.BodyPartModelNames;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStats;
 import DaoOfModding.Cultivationcraft.Common.Qi.CultivationTypes;
@@ -13,7 +13,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraftforge.event.TickEvent;
 
 public class RollTechnique extends MovementOverrideTechnique
 {

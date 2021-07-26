@@ -2,6 +2,7 @@ buildscript {
     repositories {
         maven { url = 'https://files.minecraftforge.net/maven' }
         maven { url='https://dist.creeper.host/Sponge/maven' }
+        maven { url='https://repo.spongepowered.org/maven' }
 
         jcenter()
         mavenCentral()
@@ -16,7 +17,7 @@ apply plugin: 'org.spongepowered.mixin'
 
 apply plugin: 'maven-publish'
 
-version = '0.0.2'
+version = '0.0.3'
 group = 'daoofmodding.cultivationcraft'
 archivesBaseName = 'cultivationcraft'
 
@@ -85,6 +86,8 @@ minecraft {
 
 dependencies {
     minecraft 'net.minecraftforge:forge:1.16.3-34.1.0'
+
+    compile fileTree(dir:'libs', include:'*.jar')
 }
 
 mixin {

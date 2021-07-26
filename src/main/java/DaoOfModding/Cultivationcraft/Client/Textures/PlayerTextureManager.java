@@ -1,6 +1,6 @@
 package DaoOfModding.Cultivationcraft.Client.Textures;
 
-import DaoOfModding.Cultivationcraft.Client.AnimationFramework.MultiLimbedRenderer;
+import DaoOfModding.mlmanimator.Client.MultiLimbedRenderer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.util.ResourceLocation;

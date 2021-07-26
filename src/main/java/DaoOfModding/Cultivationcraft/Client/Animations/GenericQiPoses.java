@@ -1,9 +1,9 @@
 package DaoOfModding.Cultivationcraft.Client.Animations;
 
-import DaoOfModding.Cultivationcraft.Client.AnimationFramework.AnimationBuilder;
-import DaoOfModding.Cultivationcraft.Client.AnimationFramework.GenericLimbNames;
-import DaoOfModding.Cultivationcraft.Client.AnimationFramework.GenericPoses;
-import DaoOfModding.Cultivationcraft.Client.AnimationFramework.PlayerPose;
+import DaoOfModding.mlmanimator.Client.AnimationFramework.AnimationBuilder;
+import DaoOfModding.mlmanimator.Client.Models.GenericLimbNames;
+import DaoOfModding.mlmanimator.Client.Poses.GenericPoses;
+import DaoOfModding.mlmanimator.Client.Poses.PlayerPose;
 import net.minecraft.util.math.vector.Vector3d;
 
 public class GenericQiPoses
@@ -58,6 +58,9 @@ public class GenericQiPoses
         lowerWalkAngle[1] = new Vector3d(Math.toRadians(-90), Math.toRadians(0), Math.toRadians(0));
 
         Walk = Walk.combine(AnimationBuilder.generateRepeatingMirroredLimbs(BodyPartModelNames.reverseJointLeftLegLowerModel, BodyPartModelNames.reverseJointRightLegLowerModel, lowerWalkAngle, GenericPoses.walkLegPriority, 10, 1));
+
+        // Add the new walking poses to the generic walk pose
+        GenericPoses.Walking = GenericPoses.Walking.combine(Walk);
     }
 
     private static void setupExtendedLegs()

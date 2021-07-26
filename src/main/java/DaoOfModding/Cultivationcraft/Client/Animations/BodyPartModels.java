@@ -1,7 +1,6 @@
 package DaoOfModding.Cultivationcraft.Client.Animations;
 
-import DaoOfModding.Cultivationcraft.Client.AnimationFramework.ExtendableModelRenderer;
-import DaoOfModding.Cultivationcraft.Client.AnimationFramework.defaultResizeModule;
+import DaoOfModding.mlmanimator.Client.Models.*;
 import net.minecraft.util.math.vector.Vector3d;
 
 import java.util.HashMap;

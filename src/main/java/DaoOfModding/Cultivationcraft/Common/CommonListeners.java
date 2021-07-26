@@ -55,8 +55,8 @@ public class CommonListeners
     {
         if (event.getEntity() instanceof PlayerEntity)
         {
-            if (event.getEntity().getEntityWorld().isRemote())
-                ClientListeners.playerJump((PlayerEntity)event.getEntity());
+            //if (event.getEntity().getEntityWorld().isRemote())
+            //    ClientListeners.playerJump((PlayerEntity)event.getEntity());
 
             BodyPartStatControl.getStats(event.getEntity().getUniqueID()).applyJump((PlayerEntity)event.getEntity());
         }
