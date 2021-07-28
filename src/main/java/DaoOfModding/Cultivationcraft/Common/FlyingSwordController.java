@@ -27,7 +27,7 @@ public class FlyingSwordController
         nbt.putBoolean("Flying", true);
 
         if (owner != null)
-            nbt.putUniqueId("Owner", owner);
+            nbt.putUUID("Owner", owner);
 
         item.setTag(nbt);
     }
@@ -57,9 +57,9 @@ public class FlyingSwordController
     // Deletes the specified ItemEntity and replaces it with a flying sword entity
     public static void spawnFlyingSword(ItemEntity item)
     {
-        FlyingSwordEntity test = new FlyingSwordEntity(item.world, item.getPosX(), item.getPosY(), item.getPosZ(), item.getItem());
+        FlyingSwordEntity test = new FlyingSwordEntity(item.level, item.getX(), item.getY(), item.getZ(), item.getItem());
 
-        item.world.addEntity(test);
+        item.level.addFreshEntity(test);
     }
 
     // Start binding to the specified flying sword

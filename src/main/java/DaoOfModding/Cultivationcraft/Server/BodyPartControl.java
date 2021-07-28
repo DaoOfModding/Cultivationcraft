@@ -42,7 +42,7 @@ public class BodyPartControl
 
                 PacketHandler.sendBodyModificationsToClient(player);
 
-                BodyPartStatControl.addStats(player.getUniqueID(), toComplete.getStatChanges());
+                BodyPartStatControl.addStats(player.getUUID(), toComplete.getStatChanges());
             }
         }
     }

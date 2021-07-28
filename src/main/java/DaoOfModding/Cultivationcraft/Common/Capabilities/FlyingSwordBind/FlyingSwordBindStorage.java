@@ -17,10 +17,10 @@ public class FlyingSwordBindStorage implements Capability.IStorage<IFlyingSwordB
         nbt.putLong("TimeMax", instance.getBindTimeMax());
 
         if (instance.getOwner() != null)
-            nbt.putUniqueId("Owner", instance.getOwner());
+            nbt.putUUID("Owner", instance.getOwner());
 
         if (instance.getBindingPlayer() != null)
-            nbt.putUniqueId("BindingPlayer", instance.getBindingPlayer());
+            nbt.putUUID("BindingPlayer", instance.getBindingPlayer());
 
         return nbt;
     }
@@ -36,12 +36,12 @@ public class FlyingSwordBindStorage implements Capability.IStorage<IFlyingSwordB
         instance.setBindTimeMax(((CompoundNBT) nbt).getLong("TimeMax"));
 
         if (((CompoundNBT) nbt).contains("Owner"))
-            instance.setOwner(((CompoundNBT) nbt).getUniqueId("Owner"));
+            instance.setOwner(((CompoundNBT) nbt).getUUID("Owner"));
         else
             instance.setOwner(null);
 
         if (((CompoundNBT) nbt).contains("BindingPlayer"))
-            instance.setBindingPlayer(((CompoundNBT) nbt).getUniqueId("BindingPlayer"));
+            instance.setBindingPlayer(((CompoundNBT) nbt).getUUID("BindingPlayer"));
         else
             instance.setBindingPlayer(null);
     }

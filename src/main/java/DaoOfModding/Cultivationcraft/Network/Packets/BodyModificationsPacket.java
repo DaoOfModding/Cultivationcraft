@@ -28,8 +28,8 @@ public class BodyModificationsPacket extends Packet
     @Override
     public void encode(PacketBuffer buffer)
     {
-        buffer.writeUniqueId(owner);
-        buffer.writeCompoundTag(mods.write());
+        buffer.writeUUID(owner);
+        buffer.writeNbt(mods.write());
     }
 
     public static BodyModificationsPacket decode(PacketBuffer buffer)
@@ -39,11 +39,11 @@ public class BodyModificationsPacket extends Packet
         try
         {
             // Read in the sent values
-            UUID readingOwner = buffer.readUniqueId();
+            UUID readingOwner = buffer.readUUID();
 
             IBodyModifications modifications = new BodyModifications();
 
-            modifications.read(buffer.readCompoundTag());
+            modifications.read(buffer.readNbt());
 
             return new BodyModificationsPacket(readingOwner, modifications);
         }
@@ -76,7 +76,7 @@ public class BodyModificationsPacket extends Packet
     // Process received packet on client
     private void processPacket()
     {
-        PlayerEntity player = ClientItemControl.thisWorld.getPlayerByUuid(owner);
+        PlayerEntity player = ClientItemControl.thisWorld.getPlayerByUUID(owner);
 
         // Get the modifications for the specified player
         IBodyModifications modifications = BodyModifications.getBodyModifications(player);

@@ -67,19 +67,19 @@ public class PacketHandler
     public static void sendRecallFlyingToClient(boolean recall, UUID playerID)
     {
         RecallFlyingSwordPacket pack = new RecallFlyingSwordPacket(recall, playerID);
-        channel.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> ServerLifecycleHooks.getCurrentServer().getPlayerList().getPlayerByUUID(playerID)), pack);
+        channel.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> ServerLifecycleHooks.getCurrentServer().getPlayerList().getPlayer(playerID)), pack);
     }
 
     public static void sendCultivatorTargetToClient(UUID playerID, RayTraceResult.Type type, Vector3d pos, UUID targetID)
     {
         CultivatorTargetPacket pack = new CultivatorTargetPacket(playerID, type, pos, targetID);
-        channel.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> ServerLifecycleHooks.getCurrentServer().getPlayerList().getPlayerByUUID(playerID)), pack);
+        channel.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> ServerLifecycleHooks.getCurrentServer().getPlayerList().getPlayer(playerID)), pack);
     }
 
     public static void sendAttackToClient(UUID playerID, RayTraceResult.Type type, Vector3d pos, UUID targetID, int slot)
     {
         AttackPacket pack = new AttackPacket(playerID, type, pos, targetID, slot);
-        channel.send(PacketDistributor.TRACKING_ENTITY.with(() -> ServerLifecycleHooks.getCurrentServer().getPlayerList().getPlayerByUUID(playerID)), pack);
+        channel.send(PacketDistributor.TRACKING_ENTITY.with(() -> ServerLifecycleHooks.getCurrentServer().getPlayerList().getPlayer(playerID)), pack);
     }
 
     public static void sendChunkQiSourcesToClient(Chunk chunk)
@@ -119,11 +119,11 @@ public class PacketHandler
         ICultivatorStats stats = CultivatorStats.getCultivatorStats(player);
 
         // Send the cultivator's stats to the client
-        CultivatorStatsPacket pack = new CultivatorStatsPacket(player.getUniqueID(), stats);
+        CultivatorStatsPacket pack = new CultivatorStatsPacket(player.getUUID(), stats);
         channel.send(distribute, pack);
 
         // Send the cultivator's current target to the client
-        CultivatorTargetPacket pack2 = new CultivatorTargetPacket(player.getUniqueID(), stats.getTargetType(), stats.getTarget(), stats.getTargetID());
+        CultivatorTargetPacket pack2 = new CultivatorTargetPacket(player.getUUID(), stats.getTargetType(), stats.getTarget(), stats.getTargetID());
         channel.send(distribute, pack2);
     }
 
@@ -146,7 +146,7 @@ public class PacketHandler
         IBodyModifications modifications = BodyModifications.getBodyModifications(player);
 
         // Send the cultivator's stats to the client
-        BodyModificationsPacket pack = new BodyModificationsPacket(player.getUniqueID(), modifications);
+        BodyModificationsPacket pack = new BodyModificationsPacket(player.getUUID(), modifications);
         channel.send(distribute, pack);
     }
 
@@ -154,7 +154,7 @@ public class PacketHandler
     {
         ICultivatorTechniques techs = CultivatorTechniques.getCultivatorTechniques(player);
 
-        CultivatorTechniquesPacket pack = new CultivatorTechniquesPacket(player.getUniqueID(), techs);
+        CultivatorTechniquesPacket pack = new CultivatorTechniquesPacket(player.getUUID(), techs);
         channel.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> player), pack);
     }
 
@@ -162,7 +162,7 @@ public class PacketHandler
     {
         ICultivatorTechniques techs = CultivatorTechniques.getCultivatorTechniques(player);
 
-        CultivatorTechniquesPacket pack = new CultivatorTechniquesPacket(player.getUniqueID(), techs);
+        CultivatorTechniquesPacket pack = new CultivatorTechniquesPacket(player.getUUID(), techs);
         channel.send(PacketDistributor.PLAYER.with(() -> toSend), pack);
     }
 }

@@ -35,8 +35,8 @@ public class Register
     public static DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.ENTITIES, Cultivationcraft.MODID);
 
     public static RegistryObject<EntityType<FlyingSwordEntity>> FLYINGSWORD = ENTITY_TYPES.register("flyingsword", () ->
-                                                                                EntityType.Builder.<FlyingSwordEntity>create(FlyingSwordEntity::new, EntityClassification.MISC)
-                                                                                        .size(0.5f, 0.5f)
+                                                                                EntityType.Builder.<FlyingSwordEntity>of(FlyingSwordEntity::new, EntityClassification.MISC)
+                                                                                        .sized(0.5f, 0.5f)
                                                                                         .setUpdateInterval(3)
                                                                                         .build("flyingsword"));
 
@@ -85,7 +85,7 @@ public class Register
         @SubscribeEvent
         public static void onParticleFactoryRegistration(final ParticleFactoryRegisterEvent event)
         {
-            Minecraft.getInstance().particles.registerFactory(Register.qiParticleType, QiParticle.Factory::new);
+            Minecraft.getInstance().particleEngine.register(Register.qiParticleType, QiParticle.Factory::new);
         }
     }
 }

@@ -22,12 +22,12 @@ public class QiParticleData implements IParticleData
     }
 
     @Override
-    public void write(PacketBuffer buf)
+    public void writeToNetwork(PacketBuffer buf)
     {
     }
 
     @Override
-    public String getParameters()
+    public String writeToString()
     {
         return "Source: " + source.toString();
     }

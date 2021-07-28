@@ -47,7 +47,7 @@ public class ScreenTabControl
             if (mouseOver(mouseX, mouseY, i))
             {
                 if (i == 1)
-                    Minecraft.getInstance().displayGuiScreen(new TechniqueScreen());
+                    Minecraft.getInstance().forceSetScreen(new TechniqueScreen());
                 else if (i == 2)
                 {
                     int cultivationType = CultivatorStats.getCultivatorStats(Minecraft.getInstance().player).getCultivationType();
@@ -55,7 +55,7 @@ public class ScreenTabControl
                     if (cultivationType == CultivationTypes.QI_CONDENSER)
                         ClientPacketHandler.sendKeypressToServer(Register.keyPresses.FLYINGSWORDSCREEN);
                     else if (cultivationType == CultivationTypes.BODY_CULTIVATOR)
-                        Minecraft.getInstance().displayGuiScreen(new BodyforgeScreen());
+                        Minecraft.getInstance().forceSetScreen(new BodyforgeScreen());
                 }
 
                 return true;

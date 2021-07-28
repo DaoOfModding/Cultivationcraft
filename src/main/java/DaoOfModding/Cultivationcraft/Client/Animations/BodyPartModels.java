@@ -23,14 +23,14 @@ public class BodyPartModels
 
         // Create the top half of the head
         ExtendableModelRenderer semiHeadPart = new ExtendableModelRenderer(0, 0);
-        semiHeadPart.setRotationPoint(0.0F, 0.0F, 0.0F);
+        semiHeadPart.setPos(0.0F, 0.0F, 0.0F);
         semiHeadPart.extend(semiHeadResizer);
         semiHeadPart.setLooking(true);
         semiHeadPart.setFirstPersonRender(false);
 
         // Create the jaw
         ExtendableModelRenderer jawPart = new ExtendableModelRenderer(0, 5);
-        jawPart.setRotationPoint(0.0F, -2F, 2F);
+        jawPart.setPos(0.0F, -2F, 2F);
         jawPart.extend(jawResizer);
         jawPart.setFirstPersonRender(false);
 
@@ -48,13 +48,13 @@ public class BodyPartModels
 
         // Create the top half of the head
         ExtendableModelRenderer FPsemiHeadPart = new ExtendableModelRenderer(0, 0);
-        FPsemiHeadPart.setRotationPoint(0.0F, 2.5F, -1F);
+        FPsemiHeadPart.setPos(0.0F, 2.5F, -1F);
         FPsemiHeadPart.extend(FPsemiHeadResizer);
         FPsemiHeadPart.setLooking(true);
 
         // Create the jaw
         ExtendableModelRenderer FPjawPart = new ExtendableModelRenderer(0, 5);
-        FPjawPart.setRotationPoint(0.0F, -2F, 2F);
+        FPjawPart.setPos(0.0F, -2F, 2F);
         FPjawPart.extend(FPjawResizer);
 
         // Attach the jaw to the head
@@ -76,14 +76,14 @@ public class BodyPartModels
         defaultResizeModule flatToothResizer = QiResizers.getTeethResizer(8, 7.8f, 1, 0.1f);
 
         ExtendableModelRenderer flatToothPart = new ExtendableModelRenderer(64, 64, 0, 0);
-        flatToothPart.setRotationPoint(-3.9f, -3f, -3.9f);
+        flatToothPart.setPos(-3.9f, -3f, -3.9f);
         flatToothPart.extend(flatToothResizer);
 
         //Setup side teeth
         flatToothResizer = QiResizers.getSideTeethResizer(6, 5.8f, 1, 0.1f);
 
         ExtendableModelRenderer flatToothSidePart = new ExtendableModelRenderer(64, 64, 0, 0);
-        flatToothSidePart.setRotationPoint(0f, 0f, 1.1f);
+        flatToothSidePart.setPos(0f, 0f, 1.1f);
         flatToothSidePart.extend(flatToothResizer);
 
         flatToothPart.addChild(flatToothSidePart);
@@ -91,7 +91,7 @@ public class BodyPartModels
         flatToothResizer = QiResizers.getSideTeethResizer(6, 5.8f, 1, 0.1f);
 
         flatToothSidePart = new ExtendableModelRenderer(64, 64, 0, 0);
-        flatToothSidePart.setRotationPoint(6.8f, 0f, 1.1f);
+        flatToothSidePart.setPos(6.8f, 0f, 1.1f);
         flatToothSidePart.extend(flatToothResizer);
 
         flatToothPart.addChild(flatToothSidePart);
@@ -103,14 +103,14 @@ public class BodyPartModels
         flatToothResizer = QiResizers.getTeethResizer(8, 7.8f, 1, 0.1f);
 
         flatToothPart = new ExtendableModelRenderer(64, 64, 0, 0);
-        flatToothPart.setRotationPoint(-3.9f, -2, -5.6f);
+        flatToothPart.setPos(-3.9f, -2, -5.6f);
         flatToothPart.extend(flatToothResizer);
         flatToothPart.setRotationOffset(new Vector3d(Math.toRadians(-20), 0, 0));
 
         flatToothResizer = QiResizers.getSideTeethResizer(6, 5.8f, 1, 0.1f);
 
         flatToothSidePart = new ExtendableModelRenderer(64, 64, 0, 0);
-        flatToothSidePart.setRotationPoint(0f, 0f, 1f);
+        flatToothSidePart.setPos(0f, 0f, 1f);
         flatToothSidePart.extend(flatToothResizer);
 
         flatToothPart.addChild(flatToothSidePart);
@@ -118,7 +118,7 @@ public class BodyPartModels
         flatToothResizer = QiResizers.getSideTeethResizer(6, 5.8f, 1, 0.1f);
 
         flatToothSidePart = new ExtendableModelRenderer(64, 64, 0, 0);
-        flatToothSidePart.setRotationPoint(6.8f, 0f, 1f);
+        flatToothSidePart.setPos(6.8f, 0f, 1f);
         flatToothSidePart.extend(flatToothResizer);
 
         flatToothPart.addChild(flatToothSidePart);
@@ -132,26 +132,26 @@ public class BodyPartModels
         // Create row of top teeth
         defaultResizeModule ToothResizer = QiResizers.getTeethResizer(8, 7.8f, 0.5f, 0.1f);
         ExtendableModelRenderer ToothPart = new ExtendableModelRenderer(64, 64, 0, 0);
-        ToothPart.setRotationPoint(-3.9f, -3f, -3.9f);
+        ToothPart.setPos(-3.9f, -3f, -3.9f);
         ToothPart.extend(ToothResizer);
 
         ToothResizer = QiResizers.getTeethResizer(8, 7.8f, 0.5f, 0.3f);
         ExtendableModelRenderer LowerToothPart = new ExtendableModelRenderer(64, 64, 0, 0);
-        LowerToothPart.setRotationPoint(0.1f, 0.5f, 0f);
+        LowerToothPart.setPos(0.1f, 0.5f, 0f);
         LowerToothPart.extend(ToothResizer);
 
         ToothPart.addChild(LowerToothPart);
 
         ToothResizer = QiResizers.getTeethResizer(8, 7.8f, 0.5f, 0.5f);
         LowerToothPart = new ExtendableModelRenderer(64, 64, 0, 0);
-        LowerToothPart.setRotationPoint(0.2f, 1f, 0f);
+        LowerToothPart.setPos(0.2f, 1f, 0f);
         LowerToothPart.extend(ToothResizer);
 
         ToothPart.addChild(LowerToothPart);
 
         ToothResizer = QiResizers.getTeethResizer(8, 7.8f, 0.49f, 0.7f);
         LowerToothPart = new ExtendableModelRenderer(64, 64, 0, 0);
-        LowerToothPart.setRotationPoint(0.3f, 1.5f, 0f);
+        LowerToothPart.setPos(0.3f, 1.5f, 0f);
         LowerToothPart.extend(ToothResizer);
 
         ToothPart.addChild(LowerToothPart);
@@ -160,24 +160,24 @@ public class BodyPartModels
         ToothResizer = QiResizers.getSideTeethResizer(5, 4.8f, 0.5f, 0.1f);
 
         ExtendableModelRenderer ToothSidePart = new ExtendableModelRenderer(64, 64, 0, 0);
-        ToothSidePart.setRotationPoint(0f, 0f, 1.1f);
+        ToothSidePart.setPos(0f, 0f, 1.1f);
         ToothSidePart.extend(ToothResizer);
 
         ToothResizer = QiResizers.getSideTeethResizer(5, 4.8f, 0.5f, 0.3f);
         ExtendableModelRenderer LowerToothSidePart = new ExtendableModelRenderer(64, 64, 0, 0);
-        LowerToothSidePart.setRotationPoint(0f, 0.5f, 0.1f);
+        LowerToothSidePart.setPos(0f, 0.5f, 0.1f);
         LowerToothSidePart.extend(ToothResizer);
         ToothSidePart.addChild(LowerToothSidePart);
 
         ToothResizer = QiResizers.getSideTeethResizer(5, 4.8f, 0.5f, 0.5f);
         LowerToothSidePart = new ExtendableModelRenderer(64, 64, 0, 0);
-        LowerToothSidePart.setRotationPoint(0f, 1f, 0.2f);
+        LowerToothSidePart.setPos(0f, 1f, 0.2f);
         LowerToothSidePart.extend(ToothResizer);
         ToothSidePart.addChild(LowerToothSidePart);
 
         ToothResizer = QiResizers.getSideTeethResizer(5, 4.8f, 0.49f, 0.7f);
         LowerToothSidePart = new ExtendableModelRenderer(64, 64, 0, 0);
-        LowerToothSidePart.setRotationPoint(0f, 1.5f, 0.3f);
+        LowerToothSidePart.setPos(0f, 1.5f, 0.3f);
         LowerToothSidePart.extend(ToothResizer);
         ToothSidePart.addChild(LowerToothSidePart);
 
@@ -187,24 +187,24 @@ public class BodyPartModels
         ToothResizer = QiResizers.getSideTeethResizer(5, 4.8f, 0.5f, 0.1f);
 
         ToothSidePart = new ExtendableModelRenderer(64, 64, 0, 0);
-        ToothSidePart.setRotationPoint(6.8f, 0f, 1.1f);
+        ToothSidePart.setPos(6.8f, 0f, 1.1f);
         ToothSidePart.extend(ToothResizer);
 
         ToothResizer = QiResizers.getSideTeethResizer(5, 4.8f, 0.5f, 0.3f);
         LowerToothSidePart = new ExtendableModelRenderer(64, 64, 0, 0);
-        LowerToothSidePart.setRotationPoint(0f, 0.5f, 0.1f);
+        LowerToothSidePart.setPos(0f, 0.5f, 0.1f);
         LowerToothSidePart.extend(ToothResizer);
         ToothSidePart.addChild(LowerToothSidePart);
 
         ToothResizer = QiResizers.getSideTeethResizer(5, 4.8f, 0.5f, 0.5f);
         LowerToothSidePart = new ExtendableModelRenderer(64, 64, 0, 0);
-        LowerToothSidePart.setRotationPoint(0f, 1f, 0.2f);
+        LowerToothSidePart.setPos(0f, 1f, 0.2f);
         LowerToothSidePart.extend(ToothResizer);
         ToothSidePart.addChild(LowerToothSidePart);
 
         ToothResizer = QiResizers.getSideTeethResizer(5, 4.8f, 0.49f, 0.7f);
         LowerToothSidePart = new ExtendableModelRenderer(64, 64, 0, 0);
-        LowerToothSidePart.setRotationPoint(0f, 1.5f, 0.3f);
+        LowerToothSidePart.setPos(0f, 1.5f, 0.3f);
         LowerToothSidePart.extend(ToothResizer);
         ToothSidePart.addChild(LowerToothSidePart);
 
@@ -219,27 +219,27 @@ public class BodyPartModels
         // Create row of bottom teeth
         ToothResizer = QiResizers.getTeethResizer(7, 6.8f, 0.5f, 0.1f);
         ToothPart = new ExtendableModelRenderer(64, 64, 0, 0);
-        ToothPart.setRotationPoint(-3.4f, -1.5f, -5.8f);
+        ToothPart.setPos(-3.4f, -1.5f, -5.8f);
         ToothPart.extend(ToothResizer);
         ToothPart.setRotationOffset(new Vector3d(Math.toRadians(-20), 0, 0));
 
         ToothResizer = QiResizers.getTeethResizer(7, 6.8f, 0.5f, 0.3f);
         LowerToothPart = new ExtendableModelRenderer(64, 64, 0, 0);
-        LowerToothPart.setRotationPoint(0.1f, -0.5f, 0f);
+        LowerToothPart.setPos(0.1f, -0.5f, 0f);
         LowerToothPart.extend(ToothResizer);
 
         ToothPart.addChild(LowerToothPart);
 
         ToothResizer = QiResizers.getTeethResizer(7, 6.8f, 0.5f, 0.5f);
         LowerToothPart = new ExtendableModelRenderer(64, 64, 0, 0);
-        LowerToothPart.setRotationPoint(0.2f, -1f, 0f);
+        LowerToothPart.setPos(0.2f, -1f, 0f);
         LowerToothPart.extend(ToothResizer);
 
         ToothPart.addChild(LowerToothPart);
 
         ToothResizer = QiResizers.getTeethResizer(7, 6.8f, 0.49f, 0.7f);
         LowerToothPart = new ExtendableModelRenderer(64, 64, 0, 0);
-        LowerToothPart.setRotationPoint(0.3f, -1.5f, 0f);
+        LowerToothPart.setPos(0.3f, -1.5f, 0f);
         LowerToothPart.extend(ToothResizer);
 
         ToothPart.addChild(LowerToothPart);
@@ -249,24 +249,24 @@ public class BodyPartModels
         ToothResizer = QiResizers.getSideTeethResizer(5, 4.8f, 0.5f, 0.1f);
 
         ToothSidePart = new ExtendableModelRenderer(64, 64, 0, 0);
-        ToothSidePart.setRotationPoint(-0.5f, 0f, 0.6f);
+        ToothSidePart.setPos(-0.5f, 0f, 0.6f);
         ToothSidePart.extend(ToothResizer);
 
         ToothResizer = QiResizers.getSideTeethResizer(5, 4.8f, 0.5f, 0.3f);
         LowerToothSidePart = new ExtendableModelRenderer(64, 64, 0, 0);
-        LowerToothSidePart.setRotationPoint(0f, -0.5f, 0.1f);
+        LowerToothSidePart.setPos(0f, -0.5f, 0.1f);
         LowerToothSidePart.extend(ToothResizer);
         ToothSidePart.addChild(LowerToothSidePart);
 
         ToothResizer = QiResizers.getSideTeethResizer(5, 4.8f, 0.5f, 0.5f);
         LowerToothSidePart = new ExtendableModelRenderer(64, 64, 0, 0);
-        LowerToothSidePart.setRotationPoint(0f, -1f, 0.2f);
+        LowerToothSidePart.setPos(0f, -1f, 0.2f);
         LowerToothSidePart.extend(ToothResizer);
         ToothSidePart.addChild(LowerToothSidePart);
 
         ToothResizer = QiResizers.getSideTeethResizer(5, 4.8f, 0.49f, 0.7f);
         LowerToothSidePart = new ExtendableModelRenderer(64, 64, 0, 0);
-        LowerToothSidePart.setRotationPoint(0f, -1.5f, 0.3f);
+        LowerToothSidePart.setPos(0f, -1.5f, 0.3f);
         LowerToothSidePart.extend(ToothResizer);
         ToothSidePart.addChild(LowerToothSidePart);
 
@@ -276,24 +276,24 @@ public class BodyPartModels
         ToothResizer = QiResizers.getSideTeethResizer(5, 4.8f, 0.5f, 0.1f);
 
         ToothSidePart = new ExtendableModelRenderer(64, 64, 0, 0);
-        ToothSidePart.setRotationPoint(6.3f, 0f, 0.6f);
+        ToothSidePart.setPos(6.3f, 0f, 0.6f);
         ToothSidePart.extend(ToothResizer);
 
         ToothResizer = QiResizers.getSideTeethResizer(5, 4.8f, 0.5f, 0.3f);
         LowerToothSidePart = new ExtendableModelRenderer(64, 64, 0, 0);
-        LowerToothSidePart.setRotationPoint(0f, -0.5f, 0.1f);
+        LowerToothSidePart.setPos(0f, -0.5f, 0.1f);
         LowerToothSidePart.extend(ToothResizer);
         ToothSidePart.addChild(LowerToothSidePart);
 
         ToothResizer = QiResizers.getSideTeethResizer(5, 4.8f, 0.5f, 0.5f);
         LowerToothSidePart = new ExtendableModelRenderer(64, 64, 0, 0);
-        LowerToothSidePart.setRotationPoint(0f, -1f, 0.2f);
+        LowerToothSidePart.setPos(0f, -1f, 0.2f);
         LowerToothSidePart.extend(ToothResizer);
         ToothSidePart.addChild(LowerToothSidePart);
 
         ToothResizer = QiResizers.getSideTeethResizer(5, 4.8f, 0.49f, 0.7f);
         LowerToothSidePart = new ExtendableModelRenderer(64, 64, 0, 0);
-        LowerToothSidePart.setRotationPoint(0f, -1.5f, 0.3f);
+        LowerToothSidePart.setPos(0f, -1.5f, 0.3f);
         LowerToothSidePart.extend(ToothResizer);
         ToothSidePart.addChild(LowerToothSidePart);
 
@@ -309,12 +309,12 @@ public class BodyPartModels
         defaultResizeModule footResizer = new defaultResizeModule(2, new Vector3d(0, 1, 0), new Vector3d(-1.99, 0, 0.01), new Vector3d(4, 2, 4), new Vector3d(0, 1, -1));
 
         ExtendableModelRenderer leftReverseJoint = new ExtendableModelRenderer(0, 16);
-        leftReverseJoint.setRotationPoint(1.9F, 11.0F, 0.0F);
+        leftReverseJoint.setPos(1.9F, 11.0F, 0.0F);
         leftReverseJoint.extend(reverseJointResizer);
         leftReverseJoint.mirror = true;
 
         ExtendableModelRenderer leftFoot = new ExtendableModelRenderer(0, 26);
-        leftFoot.setRotationPoint(0F, 5.0F, -4F);
+        leftFoot.setPos(0F, 5.0F, -4F);
         leftFoot.extend(footResizer);
         leftFoot.mirror = true;
 
@@ -325,11 +325,11 @@ public class BodyPartModels
         footResizer = new defaultResizeModule(2, new Vector3d(0, 1, 0), new Vector3d(-1.99, 0, 0.01), new Vector3d(4, 2, 4), new Vector3d(0, 1, -1));
 
         ExtendableModelRenderer rightReverseJoint = new ExtendableModelRenderer(0, 16);
-        rightReverseJoint.setRotationPoint(-1.9F, 11.0F, 0.0F);
+        rightReverseJoint.setPos(-1.9F, 11.0F, 0.0F);
         rightReverseJoint.extend(reverseJointResizer);
 
         ExtendableModelRenderer rightFoot = new ExtendableModelRenderer(0, 26);
-        rightFoot.setRotationPoint(0F, 5.0F, -4F);
+        rightFoot.setPos(0F, 5.0F, -4F);
         rightFoot.extend(footResizer);
 
         rightReverseJoint.getChildren().get(0).addChild(rightFoot);

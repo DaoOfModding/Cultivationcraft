@@ -20,7 +20,7 @@ public class ChunkQiSourcesStorage implements Capability.IStorage<IChunkQiSource
 
         if (instance.getChunkPos() != null)
         {
-            nbt.putLong("QiSource", instance.getChunkPos().asLong());
+            nbt.putLong("QiSource", instance.getChunkPos().toLong());
 
             int count = 0;
             // Add NBT data for each QiSource

@@ -30,21 +30,21 @@ public class BodyPartStatControl
     public static void updateStats(PlayerEntity player)
     {
         // Clear the existing stats
-        stats.put(player.getUniqueID(), new PlayerStatModifications());
+        stats.put(player.getUUID(), new PlayerStatModifications());
 
         // Add all existing body part stats to the players stats
         for (BodyPart part : BodyModifications.getBodyModifications(player).getModifications().values())
         {
-            part.onLoad(player.getUniqueID());
-            BodyPartStatControl.addStats(player.getUniqueID(), part.getStatChanges());
+            part.onLoad(player.getUUID());
+            BodyPartStatControl.addStats(player.getUUID(), part.getStatChanges());
         }
 
         // Add all existing body part option stats to the players stats
         for (HashMap<String, BodyPartOption> options : BodyModifications.getBodyModifications(player).getModificationOptions().values())
         for (BodyPartOption part : options.values())
             {
-                part.onLoad(player.getUniqueID());
-                BodyPartStatControl.addStats(player.getUniqueID(), part.getStatChanges());
+                part.onLoad(player.getUUID());
+                BodyPartStatControl.addStats(player.getUUID(), part.getStatChanges());
             }
     }
 }

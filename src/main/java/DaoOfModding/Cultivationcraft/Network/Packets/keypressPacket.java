@@ -22,7 +22,7 @@ public class keypressPacket extends Packet
     @Override
     public void encode(PacketBuffer buffer)
     {
-        buffer.writeEnumValue(keyPress);
+        buffer.writeEnum(keyPress);
     }
 
     public static keypressPacket decode(PacketBuffer buffer)
@@ -32,7 +32,7 @@ public class keypressPacket extends Packet
         try
         {
             // Read in the sent values
-            Register.keyPresses readPress = buffer.readEnumValue(Register.keyPresses.class);
+            Register.keyPresses readPress = buffer.readEnum(Register.keyPresses.class);
 
             return new keypressPacket(readPress);
 

@@ -71,8 +71,8 @@ public class BodyforgeScreen extends Screen
         cancel = new GUIButton("CANCEL", cancelString);
 
         // Centre the buttons
-        forgeXPos -= Minecraft.getInstance().fontRenderer.getStringWidth(forgeString) / 2;
-        cancelXPos -= Minecraft.getInstance().fontRenderer.getStringWidth(cancelString) / 2;
+        forgeXPos -= Minecraft.getInstance().font.width(forgeString) / 2;
+        cancelXPos -= Minecraft.getInstance().font.width(cancelString) / 2;
     }
 
     @Override
@@ -292,8 +292,8 @@ public class BodyforgeScreen extends Screen
 
     protected void drawGuiBackgroundLayer(MatrixStack matrixStack, float partialTicks, int mouseX, int mouseY)
     {
-        GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-        Minecraft.getInstance().getTextureManager().bindTexture(TEXTURE);
+        GlStateManager._color4f(1.0F, 1.0F, 1.0F, 1.0F);
+        Minecraft.getInstance().getTextureManager().bind(TEXTURE);
 
         int edgeSpacingX = (this.width - this.xSize) / 2;
         int edgeSpacingY = (this.height - this.ySize) / 2;
@@ -354,15 +354,15 @@ public class BodyforgeScreen extends Screen
         if (part instanceof BodyPartOption)
             subPosition = BodyPartNames.getDisplayName(part.getPosition(), ((BodyPartOption)part).getSubPosition());
 
-        font.drawString(matrixStack, position,edgeSpacingX + selectedTextXPos - font.getStringWidth(position) / 2, edgeSpacingY + selectedTextYPos, Color.GRAY.getRGB());
-        font.drawString(matrixStack, subPosition, edgeSpacingX + selectedTextXPos- font.getStringWidth(subPosition) / 2, edgeSpacingY + selectedTextYPos + font.FONT_HEIGHT, Color.GRAY.getRGB());
-        font.drawString(matrixStack,part.getDisplayName(), edgeSpacingX + selectedTextXPos - font.getStringWidth(part.getDisplayName()) / 2, edgeSpacingY + selectedTextYPos + font.FONT_HEIGHT*2, Color.BLACK.getRGB());
+        font.draw(matrixStack, position,edgeSpacingX + selectedTextXPos - font.width(position) / 2, edgeSpacingY + selectedTextYPos, Color.GRAY.getRGB());
+        font.draw(matrixStack, subPosition, edgeSpacingX + selectedTextXPos- font.width(subPosition) / 2, edgeSpacingY + selectedTextYPos + font.lineHeight, Color.GRAY.getRGB());
+        font.draw(matrixStack,part.getDisplayName(), edgeSpacingX + selectedTextXPos - font.width(part.getDisplayName()) / 2, edgeSpacingY + selectedTextYPos + font.lineHeight*2, Color.BLACK.getRGB());
 
         // Render the progress bar
         IBodyModifications modifications = BodyModifications.getBodyModifications(Minecraft.getInstance().player);
         float progress = (float)modifications.getProgress() / (float)part.getQiNeeded();
 
-        Minecraft.getInstance().getTextureManager().bindTexture(TEXTURE);
+        Minecraft.getInstance().getTextureManager().bind(TEXTURE);
 
         this.blit(matrixStack, edgeSpacingX + 9, edgeSpacingY + 160, 0, 246, 157, 6);
         this.blit(matrixStack, edgeSpacingX + 10, edgeSpacingY + 161, 1, 252, (int)(155 * progress), 4);

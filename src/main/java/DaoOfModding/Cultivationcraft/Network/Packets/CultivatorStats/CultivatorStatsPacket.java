@@ -39,7 +39,7 @@ public class CultivatorStatsPacket extends Packet
     {
         if (owner != null)
         {
-            buffer.writeUniqueId(owner);
+            buffer.writeUUID(owner);
             buffer.writeDouble(flyingItemSpeed);
             buffer.writeDouble(flyingItemMAXSpeed);
             buffer.writeDouble(flyingItemturnSpeed);
@@ -54,7 +54,7 @@ public class CultivatorStatsPacket extends Packet
         try
         {
             // Read in the send values
-            UUID readingOwner = buffer.readUniqueId();
+            UUID readingOwner = buffer.readUUID();
 
             ICultivatorStats stats = new CultivatorStats();
             stats.setFlyingItemSpeed(buffer.readDouble());
@@ -95,7 +95,7 @@ public class CultivatorStatsPacket extends Packet
     private void processPacket()
     {
         // Get the stats for the specified player
-        ICultivatorStats stats = CultivatorStats.getCultivatorStats(ClientItemControl.thisWorld.getPlayerByUuid(owner));
+        ICultivatorStats stats = CultivatorStats.getCultivatorStats(ClientItemControl.thisWorld.getPlayerByUUID(owner));
 
         stats.setFlyingItemSpeed(flyingItemSpeed);
         stats.setFlyingItemMaxSpeed(flyingItemMAXSpeed);

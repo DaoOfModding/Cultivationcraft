@@ -59,14 +59,14 @@ public class BasicContainer extends Container
 
     @Override
     // Return true if player can interact with this container, false if not
-    public boolean canInteractWith(@Nonnull PlayerEntity player)
+    public boolean stillValid(@Nonnull PlayerEntity player)
     {
         return true;
     }
 
     @Override
     // What happens when an item is SHIFT-clicked in this container
-    public ItemStack transferStackInSlot(PlayerEntity player, int sourceSlotIndex)
+    public ItemStack quickMoveStack(PlayerEntity player, int sourceSlotIndex)
     {
         return ItemStack.EMPTY;
     }

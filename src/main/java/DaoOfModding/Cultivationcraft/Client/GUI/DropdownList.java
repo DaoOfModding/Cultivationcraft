@@ -192,8 +192,8 @@ public class DropdownList
 
     public void render(MatrixStack matrixStack, int xpos, int ypos, int mouseX, int mouseY, AbstractGui gui)
     {
-        GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-        Minecraft.getInstance().getTextureManager().bindTexture(TEXTURE);
+        GlStateManager._color4f(1.0F, 1.0F, 1.0F, 1.0F);
+        Minecraft.getInstance().getTextureManager().bind(TEXTURE);
 
         // Draw the list open or closed
         if (isOpen)
@@ -206,7 +206,7 @@ public class DropdownList
             gui.blit(matrixStack, xpos, ypos, gui.getBlitOffset(), 0, 0, width, closedHeight, 255, 255);
 
         // Draw the selected item
-        Minecraft.getInstance().fontRenderer.drawString(matrixStack, selected, xpos + 2, ypos + 2, Color.white.getRGB());
+        Minecraft.getInstance().font.draw(matrixStack, selected, xpos + 2, ypos + 2, Color.white.getRGB());
 
         // Draw all items if open
         if (isOpen)
@@ -240,7 +240,7 @@ public class DropdownList
             {
                 // Only start displaying list items from the scroll offset
                 if (scrollOffset <= i)
-                    Minecraft.getInstance().fontRenderer.drawString(matrixStack, name, xpos + 2, ypos + 2 + (i + 1 - scrollOffset) * (closedHeight - 1), Color.white.getRGB());
+                    Minecraft.getInstance().font.draw(matrixStack, name, xpos + 2, ypos + 2 + (i + 1 - scrollOffset) * (closedHeight - 1), Color.white.getRGB());
 
                 i++;
 

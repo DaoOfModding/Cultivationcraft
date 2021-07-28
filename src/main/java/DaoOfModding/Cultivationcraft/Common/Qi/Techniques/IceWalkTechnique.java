@@ -55,10 +55,10 @@ public class IceWalkTechnique extends Technique
     {
         super.tickServer(event);
 
-        BlockPos pos = event.player.getPosition().down();
+        BlockPos pos = event.player.blockPosition().below();
 
         // If the block is already frozen, just update the freeze and do nothing more
-        if(Freeze.tryUpdateFreeze(event.player.getEntityWorld(), pos, power))
+        if(Freeze.tryUpdateFreeze(event.player.getCommandSenderWorld(), pos, power))
             return;
 
         // If moving up or down set the block to either be half or spawn one block above or below the player
@@ -71,10 +71,10 @@ public class IceWalkTechnique extends Technique
         if (PlayerUtils.lookingUp(event.player))
         {
             dir = PlayerUtils.invertDirection(dir);
-            pos = pos.add(0, 1, 0);
+            pos = pos.offset(0, 1, 0);
 
             // If the block is already frozen, just update the freeze and do nothing more
-            if(Freeze.tryUpdateFreeze(event.player.getEntityWorld(), pos, power))
+            if(Freeze.tryUpdateFreeze(event.player.getCommandSenderWorld(), pos, power))
                 return;
 
             //float y = pos.getY() + 0.5f;
@@ -82,7 +82,7 @@ public class IceWalkTechnique extends Technique
         }
 
         // Freeze the ground directly below the player
-        Freeze.FreezeAir(event.player.getEntityWorld(), pos, power, dir);
+        Freeze.FreezeAir(event.player.getCommandSenderWorld(), pos, power, dir);
     }
 
     @Override
@@ -91,13 +91,13 @@ public class IceWalkTechnique extends Technique
         super.tickClient(event);
 
         // TODO: Better way of sliding
-        Vector3d test = event.player.getMotion().scale(0.04);
-        event.player.addVelocity(test.x, 0, test.z);
+        Vector3d test = event.player.getDeltaMovement().scale(0.04);
+        event.player.push(test.x, 0, test.z);
 
-        BlockPos pos = event.player.getPosition().down();
+        BlockPos pos = event.player.blockPosition().below();
 
         // If the block at the specified position is a frozen block do nothing
-        if (Freeze.isFrozen(event.player.world, pos))
+        if (Freeze.isFrozen(event.player.level, pos))
             return;
 
         Direction dir = Direction.DOWN;
@@ -109,18 +109,18 @@ public class IceWalkTechnique extends Technique
         if (PlayerUtils.lookingUp(event.player))
         {
             dir = PlayerUtils.invertDirection(dir);
-            pos = pos.add(0, 1, 0);
+            pos = pos.offset(0, 1, 0);
 
             // If the block at the specified position is a frozen block do nothing
-            if (Freeze.isFrozen(event.player.world, pos))
+            if (Freeze.isFrozen(event.player.level, pos))
                 return;
 
             float y = pos.getY() + 0.5f;
-            event.player.setPosition(event.player.getPosX(), y, event.player.getPosZ());
+            event.player.setPos(event.player.getX(), y, event.player.getZ());
         }
 
         // Freeze the ground directly below the player
-        Freeze.FreezeAirAsClient(event.player.getEntityWorld(), pos, power, dir);
+        Freeze.FreezeAirAsClient(event.player.getCommandSenderWorld(), pos, power, dir);
     }
 
     @Override

@@ -7,6 +7,7 @@ import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.Cu
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.ICultivatorTechniques;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPart;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartOption;
+import DaoOfModding.mlmanimator.Client.Poses.GenericPoses;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.*;
@@ -23,10 +24,6 @@ public class ClientListeners
 
     public static void playerTick(TickEvent.PlayerTickEvent event)
     {
-        // TODO : Add idle pose to the mlmanimator
-        // Add the idle pose to the players poseHandler
-        // PoseHandler.addPose(event.player.getUniqueID(), GenericQiPoses.Idle);
-
         if (event.phase == TickEvent.Phase.START)
         {
             // Tick through all active cultivator techniques
@@ -102,7 +99,7 @@ public class ClientListeners
     public static void renderTick(TickEvent.RenderTickEvent event)
     {
         if (event.phase == TickEvent.Phase.END)
-            if (Minecraft.getInstance().world != null)
+            if (Minecraft.getInstance().level != null)
                 Renderer.render();
     }
 }

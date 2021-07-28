@@ -155,13 +155,13 @@ public class Technique
 
     public void writeBuffer(PacketBuffer buffer)
     {
-        buffer.writeCompoundTag(writeNBT());
+        buffer.writeNbt(writeNBT());
     }
 
     public static Technique readBuffer(PacketBuffer buffer)
     {
         Technique newTech;
-        CompoundNBT nbt = buffer.readCompoundTag();
+        CompoundNBT nbt = buffer.readNbt();
 
         return readNBT(nbt);
     }
@@ -236,7 +236,7 @@ public class Technique
             if (currentChannel < channelLength)
                 currentChannel++;
 
-        PoseHandler.addPose(event.player.getUniqueID(), pose);
+        PoseHandler.addPose(event.player.getUUID(), pose);
     }
 
     public void tickInactiveClient(TickEvent.PlayerTickEvent event)
@@ -264,8 +264,8 @@ public class Technique
         {
             ResourceLocation progress = new ResourceLocation(Cultivationcraft.MODID, "textures/gui/progressbar.png");
 
-            int scaledWidth = Minecraft.getInstance().getMainWindow().getScaledWidth();
-            int scaledHeight = Minecraft.getInstance().getMainWindow().getScaledHeight();
+            int scaledWidth = Minecraft.getInstance().getWindow().getGuiScaledWidth();
+            int scaledHeight = Minecraft.getInstance().getWindow().getGuiScaledHeight();
 
             float minPercent = 0.3f;
             float maxPercent = 0.675f;
@@ -273,26 +273,26 @@ public class Technique
             float adjustedWidth = minPercent + (maxPercent - minPercent) * percent;
 
 
-            Minecraft.getInstance().getTextureManager().bindTexture(progress);
+            Minecraft.getInstance().getTextureManager().bind(progress);
 
-            GlStateManager.enableBlend();
+            GlStateManager._enableBlend();
 
             Tessellator tessellator = Tessellator.getInstance();
-            BufferBuilder bufferbuilder = tessellator.getBuffer();
+            BufferBuilder bufferbuilder = tessellator.getBuilder();
             bufferbuilder.begin(7, DefaultVertexFormats.POSITION_TEX);
-            bufferbuilder.pos(0.0D, scaledHeight, -90.0D).tex(0.0f, 0.5f).endVertex();
-            bufferbuilder.pos(scaledWidth, scaledHeight, -90.0D).tex(1.0f, 0.5f).endVertex();
-            bufferbuilder.pos(scaledWidth, 0.0D, -90.0D).tex(1.0f, 0.0f).endVertex();
-            bufferbuilder.pos(0.0D, 0.0D, -90.0D).tex(0.0f, 0.0f).endVertex();
-            tessellator.draw();
+            bufferbuilder.vertex(0.0D, scaledHeight, -90.0D).uv(0.0f, 0.5f).endVertex();
+            bufferbuilder.vertex(scaledWidth, scaledHeight, -90.0D).uv(1.0f, 0.5f).endVertex();
+            bufferbuilder.vertex(scaledWidth, 0.0D, -90.0D).uv(1.0f, 0.0f).endVertex();
+            bufferbuilder.vertex(0.0D, 0.0D, -90.0D).uv(0.0f, 0.0f).endVertex();
+            tessellator.end();
 
-            bufferbuilder = tessellator.getBuffer();
+            bufferbuilder = tessellator.getBuilder();
             bufferbuilder.begin(7, DefaultVertexFormats.POSITION_TEX);
-            bufferbuilder.pos(0.0D, scaledHeight, -90.0D).tex(0.0f, 1f).endVertex();
-            bufferbuilder.pos(adjustedWidth * scaledWidth, scaledHeight, -90.0D).tex(1.0f * adjustedWidth, 1f).endVertex();
-            bufferbuilder.pos(adjustedWidth * scaledWidth, 0.0D, -90.0D).tex(1.0f * adjustedWidth, 0.5f).endVertex();
-            bufferbuilder.pos(0.0D, 0.0D, -90.0D).tex(0.0f, 0.5f).endVertex();
-            tessellator.draw();
+            bufferbuilder.vertex(0.0D, scaledHeight, -90.0D).uv(0.0f, 1f).endVertex();
+            bufferbuilder.vertex(adjustedWidth * scaledWidth, scaledHeight, -90.0D).uv(1.0f * adjustedWidth, 1f).endVertex();
+            bufferbuilder.vertex(adjustedWidth * scaledWidth, 0.0D, -90.0D).uv(1.0f * adjustedWidth, 0.5f).endVertex();
+            bufferbuilder.vertex(0.0D, 0.0D, -90.0D).uv(0.0f, 0.5f).endVertex();
+            tessellator.end();
         }
     }
 
@@ -307,20 +307,20 @@ public class Technique
         if (!overlayOn)
             return;
 
-        int scaledWidth = Minecraft.getInstance().getMainWindow().getScaledWidth();
-        int scaledHeight = Minecraft.getInstance().getMainWindow().getScaledHeight();
+        int scaledWidth = Minecraft.getInstance().getWindow().getGuiScaledWidth();
+        int scaledHeight = Minecraft.getInstance().getWindow().getGuiScaledHeight();
 
-        Minecraft.getInstance().getTextureManager().bindTexture(overlay);
+        Minecraft.getInstance().getTextureManager().bind(overlay);
 
-        GlStateManager.enableBlend();
+        GlStateManager._enableBlend();
 
         Tessellator tessellator = Tessellator.getInstance();
-        BufferBuilder bufferbuilder = tessellator.getBuffer();
+        BufferBuilder bufferbuilder = tessellator.getBuilder();
         bufferbuilder.begin(7, DefaultVertexFormats.POSITION_TEX);
-        bufferbuilder.pos(0.0D, scaledHeight, -90.0D).tex(0.0f, 1.0f).endVertex();
-        bufferbuilder.pos(scaledWidth, scaledHeight, -90.0D).tex(1.0f, 1.0f).endVertex();
-        bufferbuilder.pos(scaledWidth, 0.0D, -90.0D).tex(1.0f, 0.0f).endVertex();
-        bufferbuilder.pos(0.0D, 0.0D, -90.0D).tex(0.0f, 0.0f).endVertex();
-        tessellator.draw();
+        bufferbuilder.vertex(0.0D, scaledHeight, -90.0D).uv(0.0f, 1.0f).endVertex();
+        bufferbuilder.vertex(scaledWidth, scaledHeight, -90.0D).uv(1.0f, 1.0f).endVertex();
+        bufferbuilder.vertex(scaledWidth, 0.0D, -90.0D).uv(1.0f, 0.0f).endVertex();
+        bufferbuilder.vertex(0.0D, 0.0D, -90.0D).uv(0.0f, 0.0f).endVertex();
+        tessellator.end();
     }
 }

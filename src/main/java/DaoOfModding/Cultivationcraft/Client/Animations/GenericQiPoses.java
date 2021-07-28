@@ -42,6 +42,8 @@ public class GenericQiPoses
 
         Idle.addAngle(BodyPartModelNames.FPjawModel, new Vector3d(Math.toRadians(-80), 0, 0), 1);
         Idle.addAngle(BodyPartModelNames.FPjawModelLower, new Vector3d(Math.toRadians(160), 0, 0), 1);
+
+        GenericPoses.addToIdle(Idle);
     }
 
     private static void setupWalking()
@@ -60,7 +62,7 @@ public class GenericQiPoses
         Walk = Walk.combine(AnimationBuilder.generateRepeatingMirroredLimbs(BodyPartModelNames.reverseJointLeftLegLowerModel, BodyPartModelNames.reverseJointRightLegLowerModel, lowerWalkAngle, GenericPoses.walkLegPriority, 10, 1));
 
         // Add the new walking poses to the generic walk pose
-        GenericPoses.Walking = GenericPoses.Walking.combine(Walk);
+        GenericPoses.addToWalking(Walk);
     }
 
     private static void setupExtendedLegs()

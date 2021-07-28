@@ -56,7 +56,7 @@ public class ClientPacketHandler
     {
         ICultivatorTechniques techs = CultivatorTechniques.getCultivatorTechniques(Minecraft.getInstance().player);
 
-        CultivatorTechniquesPacket pack = new CultivatorTechniquesPacket(Minecraft.getInstance().player.getUniqueID(), techs);
+        CultivatorTechniquesPacket pack = new CultivatorTechniquesPacket(Minecraft.getInstance().player.getUUID(), techs);
         PacketHandler.channel.sendToServer(pack);
     }
 

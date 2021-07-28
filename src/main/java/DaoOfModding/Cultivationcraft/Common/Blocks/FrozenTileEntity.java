@@ -21,7 +21,7 @@ public class FrozenTileEntity extends TileEntity implements ITickableTileEntity
     public static final ModelProperty<Integer> RAMP_BLOCK = new ModelProperty<>();
 
     private int unfreezeTicks = -1;
-    private BlockState frozenBlock = Blocks.AIR.getDefaultState();
+    private BlockState frozenBlock = Blocks.AIR.defaultBlockState();
     private TileEntity frozenEntity = null;
     private Direction ramp = Direction.DOWN;
 
@@ -42,7 +42,7 @@ public class FrozenTileEntity extends TileEntity implements ITickableTileEntity
         frozenBlock = state;
         frozenEntity = entity;
 
-        markDirty();
+        setChanged();
     }
 
     public void setIsClient()
@@ -58,11 +58,11 @@ public class FrozenTileEntity extends TileEntity implements ITickableTileEntity
     @Override
     public void tick()
     {
-        if (!this.hasWorld())
+        if (!this.hasLevel())
             return;
 
         // Do nothing on client unless this is a client instance
-        if (this.world.isRemote && !isClient)
+        if (this.level.isClientSide && !isClient)
             return;
 
         // Do nothing if tile entity has infinite freeze duration
@@ -76,10 +76,10 @@ public class FrozenTileEntity extends TileEntity implements ITickableTileEntity
             return;
 
         // Replace this block with its unfrozen version (Don't update neighbouring blocks so grass and things don't break)
-        world.setBlockState(pos, frozenBlock, 1 + 2 + 16 + 32);
+        level.setBlock(worldPosition, frozenBlock, 1 + 2 + 16 + 32);
 
         if (frozenEntity != null)
-            world.setTileEntity(pos, frozenEntity);
+            level.setBlockEntity(worldPosition, frozenEntity);
     }
 
     public void setRamp(Direction dir)
@@ -90,29 +90,29 @@ public class FrozenTileEntity extends TileEntity implements ITickableTileEntity
     @Override
     public IModelData getModelData()
     {
-        return new ModelDataMap.Builder().withInitial(FROZEN_BLOCK, frozenBlock).withInitial(RAMP_BLOCK, ramp.getIndex()).build();
+        return new ModelDataMap.Builder().withInitial(FROZEN_BLOCK, frozenBlock).withInitial(RAMP_BLOCK, ramp.get3DDataValue()).build();
     }
 
     @Override
     public SUpdateTileEntityPacket getUpdatePacket()
     {
         CompoundNBT nbtTagCompound = new CompoundNBT();
-        write(nbtTagCompound);
+        save(nbtTagCompound);
 
-        return new SUpdateTileEntityPacket(this.pos, 76, nbtTagCompound);
+        return new SUpdateTileEntityPacket(worldPosition, 76, nbtTagCompound);
     }
 
     @Override
     public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt)
     {
-        read(getBlockState(), pkt.getNbtCompound());
+        load(getBlockState(), pkt.getTag());
     }
 
     @Override
     public CompoundNBT getUpdateTag()
     {
         CompoundNBT nbtTagCompound = new CompoundNBT();
-        write(nbtTagCompound);
+        save(nbtTagCompound);
         return nbtTagCompound;
     }
 
@@ -124,15 +124,15 @@ public class FrozenTileEntity extends TileEntity implements ITickableTileEntity
     @Override
     public void handleUpdateTag(BlockState state, CompoundNBT tag)
     {
-        read(state, tag);
+        load(state, tag);
     }
 
     @Override
-    public CompoundNBT write(CompoundNBT NBT)
+    public CompoundNBT save(CompoundNBT NBT)
     {
-        super.write(NBT);
+        super.save(NBT);
         NBT.putInt("unfreezeTicks", unfreezeTicks);
-        NBT.putInt("ramp", ramp.getIndex());
+        NBT.putInt("ramp", ramp.get3DDataValue());
         NBT.put("FrozenBlock", NBTUtil.writeBlockState(frozenBlock));
 
         if (frozenEntity != null)
@@ -142,22 +142,22 @@ public class FrozenTileEntity extends TileEntity implements ITickableTileEntity
     }
 
     @Override
-    public void read(BlockState state, CompoundNBT NBT)
+    public void load(BlockState state, CompoundNBT NBT)
     {
-        super.read(state, NBT);
+        super.load(state, NBT);
         unfreezeTicks = NBT.getInt("unfreezeTicks");
 
         Direction oldRamp = ramp;
-        ramp = Direction.byIndex(NBT.getInt("ramp"));
+        ramp = Direction.from3DDataValue(NBT.getInt("ramp"));
 
         Block oldFreeze = frozenBlock.getBlock();
         frozenBlock = NBTUtil.readBlockState(NBT.getCompound("FrozenBlock"));
 
-        if (NBT.hasUniqueId("FrozenEntity"))
-            frozenEntity = readTileEntity(frozenBlock, NBT);
+        if (NBT.hasUUID("FrozenEntity"))
+            frozenEntity = loadStatic(frozenBlock, NBT);
 
         // If the frozen block or ramp status has changed, refresh the model data
-        if (this.world != null && this.world.isRemote)
+        if (this.level != null && this.level.isClientSide())
             if (oldFreeze != frozenBlock.getBlock() || oldRamp != ramp)
                 net.minecraftforge.client.model.ModelDataManager.requestModelDataRefresh(this);
 

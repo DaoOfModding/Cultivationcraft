@@ -146,16 +146,16 @@ public class BodyModifications implements IBodyModifications
 
         CompoundNBT modifications = NBT.getCompound("modifications");
 
-        for (String limb : modifications.keySet())
+        for (String limb : modifications.getAllKeys())
             setModification(BodyPartNames.getPart(modifications.getString(limb)));
 
         CompoundNBT options = NBT.getCompound("options");
 
-        for (String limb : options.keySet())
+        for (String limb : options.getAllKeys())
         {
             CompoundNBT option = options.getCompound(limb);
 
-            for (String part : option.keySet())
+            for (String part : option.getAllKeys())
                 setOption(BodyPartNames.getOption(option.getString(part)));
         }
 

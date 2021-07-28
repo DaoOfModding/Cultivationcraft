@@ -30,7 +30,7 @@ public class GUIButton
         ID = buttonID;
         name = text;
 
-        width = baseWidth + Minecraft.getInstance().fontRenderer.getStringWidth(text);
+        width = baseWidth + Minecraft.getInstance().font.width(text);
     }
 
     public String getID()
@@ -82,8 +82,8 @@ public class GUIButton
 
     public void render(MatrixStack matrixStack, int xpos, int ypos, int mouseX, int mouseY, AbstractGui gui)
     {
-        GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-        Minecraft.getInstance().getTextureManager().bindTexture(TEXTURE);
+        GlStateManager._color4f(1.0F, 1.0F, 1.0F, 1.0F);
+        Minecraft.getInstance().getTextureManager().bind(TEXTURE);
 
         mouseOver(mouseX - xpos, mouseY - ypos);
 
@@ -103,6 +103,6 @@ public class GUIButton
 
 
         // Draw the button text
-        Minecraft.getInstance().fontRenderer.drawString(matrixStack, name, xpos + baseWidth / 2, ypos + 2, Color.BLACK.getRGB());
+        Minecraft.getInstance().font.draw(matrixStack, name, xpos + baseWidth / 2, ypos + 2, Color.BLACK.getRGB());
     }
 }

@@ -21,7 +21,7 @@ public class Renderer
     public static void renderTechniques()
     {
         // Loop through all players in the world
-        for (PlayerEntity player : Minecraft.getInstance().world.getPlayers())
+        for (PlayerEntity player : Minecraft.getInstance().level.players())
         {
             if (player.isAlive())
             {

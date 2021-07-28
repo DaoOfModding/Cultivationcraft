@@ -180,8 +180,8 @@ public class TechniqueScreen extends Screen
 
     protected void drawGuiBackgroundLayer(MatrixStack matrixStack, float partialTicks, int mouseX, int mouseY)
     {
-        GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-        Minecraft.getInstance().getTextureManager().bindTexture(TEXTURE);
+        GlStateManager._color4f(1.0F, 1.0F, 1.0F, 1.0F);
+        Minecraft.getInstance().getTextureManager().bind(TEXTURE);
 
         int edgeSpacingX = (this.width - this.xSize) / 2;
         int edgeSpacingY = (this.height - this.ySize) / 2;

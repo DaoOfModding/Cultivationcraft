@@ -53,7 +53,7 @@ public class BodyPartGUI
 
     public void render(MatrixStack matrixStack, int xPos, int yPos, boolean highlight, AbstractGui gui)
     {
-        Minecraft.getInstance().getTextureManager().bindTexture(TEXTURE);
+        Minecraft.getInstance().getTextureManager().bind(TEXTURE);
 
         if (highlight)
             RenderSystem.color4f(0.5f, 1, 0.75f, 1);

@@ -33,7 +33,7 @@ public class BlockRegister
     @SubscribeEvent
     public static void registerTileEntity(final RegistryEvent.Register<TileEntityType<?>> event)
     {
-        frozenTileEntityType = TileEntityType.Builder.create(FrozenTileEntity::new, frozenBlock).build(null);
+        frozenTileEntityType = TileEntityType.Builder.of(FrozenTileEntity::new, frozenBlock).build(null);
         frozenTileEntityType.setRegistryName(Cultivationcraft.MODID, "frozentileentity");
         event.getRegistry().register(frozenTileEntityType);
     }

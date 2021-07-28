@@ -37,8 +37,8 @@ public class CultivatorTargetPacket extends Packet
     {
         if (player != null)
         {
-            buffer.writeUniqueId(player);
-            buffer.writeEnumValue(targetType);
+            buffer.writeUUID(player);
+            buffer.writeEnum(targetType);
 
             if (targetPos != null) {
                 buffer.writeDouble(targetPos.x);
@@ -46,7 +46,7 @@ public class CultivatorTargetPacket extends Packet
                 buffer.writeDouble(targetPos.z);
 
                 if (targetType == RayTraceResult.Type.ENTITY)
-                    buffer.writeUniqueId(target);
+                    buffer.writeUUID(target);
             }
         }
     }
@@ -58,8 +58,8 @@ public class CultivatorTargetPacket extends Packet
         try
         {
             // Read in the send values
-            UUID readingPlayer = buffer.readUniqueId();
-            RayTraceResult.Type readingType = buffer.readEnumValue(RayTraceResult.Type.class);
+            UUID readingPlayer = buffer.readUUID();
+            RayTraceResult.Type readingType = buffer.readEnum(RayTraceResult.Type.class);
 
             Vector3d readingPos = null;
             UUID readingTargetID = null;
@@ -70,7 +70,7 @@ public class CultivatorTargetPacket extends Packet
 
                 // Only read the target ID if target is an entity
                 if (readingType == RayTraceResult.Type.ENTITY)
-                    readingTargetID = buffer.readUniqueId();
+                    readingTargetID = buffer.readUUID();
             }
 
             return new CultivatorTargetPacket(readingPlayer, readingType, readingPos, readingTargetID);
@@ -92,7 +92,7 @@ public class CultivatorTargetPacket extends Packet
 
         if (sideReceived.isServer())
         {
-            if (ctx.getSender().getUniqueID().compareTo(player) != 0)
+            if (ctx.getSender().getUUID().compareTo(player) != 0)
                 Cultivationcraft.LOGGER.warn("Client sent target message for other player");
             else
                 ctx.enqueueWork(() -> processServerPacket());
@@ -106,7 +106,7 @@ public class CultivatorTargetPacket extends Packet
     private void processServerPacket()
     {
         // Grab the player entity based on the read UUID
-        PlayerEntity ownerEntity = ServerLifecycleHooks.getCurrentServer().getPlayerList().getPlayerByUUID(player);
+        PlayerEntity ownerEntity = ServerLifecycleHooks.getCurrentServer().getPlayerList().getPlayer(player);
 
         // Process the packet
         processPacket(ownerEntity);
@@ -117,7 +117,7 @@ public class CultivatorTargetPacket extends Packet
 
     private void processClientPacket()
     {
-        processPacket(ClientItemControl.thisWorld.getPlayerByUuid(player));
+        processPacket(ClientItemControl.thisWorld.getPlayerByUUID(player));
     }
 
     // Process received packet
@@ -128,7 +128,7 @@ public class CultivatorTargetPacket extends Packet
         {
             ICultivatorStats stats = CultivatorStats.getCultivatorStats(ownerEntity);
 
-            stats.setTarget(targetPos, targetType, ownerEntity.world, target);
+            stats.setTarget(targetPos, targetType, ownerEntity.level, target);
         }
     }
 }

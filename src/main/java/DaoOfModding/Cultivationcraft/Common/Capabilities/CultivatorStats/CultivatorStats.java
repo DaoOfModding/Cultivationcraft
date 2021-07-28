@@ -82,7 +82,7 @@ public class CultivatorStats implements ICultivatorStats
             return Misc.getVector3dFromBlockPos(targetBlock);
         else if (targetType == RayTraceResult.Type.ENTITY)
             // Return new vector of the target's location, targeting the middle of the target rather than it's feet
-            return new Vector3d(targetEntity.getPosX(), targetEntity.getPosY() + (targetEntity.getHeight() / 2), targetEntity.getPosZ());
+            return new Vector3d(targetEntity.getX(), targetEntity.getY() + (targetEntity.getBbHeight() / 2), targetEntity.getZ());
 
         // THIS SHOULD NEVER BE REACHED
         return new Vector3d(0, 0, 0);
@@ -108,7 +108,7 @@ public class CultivatorStats implements ICultivatorStats
     // Returns the UUID of the target if it is an entity
     public UUID getTargetID() {
         if (targetType == RayTraceResult.Type.ENTITY)
-            return targetEntity.getUniqueID();
+            return targetEntity.getUUID();
 
         return null;
     }
@@ -127,12 +127,12 @@ public class CultivatorStats implements ICultivatorStats
             // Create a large bounding box at the specified position then search for a list of entities at that location
             AxisAlignedBB scan = new AxisAlignedBB(pos.x - 10, pos.y - 10, pos.z - 10, pos.x + 10, pos.y + 10, pos.z + 10);
 
-            List<Entity> entities = targetWorld.getEntitiesWithinAABB(Entity.class, scan);
+            List<Entity> entities = targetWorld.getLoadedEntitiesOfClass(Entity.class, scan);
 
             // If entities have been found, search through and try to find one with the targetID
             if (!entities.isEmpty()) {
                 for (Entity testEntity : entities)
-                    if (testEntity.getUniqueID().equals(targetID)) {
+                    if (testEntity.getUUID().equals(targetID)) {
                         targetEntity = testEntity;
                         targetType = type;
                     }

@@ -47,8 +47,8 @@ public class AttackPacket extends Packet
     {
         if (player != null)
         {
-            buffer.writeUniqueId(player);
-            buffer.writeEnumValue(targetType);
+            buffer.writeUUID(player);
+            buffer.writeEnum(targetType);
             buffer.writeInt(techSlot);
 
             if (targetPos != null) {
@@ -57,7 +57,7 @@ public class AttackPacket extends Packet
                 buffer.writeDouble(targetPos.z);
 
                 if (targetType == RayTraceResult.Type.ENTITY)
-                    buffer.writeUniqueId(target);
+                    buffer.writeUUID(target);
             }
         }
     }
@@ -69,8 +69,8 @@ public class AttackPacket extends Packet
         try
         {
             // Read in the send values
-            UUID readingPlayer = buffer.readUniqueId();
-            RayTraceResult.Type readingType = buffer.readEnumValue(RayTraceResult.Type.class);
+            UUID readingPlayer = buffer.readUUID();
+            RayTraceResult.Type readingType = buffer.readEnum(RayTraceResult.Type.class);
             int slot = buffer.readInt();
 
             Vector3d readingPos = null;
@@ -82,7 +82,7 @@ public class AttackPacket extends Packet
 
                 // Only read the target ID if target is an entity
                 if (readingType == RayTraceResult.Type.ENTITY)
-                    readingTargetID = buffer.readUniqueId();
+                    readingTargetID = buffer.readUUID();
             }
 
             return new AttackPacket(readingPlayer, readingType, readingPos, readingTargetID, slot);
@@ -104,7 +104,7 @@ public class AttackPacket extends Packet
 
         if (sideReceived.isServer())
         {
-            if (ctx.getSender().getUniqueID().compareTo(player) != 0)
+            if (ctx.getSender().getUUID().compareTo(player) != 0)
                 Cultivationcraft.LOGGER.warn("Client sent attack message for other player");
             else
                 ctx.enqueueWork(() -> processServerPacket());
@@ -118,7 +118,7 @@ public class AttackPacket extends Packet
     private void processServerPacket()
     {
         // Grab the player entity based on the read UUID
-        PlayerEntity ownerEntity = ServerLifecycleHooks.getCurrentServer().getPlayerList().getPlayerByUUID(player);
+        PlayerEntity ownerEntity = ServerLifecycleHooks.getCurrentServer().getPlayerList().getPlayer(player);
 
         // Do nothing if the specified player doesn't exist
         if (ownerEntity == null)
@@ -138,12 +138,12 @@ public class AttackPacket extends Packet
             // Create a large bounding box at the specified position then search for a list of entities at that location
             AxisAlignedBB scan = new AxisAlignedBB(targetPos.x - 10, targetPos.y - 10, targetPos.z - 10, targetPos.x + 10, targetPos.y + 10, targetPos.z + 10);
 
-            List<Entity> entities = ownerEntity.getEntityWorld().getEntitiesWithinAABB(Entity.class, scan);
+            List<Entity> entities = ownerEntity.getCommandSenderWorld().getLoadedEntitiesOfClass(Entity.class, scan);
 
             // If entities have been found, search through and try to find one with the targetID
             if (!entities.isEmpty())
                 for (Entity testEntity : entities)
-                    if (testEntity.getUniqueID().equals(target))
+                    if (testEntity.getUUID().equals(target))
                     {
                         ((AttackTechnique)tech).attackEntity(ownerEntity, testEntity);
                         return;
@@ -154,10 +154,10 @@ public class AttackPacket extends Packet
     private void processClientPacket()
     {
         // Do nothing if this is a packet for the current player
-        if (player.compareTo(Minecraft.getInstance().player.getUniqueID()) == 0)
+        if (player.compareTo(Minecraft.getInstance().player.getUUID()) == 0)
             return;
 
-        PlayerEntity pEntity = Minecraft.getInstance().world.getPlayerByUuid(player);
+        PlayerEntity pEntity = Minecraft.getInstance().level.getPlayerByUUID(player);
 
         // Do nothing if the player entity is not found
         if (pEntity == null)

@@ -25,9 +25,9 @@ public class QiSourceRenderer
 
     public static void renderQiSources()
     {
-        int chunks = Minecraft.getInstance().gameSettings.renderDistanceChunks-1;
-        int chunkX = Minecraft.getInstance().player.getPosition().getX() >> 4;
-        int chunkZ = Minecraft.getInstance().player.getPosition().getZ() >> 4;
+        int chunks = Minecraft.getInstance().options.renderDistance-1;
+        int chunkX = Minecraft.getInstance().player.blockPosition().getX() >> 4;
+        int chunkZ = Minecraft.getInstance().player.blockPosition().getZ() >> 4;
 
         Chunk QiChunk;
 
@@ -35,7 +35,7 @@ public class QiSourceRenderer
         for (int x = -chunks; x < chunks; x++)
             for (int z = -chunks; z < chunks; z++)
             {
-                QiChunk = Minecraft.getInstance().world.getChunk(chunkX + x, chunkZ + z);
+                QiChunk = Minecraft.getInstance().level.getChunk(chunkX + x, chunkZ + z);
 
                 for (QiSource source : ChunkQiSources.getChunkQiSources(QiChunk).getQiSources())
                     QiSourceRenderer.render(source);
@@ -55,6 +55,6 @@ public class QiSourceRenderer
             direction = direction.scale(speed);
 
             QiParticleData particle = new QiParticleData(source);
-            Minecraft.getInstance().world.addParticle(particle, x, y, z, direction.x, direction.y, direction.z);
+            Minecraft.getInstance().level.addParticle(particle, x, y, z, direction.x, direction.y, direction.z);
     }
 }

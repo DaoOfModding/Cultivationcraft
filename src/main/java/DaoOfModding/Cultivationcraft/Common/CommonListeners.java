@@ -35,7 +35,7 @@ public class CommonListeners
         if (!event.player.isAlive())
             return;
 
-        if (event.player.getEntityWorld().isRemote)
+        if (event.player.getCommandSenderWorld().isClientSide())
             ClientListeners.playerTick(event);
         else
             ServerListeners.playerTick(event);
@@ -44,7 +44,7 @@ public class CommonListeners
     @SubscribeEvent
     public static void worldLoad(WorldEvent.Load event)
     {
-        if (event.getWorld().isRemote())
+        if (event.getWorld().isClientSide())
             ClientItemControl.thisWorld = event.getWorld();
         else
             ServerItemControl.loaded = true;
@@ -58,7 +58,7 @@ public class CommonListeners
             //if (event.getEntity().getEntityWorld().isRemote())
             //    ClientListeners.playerJump((PlayerEntity)event.getEntity());
 
-            BodyPartStatControl.getStats(event.getEntity().getUniqueID()).applyJump((PlayerEntity)event.getEntity());
+            BodyPartStatControl.getStats(event.getEntity().getUUID()).applyJump((PlayerEntity)event.getEntity());
         }
     }
 
@@ -66,14 +66,14 @@ public class CommonListeners
     public static void playerFall(LivingFallEvent event)
     {
         if (event.getEntity() instanceof PlayerEntity)
-            event.setDistance(BodyPartStatControl.getStats(event.getEntity().getUniqueID()).reduceFallDistance(event.getDistance()));
+            event.setDistance(BodyPartStatControl.getStats(event.getEntity().getUUID()).reduceFallDistance(event.getDistance()));
     }
 
     @SubscribeEvent
     public static void chunkLoad(ChunkEvent.Load event)
     {
         // Only on server
-        if (!event.getWorld().isRemote())
+        if (!event.getWorld().isClientSide())
         {
             // If the Chunk's Qi sources have not been generated yet, generate them
             IChunkQiSources sources = ChunkQiSources.getChunkQiSources((Chunk) event.getChunk());
@@ -83,7 +83,7 @@ public class CommonListeners
                 sources.generateQiSources();
 
                 // Mark the chunk as dirty so it will save the updated capability
-                ((Chunk) event.getChunk()).markDirty();
+                ((Chunk) event.getChunk()).markUnsaved();
 
                 // Send the new capability data to all tracking clients
                 PacketHandler.sendChunkQiSourcesToClient((Chunk) event.getChunk());
@@ -99,10 +99,10 @@ public class CommonListeners
         CultivatorStats.getCultivatorStats(event.getPlayer()).setDisconnected(false);
 
         // On server
-        if (!event.getEntity().getEntityWorld().isRemote)
+        if (!event.getEntity().getCommandSenderWorld().isClientSide())
         {
             ServerItemControl.sendPlayerStats(event.getPlayer(), event.getPlayer());
-            SkillHotbarServer.addPlayer(event.getPlayer().getUniqueID());
+            SkillHotbarServer.addPlayer(event.getPlayer().getUUID());
 
             BodyPartStatControl.updateStats(event.getPlayer());
         }
@@ -114,7 +114,7 @@ public class CommonListeners
     {
         CultivatorStats.getCultivatorStats(event.getPlayer()).setDisconnected(false);
 
-        if (!event.getEntity().getEntityWorld().isRemote)
+        if (!event.getEntity().getCommandSenderWorld().isClientSide())
             ServerItemControl.sendPlayerStats(event.getPlayer(), (PlayerEntity)event.getPlayer());
     }
 
@@ -124,7 +124,7 @@ public class CommonListeners
     {
         CultivatorStats.getCultivatorStats(event.getPlayer()).setDisconnected(false);
 
-        if (!event.getEntity().getEntityWorld().isRemote)
+        if (!event.getEntity().getCommandSenderWorld().isClientSide())
             ServerItemControl.sendPlayerStats(event.getPlayer(), (PlayerEntity)event.getPlayer());
     }
 
@@ -132,7 +132,7 @@ public class CommonListeners
     @SubscribeEvent
     public static void playerStartsTracking(PlayerEvent.StartTracking event)
     {
-        if (!event.getEntity().getEntityWorld().isRemote)
+        if (!event.getEntity().getCommandSenderWorld().isClientSide())
             if (event.getTarget() instanceof PlayerEntity)
                 ServerItemControl.sendPlayerStats(event.getPlayer(), (PlayerEntity)event.getTarget());
     }
@@ -141,7 +141,7 @@ public class CommonListeners
     @SubscribeEvent
     public static void onChunkWatch(ChunkWatchEvent.Watch event)
     {
-        if (!event.getWorld().isRemote)
+        if (!event.getWorld().isClientSide())
             PacketHandler.sendChunkQiSourcesToClient(event.getWorld().getChunk(event.getPos().x, event.getPos().z), event.getPlayer());
     }
 
@@ -150,8 +150,8 @@ public class CommonListeners
     {
         CultivatorStats.getCultivatorStats(event.getPlayer()).setDisconnected(true);
 
-        if (!event.getPlayer().getEntityWorld().isRemote)
-            SkillHotbarServer.removePlayer(event.getPlayer().getUniqueID());
+        if (!event.getPlayer().getCommandSenderWorld().isClientSide())
+            SkillHotbarServer.removePlayer(event.getPlayer().getUUID());
     }
 
     @SubscribeEvent
@@ -169,13 +169,13 @@ public class CommonListeners
     private static void cancelPlacement(PlayerInteractEvent event)
     {
         // Cancel placing item if the SkillHotbar is active
-        if (event.getWorld().isRemote)
+        if (event.getWorld().isClientSide())
         {
             if (SkillHotbarOverlay.isActive())
                 event.setCanceled(true);
         }
         else
-        if (SkillHotbarServer.isActive(event.getPlayer().getUniqueID()))
+        if (SkillHotbarServer.isActive(event.getPlayer().getUUID()))
             event.setCanceled(true);
     }
 

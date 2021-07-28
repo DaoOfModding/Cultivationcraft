@@ -27,7 +27,7 @@ public class FlyingSwordBindProgresser
             if (!testItem.isEmpty())
             {
                 // If the item int the binding slot is able to be bound, try to bind it
-                if (FlyingSwordController.startFlyingSwordBind(testItem, player.getUniqueID()))
+                if (FlyingSwordController.startFlyingSwordBind(testItem, player.getUUID()))
                 {
                     IFlyingSwordBind bindData = FlyingSwordBind.getFlyingSwordBind(testItem);
 
@@ -48,7 +48,7 @@ public class FlyingSwordBindProgresser
                         bindData.setOwner(bindData.getBindingPlayer());
                         bindData.setBound(true);
 
-                        FlyingSwordController.addFlyingItem(testItem, player.getUniqueID());
+                        FlyingSwordController.addFlyingItem(testItem, player.getUUID());
                     }
                 }
             }

@@ -24,7 +24,7 @@ public class TechniqueIcons
         for (int i = 0; i < CultivatorTechniques.numberOfTechniques; i++)
             if (techs.getTechnique(i) != null)
             {
-                Minecraft.getInstance().getTextureManager().bindTexture(techs.getTechnique(i).getIcon());
+                Minecraft.getInstance().getTextureManager().bind(techs.getTechnique(i).getIcon());
 
                 gui.blit(stack, xpos + i * spacing, ypos, gui.getBlitOffset(), 0, 0, 16, 16, 16, 16);
             }
@@ -80,7 +80,7 @@ public class TechniqueIcons
     {
         RenderSystem.enableBlend();
 
-        Minecraft.getInstance().getTextureManager().bindTexture(HIGHLIGHT);
+        Minecraft.getInstance().getTextureManager().bind(HIGHLIGHT);
 
         // Set the texture to be semi-transparent
         RenderSystem.color4f(1f, 1f, 1f, 0.5f);
@@ -96,7 +96,7 @@ public class TechniqueIcons
     {
         RenderSystem.enableBlend();
 
-        Minecraft.getInstance().getTextureManager().bindTexture(COOLDOWN);
+        Minecraft.getInstance().getTextureManager().bind(COOLDOWN);
 
         // Set the texture to be semi-transparent
         RenderSystem.color4f(1f, 1f, 1f, 0.5f);

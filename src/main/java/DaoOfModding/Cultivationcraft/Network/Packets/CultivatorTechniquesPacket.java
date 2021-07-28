@@ -32,7 +32,7 @@ public class CultivatorTechniquesPacket extends Packet
     @Override
     public void encode(PacketBuffer buffer)
     {
-        buffer.writeUniqueId(owner);
+        buffer.writeUUID(owner);
 
         for (int i = 0; i < CultivatorTechniques.numberOfTechniques; i++)
         {
@@ -54,7 +54,7 @@ public class CultivatorTechniquesPacket extends Packet
         {
             ICultivatorTechniques techs = new CultivatorTechniques();
 
-            UUID owner = buffer.readUniqueId();
+            UUID owner = buffer.readUUID();
 
             for (int i = 0; i < CultivatorTechniques.numberOfTechniques; i++)
                 if (buffer.readBoolean())
@@ -89,7 +89,7 @@ public class CultivatorTechniquesPacket extends Packet
             ctx.enqueueWork(() -> processPacket());
         else
         {
-            if (owner.compareTo(ctx.getSender().getUniqueID()) != 0)
+            if (owner.compareTo(ctx.getSender().getUUID()) != 0)
             {
                 Cultivationcraft.LOGGER.warn("Client sent CultivatorTechniquesPacket for a different player: " + this.toString());
                 return;
@@ -102,7 +102,7 @@ public class CultivatorTechniquesPacket extends Packet
     private void processPacket()
     {
         // Get the stats for the specified player
-        ICultivatorTechniques techs = CultivatorTechniques.getCultivatorTechniques(ClientItemControl.thisWorld.getPlayerByUuid(owner));
+        ICultivatorTechniques techs = CultivatorTechniques.getCultivatorTechniques(ClientItemControl.thisWorld.getPlayerByUUID(owner));
 
         for (int i = 0; i < CultivatorTechniques.numberOfTechniques; i++)
              techs.setTechnique(i, techniques[i]);

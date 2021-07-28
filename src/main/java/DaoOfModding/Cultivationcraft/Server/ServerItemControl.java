@@ -33,7 +33,7 @@ public class ServerItemControl
             if (playerStats != null && playerStats.getRecall())
             {
                 playerStats.setRecall(false);
-                PacketHandler.sendRecallFlyingToClient(false, player.getUniqueID());
+                PacketHandler.sendRecallFlyingToClient(false, player.getUUID());
             }
         }
     }
@@ -54,7 +54,7 @@ public class ServerItemControl
 
         if (keyPressed == Register.keyPresses.SKILLHOTBARSWITCH)
         {
-            SkillHotbarServer.switchActive(pressedBy.getUniqueID());
+            SkillHotbarServer.switchActive(pressedBy.getUUID());
         }
     }
 }

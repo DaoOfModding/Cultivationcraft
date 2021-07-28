@@ -22,7 +22,7 @@ public class ClientItemControl
     {
         KeybindingControl.init();
 
-        ScreenManager.registerFactory(Register.ContainerTypeFlyingSword, FlyingSwordContainerScreen::new);
+        ScreenManager.register(Register.ContainerTypeFlyingSword, FlyingSwordContainerScreen::new);
 
         BodyPartModels.setupModels();
         setupDefaultBodyPartGUIs();

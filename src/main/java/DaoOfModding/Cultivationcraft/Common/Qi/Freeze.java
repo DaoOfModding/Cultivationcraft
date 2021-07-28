@@ -29,7 +29,7 @@ public class Freeze
     {
         if (world.getBlockState(pos).getBlock() instanceof FireBlock)
         {
-            world.setBlockState(pos, Blocks.AIR.getDefaultState());
+            world.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
 
             return true;
         }
@@ -39,7 +39,7 @@ public class Freeze
 
     public static boolean isFrozen(World world, BlockPos pos)
     {
-        TileEntity tileEntity = world.getTileEntity(pos);
+        TileEntity tileEntity = world.getBlockEntity(pos);
 
         // If the block at the specified position is a frozen block refresh the freeze and finish
         if (tileEntity!= null && tileEntity instanceof FrozenTileEntity)
@@ -53,7 +53,7 @@ public class Freeze
         // If the block at the specified position is a frozen block refresh the freeze and finish
         if (isFrozen(world, pos))
         {
-            ((FrozenTileEntity)world.getTileEntity(pos)).setUnfreezeTicks(ticks);
+            ((FrozenTileEntity)world.getBlockEntity(pos)).setUnfreezeTicks(ticks);
             return true;
         }
 
@@ -68,7 +68,7 @@ public class Freeze
             return;
 
         // Don't freeze air
-        if (world.isAirBlock(pos))
+        if (world.isEmptyBlock(pos))
             return;
 
         // If the block is fire, extinguish the fire instead of freezing
@@ -101,14 +101,14 @@ public class Freeze
     {
         // Get the block and tile entity at the freeze location
         BlockState toFreeze = world.getBlockState(pos);
-        TileEntity tileEntity = world.getTileEntity(pos);
+        TileEntity tileEntity = world.getBlockEntity(pos);
 
         // If the block is already frozen, update the freeze duration and do nothing more
         if (tryUpdateFreeze(world, pos, forTicks))
             return;
 
-        world.setBlockState(pos, BlockRegister.frozenBlock.getDefaultState(), 1 + 2 + 16 + 32);
-        FrozenTileEntity frozen = (FrozenTileEntity)world.getTileEntity(pos);
+        world.setBlock(pos, BlockRegister.frozenBlock.defaultBlockState(), 1 + 2 + 16 + 32);
+        FrozenTileEntity frozen = (FrozenTileEntity)world.getBlockEntity(pos);
 
         // Only set half blocks for air blocks
         if (toFreeze.getMaterial() == Material.AIR && dir != Direction.DOWN)

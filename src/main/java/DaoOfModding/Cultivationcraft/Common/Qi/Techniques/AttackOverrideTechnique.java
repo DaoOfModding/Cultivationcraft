@@ -49,8 +49,8 @@ public class AttackOverrideTechnique extends AttackTechnique
             cooldownCount = cooldownCount - 1;
 
         // Only add the pose if players main hand is empty
-        if (event.player.getHeldItemMainhand().isEmpty())
-            PoseHandler.addPose(event.player.getUniqueID(), pose);
+        if (event.player.getMainHandItem().isEmpty())
+            PoseHandler.addPose(event.player.getUUID(), pose);
     }
 
     @Override

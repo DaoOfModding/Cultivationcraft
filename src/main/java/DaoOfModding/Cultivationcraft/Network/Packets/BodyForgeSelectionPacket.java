@@ -25,7 +25,7 @@ public class BodyForgeSelectionPacket extends Packet
     @Override
     public void encode(PacketBuffer buffer)
     {
-        buffer.writeString(selectionID);
+        buffer.writeUtf(selectionID);
     }
 
     public static BodyForgeSelectionPacket decode(PacketBuffer buffer)
@@ -35,7 +35,7 @@ public class BodyForgeSelectionPacket extends Packet
         try
         {
             // Read in the sent values
-            String readingID = buffer.readString();
+            String readingID = buffer.readUtf();
 
             return new BodyForgeSelectionPacket(readingID);
         }

@@ -45,12 +45,12 @@ import java.util.UUID;
 
 public class FlyingSwordEntity extends ItemEntity
 {
-    private static final DataParameter<ItemStack> ITEM = EntityDataManager.createKey(FlyingSwordEntity.class, DataSerializers.ITEMSTACK);
-    private static final DataParameter<Float> decaySpeed = EntityDataManager.createKey(FlyingSwordEntity.class, DataSerializers.FLOAT);
+    private static final DataParameter<ItemStack> ITEM = EntityDataManager.defineId(FlyingSwordEntity.class, DataSerializers.ITEM_STACK);
+    private static final DataParameter<Float> decaySpeed = EntityDataManager.defineId(FlyingSwordEntity.class, DataSerializers.FLOAT);
 
-    private static final DataParameter<Float> movementX = EntityDataManager.createKey(FlyingSwordEntity.class, DataSerializers.FLOAT);
-    private static final DataParameter<Float> movementY = EntityDataManager.createKey(FlyingSwordEntity.class, DataSerializers.FLOAT);
-    private static final DataParameter<Float> movementZ = EntityDataManager.createKey(FlyingSwordEntity.class, DataSerializers.FLOAT);
+    private static final DataParameter<Float> movementX = EntityDataManager.defineId(FlyingSwordEntity.class, DataSerializers.FLOAT);
+    private static final DataParameter<Float> movementY = EntityDataManager.defineId(FlyingSwordEntity.class, DataSerializers.FLOAT);
+    private static final DataParameter<Float> movementZ = EntityDataManager.defineId(FlyingSwordEntity.class, DataSerializers.FLOAT);
 
     private final double idleDistance = 3;
 
@@ -86,28 +86,28 @@ public class FlyingSwordEntity extends ItemEntity
 
     private void init()
     {
-        this.setInfinitePickupDelay();
+        this.setNeverPickUp();
 
         if (Misc.enableHarvest)
-            this.noClip = true;
+            this.noPhysics = true;
 
         generateDecay();
     }
 
     @Override
-    public boolean isImmuneToExplosions()
+    public boolean ignoreExplosion()
     {
         return true;
     }
 
     private void generateDecay()
     {
-        if (!world.isRemote)
+        if (!level.isClientSide)
         {
             Random test = new Random();
             test.setSeed(getItem().hashCode());
 
-            getDataManager().set(decaySpeed, test.nextFloat() * 0.1f);
+            getEntityData().set(decaySpeed, test.nextFloat() * 0.1f);
         }
     }
 
@@ -121,17 +121,17 @@ public class FlyingSwordEntity extends ItemEntity
 
         if (owner == null)
         {
-            UUID ownerID = getItem().getTag().getUniqueId("Owner");
+            UUID ownerID = getItem().getTag().getUUID("Owner");
 
             if (ownerID != null)
             {
-                owner = this.world.getPlayerByUuid(ownerID);
+                owner = this.level.getPlayerByUUID(ownerID);
 
                 // if owner exists, grab this cultivator stats
                 if (owner != null)
                 {
-                    movement = owner.getLookVec().normalize();
-                    direction = owner.getLookVec().normalize();
+                    movement = owner.getLookAngle().normalize();
+                    direction = owner.getLookAngle().normalize();
                     stats = CultivatorStats.getCultivatorStats(owner);
 
                     storeMovement();
@@ -149,38 +149,38 @@ public class FlyingSwordEntity extends ItemEntity
     private void calculatePitchAndYaw()
     {
         // Store the previous pitch and yaw
-        this.prevRotationPitch = this.rotationPitch;
-        this.prevRotationYaw = this.rotationYaw;
+        xRotO = xRot;
+        yRotO = yRot;
 
         // Calculate pitch and yaw based on direction
 
         // Subtracting quarter of PI to align yaw in the right direction
-        rotationPitch = (float) Math.asin(direction.y) - (float)(Math.PI / 4.0);
+        xRot = (float) Math.asin(direction.y) - (float)(Math.PI / 4.0);
 
         // Subtracting half of PI to align yaw in the right direction
-        rotationYaw = (float) Math.atan2(direction.x, direction.z) - (float)(Math.PI / 2.0);
+        yRot = (float) Math.atan2(direction.x, direction.z) - (float)(Math.PI / 2.0);
     }
 
     // Turn item towards specified direction
     private void turnTowards(Vector3d newDirection)
     {
-        Double angle = Math.asin(direction.crossProduct(newDirection).length());
+        Double angle = Math.asin(direction.cross(newDirection).length());
 
-        // NEEDS TO BE LOOKED AT, causing desyncs with server (I think it's fixed now)
+        // TODO: NEEDS TO BE LOOKED AT, causing desyncs with server (I think it's fixed now)
         if (angle != 0) {
 
             Double theta = stats.getFlyingItemTurnSpeed();
             if (theta > Math.abs(angle))
                 theta = angle;
 
-            Vector3d u = direction.crossProduct(newDirection).normalize();
+            Vector3d u = direction.cross(newDirection).normalize();
 
             double cosTheta = Math.cos(theta);
             double sinTheta = Math.sin(theta);
 
-            Vector3d rotatedDirection = u.scale(u.dotProduct(direction));
-            rotatedDirection = rotatedDirection.add(u.crossProduct(direction).crossProduct(u).scale(cosTheta));
-            rotatedDirection = rotatedDirection.add(u.crossProduct(direction).scale(sinTheta));
+            Vector3d rotatedDirection = u.scale(u.dot(direction));
+            rotatedDirection = rotatedDirection.add(u.cross(direction).cross(u).scale(cosTheta));
+            rotatedDirection = rotatedDirection.add(u.cross(direction).scale(sinTheta));
 
             if (rotatedDirection.length() != 0)
                 direction = rotatedDirection;
@@ -211,9 +211,9 @@ public class FlyingSwordEntity extends ItemEntity
         Vector3d targetPos = stats.getTarget();
 
         // Check how far away the item is to the target
-        double distX = getPosX() - targetPos.x;
-        double distY = getPosY() - targetPos.y;
-        double distZ = getPosZ() - targetPos.z;
+        double distX = getX() - targetPos.x;
+        double distY = getY() - targetPos.y;
+        double distZ = getZ() - targetPos.z;
 
         Vector3d targetDir = new Vector3d(-distX, -distY, -distZ);
         targetDir = targetDir.normalize();
@@ -229,14 +229,14 @@ public class FlyingSwordEntity extends ItemEntity
     private void moveToOwner()
     {
         // Get coordinates of owner
-        double oPosX = owner.getPosX();
-        double oPosY = owner.getPosY() + (owner.getHeight() / 2.0);
-        double oPosZ = owner.getPosZ();
+        double oPosX = owner.getX();
+        double oPosY = owner.getY() + (owner.getBbHeight() / 2.0);
+        double oPosZ = owner.getZ();
 
         // Check how far away the item is to the owner
-        double distX = getPosX() - oPosX;
-        double distY = getPosY() - oPosY;
-        double distZ = getPosZ() - oPosZ;
+        double distX = getX() - oPosX;
+        double distY = getY() - oPosY;
+        double distZ = getZ() - oPosZ;
         double distance = Math.abs(distX) + Math.abs(distY) + Math.abs(distZ);
 
         // If item is set distance from owner, turn towards them
@@ -257,7 +257,7 @@ public class FlyingSwordEntity extends ItemEntity
     private void updateMotion()
     {
         // For the moment, motion is solely based on movement, will add other external forces later
-        this.setMotion(movement);
+        this.setDeltaMovement(movement);
     }
 
     // Deal with any collisions made by this entity
@@ -272,7 +272,7 @@ public class FlyingSwordEntity extends ItemEntity
     private void handleEntityCollisions()
     {
         // Get a list of entities within this entities bounding box
-        List<Entity> collisionEntities = this.world.getEntitiesInAABBexcluding(this, getBoundingBox(), null);
+        List<Entity> collisionEntities = this.level.getEntities(this, getBoundingBox(), null);
 
         // If there are entities within this entities bounding box
         if (!collisionEntities.isEmpty())
@@ -313,8 +313,8 @@ public class FlyingSwordEntity extends ItemEntity
 
     private void handleBlockCollisions()
     {
-        BlockPos blockPosition = new BlockPos(getPositionVec());
-        BlockState collisionBlock = owner.getEntityWorld().getBlockState(blockPosition);
+        BlockPos blockPosition = new BlockPos(position());
+        BlockState collisionBlock = owner.getCommandSenderWorld().getBlockState(blockPosition);
 
         if (Misc.blockExists(collisionBlock.getBlock()))
         {
@@ -327,9 +327,9 @@ public class FlyingSwordEntity extends ItemEntity
     private void bumpBackwards(double power, Vector3d fromPos)
     {
         // Check how far away the item is to the target
-        double distX = getPosX() - fromPos.x;
-        double distY = getPosY() - fromPos.y;
-        double distZ = getPosZ() - fromPos.z;
+        double distX = getX() - fromPos.x;
+        double distY = getY() - fromPos.y;
+        double distZ = getZ() - fromPos.z;
 
         Vector3d targetDir = new Vector3d(distX, distY, distZ);
         targetDir = targetDir.normalize();
@@ -346,7 +346,7 @@ public class FlyingSwordEntity extends ItemEntity
     // Return true if Flying Sword is in control range of owner
     public boolean isInRange()
     {
-        if (owner != null && owner.isAlive() && getDistance(owner) < stats.getFlyingControlRange())
+        if (owner != null && owner.isAlive() && distanceTo(owner) < stats.getFlyingControlRange())
             return true;
 
         return false;
@@ -355,7 +355,7 @@ public class FlyingSwordEntity extends ItemEntity
     // Return true if Flying Sword is in control range of supplied vector
     private boolean isInRange(Vector3d pos)
     {
-        if (getPositionVec().distanceTo(pos) < stats.getFlyingControlRange())
+        if (position().distanceTo(pos) < stats.getFlyingControlRange())
             return true;
 
         return false;
@@ -388,16 +388,16 @@ public class FlyingSwordEntity extends ItemEntity
             {
                 this.baseTick();
 
-                this.prevPosX = this.getPosX();
-                this.prevPosY = this.getPosY();
-                this.prevPosZ = this.getPosZ();
+                this.xOld = getX();
+                this.yOld = getY();
+                this.zOld = getZ();
 
                 // Set entity to be recalled if recall has been called
                 if (stats.getRecall())
                     recall = true;
 
                 // Move towards target if it exists, otherwise move towards owner
-                if (stats.hasTarget(owner.getEntityWorld()) && isInRange(stats.getTarget()) && !recall)
+                if (stats.hasTarget(owner.getCommandSenderWorld()) && isInRange(stats.getTarget()) && !recall)
                     moveToTarget();
                 else
                     moveToOwner();
@@ -415,10 +415,10 @@ public class FlyingSwordEntity extends ItemEntity
             updateMotion();
 
             // Calculate items Pitch and Yaw for rendering purposes, only on client
-            if (this.world.isRemote)
+            if (this.level.isClientSide())
                 calculatePitchAndYaw();
 
-            this.move(MoverType.SELF, this.getMotion());
+            this.move(MoverType.SELF, this.getDeltaMovement());
 
             // Increase the age, VERY important for rendering stuff (Stupid ItemEntity age being private ;( )
             if (this.age != -32768) {
@@ -436,37 +436,37 @@ public class FlyingSwordEntity extends ItemEntity
     // Store the movement vector in the data manager
     private void storeMovement()
     {
-        getDataManager().set(movementX, (float)movement.x);
-        getDataManager().set(movementY, (float)movement.y);
-        getDataManager().set(movementZ, (float)movement.z);
+        getEntityData().set(movementX, (float)movement.x);
+        getEntityData().set(movementY, (float)movement.y);
+        getEntityData().set(movementZ, (float)movement.z);
     }
 
     // Updated the movement vector to match the values in the data manager
     private void retrieveMovement()
     {
-        movement = new Vector3d(getDataManager().get(movementX).floatValue(), getDataManager().get(movementY).floatValue(), getDataManager().get(movementZ).floatValue());
+        movement = new Vector3d(getEntityData().get(movementX).floatValue(), getEntityData().get(movementY).floatValue(), getEntityData().get(movementZ).floatValue());
     }
 
     @Override
-    public void registerData()
+    public void defineSynchedData()
     {
-        getDataManager().register(ITEM, ItemStack.EMPTY);
-        getDataManager().register(decaySpeed, 0.5f);
+        getEntityData().define(ITEM, ItemStack.EMPTY);
+        getEntityData().define(decaySpeed, 0.5f);
 
-        getDataManager().register(movementX, 0f);
-        getDataManager().register(movementY, 0f);
-        getDataManager().register(movementZ, 0f);
+        getEntityData().define(movementX, 0f);
+        getEntityData().define(movementY, 0f);
+        getEntityData().define(movementZ, 0f);
     }
 
     @Override
     public void setItem(ItemStack stack)
     {
-        getDataManager().set(ITEM, stack);
+        getEntityData().set(ITEM, stack);
     }
 
     private float getDecaySpeed()
     {
-        return getDataManager().get(decaySpeed).floatValue();
+        return getEntityData().get(decaySpeed).floatValue();
     }
 
     @Override
@@ -476,7 +476,7 @@ public class FlyingSwordEntity extends ItemEntity
 
     @Override
     public ItemStack getItem() {
-        return getDataManager().get(ITEM);
+        return getEntityData().get(ITEM);
     }
 
     @Override
@@ -486,17 +486,17 @@ public class FlyingSwordEntity extends ItemEntity
     }
 
     @Override
-    public IPacket<?> createSpawnPacket()
+    public IPacket<?> getAddEntityPacket()
     {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 
 
-    // Ripped almost word for word from ItemEntity.onCollideWithPlayer. Stupid minecraft
+    // Ripped almost word for word from ItemEntity.playerTouch. Stupid minecraft
     @Override
-    public void onCollideWithPlayer(PlayerEntity entityIn)
+    public void playerTouch(PlayerEntity entityIn)
     {
-        if (!this.world.isRemote)
+        if (!this.level.isClientSide)
         {
             // Only allow item to be picked up if it's collided with it's owner and is recalling
             if (entityIn != owner || !recall) return;
@@ -509,7 +509,7 @@ public class FlyingSwordEntity extends ItemEntity
             if (hook < 0) return;
 
             ItemStack copy = itemstack.copy();
-            if (hook == 1 || i <= 0 || entityIn.inventory.addItemStackToInventory(itemstack))
+            if (hook == 1 || i <= 0 || entityIn.inventory.add(itemstack))
             {
                 copy.setCount(copy.getCount() - getItem().getCount());
                 net.minecraftforge.fml.hooks.BasicEventHooks.firePlayerItemPickupEvent(entityIn, this, copy);
@@ -520,8 +520,8 @@ public class FlyingSwordEntity extends ItemEntity
                     itemstack.setCount(i);
                 }
 
-                entityIn.addStat(Stats.ITEM_PICKED_UP.get(item), i);
-                entityIn.triggerItemPickupTrigger(this);
+                entityIn.awardStat(Stats.ITEM_PICKED_UP.get(item), i);
+                entityIn.onItemPickup(this);
             }
 
         }
@@ -530,8 +530,11 @@ public class FlyingSwordEntity extends ItemEntity
     // Ripped almost word for word from PlayerInteractionManager.tryHarvestBlock. Stupid minecraft
     public boolean tryHarvestBlock(BlockPos pos)
     {
+        // TODO: This is bugged as hell, fix it later maybe
+
+        /*
         // Only attempt a harvest on the server
-        if (!this.world.isRemote)
+        if (!this.level.isClientSide)
         {
             ServerPlayerEntity serverOwner = ((ServerPlayerEntity)owner);
             GameType gameType = serverOwner.interactionManager.getGameType();
@@ -573,88 +576,65 @@ public class FlyingSwordEntity extends ItemEntity
                 }
             }
         }
-
+        */
         return false;
     }
 
-    // Ripped almost word for word from PlayerInteractionManager.removeBlock. Stupid minecraft
-    private boolean removeBlock(BlockPos p_180235_1_, boolean canHarvest) {
-        BlockState state = this.world.getBlockState(p_180235_1_);
-        boolean removed = state.removedByPlayer(this.world, p_180235_1_, owner, canHarvest, this.world.getFluidState(p_180235_1_));
-        if (removed)
-            state.getBlock().onPlayerDestroy(this.world, p_180235_1_, state);
-        return removed;
-    }
-
-    // Ripped almost word for word from PlayerEntity.attackEntityWithCurrentItem. Stupid minecraft
+    // Ripped almost word for word from PlayerEntity.attack. Stupid minecraft
     // Removed cooldown and some crit stuff, edited to attack from flying sword instead of player
     public void attackTargetEntity(Entity targetEntity)
     {
         if (!net.minecraftforge.common.ForgeHooks.onPlayerAttackTarget(owner, targetEntity)) return;
 
-        if (targetEntity.canBeAttackedWithItem())
+        if (targetEntity.isAttackable())
         {
-            if (!targetEntity.hitByEntity(this))
+            if (!targetEntity.skipAttackInteraction(this))
             {
                 // Get the amount of damage to deal
                 float f = 1;
                 if (getItem().getItem() instanceof SwordItem)
-                    f = ((SwordItem)getItem().getItem()).getAttackDamage();
+                    f = ((SwordItem)getItem().getItem()).getDamage();
 
                 float f1;
 
                 if (targetEntity instanceof LivingEntity)
-                    f1 = EnchantmentHelper.getModifierForCreature(this.getItem(), ((LivingEntity)targetEntity).getCreatureAttribute());
+                    f1 = EnchantmentHelper.getDamageBonus(this.getItem(), ((LivingEntity)targetEntity).getMobType());
                 else
-                    f1 = EnchantmentHelper.getModifierForCreature(this.getItem(), CreatureAttribute.UNDEFINED);
+                    f1 = EnchantmentHelper.getDamageBonus(this.getItem(), CreatureAttribute.UNDEFINED);
 
                 f = f + f1;
 
                 // Knockback
-                int i = EnchantmentHelper.getEnchantmentLevel(Enchantments.KNOCKBACK, getItem());
-                owner.world.playSound((PlayerEntity)null, getPosX(), getPosY(), getPosZ(), SoundEvents.ENTITY_PLAYER_ATTACK_KNOCKBACK, owner.getSoundCategory(), 1.0F, 1.0F);
+                int i = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.KNOCKBACK, getItem());
+                owner.level.playSound((PlayerEntity)null, getX(), getY(), getZ(), SoundEvents.PLAYER_ATTACK_KNOCKBACK, owner.getSoundSource(), 1.0F, 1.0F);
                 ++i;
 
-
-                // lets not set things on fire right now...
-                /*
-                    float f4 = 0.0F;
-                    boolean flag4 = false;
-                    int j = EnchantmentHelper.getFireAspectModifier(owner);
-                    if (targetEntity instanceof LivingEntity) {
-                        f4 = ((LivingEntity)targetEntity).getHealth();
-                        if (j > 0 && !targetEntity.isBurning()) {
-                            flag4 = true;
-                            targetEntity.setFire(1);
-                        }
-                    }*/
-
                 // Knockback target
-                Vector3d vector3d = targetEntity.getMotion();
-                boolean flag5 = targetEntity.attackEntityFrom(new EntityDamageSource("player", this), f);
+                Vector3d vector3d = targetEntity.getDeltaMovement();
+                boolean flag5 = targetEntity.hurt(new EntityDamageSource("player", this), f);
 
                 if (flag5)
                 {
                     if (targetEntity instanceof LivingEntity)
-                        ((LivingEntity) targetEntity).applyKnockback((float) i * 0.5F, (double) MathHelper.sin(rotationYaw * ((float) Math.PI / 180F)), (double) (-MathHelper.cos(rotationYaw * ((float) Math.PI / 180F))));
+                        ((LivingEntity) targetEntity).knockback((float) i * 0.5F, (double) MathHelper.sin(yRot * ((float) Math.PI / 180F)), (double) (-MathHelper.cos(yRot * ((float) Math.PI / 180F))));
                     else
-                        targetEntity.addVelocity((double)(-MathHelper.sin(rotationYaw * ((float)Math.PI / 180F)) * (float)i * 0.5F), 0.1D, (double)(MathHelper.cos(rotationYaw * ((float)Math.PI / 180F)) * (float)i * 0.5F));
+                        targetEntity.push((-MathHelper.sin(yRot * ((float)Math.PI / 180F)) * (float)i * 0.5F), 0.1D, (double)(MathHelper.cos(yRot * ((float)Math.PI / 180F)) * (float)i * 0.5F));
 
                     // Tell client player has been knocked back if knocking back a player
-                    if (targetEntity instanceof ServerPlayerEntity && targetEntity.velocityChanged)
+                    if (targetEntity instanceof ServerPlayerEntity && targetEntity.hurtMarked)
                     {
-                        ((ServerPlayerEntity)targetEntity).connection.sendPacket(new SEntityVelocityPacket(targetEntity));
-                        targetEntity.velocityChanged = false;
-                        targetEntity.setMotion(vector3d);
+                        ((ServerPlayerEntity)targetEntity).connection.send(new SEntityVelocityPacket(targetEntity));
+                        targetEntity.hurtMarked = false;
+                        targetEntity.setDeltaMovement(vector3d);
                     }
 
-                    owner.world.playSound((PlayerEntity)null, getPosX(), getPosY(), getPosZ(), SoundEvents.ENTITY_PLAYER_ATTACK_STRONG, owner.getSoundCategory(), 1.0F, 1.0F);
+                    owner.level.playSound((PlayerEntity)null, getX(), getY(), getZ(), SoundEvents.PLAYER_ATTACK_STRONG, owner.getSoundSource(), 1.0F, 1.0F);
 
 
                     if (f1 > 0.0F)
-                        owner.onEnchantmentCritical(targetEntity);
+                        owner.magicCrit(targetEntity);
 
-                    owner.setLastAttackedEntity(targetEntity);
+                    owner.setLastHurtMob(targetEntity);
 
                     // Ignore enchantmnets for now
                     /*
@@ -666,22 +646,17 @@ public class FlyingSwordEntity extends ItemEntity
 
                     Entity entity = targetEntity;
                     if (targetEntity instanceof EnderDragonPartEntity)
-                        entity = ((EnderDragonPartEntity)targetEntity).dragon;
+                        entity = ((EnderDragonPartEntity)targetEntity).parentMob;
 
                     if (targetEntity instanceof LivingEntity)
                     {
                         float f5 = 0 - ((LivingEntity)targetEntity).getHealth();
-                        owner.addStat(Stats.DAMAGE_DEALT, Math.round(f5 * 10.0F));
+                        owner.awardStat(Stats.DAMAGE_DEALT, Math.round(f5 * 10.0F));
 
-                        /*
-                            if (j > 0) {
-                                targetEntity.setFire(j * 4);
-                            }*/
-
-                        if (owner.world instanceof ServerWorld && f5 > 2.0F)
+                        if (owner.level instanceof ServerWorld && f5 > 2.0F)
                         {
                             int k = (int)((double)f5 * 0.5D);
-                            ((ServerWorld)owner.world).spawnParticle(ParticleTypes.DAMAGE_INDICATOR, targetEntity.getPosX(), targetEntity.getPosYHeight(0.5D), targetEntity.getPosZ(), k, 0.1D, 0.0D, 0.1D, 0.2D);
+                            ((ServerWorld)owner.level).sendParticles(ParticleTypes.DAMAGE_INDICATOR, targetEntity.getX(), targetEntity.getY(0.5D), targetEntity.getZ(), k, 0.1D, 0.0D, 0.1D, 0.2D);
                         }
                     }
                 }

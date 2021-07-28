@@ -22,14 +22,14 @@ public class MovementOverrideTechnique extends Technique
     {
         super.tickClient(event);
 
-        Vector3d motion = new Vector3d(event.player.getMotion().x, 0, event.player.getMotion().z);
+        Vector3d motion = new Vector3d(event.player.getDeltaMovement().x, 0, event.player.getDeltaMovement().z);
 
         double speed = motion.length();
 
         // Determine if going in reverse or not
         if (speed > 0)
         {
-            Vector3d direction = new Vector3d(event.player.getLookVec().x, 0, event.player.getLookVec().z).normalize();
+            Vector3d direction = new Vector3d(event.player.getLookAngle().x, 0, event.player.getLookAngle().z).normalize();
             Vector3d movementDirection = motion.normalize();
 
             if (direction.subtract(movementDirection).length() > 1.7)
@@ -40,7 +40,7 @@ public class MovementOverrideTechnique extends Technique
 
         if (speed != 0)
         {
-            PoseHandler.addPose(event.player.getUniqueID(), move);
+            PoseHandler.addPose(event.player.getUUID(), move);
         }
     }
 

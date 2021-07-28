@@ -65,7 +65,7 @@ public class LeapTechnique extends Technique
             return;
 
 
-        PlayerPoseHandler handler = PoseHandler.getPlayerPoseHandler(player.getUniqueID());
+        PlayerPoseHandler handler = PoseHandler.getPlayerPoseHandler(player.getUUID());
 
         // Only activate if player is not already jumping
         if (handler != null && !handler.isJumping())
@@ -103,7 +103,7 @@ public class LeapTechnique extends Technique
     // Check if the leap has ended
     private void continueLeap(PlayerEntity player)
     {
-        PlayerPoseHandler handler = PoseHandler.getPlayerPoseHandler(player.getUniqueID());
+        PlayerPoseHandler handler = PoseHandler.getPlayerPoseHandler(player.getUUID());
 
         // If the player is no longer jumping or the handler can't be loaded turn the technique off
         if (handler == null || !handler.isJumping())
@@ -113,7 +113,7 @@ public class LeapTechnique extends Technique
         }
         else
         {
-            Vector3d currentMotion = player.getMotion().normalize();
+            Vector3d currentMotion = player.getDeltaMovement().normalize();
 
             PlayerPose newPose = defaultLeapLegs.clone();
             newPose.addAngle(GenericLimbNames.body, new Vector3d(Math.toRadians((currentMotion.y - 1) * -90), 0, 0), 10);
@@ -125,7 +125,7 @@ public class LeapTechnique extends Technique
     // Do the leap
     private void doLeap(PlayerEntity player)
     {
-        PlayerPoseHandler handler = PoseHandler.getPlayerPoseHandler(player.getUniqueID());
+        PlayerPoseHandler handler = PoseHandler.getPlayerPoseHandler(player.getUUID());
 
         // Cancel this leap if the handler can't be loaded
         if (handler == null)
@@ -141,14 +141,14 @@ public class LeapTechnique extends Technique
         handler.setJumping(true);
 
         // Get the current motion and forward vector of the player
-        Vector3d currentMotion = player.getMotion();
+        Vector3d currentMotion = player.getDeltaMovement();
         Vector3d forward = player.getForward().normalize();
 
         // Get the modified jump height of the player
-        int jumpPower = BodyPartStatControl.getStats(player.getUniqueID()).getJumpHeight();
+        int jumpPower = BodyPartStatControl.getStats(player.getUUID()).getJumpHeight();
 
         // Move the player forward based on the jump power, as well as applying a height jump of 1 block
-        player.setMotion(currentMotion.add(forward.x * jumpPower * 0.4f, 0.52f, forward.z * jumpPower * 0.4f));
+        player.setDeltaMovement(currentMotion.add(forward.x * jumpPower * 0.4f, 0.52f, forward.z * jumpPower * 0.4f));
     }
 
     @Override

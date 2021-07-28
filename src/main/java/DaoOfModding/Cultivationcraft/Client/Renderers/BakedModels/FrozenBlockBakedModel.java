@@ -11,6 +11,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.model.*;
 import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.state.StateHolder;
 import net.minecraft.state.properties.Half;
 import net.minecraft.state.properties.StairsShape;
 import net.minecraft.util.Direction;
@@ -28,7 +29,7 @@ public class FrozenBlockBakedModel implements IDynamicBakedModel
 
     private TextureAtlasSprite getTexture()
     {
-        return Minecraft.getInstance().getAtlasSpriteGetter(AtlasTexture.LOCATION_BLOCKS_TEXTURE).apply(TEXTURE);
+        return Minecraft.getInstance().getTextureAtlas(AtlasTexture.LOCATION_BLOCKS).apply(TEXTURE);
     }
 
     @Override
@@ -38,7 +39,7 @@ public class FrozenBlockBakedModel implements IDynamicBakedModel
 
         BlockState frozenBlock = extraData.getData(FrozenTileEntity.FROZEN_BLOCK);
 
-        IBakedModel model = Minecraft.getInstance().getBlockRendererDispatcher().getModelForState(frozenBlock);
+        IBakedModel model = Minecraft.getInstance().getBlockRenderer().getBlockModel(frozenBlock);
 
         // This... should not happen, but lets not let any infinite recursions occur just in case...
         if (model instanceof FrozenBlockBakedModel)
@@ -46,17 +47,17 @@ public class FrozenBlockBakedModel implements IDynamicBakedModel
 
         List<BakedQuad> frozenQuads = new ArrayList<>();
 
-        Direction dir = Direction.byIndex(extraData.getData(FrozenTileEntity.RAMP_BLOCK));
+        Direction dir = Direction.from3DDataValue(extraData.getData(FrozenTileEntity.RAMP_BLOCK));
         // If the frozen block is air, use the default ice model instead
         if (frozenBlock.getMaterial() == Material.AIR)
         {
             if (dir == Direction.DOWN)
-                frozenQuads = Minecraft.getInstance().getBlockRendererDispatcher().getModelForState(Blocks.ICE.getDefaultState()).getQuads(frozenBlock, side, rand, extraData);
+                frozenQuads = Minecraft.getInstance().getBlockRenderer().getBlockModel(Blocks.ICE.defaultBlockState()).getQuads(frozenBlock, side, rand, extraData);
             // If the frozen block is a ramp, use a retextured stair model instead
             else
             {
-                BlockState StairState = Blocks.COBBLESTONE_STAIRS.getDefaultState().with(StairsBlock.FACING, dir).with(StairsBlock.HALF, Half.BOTTOM).with(StairsBlock.SHAPE, StairsShape.STRAIGHT).with(StairsBlock.WATERLOGGED, false);
-                List<BakedQuad> quads = Minecraft.getInstance().getBlockRendererDispatcher().getModelForState(StairState).getQuads(frozenBlock, side, rand, extraData);
+                BlockState StairState = Blocks.COBBLESTONE_STAIRS.defaultBlockState().setValue(StairsBlock.FACING, dir).setValue(StairsBlock.HALF, Half.BOTTOM).setValue(StairsBlock.SHAPE, StairsShape.STRAIGHT).setValue(StairsBlock.WATERLOGGED, false);
+                List<BakedQuad> quads = Minecraft.getInstance().getBlockRenderer().getBlockModel(StairState).getQuads(frozenBlock, side, rand, extraData);
 
                 for (BakedQuad quad : quads)
                     frozenQuads.add(BakedModelUtils.retextureQuad(quad, getTexture()));
@@ -65,10 +66,10 @@ public class FrozenBlockBakedModel implements IDynamicBakedModel
         // If the frozen block is a liquid, use the default ice model textured as that liquid, then frozen
         else if (frozenBlock.getBlock() instanceof FlowingFluidBlock)
         {
-            List<BakedQuad> quads = Minecraft.getInstance().getBlockRendererDispatcher().getModelForState(Blocks.ICE.getDefaultState()).getQuads(frozenBlock, side, rand, extraData);
+            List<BakedQuad> quads = Minecraft.getInstance().getBlockRenderer().getBlockModel(Blocks.ICE.defaultBlockState()).getQuads(frozenBlock, side, rand, extraData);
 
             ResourceLocation liquidLocation = ((FlowingFluidBlock)frozenBlock.getBlock()).getFluid().getAttributes().getStillTexture();
-            TextureAtlasSprite liquidTexture = Minecraft.getInstance().getAtlasSpriteGetter(AtlasTexture.LOCATION_BLOCKS_TEXTURE).apply(liquidLocation);
+            TextureAtlasSprite liquidTexture = Minecraft.getInstance().getTextureAtlas(AtlasTexture.LOCATION_BLOCKS).apply(liquidLocation);
 
             for (BakedQuad quad : quads)
             {
@@ -93,7 +94,7 @@ public class FrozenBlockBakedModel implements IDynamicBakedModel
     }
 
     @Override
-    public boolean isAmbientOcclusion() {
+    public boolean useAmbientOcclusion() {
         return true;
     }
 
@@ -103,19 +104,19 @@ public class FrozenBlockBakedModel implements IDynamicBakedModel
     }
 
     @Override
-    public boolean isSideLit()
+    public boolean usesBlockLight()
     {
         return false;
     }
 
     @Override
-    public boolean isBuiltInRenderer()
+    public boolean isCustomRenderer()
     {
         return false;
     }
 
     @Override
-    public TextureAtlasSprite getParticleTexture()
+    public TextureAtlasSprite getParticleIcon()
     {
         return getTexture();
     }
@@ -127,8 +128,8 @@ public class FrozenBlockBakedModel implements IDynamicBakedModel
     }
 
     @Override
-    public ItemCameraTransforms getItemCameraTransforms()
+    public ItemCameraTransforms getTransforms()
     {
-        return ItemCameraTransforms.DEFAULT;
+        return ItemCameraTransforms.NO_TRANSFORMS;
     }
 }

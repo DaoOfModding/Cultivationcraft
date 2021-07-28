@@ -31,13 +31,13 @@ public class CultivatorModelHandler
     // Update player model based on the supplied BodyModifications
     public static void updateModel(ClientPlayerEntity player, IBodyModifications modifications)
     {
-        PlayerRenderer renderer = (PlayerRenderer)Minecraft.getInstance().getRenderManager().getRenderer(player);
-        PlayerPoseHandler handler = PoseHandler.getPlayerPoseHandler(player.getUniqueID());
+        PlayerRenderer renderer = (PlayerRenderer)Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(player);
+        PlayerPoseHandler handler = PoseHandler.getPlayerPoseHandler(player.getUUID());
 
         if (handler != null)
         {
             // Create a new player model with the specified modifications
-            MultiLimbedModel newModel = new MultiLimbedModel(renderer.getEntityModel());
+            MultiLimbedModel newModel = new MultiLimbedModel(renderer.getModel());
 
             for (BodyPart part : modifications.getModifications().values())
             {

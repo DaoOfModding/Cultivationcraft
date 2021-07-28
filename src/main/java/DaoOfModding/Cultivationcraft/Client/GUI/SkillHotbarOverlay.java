@@ -43,12 +43,12 @@ public class SkillHotbarOverlay
         // Enable transparency
         RenderSystem.enableBlend();
 
-        IngameGui gui = Minecraft.getInstance().ingameGUI;
+        IngameGui gui = Minecraft.getInstance().gui;
 
-        Minecraft.getInstance().getTextureManager().bindTexture(WIDGETS_TEX_PATH);
+        Minecraft.getInstance().getTextureManager().bind(WIDGETS_TEX_PATH);
 
-        int scaledWidth = Minecraft.getInstance().getMainWindow().getScaledWidth() / 2;
-        int scaledHeight = Minecraft.getInstance().getMainWindow().getScaledHeight();
+        int scaledWidth = Minecraft.getInstance().getWindow().getGuiScaledWidth() / 2;
+        int scaledHeight = Minecraft.getInstance().getWindow().getGuiScaledHeight();
 
         // Store the current Z layer to reset back to later
         int blitOffset = gui.getBlitOffset();

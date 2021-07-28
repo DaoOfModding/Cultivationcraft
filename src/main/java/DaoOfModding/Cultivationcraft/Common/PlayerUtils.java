@@ -8,18 +8,18 @@ public class PlayerUtils
 {
     public static boolean lookingUp(PlayerEntity player)
     {
-        return player.getLookVec().y > 0.05;
+        return player.getLookAngle().y > 0.05;
     }
 
     public static boolean lookingDown(PlayerEntity player)
     {
-        return player.getLookVec().y < -0.75;
+        return player.getLookAngle().y < -0.75;
     }
 
     public static Direction movementDirection(PlayerEntity player)
     {
-        double x = player.prevPosX - player.chasingPosX;
-        double z = player.prevPosZ - player.chasingPosZ;
+        double x = player.xOld - player.xCloak;
+        double z = player.zOld - player.zCloak;
 
         Direction dir;
 

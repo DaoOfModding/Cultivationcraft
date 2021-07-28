@@ -31,7 +31,7 @@ public class RecallFlyingSwordPacket extends Packet
         if (owner != null)
         {
             buffer.writeBoolean(recallOn);
-            buffer.writeUniqueId(owner);
+            buffer.writeUUID(owner);
         }
     }
 
@@ -43,7 +43,7 @@ public class RecallFlyingSwordPacket extends Packet
         {
             // Read in the send values
             Boolean readingRecall = buffer.readBoolean();
-            UUID readingOwner = buffer.readUniqueId();
+            UUID readingOwner = buffer.readUUID();
 
             return new RecallFlyingSwordPacket(readingRecall, readingOwner);
 
@@ -70,8 +70,8 @@ public class RecallFlyingSwordPacket extends Packet
         }
         if (sideReceived.isServer())
         {
-            if (ctx.getSender().getUniqueID().compareTo(owner) != 0)
-                Cultivationcraft.LOGGER.warn("Client sent recall message for other player - Client=" + ctx.getSender().getUniqueID().toString() + " Player=" + owner.toString());
+            if (ctx.getSender().getUUID().compareTo(owner) != 0)
+                Cultivationcraft.LOGGER.warn("Client sent recall message for other player - Client=" + ctx.getSender().getUUID().toString() + " Player=" + owner.toString());
             else
                 ctx.enqueueWork(() -> processServerPacket());
         }
@@ -85,7 +85,7 @@ public class RecallFlyingSwordPacket extends Packet
         PacketHandler.sendRecallFlyingToClient(recallOn, owner);
 
         // Grab the player entity based on the read UUID
-        PlayerEntity ownerEntity = ServerLifecycleHooks.getCurrentServer().getPlayerList().getPlayerByUUID(owner);
+        PlayerEntity ownerEntity = ServerLifecycleHooks.getCurrentServer().getPlayerList().getPlayer(owner);
 
         processPacket(ownerEntity);
     }
@@ -93,7 +93,7 @@ public class RecallFlyingSwordPacket extends Packet
     private void processClientPacket()
     {
         // Grab the player entity based on the read UUID
-        PlayerEntity ownerEntity = Minecraft.getInstance().world.getPlayerByUuid(owner);
+        PlayerEntity ownerEntity = Minecraft.getInstance().level.getPlayerByUUID(owner);
 
         if (ownerEntity != null)
             processPacket(ownerEntity);

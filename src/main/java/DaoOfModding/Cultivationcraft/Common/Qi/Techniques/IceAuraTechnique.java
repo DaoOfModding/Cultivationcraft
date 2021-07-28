@@ -27,7 +27,7 @@ public class IceAuraTechnique extends AuraTechnique
 
     public void tickServer(TickEvent.PlayerTickEvent event)
     {
-        Freeze.FreezeArea(event.player.getEntityWorld(), event.player.getPosition(), getRange(), power);
+        Freeze.FreezeArea(event.player.getCommandSenderWorld(), event.player.blockPosition(), getRange(), power);
     }
 
     @Override

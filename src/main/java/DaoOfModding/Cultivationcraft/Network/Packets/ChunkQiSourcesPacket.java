@@ -33,7 +33,7 @@ public class ChunkQiSourcesPacket extends Packet
     {
         if (chunkPos != null)
         {
-            buffer.writeLong(chunkPos.asLong());
+            buffer.writeLong(chunkPos.toLong());
 
             // Write the number of QiSources to loop through
             buffer.writeInt(QiSources.size());
@@ -98,15 +98,15 @@ public class ChunkQiSourcesPacket extends Packet
     public boolean processPacket()
     {
         // Disregard this packet if the world is unloaded
-        if (Minecraft.getInstance().world == null)
+        if (Minecraft.getInstance().level == null)
             return true;
 
         // If the current chunk isn't loaded return false
-        if (!Minecraft.getInstance().world.getChunkProvider().isChunkLoaded(chunkPos))
+        if (!Minecraft.getInstance().level.getChunkSource().isEntityTickingChunk(chunkPos))
             return false;
 
         // Get the specified chunk from the world
-        Chunk chunk = Minecraft.getInstance().world.getChunk(chunkPos.x, chunkPos.z);
+        Chunk chunk = Minecraft.getInstance().level.getChunk(chunkPos.x, chunkPos.z);
 
         // Get the ChunkQiSources instance from the chunk
         IChunkQiSources sources = ChunkQiSources.getChunkQiSources(chunk);

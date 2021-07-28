@@ -38,7 +38,7 @@ public class QiSource
     {
         CompoundNBT nbt = new CompoundNBT();
 
-        nbt.putLong("pos", pos.toLong());
+        nbt.putLong("pos", pos.asLong());
         nbt.putInt("range", range);
         nbt.putInt("element", elementID);
 
@@ -47,14 +47,14 @@ public class QiSource
 
     public void WriteBuffer(PacketBuffer buffer)
     {
-        buffer.writeLong(pos.toLong());
+        buffer.writeLong(pos.asLong());
         buffer.writeInt(range);
         buffer.writeInt(elementID);
     }
 
     public static QiSource DeserializeNBT(CompoundNBT nbt)
     {
-        BlockPos newPos = BlockPos.fromLong(nbt.getLong("pos"));
+        BlockPos newPos = BlockPos.of(nbt.getLong("pos"));
         int size = nbt.getInt("range");
         int element = nbt.getInt("element");
 
@@ -63,7 +63,7 @@ public class QiSource
 
     public static QiSource ReadBuffer(PacketBuffer buffer)
     {
-        BlockPos newPos = BlockPos.fromLong(buffer.readLong());
+        BlockPos newPos = BlockPos.of(buffer.readLong());
         int size = buffer.readInt();
         int element = buffer.readInt();
 

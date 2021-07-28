@@ -63,7 +63,7 @@ public class FlyingSwordContainer extends BasicContainer
 
     @Override
     // Return true if player can interact with this container, false if not
-    public boolean canInteractWith(@Nonnull PlayerEntity player)
+    public boolean stillValid(@Nonnull PlayerEntity player)
     {
         //TODO: Check if player cultivation high enough to use flying swords
         return true;

@@ -95,7 +95,7 @@ public class BakedModelUtils
                     float u = getUnInterpolatedU(originalTexture, data[0]);
                     float v = getUnInterpolatedV(originalTexture, data[1]);
 
-                    parent.put(2, texture.getInterpolatedU(u), texture.getInterpolatedV(v));
+                    parent.put(2, texture.getU(u), texture.getV(v));
                 }
                 else
                     parent.put(element, data);
@@ -110,8 +110,8 @@ public class BakedModelUtils
     // Functions to UnInterpolate texture values from TextureAtlasSprites
     private static int getUnInterpolatedV(TextureAtlasSprite texture, float v)
     {
-        float f = texture.getMaxV() - texture.getMinV();
-        float result = (((v - texture.getMinV()) * 16) / f);
+        float f = texture.getV1() - texture.getV0();
+        float result = (((v - texture.getV0()) * 16) / f);
 
         // The + 0.1 fixes rounding errors
         return (int)(result + 0.1);
@@ -119,8 +119,8 @@ public class BakedModelUtils
 
     private static int getUnInterpolatedU(TextureAtlasSprite texture, float u)
     {
-        float f = texture.getMaxU() - texture.getMinU();
-        float result = (((u - texture.getMinU()) * 16) / f);
+        float f = texture.getU1() - texture.getU0();
+        float result = (((u - texture.getU0()) * 16) / f);
 
         return (int)(result + 0.1);
     }

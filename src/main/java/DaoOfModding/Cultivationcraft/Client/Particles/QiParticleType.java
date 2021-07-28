@@ -13,7 +13,7 @@ public class QiParticleType extends ParticleType<QiParticleData>
 
     // What the HELL is this!?
     // I really don't know, it doesn't seem to get called, but it needs to be here...
-    public Codec<QiParticleData> func_230522_e_()
+    public Codec<QiParticleData> codec()
     {
         return null;
     }

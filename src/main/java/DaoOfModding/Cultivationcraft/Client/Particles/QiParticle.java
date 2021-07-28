@@ -22,24 +22,27 @@ public class QiParticle extends SpriteTexturedParticle
     {
         super(world, x, y, z, velocityX, velocityY, velocityZ);
 
-        this.canCollide = false;
+        this.hasPhysics = false;
 
         // Convert seconds into ticks
-        this.maxAge = lifespan;
-        this.particleAlpha = 0.5F;
+        this.lifetime = lifespan;
+        this.alpha = 0.5F;
         this.sprites = sprite;
 
-        motionX = velocityX;
-        motionY = velocityY;
-        motionZ = velocityZ;
+        xd = velocityX;
+        yd = velocityY;
+        xd = velocityZ;
     }
 
     @Override
-    protected int getBrightnessForRender(float partialTick)
+    protected int getLightColor(float partialTick)
     {
+        // TODO : this may be wrong
+
         final int BLOCK_LIGHT = 15;  // maximum brightness
         final int SKY_LIGHT = 15;    // maximum brightness
-        final int FULL_BRIGHTNESS_VALUE = LightTexture.packLight(BLOCK_LIGHT, SKY_LIGHT);
+        final int FULL_BRIGHTNESS_VALUE = LightTexture.pack(BLOCK_LIGHT, SKY_LIGHT);
+
         return FULL_BRIGHTNESS_VALUE;
     }
 
@@ -51,36 +54,36 @@ public class QiParticle extends SpriteTexturedParticle
     @Override
     public void tick()
     {
-        prevPosX = posX;
-        prevPosY = posY;
-        prevPosZ = posZ;
+        this.xo = this.x;
+        this.yo = this.y;
+        this.zo = this.z;
 
-        move(motionX, motionY, motionZ);
+        move(this.xd, this.yd, this.zd);
 
         if (onGround)
         {  // onGround is only true if the particle collides while it is moving downwards...
-            this.setExpired();
+            this.remove();
         }
 
-        if (prevPosY == posY && motionY > 0)
+        if (this.yo == this.y && this.yd > 0)
         {  // detect a collision while moving upwards (can't move up at all)
-            this.setExpired();
+            this.remove();
         }
 
-        if (this.age++ >= this.maxAge)
+        if (this.age++ >= this.lifetime)
         {
-            this.setExpired();
+            this.remove();
         }
 
         if (!Renderer.QiSourcesVisible)
-            this.setExpired();
+            this.remove();
     }
 
     @Override
-    public void renderParticle(IVertexBuilder buffer, ActiveRenderInfo renderInfo, float partialTicks)
+    public void render(IVertexBuilder buffer, ActiveRenderInfo renderInfo, float partialTicks)
     {
-        GlStateManager.disableDepthTest();
-        super.renderParticle(buffer, renderInfo, partialTicks);
+        GlStateManager._disableDepthTest();
+        super.render(buffer, renderInfo, partialTicks);
     }
 
 
@@ -90,10 +93,10 @@ public class QiParticle extends SpriteTexturedParticle
         private final IAnimatedSprite sprites;
 
         @Override
-        public Particle makeParticle(QiParticleData particleData, ClientWorld world, double xPos, double yPos, double zPos, double xVelocity, double yVelocity, double zVelocity)
+        public Particle createParticle(QiParticleData particleData, ClientWorld world, double xPos, double yPos, double zPos, double xVelocity, double yVelocity, double zVelocity)
         {
             QiParticle particle = new QiParticle(world, xPos, yPos, zPos, xVelocity, yVelocity, zVelocity, (int)(particleData.source.getSize() * ( 1 / QiSourceRenderer.speed)), sprites);
-            particle.selectSpriteRandomly(sprites);
+            particle.pickSprite(sprites);
 
             Color color = Elements.getElement(particleData.source.getElementID()).color;
             particle.setColor(color.getRed() / 255f, color.getGreen() / 255f, color.getBlue() / 255f);

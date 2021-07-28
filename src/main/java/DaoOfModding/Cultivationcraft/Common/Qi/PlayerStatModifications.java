@@ -29,10 +29,11 @@ public class PlayerStatModifications
     // Increase player jump speed based on the jump height
     public void applyJump(PlayerEntity player)
     {
-        Vector3d currentMotion = player.getMotion();
+        // TODO : Unsure if delta movement is the correct mapping here
+        Vector3d currentMotion = player.getDeltaMovement();
 
         // Increase not only the height jump but also multiply X and Z momentum
-        player.setMotion(currentMotion.x + (currentMotion.x * jumpHeight * 0.2f), 0.42f + jumpHeight * 0.1f, currentMotion.z + (currentMotion.z * jumpHeight * 0.2f));
+        player.setDeltaMovement(currentMotion.x + (currentMotion.x * jumpHeight * 0.2f), 0.42f + jumpHeight * 0.1f, currentMotion.z + (currentMotion.z * jumpHeight * 0.2f));
     }
 
     // Increase the distance you can fall without taking damage by the jump height

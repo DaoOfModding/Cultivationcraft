@@ -39,7 +39,7 @@ public class TextureManager
     public static void updateTextures(PlayerEntity player)
     {
         IBodyModifications modifications = BodyModifications.getBodyModifications(player);
-        PlayerTextureManager manager = getTextureManager(player.getUniqueID());
+        PlayerTextureManager manager = getTextureManager(player.getUUID());
 
         // Loop through each body part modification for this player and set the appropriate texture
         for (BodyPart part : modifications.getModifications().values())

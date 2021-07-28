@@ -62,15 +62,15 @@ public class AttackTechnique extends Technique
         UUID targetID = null;
 
         if (result.getType() == RayTraceResult.Type.ENTITY)
-            targetID = Misc.getEntityAtLocation(result.getHitVec(), Minecraft.getInstance().world).getUniqueID();
+            targetID = Misc.getEntityAtLocation(result.getLocation(), Minecraft.getInstance().level).getUUID();
 
-        ClientPacketHandler.sendAttackToServer(player.getUniqueID(), result.getType(), result.getHitVec(), targetID, slot);
+        ClientPacketHandler.sendAttackToServer(player.getUUID(), result.getType(), result.getLocation(), targetID, slot);
     }
 
     public void attackAnimation(PlayerEntity player)
     {
         // Add the attacking pose to the PoseHandler
-        PoseHandler.addPose(player.getUniqueID(), attack);
+        PoseHandler.addPose(player.getUUID(), attack);
     }
 
     public double getRange(PlayerEntity player)
@@ -106,10 +106,10 @@ public class AttackTechnique extends Technique
     {
         Cultivationcraft.LOGGER.info("Trying to attack...");
 
-        if (!toAttack.canBeAttackedWithItem())
+        if (!toAttack.isAttackable())
             return;
 
-        if (toAttack.hitByEntity(player))
+        if (toAttack.skipAttackInteraction(player))
             return;
 
         Cultivationcraft.LOGGER.info("Attack allowed...");
@@ -118,7 +118,7 @@ public class AttackTechnique extends Technique
         double range = getRange(player);
 
         // Do nothing if entity is not in attack range
-        if (toAttack.getPositionVec().subtract(player.getPositionVec()).length() > range)
+        if (toAttack.position().subtract(player.position()).length() > range)
             return;
 
 
@@ -128,31 +128,31 @@ public class AttackTechnique extends Technique
 
         // TODO: Check if toAttack entity is a cultivator, apply damage resistances && any extra stuff if so
 
-        Vector3d entityMotion = toAttack.getMotion();
+        Vector3d entityMotion = toAttack.getDeltaMovement();
         float entityHealth = 0;
 
         if (toAttack instanceof LivingEntity)
             entityHealth = ((LivingEntity) toAttack).getHealth();
 
         // If player does no damage (?) then play a coresponding sound and do nothing
-        if (!toAttack.attackEntityFrom(DamageSource.causePlayerDamage(player), attack)) {
-            player.world.playSound((PlayerEntity) null, player.getPosX(), player.getPosY(), player.getPosZ(), SoundEvents.ENTITY_PLAYER_ATTACK_NODAMAGE, player.getSoundCategory(), 1.0F, 1.0F);
+        if (!toAttack.hurt(DamageSource.playerAttack(player), attack)) {
+            player.level.playSound((PlayerEntity) null, player.getX(), player.getY(), player.getZ(), SoundEvents.PLAYER_ATTACK_NODAMAGE, player.getSoundSource(), 1.0F, 1.0F);
             return;
         }
 
         Cultivationcraft.LOGGER.info("Attack succeeded...");
 
         // Play attack sound
-        player.world.playSound((PlayerEntity) null, player.getPosX(), player.getPosY(), player.getPosZ(), SoundEvents.ENTITY_PLAYER_ATTACK_STRONG, player.getSoundCategory(), 1.0F, 1.0F);
+        player.level.playSound((PlayerEntity) null, player.getX(), player.getY(), player.getZ(), SoundEvents.PLAYER_ATTACK_STRONG, player.getSoundSource(), 1.0F, 1.0F);
 
         // Apply knockback to attacked entity
         if (knockback > 0) {
             if (toAttack instanceof LivingEntity)
-                ((LivingEntity) toAttack).applyKnockback(knockback, (double) MathHelper.sin(player.rotationYaw * ((float) Math.PI / 180F)), (double) (-MathHelper.cos(player.rotationYaw * ((float) Math.PI / 180F))));
+                ((LivingEntity) toAttack).knockback(knockback, (double) MathHelper.sin(player.yRot * ((float) Math.PI / 180F)), (double) (-MathHelper.cos(player.yRot * ((float) Math.PI / 180F))));
             else
-                toAttack.addVelocity((double) (-MathHelper.sin(player.rotationYaw * ((float) Math.PI / 180F)) * knockback), 0.1D, (double) (MathHelper.cos(player.rotationYaw * ((float) Math.PI / 180F)) * knockback));
+                toAttack.push((double) (-MathHelper.sin(player.yRot * ((float) Math.PI / 180F)) * knockback), 0.1D, (double) (MathHelper.cos(player.yRot * ((float) Math.PI / 180F)) * knockback));
 
-            player.setMotion(player.getMotion().mul(0.6D, 1.0D, 0.6D));
+            player.setDeltaMovement(player.getDeltaMovement().multiply(0.6D, 1.0D, 0.6D));
             player.setSprinting(false);
         }
 
@@ -173,29 +173,29 @@ public class AttackTechnique extends Technique
                         }*/
 
         // If attacking a player and they were knockedback, send a packed to them telling them so
-        if (toAttack instanceof ServerPlayerEntity && toAttack.velocityChanged) {
-            ((ServerPlayerEntity) toAttack).connection.sendPacket(new SEntityVelocityPacket(toAttack));
-            toAttack.velocityChanged = false;
-            toAttack.setMotion(entityMotion);
+        if (toAttack instanceof ServerPlayerEntity && toAttack.hurtMarked) {
+            ((ServerPlayerEntity) toAttack).connection.send(new SEntityVelocityPacket(toAttack));
+            toAttack.hurtMarked = false;
+            toAttack.setDeltaMovement(entityMotion);
         }
 
         // Set the attacked entity as the last entity the player attacked
-        player.setLastAttackedEntity(toAttack);
+        player.setLastHurtMob(toAttack);
 
         // Apply any relevant thorn enchantments from the attacked entity
         if (toAttack instanceof LivingEntity)
-            EnchantmentHelper.applyThornEnchantments((LivingEntity) toAttack, player);
+            EnchantmentHelper.doPostHurtEffects((LivingEntity) toAttack, player);
 
 
         // If attacked entity took enough damage, spawn a damage indicator
         if (toAttack instanceof LivingEntity)
         {
             float rawDamage = entityHealth - ((LivingEntity) toAttack).getHealth();
-            player.addStat(Stats.DAMAGE_DEALT, Math.round(rawDamage * 10.0F));
+            player.awardStat(Stats.DAMAGE_DEALT, Math.round(rawDamage * 10.0F));
 
-            if (player.world instanceof ServerWorld && rawDamage > 2.0F) {
+            if (player.level instanceof ServerWorld && rawDamage > 2.0F) {
                 int k = (int) ((double) rawDamage * 0.5D);
-                ((ServerWorld) player.world).spawnParticle(ParticleTypes.DAMAGE_INDICATOR, toAttack.getPosX(), toAttack.getPosYHeight(0.5D), toAttack.getPosZ(), k, 0.1D, 0.0D, 0.1D, 0.2D);
+                ((ServerWorld) player.level).sendParticles(ParticleTypes.DAMAGE_INDICATOR, toAttack.getX(), toAttack.getY(0.5D), toAttack.getZ(), k, 0.1D, 0.0D, 0.1D, 0.2D);
             }
         }
     }

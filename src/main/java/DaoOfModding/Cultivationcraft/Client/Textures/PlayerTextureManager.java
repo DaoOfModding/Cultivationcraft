@@ -15,7 +15,7 @@ public class PlayerTextureManager
 
     public PlayerTextureManager(UUID playerID)
     {
-        addTexture(TextureList.skin, MultiLimbedRenderer.getSkin((ClientPlayerEntity)Minecraft.getInstance().world.getPlayerByUuid(playerID)));
+        addTexture(TextureList.skin, MultiLimbedRenderer.getSkin((ClientPlayerEntity)Minecraft.getInstance().level.getPlayerByUUID(playerID)));
     }
 
     public void addModel(String modelID, String textureID)

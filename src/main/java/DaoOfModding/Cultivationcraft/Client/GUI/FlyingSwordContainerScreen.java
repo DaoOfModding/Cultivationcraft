@@ -31,8 +31,8 @@ public class FlyingSwordContainerScreen extends ContainerScreen<FlyingSwordConta
     {
         super(container, playerInv, title);
 
-        xSize = 175;
-        ySize = 178;
+        imageWidth = 175;
+        imageHeight = 178;
     }
 
     @Override
@@ -40,14 +40,14 @@ public class FlyingSwordContainerScreen extends ContainerScreen<FlyingSwordConta
     {
         this.renderBackground(matrixStack);
         super.render(matrixStack, mouseX, mouseY, partialTicks);
-        this.renderHoveredTooltip(matrixStack, mouseX, mouseY);
+        this.renderTooltip(matrixStack, mouseX, mouseY);
     }
 
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int buttonPressed)
     {
-        int edgeSpacingX = (this.width - this.xSize) / 2;
-        int edgeSpacingY = (this.height - this.ySize) / 2;
+        int edgeSpacingX = (this.width - this.imageWidth) / 2;
+        int edgeSpacingY = (this.height - this.imageHeight) / 2;
 
         if (ScreenTabControl.mouseClick((int)mouseX, (int)mouseY, edgeSpacingX, edgeSpacingY, buttonPressed))
             return true;
@@ -59,7 +59,7 @@ public class FlyingSwordContainerScreen extends ContainerScreen<FlyingSwordConta
     }
 
     @Override
-    protected void drawGuiContainerForegroundLayer(MatrixStack matrixStack, int mouseX, int mouseY)
+    protected void renderLabels(MatrixStack matrixStack, int mouseX, int mouseY)
     {
         final float PLAYER_LABEL_XPOS = 8;
         final float PLAYER_LABEL_DISTANCE_FROM_BOTTOM = (96 - 2);
@@ -71,39 +71,39 @@ public class FlyingSwordContainerScreen extends ContainerScreen<FlyingSwordConta
 
         String testString = new TranslationTextComponent("cultivationcraft.gui.bind").getString();
 
-        float BAG_LABEL_XPOS = (xSize / 2.0F) - font.getStringWidth(testString) / 2.0F;
-        font.drawString(matrixStack, testString, BAG_LABEL_XPOS, BAG_LABEL_YPOS, Color.darkGray.getRGB());
+        float BAG_LABEL_XPOS = (imageHeight / 2.0F) - font.width(testString) / 2.0F;
+        font.draw(matrixStack, testString, BAG_LABEL_XPOS, BAG_LABEL_YPOS, Color.darkGray.getRGB());
 
-        float PLAYER_LABEL_YPOS = ySize - PLAYER_LABEL_DISTANCE_FROM_BOTTOM;
-        font.drawString(matrixStack, this.playerInventory.getDisplayName().getString(),
+        float PLAYER_LABEL_YPOS = imageHeight - PLAYER_LABEL_DISTANCE_FROM_BOTTOM;
+        font.draw(matrixStack, this.inventory.getDisplayName().getString(),
                 PLAYER_LABEL_XPOS, PLAYER_LABEL_YPOS, Color.darkGray.getRGB());
 
 
         String progress;
 
-        if (container.getBindPercent() == 1)
+        if (menu.getBindPercent() == 1)
             progress = new TranslationTextComponent("cultivationcraft.gui.done").getString();
-        else if (container.getBindPercent() == 0)
+        else if (menu.getBindPercent() == 0)
             progress = "";
         else
-            progress = new TranslationTextComponent("cultivationcraft.gui.remaining", (int)container.getBindTime()).getString();
+            progress = new TranslationTextComponent("cultivationcraft.gui.remaining", (int)menu.getBindTime()).getString();
 
-        font.drawString(matrixStack, progress, PROGRESS_LABEL_XPOS, PROGRESS_LABEL_YPOS, Color.darkGray.getRGB());
+        font.draw(matrixStack, progress, PROGRESS_LABEL_XPOS, PROGRESS_LABEL_YPOS, Color.darkGray.getRGB());
     }
 
     @Override
-    protected void drawGuiContainerBackgroundLayer(MatrixStack matrixStack, float partialTicks, int mouseX, int mouseY)
+    protected void renderBg(MatrixStack matrixStack, float partialTicks, int mouseX, int mouseY)
     {
         Minecraft mc = Minecraft.getInstance();
-        GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-        mc.getTextureManager().bindTexture(TEXTURE);
+        GlStateManager._color4f(1.0F, 1.0F, 1.0F, 1.0F);
+        mc.getTextureManager().bind(TEXTURE);
 
-        int edgeSpacingX = (this.width - this.xSize) / 2;
-        int edgeSpacingY = (this.height - this.ySize) / 2;
-        this.blit(matrixStack, edgeSpacingX, edgeSpacingY, 0, 0, this.xSize, this.ySize);
+        int edgeSpacingX = (this.width - this.imageWidth) / 2;
+        int edgeSpacingY = (this.height - this.imageHeight) / 2;
+        this.blit(matrixStack, edgeSpacingX, edgeSpacingY, 0, 0, this.imageWidth, this.imageHeight);
 
         // Draw the progress bar based on bind progress
-        float progress = container.getBindPercent() * PROGRESS_BAR_X_SIZE;
+        float progress = menu.getBindPercent() * PROGRESS_BAR_X_SIZE;
 
         // If progress is greater than 0 draw the progress bar
         if (progress > 0)

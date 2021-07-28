@@ -20,8 +20,8 @@ public class FrozenBlockRenderer extends TileEntityRenderer<FrozenTileEntity>
         BlockState blockstate = tileEntityIn.getFrozenBlock();
         Block block = blockstate.getBlock();
 
-        matrixStackIn.push();
+        matrixStackIn.pushPose();
 
-        matrixStackIn.pop();
+        matrixStackIn.popPose();
     }
 }

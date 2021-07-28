@@ -16,13 +16,13 @@ public class ClientBlockRegister
 {
     public static void registerBlockRenderers()
     {
-        RenderTypeLookup.setRenderLayer(BlockRegister.frozenBlock, RenderType.getTranslucent());
+        RenderTypeLookup.setRenderLayer(BlockRegister.frozenBlock, RenderType.translucent());
     }
 
     @SubscribeEvent
     public static void onModelBakeEvent(ModelBakeEvent event)
     {
-        for (BlockState blockState : BlockRegister.frozenBlock.getStateContainer().getValidStates())
-            event.getModelRegistry().put(BlockModelShapes.getModelLocation(blockState), new FrozenBlockBakedModel());
+        for (BlockState blockState : BlockRegister.frozenBlock.getStateDefinition().getPossibleStates())
+            event.getModelRegistry().put(BlockModelShapes.stateToModelLocation(blockState), new FrozenBlockBakedModel());
     }
 }

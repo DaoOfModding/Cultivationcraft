@@ -39,10 +39,10 @@ public class Misc
         // Create a small bounding box at the specified position then search for a list of entities at that location
         AxisAlignedBB scan = new AxisAlignedBB(pos.x - 0.1, pos.y - 0.1, pos.z - 0.1, pos.x + 0.1, pos.y + 0.1, pos.z + 0.1);
 
-        List<Entity> entities = targetWorld.getEntitiesWithinAABB(Entity.class, scan);
+        List<Entity> entities = targetWorld.getLoadedEntitiesOfClass(Entity.class, scan);
 
         if (!entities.isEmpty())
-            if (entities.get(0).canBeAttackedWithItem())
+            if (entities.get(0).isAttackable())
                 return entities.get(0);
 
         return null;
