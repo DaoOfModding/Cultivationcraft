@@ -13,6 +13,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.*;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.common.Mod;
 
 import java.util.HashMap;
@@ -24,7 +25,7 @@ public class ClientListeners
 
     public static void playerTick(TickEvent.PlayerTickEvent event)
     {
-        if (event.phase == TickEvent.Phase.START)
+        if (event.side == LogicalSide.CLIENT && event.phase == TickEvent.Phase.START)
         {
             // Tick through all active cultivator techniques
             ICultivatorTechniques techs = CultivatorTechniques.getCultivatorTechniques(event.player);
