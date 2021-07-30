@@ -1,5 +1,6 @@
 package DaoOfModding.Cultivationcraft.Client.Animations;
 
+import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import DaoOfModding.mlmanimator.Client.Poses.PlayerPoseHandler;
 import DaoOfModding.mlmanimator.Client.Poses.PoseHandler;
 import DaoOfModding.mlmanimator.Client.Models.*;
@@ -10,6 +11,7 @@ import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPart;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartNames;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartOption;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.player.AbstractClientPlayerEntity;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.renderer.entity.PlayerRenderer;
 
@@ -18,7 +20,7 @@ import java.util.Map;
 
 public class CultivatorModelHandler
 {
-    public static void updateModifications(ClientPlayerEntity player)
+    public static void updateModifications(AbstractClientPlayerEntity player)
     {
         IBodyModifications modifications = BodyModifications.getBodyModifications(player);
 
@@ -29,7 +31,7 @@ public class CultivatorModelHandler
     }
 
     // Update player model based on the supplied BodyModifications
-    public static void updateModel(ClientPlayerEntity player, IBodyModifications modifications)
+    public static void updateModel(AbstractClientPlayerEntity player, IBodyModifications modifications)
     {
         PlayerRenderer renderer = (PlayerRenderer)Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(player);
         PlayerPoseHandler handler = PoseHandler.getPlayerPoseHandler(player.getUUID());

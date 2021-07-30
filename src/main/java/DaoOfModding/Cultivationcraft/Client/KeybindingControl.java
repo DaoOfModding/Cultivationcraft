@@ -40,7 +40,7 @@ public class KeybindingControl
 
     public static void init()
     {
-        keyBindings = new KeyBinding[10];
+        keyBindings = new KeyBinding[4];
         keyBindings[0] = new KeyBinding("Switch Hotbar", GLFW_KEY_GRAVE_ACCENT, "Cultivation");
         keyBindings[1] = new KeyBinding("Flying Sword Target", GLFW_KEY_R, "Cultivation");
         keyBindings[2] = new KeyBinding("Flying Sword Recall", GLFW_KEY_O, "Cultivation");

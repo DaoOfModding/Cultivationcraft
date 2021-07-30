@@ -25,11 +25,11 @@ public class BiteTechnique extends AttackOverrideTechnique
 
         icon = new ResourceLocation(Cultivationcraft.MODID, "textures/techniques/icons/bite.png");
 
-        pose.addAngle(BodyPartModelNames.jawModelLower, new Vector3d(Math.toRadians(40), 0, 0), GenericQiPoses.attackPriority, 5f, -1);
+        pose.addAngle(BodyPartModelNames.jawModelLower, new Vector3d(Math.toRadians(40), 0, 0), GenericQiPoses.attackPriority-1, 5f, -1);
         attack.addAngle(BodyPartModelNames.jawModelLower, new Vector3d(Math.toRadians(20), 0, 0), GenericQiPoses.attackPriority, 0f, -1);
 
-        pose.addAngle(BodyPartModelNames.FPjawModel, new Vector3d(Math.toRadians(-50), 0, 0), GenericQiPoses.attackPriority, 5f, -1);
-        pose.addAngle(BodyPartModelNames.FPjawModelLower, new Vector3d(Math.toRadians(70), 0, 0), GenericQiPoses.attackPriority, 5f, -1);
+        pose.addAngle(BodyPartModelNames.FPjawModel, new Vector3d(Math.toRadians(-50), 0, 0), GenericQiPoses.attackPriority-1, 5f, -1);
+        pose.addAngle(BodyPartModelNames.FPjawModelLower, new Vector3d(Math.toRadians(70), 0, 0), GenericQiPoses.attackPriority-1, 5f, -1);
         attack.addAngle(BodyPartModelNames.FPjawModel, new Vector3d(Math.toRadians(0), 0, 0), GenericQiPoses.attackPriority, 0f, -1);
         attack.addAngle(BodyPartModelNames.FPjawModelLower, new Vector3d(Math.toRadians(20), 0, 0), GenericQiPoses.attackPriority, 0f, -1);
     }

@@ -2,6 +2,7 @@ package DaoOfModding.Cultivationcraft.Client.Textures;
 
 import DaoOfModding.mlmanimator.Client.MultiLimbedRenderer;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.player.AbstractClientPlayerEntity;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.util.ResourceLocation;
 
@@ -15,7 +16,7 @@ public class PlayerTextureManager
 
     public PlayerTextureManager(UUID playerID)
     {
-        addTexture(TextureList.skin, MultiLimbedRenderer.getSkin((ClientPlayerEntity)Minecraft.getInstance().level.getPlayerByUUID(playerID)));
+        addTexture(TextureList.skin, MultiLimbedRenderer.getSkin((AbstractClientPlayerEntity)Minecraft.getInstance().level.getPlayerByUUID(playerID)));
     }
 
     public void addModel(String modelID, String textureID)

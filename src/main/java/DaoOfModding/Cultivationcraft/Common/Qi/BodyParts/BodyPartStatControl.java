@@ -2,6 +2,7 @@ package DaoOfModding.Cultivationcraft.Common.Qi.BodyParts;
 
 import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.BodyModifications;
 import DaoOfModding.Cultivationcraft.Common.Qi.PlayerStatModifications;
+import net.minecraft.client.entity.player.AbstractClientPlayerEntity;
 import net.minecraft.entity.player.PlayerEntity;
 
 import java.util.HashMap;
@@ -43,7 +44,10 @@ public class BodyPartStatControl
         for (HashMap<String, BodyPartOption> options : BodyModifications.getBodyModifications(player).getModificationOptions().values())
         for (BodyPartOption part : options.values())
             {
-                part.onLoad(player.getUUID());
+                // Only do bodyPart onLoads on client
+                if (player instanceof AbstractClientPlayerEntity)
+                    part.onLoad(player.getUUID());
+
                 BodyPartStatControl.addStats(player.getUUID(), part.getStatChanges());
             }
     }

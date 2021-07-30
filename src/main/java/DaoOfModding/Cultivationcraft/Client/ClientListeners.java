@@ -1,5 +1,6 @@
 package DaoOfModding.Cultivationcraft.Client;
 
+import DaoOfModding.Cultivationcraft.Client.Animations.CultivatorModelHandler;
 import DaoOfModding.Cultivationcraft.Client.GUI.SkillHotbarOverlay;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.BodyModifications;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.IBodyModifications;
@@ -9,6 +10,10 @@ import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPart;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartOption;
 import DaoOfModding.mlmanimator.Client.Poses.GenericPoses;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.player.AbstractClientPlayerEntity;
+import net.minecraft.client.entity.player.ClientPlayerEntity;
+import net.minecraft.client.entity.player.RemoteClientPlayerEntity;
+import net.minecraft.util.Hand;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.*;
 import net.minecraftforge.event.TickEvent;
@@ -27,6 +32,9 @@ public class ClientListeners
     {
         if (event.side == LogicalSide.CLIENT && event.phase == TickEvent.Phase.START)
         {
+            // Update the cultivator model if needed
+            CultivatorModelHandler.updateModifications((AbstractClientPlayerEntity)event.player);
+
             // Tick through all active cultivator techniques
             ICultivatorTechniques techs = CultivatorTechniques.getCultivatorTechniques(event.player);
 
