@@ -64,12 +64,7 @@ public class LeapTechnique extends Technique
         if (active || leaping || !keyDown || !player.isOnGround() || player.isInWater())
             return;
 
-
-        PlayerPoseHandler handler = PoseHandler.getPlayerPoseHandler(player.getUUID());
-
-        // Only activate if player is not already jumping
-        if (handler != null && !handler.isJumping())
-            active = true;
+        active = true;
     }
 
     @Override
@@ -87,7 +82,7 @@ public class LeapTechnique extends Technique
     {
         super.tickClient(event);
 
-        continueTech(event);
+        continueTechClient(event);
     }
 
     // Start the leap if not already started, otherwise check if the technique has ended
@@ -100,13 +95,34 @@ public class LeapTechnique extends Technique
 
     }
 
+    // Start the leap if not already started, otherwise check if the technique has ended
+    private void continueTechClient(TickEvent.PlayerTickEvent event)
+    {
+        if (!leaping)
+            doLeapClient(event.player);
+        else
+            continueLeapClient(event.player);
+
+    }
+
     // Check if the leap has ended
     private void continueLeap(PlayerEntity player)
+    {
+        // If the player is no longer jumping turn the technique off
+        if (player.isOnGround() || player.isInWater())
+        {
+            active = false;
+            leaping = false;
+        }
+    }
+
+    // Check if the leap has ended
+    private void continueLeapClient(PlayerEntity player)
     {
         PlayerPoseHandler handler = PoseHandler.getPlayerPoseHandler(player.getUUID());
 
         // If the player is no longer jumping or the handler can't be loaded turn the technique off
-        if (handler == null || !handler.isJumping())
+        if (player.isInWater() || handler == null || !handler.isJumping())
         {
             active = false;
             leaping = false;
@@ -123,19 +139,16 @@ public class LeapTechnique extends Technique
     }
 
     // Do the leap
-    private void doLeap(PlayerEntity player)
+    private void doLeapClient(PlayerEntity player)
     {
-        PlayerPoseHandler handler = PoseHandler.getPlayerPoseHandler(player.getUUID());
-
-        // Cancel this leap if the handler can't be loaded
-        if (handler == null)
-        {
-            active = false;
-            return;
-        }
-
         leaping = true;
         player.setOnGround(false);
+
+        PlayerPoseHandler handler = PoseHandler.getPlayerPoseHandler(player.getUUID());
+
+        // If the player is already jumping or the handler is null do nothing
+        if (handler == null || handler.isJumping())
+            return;
 
         // Tell the handler that the player is jumping
         handler.setJumping(true);
@@ -149,6 +162,13 @@ public class LeapTechnique extends Technique
 
         // Move the player forward based on the jump power, as well as applying a height jump of 1 block
         player.setDeltaMovement(currentMotion.add(forward.x * jumpPower * 0.4f, 0.52f, forward.z * jumpPower * 0.4f));
+    }
+
+    // Do the leap
+    private void doLeap(PlayerEntity player)
+    {
+        leaping = true;
+        player.setOnGround(false);
     }
 
     @Override

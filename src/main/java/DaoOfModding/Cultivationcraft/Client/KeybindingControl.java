@@ -134,8 +134,8 @@ public class KeybindingControl
     @SubscribeEvent
     public static void onInput(InputEvent event)
     {
-        // Only perform if the world is loaded
-        if (Minecraft.getInstance().level != null)
+        // Only perform if the world is loaded and player is alive
+        if (Minecraft.getInstance().level != null && Minecraft.getInstance().player.isAlive())
         {
             handleHotbarKeybinds();
             handleHotbarInteracts();

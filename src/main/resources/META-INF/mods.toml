@@ -61,6 +61,6 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed mollis lacinia magn
 [[dependencies.cultivationcraft]]
     modId="mlmanimator"
     mandatory=true
-    versionRange="[0.0.1]"
+    versionRange="[0.0.2]"
     ordering="NONE"
     side="CLIENT"

@@ -1,10 +1,14 @@
 package DaoOfModding.Cultivationcraft.Client.Textures;
 
 import DaoOfModding.Cultivationcraft.Client.Animations.BodyPartModels;
+import DaoOfModding.Cultivationcraft.Client.Animations.CultivatorModelHandler;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.BodyModifications;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.IBodyModifications;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPart;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartOption;
+import DaoOfModding.mlmanimator.Client.MultiLimbedRenderer;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.player.AbstractClientPlayerEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ResourceLocation;
 
@@ -18,7 +22,7 @@ public class TextureManager
 
     private static void addPlayer(UUID playerID)
     {
-        playerTextures.put(playerID, new PlayerTextureManager(playerID));
+        playerTextures.put(playerID, new PlayerTextureManager());
     }
 
     private static PlayerTextureManager getTextureManager(UUID playerID)
@@ -26,7 +30,10 @@ public class TextureManager
         if (!playerTextures.containsKey(playerID))
             addPlayer(playerID);
 
-        return playerTextures.get(playerID);
+        PlayerTextureManager manager = playerTextures.get(playerID);
+        manager.update(playerID);
+
+        return manager;
     }
 
     public static void addTexture(UUID playerID, String textureID, ResourceLocation textureLocation)
@@ -37,6 +44,8 @@ public class TextureManager
     // Update the textures for each model
     public static void updateTextures(PlayerEntity player)
     {
+        BodyPartModels modelParts = CultivatorModelHandler.getPlayerModels(player.getUUID());
+
         IBodyModifications modifications = BodyModifications.getBodyModifications(player);
         PlayerTextureManager manager = getTextureManager(player.getUUID());
 
@@ -46,10 +55,10 @@ public class TextureManager
             ResourceLocation texture = manager.getTexture(part.getTextureID());
 
             for (String modelID : part.getModelIDs())
-                BodyPartModels.getModel(modelID).setCustomTextureForFamily(texture);
+                modelParts.getModel(modelID).setCustomTextureForFamily(texture);
 
             for (String modelID : part.getFirstPersonModelIDs())
-                BodyPartModels.getModel(modelID).setCustomTextureForFamily(texture);
+                modelParts.getModel(modelID).setCustomTextureForFamily(texture);
 
             // Loop through each body part option for this modification and set the appropriate texture
             for (BodyPartOption option : modifications.getModificationOptions(part.getPosition()).values())
@@ -58,7 +67,7 @@ public class TextureManager
 
                 for (ArrayList<String> models : option.getOptionModels().values())
                         for (String modelID : models)
-                            BodyPartModels.getModel(modelID).setCustomTextureForFamily(texture2);
+                            modelParts.getModel(modelID).setCustomTextureForFamily(texture2);
             }
         }
     }

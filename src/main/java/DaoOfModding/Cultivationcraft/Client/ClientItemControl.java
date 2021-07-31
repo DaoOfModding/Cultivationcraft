@@ -24,7 +24,6 @@ public class ClientItemControl
 
         ScreenManager.register(Register.ContainerTypeFlyingSword, FlyingSwordContainerScreen::new);
 
-        BodyPartModels.setupModels();
         setupDefaultBodyPartGUIs();
     }
 

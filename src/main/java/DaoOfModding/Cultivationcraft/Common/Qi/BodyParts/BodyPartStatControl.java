@@ -45,7 +45,7 @@ public class BodyPartStatControl
         for (BodyPartOption part : options.values())
             {
                 // Only do bodyPart onLoads on client
-                if (player instanceof AbstractClientPlayerEntity)
+                if (player.isLocalPlayer())
                     part.onLoad(player.getUUID());
 
                 BodyPartStatControl.addStats(player.getUUID(), part.getStatChanges());

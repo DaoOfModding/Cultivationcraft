@@ -29,7 +29,8 @@ public class CultivatorTechniques implements ICultivatorTechniques
     }
 
     // Return a specified players CultivatorTechniques
-    public static ICultivatorTechniques getCultivatorTechniques(PlayerEntity player) {
+    public static ICultivatorTechniques getCultivatorTechniques(PlayerEntity player)
+    {
         return player.getCapability(CultivatorTechniquesCapability.CULTIVATOR_TECHINQUES_CAPABILITY_CAPABILITY).orElseThrow(() -> new IllegalArgumentException("getting cultivator techniques"));
     }
 }

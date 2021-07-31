@@ -104,15 +104,11 @@ public class AttackTechnique extends Technique
     // Attack specified entity with specified player, server only
     public void attackEntity(PlayerEntity player, Entity toAttack)
     {
-        Cultivationcraft.LOGGER.info("Trying to attack...");
-
         if (!toAttack.isAttackable())
             return;
 
         if (toAttack.skipAttackInteraction(player))
             return;
-
-        Cultivationcraft.LOGGER.info("Attack allowed...");
 
         // Get attack range
         double range = getRange(player);

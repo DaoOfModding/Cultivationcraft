@@ -16,18 +16,36 @@ import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.renderer.entity.PlayerRenderer;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 public class CultivatorModelHandler
 {
+    private static HashMap<UUID, BodyPartModels> models = new HashMap<UUID, BodyPartModels>();
+
+    public static BodyPartModels getPlayerModels(UUID playerID)
+    {
+        if (!models.containsKey(playerID))
+            models.put(playerID, new BodyPartModels());
+
+        return models.get(playerID);
+    }
+
     public static void updateModifications(AbstractClientPlayerEntity player)
     {
         IBodyModifications modifications = BodyModifications.getBodyModifications(player);
 
         if (!modifications.hasUpdated())
+        {
+            // Update the model textures to be using the players textures before adding them to the players model
+            TextureManager.updateTextures(player);
             updateModel(player, modifications);
 
-        TextureManager.updateTextures(player);
+            // If player hasn't loaded their skin, then try to update again next tick
+            if (!player.isSkinLoaded())
+                modifications.setUpdated(false);
+        }
     }
 
     // Update player model based on the supplied BodyModifications
@@ -38,6 +56,8 @@ public class CultivatorModelHandler
 
         if (handler != null)
         {
+            BodyPartModels models = getPlayerModels(player.getUUID());
+
             // Create a new player model with the specified modifications
             MultiLimbedModel newModel = new MultiLimbedModel(renderer.getModel());
 
@@ -63,14 +83,14 @@ public class CultivatorModelHandler
 
                 for (String modelID : part.getModelIDs())
                 {
-                    ExtendableModelRenderer modelPart = BodyPartModels.getModel(modelID);
+                    ExtendableModelRenderer modelPart = models.getModel(modelID);
                     newModel.addLimb(modelID, modelPart);
 
                     // If this part is a base head model, set it as the model's view point
                     if (part.getPosition().equalsIgnoreCase(BodyPartNames.headPosition))
                         newModel.setViewPoint(modelPart);
 
-                    for (Map.Entry<String, ExtendableModelRenderer> entry : BodyPartModels.getReferences(modelID).entrySet())
+                    for (Map.Entry<String, ExtendableModelRenderer> entry : models.getReferences(modelID).entrySet())
                         newModel.addLimbReference(entry.getKey(), entry.getValue());
 
 
@@ -78,28 +98,28 @@ public class CultivatorModelHandler
                     for (BodyPartOption option : modifications.getModificationOptions(part.getPosition()).values())
                         for (String optionModels : option.getDefaultOptionModels())
                         {
-                            newModel.addLimb(optionModels, BodyPartModels.getModel(optionModels), newModel.getLimb(modelID));
+                            newModel.addLimb(optionModels, models.getModel(optionModels), modelID);
 
-                            for (Map.Entry<String, ExtendableModelRenderer> entry : BodyPartModels.getReferences(optionModels).entrySet())
+                            for (Map.Entry<String, ExtendableModelRenderer> entry : models.getReferences(optionModels).entrySet())
                                 newModel.addLimbReference(entry.getKey(), entry.getValue());
                         }
                 }
 
                 for (String modelID : part.getFirstPersonModelIDs())
                 {
-                    ExtendableModelRenderer modelPart = BodyPartModels.getModel(modelID);
+                    ExtendableModelRenderer modelPart = models.getModel(modelID);
                     newModel.addFirstPersonLimb(modelID, modelPart);
 
-                    for (Map.Entry<String, ExtendableModelRenderer> entry : BodyPartModels.getReferences(modelID).entrySet())
+                    for (Map.Entry<String, ExtendableModelRenderer> entry : models.getReferences(modelID).entrySet())
                         newModel.addLimbReference(entry.getKey(), entry.getValue());
 
                     // Add models for any valid options to this body part
                     for (BodyPartOption option : modifications.getModificationOptions(part.getPosition()).values())
                         for (String optionModels : option.getDefaultOptionModels())
                         {
-                            newModel.addLimb(optionModels, BodyPartModels.getModel(optionModels), newModel.getFirstPersonLimb(modelID));
+                            newModel.addLimb(optionModels, models.getModel(optionModels), modelID);
 
-                            for (Map.Entry<String, ExtendableModelRenderer> entry : BodyPartModels.getReferences(optionModels).entrySet())
+                            for (Map.Entry<String, ExtendableModelRenderer> entry : models.getReferences(optionModels).entrySet())
                                 newModel.addLimbReference(entry.getKey(), entry.getValue());
                         }
                 }
@@ -110,19 +130,15 @@ public class CultivatorModelHandler
                     {
                         // Get the ID of the model this model list is connected to
                         String baseModelID = optionModelCollections.getKey();
-                        ExtendableModelRenderer baseModel = newModel.getLimb(baseModelID);
-
-                        if (baseModel == null)
-                            baseModel = newModel.getFirstPersonLimb(baseModelID);
 
                         // If the model this collection is tied to exists
-                        if (baseModel != null)
+                        if (newModel.hasLimb(baseModelID))
                         {
                             for (String optionModels : optionModelCollections.getValue())
                             {
-                                newModel.addLimb(optionModels, BodyPartModels.getModel(optionModels), baseModel);
+                                newModel.addLimb(optionModels, models.getModel(optionModels), baseModelID);
 
-                                for (Map.Entry<String, ExtendableModelRenderer> entry : BodyPartModels.getReferences(optionModels).entrySet())
+                                for (Map.Entry<String, ExtendableModelRenderer> entry : models.getReferences(optionModels).entrySet())
                                     newModel.addLimbReference(entry.getKey(), entry.getValue());
                             }
                         }
@@ -139,7 +155,6 @@ public class CultivatorModelHandler
             handler.unlock();
 
             modifications.setUpdated(true);
-
         }
     }
 }

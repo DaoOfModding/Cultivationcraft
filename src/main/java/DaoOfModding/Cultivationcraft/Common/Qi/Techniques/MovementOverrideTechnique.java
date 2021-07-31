@@ -1,7 +1,10 @@
 package DaoOfModding.Cultivationcraft.Common.Qi.Techniques;
 
+import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import DaoOfModding.mlmanimator.Client.Poses.PlayerPose;
+import DaoOfModding.mlmanimator.Client.Poses.PlayerPoseHandler;
 import DaoOfModding.mlmanimator.Client.Poses.PoseHandler;
+import net.minecraft.client.entity.player.RemoteClientPlayerEntity;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraftforge.event.TickEvent;
 
@@ -22,9 +25,15 @@ public class MovementOverrideTechnique extends Technique
     {
         super.tickClient(event);
 
-        Vector3d motion = new Vector3d(event.player.getDeltaMovement().x, 0, event.player.getDeltaMovement().z);
+        Vector3d motion = PoseHandler.getMovement(event.player.getUUID());
+        motion.multiply(1, 0, 1);
 
-        double speed = motion.length();
+        double speed = motion.length() * 0.75;
+
+        Cultivationcraft.LOGGER.info(speed);
+
+        if (speed < 0)
+            speed = 0;
 
         // Determine if going in reverse or not
         if (speed > 0)

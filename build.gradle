@@ -12,7 +12,7 @@ buildscript {
 apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'maven-publish'
 
-version = '0.0.3'
+version = '0.0.4'
 group = 'daoofmodding.cultivationcraft'
 archivesBaseName = 'cultivationcraft'
 

@@ -7,16 +7,16 @@ import java.util.HashMap;
 
 public class BodyPartModels
 {
-    private static HashMap<String, ExtendableModelRenderer> models = new HashMap<String, ExtendableModelRenderer>();
-    private static HashMap<String, HashMap<String, ExtendableModelRenderer>> nonRenderingModels = new HashMap<String, HashMap<String, ExtendableModelRenderer>>();
+    private HashMap<String, ExtendableModelRenderer> models = new HashMap<String, ExtendableModelRenderer>();
+    private HashMap<String, HashMap<String, ExtendableModelRenderer>> nonRenderingModels = new HashMap<String, HashMap<String, ExtendableModelRenderer>>();
 
-    public static void setupModels()
+    public BodyPartModels()
     {
         setupHeadModels();
         setupLegModels();
     }
 
-    private static void setupHeadModels()
+    private void setupHeadModels()
     {
         defaultResizeModule semiHeadResizer = new defaultResizeModule(1, new Vector3d(0, 1, 0), new Vector3d(-4, -8, -4), new Vector3d(8, 5, 8), new Vector3d(0, 1, 1));
         defaultResizeModule jawResizer = new defaultResizeModule(1, new Vector3d(0, 0, 0), new Vector3d(-4, -1, -6), new Vector3d(8, 3, 8), new Vector3d(0, 1, 1));
@@ -64,13 +64,13 @@ public class BodyPartModels
         addReference(BodyPartModelNames.FPjawModel, BodyPartModelNames.FPjawModelLower, FPjawPart);
     }
 
-    private static void setupTeethModels()
+    private void setupTeethModels()
     {
         setupFlatTeethModels();
         setupSharpTeethModels();
     }
 
-    private static void setupFlatTeethModels()
+    private void setupFlatTeethModels()
     {
         // Create row of top teeth
         defaultResizeModule flatToothResizer = QiResizers.getTeethResizer(8, 7.8f, 1, 0.1f);
@@ -127,7 +127,7 @@ public class BodyPartModels
         addModel(BodyPartModelNames.flatToothLowerModel, flatToothPart);
     }
 
-    private static void setupSharpTeethModels()
+    private void setupSharpTeethModels()
     {
         // Create row of top teeth
         defaultResizeModule ToothResizer = QiResizers.getTeethResizer(8, 7.8f, 0.5f, 0.1f);
@@ -303,7 +303,7 @@ public class BodyPartModels
         addModel(BodyPartModelNames.sharpToothLowerModel, ToothPart);
     }
 
-    private static void setupLegModels()
+    private void setupLegModels()
     {
         defaultResizeModule reverseJointResizer = new defaultResizeModule(2, new Vector3d(0, 1, 0), new Vector3d(-1.99, 0, -1.99), new Vector3d(3.98, 10, 3.98), new Vector3d(0, 1, 1));
         defaultResizeModule footResizer = new defaultResizeModule(2, new Vector3d(0, 1, 0), new Vector3d(-1.99, 0, 0.01), new Vector3d(4, 2, 4), new Vector3d(0, 1, -1));
@@ -343,12 +343,12 @@ public class BodyPartModels
         addReference(BodyPartModelNames.reverseJointRightLegModel, BodyPartModelNames.reverseJointRightFootModel, rightFoot);
     }
 
-    public static void addModel(String ID, ExtendableModelRenderer model)
+    public void addModel(String ID, ExtendableModelRenderer model)
     {
         models.put(ID, model);
     }
 
-    public static void addReference(String ID, String referenceID, ExtendableModelRenderer model)
+    public void addReference(String ID, String referenceID, ExtendableModelRenderer model)
     {
         if (!nonRenderingModels.containsKey(ID))
             nonRenderingModels.put(ID, new HashMap<String, ExtendableModelRenderer>());
@@ -356,7 +356,7 @@ public class BodyPartModels
         nonRenderingModels.get(ID).put(referenceID, model);
     }
 
-    public static HashMap<String, ExtendableModelRenderer> getReferences(String ID)
+    public HashMap<String, ExtendableModelRenderer> getReferences(String ID)
     {
         if (!nonRenderingModels.containsKey(ID))
             nonRenderingModels.put(ID, new HashMap<String, ExtendableModelRenderer>());
@@ -365,7 +365,7 @@ public class BodyPartModels
     }
 
     // Returns the specified model
-    public static ExtendableModelRenderer getModel(String ID)
+    public ExtendableModelRenderer getModel(String ID)
     {
         return models.get(ID);
     }
