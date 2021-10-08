@@ -25,7 +25,7 @@ public class MovementOverrideTechnique extends Technique
     {
         super.tickClient(event);
 
-        Vector3d motion = PoseHandler.getMovement(event.player.getUUID());
+        Vector3d motion = event.player.getDeltaMovement();
         motion.multiply(1, 0, 1);
 
         double speed = motion.length() * 0.75;

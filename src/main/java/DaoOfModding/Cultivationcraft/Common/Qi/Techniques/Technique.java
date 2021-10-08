@@ -9,11 +9,19 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
+import net.minecraft.entity.ai.attributes.ModifiableAttributeInstance;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.potion.Effect;
+import net.minecraft.potion.EffectInstance;
+import net.minecraft.potion.Effects;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.event.TickEvent;
+
+import java.util.ArrayList;
 
 public class Technique
 {
@@ -42,6 +50,10 @@ public class Technique
     protected int currentChannel = 0;
 
     protected PlayerPose pose = new PlayerPose();
+
+    protected ArrayList<AttributeModifier> modifiers = new ArrayList<AttributeModifier>();
+    protected ArrayList<Effect> effects = new ArrayList<Effect>();
+
 
     public Technique()
     {
@@ -108,9 +120,9 @@ public class Technique
                 onRelease(player);
 
             if (!keyDown)
-                deactivate();
+                deactivate(player);
             else if (keyDown && !active)
-                activate();
+                activate(player);
         }
         else if (type == useType.Toggle)
         {
@@ -118,27 +130,56 @@ public class Technique
             if (!keyDown)
             {
                 if (active)
-                    deactivate();
+                    deactivate(player);
                 else
-                    activate();
+                    activate(player);
             }
         }
         // Skill is turned on when the key is pressed (custom code to deactivate)
         else if (type == useType.Tap)
             if (keyDown)
-                activate();
+                activate(player);
     }
 
-    public void activate()
+    public void activate(PlayerEntity player)
     {
+        addModifiers(player);
+
         active = true;
     }
 
-    public void deactivate()
+    public void deactivate(PlayerEntity player)
     {
+        removeModifiers(player);
+
         active = false;
         cooldownCount = cooldown;
         currentChannel = 0;
+    }
+
+    private void addModifiers(PlayerEntity player)
+    {
+        ModifiableAttributeInstance modifierInstance = player.getAttribute(net.minecraftforge.common.ForgeMod.ENTITY_GRAVITY.get());
+
+        for (AttributeModifier modifier : modifiers)
+            if (!modifierInstance.hasModifier(modifier))
+                modifierInstance.addTransientModifier(modifier);
+
+        for (Effect effect : effects)
+            if (!player.hasEffect(effect))
+                player.addEffect(new EffectInstance(effect, 9999999));
+    }
+
+    private void removeModifiers(PlayerEntity player)
+    {
+        ModifiableAttributeInstance modifierInstance = player.getAttribute(net.minecraftforge.common.ForgeMod.ENTITY_GRAVITY.get());
+
+        for (AttributeModifier modifier : modifiers)
+            modifierInstance.removeModifier(modifier);
+
+        for (Effect effect : effects)
+            if (player.hasEffect(effect))
+                player.removeEffect(effect);
     }
 
     // Called when the use key is released for a channel skill
@@ -219,9 +260,17 @@ public class Technique
         setActive(buffer.readBoolean());
     }
 
+    // Triggers clients side only
+    // Only triggers if the technique is active and set by the player
+    public void onInput()
+    {
+    }
+
     // Ticks on server side, only called if Technique is active and owned by the player
     public void tickServer(TickEvent.PlayerTickEvent event)
     {
+        addModifiers(event.player);
+
         // While the key is being held down increase the currentChannel duration
         if (type == useType.Channel)
             if (currentChannel < channelLength)
@@ -231,6 +280,8 @@ public class Technique
     // Ticks on client side, only called if Technique is active
     public void tickClient(TickEvent.PlayerTickEvent event)
     {
+        addModifiers(event.player);
+
         // While the key is being held down increase the currentChannel duration
         if (type == useType.Channel)
             if (currentChannel < channelLength)

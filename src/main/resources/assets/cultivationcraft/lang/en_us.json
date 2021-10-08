@@ -29,6 +29,9 @@
 
   "cultivationcraft.gui.bodypart.skin": "Skin",
   "cultivationcraft.gui.bodypart.bone": "Bones",
+  "cultivationcraft.gui.bodypart.back": "Back",
+
+  "cultivationcraft.gui.bodypart.back.wings": "Wings",
 
   "cultivationcraft.gui.headpart.jaw": "Unhinged Jaw",
 
@@ -49,5 +52,6 @@
 
   "cultivationcraft.technique.leap": "Leap",
   "cultivationcraft.technique.bite": "Bite",
-  "cultivationcraft.technique.roll": "Roll"
+  "cultivationcraft.technique.roll": "Roll",
+  "cultivationcraft.technique.spread": "Spread Wings"
 }

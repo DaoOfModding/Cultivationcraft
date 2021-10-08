@@ -39,9 +39,19 @@ public class GenericQiPoses
         Idle.addAngle(BodyPartModelNames.reverseJointRightLegLowerModel, new Vector3d(Math.toRadians(-60), 0, 0), 0);
         Idle.addAngle(BodyPartModelNames.reverseJointRightFootModel, new Vector3d(Math.toRadians(30), 0, 0), 0);
 
-
+        // Mouth closed
         Idle.addAngle(BodyPartModelNames.FPjawModel, new Vector3d(Math.toRadians(-80), 0, 0), 1);
         Idle.addAngle(BodyPartModelNames.FPjawModelLower, new Vector3d(Math.toRadians(160), 0, 0), 1);
+
+        // Wings folded
+        Idle.addAngle(BodyPartModelNames.wingUpperArmModel, new Vector3d(0, 0, Math.toRadians(70)), 1);
+        Idle.addAngle(BodyPartModelNames.wingLowerArmModel, new Vector3d(0, 0, Math.toRadians(-160)), 1);
+
+        Idle.addAngle(BodyPartModelNames.wingStrand1Model, new Vector3d(0, 0, Math.toRadians(50)), 1);
+        Idle.addAngle(BodyPartModelNames.wingStrand2Model, new Vector3d(0, 0, Math.toRadians(60)), 1);
+        Idle.addAngle(BodyPartModelNames.wingStrand3Model, new Vector3d(0, 0, Math.toRadians(70)), 1);
+        Idle.addAngle(BodyPartModelNames.wingStrand4Model, new Vector3d(0, 0, Math.toRadians(80)), 1);
+
 
         GenericPoses.addToIdle(Idle);
     }

@@ -2,6 +2,7 @@ package DaoOfModding.Cultivationcraft.Client;
 
 import DaoOfModding.Cultivationcraft.Client.GUI.SkillHotbarOverlay;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.CultivatorTechniques;
+import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.ICultivatorTechniques;
 import DaoOfModding.Cultivationcraft.Common.Misc;
 import DaoOfModding.Cultivationcraft.Common.Qi.CultivatorControl;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.AttackOverrideTechnique;
@@ -93,6 +94,18 @@ public class KeybindingControl
         }
     }
 
+    public static void handleSkillKeyPresses()
+    {
+        // Tell all active techniques that a button has been pressed
+
+        ICultivatorTechniques techs = CultivatorTechniques.getCultivatorTechniques(Minecraft.getInstance().player);
+
+        for (int i = 0; i < CultivatorTechniques.numberOfTechniques; i++)
+            if (techs.getTechnique(i) != null)
+                if (techs.getTechnique(i).isActive())
+                    techs.getTechnique(i).onInput();
+    }
+
     public static void handleAttackOverrides()
     {
         // If something is held in the players hand do nothing
@@ -140,6 +153,7 @@ public class KeybindingControl
             handleHotbarKeybinds();
             handleHotbarInteracts();
             handleAttackOverrides();
+            handleSkillKeyPresses();
 
             if (keyBindings[0].isDown())
             {

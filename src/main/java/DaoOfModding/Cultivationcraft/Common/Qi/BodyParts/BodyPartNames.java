@@ -4,6 +4,7 @@ import DaoOfModding.Cultivationcraft.Client.Animations.BodyPartModelNames;
 import DaoOfModding.Cultivationcraft.Client.Animations.BodyPartModels;
 import DaoOfModding.Cultivationcraft.Client.Textures.TextureList;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
+import DaoOfModding.mlmanimator.mlmanimator;
 import javafx.util.Pair;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -18,6 +19,7 @@ public class BodyPartNames
     // PARTS
     public static final String jawPart = "jaw";
     public static final String reverseJointLegPart = "rjleg";
+    public static final String reinforcedBodyPart = "rbody";
 
     // OPTIONS
     public static final String reinforcePart = "reinforce";
@@ -25,6 +27,7 @@ public class BodyPartNames
     public static final String startingEyesPart = "qisight";
     public static final String flatTeethPart = "flatteeth";
     public static final String sharpTeethPart = "sharpteeth";
+    public static final String wingPart = "wing";
 
     // DEFAULTS
     public static final String DefaultLeftArm = "armleft";
@@ -47,6 +50,7 @@ public class BodyPartNames
     public static final String mouthSubPosition = "MOUTH";
     public static final String skinSubPosition = "SKIN";
     public static final String boneSubPosition = "BONE";
+    public static final String backSubPosition = "BACK";
 
 
     private static ArrayList<BodyPart> parts = new ArrayList<BodyPart>();
@@ -65,9 +69,11 @@ public class BodyPartNames
 
         addSubPartDisplayName(bodyPosition, skinSubPosition, "cultivationcraft.gui.bodypart.skin");
         addSubPartDisplayName(bodyPosition, boneSubPosition, "cultivationcraft.gui.bodypart.bone");
+        addSubPartDisplayName(bodyPosition, backSubPosition, "cultivationcraft.gui.bodypart.back");
         addSubPartDisplayName(headPosition, eyeSubPosition, "cultivationcraft.gui.headpart.eye");
         addSubPartDisplayName(headPosition, mouthSubPosition, "cultivationcraft.gui.headpart.mouth");
 
+        setupBodyParts();
         setupBodyOptions();
 
         setupHeadParts();
@@ -80,9 +86,36 @@ public class BodyPartNames
     {
         BodyPartOption reinforceBones = new BodyPartOption(reinforcePart, bodyPosition, boneSubPosition,  "cultivationcraft.gui.generic.reinforce", 1000);
         reinforceBones.addTextureChange(TextureList.bone, new ResourceLocation(Cultivationcraft.MODID, "textures/models/bone/bone.png"));
-        reinforceBones.addNeededPart(BodyPartNames.startingEyesPart);
+        reinforceBones.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.basePosition);
 
         addOption(reinforceBones);
+
+        setupBackOptions();
+    }
+
+
+    private static void setupBackOptions()
+    {
+        BodyPartOption addWings = new BodyPartOption(wingPart, bodyPosition, backSubPosition,  "cultivationcraft.gui.bodypart.back.wings", 1000);
+        addWings.addModel(BodyPartModelNames.wingUpperArmModel);
+        addWings.addQuad(BodyPartModelNames.wing12quad);
+        addWings.addQuad(BodyPartModelNames.wing23quad);
+        addWings.addQuad(BodyPartModelNames.wing34quad);
+        addWings.addQuad(BodyPartModelNames.wing45quad);
+        addWings.addQuad(BodyPartModelNames.wing46quad);
+        addWings.setTexture(TextureList.bone);
+        addWings.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.basePosition);
+
+        addOption(addWings);
+    }
+
+    private static void setupBodyParts()
+    {
+        BodyPart reinforce = new BodyPart(reinforcedBodyPart, bodyPosition, "cultivationcraft.gui.generic.reinforce", 1000);
+        reinforce.addModel(BodyPartModelNames.reinforcedBodyModel);
+        reinforce.addNeededPart(BodyPartNames.startingEyesPart);
+
+        addPart(reinforce);
     }
 
     private static void setupHeadParts()

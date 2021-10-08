@@ -1,6 +1,7 @@
 package DaoOfModding.Cultivationcraft.Client.Animations;
 
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
+import DaoOfModding.mlmanimator.Client.Models.Quads.Quad;
 import DaoOfModding.mlmanimator.Client.Poses.PlayerPoseHandler;
 import DaoOfModding.mlmanimator.Client.Poses.PoseHandler;
 import DaoOfModding.mlmanimator.Client.Models.*;
@@ -63,7 +64,7 @@ public class CultivatorModelHandler
 
             for (BodyPart part : modifications.getModifications().values())
             {
-                // Remove arms and legs if the they have been replaced
+                // Remove vanilla body parts if the they have been replaced
                 if (part.getPosition().equalsIgnoreCase(BodyPartNames.armPosition))
                 {
                     newModel.removeLimb(GenericLimbNames.rightArm);
@@ -80,29 +81,46 @@ public class CultivatorModelHandler
                 }
                 else if (part.getPosition().equalsIgnoreCase(BodyPartNames.headPosition))
                     newModel.removeLimb(GenericLimbNames.head);
+                else if (part.getPosition().equalsIgnoreCase(BodyPartNames.bodyPosition))
+                    newModel.removeLimb(GenericLimbNames.body);
 
                 for (String modelID : part.getModelIDs())
                 {
                     ExtendableModelRenderer modelPart = models.getModel(modelID);
-                    newModel.addLimb(modelID, modelPart);
+
+                    // Set as the body if this is a body part
+                    if (part.getPosition().equalsIgnoreCase(BodyPartNames.bodyPosition))
+                        newModel.addBody(modelPart);
+                    else
+                        newModel.addLimb(modelID, modelPart);
 
                     // If this part is a base head model, set it as the model's view point
                     if (part.getPosition().equalsIgnoreCase(BodyPartNames.headPosition))
-                        newModel.setViewPoint(modelPart);
+                         newModel.setViewPoint(modelPart);
 
                     for (Map.Entry<String, ExtendableModelRenderer> entry : models.getReferences(modelID).entrySet())
                         newModel.addLimbReference(entry.getKey(), entry.getValue());
 
-
                     // Add models for any valid options to this body part
                     for (BodyPartOption option : modifications.getModificationOptions(part.getPosition()).values())
-                        for (String optionModels : option.getDefaultOptionModels())
-                        {
-                            newModel.addLimb(optionModels, models.getModel(optionModels), modelID);
+                    {
+                        for (String optionModels : option.getDefaultOptionModels()) {
+                            // Add to the body if the base part is a body part, otherwise reference the base modelID
+                            if (part.getPosition().equalsIgnoreCase(BodyPartNames.bodyPosition))
+                                newModel.addLimb(optionModels, models.getModel(optionModels));
+                            else
+                                newModel.addLimb(optionModels, models.getModel(optionModels), modelID);
 
                             for (Map.Entry<String, ExtendableModelRenderer> entry : models.getReferences(optionModels).entrySet())
                                 newModel.addLimbReference(entry.getKey(), entry.getValue());
                         }
+
+                        for (String quadID : option.getQuadIDs())
+                        {
+                            Quad quad = models.getQuad(quadID);
+                            newModel.getBody().addQuad(quad);
+                        }
+                    }
                 }
 
                 for (String modelID : part.getFirstPersonModelIDs())
@@ -143,6 +161,14 @@ public class CultivatorModelHandler
                             }
                         }
                     }
+
+
+                for (String quadID : part.getQuadIDs())
+                {
+                    Quad quad = models.getQuad(quadID);
+                    newModel.getBody().addQuad(quad);
+                }
+
             }
 
             // Lock the handler so it can be modified without other threads messing with it

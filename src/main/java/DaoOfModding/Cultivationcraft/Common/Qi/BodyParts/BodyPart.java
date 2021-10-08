@@ -8,6 +8,7 @@ import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.Cultiva
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.ICultivatorStats;
 import DaoOfModding.Cultivationcraft.Common.Qi.CultivationTypes;
 import DaoOfModding.Cultivationcraft.Common.Qi.PlayerStatModifications;
+import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import javafx.util.Pair;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ResourceLocation;
@@ -22,6 +23,7 @@ public class BodyPart
 {
     private String ID;
     private ArrayList<String> modelIDs = new ArrayList<String>();
+    private ArrayList<String> quadIDs = new ArrayList<String>();
     private ArrayList<String> firstPersonModelIDs = new ArrayList<String>();
     private String limbPosition;
     private String displayNamePosition;
@@ -49,6 +51,11 @@ public class BodyPart
     public void addModel(String modelID)
     {
         modelIDs.add(modelID);
+    }
+
+    public void addQuad(String quadID)
+    {
+        quadIDs.add(quadID);
     }
 
     public void addFirstPersonModel(String modelID)
@@ -99,6 +106,11 @@ public class BodyPart
     public ArrayList<String> getModelIDs()
     {
         return modelIDs;
+    }
+
+    public ArrayList<String> getQuadIDs()
+    {
+        return quadIDs;
     }
 
     public ArrayList<String> getFirstPersonModelIDs()
