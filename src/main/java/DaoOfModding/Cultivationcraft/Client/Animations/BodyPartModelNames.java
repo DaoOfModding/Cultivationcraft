@@ -25,15 +25,17 @@ public class BodyPartModelNames
     public static final String reverseJointRightFootModel = "RJL_RIGHT_FOOT_MODEL";
 
 
-    public static final String wingUpperArmModel = "WING_UPPER_ARM_MODEL";
-    public static final String wingLowerArmModel = "WING_LOWER_ARM_MODEL";
-    public static final String wingStrand1Model = "WING_STRAND_1_MODEL";
-    public static final String wingStrand2Model = "WING_STRAND_2_MODEL";
-    public static final String wingStrand3Model = "WING_STRAND_3_MODEL";
-    public static final String wingStrand4Model = "WING_STRAND_4_MODEL";
-    public static final String wing12quad = "WING_1_2_QUAD";
-    public static final String wing23quad = "WING_2_3_QUAD";
-    public static final String wing34quad = "WING_3_4_QUAD";
-    public static final String wing45quad = "WING_4_5_QUAD";
-    public static final String wing46quad = "WING_4_6_QUAD";
+    public static final String lwingUpperArmModel = "LEFT_WING_UPPER_ARM_MODEL";
+    public static final String lwingStrand1Model = "LEFT_WING_STRAND_1_MODEL";
+    public static final String lwingStrand2Model = "LEFT_WING_STRAND_2_MODEL";
+    public static final String lwingStrand3Model = "LEFT_WING_STRAND_3_MODEL";
+    public static final String lwingStrand4Model = "LEFT_WING_STRAND_4_MODEL";
+
+    public static final String rwingUpperArmModel = "RIGHT_WING_UPPER_ARM_MODEL";
+    public static final String rwingStrand1Model = "RIGHT_WING_STRAND_1_MODEL";
+    public static final String rwingStrand2Model = "RIGHT_WING_STRAND_2_MODEL";
+    public static final String rwingStrand3Model = "RIGHT_WING_STRAND_3_MODEL";
+    public static final String rwingStrand4Model = "RIGHT_WING_STRAND_4_MODEL";
+
+    public static final String wingquad = "WING_QUADS";
 }

@@ -97,12 +97,9 @@ public class BodyPartNames
     private static void setupBackOptions()
     {
         BodyPartOption addWings = new BodyPartOption(wingPart, bodyPosition, backSubPosition,  "cultivationcraft.gui.bodypart.back.wings", 1000);
-        addWings.addModel(BodyPartModelNames.wingUpperArmModel);
-        addWings.addQuad(BodyPartModelNames.wing12quad);
-        addWings.addQuad(BodyPartModelNames.wing23quad);
-        addWings.addQuad(BodyPartModelNames.wing34quad);
-        addWings.addQuad(BodyPartModelNames.wing45quad);
-        addWings.addQuad(BodyPartModelNames.wing46quad);
+        addWings.addModel(BodyPartModelNames.rwingUpperArmModel);
+        addWings.addModel(BodyPartModelNames.lwingUpperArmModel);
+        addWings.addQuad(BodyPartModelNames.wingquad);
         addWings.setTexture(TextureList.bone);
         addWings.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.basePosition);
 

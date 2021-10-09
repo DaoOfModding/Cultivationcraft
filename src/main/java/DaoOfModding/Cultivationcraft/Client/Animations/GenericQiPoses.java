@@ -44,14 +44,18 @@ public class GenericQiPoses
         Idle.addAngle(BodyPartModelNames.FPjawModelLower, new Vector3d(Math.toRadians(160), 0, 0), 1);
 
         // Wings folded
-        Idle.addAngle(BodyPartModelNames.wingUpperArmModel, new Vector3d(0, 0, Math.toRadians(70)), 1);
-        Idle.addAngle(BodyPartModelNames.wingLowerArmModel, new Vector3d(0, 0, Math.toRadians(-160)), 1);
+        Idle.addAngle(BodyPartModelNames.rwingUpperArmModel, new Vector3d(Math.toRadians(35), Math.toRadians(-15), Math.toRadians(-70)), 0);
+        Idle.addAngle(BodyPartModelNames.lwingUpperArmModel, new Vector3d(Math.toRadians(35), Math.toRadians(15), Math.toRadians(70)), 0);
 
-        Idle.addAngle(BodyPartModelNames.wingStrand1Model, new Vector3d(0, 0, Math.toRadians(50)), 1);
-        Idle.addAngle(BodyPartModelNames.wingStrand2Model, new Vector3d(0, 0, Math.toRadians(60)), 1);
-        Idle.addAngle(BodyPartModelNames.wingStrand3Model, new Vector3d(0, 0, Math.toRadians(70)), 1);
-        Idle.addAngle(BodyPartModelNames.wingStrand4Model, new Vector3d(0, 0, Math.toRadians(80)), 1);
+        Idle.addAngle(BodyPartModelNames.rwingStrand1Model, new Vector3d(0, 0, Math.toRadians(50)), 0);
+        Idle.addAngle(BodyPartModelNames.rwingStrand2Model, new Vector3d(0, 0, Math.toRadians(60)), 0);
+        Idle.addAngle(BodyPartModelNames.rwingStrand3Model, new Vector3d(0, 0, Math.toRadians(70)), 0);
+        Idle.addAngle(BodyPartModelNames.rwingStrand4Model, new Vector3d(0, 0, Math.toRadians(80)), 0);
 
+        Idle.addAngle(BodyPartModelNames.lwingStrand1Model, new Vector3d(0, 0, Math.toRadians(-50)), 0);
+        Idle.addAngle(BodyPartModelNames.lwingStrand2Model, new Vector3d(0, 0, Math.toRadians(-60)), 0);
+        Idle.addAngle(BodyPartModelNames.lwingStrand3Model, new Vector3d(0, 0, Math.toRadians(-70)), 0);
+        Idle.addAngle(BodyPartModelNames.lwingStrand4Model, new Vector3d(0, 0, Math.toRadians(-80)), 0);
 
         GenericPoses.addToIdle(Idle);
     }

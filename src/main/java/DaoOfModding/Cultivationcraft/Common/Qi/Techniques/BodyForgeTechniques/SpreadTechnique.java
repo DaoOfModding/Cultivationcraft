@@ -8,6 +8,7 @@ import DaoOfModding.Cultivationcraft.Common.Qi.CultivationTypes;
 import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.Technique;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
+import DaoOfModding.mlmanimator.Client.Models.GenericLimbNames;
 import DaoOfModding.mlmanimator.Client.Poses.PlayerPose;
 import DaoOfModding.mlmanimator.Client.Poses.PoseHandler;
 import net.minecraft.client.Minecraft;
@@ -27,6 +28,8 @@ public class SpreadTechnique extends Technique
     private PlayerPose flapUp = new PlayerPose();
     private PlayerPose flapDown = new PlayerPose();
 
+    private PlayerPose inAir = new PlayerPose();
+
     public SpreadTechnique()
     {
         name = new TranslationTextComponent("cultivationcraft.technique.spread").getString();
@@ -39,19 +42,49 @@ public class SpreadTechnique extends Technique
 
         icon = new ResourceLocation(Cultivationcraft.MODID, "textures/techniques/icons/wingspread.png");
 
-        pose.addAngle(BodyPartModelNames.wingUpperArmModel, new Vector3d(Math.toRadians(45), 0, Math.toRadians(-25)), 1);
-        pose.addAngle(BodyPartModelNames.wingLowerArmModel, new Vector3d(0, 0, Math.toRadians(0)), 1);
+        pose.addAngle(BodyPartModelNames.rwingUpperArmModel, new Vector3d(Math.toRadians(45), Math.toRadians(-35), Math.toRadians(-25)), 1);
+        pose.addAngle(BodyPartModelNames.lwingUpperArmModel, new Vector3d(Math.toRadians(45), Math.toRadians(35), Math.toRadians(25)), 1);
 
-        pose.addAngle(BodyPartModelNames.wingStrand1Model, new Vector3d(0, 0, Math.toRadians(-70)), 1);
-        pose.addAngle(BodyPartModelNames.wingStrand2Model, new Vector3d(0, 0, Math.toRadians(-20)), 1);
-        pose.addAngle(BodyPartModelNames.wingStrand3Model, new Vector3d(0, 0, Math.toRadians(20)), 1);
-        pose.addAngle(BodyPartModelNames.wingStrand4Model, new Vector3d(0, 0, Math.toRadians(60)), 1);
+        pose.addAngle(BodyPartModelNames.rwingStrand1Model, new Vector3d(0, 0, Math.toRadians(-70)), 1);
+        pose.addAngle(BodyPartModelNames.rwingStrand2Model, new Vector3d(0, 0, Math.toRadians(-20)), 1);
+        pose.addAngle(BodyPartModelNames.rwingStrand3Model, new Vector3d(0, 0, Math.toRadians(20)), 1);
+        pose.addAngle(BodyPartModelNames.rwingStrand4Model, new Vector3d(0, 0, Math.toRadians(60)), 1);
+
+        pose.addAngle(BodyPartModelNames.lwingStrand1Model, new Vector3d(0, 0, Math.toRadians(70)), 1);
+        pose.addAngle(BodyPartModelNames.lwingStrand2Model, new Vector3d(0, 0, Math.toRadians(20)), 1);
+        pose.addAngle(BodyPartModelNames.lwingStrand3Model, new Vector3d(0, 0, Math.toRadians(-20)), 1);
+        pose.addAngle(BodyPartModelNames.lwingStrand4Model, new Vector3d(0, 0, Math.toRadians(-60)), 1);
 
 
-        flapUp.addAngle(BodyPartModelNames.wingUpperArmModel, new Vector3d(Math.toRadians(45), 0, Math.toRadians(-50)), 5, 3f, -1);
-        flapUp.addAngle(BodyPartModelNames.wingLowerArmModel, new Vector3d(0, 0, Math.toRadians(15)), 5, 3f, -1);
-        flapDown.addAngle(BodyPartModelNames.wingUpperArmModel, new Vector3d(Math.toRadians(45), 0, Math.toRadians(25)), 5);
-        flapDown.addAngle(BodyPartModelNames.wingLowerArmModel, new Vector3d(0, 0, Math.toRadians(-15)), 5);
+        flapUp.addAngle(BodyPartModelNames.rwingUpperArmModel, new Vector3d(Math.toRadians(45), Math.toRadians(-75), Math.toRadians(-25)), 5, 3f, -1);
+        flapUp.addAngle(BodyPartModelNames.lwingUpperArmModel, new Vector3d(Math.toRadians(45), Math.toRadians(75), Math.toRadians(25)), 5, 3f, -1);
+        flapDown.addAngle(BodyPartModelNames.rwingUpperArmModel, new Vector3d(Math.toRadians(45), Math.toRadians(0), Math.toRadians(-15)), 5);
+        flapDown.addAngle(BodyPartModelNames.lwingUpperArmModel, new Vector3d(Math.toRadians(45), Math.toRadians(0), Math.toRadians(15)), 5);
+
+        flapUp.addAngle(BodyPartModelNames.rwingStrand1Model, new Vector3d(Math.toRadians(-45), 0, Math.toRadians(-70)), 5);
+        flapUp.addAngle(BodyPartModelNames.rwingStrand2Model, new Vector3d(Math.toRadians(-35), 0, Math.toRadians(-20)), 5);
+        flapUp.addAngle(BodyPartModelNames.rwingStrand3Model, new Vector3d(Math.toRadians(-25), 0, Math.toRadians(20)), 5);
+        flapUp.addAngle(BodyPartModelNames.rwingStrand4Model, new Vector3d(Math.toRadians(-15), 0, Math.toRadians(60)), 5);
+
+        flapDown.addAngle(BodyPartModelNames.rwingStrand1Model, new Vector3d(Math.toRadians(-20), 0, Math.toRadians(-70)), 5);
+        flapDown.addAngle(BodyPartModelNames.rwingStrand2Model, new Vector3d(Math.toRadians(-15), 0, Math.toRadians(-20)), 5);
+        flapDown.addAngle(BodyPartModelNames.rwingStrand3Model, new Vector3d(Math.toRadians(-10), 0, Math.toRadians(20)), 5);
+        flapDown.addAngle(BodyPartModelNames.rwingStrand4Model, new Vector3d(Math.toRadians(-5), 0, Math.toRadians(60)), 5);
+
+        flapUp.addAngle(BodyPartModelNames.lwingStrand1Model, new Vector3d(Math.toRadians(-45), 0, Math.toRadians(70)), 5);
+        flapUp.addAngle(BodyPartModelNames.lwingStrand2Model, new Vector3d(Math.toRadians(-35), 0, Math.toRadians(20)), 5);
+        flapUp.addAngle(BodyPartModelNames.lwingStrand3Model, new Vector3d(Math.toRadians(-25), 0, Math.toRadians(-20)), 5);
+        flapUp.addAngle(BodyPartModelNames.lwingStrand4Model, new Vector3d(Math.toRadians(-15), 0, Math.toRadians(-60)), 5);
+
+        flapDown.addAngle(BodyPartModelNames.lwingStrand1Model, new Vector3d(Math.toRadians(-20), 0, Math.toRadians(70)), 5);
+        flapDown.addAngle(BodyPartModelNames.lwingStrand2Model, new Vector3d(Math.toRadians(-15), 0, Math.toRadians(20)), 5);
+        flapDown.addAngle(BodyPartModelNames.lwingStrand3Model, new Vector3d(Math.toRadians(-10), 0, Math.toRadians(-20)), 5);
+        flapDown.addAngle(BodyPartModelNames.lwingStrand4Model, new Vector3d(Math.toRadians(-5), 0, Math.toRadians(-60)), 5);
+
+        inAir.addAngle(GenericLimbNames.leftArm, new Vector3d(Math.toRadians(0.0D), Math.toRadians(0.0D), Math.toRadians(-30.0D)), 11, 5.0F, -1);
+        inAir.addAngle(GenericLimbNames.rightArm, new Vector3d(Math.toRadians(0.0D), Math.toRadians(0.0D), Math.toRadians(30.0D)), 11, 5.0F, -1);
+        inAir.addAngle(GenericLimbNames.body, new Vector3d(Math.toRadians(30.0D), Math.toRadians(0.0D), Math.toRadians(0.0D)), 11, 5.0F, -1);
+
     }
 
     @Override
@@ -73,12 +106,14 @@ public class SpreadTechnique extends Technique
         tickInactiveClient(event);
 
         // Reset flapping if player is on the ground
-        if (event.player.isOnGround())
+        if (event.player.isOnGround() || event.player.isInWater())
         {
             cooldownCount = 0;
             jumpPressed = false;
             groundCheck = false;
         }
+        else
+            PoseHandler.addPose(event.player.getUUID(), inAir);
 
         if (cooldownCount > cooldown * 0.5)
             PoseHandler.addPose(event.player.getUUID(), flapDown);
@@ -103,7 +138,7 @@ public class SpreadTechnique extends Technique
         // Check if the jump key is depressed
         if (Minecraft.getInstance().options.keyJump.getKeyBinding().isDown())
         {
-            if (Minecraft.getInstance().player.isOnGround())
+            if (Minecraft.getInstance().player.isOnGround() || Minecraft.getInstance().player.isInWater())
                 groundCheck = true;
 
             jumpPressed = true;
@@ -132,18 +167,30 @@ public class SpreadTechnique extends Technique
         float maxFallSpeed = -0.4f;
         float FlapSpeed = 0.4f;
 
-        // TODO: adjust fall speed based on X/Z movement speed
         // Ensure the player doesn't fall faster than set speed when gliding
         if (motion.y < maxFallSpeed)
             player.setDeltaMovement(motion.x, maxFallSpeed, motion.z);
 
+        Vector3d dir = player.getLookAngle();
+        dir.multiply(new Vector3d(1, 0, 1));
+        dir.normalize();
+
         // If less than halfway through cooldown, then move upwards
         if (cooldownCount > cooldown / 2)
+        {
+            // TODO: Calculated flight movement speed
+            double xMotion = motion.x + FlapSpeed / 4 * dir.x;
+            double zMotion = motion.z + FlapSpeed / 4 * dir.z;
+            double upMotion;
+
             if (motion.y > FlapSpeed)
-                return;
+                upMotion = motion.y;
             else if (motion.y > 0)
-                player.setDeltaMovement(motion.x, FlapSpeed, motion.z);
+                upMotion = FlapSpeed;
             else
-                player.setDeltaMovement(motion.x, motion.y + FlapSpeed, motion.z);
+                upMotion = motion.y + FlapSpeed;
+
+            player.setDeltaMovement(xMotion, upMotion, zMotion);
+        }
     }
 }

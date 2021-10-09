@@ -117,8 +117,10 @@ public class CultivatorModelHandler
 
                         for (String quadID : option.getQuadIDs())
                         {
-                            Quad quad = models.getQuad(quadID);
-                            newModel.getBody().addQuad(quad);
+                            QuadCollection collection = models.getQuadCollection(quadID);
+
+                            for (Quad quad : collection.getQuads())
+                                newModel.getBody().addQuad(quad);
                         }
                     }
                 }
@@ -165,8 +167,10 @@ public class CultivatorModelHandler
 
                 for (String quadID : part.getQuadIDs())
                 {
-                    Quad quad = models.getQuad(quadID);
-                    newModel.getBody().addQuad(quad);
+                    QuadCollection collection = models.getQuadCollection(quadID);
+
+                    for (Quad quad : collection.getQuads())
+                        newModel.getBody().addQuad(quad);
                 }
 
             }

@@ -11,7 +11,7 @@ public class BodyPartModels
 {
     private HashMap<String, ExtendableModelRenderer> models = new HashMap<String, ExtendableModelRenderer>();
     private HashMap<String, HashMap<String, ExtendableModelRenderer>> nonRenderingModels = new HashMap<String, HashMap<String, ExtendableModelRenderer>>();
-    private HashMap<String, Quad> quads = new HashMap<String, Quad>();
+    private HashMap<String, QuadCollection> quads = new HashMap<String, QuadCollection>();
 
     public BodyPartModels()
     {
@@ -81,29 +81,51 @@ public class BodyPartModels
 
     private void setupWingModels()
     {
-        defaultResizeModule wingTop = new defaultResizeModule(2, new Vector3d(1, 0, 0), new Vector3d(0, 0, 0), new Vector3d(16, 1, 1), new Vector3d(1, 0, 0));
+        defaultResizeModule wingTop = new defaultResizeModule(1, new Vector3d(1, 0, 0), new Vector3d(0, 0, 0), new Vector3d(16, 0.5, 1), new Vector3d(1, 0, 0));
 
         ExtendableModelRenderer wingTopModel = new ExtendableModelRenderer(0, 0);
-        wingTopModel.setPos(0.0F, 2.5F, 2F);
+        wingTopModel.setPos(0.5F, 3.5F, 2F);
         wingTopModel.extend(wingTop);
 
-        ExtendableModelRenderer wingLowerModel = wingTopModel.getChildren().get(0);
+
+        defaultResizeModule lwingTop = new defaultResizeModule(1, new Vector3d(-1, 0, 0), new Vector3d(0, 0, 0), new Vector3d(-16, 0.5, 1), new Vector3d(1, 0, 0));
+
+        ExtendableModelRenderer lwingTopModel = new ExtendableModelRenderer(0, 0);
+        lwingTopModel.setPos(-0.5F, 3.5F, 2F);
+        lwingTopModel.extend(lwingTop);
 
 
-        defaultResizeModule wingStrand = new defaultResizeModule(1, new Vector3d(1, 0, 0), new Vector3d(0, 0, 0), new Vector3d(0.5, 12, 0.5), new Vector3d(1, 0, 0));
+        defaultResizeModule wingStrand = new defaultResizeModule(1, new Vector3d(1, 0, 0), new Vector3d(0, 0, 0), new Vector3d(0.5, 16, 1), new Vector3d(1, 0, 0));
 
         ExtendableModelRenderer wingStrandModel = new ExtendableModelRenderer(0, 0);
-        wingStrandModel.setPos(7.5F, 0F, 0F);
+        wingStrandModel.setPos(16F, 0.5F, 0F);
         wingStrandModel.extend(wingStrand);
 
         ExtendableModelRenderer wingStrandModel2 = wingStrandModel.clone();
         ExtendableModelRenderer wingStrandModel3 = wingStrandModel.clone();
         ExtendableModelRenderer wingStrandModel4 = wingStrandModel.clone();
 
-        wingLowerModel.addChild(wingStrandModel);
-        wingLowerModel.addChild(wingStrandModel2);
-        wingLowerModel.addChild(wingStrandModel3);
-        wingLowerModel.addChild(wingStrandModel4);
+
+        defaultResizeModule lwingStrand = new defaultResizeModule(1, new Vector3d(1, 0, 0), new Vector3d(0, 0, 0), new Vector3d(0.5, 16, 1), new Vector3d(-1, 0, 0));
+
+        ExtendableModelRenderer lwingStrandModel = new ExtendableModelRenderer(0, 0);
+        lwingStrandModel.setPos(-16.5F, 0.5F, 0F);
+        lwingStrandModel.extend(lwingStrand);
+
+        ExtendableModelRenderer lwingStrandModel2 = lwingStrandModel.clone();
+        ExtendableModelRenderer lwingStrandModel3 = lwingStrandModel.clone();
+        ExtendableModelRenderer lwingStrandModel4 = lwingStrandModel.clone();
+
+        wingTopModel.addChild(wingStrandModel);
+        wingTopModel.addChild(wingStrandModel2);
+        wingTopModel.addChild(wingStrandModel3);
+        wingTopModel.addChild(wingStrandModel4);
+
+        lwingTopModel.addChild(lwingStrandModel);
+        lwingTopModel.addChild(lwingStrandModel2);
+        lwingTopModel.addChild(lwingStrandModel3);
+        lwingTopModel.addChild(lwingStrandModel4);
+
 
         Quad wing12Connector = new Quad(new Vector3d(0, 0, 0), new Vector3d(0, 0, 0),new Vector3d(0, 0, 0),new Vector3d(0, 0, 0));
         wingStrandModel.addQuadLinkage(new QuadLinkage(wing12Connector, Quad.QuadVertex.TopLeft, new Vector3d(0, 0, 0.5)));
@@ -126,27 +148,57 @@ public class BodyPartModels
         Quad wing45Connector = new Quad(new Vector3d(0, 0, 0), new Vector3d(0, 0, 0),new Vector3d(0, 0, 0),new Vector3d(0, 0, 0));
         wingStrandModel4.addQuadLinkage(new QuadLinkage(wing45Connector, Quad.QuadVertex.TopLeft, new Vector3d(0, 0, 0.5)));
         wingStrandModel4.addQuadLinkage(new QuadLinkage(wing45Connector, Quad.QuadVertex.BottomLeft, new Vector3d(0, 0.95, 0.5)));
-        wingLowerModel.addQuadLinkage(new QuadLinkage(wing45Connector, Quad.QuadVertex.TopRight, new Vector3d(1, 0, 0.5)));
-        wingLowerModel.addQuadLinkage(new QuadLinkage(wing45Connector, Quad.QuadVertex.BottomRight, new Vector3d(0, 0, 0.5)));
-
-        Quad wing46Connector = new Quad(new Vector3d(0, 0, 0), new Vector3d(0, 0, 0),new Vector3d(0, 0, 0),new Vector3d(0, 0, 0));
-        wingStrandModel4.addQuadLinkage(new QuadLinkage(wing46Connector, Quad.QuadVertex.TopLeft, new Vector3d(0, 0.94, 0.5)));
-        wingStrandModel4.addQuadLinkage(new QuadLinkage(wing46Connector, Quad.QuadVertex.BottomLeft, new Vector3d(0.1, 0.95, 0.5)));
-        wingTopModel.addQuadLinkage(new QuadLinkage(wing46Connector, Quad.QuadVertex.TopRight, new Vector3d(1, 0, 0.5)));
-        wingTopModel.addQuadLinkage(new QuadLinkage(wing46Connector, Quad.QuadVertex.BottomRight, new Vector3d(0, 0, 0.5)));
+        wingTopModel.addQuadLinkage(new QuadLinkage(wing45Connector, Quad.QuadVertex.TopRight, new Vector3d(1, 0, 0.5)));
+        wingTopModel.addQuadLinkage(new QuadLinkage(wing45Connector, Quad.QuadVertex.BottomRight, new Vector3d(0, 0, 0.5)));
 
 
-        addModel(BodyPartModelNames.wingUpperArmModel, wingTopModel);
-        addReference(BodyPartModelNames.wingUpperArmModel, BodyPartModelNames.wingLowerArmModel, wingLowerModel);
-        addReference(BodyPartModelNames.wingUpperArmModel, BodyPartModelNames.wingStrand1Model, wingStrandModel);
-        addReference(BodyPartModelNames.wingUpperArmModel, BodyPartModelNames.wingStrand2Model, wingStrandModel2);
-        addReference(BodyPartModelNames.wingUpperArmModel, BodyPartModelNames.wingStrand3Model, wingStrandModel3);
-        addReference(BodyPartModelNames.wingUpperArmModel, BodyPartModelNames.wingStrand4Model, wingStrandModel4);
-        addQuad(BodyPartModelNames.wing12quad, wing12Connector);
-        addQuad(BodyPartModelNames.wing23quad, wing23Connector);
-        addQuad(BodyPartModelNames.wing34quad, wing34Connector);
-        addQuad(BodyPartModelNames.wing45quad, wing45Connector);
-        addQuad(BodyPartModelNames.wing46quad, wing46Connector);
+        Quad lwing12Connector = new Quad(new Vector3d(0, 0, 0), new Vector3d(0, 0, 0),new Vector3d(0, 0, 0),new Vector3d(0, 0, 0));
+        lwingStrandModel.addQuadLinkage(new QuadLinkage(lwing12Connector, Quad.QuadVertex.TopLeft, new Vector3d(0, 0, 0.5)));
+        lwingStrandModel.addQuadLinkage(new QuadLinkage(lwing12Connector, Quad.QuadVertex.TopRight, new Vector3d(0, 0.95, 0.5)));
+        lwingStrandModel2.addQuadLinkage(new QuadLinkage(lwing12Connector, Quad.QuadVertex.BottomLeft, new Vector3d(1, 0, 0.5)));
+        lwingStrandModel2.addQuadLinkage(new QuadLinkage(lwing12Connector, Quad.QuadVertex.BottomRight, new Vector3d(1, 0.95, 0.5)));
+
+        Quad lwing23Connector = new Quad(new Vector3d(0, 0, 0), new Vector3d(0, 0, 0),new Vector3d(0, 0, 0),new Vector3d(0, 0, 0));
+        lwingStrandModel2.addQuadLinkage(new QuadLinkage(lwing23Connector, Quad.QuadVertex.TopLeft, new Vector3d(0, 0, 0.5)));
+        lwingStrandModel2.addQuadLinkage(new QuadLinkage(lwing23Connector, Quad.QuadVertex.TopRight, new Vector3d(0, 0.95, 0.5)));
+        lwingStrandModel3.addQuadLinkage(new QuadLinkage(lwing23Connector, Quad.QuadVertex.BottomLeft, new Vector3d(1, 0, 0.5)));
+        lwingStrandModel3.addQuadLinkage(new QuadLinkage(lwing23Connector, Quad.QuadVertex.BottomRight, new Vector3d(1, 0.95, 0.5)));
+
+        Quad lwing34Connector = new Quad(new Vector3d(0, 0, 0), new Vector3d(0, 0, 0),new Vector3d(0, 0, 0),new Vector3d(0, 0, 0));
+        lwingStrandModel3.addQuadLinkage(new QuadLinkage(lwing34Connector, Quad.QuadVertex.TopLeft, new Vector3d(0, 0, 0.5)));
+        lwingStrandModel3.addQuadLinkage(new QuadLinkage(lwing34Connector, Quad.QuadVertex.TopRight, new Vector3d(0, 0.95, 0.5)));
+        lwingStrandModel4.addQuadLinkage(new QuadLinkage(lwing34Connector, Quad.QuadVertex.BottomLeft, new Vector3d(1, 0, 0.5)));
+        lwingStrandModel4.addQuadLinkage(new QuadLinkage(lwing34Connector, Quad.QuadVertex.BottomRight, new Vector3d(1, 0.95, 0.5)));
+
+        Quad lwing45Connector = new Quad(new Vector3d(0, 0, 0), new Vector3d(0, 0, 0),new Vector3d(0, 0, 0),new Vector3d(0, 0, 0));
+        lwingStrandModel4.addQuadLinkage(new QuadLinkage(lwing45Connector, Quad.QuadVertex.TopLeft, new Vector3d(0, 0, 0.5)));
+        lwingStrandModel4.addQuadLinkage(new QuadLinkage(lwing45Connector, Quad.QuadVertex.TopRight, new Vector3d(0, 0.95, 0.5)));
+        lwingTopModel.addQuadLinkage(new QuadLinkage(lwing45Connector, Quad.QuadVertex.BottomLeft, new Vector3d(1, 0, 0.5)));
+        lwingTopModel.addQuadLinkage(new QuadLinkage(lwing45Connector, Quad.QuadVertex.BottomRight, new Vector3d(0, 0, 0.5)));
+
+
+        QuadCollection wingQuads = new QuadCollection();
+        wingQuads.addQuad(wing12Connector);
+        wingQuads.addQuad(wing23Connector);
+        wingQuads.addQuad(wing34Connector);
+        wingQuads.addQuad(wing45Connector);
+        wingQuads.addQuad(lwing12Connector);
+        wingQuads.addQuad(lwing23Connector);
+        wingQuads.addQuad(lwing34Connector);
+        wingQuads.addQuad(lwing45Connector);
+
+
+        addModel(BodyPartModelNames.rwingUpperArmModel, wingTopModel);
+        addReference(BodyPartModelNames.rwingUpperArmModel, BodyPartModelNames.rwingStrand1Model, wingStrandModel);
+        addReference(BodyPartModelNames.rwingUpperArmModel, BodyPartModelNames.rwingStrand2Model, wingStrandModel2);
+        addReference(BodyPartModelNames.rwingUpperArmModel, BodyPartModelNames.rwingStrand3Model, wingStrandModel3);
+        addReference(BodyPartModelNames.rwingUpperArmModel, BodyPartModelNames.rwingStrand4Model, wingStrandModel4);
+        addModel(BodyPartModelNames.lwingUpperArmModel, lwingTopModel);
+        addReference(BodyPartModelNames.lwingUpperArmModel, BodyPartModelNames.lwingStrand1Model, lwingStrandModel);
+        addReference(BodyPartModelNames.lwingUpperArmModel, BodyPartModelNames.lwingStrand2Model, lwingStrandModel2);
+        addReference(BodyPartModelNames.lwingUpperArmModel, BodyPartModelNames.lwingStrand3Model, lwingStrandModel3);
+        addReference(BodyPartModelNames.lwingUpperArmModel, BodyPartModelNames.lwingStrand4Model, lwingStrandModel4);
+        addQuadCollection(BodyPartModelNames.wingquad, wingQuads);
     }
 
     private void setupTeethModels()
@@ -428,7 +480,7 @@ public class BodyPartModels
         addReference(BodyPartModelNames.reverseJointRightLegModel, BodyPartModelNames.reverseJointRightFootModel, rightFoot);
     }
 
-    public void addQuad(String ID, Quad quad)
+    public void addQuadCollection(String ID, QuadCollection quad)
     {
         quads.put(ID, quad);
     }
@@ -461,7 +513,7 @@ public class BodyPartModels
     }
 
     // Returns the specified quad
-    public Quad getQuad(String ID)
+    public QuadCollection getQuadCollection(String ID)
     {
         return quads.get(ID);
     }
