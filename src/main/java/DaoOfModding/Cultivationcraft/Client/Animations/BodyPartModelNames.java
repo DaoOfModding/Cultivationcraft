@@ -2,8 +2,6 @@ package DaoOfModding.Cultivationcraft.Client.Animations;
 
 public class BodyPartModelNames
 {
-    public static final String reinforcedBodyModel = "R_BODY_MODEL";
-
     public static final String jawModel = "JAW_MODEL";
     public static final String jawModelLower = "JAW_LOWER_MODEL";
 
@@ -38,4 +36,7 @@ public class BodyPartModelNames
     public static final String rwingStrand4Model = "RIGHT_WING_STRAND_4_MODEL";
 
     public static final String wingquad = "WING_QUADS";
+
+
+    public static final String armglidequad = "ARM_GLIDING_QUADS";
 }

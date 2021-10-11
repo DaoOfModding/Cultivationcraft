@@ -26,6 +26,8 @@ public class LeapTechnique extends Technique
 
     public LeapTechnique()
     {
+        super();
+
         name = new TranslationTextComponent("cultivationcraft.technique.leap").getString();
         elementID = Elements.noElementID;
 

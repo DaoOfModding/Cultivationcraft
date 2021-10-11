@@ -7,6 +7,7 @@ import DaoOfModding.Cultivationcraft.Network.Packets.*;
 import DaoOfModding.Cultivationcraft.Network.Packets.CultivatorStats.CultivatorTargetPacket;
 import DaoOfModding.Cultivationcraft.Network.Packets.CultivatorStats.RecallFlyingSwordPacket;
 import net.minecraft.client.Minecraft;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraftforge.fml.network.PacketDistributor;
@@ -50,6 +51,13 @@ public class ClientPacketHandler
     {
         CultivatorTargetPacket pack = new CultivatorTargetPacket(playerID, type, pos, targetID);
         PacketHandler.channel.sendToServer(pack);
+    }
+
+    public static void sendTechniqueInfoToServer(UUID playerID, int info, int slot)
+    {
+        TechniqueInfoPacket packet = new TechniqueInfoPacket(slot, info, playerID);
+
+        PacketHandler.channel.sendToServer(packet);
     }
 
     public static void sendCultivatorTechniquesToServer()

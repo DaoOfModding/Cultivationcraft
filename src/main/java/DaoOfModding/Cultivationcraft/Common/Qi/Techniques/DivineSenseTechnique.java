@@ -19,6 +19,8 @@ public class DivineSenseTechnique extends Technique
 {
     public DivineSenseTechnique()
     {
+        super();
+
         name = new TranslationTextComponent("cultivationcraft.technique.divinesense").getString();
         elementID = Elements.noElementID;
 

@@ -26,6 +26,8 @@ public class IceWalkTechnique extends Technique
 
     public IceWalkTechnique()
     {
+        super();
+
         name = new TranslationTextComponent("cultivationcraft.technique.icewalk").getString();
         elementID = Elements.iceElementID;
 

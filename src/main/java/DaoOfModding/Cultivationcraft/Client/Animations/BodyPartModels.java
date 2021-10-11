@@ -18,6 +18,7 @@ public class BodyPartModels
         setupBodyModels();
         setupHeadModels();
         setupLegModels();
+        setupArmModels();
 
         setupWingModels();
     }
@@ -28,7 +29,50 @@ public class BodyPartModels
         body.setPos(0.0F, 0.0F, 0.0F);
         body.extend(GenericResizers.getBodyResizer());
 
-        addModel(BodyPartModelNames.reinforcedBodyModel, body);
+        addModel(GenericLimbNames.body, body);
+    }
+
+    private void setupArmModels()
+    {
+        ExtendableModelRenderer rightArm = new ExtendableModelRenderer(40, 16);
+        rightArm.setPos(-5.0F, 2.0F, 0.0F);
+        rightArm.extend(GenericResizers.getRightArmResizer());
+
+        ExtendableModelRenderer leftArm = new ExtendableModelRenderer(32, 48);
+        leftArm.setPos(5.0F, 2.0F, 0.0F);
+        leftArm.extend(GenericResizers.getLeftArmResizer());
+        leftArm.mirror = true;
+
+        addModel(GenericLimbNames.leftArm, leftArm);
+        addReference(GenericLimbNames.lowerLeftArm, GenericLimbNames.leftArm, leftArm.getChildren().get(0));
+        addModel(GenericLimbNames.rightArm, rightArm);
+        addReference(GenericLimbNames.lowerRightArm, GenericLimbNames.rightArm, rightArm.getChildren().get(0));
+
+        setupArmOptions();
+    }
+
+    private void setupArmOptions()
+    {
+        Quad larmConnector = new Quad(new Vector3d(0, 0, 0), new Vector3d(0, 0, 0),new Vector3d(0, 0, 0),new Vector3d(0, 0, 0));
+        Quad rarmConnector = new Quad(new Vector3d(0, 0, 0), new Vector3d(0, 0, 0),new Vector3d(0, 0, 0),new Vector3d(0, 0, 0));
+        getModel(GenericLimbNames.body).addQuadLinkage(new QuadLinkage(larmConnector, Quad.QuadVertex.TopLeft, new Vector3d(1, 1, 0.5)));
+        getModel(GenericLimbNames.body).addQuadLinkage(new QuadLinkage(larmConnector, Quad.QuadVertex.TopRight, new Vector3d(1, 0, 0.5)));
+
+        getModel(GenericLimbNames.body).addQuadLinkage(new QuadLinkage(rarmConnector, Quad.QuadVertex.TopLeft, new Vector3d(0, 0, 0.5)));
+        getModel(GenericLimbNames.body).addQuadLinkage(new QuadLinkage(rarmConnector, Quad.QuadVertex.BottomLeft, new Vector3d(0, 1, 0.5)));
+
+        getModel(GenericLimbNames.leftArm).addQuadLinkage(new QuadLinkage(larmConnector, Quad.QuadVertex.BottomLeft, new Vector3d(0, 1, 0.5)));
+        getModel(GenericLimbNames.leftArm).getChildren().get(0).addQuadLinkage(new QuadLinkage(larmConnector, Quad.QuadVertex.BottomRight, new Vector3d(0, 0.5, 0.5)));
+
+        getModel(GenericLimbNames.rightArm).addQuadLinkage(new QuadLinkage(rarmConnector, Quad.QuadVertex.TopRight, new Vector3d(0, 1, 0.5)));
+        getModel(GenericLimbNames.rightArm).getChildren().get(0).addQuadLinkage(new QuadLinkage(rarmConnector, Quad.QuadVertex.BottomRight, new Vector3d(1, 0.5, 0.5)));
+
+
+        QuadCollection glidingArms = new QuadCollection();
+        glidingArms.addQuad(larmConnector);
+        glidingArms.addQuad(rarmConnector);
+
+        addQuadCollection(BodyPartModelNames.armglidequad, glidingArms);
     }
 
     private void setupHeadModels()
@@ -111,6 +155,7 @@ public class BodyPartModels
         ExtendableModelRenderer lwingStrandModel = new ExtendableModelRenderer(0, 0);
         lwingStrandModel.setPos(-16.5F, 0.5F, 0F);
         lwingStrandModel.extend(lwingStrand);
+
 
         ExtendableModelRenderer lwingStrandModel2 = lwingStrandModel.clone();
         ExtendableModelRenderer lwingStrandModel3 = lwingStrandModel.clone();

@@ -1,5 +1,6 @@
 package DaoOfModding.Cultivationcraft.Common.Qi.Techniques;
 
+import DaoOfModding.Cultivationcraft.Network.ClientPacketHandler;
 import DaoOfModding.mlmanimator.Client.Poses.PoseHandler;
 import DaoOfModding.mlmanimator.Client.Poses.PlayerPose;
 import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
@@ -54,6 +55,8 @@ public class Technique
     protected ArrayList<AttributeModifier> modifiers = new ArrayList<AttributeModifier>();
     protected ArrayList<Effect> effects = new ArrayList<Effect>();
 
+    protected int slot;
+
 
     public Technique()
     {
@@ -63,6 +66,11 @@ public class Technique
         multiple = true;
 
         icon = new ResourceLocation(Cultivationcraft.MODID, "textures/techniques/icons/example.png");
+    }
+
+    public void setSlot(int newSlot)
+    {
+        slot = newSlot;
     }
 
     // Returns whether this technique can be used by the specified player
@@ -373,5 +381,18 @@ public class Technique
         bufferbuilder.vertex(scaledWidth, 0.0D, -90.0D).uv(1.0f, 0.0f).endVertex();
         bufferbuilder.vertex(0.0D, 0.0D, -90.0D).uv(0.0f, 0.0f).endVertex();
         tessellator.end();
+    }
+
+    // Send an int info packet to other clients
+    // Client only, only if owner of technique
+    public void sendInfo(int info)
+    {
+        ClientPacketHandler.sendTechniqueInfoToServer(Minecraft.getInstance().player.getUUID(), info, slot);
+    }
+
+    // Process a received int info packet
+    public void processInfo(PlayerEntity player, int info)
+    {
+
     }
 }

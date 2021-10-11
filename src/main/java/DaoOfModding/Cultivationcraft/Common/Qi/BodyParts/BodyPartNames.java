@@ -4,6 +4,8 @@ import DaoOfModding.Cultivationcraft.Client.Animations.BodyPartModelNames;
 import DaoOfModding.Cultivationcraft.Client.Animations.BodyPartModels;
 import DaoOfModding.Cultivationcraft.Client.Textures.TextureList;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
+import DaoOfModding.mlmanimator.Client.Models.GenericLimbNames;
+import DaoOfModding.mlmanimator.Client.Models.MultiLimbedModel;
 import DaoOfModding.mlmanimator.mlmanimator;
 import javafx.util.Pair;
 import net.minecraft.util.ResourceLocation;
@@ -14,12 +16,15 @@ import java.util.HashMap;
 
 public class BodyPartNames
 {
-    // TODO: Move BodyPart classes to a more appropriate place (in common)
-
     // PARTS
     public static final String jawPart = "jaw";
     public static final String reverseJointLegPart = "rjleg";
     public static final String reinforcedBodyPart = "rbody";
+    public static final String reinforcedArmPart = "rarm";
+    public static final String reinforcedLegPart = "rleg";
+    public static final String reinforcedHeadPart = "rhead";
+
+    public static final String glideArmPart = "glidearm";
 
     // OPTIONS
     public static final String reinforcePart = "reinforce";
@@ -79,6 +84,8 @@ public class BodyPartNames
         setupHeadParts();
         setupHeadOptions();
 
+        setupArmParts();
+
         setupLegParts();
     }
 
@@ -101,7 +108,8 @@ public class BodyPartNames
         addWings.addModel(BodyPartModelNames.lwingUpperArmModel);
         addWings.addQuad(BodyPartModelNames.wingquad);
         addWings.setTexture(TextureList.bone);
-        addWings.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.basePosition);
+        addWings.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.boneSubPosition);
+        addWings.addNotNeededPart(BodyPartNames.glideArmPart);
 
         addOption(addWings);
     }
@@ -109,7 +117,7 @@ public class BodyPartNames
     private static void setupBodyParts()
     {
         BodyPart reinforce = new BodyPart(reinforcedBodyPart, bodyPosition, "cultivationcraft.gui.generic.reinforce", 1000);
-        reinforce.addModel(BodyPartModelNames.reinforcedBodyModel);
+        reinforce.addModel(GenericLimbNames.body);
         reinforce.addNeededPart(BodyPartNames.startingEyesPart);
 
         addPart(reinforce);
@@ -120,9 +128,29 @@ public class BodyPartNames
         BodyPart jaw = new BodyPart(jawPart, headPosition, "cultivationcraft.gui.headpart.jaw", 1000);
         jaw.addModel(BodyPartModelNames.jawModel);
         jaw.addFirstPersonModel(BodyPartModelNames.FPjawModel);
-        jaw.addNeededPart(BodyPartNames.startingEyesPart);
+        jaw.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.basePosition);
 
         addPart(jaw);
+    }
+
+    private static void setupArmParts()
+    {
+        BodyPart reinforce = new BodyPart(reinforcedArmPart, armPosition, "cultivationcraft.gui.generic.reinforce", 1000);
+        reinforce.addModel(GenericLimbNames.leftArm);
+        reinforce.addModel(GenericLimbNames.rightArm);
+        reinforce.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.basePosition);
+
+        addPart(reinforce);
+
+
+        BodyPart glide = new GlidePart(glideArmPart, armPosition, "cultivationcraft.gui.armpart.glide", 1000);
+        glide.addModel(GenericLimbNames.leftArm);
+        glide.addModel(GenericLimbNames.rightArm);
+        glide.addQuad(BodyPartModelNames.armglidequad);
+        glide.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.basePosition);
+        glide.addNotNeededPart(BodyPartNames.wingPart);
+
+        addPart(glide);
     }
 
     private static void setupHeadOptions()
@@ -157,7 +185,7 @@ public class BodyPartNames
         rjLegPart.getStatChanges().setJumpHeight(5);
         rjLegPart.addModel(BodyPartModelNames.reverseJointRightLegModel);
         rjLegPart.addModel(BodyPartModelNames.reverseJointLeftLegModel);
-        rjLegPart.addNeededPart(BodyPartNames.startingEyesPart);
+        rjLegPart.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.basePosition);
 
         addPart(rjLegPart);
     }

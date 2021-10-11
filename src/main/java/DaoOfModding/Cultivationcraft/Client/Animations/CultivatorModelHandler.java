@@ -81,8 +81,6 @@ public class CultivatorModelHandler
                 }
                 else if (part.getPosition().equalsIgnoreCase(BodyPartNames.headPosition))
                     newModel.removeLimb(GenericLimbNames.head);
-                else if (part.getPosition().equalsIgnoreCase(BodyPartNames.bodyPosition))
-                    newModel.removeLimb(GenericLimbNames.body);
 
                 for (String modelID : part.getModelIDs())
                 {
@@ -90,13 +88,15 @@ public class CultivatorModelHandler
 
                     // Set as the body if this is a body part
                     if (part.getPosition().equalsIgnoreCase(BodyPartNames.bodyPosition))
+                    {
                         newModel.addBody(modelPart);
+                    }
                     else
                         newModel.addLimb(modelID, modelPart);
 
                     // If this part is a base head model, set it as the model's view point
                     if (part.getPosition().equalsIgnoreCase(BodyPartNames.headPosition))
-                         newModel.setViewPoint(modelPart);
+                        newModel.setViewPoint(modelPart);
 
                     for (Map.Entry<String, ExtendableModelRenderer> entry : models.getReferences(modelID).entrySet())
                         newModel.addLimbReference(entry.getKey(), entry.getValue());

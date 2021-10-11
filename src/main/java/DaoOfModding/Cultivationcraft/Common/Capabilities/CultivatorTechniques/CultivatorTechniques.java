@@ -16,6 +16,9 @@ public class CultivatorTechniques implements ICultivatorTechniques
 
     public void setTechnique(int slot, Technique tech)
     {
+        if (tech != null)
+            tech.setSlot(slot);
+
         techniques[slot] = tech;
     }
 

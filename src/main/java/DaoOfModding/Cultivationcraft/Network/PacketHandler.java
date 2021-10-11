@@ -33,6 +33,7 @@ public class PacketHandler
     private static final byte ATTACK = 07;
     private static final byte CHUNK_QI_SOURCES = 10;
     private static final byte TECHNIQUE_USE = 20;
+    private static final byte TECHNIQUE_INFO = 21;
     private static final byte FLYING_SWORD_NBT_ID = 35;
     private static final byte FLYING_SWORD_RECALL = 36;
     private static final byte CULTIVATOR_TARGET_ID = 76;
@@ -55,6 +56,7 @@ public class PacketHandler
         channel.registerMessage(ATTACK, AttackPacket.class, AttackPacket::encode, AttackPacket::decode, AttackPacket::handle);
         channel.registerMessage(CHUNK_QI_SOURCES, ChunkQiSourcesPacket.class, ChunkQiSourcesPacket::encode, ChunkQiSourcesPacket::decode, ChunkQiSourcesPacket::handle);
         channel.registerMessage(TECHNIQUE_USE, TechniqueUsePacket.class, TechniqueUsePacket::encode, TechniqueUsePacket::decode, TechniqueUsePacket::handle);
+        channel.registerMessage(TECHNIQUE_INFO, TechniqueInfoPacket.class, TechniqueInfoPacket::encode, TechniqueInfoPacket::decode, TechniqueInfoPacket::handle);
         channel.registerMessage(FLYING_SWORD_NBT_ID, ConvertToFlyingPacket.class, ConvertToFlyingPacket::encode, ConvertToFlyingPacket::decode, ConvertToFlyingPacket::handle);
         channel.registerMessage(FLYING_SWORD_RECALL, RecallFlyingSwordPacket.class, RecallFlyingSwordPacket::encode, RecallFlyingSwordPacket::decode, RecallFlyingSwordPacket::handle);
         channel.registerMessage(CULTIVATOR_TARGET_ID, CultivatorTargetPacket.class, CultivatorTargetPacket::encode, CultivatorTargetPacket::decode, CultivatorTargetPacket::handle);
@@ -148,6 +150,11 @@ public class PacketHandler
         // Send the cultivator's stats to the client
         BodyModificationsPacket pack = new BodyModificationsPacket(player.getUUID(), modifications);
         channel.send(distribute, pack);
+    }
+
+    public static void sendTechniqueInfoToClients(TechniqueInfoPacket packet, PlayerEntity except)
+    {
+        channel.send(PacketDistributor.TRACKING_ENTITY.with(() -> except), packet);
     }
 
     public static void sendCultivatorTechniquesToClient(PlayerEntity player)

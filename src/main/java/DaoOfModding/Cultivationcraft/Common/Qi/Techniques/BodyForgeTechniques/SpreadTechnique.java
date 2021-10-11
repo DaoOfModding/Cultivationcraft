@@ -12,6 +12,7 @@ import DaoOfModding.mlmanimator.Client.Models.GenericLimbNames;
 import DaoOfModding.mlmanimator.Client.Poses.PlayerPose;
 import DaoOfModding.mlmanimator.Client.Poses.PoseHandler;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.vector.Vector3d;
@@ -32,6 +33,8 @@ public class SpreadTechnique extends Technique
 
     public SpreadTechnique()
     {
+        super();
+
         name = new TranslationTextComponent("cultivationcraft.technique.spread").getString();
         elementID = Elements.noElementID;
 
@@ -138,23 +141,45 @@ public class SpreadTechnique extends Technique
         // Check if the jump key is depressed
         if (Minecraft.getInstance().options.keyJump.getKeyBinding().isDown())
         {
-            if (Minecraft.getInstance().player.isOnGround() || Minecraft.getInstance().player.isInWater())
-                groundCheck = true;
+            if (jumpPressed == false)
+                sendInfo(1);
 
-            jumpPressed = true;
+            flapUp(Minecraft.getInstance().player);
         }
         // If the jump key is released, reset the jump key checking boolean and set the cooldown
         else if (jumpPressed)
         {
+            sendInfo(2);
             jumpPressed = false;
 
-            // Don't flap if jumping off the ground
-            if (groundCheck == true)
-                groundCheck = false;
-            // TODO: Update this on server
-            else if (!Minecraft.getInstance().player.isOnGround() && cooldownCount == 0)
-                cooldownCount = cooldown;
+            flapDown(Minecraft.getInstance().player);
         }
+    }
+
+    private void flapUp(PlayerEntity player)
+    {
+        if (player.isOnGround() || player.isInWater())
+            groundCheck = true;
+
+        jumpPressed = true;
+    }
+
+    private void flapDown(PlayerEntity player)
+    {
+        // Don't flap if jumping off the ground
+        if (groundCheck == true)
+            groundCheck = false;
+        else if (!player.isOnGround() && cooldownCount == 0)
+            cooldownCount = cooldown;
+    }
+
+    @Override
+    public void processInfo(PlayerEntity player, int info)
+    {
+        if (info == 2)
+            flapDown(player);
+        else if (info == 1)
+            flapUp(player);
     }
 
     private void glide(PlayerEntity player)

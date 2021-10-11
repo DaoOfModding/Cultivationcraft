@@ -18,6 +18,8 @@ public class MeditateTechnique extends Technique
 {
     public MeditateTechnique()
     {
+        super();
+
         name = new TranslationTextComponent("cultivationcraft.technique.meditate").getString();
         elementID = Elements.noElementID;
 

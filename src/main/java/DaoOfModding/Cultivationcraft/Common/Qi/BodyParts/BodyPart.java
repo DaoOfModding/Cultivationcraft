@@ -32,7 +32,9 @@ public class BodyPart
     private String textureID = TextureList.skin;
 
     private ArrayList<String> neededToForge = new ArrayList<String>();
+    private ArrayList<String> neededNotToForge = new ArrayList<String>();
     private ArrayList<Pair<String, String>> neededPositionToForge = new ArrayList<Pair<String, String>>();
+    private ArrayList<Pair<String, String>> needNotPositionToForge = new ArrayList<Pair<String, String>>();
 
     private HashMap<String, ResourceLocation> textureChanges = new HashMap<String, ResourceLocation>();
 
@@ -123,9 +125,19 @@ public class BodyPart
         neededToForge.add(partID);
     }
 
+    public void addNotNeededPart(String partID)
+    {
+        neededNotToForge.add(partID);
+    }
+
+
     public void addNeededPosition(String positionID, String subpositionID)
     {
         neededPositionToForge.add(new Pair(positionID, subpositionID));
+    }
+    public void addNeedNotPosition(String positionID, String subpositionID)
+    {
+        needNotPositionToForge.add(new Pair(positionID, subpositionID));
     }
 
     public void onLoad(UUID playerID)
@@ -159,7 +171,13 @@ public class BodyPart
         if (!hasNeededPositions(modifications))
             return false;
 
+        if (hasNotNeededPositions(modifications))
+            return false;
+
         if (!hasNeededParts(modifications))
+            return false;
+
+        if (hasNotNeededParts(modifications))
             return false;
 
         // Loop through all player body modifications, return false if a modification for this position already exists
@@ -189,6 +207,25 @@ public class BodyPart
         return true;
     }
 
+    protected boolean hasNotNeededPositions(IBodyModifications modifications)
+    {
+        // Loop through all positions needed to not be able to forge this part
+        for (Pair<String, String> position : needNotPositionToForge)
+        {
+            // If the subposition is basePosition then check if there is a modification at this position
+            if (position.getValue().compareTo(BodyPartNames.basePosition) == 0)
+            {
+                if (modifications.hasModification(position.getKey()))
+                    return true;
+            }
+            // Otherwise check if there is a modification option at this subposition
+            else if (modifications.hasOption(position.getKey(), position.getValue()))
+                return true;
+        }
+
+        return false;
+    }
+
     protected boolean hasNeededParts(IBodyModifications modifications)
     {
         // Check if the player has all body parts that are needed to forge this part
@@ -208,6 +245,28 @@ public class BodyPart
         }
 
         return true;
+    }
+
+    protected boolean hasNotNeededParts(IBodyModifications modifications)
+    {
+        // Check if the player has any body parts that are needed to not have to forge this part
+        for (String testPart : neededNotToForge)
+        {
+            BodyPart test = BodyPartNames.getPart(testPart);
+
+            if (test != null)
+                return true;
+
+            test = BodyPartNames.getOption(testPart);
+
+            if (modifications.hasOption(test.getPosition(), ((BodyPartOption) test).getSubPosition(), test.ID))
+                return true;
+
+            if (modifications.hasModification(test.getPosition(), test.ID))
+                return true;
+        }
+
+        return false;
     }
 
 }

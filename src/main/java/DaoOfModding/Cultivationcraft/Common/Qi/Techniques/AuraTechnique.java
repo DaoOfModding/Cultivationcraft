@@ -7,6 +7,8 @@ public class AuraTechnique extends Technique
 
     public AuraTechnique()
     {
+        super();
+
         type = useType.Toggle;
         multiple = false;
     }
