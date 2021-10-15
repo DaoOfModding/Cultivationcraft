@@ -1,5 +1,6 @@
 package DaoOfModding.Cultivationcraft.Client;
 
+import DaoOfModding.Cultivationcraft.Client.Animations.BodyPartModelNames;
 import DaoOfModding.Cultivationcraft.Client.Animations.CultivatorModelHandler;
 import DaoOfModding.Cultivationcraft.Client.GUI.SkillHotbarOverlay;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.BodyModifications;
@@ -8,7 +9,11 @@ import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.Cu
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.ICultivatorTechniques;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPart;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartOption;
+import DaoOfModding.Cultivationcraft.Cultivationcraft;
+import DaoOfModding.mlmanimator.Client.Models.ExtendableModelRenderer;
 import DaoOfModding.mlmanimator.Client.Poses.GenericPoses;
+import DaoOfModding.mlmanimator.Client.Poses.PlayerPoseHandler;
+import DaoOfModding.mlmanimator.Client.Poses.PoseHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.AbstractClientPlayerEntity;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
@@ -56,6 +61,16 @@ public class ClientListeners
             for (HashMap<String, BodyPartOption> parts : modifications.getModificationOptions().values())
                 for (BodyPartOption part : parts.values())
                     part.onClientTick(event.player);
+
+
+            ExtendableModelRenderer test = PoseHandler.getPlayerPoseHandler(event.player.getUUID()).getPlayerModel().getLimb(BodyPartModelNames.jawModelLower);
+            ExtendableModelRenderer test2 = PoseHandler.getPlayerPoseHandler(event.player.getUUID()).getPlayerModel().getLimb(BodyPartModelNames.flatToothLowerModel);
+
+            if (test != null && test2 != null)
+            {
+                test.updatePosition();
+                test2.updatePosition();
+            }
         }
     }
 

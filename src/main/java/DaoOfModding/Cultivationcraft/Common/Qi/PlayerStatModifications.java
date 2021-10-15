@@ -29,7 +29,6 @@ public class PlayerStatModifications
     // Increase player jump speed based on the jump height
     public void applyJump(PlayerEntity player)
     {
-        // TODO : Unsure if delta movement is the correct mapping here
         Vector3d currentMotion = player.getDeltaMovement();
 
         // Increase not only the height jump but also multiply X and Z momentum
@@ -49,7 +48,6 @@ public class PlayerStatModifications
 
     public void combine(PlayerStatModifications newStats)
     {
-        // Subtract 1 from the combined jump height as jumpHeight starts at 1
         setJumpHeight(getRawJumpHeight() + newStats.getRawJumpHeight());
     }
 }

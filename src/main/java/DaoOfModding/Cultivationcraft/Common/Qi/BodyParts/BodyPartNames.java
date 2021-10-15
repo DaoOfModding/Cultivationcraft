@@ -128,6 +128,7 @@ public class BodyPartNames
         BodyPart jaw = new BodyPart(jawPart, headPosition, "cultivationcraft.gui.headpart.jaw", 1000);
         jaw.addModel(BodyPartModelNames.jawModel);
         jaw.addFirstPersonModel(BodyPartModelNames.FPjawModel);
+        jaw.setViewPoint(BodyPartModelNames.jawModel);
         jaw.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.basePosition);
 
         addPart(jaw);

@@ -31,6 +31,8 @@ public class BodyPart
     private PlayerStatModifications stats;
     private String textureID = TextureList.skin;
 
+    private String viewPoint;
+
     private ArrayList<String> neededToForge = new ArrayList<String>();
     private ArrayList<String> neededNotToForge = new ArrayList<String>();
     private ArrayList<Pair<String, String>> neededPositionToForge = new ArrayList<Pair<String, String>>();
@@ -48,6 +50,16 @@ public class BodyPart
         qiNeeded = qiToForge;
 
         stats = new PlayerStatModifications();
+    }
+
+    public void setViewPoint(String viewPoint)
+    {
+        this.viewPoint = viewPoint;
+    }
+
+    public String getViewPoint()
+    {
+        return viewPoint;
     }
 
     public void addModel(String modelID)

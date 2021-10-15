@@ -94,8 +94,8 @@ public class CultivatorModelHandler
                     else
                         newModel.addLimb(modelID, modelPart);
 
-                    // If this part is a base head model, set it as the model's view point
-                    if (part.getPosition().equalsIgnoreCase(BodyPartNames.headPosition))
+                    // Set this as the players view point if it is set to be a view point
+                    if (modelID == part.getViewPoint())
                         newModel.setViewPoint(modelPart);
 
                     for (Map.Entry<String, ExtendableModelRenderer> entry : models.getReferences(modelID).entrySet())
