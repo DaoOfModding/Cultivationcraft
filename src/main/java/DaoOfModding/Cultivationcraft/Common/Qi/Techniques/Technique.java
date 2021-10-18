@@ -1,5 +1,7 @@
 package DaoOfModding.Cultivationcraft.Common.Qi.Techniques;
 
+import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartStatControl;
+import DaoOfModding.Cultivationcraft.Common.Qi.Stats.PlayerStatModifications;
 import DaoOfModding.Cultivationcraft.Network.ClientPacketHandler;
 import DaoOfModding.mlmanimator.Client.Poses.PoseHandler;
 import DaoOfModding.mlmanimator.Client.Poses.PlayerPose;
@@ -57,6 +59,8 @@ public class Technique
 
     protected int slot;
 
+    protected PlayerStatModifications stats;
+
 
     public Technique()
     {
@@ -66,6 +70,11 @@ public class Technique
         multiple = true;
 
         icon = new ResourceLocation(Cultivationcraft.MODID, "textures/techniques/icons/example.png");
+    }
+
+    public PlayerStatModifications getStats()
+    {
+        return stats;
     }
 
     public void setSlot(int newSlot)
@@ -151,18 +160,18 @@ public class Technique
 
     public void activate(PlayerEntity player)
     {
-        addModifiers(player);
-
         active = true;
+
+        addModifiers(player);
     }
 
     public void deactivate(PlayerEntity player)
     {
-        removeModifiers(player);
-
         active = false;
         cooldownCount = cooldown;
         currentChannel = 0;
+
+        removeModifiers(player);
     }
 
     private void addModifiers(PlayerEntity player)
@@ -176,6 +185,9 @@ public class Technique
         for (Effect effect : effects)
             if (!player.hasEffect(effect))
                 player.addEffect(new EffectInstance(effect, 9999999));
+
+        if (stats != null)
+            BodyPartStatControl.updateStats(player);
     }
 
     private void removeModifiers(PlayerEntity player)
@@ -188,6 +200,9 @@ public class Technique
         for (Effect effect : effects)
             if (player.hasEffect(effect))
                 player.removeEffect(effect);
+
+        if (stats != null)
+            BodyPartStatControl.updateStats(player);
     }
 
     // Called when the use key is released for a channel skill

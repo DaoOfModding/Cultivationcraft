@@ -1,8 +1,12 @@
 package DaoOfModding.Cultivationcraft.Common.Qi.BodyParts;
 
 import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.BodyModifications;
+import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.CultivatorTechniques;
+import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.ICultivatorTechniques;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.PlayerStatModifications;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.StatIDs;
+import DaoOfModding.Cultivationcraft.Common.Qi.TechniqueControl;
+import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.Technique;
 import net.minecraft.entity.player.PlayerEntity;
 
 import java.util.HashMap;
@@ -60,5 +64,15 @@ public class BodyPartStatControl
 
                 BodyPartStatControl.addStats(player.getUUID(), part.getStatChanges());
             }
+
+        // Add all existing stat modifiers on active techniques to the player stats
+        ICultivatorTechniques techs = CultivatorTechniques.getCultivatorTechniques(player);
+
+        for (int i = 0; i < CultivatorTechniques.numberOfTechniques; i++)
+        {
+            Technique tech = techs.getTechnique(i);
+            if (tech != null && tech.isActive() && tech.getStats() != null)
+                BodyPartStatControl.addStats(player.getUUID(), tech.getStats());
+        }
     }
 }

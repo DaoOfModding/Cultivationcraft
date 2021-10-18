@@ -21,6 +21,7 @@ public class TechniqueControl
         TechniqueControl.addTechnique(RollTechnique.class);
         TechniqueControl.addTechnique(SpreadTechnique.class);
         TechniqueControl.addTechnique(FloatTechnique.class);
+        TechniqueControl.addTechnique(BounceTechnique.class);
     }
 
     // List of all techniques available in the game

@@ -55,12 +55,7 @@ public class CommonListeners
     public static void playerJump(LivingEvent.LivingJumpEvent event)
     {
         if (event.getEntity() instanceof PlayerEntity)
-        {
-            //if (event.getEntity().getEntityWorld().isRemote())
-            //    ClientListeners.playerJump((PlayerEntity)event.getEntity());
-
             Physics.applyJump((PlayerEntity)event.getEntity());
-        }
     }
 
     @SubscribeEvent

@@ -40,6 +40,8 @@ public class ClientListeners
             // Update the cultivator model if needed
             CultivatorModelHandler.updateModifications((AbstractClientPlayerEntity)event.player);
 
+            Physics.Bounce(event.player);
+
             // Tick through all active cultivator techniques
             ICultivatorTechniques techs = CultivatorTechniques.getCultivatorTechniques(event.player);
 
@@ -61,16 +63,6 @@ public class ClientListeners
             for (HashMap<String, BodyPartOption> parts : modifications.getModificationOptions().values())
                 for (BodyPartOption part : parts.values())
                     part.onClientTick(event.player);
-
-
-            ExtendableModelRenderer test = PoseHandler.getPlayerPoseHandler(event.player.getUUID()).getPlayerModel().getLimb(BodyPartModelNames.jawModelLower);
-            ExtendableModelRenderer test2 = PoseHandler.getPlayerPoseHandler(event.player.getUUID()).getPlayerModel().getLimb(BodyPartModelNames.flatToothLowerModel);
-
-            if (test != null && test2 != null)
-            {
-                test.updatePosition();
-                test2.updatePosition();
-            }
         }
     }
 

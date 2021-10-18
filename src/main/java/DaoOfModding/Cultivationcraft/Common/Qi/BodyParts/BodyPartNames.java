@@ -107,7 +107,12 @@ public class BodyPartNames
         rubberSkin.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.basePosition);
         rubberSkin.getStatChanges().setStat(StatIDs.bounceHeight, 0.5f);
 
+        BodyPartOption reinforceSkin = new BodyPartOption(reinforcePart, bodyPosition, skinSubPosition,  "cultivationcraft.gui.generic.reinforce", 1000);
+        //rubberSkin.addTextureChange(TextureList.skin, new ResourceLocation(Cultivationcraft.MODID, "textures/models/bone/bone.png"));
+        rubberSkin.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.basePosition);
+
         addOption(rubberSkin);
+        addOption(reinforceSkin);
     }
 
 
@@ -119,6 +124,7 @@ public class BodyPartNames
         addWings.addQuad(BodyPartModelNames.wingquad);
         addWings.setTexture(TextureList.bone);
         addWings.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.boneSubPosition);
+        addWings.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.skinSubPosition);
         addWings.addNotNeededPart(BodyPartNames.glideArmPart);
 
         addOption(addWings);
@@ -158,7 +164,7 @@ public class BodyPartNames
         glide.addModel(GenericLimbNames.leftArm);
         glide.addModel(GenericLimbNames.rightArm);
         glide.addQuad(BodyPartModelNames.armglidequad);
-        glide.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.basePosition);
+        glide.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.skinSubPosition);
         glide.addNotNeededPart(BodyPartNames.wingPart);
 
         addPart(glide);

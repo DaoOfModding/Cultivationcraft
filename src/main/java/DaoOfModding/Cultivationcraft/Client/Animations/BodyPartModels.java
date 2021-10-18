@@ -531,9 +531,9 @@ public class BodyPartModels
         defaultResizeModule footResizer = new defaultResizeModule(new Vector3d(4, 2, 4));
 
         ExtendableModelRenderer leftReverseJoint = new ExtendableModelRenderer(0, 16);
-        leftReverseJoint.setPos(1.0F, 1.0F, 0F);
-        leftReverseJoint.setRotationPoint(new Vector3d(0.0D, 1D, 1D));
-        //leftReverseJoint.setFixedPosAdjustment(0.0F, -1.0F, 0.0F);
+        leftReverseJoint.setPos(0.75F, 1.0F, 0.5F);
+        leftReverseJoint.setRotationPoint(new Vector3d(0.5D, 1D, 0.5D));
+        leftReverseJoint.setFixedPosAdjustment(0.0F, 0.0F, 0.0F);
         leftReverseJoint.extend(reverseJointResizer);
         leftReverseJoint.mirror = true;
 
@@ -550,9 +550,9 @@ public class BodyPartModels
         footResizer = new defaultResizeModule(new Vector3d(4, 2, 4));
 
         ExtendableModelRenderer rightReverseJoint = new ExtendableModelRenderer(0, 16);
-        rightReverseJoint.setPos(0.0F, 1.0F, 0);
-        rightReverseJoint.setRotationPoint(new Vector3d(1.0D, 1, 1));
-        //rightReverseJoint.setFixedPosAdjustment(0.0F, -1.0F, 0.0F);
+        rightReverseJoint.setPos(0.25F, 1.0F, 0.5F);
+        rightReverseJoint.setRotationPoint(new Vector3d(0.5D, 1, 0.5));
+        rightReverseJoint.setFixedPosAdjustment(0.0F, 0.0F, 0F);
         rightReverseJoint.extend(reverseJointResizer);
 
         ExtendableModelRenderer rightFoot = new ExtendableModelRenderer(0, 26);
