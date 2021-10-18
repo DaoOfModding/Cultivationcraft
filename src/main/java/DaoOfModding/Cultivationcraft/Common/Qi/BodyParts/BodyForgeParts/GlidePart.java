@@ -1,5 +1,6 @@
-package DaoOfModding.Cultivationcraft.Common.Qi.BodyParts;
+package DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyForgeParts;
 
+import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPart;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import DaoOfModding.mlmanimator.Client.Models.GenericLimbNames;
 import DaoOfModding.mlmanimator.Client.Poses.GenericPoses;

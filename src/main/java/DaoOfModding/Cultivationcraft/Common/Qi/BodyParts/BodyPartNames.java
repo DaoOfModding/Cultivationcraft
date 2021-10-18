@@ -1,13 +1,11 @@
 package DaoOfModding.Cultivationcraft.Common.Qi.BodyParts;
 
 import DaoOfModding.Cultivationcraft.Client.Animations.BodyPartModelNames;
-import DaoOfModding.Cultivationcraft.Client.Animations.BodyPartModels;
 import DaoOfModding.Cultivationcraft.Client.Textures.TextureList;
+import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyForgeParts.GlidePart;
+import DaoOfModding.Cultivationcraft.Common.Qi.Stats.StatIDs;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import DaoOfModding.mlmanimator.Client.Models.GenericLimbNames;
-import DaoOfModding.mlmanimator.Client.Models.MultiLimbedModel;
-import DaoOfModding.mlmanimator.mlmanimator;
-import javafx.util.Pair;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TranslationTextComponent;
 
@@ -33,6 +31,7 @@ public class BodyPartNames
     public static final String flatTeethPart = "flatteeth";
     public static final String sharpTeethPart = "sharpteeth";
     public static final String wingPart = "wing";
+    public static final String rubberSkinPart = "rubber";
 
     // DEFAULTS
     public static final String DefaultLeftArm = "armleft";
@@ -97,7 +96,18 @@ public class BodyPartNames
 
         addOption(reinforceBones);
 
+        setupSkinOptions();
         setupBackOptions();
+    }
+
+    private static void setupSkinOptions()
+    {
+        BodyPartOption rubberSkin = new BodyPartOption(rubberSkinPart, bodyPosition, skinSubPosition,  "cultivationcraft.gui.bodypart.skin.rubber", 1000);
+        //rubberSkin.addTextureChange(TextureList.skin, new ResourceLocation(Cultivationcraft.MODID, "textures/models/bone/bone.png"));
+        rubberSkin.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.basePosition);
+        rubberSkin.getStatChanges().setStat(StatIDs.bounceHeight, 0.5f);
+
+        addOption(rubberSkin);
     }
 
 
@@ -183,7 +193,7 @@ public class BodyPartNames
     private static void setupLegParts()
     {
         BodyPart rjLegPart = new BodyPart(reverseJointLegPart, legPosition, "cultivationcraft.gui.legpart.reversejoint", 1000);
-        rjLegPart.getStatChanges().setJumpHeight(5);
+        rjLegPart.getStatChanges().setStat(StatIDs.jumpHeight, 5);
         rjLegPart.addModel(BodyPartModelNames.reverseJointRightLegModel);
         rjLegPart.addModel(BodyPartModelNames.reverseJointLeftLegModel);
         rjLegPart.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.basePosition);

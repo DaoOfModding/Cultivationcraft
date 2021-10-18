@@ -3,6 +3,7 @@ package DaoOfModding.Cultivationcraft.Common;
 import DaoOfModding.Cultivationcraft.Client.ClientItemControl;
 import DaoOfModding.Cultivationcraft.Client.ClientListeners;
 import DaoOfModding.Cultivationcraft.Client.GUI.SkillHotbarOverlay;
+import DaoOfModding.Cultivationcraft.Client.Physics;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.BodyModifications;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.ChunkQiSources.ChunkQiSources;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.ChunkQiSources.IChunkQiSources;
@@ -58,7 +59,7 @@ public class CommonListeners
             //if (event.getEntity().getEntityWorld().isRemote())
             //    ClientListeners.playerJump((PlayerEntity)event.getEntity());
 
-            BodyPartStatControl.getStats(event.getEntity().getUUID()).applyJump((PlayerEntity)event.getEntity());
+            Physics.applyJump((PlayerEntity)event.getEntity());
         }
     }
 
@@ -66,7 +67,7 @@ public class CommonListeners
     public static void playerFall(LivingFallEvent event)
     {
         if (event.getEntity() instanceof PlayerEntity)
-            event.setDistance(BodyPartStatControl.getStats(event.getEntity().getUUID()).reduceFallDistance(event.getDistance()));
+            event.setDistance(Physics.reduceFallDistance((PlayerEntity) event.getEntity(), event.getDistance()));
     }
 
     @SubscribeEvent

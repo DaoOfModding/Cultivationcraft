@@ -27,6 +27,7 @@ public class BodyPartModels
     {
         ExtendableModelRenderer body = new ExtendableModelRenderer(16, 16);
         body.setPos(0.0F, 0.0F, 0.0F);
+        body.setRotationPoint(new Vector3d(0.5, 0.5, 0.5));
         body.extend(GenericResizers.getBodyResizer());
 
         addModel(GenericLimbNames.body, body);
@@ -95,8 +96,8 @@ public class BodyPartModels
 
         // Create the jaw
         ExtendableModelRenderer jawPart = new ExtendableModelRenderer(0, 5);
-        jawPart.setRotationPoint(new Vector3d(0.5D, 1, 0.33));
-        jawPart.setPos(0.5F, 1F, 0.66F);
+        jawPart.setRotationPoint(new Vector3d(0.5D, 1, 0.3));
+        jawPart.setPos(0.5F, 1F, 0.7F);
         jawPart.extend(jawResizer);
         jawPart.setFirstPersonRender(false);
 
@@ -306,7 +307,7 @@ public class BodyPartModels
         flatToothResizer = QiResizers.getTeethResizer(8, 7.8f, 1, 0.1f);
 
         flatToothPart = new ExtendableModelRenderer(64, 64, 0, 0);
-        flatToothPart.setPos(0f, 0, 0);
+        flatToothPart.setPos(0f, 0, 0.3f);
         flatToothPart.setFixedPosAdjustment(0.05f, 0, 0.05f);
         flatToothPart.setRotationPoint(new Vector3d(1f, 0, 1));
         flatToothPart.extend(flatToothResizer);
@@ -436,7 +437,7 @@ public class BodyPartModels
         // Create row of bottom teeth
         ToothResizer = QiResizers.getTeethResizer(7, 7f, 0.5f, 0.1f);
         ToothPart = new ExtendableModelRenderer(64, 64, 0, 0);
-        ToothPart.setPos(0f, 0f, 0.33f);
+        ToothPart.setPos(0f, 0f, 0.3f);
         ToothPart.setFixedPosAdjustment(0.55f, 0, 0.1f);
         ToothPart.setRotationPoint(new Vector3d(1f, 0, 1));
         ToothPart.extend(ToothResizer);

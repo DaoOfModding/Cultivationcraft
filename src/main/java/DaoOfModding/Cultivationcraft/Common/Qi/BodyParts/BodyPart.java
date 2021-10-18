@@ -7,8 +7,7 @@ import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.IBody
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStats;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.ICultivatorStats;
 import DaoOfModding.Cultivationcraft.Common.Qi.CultivationTypes;
-import DaoOfModding.Cultivationcraft.Common.Qi.PlayerStatModifications;
-import DaoOfModding.Cultivationcraft.Cultivationcraft;
+import DaoOfModding.Cultivationcraft.Common.Qi.Stats.PlayerStatModifications;
 import javafx.util.Pair;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ResourceLocation;

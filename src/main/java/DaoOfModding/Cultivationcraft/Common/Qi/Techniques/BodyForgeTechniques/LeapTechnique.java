@@ -1,5 +1,6 @@
 package DaoOfModding.Cultivationcraft.Common.Qi.Techniques.BodyForgeTechniques;
 
+import DaoOfModding.Cultivationcraft.Common.Qi.Stats.StatIDs;
 import DaoOfModding.mlmanimator.Client.Poses.*;
 import DaoOfModding.mlmanimator.Client.Models.GenericLimbNames;
 import DaoOfModding.Cultivationcraft.Client.Animations.BodyPartModelNames;
@@ -160,7 +161,7 @@ public class LeapTechnique extends Technique
         Vector3d forward = player.getForward().normalize();
 
         // Get the modified jump height of the player
-        int jumpPower = BodyPartStatControl.getStats(player.getUUID()).getJumpHeight();
+        float jumpPower = BodyPartStatControl.getStats(player.getUUID()).getStat(StatIDs.jumpHeight);
 
         // Move the player forward based on the jump power, as well as applying a height jump of 1 block
         player.setDeltaMovement(currentMotion.add(forward.x * jumpPower * 0.4f, 0.52f, forward.z * jumpPower * 0.4f));

@@ -1,10 +1,7 @@
 package DaoOfModding.Cultivationcraft.Common.Qi;
 
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.*;
-import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.BodyForgeTechniques.BiteTechnique;
-import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.BodyForgeTechniques.LeapTechnique;
-import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.BodyForgeTechniques.RollTechnique;
-import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.BodyForgeTechniques.SpreadTechnique;
+import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.BodyForgeTechniques.*;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import net.minecraft.entity.player.PlayerEntity;
 
@@ -23,6 +20,7 @@ public class TechniqueControl
         TechniqueControl.addTechnique(BiteTechnique.class);
         TechniqueControl.addTechnique(RollTechnique.class);
         TechniqueControl.addTechnique(SpreadTechnique.class);
+        TechniqueControl.addTechnique(FloatTechnique.class);
     }
 
     // List of all techniques available in the game
