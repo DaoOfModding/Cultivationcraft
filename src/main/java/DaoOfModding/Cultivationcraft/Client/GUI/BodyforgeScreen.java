@@ -28,6 +28,7 @@ public class BodyforgeScreen extends Screen
 
     private ArrayList<GUIButton> buttons = new ArrayList<GUIButton>();
     private GUIButton forge;
+    private GUIButton details;
     private GUIButton cancel;
 
     private final int bodyPartListXPos = 75;
@@ -36,8 +37,11 @@ public class BodyforgeScreen extends Screen
     private final int bodySubPartListXPos = 75;
     private final int bodySubPartListYPos = 75;
 
-    private int forgeXPos = 83;
+    private int forgeXPos = 63;
     private final int forgeYPos = 150;
+
+    private int detailsXPos = 103;
+    private final int detailsYPos = 150;
 
     private int cancelXPos = 118;
     private final int cancelYPos = 110;
@@ -55,6 +59,8 @@ public class BodyforgeScreen extends Screen
 
     private String selectedPart = null;
 
+    private boolean detailsOn = false;
+
     private int mode = 0;
 
     public BodyforgeScreen()
@@ -67,11 +73,15 @@ public class BodyforgeScreen extends Screen
         String forgeString = new TranslationTextComponent("cultivationcraft.gui.forge").getString();
         forge = new GUIButton("FORGE", forgeString);
 
+        String detailString = new TranslationTextComponent("cultivationcraft.gui.details").getString();
+        details = new GUIButton("DETAILS", detailString);
+
         String cancelString = new TranslationTextComponent("cultivationcraft.gui.cancel").getString();
         cancel = new GUIButton("CANCEL", cancelString);
 
         // Centre the buttons
         forgeXPos -= Minecraft.getInstance().font.width(forgeString) / 2;
+        detailsXPos -= Minecraft.getInstance().font.width(forgeString) / 2;
         cancelXPos -= Minecraft.getInstance().font.width(cancelString) / 2;
     }
 
@@ -204,6 +214,17 @@ public class BodyforgeScreen extends Screen
             return true;
         }
 
+        // Display details for the selected part if details button is pressed
+        if (details.mouseClick((int)mouseX - (edgeSpacingX + detailsXPos), (int)mouseY - (edgeSpacingY + detailsYPos), buttonPressed))
+        {
+            if (selectedPart != null)
+                detailsOn = true;
+
+            details.unselect();
+
+            return true;
+        }
+
         int xpos = buttonMinXPos;
         int ypos = 0;
         for (GUIButton button : buttons)
@@ -272,11 +293,33 @@ public class BodyforgeScreen extends Screen
         this.renderBackground(matrixStack);
         drawGuiBackgroundLayer(matrixStack, partialTicks, mouseX, mouseY);
         super.render(matrixStack, mouseX, mouseY, partialTicks);
-        drawGuiForgroundLayer(matrixStack, partialTicks, mouseX, mouseY);
+
+        if (detailsOn)
+            drawGuiDetailsForgroundLayer(matrixStack, partialTicks, mouseX, mouseY);
+        else
+            drawGuiForgroundLayer(matrixStack, partialTicks, mouseX, mouseY);
+    }
+
+    protected void drawGuiDetailsForgroundLayer(MatrixStack matrixStack, float partialTicks, int mouseX, int mouseY)
+    {
+        BodyPart part = BodyPartNames.getPart(selectedPart);
+        if (part == null)
+            part = BodyPartNames.getOption(selectedPart);
+
+        // TODO: draw details for selected part here
+
+        int edgeSpacingX = (this.width - this.xSize) / 2;
+        int edgeSpacingY = (this.height - this.ySize) / 2;
+
+        String details = part.getDescription();
+
+        BetterFontRenderer.wordwrap(font, matrixStack, details ,edgeSpacingX + 15, edgeSpacingY + 30, Color.GRAY.getRGB(), xSize - 30);
     }
 
     protected void drawGuiForgroundLayer(MatrixStack matrixStack, float partialTicks, int mouseX, int mouseY)
     {
+        drawBody(matrixStack);
+
         // If a part has already been selected then draw information on that selection
         // Otherwise draw the part selection menu
         String Selection = BodyModifications.getBodyModifications(Minecraft.getInstance().player).getSelection();
@@ -300,8 +343,6 @@ public class BodyforgeScreen extends Screen
         this.blit(matrixStack, edgeSpacingX, edgeSpacingY, 0, 0, this.xSize, this.ySize);
 
         ScreenTabControl.highlightTabs(matrixStack, 2, mouseX, mouseY, edgeSpacingX, edgeSpacingY, this);
-
-        drawBody(matrixStack);
     }
 
     private void drawSelection(MatrixStack matrixStack, int mouseX, int mouseY)
@@ -335,6 +376,7 @@ public class BodyforgeScreen extends Screen
         }
 
         forge.render(matrixStack, edgeSpacingX + forgeXPos, edgeSpacingY + forgeYPos, mouseX, mouseY, this);
+        details.render(matrixStack, edgeSpacingX + detailsXPos, edgeSpacingY + detailsYPos, mouseX, mouseY, this);
 
         // Render the BodyPart dropdown list
         bodySubParts.render(matrixStack, edgeSpacingX + bodySubPartListXPos, edgeSpacingY + bodySubPartListYPos, mouseX, mouseY, this);

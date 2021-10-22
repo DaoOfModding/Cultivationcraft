@@ -101,6 +101,11 @@ public class BodyPart
         return new TranslationTextComponent(displayNamePosition).getString();
     }
 
+    public String getDescription()
+    {
+        return new TranslationTextComponent(displayNamePosition + ".description").getString();
+    }
+
     public String getID()
     {
         return ID;

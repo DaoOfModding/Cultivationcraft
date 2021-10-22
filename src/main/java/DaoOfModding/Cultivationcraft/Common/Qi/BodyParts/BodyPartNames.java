@@ -109,7 +109,7 @@ public class BodyPartNames
 
         BodyPartOption reinforceSkin = new BodyPartOption(reinforcePart, bodyPosition, skinSubPosition,  "cultivationcraft.gui.generic.reinforce", 1000);
         //rubberSkin.addTextureChange(TextureList.skin, new ResourceLocation(Cultivationcraft.MODID, "textures/models/bone/bone.png"));
-        rubberSkin.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.basePosition);
+        reinforceSkin.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.basePosition);
 
         addOption(rubberSkin);
         addOption(reinforceSkin);

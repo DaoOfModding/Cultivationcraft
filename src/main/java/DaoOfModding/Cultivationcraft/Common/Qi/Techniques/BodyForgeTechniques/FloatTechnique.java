@@ -39,6 +39,8 @@ public class FloatTechnique extends Technique
         icon = new ResourceLocation(Cultivationcraft.MODID, "textures/techniques/icons/float.png");
 
         floating.addSize(GenericLimbNames.body, new Vector3d(3, 2, 4), 9999, 0.1f);
+        floating.addAngle(GenericLimbNames.body, new Vector3d(0, 0, Math.toRadians(-15)), GenericPoses.jumpArmPriority+2, 40f, -1);
+        floating.addAngle(GenericLimbNames.body, new Vector3d(0, 0, Math.toRadians(15)), GenericPoses.jumpArmPriority+2, 40f, -1);
 
         floating.addAngle(GenericLimbNames.leftArm, new Vector3d(Math.toRadians(0), 0, Math.toRadians(-130)), GenericPoses.jumpArmPriority + 5, 5f,-1);
         floating.addAngle(GenericLimbNames.leftArm, new Vector3d(Math.toRadians(0), 0, Math.toRadians(0)), GenericPoses.jumpArmPriority + 5, 5f, -1);

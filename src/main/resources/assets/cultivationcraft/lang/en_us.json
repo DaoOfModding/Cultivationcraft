@@ -17,6 +17,7 @@
 
   "cultivationcraft.gui.bodyforge": "Forge Body",
   "cultivationcraft.gui.forge": "Forge",
+  "cultivationcraft.gui.details": "Details",
 
   "cultivationcraft.gui.headpart": "Head",
   "cultivationcraft.gui.bodypart": "Body",
@@ -25,6 +26,7 @@
 
   "cultivationcraft.gui.generic.base": "Base",
   "cultivationcraft.gui.generic.reinforce": "Reinforce",
+  "cultivationcraft.gui.generic.reinforce.description": "Reinforce this body part to be stronger without making any significant change to its structure",
 
 
   "cultivationcraft.gui.bodypart.skin": "Skin",
@@ -32,23 +34,31 @@
   "cultivationcraft.gui.bodypart.back": "Back",
 
   "cultivationcraft.gui.bodypart.skin.rubber": "Rubber",
+  "cultivationcraft.gui.bodypart.skin.rubber.description": "Forge your skin into a rubber-like consistency, making it stretchy, bouncy and providing an extremely high resistance to lightning",
 
   "cultivationcraft.gui.bodypart.back.wings": "Wings",
+  "cultivationcraft.gui.bodypart.back.wings.description": "Grow wings to carry you through the sky",
 
   "cultivationcraft.gui.headpart.jaw": "Unhinged Jaw",
+  "cultivationcraft.gui.headpart.jaw.description": "Unhinge your jaw to allow your mouth to open much wider than usually possible",
 
   "cultivationcraft.gui.headpart.eye": "Eyes",
 
   "cultivationcraft.gui.headpart.eye.qisight": "Qi Sight",
+  "cultivationcraft.gui.headpart.eye.qisight.description": "Forge your eyes to be able to see large concentrations of Qi",
 
   "cultivationcraft.gui.headpart.mouth": "Mouth",
 
   "cultivationcraft.gui.headpart.mouth.flatteeth": "Flat Teeth",
+  "cultivationcraft.gui.headpart.mouth.flatteeth.description": "Grow larger, flat teeth, allowing you to chew up and swallow almost any substance",
   "cultivationcraft.gui.headpart.mouth.sharpteeth": "Sharp Teeth",
+  "cultivationcraft.gui.headpart.mouth.sharpteeth.description": "Grow larger, sharper teeth, providing you with a highly damaging bite attack",
 
   "cultivationcraft.gui.armpart.glide": "Gliding Arms",
+  "cultivationcraft.gui.armpart.glide.description": "Grow a thin membrane connecting your arms to your body, providing you with the ability to glide through the air that cannot be disabled",
 
   "cultivationcraft.gui.legpart.reversejoint": "Reverse-Jointed",
+  "cultivationcraft.gui.legpart.reversejoint.description": "Reverse the joints in your knees allowing you to jump significantly higher",
 
   "cultivationcraft.technique.meditate": "Meditate",
   "cultivationcraft.technique.divinesense": "Divine Sense",

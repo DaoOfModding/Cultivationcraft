@@ -52,7 +52,7 @@ public class BounceTechnique extends Technique
         //fall.addAngle(GenericLimbNames.leftArm, new Vector3d(0, Math.toRadians(0), Math.toRadians(0)), GenericPoses.jumpArmPriority+2);
         //fall.addAngle(GenericLimbNames.rightArm, new Vector3d(0, Math.toRadians(0), Math.toRadians(0)), GenericPoses.jumpArmPriority+2);
 
-        fall.addAngle(GenericLimbNames.body, new Vector3d(Math.toRadians(-45), 0, 0), GenericPoses.jumpArmPriority+1, 1f, -1);
+        //fall.addAngle(GenericLimbNames.body, new Vector3d(Math.toRadians(-45), 0, 0), GenericPoses.jumpArmPriority+1, 1f, -1);
     }
 
     @Override
