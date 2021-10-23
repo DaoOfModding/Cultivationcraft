@@ -31,7 +31,8 @@ public class BetterFontRenderer
 
             // Ensure the line string ends with a whole word
             // Don't bother adjusting the lineString if it contains everything string does or string starts with a space
-            if (lineString.length() < string.length() && !string.substring(lineString.length()).startsWith(" "))
+            // Also don't try to adjust the lineString if it contains no spaces
+            if (lineString.length() < string.length() && !string.substring(lineString.length()).startsWith(" ") && lineString.lastIndexOf(" ") > -1)
                 lineString = lineString.substring(0, lineString.lastIndexOf(" "));
 
             font.draw(stack, lineString, x, y + line, color);

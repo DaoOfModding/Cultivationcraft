@@ -31,7 +31,7 @@ public class FlyingSwordContainerScreen extends ContainerScreen<FlyingSwordConta
     {
         super(container, playerInv, title);
 
-        imageWidth = 175;
+        imageWidth = 256;
         imageHeight = 178;
     }
 

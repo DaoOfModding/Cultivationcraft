@@ -19,7 +19,7 @@ public class ScreenTabControl
     private static final int TAB_BAR_Y_SIZE = 12;
 
     private static final int TAB_BAR_U = 214;
-    private static final int TAB_BAR_V = 0;
+    private static final int TAB_BAR_V = 243;
 
     public static void highlightTabs(MatrixStack matrixStack, int tabSelected, int mouseX, int mouseY, int screenX, int screenY, Screen drawTo)
     {

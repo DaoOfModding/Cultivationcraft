@@ -20,12 +20,12 @@ public class TechniqueScreen extends Screen
 
     private DropdownList techniques;
 
-    private final int xSize = 175;
+    private final int xSize = 256;
     private final int ySize = 178;
 
     public static int selected = 0;
 
-    private final int techniqueXPos = 25;
+    private final int techniqueXPos = (xSize - 85) / 2;
     private final int techniqueYPos = 50;
 
     public TechniqueScreen()
@@ -144,7 +144,7 @@ public class TechniqueScreen extends Screen
 
         if (buttonPressed == 0)
         {
-            int techniqueSelected = TechniqueIcons.mouseOver(edgeSpacingX + 8, edgeSpacingY + 155, (int) mouseX, (int) mouseY, 18);
+            int techniqueSelected = TechniqueIcons.mouseOver(edgeSpacingX + 48, edgeSpacingY + 155, (int) mouseX, (int) mouseY, 18);
 
             if (techniqueSelected != -1)
                 changeSelection(techniqueSelected);
@@ -168,11 +168,11 @@ public class TechniqueScreen extends Screen
         int edgeSpacingY = (this.height - this.ySize) / 2;
 
         // Draw icons in the selection box
-        TechniqueIcons.renderIcons(matrixStack, edgeSpacingX + 8,edgeSpacingY + 155, this, 18);
+        TechniqueIcons.renderIcons(matrixStack, edgeSpacingX + 48,edgeSpacingY + 155, this, 18);
 
         // Highlight the selected technique and the technique the mouse is hovering over
-        TechniqueIcons.mouseOverHighlight(matrixStack, edgeSpacingX + 8,edgeSpacingY + 155, this, 18, mouseX, mouseY);
-        TechniqueIcons.highlightIcon(matrixStack, edgeSpacingX + 8,edgeSpacingY + 155, this, 18, selected);
+        TechniqueIcons.mouseOverHighlight(matrixStack, edgeSpacingX + 48,edgeSpacingY + 155, this, 18, mouseX, mouseY);
+        TechniqueIcons.highlightIcon(matrixStack, edgeSpacingX + 48,edgeSpacingY + 155, this, 18, selected);
 
         // Render the techniques dropdown list
         techniques.render(matrixStack, edgeSpacingX + techniqueXPos, edgeSpacingY + techniqueYPos, mouseX, mouseY, this);
