@@ -21,6 +21,7 @@ import net.minecraft.potion.Effect;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.event.TickEvent;
 
@@ -35,7 +36,7 @@ public class Technique
     protected ResourceLocation icon;
     protected ResourceLocation overlay;
 
-    protected String name;
+    protected String langLocation;
 
     protected int elementID;
     protected boolean active = false;
@@ -64,12 +65,17 @@ public class Technique
 
     public Technique()
     {
-        name = "Example name";
+        langLocation = "cultivationcraft.technique.example";
         elementID = Elements.noElementID;
         type = useType.Toggle;
         multiple = true;
 
         icon = new ResourceLocation(Cultivationcraft.MODID, "textures/techniques/icons/example.png");
+    }
+
+    public String getDescription()
+    {
+        return new TranslationTextComponent(langLocation + ".description").getString();
     }
 
     public PlayerStatModifications getStats()
@@ -113,7 +119,7 @@ public class Technique
     // Returns the name of this technique
     public String getName()
     {
-        return name;
+        return new TranslationTextComponent(langLocation).getString();
     }
 
     // Allow multiple copies of this technique to be equipped at once

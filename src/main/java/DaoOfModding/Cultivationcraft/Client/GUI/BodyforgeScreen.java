@@ -36,9 +36,6 @@ public class BodyforgeScreen extends Screen
     private final int bodySubPartListXPos = 75;
     private final int bodySubPartListYPos = 75;
 
-    private int forgeXPos = 93;
-    private final int forgeYPos = 150;
-
     private final int detailsMinXPos = 165;
     private final int detailsMaxXPos = 250;
     private final int detailsYPos = 50;
@@ -53,6 +50,9 @@ public class BodyforgeScreen extends Screen
 
     private final int xSize = 256;
     private final int ySize = 178;
+
+    private int forgeXPos = xSize / 2;
+    private final int forgeYPos = 150;
 
     private final int selectedTextXPos = xSize / 2;
     private final int selectedTextYPos = 70;

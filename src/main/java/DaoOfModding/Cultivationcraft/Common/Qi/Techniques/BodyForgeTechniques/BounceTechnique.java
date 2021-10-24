@@ -28,7 +28,7 @@ public class BounceTechnique extends Technique
     {
         super();
 
-        name = new TranslationTextComponent("cultivationcraft.technique.bounce").getString();
+        langLocation = "cultivationcraft.technique.bounce";
         elementID = Elements.noElementID;
 
         icon = new ResourceLocation(Cultivationcraft.MODID, "textures/techniques/icons/bounce.png");

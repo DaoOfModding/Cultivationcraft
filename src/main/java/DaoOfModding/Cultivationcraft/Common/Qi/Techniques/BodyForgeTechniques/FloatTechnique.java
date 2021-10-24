@@ -28,7 +28,7 @@ public class FloatTechnique extends Technique
     {
         super();
 
-        name = new TranslationTextComponent("cultivationcraft.technique.float").getString();
+        langLocation = "cultivationcraft.technique.float";
         elementID = Elements.noElementID;
 
         type = useType.Toggle;

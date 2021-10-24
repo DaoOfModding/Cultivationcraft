@@ -29,7 +29,7 @@ public class LeapTechnique extends Technique
     {
         super();
 
-        name = new TranslationTextComponent("cultivationcraft.technique.leap").getString();
+        langLocation = "cultivationcraft.technique.leap";
         elementID = Elements.noElementID;
 
         multiple = true;

@@ -34,7 +34,7 @@ public class SpreadTechnique extends Technique
     {
         super();
 
-        name = new TranslationTextComponent("cultivationcraft.technique.spread").getString();
+        langLocation = "cultivationcraft.technique.spread";
         elementID = Elements.noElementID;
 
         type = useType.Toggle;

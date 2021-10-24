@@ -21,7 +21,7 @@ public class DivineSenseTechnique extends Technique
     {
         super();
 
-        name = new TranslationTextComponent("cultivationcraft.technique.divinesense").getString();
+        langLocation = "cultivationcraft.technique.divinesense";
         elementID = Elements.noElementID;
 
         type = useType.Toggle;

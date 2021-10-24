@@ -20,7 +20,7 @@ public class MeditateTechnique extends Technique
     {
         super();
 
-        name = new TranslationTextComponent("cultivationcraft.technique.meditate").getString();
+        langLocation = "cultivationcraft.technique.meditate";
         elementID = Elements.noElementID;
 
         type = Technique.useType.Toggle;

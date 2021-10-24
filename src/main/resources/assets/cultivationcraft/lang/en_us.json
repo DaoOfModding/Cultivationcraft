@@ -59,14 +59,34 @@
   "cultivationcraft.gui.legpart.reversejoint": "Reverse-Jointed",
   "cultivationcraft.gui.legpart.reversejoint.description": "Reverse the joints in your knees allowing you to jump significantly higher",
 
+
+  "cultivationcraft.technique.example": "Example Technique",
+  "cultivationcraft.technique.example.description": "This is an example description",
+
   "cultivationcraft.technique.meditate": "Meditate",
+  "cultivationcraft.technique.meditate.description": "Activate to meditate, absorbing the Qi around you to enhance your cultivation",
+
   "cultivationcraft.technique.divinesense": "Divine Sense",
+  "cultivationcraft.technique.divinesense.description": "Toggle on to sense the Qi around you, allowing you to \"see\" large concentrations of Qi",
+
   "cultivationcraft.technique.icewalk": "Ice Walk",
+  "cultivationcraft.technique.icewalk.description": "Toggle on to freeze whatever is below your feet as you move, including air!",
 
   "cultivationcraft.technique.leap": "Leap",
+  "cultivationcraft.technique.leap.description": "Activate to quickly leap forward a great distance",
+
   "cultivationcraft.technique.bite": "Bite",
+  "cultivationcraft.technique.bite.description": "Toggle on to replace your attack with a bite attack when selected",
+
   "cultivationcraft.technique.roll": "Roll",
+  "cultivationcraft.technique.roll.description": "Toggle on to roll around instead of walking.\n§cWARNING: §cDOING §cTHIS §cIN §cFIRST §cPERSON §cIS §cNOT §cADVISED",
+
   "cultivationcraft.technique.float": "Float",
+  "cultivationcraft.technique.float.description": "Toggle on to replace your jump with the ability to blow yourself up into a balloon and slowly float upwards",
+
   "cultivationcraft.technique.spread": "Spread Wings",
-  "cultivationcraft.technique.bounce": "Bounce Harder"
+  "cultivationcraft.technique.spread.description": "Toggle on to spread your wings. Hold jump whilst in the air to raise your wings and release jump to flap them downwards, raising your higher into the air",
+
+  "cultivationcraft.technique.bounce": "Bounce Harder",
+  "cultivationcraft.technique.bounce.description": "Toggle on to curl yourself into a ball when in the air, increasing the amount you bounce when you land"
 }

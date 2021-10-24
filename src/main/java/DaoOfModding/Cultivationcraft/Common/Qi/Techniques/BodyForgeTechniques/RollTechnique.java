@@ -22,7 +22,7 @@ public class RollTechnique extends MovementOverrideTechnique
     {
         super();
 
-        name = new TranslationTextComponent("cultivationcraft.technique.roll").getString();
+        langLocation = "cultivationcraft.technique.roll";
         elementID = Elements.noElementID;
 
         icon = new ResourceLocation(Cultivationcraft.MODID, "textures/techniques/icons/roll.png");

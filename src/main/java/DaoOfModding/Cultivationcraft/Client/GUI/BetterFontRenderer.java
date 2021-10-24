@@ -4,6 +4,7 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.gui.FontRenderer;
 
 import java.awt.*;
+import java.util.ArrayList;
 
 public class BetterFontRenderer
 {
@@ -12,16 +13,35 @@ public class BetterFontRenderer
     {
         int line = 0;
 
-        for (String newString : string.split("\n"))
+        for (String newString : getNewLines(string))
         {
             font.draw(stack, newString, x, y + line, color);
             line += font.lineHeight;
         }
     }
 
+    private static ArrayList<String> getNewLines(String string)
+    {
+        ArrayList<String> newLined = new ArrayList<>();
+
+        if (string.contains("\n"))
+            for (String newString : string.split("\n"))
+                newLined.add(newString);
+        else
+            newLined.add(string);
+
+        return newLined;
+    }
+
     // Wrap the text to fit the specified width
     // Ensures whole words per line
     public static void wordwrap(FontRenderer font, MatrixStack stack, String string, float x, float y, int color, int width)
+    {
+        for (String newString : getNewLines(string))
+            y += wordwrapSingleLine(font, stack, newString, x, y, color, width);
+    }
+
+    private static float wordwrapSingleLine(FontRenderer font, MatrixStack stack, String string, float x, float y, int color, int width)
     {
         int line = 0;
 
@@ -43,6 +63,8 @@ public class BetterFontRenderer
 
             line += font.lineHeight;
         }
+
+        return line;
     }
 
     // Wrap the text to fit the specified width

@@ -14,6 +14,8 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TranslationTextComponent;
 
+import java.awt.*;
+
 public class TechniqueScreen extends Screen
 {
     private static final ResourceLocation TEXTURE = new ResourceLocation(Cultivationcraft.MODID, "textures/gui/technique.png");
@@ -173,6 +175,11 @@ public class TechniqueScreen extends Screen
         // Highlight the selected technique and the technique the mouse is hovering over
         TechniqueIcons.mouseOverHighlight(matrixStack, edgeSpacingX + 48,edgeSpacingY + 155, this, 18, mouseX, mouseY);
         TechniqueIcons.highlightIcon(matrixStack, edgeSpacingX + 48,edgeSpacingY + 155, this, 18, selected);
+
+        Technique selectedTech = CultivatorTechniques.getCultivatorTechniques(Minecraft.getInstance().player).getTechnique(selected);
+
+        if (selectedTech != null)
+            BetterFontRenderer.wordwrap(font, matrixStack, selectedTech.getDescription(),edgeSpacingX + 30, edgeSpacingY + techniqueYPos + 20, Color.GRAY.getRGB(), xSize - 60);
 
         // Render the techniques dropdown list
         techniques.render(matrixStack, edgeSpacingX + techniqueXPos, edgeSpacingY + techniqueYPos, mouseX, mouseY, this);

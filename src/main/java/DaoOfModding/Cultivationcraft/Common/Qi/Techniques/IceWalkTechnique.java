@@ -28,7 +28,7 @@ public class IceWalkTechnique extends Technique
     {
         super();
 
-        name = new TranslationTextComponent("cultivationcraft.technique.icewalk").getString();
+        langLocation = "cultivationcraft.technique.icewalk";
         elementID = Elements.iceElementID;
 
         type = useType.Toggle;

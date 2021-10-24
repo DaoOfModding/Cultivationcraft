@@ -19,7 +19,6 @@ public class IceAuraTechnique extends AuraTechnique
     {
         super();
 
-        name = "Ice Aura";
         elementID = Elements.iceElementID;
 
         icon = new ResourceLocation(Cultivationcraft.MODID, "textures/techniques/icons/iceaura.png");
