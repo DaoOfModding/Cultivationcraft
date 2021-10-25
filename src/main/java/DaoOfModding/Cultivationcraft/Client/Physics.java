@@ -2,7 +2,6 @@ package DaoOfModding.Cultivationcraft.Client;
 
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartStatControl;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.StatIDs;
-import DaoOfModding.mlmanimator.mlmanimator;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.vector.Vector3d;
 

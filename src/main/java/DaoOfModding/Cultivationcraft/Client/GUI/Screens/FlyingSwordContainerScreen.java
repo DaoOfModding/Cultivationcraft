@@ -1,5 +1,6 @@
-package DaoOfModding.Cultivationcraft.Client.GUI;
+package DaoOfModding.Cultivationcraft.Client.GUI.Screens;
 
+import DaoOfModding.Cultivationcraft.Client.GUI.ScreenTabControl;
 import DaoOfModding.Cultivationcraft.Common.Containers.FlyingSwordContainer;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import com.mojang.blaze3d.matrix.MatrixStack;

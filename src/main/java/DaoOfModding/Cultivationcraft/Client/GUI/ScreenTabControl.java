@@ -1,11 +1,12 @@
 package DaoOfModding.Cultivationcraft.Client.GUI;
 
+import DaoOfModding.Cultivationcraft.Client.GUI.Screens.BodyforgeScreen;
+import DaoOfModding.Cultivationcraft.Client.GUI.Screens.StatScreen;
+import DaoOfModding.Cultivationcraft.Client.GUI.Screens.TechniqueScreen;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStats;
-import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStatsCapability;
 import DaoOfModding.Cultivationcraft.Common.Qi.CultivationTypes;
 import DaoOfModding.Cultivationcraft.Common.Register;
 import DaoOfModding.Cultivationcraft.Network.ClientPacketHandler;
-import DaoOfModding.Cultivationcraft.Network.PacketHandler;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
@@ -16,7 +17,7 @@ public class ScreenTabControl
     private static final int[] TAB_BAR_Y_POS = {0, 0, 0, 0};
 
     private static final int TAB_BAR_X_SIZE = 41;
-    private static final int TAB_BAR_Y_SIZE = 12;
+    private static final int TAB_BAR_Y_SIZE = 13;
 
     private static final int TAB_BAR_U = 214;
     private static final int TAB_BAR_V = 243;
@@ -46,7 +47,9 @@ public class ScreenTabControl
         for (int i = 0; i < TAB_BAR_X_POS.length; i++)
             if (mouseOver(mouseX, mouseY, i))
             {
-                if (i == 1)
+                if (i == 0)
+                    Minecraft.getInstance().forceSetScreen(new StatScreen());
+                else if (i == 1)
                     Minecraft.getInstance().forceSetScreen(new TechniqueScreen());
                 else if (i == 2)
                 {

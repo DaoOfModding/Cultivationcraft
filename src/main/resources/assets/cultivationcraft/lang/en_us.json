@@ -12,6 +12,8 @@
   "cultivationcraft.gui.cancel": "Cancel",
   "cultivationcraft.gui.remaining": "Remaining: %s seconds",
 
+  "cultivationcraft.gui.stats": "Statistics",
+
   "cultivationcraft.gui.technique": "Techniques",
   "cultivationcraft.gui.notechnique": "None",
 

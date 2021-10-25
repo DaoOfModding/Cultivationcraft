@@ -1,5 +1,9 @@
-package DaoOfModding.Cultivationcraft.Client.GUI;
+package DaoOfModding.Cultivationcraft.Client.GUI.Screens;
 
+import DaoOfModding.Cultivationcraft.Client.GUI.BetterFontRenderer;
+import DaoOfModding.Cultivationcraft.Client.GUI.DropdownList;
+import DaoOfModding.Cultivationcraft.Client.GUI.ScreenTabControl;
+import DaoOfModding.Cultivationcraft.Client.GUI.TechniqueIcons;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.CultivatorTechniques;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.ICultivatorTechniques;
 import DaoOfModding.Cultivationcraft.Common.Qi.TechniqueControl;
@@ -16,14 +20,9 @@ import net.minecraft.util.text.TranslationTextComponent;
 
 import java.awt.*;
 
-public class TechniqueScreen extends Screen
+public class TechniqueScreen extends GenericTabScreen
 {
-    private static final ResourceLocation TEXTURE = new ResourceLocation(Cultivationcraft.MODID, "textures/gui/technique.png");
-
     private DropdownList techniques;
-
-    private final int xSize = 256;
-    private final int ySize = 178;
 
     public static int selected = 0;
 
@@ -32,7 +31,7 @@ public class TechniqueScreen extends Screen
 
     public TechniqueScreen()
     {
-        super(new TranslationTextComponent("cultivationcraft.gui.technique"));
+        super(1, new TranslationTextComponent("cultivationcraft.gui.technique"), new ResourceLocation(Cultivationcraft.MODID, "textures/gui/technique.png"));
 
         updateTechniqueList();
     }
@@ -78,9 +77,8 @@ public class TechniqueScreen extends Screen
     @Override
     public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks)
     {
-        this.renderBackground(matrixStack);
-        drawGuiBackgroundLayer(matrixStack, partialTicks, mouseX, mouseY);
         super.render(matrixStack, mouseX, mouseY, partialTicks);
+
         drawGuiForgroundLayer(matrixStack, partialTicks, mouseX, mouseY);
     }
 
@@ -132,7 +130,7 @@ public class TechniqueScreen extends Screen
         int edgeSpacingX = (this.width - this.xSize) / 2;
         int edgeSpacingY = (this.height - this.ySize) / 2;
 
-        if (ScreenTabControl.mouseClick((int)mouseX, (int)mouseY, edgeSpacingX, edgeSpacingY, buttonPressed))
+        if (super.mouseClicked(mouseX, mouseY, buttonPressed))
             return true;
 
         Class changed = (Class)techniques.mouseClick((int)mouseX - (edgeSpacingX + techniqueXPos), (int)mouseY - (edgeSpacingY + techniqueYPos), buttonPressed);
@@ -151,9 +149,6 @@ public class TechniqueScreen extends Screen
             if (techniqueSelected != -1)
                 changeSelection(techniqueSelected);
         }
-
-        if (super.mouseClicked(mouseX, mouseY, buttonPressed))
-            return true;
 
         return false;
     }
@@ -183,17 +178,5 @@ public class TechniqueScreen extends Screen
 
         // Render the techniques dropdown list
         techniques.render(matrixStack, edgeSpacingX + techniqueXPos, edgeSpacingY + techniqueYPos, mouseX, mouseY, this);
-    }
-
-    protected void drawGuiBackgroundLayer(MatrixStack matrixStack, float partialTicks, int mouseX, int mouseY)
-    {
-        GlStateManager._color4f(1.0F, 1.0F, 1.0F, 1.0F);
-        Minecraft.getInstance().getTextureManager().bind(TEXTURE);
-
-        int edgeSpacingX = (this.width - this.xSize) / 2;
-        int edgeSpacingY = (this.height - this.ySize) / 2;
-        this.blit(matrixStack, edgeSpacingX, edgeSpacingY, 0, 0, this.xSize, this.ySize);
-
-        ScreenTabControl.highlightTabs(matrixStack, 1, mouseX, mouseY, edgeSpacingX, edgeSpacingY, this);
     }
 }

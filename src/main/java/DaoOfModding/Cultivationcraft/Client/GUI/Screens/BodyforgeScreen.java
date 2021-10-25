@@ -1,5 +1,6 @@
-package DaoOfModding.Cultivationcraft.Client.GUI;
+package DaoOfModding.Cultivationcraft.Client.GUI.Screens;
 
+import DaoOfModding.Cultivationcraft.Client.GUI.*;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartNames;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.BodyModifications;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.IBodyModifications;
@@ -19,10 +20,8 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.Map;
 
-public class BodyforgeScreen extends Screen
+public class BodyforgeScreen extends GenericTabScreen
 {
-    private static final ResourceLocation TEXTURE = new ResourceLocation(Cultivationcraft.MODID, "textures/gui/bodyforge.png");
-
     private DropdownList bodyParts;
     private DropdownList bodySubParts;
 
@@ -48,9 +47,6 @@ public class BodyforgeScreen extends Screen
 
     private final int buttonMinYPos = 100;
 
-    private final int xSize = 256;
-    private final int ySize = 178;
-
     private int forgeXPos = xSize / 2;
     private final int forgeYPos = 150;
 
@@ -63,7 +59,7 @@ public class BodyforgeScreen extends Screen
 
     public BodyforgeScreen()
     {
-        super(new TranslationTextComponent("cultivationcraft.gui.bodyforge"));
+        super(2, new TranslationTextComponent("cultivationcraft.gui.bodyforge"), new ResourceLocation(Cultivationcraft.MODID, "textures/gui/bodyforge.png"));
 
         String Selection = BodyModifications.getBodyModifications(Minecraft.getInstance().player).getSelection();
         updateBodyPartList();
@@ -77,12 +73,6 @@ public class BodyforgeScreen extends Screen
         // Centre the buttons
         forgeXPos -= Minecraft.getInstance().font.width(forgeString) / 2;
         cancelXPos -= Minecraft.getInstance().font.width(cancelString) / 2;
-    }
-
-    @Override
-    public boolean isPauseScreen()
-    {
-        return false;
     }
 
     private void updateBodyPartList()
@@ -170,7 +160,7 @@ public class BodyforgeScreen extends Screen
         int edgeSpacingX = (this.width - this.xSize) / 2;
         int edgeSpacingY = (this.height - this.ySize) / 2;
 
-        if (ScreenTabControl.mouseClick((int)mouseX, (int)mouseY, edgeSpacingX, edgeSpacingY, buttonPressed))
+        if (super.mouseClicked(mouseX, mouseY, buttonPressed))
             return true;
 
         // Change the selected position if a position is clicked in the dropdown list
@@ -231,9 +221,6 @@ public class BodyforgeScreen extends Screen
             xpos += button.width + 3;
         }
 
-        if (super.mouseClicked(mouseX, mouseY, buttonPressed))
-            return true;
-
         return false;
     }
 
@@ -273,8 +260,6 @@ public class BodyforgeScreen extends Screen
     @Override
     public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks)
     {
-        this.renderBackground(matrixStack);
-        drawGuiBackgroundLayer(matrixStack, partialTicks, mouseX, mouseY);
         super.render(matrixStack, mouseX, mouseY, partialTicks);
 
         drawGuiForgroundLayer(matrixStack, partialTicks, mouseX, mouseY);
@@ -312,18 +297,6 @@ public class BodyforgeScreen extends Screen
             drawSelection(matrixStack, mouseX, mouseY);
         else
             drawSelected(matrixStack, part, mouseX, mouseY);
-    }
-
-    protected void drawGuiBackgroundLayer(MatrixStack matrixStack, float partialTicks, int mouseX, int mouseY)
-    {
-        GlStateManager._color4f(1.0F, 1.0F, 1.0F, 1.0F);
-        Minecraft.getInstance().getTextureManager().bind(TEXTURE);
-
-        int edgeSpacingX = (this.width - this.xSize) / 2;
-        int edgeSpacingY = (this.height - this.ySize) / 2;
-        this.blit(matrixStack, edgeSpacingX, edgeSpacingY, 0, 0, this.xSize, this.ySize);
-
-        ScreenTabControl.highlightTabs(matrixStack, 2, mouseX, mouseY, edgeSpacingX, edgeSpacingY, this);
     }
 
     private void drawSelection(MatrixStack matrixStack, int mouseX, int mouseY)

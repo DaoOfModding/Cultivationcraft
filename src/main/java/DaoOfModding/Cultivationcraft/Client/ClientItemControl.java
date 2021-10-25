@@ -1,10 +1,9 @@
 package DaoOfModding.Cultivationcraft.Client;
 
-import DaoOfModding.Cultivationcraft.Client.Animations.BodyPartModels;
 import DaoOfModding.Cultivationcraft.Client.GUI.BodyPartGUIs;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartNames;
 import DaoOfModding.Cultivationcraft.Client.GUI.BodyPartGUI;
-import DaoOfModding.Cultivationcraft.Client.GUI.FlyingSwordContainerScreen;
+import DaoOfModding.Cultivationcraft.Client.GUI.Screens.FlyingSwordContainerScreen;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import DaoOfModding.Cultivationcraft.Common.Register;
 import net.minecraft.client.gui.ScreenManager;
