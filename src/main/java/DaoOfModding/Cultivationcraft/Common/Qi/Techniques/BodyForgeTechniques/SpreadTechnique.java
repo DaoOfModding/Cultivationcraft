@@ -92,7 +92,7 @@ public class SpreadTechnique extends Technique
     @Override
     public boolean isValid(PlayerEntity player)
     {
-        // Technique is valid if the player is a body cultivator with Reverse Joint Legs
+        // Technique is valid if the player is a body cultivator with Wings
         if (CultivatorStats.getCultivatorStats(player).getCultivationType() == CultivationTypes.BODY_CULTIVATOR &&
                 BodyModifications.getBodyModifications(player).hasOption(BodyPartNames.bodyPosition, BodyPartNames.backSubPosition, BodyPartNames.wingPart))
             return true;

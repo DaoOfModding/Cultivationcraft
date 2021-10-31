@@ -25,12 +25,14 @@ public class BodyPartNames
     public static final String glideArmPart = "glidearm";
 
     // OPTIONS
-    public static final String reinforcePart = "reinforce";
+    public static final String reinforceSkinPart = "reinforceSkin";
+    public static final String reinforceBonePart = "reinforceBone";
 
     public static final String startingEyesPart = "qisight";
     public static final String flatTeethPart = "flatteeth";
     public static final String sharpTeethPart = "sharpteeth";
     public static final String wingPart = "wing";
+    public static final String insectwingPart = "iwing";
     public static final String rubberSkinPart = "rubber";
 
     // DEFAULTS
@@ -90,7 +92,7 @@ public class BodyPartNames
 
     private static void setupBodyOptions()
     {
-        BodyPartOption reinforceBones = new BodyPartOption(reinforcePart, bodyPosition, boneSubPosition,  "cultivationcraft.gui.generic.reinforce", 1000);
+        BodyPartOption reinforceBones = new BodyPartOption(reinforceBonePart, bodyPosition, boneSubPosition,  "cultivationcraft.gui.generic.reinforce", 1000);
         reinforceBones.addTextureChange(TextureList.bone, new ResourceLocation(Cultivationcraft.MODID, "textures/models/bone/bone.png"));
         reinforceBones.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.basePosition);
 
@@ -107,7 +109,7 @@ public class BodyPartNames
         rubberSkin.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.basePosition);
         rubberSkin.getStatChanges().setStat(StatIDs.bounceHeight, 0.5f);
 
-        BodyPartOption reinforceSkin = new BodyPartOption(reinforcePart, bodyPosition, skinSubPosition,  "cultivationcraft.gui.generic.reinforce", 1000);
+        BodyPartOption reinforceSkin = new BodyPartOption(reinforceSkinPart, bodyPosition, skinSubPosition,  "cultivationcraft.gui.generic.reinforce", 1000);
         //rubberSkin.addTextureChange(TextureList.skin, new ResourceLocation(Cultivationcraft.MODID, "textures/models/bone/bone.png"));
         reinforceSkin.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.basePosition);
 
@@ -127,7 +129,17 @@ public class BodyPartNames
         addWings.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.skinSubPosition);
         addWings.addNotNeededPart(BodyPartNames.glideArmPart);
 
+        BodyPartOption addIWings = new BodyPartOption(insectwingPart, bodyPosition, backSubPosition,  "cultivationcraft.gui.bodypart.back.iwings", 1000);
+        addIWings.addModel(BodyPartModelNames.rinsectWing);
+        addIWings.addModel(BodyPartModelNames.linsectWing);
+        addIWings.addQuad(BodyPartModelNames.insectQuads);
+        addIWings.setTexture(TextureList.bone);
+        addIWings.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.boneSubPosition);
+        addIWings.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.skinSubPosition);
+        addIWings.addNotNeededPart(BodyPartNames.glideArmPart);
+
         addOption(addWings);
+        addOption(addIWings);
     }
 
     private static void setupBodyParts()

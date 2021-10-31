@@ -1,6 +1,7 @@
 package DaoOfModding.Cultivationcraft.Client.Animations;
 
 import DaoOfModding.mlmanimator.Client.AnimationFramework.AnimationBuilder;
+import DaoOfModding.mlmanimator.Client.AnimationFramework.AnimationSpeedCalculator;
 import DaoOfModding.mlmanimator.Client.Models.GenericLimbNames;
 import DaoOfModding.mlmanimator.Client.Poses.GenericPoses;
 import DaoOfModding.mlmanimator.Client.Poses.PlayerPose;
@@ -57,6 +58,13 @@ public class GenericQiPoses
         Idle.addAngle(BodyPartModelNames.lwingStrand3Model, new Vector3d(0, 0, Math.toRadians(-70)), 0);
         Idle.addAngle(BodyPartModelNames.lwingStrand4Model, new Vector3d(0, 0, Math.toRadians(-80)), 0);
 
+
+        Idle.addAngle(BodyPartModelNames.linsectWing, new Vector3d(0, Math.toRadians(0), Math.toRadians(-60)), 0);
+        Idle.addAngle(BodyPartModelNames.rinsectWing, new Vector3d(0, Math.toRadians(0), Math.toRadians(60)), 0);
+
+        Idle.addAngle(BodyPartModelNames.linsectWingInner, new Vector3d(0, Math.toRadians(15), Math.toRadians(-30)), 0);
+        Idle.addAngle(BodyPartModelNames.rinsectWingInner, new Vector3d(0, Math.toRadians(-15), Math.toRadians(30)), 0);
+
         GenericPoses.addToIdle(Idle);
     }
 
@@ -110,11 +118,11 @@ public class GenericQiPoses
 
     private static void setupCrossLegs()
     {
-        CrossLegs.addAngle(GenericLimbNames.leftArm, new Vector3d(Math.toRadians(30), Math.toRadians(-180), 0), GenericPoses.walkArmPriority + 4);
-        CrossLegs.addAngle(GenericLimbNames.rightArm, new Vector3d(Math.toRadians(30), Math.toRadians(180), 0), GenericPoses.walkArmPriority + 4);
+        CrossLegs.addAngle(GenericLimbNames.leftArm, new Vector3d(Math.toRadians(0), Math.toRadians(-30), 0), GenericPoses.walkArmPriority + 4);
+        CrossLegs.addAngle(GenericLimbNames.rightArm, new Vector3d(Math.toRadians(0), Math.toRadians(30), 0), GenericPoses.walkArmPriority + 4);
 
-        CrossLegs.addAngle(GenericLimbNames.lowerLeftArm, new Vector3d(0, 0, Math.toRadians(30)), GenericPoses.walkArmPriority + 4);
-        CrossLegs.addAngle(GenericLimbNames.lowerRightArm, new Vector3d(0, 0, Math.toRadians(-30)), GenericPoses.walkArmPriority + 4);
+        CrossLegs.addAngle(GenericLimbNames.lowerLeftArm, new Vector3d(Math.toRadians(-30), 0, 0), GenericPoses.walkArmPriority + 4);
+        CrossLegs.addAngle(GenericLimbNames.lowerRightArm, new Vector3d(Math.toRadians(-30), 0, 0), GenericPoses.walkArmPriority + 4);
 
         CrossLegs.addAngle(GenericLimbNames.leftLeg, new Vector3d(Math.toRadians(45), Math.toRadians(-180), Math.toRadians(-90)), GenericPoses.walkLegPriority + 4);
         CrossLegs.addAngle(GenericLimbNames.rightLeg, new Vector3d(Math.toRadians(45), Math.toRadians(180), Math.toRadians(90)), GenericPoses.walkLegPriority + 4);

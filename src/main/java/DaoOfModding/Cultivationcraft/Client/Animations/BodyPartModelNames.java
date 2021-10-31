@@ -38,5 +38,14 @@ public class BodyPartModelNames
     public static final String wingquad = "WING_QUADS";
 
 
+    public static final String rinsectWing = "RIGHT_INSECT_WING";
+    public static final String rinsectWingInner = "RIGHT_INSECT_WING_INNER";
+
+    public static final String linsectWing = "LEFT_INSECT_WING";
+    public static final String linsectWingInner = "LEFT_INSECT_WING_INNER";
+
+    public static final String insectQuads = "INSECT_QUADS";
+
+
     public static final String armglidequad = "ARM_GLIDING_QUADS";
 }

@@ -4,6 +4,7 @@ import DaoOfModding.mlmanimator.Client.Models.*;
 import DaoOfModding.mlmanimator.Client.Models.Quads.Quad;
 import DaoOfModding.mlmanimator.Client.Models.Quads.QuadLinkage;
 import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.util.math.vector.Vector4f;
 
 import java.util.HashMap;
 
@@ -20,7 +21,7 @@ public class BodyPartModels
         setupLegModels();
         setupArmModels();
 
-        setupWingModels();
+        setupBackModels();
     }
 
     private void setupBodyModels()
@@ -39,13 +40,13 @@ public class BodyPartModels
         rightArm.setRotationPoint(new Vector3d(0.5D, 0.66D, 0.5D));
         rightArm.setPos(0.0F, 0.0F, 0.5F);
         rightArm.setFixedPosAdjustment(-2.0F, 2F, 0.0F);
-        rightArm.extend(GenericResizers.getRightArmResizer());
+        rightArm.extend(GenericResizers.getArmResizer());
 
         ExtendableModelRenderer leftArm = new ExtendableModelRenderer(32, 48);
         leftArm.setRotationPoint(new Vector3d(0.5D, 0.66D, 0.5D));
         leftArm.setPos(1.0F, 0.0F, 0.5F);
         leftArm.setFixedPosAdjustment(2.0F, 2F, 0.0F);
-        leftArm.extend(GenericResizers.getLeftArmResizer());
+        leftArm.extend(GenericResizers.getArmResizer());
         leftArm.mirror = true;
 
         addModel(GenericLimbNames.leftArm, leftArm);
@@ -133,6 +134,12 @@ public class BodyPartModels
 
         addModel(BodyPartModelNames.FPjawModel, FPsemiHeadPart);
         addReference(BodyPartModelNames.FPjawModel, BodyPartModelNames.FPjawModelLower, FPjawPart);
+    }
+
+    private void setupBackModels()
+    {
+        setupWingModels();
+        setupInsectWingModels();
     }
 
     private void setupWingModels()
@@ -254,6 +261,67 @@ public class BodyPartModels
         addReference(BodyPartModelNames.lwingUpperArmModel, BodyPartModelNames.lwingStrand3Model, lwingStrandModel3);
         addReference(BodyPartModelNames.lwingUpperArmModel, BodyPartModelNames.lwingStrand4Model, lwingStrandModel4);
         addQuadCollection(BodyPartModelNames.wingquad, wingQuads);
+    }
+
+    private void setupInsectWingModels()
+    {
+        defaultResizeModule wingTop = new defaultResizeModule(new Vector3d(16, 0.25, 0.25));
+        defaultResizeModule lwingTop = new defaultResizeModule(new Vector3d(-16, 0.25, 0.25));
+
+        ExtendableModelRenderer wingTopModel = new ExtendableModelRenderer(0, 0);
+        wingTopModel.setPos(0.5F, 0.1F, 1F);
+        wingTopModel.setRotationPoint(new Vector3d(1, 0.5f, 0f));
+        wingTopModel.extend(wingTop);
+
+        ExtendableModelRenderer lwingTopModel = new ExtendableModelRenderer(0, 0);
+        lwingTopModel.setPos(0.5F, 0.1F, 1F);
+        lwingTopModel.setRotationPoint(new Vector3d(1, 0.5f, 0f));
+        lwingTopModel.extend(lwingTop);
+
+
+        defaultResizeModule innerWingTop = new defaultResizeModule(new Vector3d(-14, 0.25, 0.25));
+        defaultResizeModule linnerWingTop = new defaultResizeModule(new Vector3d(14, 0.25, 0.25));
+
+        ExtendableModelRenderer innerWingModel = new ExtendableModelRenderer(0, 0);
+        innerWingModel.setPos(0, 0F, 0.5F);
+        innerWingModel.setRotationPoint(new Vector3d(0F, 1, 0.5f));
+        innerWingModel.extend(innerWingTop);
+
+        ExtendableModelRenderer linnerWingModel = new ExtendableModelRenderer(0, 0);
+        linnerWingModel.setPos(0, 0F, 0.5F);
+        linnerWingModel.setRotationPoint(new Vector3d(0F, 1, 0.5f));
+        linnerWingModel.extend(linnerWingTop);
+
+        wingTopModel.addChild(innerWingModel);
+        lwingTopModel.addChild(linnerWingModel);
+
+
+        Quad lwingConnector = new Quad(new Vector3d(0, 0, 0), new Vector3d(0, 0, 0),new Vector3d(0, 0, 0),new Vector3d(0, 0, 0));
+        lwingTopModel.addQuadLinkage(new QuadLinkage(lwingConnector, Quad.QuadVertex.TopLeft, new Vector3d(0, 0, 0.5)));
+        lwingTopModel.addQuadLinkage(new QuadLinkage(lwingConnector, Quad.QuadVertex.BottomLeft, new Vector3d(1, 0, 0.5)));
+        linnerWingModel.addQuadLinkage(new QuadLinkage(lwingConnector, Quad.QuadVertex.TopRight, new Vector3d(1, 0, 0.5)));
+        linnerWingModel.addQuadLinkage(new QuadLinkage(lwingConnector, Quad.QuadVertex.BottomRight, new Vector3d(0, 0, 0.5)));
+        lwingConnector.setColor(new Vector4f(1, 1, 1, 0.33f));
+
+        Quad rwingConnector = new Quad(new Vector3d(0, 0, 0), new Vector3d(0, 0, 0),new Vector3d(0, 0, 0),new Vector3d(0, 0, 0));
+        wingTopModel.addQuadLinkage(new QuadLinkage(rwingConnector, Quad.QuadVertex.TopLeft, new Vector3d(0, 0, 0.5)));
+        wingTopModel.addQuadLinkage(new QuadLinkage(rwingConnector, Quad.QuadVertex.BottomLeft, new Vector3d(1, 0, 0.5)));
+        innerWingModel.addQuadLinkage(new QuadLinkage(rwingConnector, Quad.QuadVertex.TopRight, new Vector3d(1, 0, 0.5)));
+        innerWingModel.addQuadLinkage(new QuadLinkage(rwingConnector, Quad.QuadVertex.BottomRight, new Vector3d(0, 0, 0.5)));
+        rwingConnector.setColor(new Vector4f(1, 1, 1, 0.33f));
+
+        QuadCollection wingQuads = new QuadCollection();
+        wingQuads.addQuad(lwingConnector);
+        wingQuads.addQuad(rwingConnector);
+
+
+        addModel(BodyPartModelNames.rinsectWing, wingTopModel);
+        addReference(BodyPartModelNames.rinsectWing, BodyPartModelNames.rinsectWingInner, innerWingModel);
+
+        addModel(BodyPartModelNames.linsectWing, lwingTopModel);
+        addReference(BodyPartModelNames.linsectWing, BodyPartModelNames.linsectWingInner, linnerWingModel);
+
+        addQuadCollection(BodyPartModelNames.insectQuads, wingQuads);
     }
 
     private void setupTeethModels()

@@ -40,6 +40,9 @@
   "cultivationcraft.gui.bodypart.back.wings": "Wings",
   "cultivationcraft.gui.bodypart.back.wings.description": "Grow wings to carry you through the sky",
 
+  "cultivationcraft.gui.bodypart.back.iwings": "Insect Wings",
+  "cultivationcraft.gui.bodypart.back.iwings.description": "Grow delicate insect wings allowing you to quickly dart through the sky",
+
   "cultivationcraft.gui.headpart.jaw": "Unhinged Jaw",
   "cultivationcraft.gui.headpart.jaw.description": "Unhinge your jaw to allow your mouth to open much wider than usually possible",
 
@@ -88,6 +91,9 @@
 
   "cultivationcraft.technique.spread": "Spread Wings",
   "cultivationcraft.technique.spread.description": "Toggle on to spread your wings. Hold jump whilst in the air to raise your wings and release jump to flap them downwards, raising your higher into the air",
+
+  "cultivationcraft.technique.dart": "Spread Wings",
+  "cultivationcraft.technique.dart.description": "Toggle on to spread your wings. Press jump to quickly dart in the direction you are looking",
 
   "cultivationcraft.technique.bounce": "Bounce Harder",
   "cultivationcraft.technique.bounce.description": "Toggle on to curl yourself into a ball when in the air, increasing the amount you bounce when you land"
