@@ -6,6 +6,7 @@ import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyForgeParts.GlidePar
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.StatIDs;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import DaoOfModding.mlmanimator.Client.Models.GenericLimbNames;
+import net.minecraft.entity.boss.dragon.EnderDragonEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TranslationTextComponent;
 
@@ -171,13 +172,13 @@ public class BodyPartNames
 
         addPart(reinforce);
 
-
         BodyPart glide = new GlidePart(glideArmPart, armPosition, "cultivationcraft.gui.armpart.glide", 1000);
         glide.addModel(GenericLimbNames.leftArm);
         glide.addModel(GenericLimbNames.rightArm);
         glide.addQuad(BodyPartModelNames.armglidequad);
         glide.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.skinSubPosition);
         glide.addNotNeededPart(BodyPartNames.wingPart);
+        glide.addNotNeededPart(BodyPartNames.insectwingPart);
 
         addPart(glide);
     }

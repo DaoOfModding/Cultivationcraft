@@ -10,52 +10,37 @@ import net.minecraftforge.event.TickEvent;
 
 public class MovementOverrideTechnique extends Technique
 {
-    protected PlayerPose move = new PlayerPose();
-
     public MovementOverrideTechnique()
     {
         super();
 
-        type = useType.Toggle;
         multiple = false;
     }
 
-    @Override
-    public void tickClient(TickEvent.PlayerTickEvent event)
+    // Called when the keybinding for the specified input is pressed
+    // If any of these return true, then vanilla movement for that input will be cancelled
+    public boolean overwriteForward()
     {
-        super.tickClient(event);
-
-        Vector3d motion = event.player.getDeltaMovement();
-        motion.multiply(1, 0, 1);
-
-        double speed = motion.length() * 0.75;
-
-        Cultivationcraft.LOGGER.info(speed);
-
-        if (speed < 0)
-            speed = 0;
-
-        // Determine if going in reverse or not
-        if (speed > 0)
-        {
-            Vector3d direction = new Vector3d(event.player.getLookAngle().x, 0, event.player.getLookAngle().z).normalize();
-            Vector3d movementDirection = motion.normalize();
-
-            if (direction.subtract(movementDirection).length() > 1.7)
-                speed *= -1;
-        }
-
-        updateSpeed(speed);
-
-        if (speed != 0)
-        {
-            PoseHandler.addPose(event.player.getUUID(), move);
-        }
+        return false;
     }
 
-    // Sends the players movement speed to the technique before updating
-    public void updateSpeed(double speed)
+    public boolean overwriteLeft()
     {
+        return false;
+    }
 
+    public boolean overwriteRight()
+    {
+        return false;
+    }
+
+    public boolean overwriteBackward()
+    {
+        return false;
+    }
+
+    public boolean overwriteJump()
+    {
+        return false;
     }
 }

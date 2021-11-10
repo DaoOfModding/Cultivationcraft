@@ -6,6 +6,7 @@ import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.IC
 import DaoOfModding.Cultivationcraft.Common.Misc;
 import DaoOfModding.Cultivationcraft.Common.Qi.CultivatorControl;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.AttackOverrideTechnique;
+import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.MovementOverrideTechnique;
 import DaoOfModding.Cultivationcraft.Common.Register;
 import DaoOfModding.Cultivationcraft.Network.ClientPacketHandler;
 import net.minecraft.client.Minecraft;
@@ -130,6 +131,39 @@ public class KeybindingControl
         attackTech.attack(Minecraft.getInstance().player, slot);
     }
 
+    public static void handleMovementOverrides()
+    {
+        // Get all cultivator techniques and check if any of them are active movement overrides
+        int slot = CultivatorControl.getMovementOverride(Minecraft.getInstance().player);
+
+        // Do nothing if there is no active movement override
+        if (slot == -1)
+            return;
+
+        MovementOverrideTechnique movementTech = (MovementOverrideTechnique)CultivatorTechniques.getCultivatorTechniques(Minecraft.getInstance().player).getTechnique(slot);
+
+
+        if (Minecraft.getInstance().options.keyUp.getKeyBinding().isDown())
+            if (movementTech.overwriteForward())
+                Minecraft.getInstance().options.keyUp.getKeyBinding().setDown(false);
+
+        if (Minecraft.getInstance().options.keyDown.getKeyBinding().isDown())
+            if (movementTech.overwriteBackward())
+                Minecraft.getInstance().options.keyDown.getKeyBinding().setDown(false);
+
+        if (Minecraft.getInstance().options.keyLeft.getKeyBinding().isDown())
+            if (movementTech.overwriteLeft())
+                Minecraft.getInstance().options.keyLeft.getKeyBinding().setDown(false);
+
+        if (Minecraft.getInstance().options.keyRight.getKeyBinding().isDown())
+            if (movementTech.overwriteRight())
+                Minecraft.getInstance().options.keyRight.getKeyBinding().setDown(false);
+
+        if (Minecraft.getInstance().options.keyJump.getKeyBinding().isDown())
+            if (movementTech.overwriteJump())
+                Minecraft.getInstance().options.keyJump.getKeyBinding().setDown(false);
+    }
+
     @SubscribeEvent
     public static void mouseScroll(InputEvent.MouseScrollEvent event)
     {
@@ -153,6 +187,7 @@ public class KeybindingControl
             handleHotbarKeybinds();
             handleHotbarInteracts();
             handleAttackOverrides();
+            handleMovementOverrides();
             handleSkillKeyPresses();
 
             if (keyBindings[0].isDown())

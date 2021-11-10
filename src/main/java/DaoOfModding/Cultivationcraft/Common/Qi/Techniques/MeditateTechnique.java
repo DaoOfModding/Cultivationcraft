@@ -7,6 +7,7 @@ import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.Cultiva
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.ICultivatorStats;
 import DaoOfModding.Cultivationcraft.Common.Qi.CultivationTypes;
 import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
+import DaoOfModding.Cultivationcraft.Common.Qi.Stats.StatIDs;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import DaoOfModding.Cultivationcraft.Server.BodyPartControl;
 import net.minecraft.entity.player.PlayerEntity;
@@ -14,7 +15,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.event.TickEvent;
 
-public class MeditateTechnique extends Technique
+public class MeditateTechnique extends MovementOverrideTechnique
 {
     public MeditateTechnique()
     {
@@ -74,5 +75,35 @@ public class MeditateTechnique extends Technique
             return true;
 
         return false;
+    }
+
+    @Override
+    public boolean overwriteForward()
+    {
+        return true;
+    }
+
+    @Override
+    public boolean overwriteLeft()
+    {
+        return true;
+    }
+
+    @Override
+    public boolean overwriteRight()
+    {
+        return true;
+    }
+
+    @Override
+    public boolean overwriteBackward()
+    {
+        return true;
+    }
+
+    @Override
+    public boolean overwriteJump()
+    {
+        return true;
     }
 }

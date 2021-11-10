@@ -67,6 +67,8 @@ public class CultivatorModelHandler
                 // Remove vanilla body parts if the they have been replaced
                 if (part.getPosition().equalsIgnoreCase(BodyPartNames.armPosition))
                 {
+                    // TODO: Add the new arm parts as item holding arms to the model
+
                     newModel.removeLimb(GenericLimbNames.rightArm);
                     newModel.removeLimb(GenericLimbNames.leftArm);
                     newModel.removeLimb(GenericLimbNames.lowerRightArm);

@@ -1,5 +1,6 @@
 package DaoOfModding.Cultivationcraft.Common.Qi.Techniques.BodyForgeTechniques;
 
+import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.Technique;
 import DaoOfModding.mlmanimator.Client.Poses.GenericPoses;
 import DaoOfModding.mlmanimator.Client.Models.GenericLimbNames;
 import DaoOfModding.mlmanimator.Client.Poses.PlayerPose;
@@ -7,20 +8,24 @@ import DaoOfModding.Cultivationcraft.Client.Animations.BodyPartModelNames;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStats;
 import DaoOfModding.Cultivationcraft.Common.Qi.CultivationTypes;
 import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
-import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.MovementOverrideTechnique;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
+import DaoOfModding.mlmanimator.Client.Poses.PoseHandler;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraftforge.event.TickEvent;
 
-public class RollTechnique extends MovementOverrideTechnique
+public class RollTechnique extends Technique
 {
     protected PlayerPose moveDefaults = new PlayerPose();
+    protected PlayerPose move = new PlayerPose();
 
     public RollTechnique()
     {
         super();
+
+        type = useType.Toggle;
+        multiple = false;
 
         langLocation = "cultivationcraft.technique.roll";
         elementID = Elements.noElementID;
@@ -56,6 +61,38 @@ public class RollTechnique extends MovementOverrideTechnique
     }
 
     @Override
+    public void tickClient(TickEvent.PlayerTickEvent event)
+    {
+        super.tickClient(event);
+
+        Vector3d motion = event.player.getDeltaMovement();
+        motion = motion.multiply(1, 0, 1);
+
+        double speed = motion.length() * 0.75;
+
+        Cultivationcraft.LOGGER.info(speed);
+
+        if (speed < 0)
+            speed = 0;
+
+        // Determine if going in reverse or not
+        if (speed > 0)
+        {
+            Vector3d direction = new Vector3d(event.player.getLookAngle().x, 0, event.player.getLookAngle().z).normalize();
+            Vector3d movementDirection = motion.normalize();
+
+            if (direction.subtract(movementDirection).length() > 1.7)
+                speed *= -1;
+        }
+
+        updateSpeed(speed);
+
+        if (speed != 0)
+        {
+            PoseHandler.addPose(event.player.getUUID(), move);
+        }
+    }
+
     public void updateSpeed(double speed)
     {
         if (speed == 0)
