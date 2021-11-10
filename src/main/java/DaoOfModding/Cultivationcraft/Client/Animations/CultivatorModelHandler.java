@@ -67,8 +67,6 @@ public class CultivatorModelHandler
                 // Remove vanilla body parts if the they have been replaced
                 if (part.getPosition().equalsIgnoreCase(BodyPartNames.armPosition))
                 {
-                    // TODO: Add the new arm parts as item holding arms to the model
-
                     newModel.removeLimb(GenericLimbNames.rightArm);
                     newModel.removeLimb(GenericLimbNames.leftArm);
                     newModel.removeLimb(GenericLimbNames.lowerRightArm);
@@ -90,9 +88,7 @@ public class CultivatorModelHandler
 
                     // Set as the body if this is a body part
                     if (part.getPosition().equalsIgnoreCase(BodyPartNames.bodyPosition))
-                    {
                         newModel.addBody(modelPart);
-                    }
                     else
                         newModel.addLimb(modelID, modelPart);
 
@@ -103,10 +99,14 @@ public class CultivatorModelHandler
                     for (Map.Entry<String, ExtendableModelRenderer> entry : models.getReferences(modelID).entrySet())
                         newModel.addLimbReference(entry.getKey(), entry.getValue());
 
+                    if (part.getHand(modelID) != -1)
+                        newModel.setHand(part.getHand(modelID), newModel.getLimb(modelID));
+
                     // Add models for any valid options to this body part
                     for (BodyPartOption option : modifications.getModificationOptions(part.getPosition()).values())
                     {
-                        for (String optionModels : option.getDefaultOptionModels()) {
+                        for (String optionModels : option.getDefaultOptionModels())
+                        {
                             // Add to the body if the base part is a body part, otherwise reference the base modelID
                             if (part.getPosition().equalsIgnoreCase(BodyPartNames.bodyPosition))
                                 newModel.addLimb(optionModels, models.getModel(optionModels));
@@ -115,6 +115,9 @@ public class CultivatorModelHandler
 
                             for (Map.Entry<String, ExtendableModelRenderer> entry : models.getReferences(optionModels).entrySet())
                                 newModel.addLimbReference(entry.getKey(), entry.getValue());
+
+                            if (option.getHand(optionModels) != -1)
+                                newModel.setHand(option.getHand(optionModels), newModel.getLimb(optionModels));
                         }
 
                         for (String quadID : option.getQuadIDs())
@@ -135,6 +138,9 @@ public class CultivatorModelHandler
                     for (Map.Entry<String, ExtendableModelRenderer> entry : models.getReferences(modelID).entrySet())
                         newModel.addLimbReference(entry.getKey(), entry.getValue());
 
+                    if (part.getHand(modelID) != -1)
+                        newModel.setHand(part.getHand(modelID), newModel.getLimb(modelID));
+
                     // Add models for any valid options to this body part
                     for (BodyPartOption option : modifications.getModificationOptions(part.getPosition()).values())
                         for (String optionModels : option.getDefaultOptionModels())
@@ -143,6 +149,9 @@ public class CultivatorModelHandler
 
                             for (Map.Entry<String, ExtendableModelRenderer> entry : models.getReferences(optionModels).entrySet())
                                 newModel.addLimbReference(entry.getKey(), entry.getValue());
+
+                            if (option.getHand(optionModels) != -1)
+                                newModel.setHand(option.getHand(optionModels), newModel.getLimb(optionModels));
                         }
                 }
 
@@ -162,6 +171,9 @@ public class CultivatorModelHandler
 
                                 for (Map.Entry<String, ExtendableModelRenderer> entry : models.getReferences(optionModels).entrySet())
                                     newModel.addLimbReference(entry.getKey(), entry.getValue());
+
+                                if (option.getHand(optionModels) != -1)
+                                    newModel.setHand(option.getHand(optionModels), newModel.getLimb(optionModels));
                             }
                         }
                     }

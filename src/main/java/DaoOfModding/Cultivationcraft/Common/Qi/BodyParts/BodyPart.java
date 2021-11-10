@@ -37,6 +37,8 @@ public class BodyPart
     private ArrayList<Pair<String, String>> neededPositionToForge = new ArrayList<Pair<String, String>>();
     private ArrayList<Pair<String, String>> needNotPositionToForge = new ArrayList<Pair<String, String>>();
 
+    private HashMap<String, Integer> hands = new HashMap<String, Integer>();
+
     private HashMap<String, ResourceLocation> textureChanges = new HashMap<String, ResourceLocation>();
 
     public BodyPart(String partID, String position, String displayNamePos, int qiToForge)
@@ -64,6 +66,19 @@ public class BodyPart
     public void addModel(String modelID)
     {
         modelIDs.add(modelID);
+    }
+
+    public void addHand(String modelID, int slot)
+    {
+        hands.put(modelID, slot);
+    }
+
+    public int getHand(String modelID)
+    {
+        if (hands.containsKey(modelID))
+            return hands.get(modelID);
+
+        return -1;
     }
 
     public void addQuad(String quadID)

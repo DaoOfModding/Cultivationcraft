@@ -168,6 +168,8 @@ public class BodyPartNames
         BodyPart reinforce = new BodyPart(reinforcedArmPart, armPosition, "cultivationcraft.gui.generic.reinforce", 1000);
         reinforce.addModel(GenericLimbNames.leftArm);
         reinforce.addModel(GenericLimbNames.rightArm);
+        reinforce.addHand(GenericLimbNames.leftArm, 1);
+        reinforce.addHand(GenericLimbNames.rightArm, 0);
         reinforce.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.basePosition);
 
         addPart(reinforce);
@@ -175,6 +177,8 @@ public class BodyPartNames
         BodyPart glide = new GlidePart(glideArmPart, armPosition, "cultivationcraft.gui.armpart.glide", 1000);
         glide.addModel(GenericLimbNames.leftArm);
         glide.addModel(GenericLimbNames.rightArm);
+        glide.addHand(GenericLimbNames.leftArm, 1);
+        glide.addHand(GenericLimbNames.rightArm, 0);
         glide.addQuad(BodyPartModelNames.armglidequad);
         glide.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.skinSubPosition);
         glide.addNotNeededPart(BodyPartNames.wingPart);
