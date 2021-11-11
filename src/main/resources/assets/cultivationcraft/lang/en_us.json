@@ -64,6 +64,8 @@
   "cultivationcraft.gui.legpart.reversejoint": "Reverse-Jointed",
   "cultivationcraft.gui.legpart.reversejoint.description": "Reverse the joints in your knees allowing you to jump significantly higher",
 
+  "cultivationcraft.gui.legpart.singleLeg": "Single Leg",
+  "cultivationcraft.gui.legpart.singleLeg.description": "Remove one of your superfluous legs, allowing superior movement through hopping and greatly increasing jump height",
 
   "cultivationcraft.technique.example": "Example Technique",
   "cultivationcraft.technique.example.description": "This is an example description",

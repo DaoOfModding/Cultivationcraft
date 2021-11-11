@@ -40,6 +40,9 @@ public class GenericQiPoses
         Idle.addAngle(BodyPartModelNames.reverseJointRightLegLowerModel, new Vector3d(Math.toRadians(-60), 0, 0), 0);
         Idle.addAngle(BodyPartModelNames.reverseJointRightFootModel, new Vector3d(Math.toRadians(30), 0, 0), 0);
 
+        Idle.addAngle(BodyPartModelNames.singleLegModel, new Vector3d(Math.toRadians(-30), 0, 0), 0, 5f, -1);
+        Idle.addAngle(BodyPartModelNames.singleLegLowerModel, new Vector3d(Math.toRadians(60), 0, 0), 0, 5f, -1);
+
         // Mouth closed
         Idle.addAngle(BodyPartModelNames.FPjawModel, new Vector3d(Math.toRadians(-80), 0, 0), 1);
         Idle.addAngle(BodyPartModelNames.FPjawModelLower, new Vector3d(Math.toRadians(160), 0, 0), 1);
@@ -105,6 +108,9 @@ public class GenericQiPoses
         GenericPoses.Jumping.addAngle(BodyPartModelNames.reverseJointRightLegLowerModel, new Vector3d(Math.toRadians(0), Math.toRadians(0), 0), GenericPoses.jumpLegPriority, 1f, -1);
         GenericPoses.Jumping.addAngle(BodyPartModelNames.reverseJointLeftFootModel, new Vector3d(Math.toRadians(0), Math.toRadians(0), 0), GenericPoses.jumpLegPriority, 1f, -1);
         GenericPoses.Jumping.addAngle(BodyPartModelNames.reverseJointRightFootModel, new Vector3d(Math.toRadians(0), Math.toRadians(0), 0), GenericPoses.jumpLegPriority, 1f, -1);
+
+        GenericPoses.Jumping.addAngle(BodyPartModelNames.singleLegModel, new Vector3d(0, 0, 0), GenericPoses.jumpLegPriority, 1f, -1);
+        GenericPoses.Jumping.addAngle(BodyPartModelNames.singleLegLowerModel, new Vector3d(0, 0, 0), GenericPoses.jumpLegPriority, 1f, -1);
     }
 
     private static void setupHandsBehind()

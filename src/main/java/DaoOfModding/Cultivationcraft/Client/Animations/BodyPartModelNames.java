@@ -22,6 +22,8 @@ public class BodyPartModelNames
     public static final String reverseJointRightLegLowerModel = "RJL_RIGHT_LOWER_MODEL";
     public static final String reverseJointRightFootModel = "RJL_RIGHT_FOOT_MODEL";
 
+    public static final String singleLegModel = "SINGLE_LEG_MODEL";
+    public static final String singleLegLowerModel = "SINGLE_LEG_LOWER_MODEL";
 
     public static final String lwingUpperArmModel = "LEFT_WING_UPPER_ARM_MODEL";
     public static final String lwingStrand1Model = "LEFT_WING_STRAND_1_MODEL";

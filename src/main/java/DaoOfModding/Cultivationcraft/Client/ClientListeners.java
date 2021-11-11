@@ -37,6 +37,9 @@ public class ClientListeners
     {
         if (event.side == LogicalSide.CLIENT && event.phase == TickEvent.Phase.START)
         {
+            if (event.player == Minecraft.getInstance().player)
+                KeybindingControl.handleMovementOverrides();
+
             // Update the cultivator model if needed
             CultivatorModelHandler.updateModifications((AbstractClientPlayerEntity)event.player);
 

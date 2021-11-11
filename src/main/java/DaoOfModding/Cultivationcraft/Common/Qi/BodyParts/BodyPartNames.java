@@ -3,6 +3,7 @@ package DaoOfModding.Cultivationcraft.Common.Qi.BodyParts;
 import DaoOfModding.Cultivationcraft.Client.Animations.BodyPartModelNames;
 import DaoOfModding.Cultivationcraft.Client.Textures.TextureList;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyForgeParts.GlidePart;
+import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyForgeParts.SingleLegPart;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.StatIDs;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import DaoOfModding.mlmanimator.Client.Models.GenericLimbNames;
@@ -17,13 +18,15 @@ public class BodyPartNames
 {
     // PARTS
     public static final String jawPart = "jaw";
-    public static final String reverseJointLegPart = "rjleg";
     public static final String reinforcedBodyPart = "rbody";
     public static final String reinforcedArmPart = "rarm";
     public static final String reinforcedLegPart = "rleg";
     public static final String reinforcedHeadPart = "rhead";
 
     public static final String glideArmPart = "glidearm";
+
+    public static final String reverseJointLegPart = "rjleg";
+    public static final String singleLegPart = "oneleg";
 
     // OPTIONS
     public static final String reinforceSkinPart = "reinforceSkin";
@@ -222,6 +225,13 @@ public class BodyPartNames
         rjLegPart.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.basePosition);
 
         addPart(rjLegPart);
+
+        SingleLegPart oneLegPart = new SingleLegPart(singleLegPart, legPosition, "cultivationcraft.gui.legpart.singleLeg", 1000);
+        oneLegPart.getStatChanges().setStat(StatIDs.jumpHeight, 7);
+        oneLegPart.addModel(BodyPartModelNames.singleLegModel);
+        oneLegPart.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.basePosition);
+
+        addPart(oneLegPart);
     }
 
     public static String getDisplayName(String position)

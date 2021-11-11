@@ -1,9 +1,14 @@
 package DaoOfModding.Cultivationcraft.Client;
 
 import DaoOfModding.Cultivationcraft.Client.GUI.SkillHotbarOverlay;
+import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.BodyModifications;
+import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.IBodyModifications;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.CultivatorTechniques;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.ICultivatorTechniques;
 import DaoOfModding.Cultivationcraft.Common.Misc;
+import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyForgeParts.MovementOverridePart;
+import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPart;
+import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartOption;
 import DaoOfModding.Cultivationcraft.Common.Qi.CultivatorControl;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.AttackOverrideTechnique;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.MovementOverrideTechnique;
@@ -24,6 +29,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.Mod;
 
+import java.util.HashMap;
 import java.util.UUID;
 
 import static org.lwjgl.glfw.GLFW.*;
@@ -133,6 +139,25 @@ public class KeybindingControl
 
     public static void handleMovementOverrides()
     {
+        // TODO: Pressing other keys at the same time can result in having to repress the key you're holding down
+        // Unsure how to resolve this...
+
+        handleMovementTechOverrides();
+        handleMovementPartOverrides();
+    }
+
+    private static void handleMovementPartOverrides()
+    {
+        // Tick through all body modifications on the player
+        IBodyModifications modifications = BodyModifications.getBodyModifications(Minecraft.getInstance().player);
+
+        for (BodyPart part : modifications.getModifications().values())
+            if (part instanceof MovementOverridePart)
+                handlePartMovementOverride((MovementOverridePart) part);
+    }
+
+    private static void handleMovementTechOverrides()
+    {
         // Get all cultivator techniques and check if any of them are active movement overrides
         int slot = CultivatorControl.getMovementOverride(Minecraft.getInstance().player);
 
@@ -141,8 +166,11 @@ public class KeybindingControl
             return;
 
         MovementOverrideTechnique movementTech = (MovementOverrideTechnique)CultivatorTechniques.getCultivatorTechniques(Minecraft.getInstance().player).getTechnique(slot);
+        handleTechMovementOverride(movementTech);
+    }
 
-
+    private static void handleTechMovementOverride(MovementOverrideTechnique movementTech)
+    {
         if (Minecraft.getInstance().options.keyUp.getKeyBinding().isDown())
             if (movementTech.overwriteForward())
                 Minecraft.getInstance().options.keyUp.getKeyBinding().setDown(false);
@@ -163,6 +191,30 @@ public class KeybindingControl
             if (movementTech.overwriteJump())
                 Minecraft.getInstance().options.keyJump.getKeyBinding().setDown(false);
     }
+
+    private static void handlePartMovementOverride(MovementOverridePart movementPart)
+    {
+        if (Minecraft.getInstance().options.keyUp.getKeyBinding().isDown())
+            if (movementPart.overwriteForward())
+                Minecraft.getInstance().options.keyUp.getKeyBinding().setDown(false);
+
+        if (Minecraft.getInstance().options.keyDown.getKeyBinding().isDown())
+            if (movementPart.overwriteBackward())
+                Minecraft.getInstance().options.keyDown.getKeyBinding().setDown(false);
+
+        if (Minecraft.getInstance().options.keyLeft.getKeyBinding().isDown())
+            if (movementPart.overwriteLeft())
+                Minecraft.getInstance().options.keyLeft.getKeyBinding().setDown(false);
+
+        if (Minecraft.getInstance().options.keyRight.getKeyBinding().isDown())
+            if (movementPart.overwriteRight())
+                Minecraft.getInstance().options.keyRight.getKeyBinding().setDown(false);
+
+        if (Minecraft.getInstance().options.keyJump.getKeyBinding().isDown())
+            if (movementPart.overwriteJump())
+                Minecraft.getInstance().options.keyJump.getKeyBinding().setDown(false);
+    }
+
 
     @SubscribeEvent
     public static void mouseScroll(InputEvent.MouseScrollEvent event)
@@ -187,7 +239,7 @@ public class KeybindingControl
             handleHotbarKeybinds();
             handleHotbarInteracts();
             handleAttackOverrides();
-            handleMovementOverrides();
+            //handleMovementOverrides();
             handleSkillKeyPresses();
 
             if (keyBindings[0].isDown())

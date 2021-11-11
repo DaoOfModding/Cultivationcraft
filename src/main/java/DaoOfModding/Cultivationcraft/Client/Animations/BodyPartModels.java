@@ -637,6 +637,16 @@ public class BodyPartModels
         addModel(BodyPartModelNames.reverseJointRightLegModel, rightReverseJoint);
         addReference(BodyPartModelNames.reverseJointRightLegModel, BodyPartModelNames.reverseJointRightLegLowerModel, rightReverseJoint.getChildren().get(0));
         addReference(BodyPartModelNames.reverseJointRightLegModel, BodyPartModelNames.reverseJointRightFootModel, rightFoot);
+
+
+        ExtendableModelRenderer singleLeg = new ExtendableModelRenderer(0, 16);
+        singleLeg.setPos(0.5F, 1.0F, 0.5F);
+        singleLeg.setRotationPoint(new Vector3d(0.5, 0.66, 0.5));
+        singleLeg.setFixedPosAdjustment(0F, 2F, 0.0F);
+        singleLeg.extend(GenericResizers.getLegResizer());
+
+        addModel(BodyPartModelNames.singleLegModel, singleLeg);
+        addReference(BodyPartModelNames.singleLegModel, BodyPartModelNames.singleLegLowerModel, singleLeg.getChildren().get(0));
     }
 
     public void addQuadCollection(String ID, QuadCollection quad)
