@@ -7,7 +7,7 @@ import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.Cultiva
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.ICultivatorStats;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPart;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartOption;
-import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartStatControl;
+import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
 import DaoOfModding.Cultivationcraft.Common.Qi.CultivationTypes;
 import DaoOfModding.Cultivationcraft.Network.PacketHandler;
 import net.minecraft.entity.player.PlayerEntity;

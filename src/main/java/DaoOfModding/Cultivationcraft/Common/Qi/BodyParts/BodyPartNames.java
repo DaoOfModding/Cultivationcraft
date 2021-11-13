@@ -60,6 +60,8 @@ public class BodyPartNames
     public static final String mouthSubPosition = "MOUTH";
     public static final String skinSubPosition = "SKIN";
     public static final String boneSubPosition = "BONE";
+    public static final String stomachSubPosition = "STOMACH";
+    public static final String bloodSubPosition = "BLOOD";
     public static final String backSubPosition = "BACK";
 
 

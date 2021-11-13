@@ -2,7 +2,7 @@ package DaoOfModding.Cultivationcraft.Common.Qi.Techniques.BodyForgeTechniques;
 
 import DaoOfModding.Cultivationcraft.Client.Animations.BodyPartModelNames;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStats;
-import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartStatControl;
+import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
 import DaoOfModding.Cultivationcraft.Common.Qi.CultivationTypes;
 import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.PlayerStatModifications;
@@ -12,12 +12,10 @@ import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import DaoOfModding.mlmanimator.Client.Models.GenericLimbNames;
 import DaoOfModding.mlmanimator.Client.Poses.GenericPoses;
 import DaoOfModding.mlmanimator.Client.Poses.PlayerPose;
-import DaoOfModding.mlmanimator.Client.Poses.PlayerPoseHandler;
 import DaoOfModding.mlmanimator.Client.Poses.PoseHandler;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.event.TickEvent;
 
 public class BounceTechnique extends Technique

@@ -1,13 +1,7 @@
-package DaoOfModding.Cultivationcraft.Common.Qi.BodyParts;
+package DaoOfModding.Cultivationcraft.Common.Qi.Stats;
 
-import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.BodyModifications;
-import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.CultivatorTechniques;
-import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.ICultivatorTechniques;
+import DaoOfModding.Cultivationcraft.Common.Qi.Stats.PlayerStatControl;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.PlayerStatModifications;
-import DaoOfModding.Cultivationcraft.Common.Qi.Stats.StatIDs;
-import DaoOfModding.Cultivationcraft.Common.Qi.TechniqueControl;
-import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.Technique;
-import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.player.PlayerEntity;
 
 import java.util.HashMap;

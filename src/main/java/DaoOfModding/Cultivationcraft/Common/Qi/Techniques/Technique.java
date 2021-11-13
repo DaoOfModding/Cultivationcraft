@@ -1,6 +1,6 @@
 package DaoOfModding.Cultivationcraft.Common.Qi.Techniques;
 
-import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartStatControl;
+import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.PlayerStatModifications;
 import DaoOfModding.Cultivationcraft.Network.ClientPacketHandler;
 import DaoOfModding.mlmanimator.Client.Poses.PoseHandler;
@@ -19,10 +19,8 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.potion.Effect;
 import net.minecraft.potion.EffectInstance;
-import net.minecraft.potion.Effects;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.event.TickEvent;
 
 import java.util.ArrayList;

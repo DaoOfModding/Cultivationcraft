@@ -1,10 +1,11 @@
-package DaoOfModding.Cultivationcraft.Common.Qi.BodyParts;
+package DaoOfModding.Cultivationcraft.Common.Qi.Stats;
 
 import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.BodyModifications;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.CultivatorTechniques;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.ICultivatorTechniques;
-import DaoOfModding.Cultivationcraft.Common.Qi.Stats.PlayerStatModifications;
-import DaoOfModding.Cultivationcraft.Common.Qi.Stats.StatIDs;
+import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPart;
+import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartOption;
+import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.PlayerHealthManager;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.Technique;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.Attributes;
@@ -28,6 +29,7 @@ public class PlayerStatControl
     public void setupStats()
     {
         stats.setStat(StatIDs.maxHP, StatIDs.defaultMaxHP);
+        stats.setStat(StatIDs.maxStamina, StatIDs.defaultMaxStamina);
         stats.setStat(StatIDs.movementSpeed, StatIDs.defaultMovementSpeed);
         stats.setStat(StatIDs.jumpHeight, 1);
     }
@@ -75,8 +77,6 @@ public class PlayerStatControl
 
     private void applyStats(PlayerEntity player)
     {
-        System.out.println(player.getAttributeValue(Attributes.MOVEMENT_SPEED));
-
         if (healthModifier != null)
             player.getAttribute(Attributes.MAX_HEALTH).removeModifier(healthModifier);
 
@@ -89,7 +89,6 @@ public class PlayerStatControl
         player.getAttribute(Attributes.MAX_HEALTH).addTransientModifier(healthModifier);
         player.getAttribute(Attributes.MAX_HEALTH).addTransientModifier(movementModifier);
 
-        // May have to make a custom FoodStats class
-       // player.getFoodData().setFoodLevel(80);
+        PlayerHealthManager.updateFoodStats(player);
     }
 }

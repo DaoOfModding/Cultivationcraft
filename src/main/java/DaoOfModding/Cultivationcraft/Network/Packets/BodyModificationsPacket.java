@@ -3,7 +3,7 @@ package DaoOfModding.Cultivationcraft.Network.Packets;
 import DaoOfModding.Cultivationcraft.Client.ClientItemControl;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.BodyModifications;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.IBodyModifications;
-import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartStatControl;
+import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.PacketBuffer;

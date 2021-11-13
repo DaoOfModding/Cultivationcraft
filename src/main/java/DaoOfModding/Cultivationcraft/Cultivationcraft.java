@@ -3,6 +3,7 @@ package DaoOfModding.Cultivationcraft;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartNames;
 import DaoOfModding.Cultivationcraft.Client.Animations.GenericQiPoses;
 import DaoOfModding.Cultivationcraft.Client.ClientItemControl;
+import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.PlayerHealthManager;
 import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
 import DaoOfModding.Cultivationcraft.Common.Qi.TechniqueControl;
 import DaoOfModding.Cultivationcraft.Common.Register;
@@ -46,6 +47,7 @@ public class Cultivationcraft {
         TechniqueControl.init();
         GenericQiPoses.init();
         BodyPartNames.init();
+        PlayerHealthManager.setup();
     }
 
     private void clientInit(final FMLClientSetupEvent event)
