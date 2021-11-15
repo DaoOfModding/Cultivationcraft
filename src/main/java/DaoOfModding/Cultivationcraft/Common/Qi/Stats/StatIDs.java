@@ -2,6 +2,7 @@ package DaoOfModding.Cultivationcraft.Common.Qi.Stats;
 
 public class StatIDs
 {
+    public static final String weight = "weight";
     public static final String movementSpeed = "movementSpeed";
     public static final String maxHP = "maxHP";
     public static final String maxStamina = "maxStamina";
@@ -18,4 +19,5 @@ public class StatIDs
     public static final float defaultMovementSpeed = 0.10000000149011612f;
 
     public static final int defaultStaminaUse = 1;
+    public static final int defaultWeight = 1;
 }

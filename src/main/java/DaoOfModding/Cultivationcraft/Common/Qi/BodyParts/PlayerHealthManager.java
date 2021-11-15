@@ -28,6 +28,14 @@ public class PlayerHealthManager
         foodStatField = ObfuscationReflectionHelper.findField(PlayerEntity.class,"field_71100_bB");
     }
 
+    public static float getStaminaUse(PlayerEntity player)
+    {
+        float staminaUse = BodyPartStatControl.getStats(player.getUUID()).getStat(StatIDs.staminaUse);
+        float weight = BodyPartStatControl.getStats(player.getUUID()).getStat(StatIDs.weight);
+
+        return staminaUse * weight;
+    }
+
     public static Blood getBlood(PlayerEntity player)
     {
         // If the player is not a body cultivator or has not forged their blood, then return the defauly bloody type
@@ -54,7 +62,7 @@ public class PlayerHealthManager
             IBodyModifications modifications = BodyModifications.getBodyModifications(player);
 
             if (modifications.hasOption(BodyPartNames.bodyPosition, BodyPartNames.stomachSubPosition))
-                food = ((StomachPart)modifications.getOption(BodyPartNames.bodyPosition, BodyPartNames.bloodSubPosition)).getFoodStats();
+                food = ((StomachPart)modifications.getOption(BodyPartNames.bodyPosition, BodyPartNames.stomachSubPosition)).getFoodStats();
         }
 
         // Set the players max stamina

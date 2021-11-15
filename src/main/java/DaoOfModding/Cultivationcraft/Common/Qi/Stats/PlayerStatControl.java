@@ -28,6 +28,7 @@ public class PlayerStatControl
 
     public void setupStats()
     {
+        stats.setStat(StatIDs.weight, StatIDs.defaultWeight);
         stats.setStat(StatIDs.maxHP, StatIDs.defaultMaxHP);
         stats.setStat(StatIDs.maxStamina, StatIDs.defaultMaxStamina);
         stats.setStat(StatIDs.staminaUse, StatIDs.defaultStaminaUse);

@@ -29,6 +29,8 @@
   "cultivationcraft.gui.generic.reinforce": "Reinforce",
   "cultivationcraft.gui.generic.reinforce.description": "Reinforce this body part to be stronger without making any significant change to its structure",
 
+  "cultivationcraft.gui.bodypart.expanding": "Expandable",
+  "cultivationcraft.gui.bodypart.expanding.description": "Forge your body to enable it to increase and decrease in size",
 
   "cultivationcraft.gui.bodypart.skin": "Skin",
   "cultivationcraft.gui.bodypart.bone": "Bones",
@@ -38,6 +40,12 @@
 
   "cultivationcraft.gui.bodypart.skin.rubber": "Rubber",
   "cultivationcraft.gui.bodypart.skin.rubber.description": "Forge your skin into a rubber-like consistency, making it stretchy, bouncy and providing an extremely high resistance to lightning",
+
+  "cultivationcraft.gui.bodypart.skin.stretchy": "Stretchy",
+  "cultivationcraft.gui.bodypart.skin.stretchy.description": "Forge your skin to be able to freely stretch into much larger sizes",
+
+  "cultivationcraft.gui.bodypart.stomach.expanding": "Expanding",
+  "cultivationcraft.gui.bodypart.stomach.expanding.description": "Forge your stomach to expand as needed, vastly increasing your maximum stamina but also increasing your size and weight as you eat",
 
   "cultivationcraft.gui.bodypart.back.wings": "Wings",
   "cultivationcraft.gui.bodypart.back.wings.description": "Grow wings to carry you through the sky",
@@ -68,6 +76,7 @@
 
   "cultivationcraft.gui.legpart.singleLeg": "Single Leg",
   "cultivationcraft.gui.legpart.singleLeg.description": "Remove one of your superfluous legs, allowing superior movement through hopping and greatly increasing jump height",
+
 
   "cultivationcraft.technique.example": "Example Technique",
   "cultivationcraft.technique.example.description": "This is an example description",

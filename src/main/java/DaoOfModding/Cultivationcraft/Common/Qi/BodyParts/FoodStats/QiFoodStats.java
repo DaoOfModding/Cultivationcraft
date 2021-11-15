@@ -3,6 +3,7 @@ package DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.FoodStats;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.PlayerHealthManager;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.StatIDs;
+import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
@@ -12,7 +13,7 @@ import net.minecraft.world.Difficulty;
 public class QiFoodStats extends FoodStats
 {
     private int maxFood = 20;
-    private float exhaustionLevel;
+    private float exhaustionLevel = 0;
     private float foodLevel = 20;
     public int tickTimer = 0;
 
@@ -30,7 +31,9 @@ public class QiFoodStats extends FoodStats
     public void eat(int p_75122_1_, float p_75122_2_)
     {
         setFoodLevel(Math.min(p_75122_1_ + getTrueFoodLevel(), maxFood));
-        setSaturation(Math.min(getSaturationLevel() + (float)p_75122_1_ * p_75122_2_ * 2.0F, getTrueFoodLevel()));
+
+        // Disable saturation
+        //setSaturation(Math.min(getSaturationLevel() + (float)p_75122_1_ * p_75122_2_ * 2.0F, getTrueFoodLevel()));
     }
 
     @Override
@@ -49,9 +52,10 @@ public class QiFoodStats extends FoodStats
 
     private void drainFood(PlayerEntity player)
     {
-        float staminaUse = BodyPartStatControl.getStats(player.getUUID()).getStat(StatIDs.staminaUse);
+        float staminaUse = PlayerHealthManager.getStaminaUse(player);
 
         // Vanilla minecraft stamina handling
+        /*
         Difficulty difficulty = player.level.getDifficulty();
         if (this.exhaustionLevel > 4.0F)
         {
@@ -60,7 +64,20 @@ public class QiFoodStats extends FoodStats
             if (getSaturationLevel() > 0.0F)
                 setSaturation(Math.max(getSaturationLevel() - staminaUse, 0.0F));
             else if (difficulty != Difficulty.PEACEFUL)
-                setFoodLevel(Math.max(getTrueFoodLevel() - staminaUse, 0));
+                setFoodLevel((float)Math.max(getTrueFoodLevel() - staminaUse, 0));
+        }*/
+        // Reduce stamina immediately rather than in units of 1
+        Difficulty difficulty = player.level.getDifficulty();
+        if (exhaustionLevel > 0F)
+        {
+            float change = (exhaustionLevel / 4F) * staminaUse;
+
+            exhaustionLevel = 0F;
+
+            if (getSaturationLevel() > 0.0F)
+                setSaturation(Math.max(getSaturationLevel() - change, 0.0F));
+            else if (difficulty != Difficulty.PEACEFUL)
+                setFoodLevel(Math.max(getTrueFoodLevel() - change, 0));
         }
     }
 
@@ -70,8 +87,8 @@ public class QiFoodStats extends FoodStats
         if (p_75112_1_.contains("foodLevel", 99))
         {
             setFoodLevel(p_75112_1_.getFloat("foodLevel"));
-            setSaturation(p_75112_1_.getFloat("foodSaturationLevel"));
-            setExhaustion(p_75112_1_.getFloat("foodExhaustionLevel"));
+            //setSaturation(p_75112_1_.getFloat("foodSaturationLevel"));
+            //setExhaustion(p_75112_1_.getFloat("foodExhaustionLevel"));
         }
 
     }
@@ -80,14 +97,14 @@ public class QiFoodStats extends FoodStats
     public void addAdditionalSaveData(CompoundNBT p_75117_1_)
     {
         p_75117_1_.putFloat("foodLevel", getTrueFoodLevel());
-        p_75117_1_.putFloat("foodSaturationLevel", getSaturationLevel());
-        p_75117_1_.putFloat("foodExhaustionLevel", getExhaustion());
+        //p_75117_1_.putFloat("foodSaturationLevel", getSaturationLevel());
+        //p_75117_1_.putFloat("foodExhaustionLevel", getExhaustion());
     }
 
     @Override
     public void addExhaustion(float p_75113_1_)
     {
-        setExhaustion(Math.min(getExhaustion() + p_75113_1_, 40.0F));
+        setExhaustion(getExhaustion() + p_75113_1_);
     }
 
     public float getExhaustion()

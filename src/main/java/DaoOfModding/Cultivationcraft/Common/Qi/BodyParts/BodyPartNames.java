@@ -2,6 +2,7 @@ package DaoOfModding.Cultivationcraft.Common.Qi.BodyParts;
 
 import DaoOfModding.Cultivationcraft.Client.Animations.BodyPartModelNames;
 import DaoOfModding.Cultivationcraft.Client.Textures.TextureList;
+import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyForgeParts.ExpandingStomachPart;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyForgeParts.GlidePart;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyForgeParts.SingleLegPart;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.StatIDs;
@@ -23,6 +24,8 @@ public class BodyPartNames
     public static final String reinforcedLegPart = "rleg";
     public static final String reinforcedHeadPart = "rhead";
 
+    public static final String expandingBodyPart = "expandingBody";
+
     public static final String glideArmPart = "glidearm";
 
     public static final String reverseJointLegPart = "rjleg";
@@ -33,11 +36,17 @@ public class BodyPartNames
     public static final String reinforceBonePart = "reinforceBone";
 
     public static final String startingEyesPart = "qisight";
+
     public static final String flatTeethPart = "flatteeth";
     public static final String sharpTeethPart = "sharpteeth";
+
     public static final String wingPart = "wing";
     public static final String insectwingPart = "iwing";
+
     public static final String rubberSkinPart = "rubber";
+    public static final String stretchySkinPart = "stretchy";
+
+    public static final String expandingStomachPart = "expandingStomach";
 
     // DEFAULTS
     public static final String DefaultLeftArm = "armleft";
@@ -81,6 +90,8 @@ public class BodyPartNames
 
         addSubPartDisplayName(bodyPosition, skinSubPosition, "cultivationcraft.gui.bodypart.skin");
         addSubPartDisplayName(bodyPosition, boneSubPosition, "cultivationcraft.gui.bodypart.bone");
+        addSubPartDisplayName(bodyPosition, stomachSubPosition, "cultivationcraft.gui.bodypart.stomach");
+        addSubPartDisplayName(bodyPosition, bloodSubPosition, "cultivationcraft.gui.bodypart.blood");
         addSubPartDisplayName(bodyPosition, backSubPosition, "cultivationcraft.gui.bodypart.back");
         addSubPartDisplayName(headPosition, eyeSubPosition, "cultivationcraft.gui.headpart.eye");
         addSubPartDisplayName(headPosition, mouthSubPosition, "cultivationcraft.gui.headpart.mouth");
@@ -105,22 +116,40 @@ public class BodyPartNames
         addOption(reinforceBones);
 
         setupSkinOptions();
+        setupStomachOptions();
         setupBackOptions();
+    }
+
+    private static void setupStomachOptions()
+    {
+        ExpandingStomachPart expandingStomach = new ExpandingStomachPart(expandingStomachPart, bodyPosition, stomachSubPosition,  "cultivationcraft.gui.bodypart.stomach.expanding", 1000);
+        expandingStomach.addUniqueTag(BodyPartTags.hunger);
+        expandingStomach.addUniqueTag(BodyPartTags.expanding);
+        expandingStomach.addNeededPart(expandingBodyPart);
+        expandingStomach.getStatChanges().setStat(StatIDs.maxStamina, 60);
+
+        addOption(expandingStomach);
     }
 
     private static void setupSkinOptions()
     {
         BodyPartOption rubberSkin = new BodyPartOption(rubberSkinPart, bodyPosition, skinSubPosition,  "cultivationcraft.gui.bodypart.skin.rubber", 1000);
         //rubberSkin.addTextureChange(TextureList.skin, new ResourceLocation(Cultivationcraft.MODID, "textures/models/bone/bone.png"));
-        rubberSkin.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.basePosition);
         rubberSkin.getStatChanges().setStat(StatIDs.bounceHeight, 0.5f);
+        rubberSkin.addNeededPart(BodyPartNames.startingEyesPart);
         rubberSkin.addUniqueTag(BodyPartTags.stretchy);
+
+        BodyPartOption stretchySkin = new BodyPartOption(stretchySkinPart, bodyPosition, skinSubPosition,  "cultivationcraft.gui.bodypart.skin.stretchy", 1000);
+        //stretchySkin.addTextureChange(TextureList.skin, new ResourceLocation(Cultivationcraft.MODID, "textures/models/bone/bone.png"));
+        stretchySkin.addUniqueTag(BodyPartTags.stretchy);
+        stretchySkin.addNeededPart(BodyPartNames.startingEyesPart);
 
         BodyPartOption reinforceSkin = new BodyPartOption(reinforceSkinPart, bodyPosition, skinSubPosition,  "cultivationcraft.gui.generic.reinforce", 1000);
         //rubberSkin.addTextureChange(TextureList.skin, new ResourceLocation(Cultivationcraft.MODID, "textures/models/bone/bone.png"));
-        reinforceSkin.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.basePosition);
+        reinforceSkin.addNeededPart(BodyPartNames.startingEyesPart);
 
         addOption(rubberSkin);
+        addOption(stretchySkin);
         addOption(reinforceSkin);
     }
 
@@ -133,7 +162,6 @@ public class BodyPartNames
         addWings.addQuad(BodyPartModelNames.wingquad);
         addWings.setTexture(TextureList.bone);
         addWings.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.boneSubPosition);
-        addWings.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.skinSubPosition);
         addWings.addUniqueTag(BodyPartTags.flight);
 
         BodyPartOption addIWings = new BodyPartOption(insectwingPart, bodyPosition, backSubPosition,  "cultivationcraft.gui.bodypart.back.iwings", 1000);
@@ -142,7 +170,6 @@ public class BodyPartNames
         addIWings.addQuad(BodyPartModelNames.insectQuads);
         addIWings.setTexture(TextureList.bone);
         addIWings.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.boneSubPosition);
-        addIWings.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.skinSubPosition);
         addIWings.addUniqueTag(BodyPartTags.flight);
 
         addOption(addWings);
@@ -153,9 +180,15 @@ public class BodyPartNames
     {
         BodyPart reinforce = new BodyPart(reinforcedBodyPart, bodyPosition, "cultivationcraft.gui.generic.reinforce", 1000);
         reinforce.addModel(GenericLimbNames.body);
-        reinforce.addNeededPart(BodyPartNames.startingEyesPart);
+        reinforce.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.skinSubPosition);
+
+        BodyPart expanding = new BodyPart(expandingBodyPart, bodyPosition, "cultivationcraft.gui.bodypart.expanding", 1000);
+        expanding.addModel(GenericLimbNames.body);
+        expanding.addNeededTags(BodyPartTags.stretchy);
+        expanding.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.skinSubPosition);
 
         addPart(reinforce);
+        addPart(expanding);
     }
 
     private static void setupHeadParts()
@@ -186,7 +219,7 @@ public class BodyPartNames
         glide.addHand(GenericLimbNames.leftArm, 1);
         glide.addHand(GenericLimbNames.rightArm, 0);
         glide.addQuad(BodyPartModelNames.armglidequad);
-        glide.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.skinSubPosition);
+        glide.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.basePosition);
         glide.addUniqueTag(BodyPartTags.flight);
 
         addPart(glide);
