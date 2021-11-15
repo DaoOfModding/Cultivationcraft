@@ -114,6 +114,7 @@ public class BodyPartNames
         //rubberSkin.addTextureChange(TextureList.skin, new ResourceLocation(Cultivationcraft.MODID, "textures/models/bone/bone.png"));
         rubberSkin.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.basePosition);
         rubberSkin.getStatChanges().setStat(StatIDs.bounceHeight, 0.5f);
+        rubberSkin.addUniqueTag(BodyPartTags.stretchy);
 
         BodyPartOption reinforceSkin = new BodyPartOption(reinforceSkinPart, bodyPosition, skinSubPosition,  "cultivationcraft.gui.generic.reinforce", 1000);
         //rubberSkin.addTextureChange(TextureList.skin, new ResourceLocation(Cultivationcraft.MODID, "textures/models/bone/bone.png"));
@@ -133,7 +134,7 @@ public class BodyPartNames
         addWings.setTexture(TextureList.bone);
         addWings.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.boneSubPosition);
         addWings.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.skinSubPosition);
-        addWings.addNotNeededPart(BodyPartNames.glideArmPart);
+        addWings.addUniqueTag(BodyPartTags.flight);
 
         BodyPartOption addIWings = new BodyPartOption(insectwingPart, bodyPosition, backSubPosition,  "cultivationcraft.gui.bodypart.back.iwings", 1000);
         addIWings.addModel(BodyPartModelNames.rinsectWing);
@@ -142,7 +143,7 @@ public class BodyPartNames
         addIWings.setTexture(TextureList.bone);
         addIWings.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.boneSubPosition);
         addIWings.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.skinSubPosition);
-        addIWings.addNotNeededPart(BodyPartNames.glideArmPart);
+        addIWings.addUniqueTag(BodyPartTags.flight);
 
         addOption(addWings);
         addOption(addIWings);
@@ -186,8 +187,7 @@ public class BodyPartNames
         glide.addHand(GenericLimbNames.rightArm, 0);
         glide.addQuad(BodyPartModelNames.armglidequad);
         glide.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.skinSubPosition);
-        glide.addNotNeededPart(BodyPartNames.wingPart);
-        glide.addNotNeededPart(BodyPartNames.insectwingPart);
+        glide.addUniqueTag(BodyPartTags.flight);
 
         addPart(glide);
     }

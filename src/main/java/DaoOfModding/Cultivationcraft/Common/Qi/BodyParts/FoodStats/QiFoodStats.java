@@ -1,9 +1,10 @@
-package DaoOfModding.Cultivationcraft.Common.Qi;
+package DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.FoodStats;
 
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.PlayerHealthManager;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.StatIDs;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.FoodStats;
 import net.minecraft.world.Difficulty;
@@ -48,6 +49,8 @@ public class QiFoodStats extends FoodStats
 
     private void drainFood(PlayerEntity player)
     {
+        float staminaUse = BodyPartStatControl.getStats(player.getUUID()).getStat(StatIDs.staminaUse);
+
         // Vanilla minecraft stamina handling
         Difficulty difficulty = player.level.getDifficulty();
         if (this.exhaustionLevel > 4.0F)
@@ -55,9 +58,9 @@ public class QiFoodStats extends FoodStats
             this.exhaustionLevel -= 4.0F;
 
             if (getSaturationLevel() > 0.0F)
-                setSaturation(Math.max(getSaturationLevel() - 1.0F, 0.0F));
+                setSaturation(Math.max(getSaturationLevel() - staminaUse, 0.0F));
             else if (difficulty != Difficulty.PEACEFUL)
-                setFoodLevel(Math.max(getTrueFoodLevel() - 1, 0));
+                setFoodLevel(Math.max(getTrueFoodLevel() - staminaUse, 0));
         }
     }
 
@@ -123,5 +126,11 @@ public class QiFoodStats extends FoodStats
     public void setFoodLevel(float p_75114_1_)
     {
         foodLevel = p_75114_1_;
+    }
+
+    // TODO: Call this when determining if something can be eaten
+    public boolean isEdible(ItemStack item)
+    {
+        return item.isEdible();
     }
 }

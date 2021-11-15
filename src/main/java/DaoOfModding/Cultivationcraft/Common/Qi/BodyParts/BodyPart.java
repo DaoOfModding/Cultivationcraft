@@ -36,6 +36,10 @@ public class BodyPart
     private ArrayList<String> neededNotToForge = new ArrayList<String>();
     private ArrayList<Pair<String, String>> neededPositionToForge = new ArrayList<Pair<String, String>>();
     private ArrayList<Pair<String, String>> needNotPositionToForge = new ArrayList<Pair<String, String>>();
+    private ArrayList<String> neededTags = new ArrayList<String>();
+    private ArrayList<String> neededNotTags = new ArrayList<String>();
+
+    private ArrayList<String> uniqueTags = new ArrayList<String>();
 
     private HashMap<String, Integer> hands = new HashMap<String, Integer>();
 
@@ -171,6 +175,25 @@ public class BodyPart
         needNotPositionToForge.add(new Pair(positionID, subpositionID));
     }
 
+    public void addNeededTags(String tag)
+    {
+        neededTags.add(tag);
+    }
+    public void addNeedNotTags(String tag)
+    {
+        neededNotTags.add(tag);
+    }
+
+    public void addUniqueTag(String tag)
+    {
+        uniqueTags.add(tag);
+    }
+
+    public ArrayList<String> getUniqueTags()
+    {
+        return uniqueTags;
+    }
+
     public void onLoad(UUID playerID)
     {
         for (Map.Entry<String, ResourceLocation> entry : textureChanges.entrySet())
@@ -211,12 +234,48 @@ public class BodyPart
         if (hasNotNeededParts(modifications))
             return false;
 
+        if (hasDuplicateTags(modifications))
+            return false;
+
+        if (!hasNeededTags(modifications))
+            return false;
+
+        if (hasNotNeededTags(modifications))
+            return false;
+
         // Loop through all player body modifications, return false if a modification for this position already exists
         for (BodyPart part : modifications.getModifications().values())
             if (part.getPosition().compareTo(limbPosition) == 0)
                 return false;
 
         return true;
+    }
+
+    protected boolean hasDuplicateTags(IBodyModifications modifications)
+    {
+        for (String tag : uniqueTags)
+            if (modifications.getTags().contains(tag))
+                return true;
+
+        return false;
+    }
+
+    protected boolean hasNeededTags(IBodyModifications modifications)
+    {
+        for (String tag : neededTags)
+            if (!modifications.getTags().contains(tag))
+                return false;
+
+        return true;
+    }
+
+    protected boolean hasNotNeededTags(IBodyModifications modifications)
+    {
+        for (String tag : neededNotTags)
+            if (modifications.getTags().contains(tag))
+                return true;
+
+        return false;
     }
 
     protected boolean hasNeededPositions(IBodyModifications modifications)
@@ -299,5 +358,4 @@ public class BodyPart
 
         return false;
     }
-
 }

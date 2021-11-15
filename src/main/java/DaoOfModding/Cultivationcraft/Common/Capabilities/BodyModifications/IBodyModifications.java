@@ -4,6 +4,7 @@ import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPart;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartOption;
 import net.minecraft.nbt.CompoundNBT;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public interface IBodyModifications
@@ -26,6 +27,7 @@ public interface IBodyModifications
     public HashMap<String, BodyPart> getModifications();
     public HashMap<String, BodyPartOption> getModificationOptions(String limb);
     public HashMap<String, HashMap<String, BodyPartOption>> getModificationOptions();
+    public ArrayList<String> getTags();
 
     public void read(CompoundNBT NBT);
     public CompoundNBT write();

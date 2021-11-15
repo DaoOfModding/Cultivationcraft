@@ -30,6 +30,7 @@ public class PlayerStatControl
     {
         stats.setStat(StatIDs.maxHP, StatIDs.defaultMaxHP);
         stats.setStat(StatIDs.maxStamina, StatIDs.defaultMaxStamina);
+        stats.setStat(StatIDs.staminaUse, StatIDs.defaultStaminaUse);
         stats.setStat(StatIDs.movementSpeed, StatIDs.defaultMovementSpeed);
         stats.setStat(StatIDs.jumpHeight, 1);
     }

@@ -3,9 +3,11 @@ package DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartNames;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPart;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartOption;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,6 +16,7 @@ public class BodyModifications implements IBodyModifications
     String selected = "";
     HashMap<String, BodyPart> modifications = new HashMap<String, BodyPart>();
     HashMap<String, HashMap<String, BodyPartOption>> options = new HashMap<String, HashMap<String, BodyPartOption>>();
+    ArrayList<String> tags = new ArrayList<String>();
     boolean hasUpdated = false;
     int progress = 0;
 
@@ -91,6 +94,7 @@ public class BodyModifications implements IBodyModifications
     public void setModification(BodyPart part)
     {
         modifications.put(part.getPosition(), part);
+        addTags(part);
         setUpdated(false);
     }
 
@@ -100,6 +104,18 @@ public class BodyModifications implements IBodyModifications
             options.put(option.getPosition(), new HashMap<String, BodyPartOption>());
 
         options.get(option.getPosition()).put(option.getSubPosition(), option);
+        addTags(option);
+    }
+
+    protected void addTags(BodyPart part)
+    {
+        for (String tag : part.getUniqueTags())
+            tags.add(tag);
+    }
+
+    public ArrayList<String> getTags()
+    {
+        return tags;
     }
 
     public HashMap<String, BodyPart> getModifications()
@@ -196,6 +212,7 @@ public class BodyModifications implements IBodyModifications
         modifications = mod.getModifications();
         options = mod.getModificationOptions();
         progress = mod.getProgress();
+        tags = mod.getTags();
 
         setUpdated(false);
     }

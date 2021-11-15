@@ -1,7 +1,7 @@
 package DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyForgeParts;
 
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartOption;
-import DaoOfModding.Cultivationcraft.Common.Qi.QiFoodStats;
+import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.FoodStats.QiFoodStats;
 
 public class StomachPart extends BodyPartOption
 {

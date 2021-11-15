@@ -78,7 +78,22 @@ public class BodyPartOption extends BodyPart
         if (!hasNeededPositions(modifications))
             return false;
 
+        if (hasNotNeededPositions(modifications))
+            return false;
+
         if (!hasNeededParts(modifications))
+            return false;
+
+        if (hasNotNeededParts(modifications))
+            return false;
+
+        if (hasDuplicateTags(modifications))
+            return false;
+
+        if (!hasNeededTags(modifications))
+            return false;
+
+        if (hasNotNeededTags(modifications))
             return false;
 
         // Return false if there exists an option in this position and subposition already

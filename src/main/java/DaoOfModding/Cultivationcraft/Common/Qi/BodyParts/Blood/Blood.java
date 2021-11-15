@@ -1,6 +1,8 @@
 package DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Blood;
 
-import DaoOfModding.Cultivationcraft.Common.Qi.QiFoodStats;
+import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.FoodStats.QiFoodStats;
+import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
+import DaoOfModding.Cultivationcraft.Common.Qi.Stats.StatIDs;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.Difficulty;
@@ -50,5 +52,22 @@ public class Blood
         } else {
             food.tickTimer = 0;
         }
+
+        hpRegen(player);
+    }
+
+    // Heal the player based on their hp Regen
+    // Divided by 20 to convert seconds into ticks
+    protected void hpRegen(PlayerEntity player)
+    {
+        if (player.isDeadOrDying())
+            return;
+
+        float regen = BodyPartStatControl.getStats(player.getUUID()).getStat(StatIDs.healthRegen) / 20;
+
+        if (regen > 0)
+            player.heal(regen);
+        else if (regen < 0)
+            player.setHealth(player.getHealth() + regen);
     }
 }
