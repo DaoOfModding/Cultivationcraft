@@ -5,60 +5,41 @@ import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.StatIDs;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.math.vector.Vector3f;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.GameRules;
 
-public class Blood
+public class QiBlood extends Blood
 {
-    protected Vector3f colour = new Vector3f(1, 0 ,0);
-
-    public Vector3f getColour()
-    {
-        return colour;
-    }
-
-    // Handle passive player regen here
+    @Override
     public void regen(PlayerEntity player)
     {
-        // Vanilla health regen
         boolean flag = player.level.getGameRules().getBoolean(GameRules.RULE_NATURAL_REGENERATION);
         Difficulty difficulty = player.level.getDifficulty();
 
         QiFoodStats food = (QiFoodStats)player.getFoodData();
 
-        if (flag && food.getSaturationLevel() > 0.0F && player.isHurt() && food.getFoodLevel() >= food.getMaxFood())
+        // If the player has stamina and is hurt, then heal
+        if (flag && food.getFoodLevel() >= 0 && player.isHurt())
         {
-            ++food.tickTimer;
-            if (food.tickTimer >= 10) {
-                float f = Math.min(food.getSaturationLevel(), 6.0F);
-                player.heal(f / 6.0F);
-                food.addExhaustion(f);
-                food.tickTimer = 0;
-            }
-        }
-        else if (flag && food.getFoodLevel() >= food.getMaxFood() * 0.9 && player.isHurt())
-        {
-            ++food.tickTimer;
-            if (food.tickTimer >= 80) {
-                player.heal(1.0F);
-                food.addExhaustion(6.0F);
-                food.tickTimer = 0;
-            }
+            // Get player regen, divided by 20 to convert seconds into ticks
+            float regen = BodyPartStatControl.getStats(player.getUUID()).getStat(StatIDs.healthRegen) / 20;
+
+            player.heal(regen);
+
+            // Exhaust the player by the amount regenerated multiplied by their healthStaminaConversion modifier
+            food.addExhaustion(regen * BodyPartStatControl.getStats(player.getUUID()).getStat(StatIDs.healthStaminaConversion));
         }
         else if (food.getFoodLevel() <= 0)
         {
             ++food.tickTimer;
-            if (food.tickTimer >= 80) {
+            if (food.tickTimer >= 80)
+            {
                 if (player.getHealth() > 10.0F || difficulty == Difficulty.HARD || player.getHealth() > 1.0F && difficulty == Difficulty.NORMAL)
-                {
                     player.hurt(DamageSource.STARVE, 1.0F);
-                }
 
                 food.tickTimer = 0;
             }
-        } else {
+        } else
             food.tickTimer = 0;
-        }
     }
 }

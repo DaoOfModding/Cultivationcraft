@@ -13,6 +13,7 @@ public class StatIDs
     public static final String staminaUse = "staminaUse";
 
     public static final String healthRegen = "healthRegen";
+    public static final String healthStaminaConversion = "healthStaminaConversion";
 
     public static final int defaultMaxHP = 20;
     public static final int defaultMaxStamina = 20;
@@ -20,4 +21,6 @@ public class StatIDs
 
     public static final int defaultStaminaUse = 1;
     public static final int defaultWeight = 1;
+    public static final int defaulthealthStaminaConversion = 1;
+    public static final float defaultHealthRegen = 0.1f;
 }

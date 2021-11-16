@@ -80,9 +80,36 @@ public class ClientListeners
         {
             SkillHotbarOverlay.PreRenderSkillHotbar(event.getMatrixStack());
         }
+        else if (event.getType() == RenderGameOverlayEvent.ElementType.HEALTH)
+        {
+            // Render stamina and health the other way around, so health renders ontop of stamina
+            Renderer.renderStamina();
+            event.setCanceled(true);
+        }
+        else if (event.getType() == RenderGameOverlayEvent.ElementType.FOOD)
+        {
+            Renderer.renderHP();
+            event.setCanceled(true);
+        }
+        else if (event.getType() == RenderGameOverlayEvent.ElementType.EXPERIENCE)
+        {
+            // Move the experience bar up slightly
+            event.getMatrixStack().pushPose();
+            event.getMatrixStack().translate(0, -10, 0);
+        }
         else if(event.getType() == RenderGameOverlayEvent.ElementType.ALL)
         {
             Renderer.renderTechniqueOverlays();
+        }
+    }
+
+    @SubscribeEvent
+    public static void overlayRenderPost(RenderGameOverlayEvent.Post event)
+    {
+        if (event.getType() == RenderGameOverlayEvent.ElementType.EXPERIENCE)
+        {
+            // Remove the upward translation
+            event.getMatrixStack().popPose();
         }
     }
 

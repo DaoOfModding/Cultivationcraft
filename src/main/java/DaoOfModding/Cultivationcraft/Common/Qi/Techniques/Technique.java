@@ -60,6 +60,8 @@ public class Technique
 
     protected PlayerStatModifications stats;
 
+    protected ResourceLocation progress = new ResourceLocation(Cultivationcraft.MODID, "textures/gui/progressbar.png");
+
 
     public Technique()
     {
@@ -340,8 +342,6 @@ public class Technique
     {
         if (active && type == useType.Channel)
         {
-            ResourceLocation progress = new ResourceLocation(Cultivationcraft.MODID, "textures/gui/progressbar.png");
-
             int scaledWidth = Minecraft.getInstance().getWindow().getGuiScaledWidth();
             int scaledHeight = Minecraft.getInstance().getWindow().getGuiScaledHeight();
 
