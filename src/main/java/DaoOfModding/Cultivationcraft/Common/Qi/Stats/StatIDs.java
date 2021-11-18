@@ -7,6 +7,7 @@ public class StatIDs
     public static final String maxHP = "maxHP";
     public static final String maxStamina = "maxStamina";
     public static final String jumpHeight = "jumpHeight";
+    public static final String fallHeight = "fallHeight";
     public static final String bounceHeight = "bounceHeight";
 
     public static final String staminaDrain = "staminaDrain";
@@ -15,12 +16,17 @@ public class StatIDs
     public static final String healthRegen = "healthRegen";
     public static final String healthStaminaConversion = "healthStaminaConversion";
 
+    public static final String legSupport = "legWeight";
+
     public static final int defaultMaxHP = 20;
     public static final int defaultMaxStamina = 20;
     public static final float defaultMovementSpeed = 0.10000000149011612f;
 
     public static final int defaultStaminaUse = 1;
     public static final int defaultWeight = 1;
+    public static final int defaultLegSupport = 1;
+    public static final int defaultJumpHeight = 1;
+    public static final float defaultFallHeight = 1.5f;
     public static final int defaulthealthStaminaConversion = 1;
     public static final float defaultHealthRegen = 0.1f;
 }

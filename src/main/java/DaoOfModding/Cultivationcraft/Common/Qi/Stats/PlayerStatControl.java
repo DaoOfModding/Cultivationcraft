@@ -7,8 +7,11 @@ import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPart;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartOption;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.PlayerHealthManager;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.Technique;
+import DaoOfModding.Cultivationcraft.Cultivationcraft;
+import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.Attributes;
+import net.minecraft.entity.ai.attributes.ModifiableAttributeInstance;
 import net.minecraft.entity.player.PlayerEntity;
 
 import java.util.HashMap;
@@ -35,7 +38,9 @@ public class PlayerStatControl
         stats.setStat(StatIDs.healthRegen, StatIDs.defaultHealthRegen);
         stats.setStat(StatIDs.healthStaminaConversion, StatIDs.defaulthealthStaminaConversion);
         stats.setStat(StatIDs.movementSpeed, StatIDs.defaultMovementSpeed);
-        stats.setStat(StatIDs.jumpHeight, 1);
+        stats.setStat(StatIDs.jumpHeight, StatIDs.defaultJumpHeight);
+        stats.setStat(StatIDs.fallHeight, StatIDs.defaultFallHeight);
+        stats.setStat(StatIDs.legSupport, StatIDs.defaultLegSupport);
     }
 
     public PlayerStatModifications getStats()
@@ -76,7 +81,11 @@ public class PlayerStatControl
                 BodyPartStatControl.addStats(player.getUUID(), tech.getStats());
         }
 
-        applyStats(player);
+        // Only apply player attribute modifiers on the server
+        if (!(player instanceof ClientPlayerEntity))
+            applyStats(player);
+
+        PlayerHealthManager.updateFoodStats(player);
     }
 
     private void applyStats(PlayerEntity player)
@@ -88,11 +97,25 @@ public class PlayerStatControl
             player.getAttribute(Attributes.MOVEMENT_SPEED).removeModifier(movementModifier);
 
         healthModifier = new AttributeModifier("BodyForgeHealth", stats.getStat(StatIDs.maxHP) - StatIDs.defaultMaxHP, AttributeModifier.Operation.ADDITION);
-        movementModifier = new AttributeModifier("BodyForgeMove", stats.getStat(StatIDs.movementSpeed) - StatIDs.defaultMovementSpeed, AttributeModifier.Operation.ADDITION);
+        movementModifier = new AttributeModifier("BodyForgeMove", stats.getStat(StatIDs.movementSpeed) * getLegWeightModifier() - StatIDs.defaultMovementSpeed, AttributeModifier.Operation.ADDITION);
 
         player.getAttribute(Attributes.MAX_HEALTH).addTransientModifier(healthModifier);
-        player.getAttribute(Attributes.MAX_HEALTH).addTransientModifier(movementModifier);
+        player.getAttribute(Attributes.MOVEMENT_SPEED).addTransientModifier(movementModifier);
+    }
 
-        PlayerHealthManager.updateFoodStats(player);
+    // Returns a modifier based on how overweight the player is
+    public float getLegWeightModifier()
+    {
+        float support = stats.getStat(StatIDs.legSupport);
+        float weight = stats.getStat(StatIDs.weight);
+
+        // No modifier if the players legSupport is not less than the players weight
+        if (support >= weight)
+            return 1;
+
+        Cultivationcraft.LOGGER.info(weight + "/" + support + "=" + Math.max(0.1f, 2 - weight / support));
+
+        // Return 0.1 if weight is (just under) double or more than the leg support
+        return Math.max(0.1f, 2 - weight / support);
     }
 }

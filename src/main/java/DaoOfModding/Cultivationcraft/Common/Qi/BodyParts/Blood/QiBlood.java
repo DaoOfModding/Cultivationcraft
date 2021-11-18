@@ -19,7 +19,7 @@ public class QiBlood extends Blood
         QiFoodStats food = (QiFoodStats)player.getFoodData();
 
         // If the player has stamina and is hurt, then heal
-        if (flag && food.getFoodLevel() >= 0 && player.isHurt())
+        if (flag && food.getFoodLevel() > 0 && player.isHurt())
         {
             // Get player regen, divided by 20 to convert seconds into ticks
             float regen = BodyPartStatControl.getStats(player.getUUID()).getStat(StatIDs.healthRegen) / 20;
@@ -27,7 +27,7 @@ public class QiBlood extends Blood
             player.heal(regen);
 
             // Exhaust the player by the amount regenerated multiplied by their healthStaminaConversion modifier
-            food.addExhaustion(regen * BodyPartStatControl.getStats(player.getUUID()).getStat(StatIDs.healthStaminaConversion));
+            food.addExhaustion(regen * BodyPartStatControl.getStats(player.getUUID()).getStat(StatIDs.healthStaminaConversion) * 4);
         }
         else if (food.getFoodLevel() <= 0)
         {

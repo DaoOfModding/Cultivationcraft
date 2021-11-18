@@ -54,11 +54,7 @@ public class BodyPartModels
         addModel(GenericLimbNames.rightArm, rightArm);
         addReference(GenericLimbNames.rightArm, GenericLimbNames.lowerRightArm, rightArm.getChildren().get(0));
 
-        setupArmOptions();
-    }
 
-    private void setupArmOptions()
-    {
         Quad larmConnector = new Quad(new Vector3d(0, 0, 0), new Vector3d(0, 0, 0),new Vector3d(0, 0, 0),new Vector3d(0, 0, 0));
         Quad rarmConnector = new Quad(new Vector3d(0, 0, 0), new Vector3d(0, 0, 0),new Vector3d(0, 0, 0),new Vector3d(0, 0, 0));
         getModel(GenericLimbNames.body).addQuadLinkage(new QuadLinkage(larmConnector, Quad.QuadVertex.TopLeft, new Vector3d(1, 1, 0.5)));
@@ -79,6 +75,12 @@ public class BodyPartModels
         glidingArms.addQuad(rarmConnector);
 
         addQuadCollection(BodyPartModelNames.armglidequad, glidingArms);
+
+        setupArmOptions();
+    }
+
+    private void setupArmOptions()
+    {
     }
 
     private void setupHeadModels()

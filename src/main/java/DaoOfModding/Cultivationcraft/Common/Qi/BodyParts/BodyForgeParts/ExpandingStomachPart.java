@@ -4,6 +4,7 @@ import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.FoodStats.QiFoodStats;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.DefaultPlayerBodyPartWeights;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.StatIDs;
+import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import DaoOfModding.mlmanimator.Client.Models.GenericLimbNames;
 import DaoOfModding.mlmanimator.Client.Poses.PlayerPose;
 import DaoOfModding.mlmanimator.Client.Poses.PoseHandler;
@@ -54,7 +55,7 @@ public class ExpandingStomachPart extends StomachPart
             currentPercent = foodPercent;
 
             getStatChanges().setStat(StatIDs.weight, DefaultPlayerBodyPartWeights.bodyWeight * ((maxXSize-1) * currentPercent) * ((maxYSize-1) * currentPercent) * ((maxZSize-1) * currentPercent));
-            BodyPartStatControl.getPlayerStatControl(player.getUUID()).updateStats(player);
+            BodyPartStatControl.updateStats(player);
 
             update = true;
         }
@@ -63,6 +64,6 @@ public class ExpandingStomachPart extends StomachPart
     protected void updateExpandingPose()
     {
         expandingPose = new PlayerPose();
-        expandingPose.addSize(GenericLimbNames.body, new Vector3d(1 + (maxXSize - 1) * currentPercent, 1 + (maxYSize - 1) * currentPercent, 1 + (maxZSize- 1) * currentPercent), 99, 1);
+        expandingPose.addSize(GenericLimbNames.body, new Vector3d(1 + (maxXSize - 1) * currentPercent, 1 + (maxYSize - 1) * currentPercent, 1 + (maxZSize- 1) * currentPercent), 99, 5);
     }
 }

@@ -5,6 +5,7 @@ import DaoOfModding.Cultivationcraft.Client.Textures.TextureList;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyForgeParts.ExpandingStomachPart;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyForgeParts.GlidePart;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyForgeParts.SingleLegPart;
+import DaoOfModding.Cultivationcraft.Common.Qi.Stats.DefaultPlayerBodyPartWeights;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.StatIDs;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import DaoOfModding.mlmanimator.Client.Models.GenericLimbNames;
@@ -138,6 +139,7 @@ public class BodyPartNames
         rubberSkin.getStatChanges().setStat(StatIDs.bounceHeight, 0.5f);
         rubberSkin.addNeededPart(BodyPartNames.startingEyesPart);
         rubberSkin.addUniqueTag(BodyPartTags.stretchy);
+        rubberSkin.getStatChanges().setStat(StatIDs.fallHeight, 99);
 
         BodyPartOption stretchySkin = new BodyPartOption(stretchySkinPart, bodyPosition, skinSubPosition,  "cultivationcraft.gui.bodypart.skin.stretchy", 1000);
         //stretchySkin.addTextureChange(TextureList.skin, new ResourceLocation(Cultivationcraft.MODID, "textures/models/bone/bone.png"));
@@ -163,6 +165,7 @@ public class BodyPartNames
         addWings.setTexture(TextureList.bone);
         addWings.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.boneSubPosition);
         addWings.addUniqueTag(BodyPartTags.flight);
+        addWings.getStatChanges().setStat(StatIDs.weight, 0.2f);
 
         BodyPartOption addIWings = new BodyPartOption(insectwingPart, bodyPosition, backSubPosition,  "cultivationcraft.gui.bodypart.back.iwings", 1000);
         addIWings.addModel(BodyPartModelNames.rinsectWing);
@@ -171,6 +174,7 @@ public class BodyPartNames
         addIWings.setTexture(TextureList.bone);
         addIWings.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.boneSubPosition);
         addIWings.addUniqueTag(BodyPartTags.flight);
+        addIWings.getStatChanges().setStat(StatIDs.weight, 0.01f);
 
         addOption(addWings);
         addOption(addIWings);
@@ -221,6 +225,7 @@ public class BodyPartNames
         glide.addQuad(BodyPartModelNames.armglidequad);
         glide.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.basePosition);
         glide.addUniqueTag(BodyPartTags.flight);
+        glide.getStatChanges().setStat(StatIDs.weight, 0.01f);
 
         addPart(glide);
     }
@@ -237,6 +242,7 @@ public class BodyPartNames
         flatTeeth.addNeededPart(BodyPartNames.jawPart);
         flatTeeth.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.boneSubPosition);
         flatTeeth.setTexture(TextureList.bone);
+        flatTeeth.getStatChanges().setStat(StatIDs.weight, 0.02f);
 
         addOption(flatTeeth);
 
@@ -247,6 +253,7 @@ public class BodyPartNames
         sharpTeeth.addNeededPart(BodyPartNames.jawPart);
         sharpTeeth.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.boneSubPosition);
         sharpTeeth.setTexture(TextureList.bone);
+        sharpTeeth.getStatChanges().setStat(StatIDs.weight, 0.02f);
 
         addOption(sharpTeeth);
     }
@@ -254,10 +261,11 @@ public class BodyPartNames
     private static void setupLegParts()
     {
         BodyPart rjLegPart = new BodyPart(reverseJointLegPart, legPosition, "cultivationcraft.gui.legpart.reversejoint", 1000);
-        rjLegPart.getStatChanges().setStat(StatIDs.jumpHeight, 5);
         rjLegPart.addModel(BodyPartModelNames.reverseJointRightLegModel);
         rjLegPart.addModel(BodyPartModelNames.reverseJointLeftLegModel);
         rjLegPart.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.basePosition);
+        rjLegPart.getStatChanges().setStat(StatIDs.jumpHeight, 5);
+        rjLegPart.getStatChanges().setStat(StatIDs.fallHeight, 5);
 
         addPart(rjLegPart);
 
@@ -265,6 +273,8 @@ public class BodyPartNames
         oneLegPart.getStatChanges().setStat(StatIDs.jumpHeight, 7);
         oneLegPart.addModel(BodyPartModelNames.singleLegModel);
         oneLegPart.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.basePosition);
+        oneLegPart.getStatChanges().setStat(StatIDs.weight, DefaultPlayerBodyPartWeights.legWeight * -1);
+        oneLegPart.getStatChanges().setStat(StatIDs.legSupport, StatIDs.defaultLegSupport * -0.25f);
 
         addPart(oneLegPart);
     }

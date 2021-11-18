@@ -63,14 +63,14 @@ public class RollTechnique extends Technique
     @Override
     public void tickClient(TickEvent.PlayerTickEvent event)
     {
+        // TODO: Slowly increase movement speed to a max speed that increases based on weight
+
         super.tickClient(event);
 
         Vector3d motion = event.player.getDeltaMovement();
         motion = motion.multiply(1, 0, 1);
 
         double speed = motion.length() * 0.75;
-
-        Cultivationcraft.LOGGER.info(speed);
 
         if (speed < 0)
             speed = 0;

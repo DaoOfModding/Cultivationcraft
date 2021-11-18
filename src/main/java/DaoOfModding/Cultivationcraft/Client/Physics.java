@@ -1,6 +1,8 @@
 package DaoOfModding.Cultivationcraft.Client;
 
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
+import DaoOfModding.Cultivationcraft.Common.Qi.Stats.PlayerStatControl;
+import DaoOfModding.Cultivationcraft.Common.Qi.Stats.PlayerStatModifications;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.StatIDs;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.vector.Vector3d;
@@ -15,12 +17,13 @@ public class Physics
     // Increase player jump speed based on the jump height
     public static void applyJump(PlayerEntity player)
     {
-        float jumpHeight = BodyPartStatControl.getStats(player.getUUID()).getStat(StatIDs.jumpHeight);
+        PlayerStatControl stats = BodyPartStatControl.getPlayerStatControl(player.getUUID());
+        float jumpHeight = stats.getStats().getStat(StatIDs.jumpHeight);
 
         Vector3d currentMotion = player.getDeltaMovement();
 
         // Increase not only the height jump but also multiply X and Z momentum
-        player.setDeltaMovement(currentMotion.x + (currentMotion.x * jumpHeight * 0.2f), 0.42f + jumpHeight * 0.1f, currentMotion.z + (currentMotion.z * jumpHeight * 0.2f));
+        player.setDeltaMovement(currentMotion.x + (currentMotion.x * jumpHeight * 0.2f) * stats.getLegWeightModifier(), (0.42f + jumpHeight * 0.1f) * stats.getLegWeightModifier(), currentMotion.z + (currentMotion.z * jumpHeight * 0.2f) * stats.getLegWeightModifier());
     }
 
     public static void Bounce(PlayerEntity player)
@@ -64,10 +67,15 @@ public class Physics
             fallSpeed.remove(player.getUUID());
     }
 
-    // Increase the distance you can fall without taking damage by the jump height
+    // Increase the distance you can fall without taking damage by the fall height
     public static float reduceFallDistance(PlayerEntity player, float distance)
     {
-        distance -= BodyPartStatControl.getStats(player.getUUID()).getStat(StatIDs.jumpHeight);
+        PlayerStatControl stats = BodyPartStatControl.getPlayerStatControl(player.getUUID());
+
+        distance -= (stats.getStats().getStat(StatIDs.fallHeight) - 1) * stats.getLegWeightModifier();
+
+        // Adjust the vanilla fall distance of 1 by the legWeightModifier
+        distance += 1 * (1 - stats.getLegWeightModifier());
 
         if (distance < 0)
             distance = 0;
