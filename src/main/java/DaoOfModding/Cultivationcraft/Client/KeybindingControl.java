@@ -1,5 +1,6 @@
 package DaoOfModding.Cultivationcraft.Client;
 
+import DaoOfModding.Cultivationcraft.Client.Animations.CultivatorModelHandler;
 import DaoOfModding.Cultivationcraft.Client.GUI.SkillHotbarOverlay;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.BodyModifications;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.IBodyModifications;
@@ -13,7 +14,9 @@ import DaoOfModding.Cultivationcraft.Common.Qi.CultivatorControl;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.AttackOverrideTechnique;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.MovementOverrideTechnique;
 import DaoOfModding.Cultivationcraft.Common.Register;
+import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import DaoOfModding.Cultivationcraft.Network.ClientPacketHandler;
+import DaoOfModding.mlmanimator.Client.Poses.PoseHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.settings.KeyBinding;
@@ -113,28 +116,27 @@ public class KeybindingControl
                     techs.getTechnique(i).onInput();
     }
 
-    public static void handleAttackOverrides()
+    public static boolean handleAttackOverrides()
     {
         // If something is held in the players hand do nothing
-        if (!Minecraft.getInstance().player.getUseItem().isEmpty())
-            return;
+        if (!Minecraft.getInstance().player.getMainHandItem().isEmpty())
+            return false;
 
         // Get all cultivator techniques and check if any of them are active attack overrides
         int slot = CultivatorControl.getAttackOverride(Minecraft.getInstance().player);
 
         // Do nothing if there is no active attack override
         if (slot == -1)
-            return;
+            return false;
 
         AttackOverrideTechnique attackTech = (AttackOverrideTechnique)CultivatorTechniques.getCultivatorTechniques(Minecraft.getInstance().player).getTechnique(slot);
 
-        // If the attack button is not pressed do nothing
-        // (calling this cancels the default attack, so it has to be checked after confirming that there is an active attack override)
-        if (!Minecraft.getInstance().options.keyAttack.getKeyBinding().isDown())
-            return;
+        Minecraft.getInstance().options.keyAttack.getKeyBinding().setDown(false);
 
         // Attack with the attack override
         attackTech.attack(Minecraft.getInstance().player, slot);
+
+        return true;
     }
 
     public static void handleMovementOverrides()
@@ -231,6 +233,15 @@ public class KeybindingControl
     }
 
     @SubscribeEvent
+    public static void onInput(InputEvent.ClickInputEvent event)
+    {
+        if (event.getKeyBinding() == Minecraft.getInstance().options.keyAttack.getKeyBinding())
+        {
+            event.setCanceled(handleAttackOverrides());
+        }
+    }
+
+    @SubscribeEvent
     public static void onInput(InputEvent event)
     {
         // Only perform if the world is loaded and player is alive
@@ -238,7 +249,6 @@ public class KeybindingControl
         {
             handleHotbarKeybinds();
             handleHotbarInteracts();
-            handleAttackOverrides();
             //handleMovementOverrides();
             handleSkillKeyPresses();
 
@@ -316,7 +326,7 @@ public class KeybindingControl
                 float f = 1.0F;
                 AxisAlignedBB axisalignedbb = entity.getBoundingBox().expandTowards(vector3d1.scale(d0)).inflate(1.0D, 1.0D, 1.0D);
                 EntityRayTraceResult entityraytraceresult = ProjectileHelper.getEntityHitResult(entity, vector3d, vector3d2, axisalignedbb, (p_215312_0_) -> {
-                    return !p_215312_0_.isSpectator() && p_215312_0_.canBeCollidedWith();
+                    return !p_215312_0_.isSpectator() && p_215312_0_.isPickable();
                 }, d1);
                 if (entityraytraceresult != null)
                 {

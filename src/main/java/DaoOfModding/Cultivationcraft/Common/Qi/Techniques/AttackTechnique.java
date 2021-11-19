@@ -75,8 +75,9 @@ public class AttackTechnique extends Technique
 
     public double getRange(PlayerEntity player)
     {
+        // TODO: Update this
         // Default attack range
-        double range = 9;
+        double range = 6;
 
         // Add any range modifiers onto the attack range
         ICultivatorStats stats = CultivatorStats.getCultivatorStats(player);
@@ -89,6 +90,7 @@ public class AttackTechnique extends Technique
 
     public int getAttack(PlayerEntity player)
     {
+        // TODO: Update this
         // Default attack damage
         int attack = 1;
 
@@ -130,13 +132,11 @@ public class AttackTechnique extends Technique
         if (toAttack instanceof LivingEntity)
             entityHealth = ((LivingEntity) toAttack).getHealth();
 
-        // If player does no damage (?) then play a coresponding sound and do nothing
+        // If player does no damage (?) then play a corresponding sound and do nothing
         if (!toAttack.hurt(DamageSource.playerAttack(player), attack)) {
             player.level.playSound((PlayerEntity) null, player.getX(), player.getY(), player.getZ(), SoundEvents.PLAYER_ATTACK_NODAMAGE, player.getSoundSource(), 1.0F, 1.0F);
             return;
         }
-
-        Cultivationcraft.LOGGER.info("Attack succeeded...");
 
         // Play attack sound
         player.level.playSound((PlayerEntity) null, player.getX(), player.getY(), player.getZ(), SoundEvents.PLAYER_ATTACK_STRONG, player.getSoundSource(), 1.0F, 1.0F);
@@ -194,6 +194,14 @@ public class AttackTechnique extends Technique
                 ((ServerWorld) player.level).sendParticles(ParticleTypes.DAMAGE_INDICATOR, toAttack.getX(), toAttack.getY(0.5D), toAttack.getZ(), k, 0.1D, 0.0D, 0.1D, 0.2D);
             }
         }
+
+        // If the entity is dead then call onKill
+        if (toAttack instanceof LivingEntity && !((LivingEntity)toAttack).isAlive())
+            onKill(player, (LivingEntity)toAttack);
     }
 
+    // What to do when any entity has been killed by this technique
+    protected void onKill(PlayerEntity player, LivingEntity entity)
+    {
+    }
 }

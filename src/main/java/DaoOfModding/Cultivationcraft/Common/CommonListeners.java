@@ -7,12 +7,15 @@ import DaoOfModding.Cultivationcraft.Client.Physics;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.ChunkQiSources.ChunkQiSources;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.ChunkQiSources.IChunkQiSources;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStats;
+import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.FoodStats.QiFoodStats;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
+import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import DaoOfModding.Cultivationcraft.Network.PacketHandler;
 import DaoOfModding.Cultivationcraft.Server.ServerItemControl;
 import DaoOfModding.Cultivationcraft.Server.ServerListeners;
 import DaoOfModding.Cultivationcraft.Server.SkillHotbarServer;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
@@ -54,9 +57,19 @@ public class CommonListeners
     public static void playerJump(LivingEvent.LivingJumpEvent event)
     {
         if (event.getEntity() instanceof PlayerEntity)
-        {
             Physics.applyJump((PlayerEntity) event.getEntity());
-        }
+    }
+
+    @SubscribeEvent
+    public static void useItem(PlayerInteractEvent.RightClickItem event)
+    {
+        // TODO: Allow eating of inedible items if the players stomach says they are edible
+
+        // Cancel the eat event if the players stomach is incompatible with the food type
+        if (event.getItemStack().isEdible())
+            if (event.getPlayer().getFoodData() instanceof QiFoodStats)
+                if (!((QiFoodStats)((QiFoodStats) event.getPlayer().getFoodData())).isEdible(event.getItemStack()))
+                    event.setCanceled(true);
     }
 
     @SubscribeEvent

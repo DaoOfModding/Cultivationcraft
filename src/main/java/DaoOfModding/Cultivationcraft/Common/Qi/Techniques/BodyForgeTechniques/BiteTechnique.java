@@ -9,6 +9,8 @@ import DaoOfModding.Cultivationcraft.Common.Qi.CultivationTypes;
 import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.AttackOverrideTechnique;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.vector.Vector3d;
@@ -44,5 +46,18 @@ public class BiteTechnique extends AttackOverrideTechnique
             return true;
 
         return false;
+    }
+
+    @Override
+    protected void onKill(PlayerEntity player, LivingEntity entity)
+    {
+        super.onKill(player, entity);
+
+        // TODO: Check if player has carnivorous stomach, eat entity
+        if (BodyModifications.getBodyModifications(player).hasOption(BodyPartNames.headPosition, BodyPartNames.mouthSubPosition, BodyPartNames.sharpTeethPart) &&
+                true)
+        {
+
+        }
     }
 }

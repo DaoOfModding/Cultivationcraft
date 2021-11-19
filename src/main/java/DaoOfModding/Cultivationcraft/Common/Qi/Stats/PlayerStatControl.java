@@ -113,8 +113,6 @@ public class PlayerStatControl
         if (support >= weight)
             return 1;
 
-        Cultivationcraft.LOGGER.info(weight + "/" + support + "=" + Math.max(0.1f, 2 - weight / support));
-
         // Return 0.1 if weight is (just under) double or more than the leg support
         return Math.max(0.1f, 2 - weight / support);
     }

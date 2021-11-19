@@ -14,6 +14,9 @@ public class CarnivoreFoodStats extends QiFoodStats
     @Override
     public boolean isEdible(ItemStack item)
     {
+        if (item.getItem().getFoodProperties() == null)
+            return false;
+
         // Can only eat meat
         return item.getItem().getFoodProperties().isMeat();
     }

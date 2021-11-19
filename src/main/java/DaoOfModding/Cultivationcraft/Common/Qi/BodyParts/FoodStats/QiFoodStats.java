@@ -145,7 +145,6 @@ public class QiFoodStats extends FoodStats
         foodLevel = p_75114_1_;
     }
 
-    // TODO: Call this when determining if something can be eaten
     public boolean isEdible(ItemStack item)
     {
         return item.isEdible();
