@@ -5,16 +5,27 @@ import DaoOfModding.Cultivationcraft.Client.Animations.GenericQiPoses;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.BodyModifications;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStats;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartNames;
+import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.FoodStats.QiFoodStats;
+import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.PlayerHealthManager;
 import DaoOfModding.Cultivationcraft.Common.Qi.CultivationTypes;
 import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
+import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
+import DaoOfModding.Cultivationcraft.Common.Qi.Stats.PlayerStatControl;
+import DaoOfModding.Cultivationcraft.Common.Qi.Stats.PlayerStatModifications;
+import DaoOfModding.Cultivationcraft.Common.Qi.Stats.StatIDs;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.AttackOverrideTechnique;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvent;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.registries.GameData;
 
 public class BiteTechnique extends AttackOverrideTechnique
 {
@@ -26,6 +37,11 @@ public class BiteTechnique extends AttackOverrideTechnique
         elementID = Elements.noElementID;
 
         icon = new ResourceLocation(Cultivationcraft.MODID, "textures/techniques/icons/bite.png");
+
+        attackSound = SoundEvents.FOX_BITE;
+        missSound = SoundEvents.FOX_BITE;
+
+        damage = 2;
 
         pose.addAngle(BodyPartModelNames.jawModelLower, new Vector3d(Math.toRadians(40), 0, 0), GenericQiPoses.attackPriority-1, 5f, -1);
         attack.addAngle(BodyPartModelNames.jawModelLower, new Vector3d(Math.toRadians(20), 0, 0), GenericQiPoses.attackPriority, 0f, -1);
@@ -49,15 +65,31 @@ public class BiteTechnique extends AttackOverrideTechnique
     }
 
     @Override
+    public float getAttack(PlayerEntity player)
+    {
+        PlayerStatModifications stats = BodyPartStatControl.getPlayerStatControl(player.getUUID()).getStats();
+
+        return damage * stats.getStat(StatIDs.boneAttackModifier) * stats.getStat(StatIDs.biteAttackModifier);
+    }
+
+    @Override
     protected void onKill(PlayerEntity player, LivingEntity entity)
     {
         super.onKill(player, entity);
 
-        // TODO: Check if player has carnivorous stomach, eat entity
         if (BodyModifications.getBodyModifications(player).hasOption(BodyPartNames.headPosition, BodyPartNames.mouthSubPosition, BodyPartNames.sharpTeethPart) &&
-                true)
+                ((QiFoodStats)player.getFoodData()).canEatMet())
         {
+            // Stamina gain equal to entity max health / 2
+            float nutrition = entity.getMaxHealth() / 2;
 
+            player.getFoodData().eat((int)nutrition, nutrition);
+
+            // Make entity disappear once eaten, so it leaves no corpse
+            entity.setInvisible(true);
+
+            ((ServerWorld) player.level).sendParticles(ParticleTypes.SMOKE, entity.getX(), entity.getY(), entity.getZ(), 20, 1D, 1D, 1D, 1D);
+            player.level.playSound((PlayerEntity) null, player.getX(), player.getY(), player.getZ(), SoundEvents.GENERIC_EAT, player.getSoundSource(), 1.0F, 1.0F);
         }
     }
 }

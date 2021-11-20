@@ -5,6 +5,8 @@ import DaoOfModding.Cultivationcraft.Client.Textures.TextureList;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyForgeParts.ExpandingStomachPart;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyForgeParts.GlidePart;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyForgeParts.SingleLegPart;
+import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyForgeParts.StomachPart;
+import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.FoodStats.CarnivoreFoodStats;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.DefaultPlayerBodyPartWeights;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.StatIDs;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
@@ -48,6 +50,7 @@ public class BodyPartNames
     public static final String stretchySkinPart = "stretchy";
 
     public static final String expandingStomachPart = "expandingStomach";
+    public static final String carnivorousStomachPart = "carnivorousStomach";
 
     // DEFAULTS
     public static final String DefaultLeftArm = "armleft";
@@ -112,7 +115,8 @@ public class BodyPartNames
     {
         BodyPartOption reinforceBones = new BodyPartOption(reinforceBonePart, bodyPosition, boneSubPosition,  "cultivationcraft.gui.generic.reinforce", 1000);
         reinforceBones.addTextureChange(TextureList.bone, new ResourceLocation(Cultivationcraft.MODID, "textures/models/bone/bone.png"));
-        reinforceBones.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.basePosition);
+        reinforceBones.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.skinSubPosition);
+        reinforceBones.getStatChanges().setStat(StatIDs.boneAttackModifier, 1);
 
         addOption(reinforceBones);
 
@@ -127,9 +131,17 @@ public class BodyPartNames
         expandingStomach.addUniqueTag(BodyPartTags.hunger);
         expandingStomach.addUniqueTag(BodyPartTags.expanding);
         expandingStomach.addNeededPart(expandingBodyPart);
-        expandingStomach.getStatChanges().setStat(StatIDs.maxStamina, 60);
+        expandingStomach.getStatChanges().setStat(StatIDs.maxStamina, 80);
+
+        StomachPart carnivorousStomach = new StomachPart(carnivorousStomachPart, bodyPosition, stomachSubPosition,  "cultivationcraft.gui.bodypart.stomach.carnivorous", 1000);
+        carnivorousStomach.addUniqueTag(BodyPartTags.hunger);
+        carnivorousStomach.addUniqueTag(BodyPartTags.expanding);
+        carnivorousStomach.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.skinSubPosition);
+        carnivorousStomach.getStatChanges().setStat(StatIDs.maxStamina, 20);
+        carnivorousStomach.setFoodStats(new CarnivoreFoodStats());
 
         addOption(expandingStomach);
+        addOption(carnivorousStomach);
     }
 
     private static void setupSkinOptions()
@@ -243,6 +255,7 @@ public class BodyPartNames
         flatTeeth.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.boneSubPosition);
         flatTeeth.setTexture(TextureList.bone);
         flatTeeth.getStatChanges().setStat(StatIDs.weight, 0.02f);
+        flatTeeth.getStatChanges().setStat(StatIDs.biteAttackModifier, 0.75f);
 
         addOption(flatTeeth);
 
@@ -254,6 +267,7 @@ public class BodyPartNames
         sharpTeeth.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.boneSubPosition);
         sharpTeeth.setTexture(TextureList.bone);
         sharpTeeth.getStatChanges().setStat(StatIDs.weight, 0.02f);
+        sharpTeeth.getStatChanges().setStat(StatIDs.biteAttackModifier, 1.5f);
 
         addOption(sharpTeeth);
     }
@@ -263,7 +277,7 @@ public class BodyPartNames
         BodyPart rjLegPart = new BodyPart(reverseJointLegPart, legPosition, "cultivationcraft.gui.legpart.reversejoint", 1000);
         rjLegPart.addModel(BodyPartModelNames.reverseJointRightLegModel);
         rjLegPart.addModel(BodyPartModelNames.reverseJointLeftLegModel);
-        rjLegPart.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.basePosition);
+        rjLegPart.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.skinSubPosition);
         rjLegPart.getStatChanges().setStat(StatIDs.jumpHeight, 5);
         rjLegPart.getStatChanges().setStat(StatIDs.fallHeight, 5);
 
@@ -272,7 +286,7 @@ public class BodyPartNames
         SingleLegPart oneLegPart = new SingleLegPart(singleLegPart, legPosition, "cultivationcraft.gui.legpart.singleLeg", 1000);
         oneLegPart.getStatChanges().setStat(StatIDs.jumpHeight, 7);
         oneLegPart.addModel(BodyPartModelNames.singleLegModel);
-        oneLegPart.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.basePosition);
+        oneLegPart.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.skinSubPosition);
         oneLegPart.getStatChanges().setStat(StatIDs.weight, DefaultPlayerBodyPartWeights.legWeight * -1);
         oneLegPart.getStatChanges().setStat(StatIDs.legSupport, StatIDs.defaultLegSupport * -0.25f);
 

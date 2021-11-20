@@ -17,6 +17,9 @@ public class QiFoodStats extends FoodStats
     private float foodLevel = 20;
     public int tickTimer = 0;
 
+    protected boolean eatMeat = true;
+    protected boolean eatGrass = false;
+
     public void setMaxFood(int newMaxFood)
     {
         maxFood = newMaxFood;
@@ -148,5 +151,15 @@ public class QiFoodStats extends FoodStats
     public boolean isEdible(ItemStack item)
     {
         return item.isEdible();
+    }
+
+    public boolean canEatMet()
+    {
+        return eatMeat;
+    }
+
+    public boolean canEatGrass()
+    {
+        return eatGrass;
     }
 }

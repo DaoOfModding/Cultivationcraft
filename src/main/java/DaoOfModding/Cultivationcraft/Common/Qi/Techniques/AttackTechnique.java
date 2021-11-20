@@ -18,6 +18,7 @@ import net.minecraft.network.play.server.SEntityVelocityPacket;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
@@ -29,24 +30,13 @@ import java.util.UUID;
 
 public class AttackTechnique extends Technique
 {
+    protected SoundEvent attackSound = SoundEvents.PLAYER_ATTACK_STRONG;
+    protected SoundEvent missSound = SoundEvents.PLAYER_ATTACK_WEAK;
+
     protected  PlayerPose attack = new PlayerPose();
 
-    ArrayList<String> modifiers = new ArrayList<String>();
-
-    public void addModifier(String modifierID)
-    {
-        modifiers.add(modifierID);
-    }
-
-    public Boolean hasModifier(String modifierID)
-    {
-        return modifiers.contains(modifierID);
-    }
-
-    public ArrayList<String> getModifiers()
-    {
-        return modifiers;
-    }
+    protected double range = 6;
+    protected float damage = 1;
 
     // Try to attack with specified player, client only
     public void attack(PlayerEntity player, int slot)
@@ -75,32 +65,19 @@ public class AttackTechnique extends Technique
 
     public double getRange(PlayerEntity player)
     {
-        // TODO: Update this
         // Default attack range
-        double range = 6;
-
-        // Add any range modifiers onto the attack range
-        ICultivatorStats stats = CultivatorStats.getCultivatorStats(player);
-
-        for (String modifier : getModifiers())
-            range += stats.getModifier(modifier).getAttackRange();
-
         return range;
     }
 
-    public int getAttack(PlayerEntity player)
+    public float getAttack(PlayerEntity player)
     {
-        // TODO: Update this
         // Default attack damage
-        int attack = 1;
+        return damage;
+    }
 
-        // Add any attack modifiers onto the attack damage
-        ICultivatorStats stats = CultivatorStats.getCultivatorStats(player);
-
-        for (String modifier : getModifiers())
-            attack += stats.getModifier(modifier).getAttack();
-
-        return attack;
+    public void attackNothing(PlayerEntity player)
+    {
+        player.level.playSound((PlayerEntity) null, player.getX(), player.getY(), player.getZ(), missSound, player.getSoundSource(), 1.0F, 1.0F);
     }
 
     // Attack specified entity with specified player, server only
@@ -120,7 +97,7 @@ public class AttackTechnique extends Technique
             return;
 
 
-        int attack = getAttack(player);
+        float attack = getAttack(player);
         // TODO: Add knockback as an attackModifier
         float knockback = 1;
 
@@ -139,7 +116,7 @@ public class AttackTechnique extends Technique
         }
 
         // Play attack sound
-        player.level.playSound((PlayerEntity) null, player.getX(), player.getY(), player.getZ(), SoundEvents.PLAYER_ATTACK_STRONG, player.getSoundSource(), 1.0F, 1.0F);
+        player.level.playSound((PlayerEntity) null, player.getX(), player.getY(), player.getZ(), attackSound, player.getSoundSource(), 1.0F, 1.0F);
 
         // Apply knockback to attacked entity
         if (knockback > 0) {

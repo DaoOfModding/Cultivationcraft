@@ -149,6 +149,12 @@ public class AttackPacket extends Packet
                         return;
                     }
         }
+        else if (targetType == RayTraceResult.Type.BLOCK)
+        {
+            // TODO: Do stuff with blocks here
+        }
+        else
+            ((AttackTechnique)tech).attackNothing(ownerEntity);
     }
 
     private void processClientPacket()
