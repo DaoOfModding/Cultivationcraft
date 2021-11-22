@@ -15,13 +15,19 @@ import DaoOfModding.Cultivationcraft.Common.Qi.Stats.PlayerStatModifications;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.StatIDs;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.AttackOverrideTechnique;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.passive.SheepEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.server.ServerWorld;
@@ -42,6 +48,7 @@ public class BiteTechnique extends AttackOverrideTechnique
         missSound = SoundEvents.FOX_BITE;
 
         damage = 2;
+        range = 3.5;
 
         pose.addAngle(BodyPartModelNames.jawModelLower, new Vector3d(Math.toRadians(40), 0, 0), GenericQiPoses.attackPriority-1, 5f, -1);
         attack.addAngle(BodyPartModelNames.jawModelLower, new Vector3d(Math.toRadians(20), 0, 0), GenericQiPoses.attackPriority, 0f, -1);
@@ -73,12 +80,41 @@ public class BiteTechnique extends AttackOverrideTechnique
     }
 
     @Override
+    public void attackBlock(PlayerEntity player, BlockState block, BlockPos pos)
+    {
+        int nutrition = ((QiFoodStats) player.getFoodData()).getNutrition(block);
+
+        if (nutrition > 0 && BodyModifications.getBodyModifications(player).hasOption(BodyPartNames.headPosition, BodyPartNames.mouthSubPosition, BodyPartNames.flatTeethPart))
+        {
+            player.level.playSound((PlayerEntity) null, player.getX(), player.getY(), player.getZ(), SoundEvents.GENERIC_EAT, player.getSoundSource(), 1.0F, 1.0F);
+
+            // If the block is grass, destroy the grass but leave the dirt
+            if (block.getMaterial() == Material.GRASS)
+            {
+                player.level.levelEvent(2001, pos, Block.getId(block.getBlockState()));
+                player.level.setBlock(pos, Blocks.DIRT.defaultBlockState(), 2);
+            }
+            // Otherwise destroy the block
+            else
+            {
+                //player.level.levelEvent(2001, pos, Block.getId(Blocks.GRASS_BLOCK.defaultBlockState()));
+                //player.level.setBlock(pos, Blocks.AIR.defaultBlockState(), 2);
+                player.level.destroyBlock(pos, false);
+            }
+
+            player.getFoodData().eat(nutrition, nutrition);
+        }
+        else
+            super.attackBlock(player, block, pos);
+    }
+
+    @Override
     protected void onKill(PlayerEntity player, LivingEntity entity)
     {
         super.onKill(player, entity);
 
         if (BodyModifications.getBodyModifications(player).hasOption(BodyPartNames.headPosition, BodyPartNames.mouthSubPosition, BodyPartNames.sharpTeethPart) &&
-                ((QiFoodStats)player.getFoodData()).canEatMet())
+                ((QiFoodStats)player.getFoodData()).canEatMeat())
         {
             // Stamina gain equal to entity max health / 2
             float nutrition = entity.getMaxHealth() / 2;

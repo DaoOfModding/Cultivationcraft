@@ -50,6 +50,9 @@
   "cultivationcraft.gui.bodypart.stomach.carnivorous": "Carnivorous",
   "cultivationcraft.gui.bodypart.stomach.carnivorous.description": "Forge your stomach to gain extra nutrition from meat, but you can only eat meat.",
 
+  "cultivationcraft.gui.bodypart.stomach.herbivorous": "Herbivorous",
+  "cultivationcraft.gui.bodypart.stomach.herbivorous.description": "Forge your stomach to be able to eat vegetation, but you can not eat meat.",
+
   "cultivationcraft.gui.bodypart.back.wings": "Wings",
   "cultivationcraft.gui.bodypart.back.wings.description": "Grow wings to carry you through the sky",
 

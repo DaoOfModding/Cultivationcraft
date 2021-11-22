@@ -4,6 +4,10 @@ import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.PlayerHealthManager;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.StatIDs;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
+import jdk.nashorn.internal.ir.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
@@ -16,9 +20,6 @@ public class QiFoodStats extends FoodStats
     private float exhaustionLevel = 0;
     private float foodLevel = 20;
     public int tickTimer = 0;
-
-    protected boolean eatMeat = true;
-    protected boolean eatGrass = false;
 
     public void setMaxFood(int newMaxFood)
     {
@@ -150,16 +151,25 @@ public class QiFoodStats extends FoodStats
 
     public boolean isEdible(ItemStack item)
     {
-        return item.isEdible();
+        if (item.getItem().getFoodProperties() == null)
+            return false;
+
+        if (!item.getItem().getFoodProperties().isMeat())
+            return true;
+
+        if (item.getItem().getFoodProperties().isMeat() && canEatMeat())
+            return true;
+
+        return false;
     }
 
-    public boolean canEatMet()
+    public boolean canEatMeat()
     {
-        return eatMeat;
+        return true;
     }
-
-    public boolean canEatGrass()
+    
+    public int getNutrition(BlockState block)
     {
-        return eatGrass;
+        return 0;
     }
 }

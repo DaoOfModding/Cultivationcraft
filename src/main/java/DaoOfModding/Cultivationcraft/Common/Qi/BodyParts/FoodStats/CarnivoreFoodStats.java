@@ -18,6 +18,9 @@ public class CarnivoreFoodStats extends QiFoodStats
             return false;
 
         // Can only eat meat
-        return item.getItem().getFoodProperties().isMeat();
+        if (!item.getItem().getFoodProperties().isMeat())
+            return false;
+
+        return super.isEdible(item);
     }
 }

@@ -8,18 +8,23 @@ import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.ICultiv
 import DaoOfModding.Cultivationcraft.Common.Misc;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import DaoOfModding.Cultivationcraft.Network.ClientPacketHandler;
+import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.passive.CowEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.network.play.server.SEntityVelocityPacket;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.stats.Stats;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.vector.Vector3d;
@@ -35,7 +40,7 @@ public class AttackTechnique extends Technique
 
     protected  PlayerPose attack = new PlayerPose();
 
-    protected double range = 6;
+    protected double range = 4;
     protected float damage = 1;
 
     // Try to attack with specified player, client only
@@ -54,7 +59,15 @@ public class AttackTechnique extends Technique
         if (result.getType() == RayTraceResult.Type.ENTITY)
             targetID = Misc.getEntityAtLocation(result.getLocation(), Minecraft.getInstance().level).getUUID();
 
-        ClientPacketHandler.sendAttackToServer(player.getUUID(), result.getType(), result.getLocation(), targetID, slot);
+        Vector3d Location = result.getLocation();
+
+        if (result.getType() == RayTraceResult.Type.BLOCK)
+        {
+            BlockPos blockpos = ((BlockRayTraceResult) result).getBlockPos();
+            Location = new Vector3d(blockpos.getX(), blockpos.getY(), blockpos.getZ());
+        }
+
+        ClientPacketHandler.sendAttackToServer(player.getUUID(), result.getType(), Location, targetID, slot);
     }
 
     public void attackAnimation(PlayerEntity player)
@@ -78,6 +91,13 @@ public class AttackTechnique extends Technique
     public void attackNothing(PlayerEntity player)
     {
         player.level.playSound((PlayerEntity) null, player.getX(), player.getY(), player.getZ(), missSound, player.getSoundSource(), 1.0F, 1.0F);
+    }
+
+    public void attackBlock(PlayerEntity player, BlockState block, BlockPos pos)
+    {
+        player.level.playSound((PlayerEntity) null, player.getX(), player.getY(), player.getZ(), attackSound, player.getSoundSource(), 1.0F, 1.0F);
+
+        // TODO: Mine block here
     }
 
     // Attack specified entity with specified player, server only

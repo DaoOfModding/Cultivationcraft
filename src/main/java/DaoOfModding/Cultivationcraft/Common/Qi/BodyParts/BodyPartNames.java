@@ -7,6 +7,7 @@ import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyForgeParts.GlidePar
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyForgeParts.SingleLegPart;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyForgeParts.StomachPart;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.FoodStats.CarnivoreFoodStats;
+import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.FoodStats.HerbivoreFoodStats;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.DefaultPlayerBodyPartWeights;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.StatIDs;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
@@ -51,6 +52,8 @@ public class BodyPartNames
 
     public static final String expandingStomachPart = "expandingStomach";
     public static final String carnivorousStomachPart = "carnivorousStomach";
+    public static final String herbivorousStomachPart = "herbivorousStomachPart";
+
 
     // DEFAULTS
     public static final String DefaultLeftArm = "armleft";
@@ -135,13 +138,19 @@ public class BodyPartNames
 
         StomachPart carnivorousStomach = new StomachPart(carnivorousStomachPart, bodyPosition, stomachSubPosition,  "cultivationcraft.gui.bodypart.stomach.carnivorous", 1000);
         carnivorousStomach.addUniqueTag(BodyPartTags.hunger);
-        carnivorousStomach.addUniqueTag(BodyPartTags.expanding);
         carnivorousStomach.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.skinSubPosition);
         carnivorousStomach.getStatChanges().setStat(StatIDs.maxStamina, 20);
         carnivorousStomach.setFoodStats(new CarnivoreFoodStats());
 
+        StomachPart herbivoreStomach = new StomachPart(herbivorousStomachPart, bodyPosition, stomachSubPosition,  "cultivationcraft.gui.bodypart.stomach.herbivorous", 1000);
+        herbivoreStomach.addUniqueTag(BodyPartTags.hunger);
+        herbivoreStomach.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.skinSubPosition);
+        herbivoreStomach.getStatChanges().setStat(StatIDs.maxStamina, 20);
+        herbivoreStomach.setFoodStats(new HerbivoreFoodStats());
+
         addOption(expandingStomach);
         addOption(carnivorousStomach);
+        addOption(herbivoreStomach);
     }
 
     private static void setupSkinOptions()

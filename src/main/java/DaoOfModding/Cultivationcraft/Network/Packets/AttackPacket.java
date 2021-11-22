@@ -10,11 +10,15 @@ import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.AttackTechnique;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.Technique;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import DaoOfModding.Cultivationcraft.Network.PacketHandler;
+import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraftforge.fml.LogicalSide;
@@ -151,7 +155,11 @@ public class AttackPacket extends Packet
         }
         else if (targetType == RayTraceResult.Type.BLOCK)
         {
-            // TODO: Do stuff with blocks here
+            BlockPos pos = new BlockPos((int)targetPos.x, (int)targetPos.y, (int)targetPos.z);
+            BlockState block = ownerEntity.getCommandSenderWorld().getBlockState(pos);
+
+            if (block != null)
+                ((AttackTechnique)tech).attackBlock(ownerEntity, block, pos);
         }
         else
             ((AttackTechnique)tech).attackNothing(ownerEntity);
