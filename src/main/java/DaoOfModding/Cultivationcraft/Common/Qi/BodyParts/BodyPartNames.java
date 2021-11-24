@@ -32,7 +32,9 @@ public class BodyPartNames
 
     public static final String glideArmPart = "glidearm";
 
+    // LEGS
     public static final String reverseJointLegPart = "rjleg";
+    public static final String hexaLegPart = "hexaleg";
     public static final String singleLegPart = "oneleg";
 
     // OPTIONS
@@ -287,19 +289,37 @@ public class BodyPartNames
         rjLegPart.addModel(BodyPartModelNames.reverseJointRightLegModel);
         rjLegPart.addModel(BodyPartModelNames.reverseJointLeftLegModel);
         rjLegPart.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.skinSubPosition);
-        rjLegPart.getStatChanges().setStat(StatIDs.jumpHeight, 5);
-        rjLegPart.getStatChanges().setStat(StatIDs.fallHeight, 5);
+        rjLegPart.getStatChanges().setStat(StatIDs.jumpHeight, 4);
+        rjLegPart.getStatChanges().setStat(StatIDs.fallHeight, 4);
 
         addPart(rjLegPart);
 
         SingleLegPart oneLegPart = new SingleLegPart(singleLegPart, legPosition, "cultivationcraft.gui.legpart.singleLeg", 1000);
         oneLegPart.getStatChanges().setStat(StatIDs.jumpHeight, 7);
+        oneLegPart.getStatChanges().setStat(StatIDs.fallHeight, 7);
         oneLegPart.addModel(BodyPartModelNames.singleLegModel);
         oneLegPart.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.skinSubPosition);
         oneLegPart.getStatChanges().setStat(StatIDs.weight, DefaultPlayerBodyPartWeights.legWeight * -1);
         oneLegPart.getStatChanges().setStat(StatIDs.legSupport, StatIDs.defaultLegSupport * -0.25f);
 
         addPart(oneLegPart);
+
+        BodyPart sixLegPart = new BodyPart(hexaLegPart, legPosition, "cultivationcraft.gui.legpart.hexaLeg", 1000);
+        sixLegPart.addModel(BodyPartModelNames.hexaLeftLegModel);
+        sixLegPart.addModel(BodyPartModelNames.hexaLeftLegModelTwo);
+        sixLegPart.addModel(BodyPartModelNames.hexaLeftLegModelThree);
+        sixLegPart.addModel(BodyPartModelNames.hexaRightLegModel);
+        sixLegPart.addModel(BodyPartModelNames.hexaRightLegModelTwo);
+        sixLegPart.addModel(BodyPartModelNames.hexaRightLegModelThree);
+        sixLegPart.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.skinSubPosition);
+        sixLegPart.getStatChanges().setStat(StatIDs.jumpHeight, 4);
+        sixLegPart.getStatChanges().setStat(StatIDs.fallHeight, 4);
+        sixLegPart.getStatChanges().setStat(StatIDs.movementSpeed, 0.1f);
+        oneLegPart.getStatChanges().setStat(StatIDs.weight, DefaultPlayerBodyPartWeights.legWeight * -1.5f);
+        // TODO: Change this after testing
+        sixLegPart.getStatChanges().setStat(StatIDs.legSupport, StatIDs.defaultLegSupport);
+
+        addPart(sixLegPart);
     }
 
     public static String getDisplayName(String position)

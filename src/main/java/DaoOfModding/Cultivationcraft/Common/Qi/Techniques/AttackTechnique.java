@@ -40,8 +40,9 @@ public class AttackTechnique extends Technique
 
     protected  PlayerPose attack = new PlayerPose();
 
-    protected double range = 4;
+    protected double range = 5;
     protected float damage = 1;
+    protected int minePower = 0;
 
     // Try to attack with specified player, client only
     public void attack(PlayerEntity player, int slot)

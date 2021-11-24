@@ -18,6 +18,7 @@ import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import DaoOfModding.Cultivationcraft.Network.ClientPacketHandler;
 import DaoOfModding.mlmanimator.Client.Poses.PoseHandler;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.Entity;
@@ -143,6 +144,7 @@ public class KeybindingControl
     {
         // TODO: Pressing other keys at the same time can result in having to repress the key you're holding down
         // Unsure how to resolve this...
+        // Replace ClientPlayerEntity.MovementInput?
 
         handleMovementTechOverrides();
         handleMovementPartOverrides();

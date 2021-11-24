@@ -649,6 +649,47 @@ public class BodyPartModels
 
         addModel(BodyPartModelNames.singleLegModel, singleLeg);
         addReference(BodyPartModelNames.singleLegModel, BodyPartModelNames.singleLegLowerModel, singleLeg.getChildren().get(0));
+
+
+        defaultResizeModule hexaResizer = new defaultResizeModule(2, new Vector3d(0, 1, 0), new Vector3d(0.5, 1, 0.5), new Vector3d(4, 10, 4), new Vector3d(0.5, 1, 0.5));
+
+        ExtendableModelRenderer hexaLeft = new ExtendableModelRenderer(0, 16);
+        hexaLeft.setPos(1F, 1.0F, 0.5F);
+        hexaLeft.setRotationPoint(new Vector3d(0.5D, 1D, 0.5D));
+        hexaLeft.extend(hexaResizer);
+        hexaLeft.mirror = true;
+        hexaLeft.setDefaultResize(new Vector3d(0.5, 1.5, 0.5));
+        hexaLeft.getChildren().get(0).setDefaultResize(new Vector3d(0.5, 1.5, 0.5));
+
+        ExtendableModelRenderer hexaLeftTwo = hexaLeft.clone();
+        ExtendableModelRenderer hexaLeftThree = hexaLeft.clone();
+
+        hexaResizer = new defaultResizeModule(2, new Vector3d(0, 1, 0), new Vector3d(0.5, 1, 0.5), new Vector3d(4, 10, 4), new Vector3d(0.5, 1, 0.5));
+
+        ExtendableModelRenderer hexaRight = new ExtendableModelRenderer(0, 16);
+        hexaRight.setPos(0F, 1.0F, 0.5F);
+        hexaRight.setRotationPoint(new Vector3d(0.5D, 1D, 0.5D));
+        hexaRight.extend(hexaResizer);
+        hexaRight.mirror = true;
+        hexaRight.setDefaultResize(new Vector3d(0.5, 1.5, 0.5));
+        hexaRight.getChildren().get(0).setDefaultResize(new Vector3d(0.5, 1.5, 0.5));
+
+        ExtendableModelRenderer hexaRightTwo = hexaRight.clone();
+        ExtendableModelRenderer hexaRightThree = hexaRight.clone();
+
+        addModel(BodyPartModelNames.hexaLeftLegModel, hexaLeft);
+        addReference(BodyPartModelNames.hexaLeftLegModel, BodyPartModelNames.hexaLowerLeftLegModel, hexaLeft.getChildren().get(0));
+        addModel(BodyPartModelNames.hexaLeftLegModelTwo, hexaLeftTwo);
+        addReference(BodyPartModelNames.hexaLeftLegModelTwo, BodyPartModelNames.hexaLowerLeftLegModelTwo, hexaLeftTwo.getChildren().get(0));
+        addModel(BodyPartModelNames.hexaLeftLegModelThree, hexaLeftThree);
+        addReference(BodyPartModelNames.hexaLeftLegModelThree, BodyPartModelNames.hexaLowerLeftLegModelThree, hexaLeftThree.getChildren().get(0));
+
+        addModel(BodyPartModelNames.hexaRightLegModel, hexaRight);
+        addReference(BodyPartModelNames.hexaRightLegModel, BodyPartModelNames.hexaLowerRightLegModel, hexaRight.getChildren().get(0));
+        addModel(BodyPartModelNames.hexaRightLegModelTwo, hexaRightTwo);
+        addReference(BodyPartModelNames.hexaRightLegModelTwo, BodyPartModelNames.hexaLowerRightLegModelTwo, hexaRightTwo.getChildren().get(0));
+        addModel(BodyPartModelNames.hexaRightLegModelThree, hexaRightThree);
+        addReference(BodyPartModelNames.hexaRightLegModelThree, BodyPartModelNames.hexaLowerRightLegModelThree, hexaRightThree.getChildren().get(0));
     }
 
     public void addQuadCollection(String ID, QuadCollection quad)

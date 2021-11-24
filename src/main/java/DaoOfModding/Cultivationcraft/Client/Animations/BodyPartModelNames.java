@@ -17,10 +17,22 @@ public class BodyPartModelNames
     public static final String reverseJointLeftLegModel = "RJL_LEFT_MODEL";
     public static final String reverseJointLeftLegLowerModel = "RJL_LEFT_LOWER_MODEL";
     public static final String reverseJointLeftFootModel = "RJL_LEFT_FOOT_MODEL";
-
     public static final String reverseJointRightLegModel = "RJL_RIGHT_MODEL";
     public static final String reverseJointRightLegLowerModel = "RJL_RIGHT_LOWER_MODEL";
     public static final String reverseJointRightFootModel = "RJL_RIGHT_FOOT_MODEL";
+
+    public static final String hexaLeftLegModel = "HEXA_LEFT_MODEL";
+    public static final String hexaLowerLeftLegModel = "HEXA_LEFT_LOWER_MODEL";
+    public static final String hexaLeftLegModelTwo = "HEXA_LEFT_MODEL_TWO";
+    public static final String hexaLowerLeftLegModelTwo = "HEXA_LEFT_LOWER_MODEL_TWO";
+    public static final String hexaLeftLegModelThree = "HEXA_LEFT_MODEL_THREE";
+    public static final String hexaLowerLeftLegModelThree = "HEXA_LEFT_LOWER_MODEL_THREE";
+    public static final String hexaRightLegModel = "HEXA_RIGHT_MODEL";
+    public static final String hexaLowerRightLegModel = "HEXA_RIGHT_LOWER_MODEL";
+    public static final String hexaRightLegModelTwo = "HEXA_RIGHT_MODEL_TWO";
+    public static final String hexaLowerRightLegModelTwo = "HEXA_RIGHT_LOWER_MODEL_TWO";
+    public static final String hexaRightLegModelThree = "HEXA_RIGHT_MODEL_THREE";
+    public static final String hexaLowerRightLegModelThree = "HEXA_RIGHT_LOWER_MODEL_THREE";
 
     public static final String singleLegModel = "SINGLE_LEG_MODEL";
     public static final String singleLegLowerModel = "SINGLE_LEG_LOWER_MODEL";
