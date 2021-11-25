@@ -21,6 +21,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.client.util.InputMappings;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.projectile.ProjectileHelper;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -49,6 +50,13 @@ public class KeybindingControl
     public static double x = 0;
     public static double y = 0;
     public static double z = 0;
+
+
+    private static boolean overwriteUp = false;
+    private static boolean overwriteDown = false;
+    private static boolean overwriteLeft = false;
+    private static boolean overwriteRight = false;
+    private static boolean overwriteJump = false;
 
     public static void init()
     {
@@ -142,12 +150,53 @@ public class KeybindingControl
 
     public static void handleMovementOverrides()
     {
-        // TODO: Pressing other keys at the same time can result in having to repress the key you're holding down
-        // Unsure how to resolve this...
-        // Replace ClientPlayerEntity.MovementInput?
-
         handleMovementTechOverrides();
         handleMovementPartOverrides();
+
+        handleKeyOverrides();
+    }
+
+    // Set keyBindings to false if their overwrite has been set
+    // Otherwise set them to the state of the key (to avoid issues with multiple key presses at the same time)
+    private static void handleKeyOverrides()
+    {
+        if (overwriteUp)
+            Minecraft.getInstance().options.keyUp.getKeyBinding().setDown(false);
+        else
+            Minecraft.getInstance().options.keyUp.getKeyBinding().setDown(isDown(Minecraft.getInstance().options.keyUp));
+
+        if (overwriteDown)
+            Minecraft.getInstance().options.keyDown.getKeyBinding().setDown(false);
+        else
+            Minecraft.getInstance().options.keyDown.getKeyBinding().setDown(isDown(Minecraft.getInstance().options.keyDown));
+
+        if (overwriteLeft)
+            Minecraft.getInstance().options.keyLeft.getKeyBinding().setDown(false);
+        else
+            Minecraft.getInstance().options.keyLeft.getKeyBinding().setDown(isDown(Minecraft.getInstance().options.keyLeft));
+
+        if (overwriteRight)
+            Minecraft.getInstance().options.keyRight.getKeyBinding().setDown(false);
+        else
+            Minecraft.getInstance().options.keyRight.getKeyBinding().setDown(isDown(Minecraft.getInstance().options.keyRight));
+
+        if (overwriteJump)
+            Minecraft.getInstance().options.keyJump.getKeyBinding().setDown(false);
+        else
+            Minecraft.getInstance().options.keyJump.getKeyBinding().setDown(isDown(Minecraft.getInstance().options.keyJump));
+
+        overwriteUp = false;
+        overwriteDown = false;
+        overwriteLeft = false;
+        overwriteRight = false;
+        overwriteJump = false;
+    }
+
+    // Check whether the key is press via InputMappings rather than keybindings
+    // Fixes issues caused by pressing multiple keys at the same time
+    public static boolean isDown(KeyBinding key)
+    {
+        return InputMappings.isKeyDown(Minecraft.getInstance().getWindow().getWindow(), key.getKeyBinding().getKey().getValue());
     }
 
     private static void handleMovementPartOverrides()
@@ -175,48 +224,48 @@ public class KeybindingControl
 
     private static void handleTechMovementOverride(MovementOverrideTechnique movementTech)
     {
-        if (Minecraft.getInstance().options.keyUp.getKeyBinding().isDown())
+        if (Minecraft.getInstance().options.keyUp.isDown())
             if (movementTech.overwriteForward())
-                Minecraft.getInstance().options.keyUp.getKeyBinding().setDown(false);
+                overwriteUp = true;
 
-        if (Minecraft.getInstance().options.keyDown.getKeyBinding().isDown())
+        if (Minecraft.getInstance().options.keyDown.isDown())
             if (movementTech.overwriteBackward())
-                Minecraft.getInstance().options.keyDown.getKeyBinding().setDown(false);
+                overwriteDown = true;
 
-        if (Minecraft.getInstance().options.keyLeft.getKeyBinding().isDown())
+        if (Minecraft.getInstance().options.keyLeft.isDown())
             if (movementTech.overwriteLeft())
-                Minecraft.getInstance().options.keyLeft.getKeyBinding().setDown(false);
+                overwriteLeft = true;
 
-        if (Minecraft.getInstance().options.keyRight.getKeyBinding().isDown())
+        if (Minecraft.getInstance().options.keyRight.isDown())
             if (movementTech.overwriteRight())
-                Minecraft.getInstance().options.keyRight.getKeyBinding().setDown(false);
+                overwriteRight = true;
 
-        if (Minecraft.getInstance().options.keyJump.getKeyBinding().isDown())
+        if (Minecraft.getInstance().options.keyJump.isDown())
             if (movementTech.overwriteJump())
-                Minecraft.getInstance().options.keyJump.getKeyBinding().setDown(false);
+                overwriteJump = true;
     }
 
     private static void handlePartMovementOverride(MovementOverridePart movementPart)
     {
-        if (Minecraft.getInstance().options.keyUp.getKeyBinding().isDown())
+        if (Minecraft.getInstance().options.keyUp.isDown())
             if (movementPart.overwriteForward())
-                Minecraft.getInstance().options.keyUp.getKeyBinding().setDown(false);
+                overwriteUp = true;
 
-        if (Minecraft.getInstance().options.keyDown.getKeyBinding().isDown())
+        if (Minecraft.getInstance().options.keyDown.isDown())
             if (movementPart.overwriteBackward())
-                Minecraft.getInstance().options.keyDown.getKeyBinding().setDown(false);
+                overwriteDown = true;
 
-        if (Minecraft.getInstance().options.keyLeft.getKeyBinding().isDown())
+        if (Minecraft.getInstance().options.keyLeft.isDown())
             if (movementPart.overwriteLeft())
-                Minecraft.getInstance().options.keyLeft.getKeyBinding().setDown(false);
+                overwriteLeft = true;
 
-        if (Minecraft.getInstance().options.keyRight.getKeyBinding().isDown())
+        if (Minecraft.getInstance().options.keyRight.isDown())
             if (movementPart.overwriteRight())
-                Minecraft.getInstance().options.keyRight.getKeyBinding().setDown(false);
+                overwriteRight = true;
 
-        if (Minecraft.getInstance().options.keyJump.getKeyBinding().isDown())
+        if (Minecraft.getInstance().options.keyJump.isDown())
             if (movementPart.overwriteJump())
-                Minecraft.getInstance().options.keyJump.getKeyBinding().setDown(false);
+                overwriteJump = true;
     }
 
 
