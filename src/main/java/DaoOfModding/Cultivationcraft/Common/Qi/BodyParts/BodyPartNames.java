@@ -2,10 +2,7 @@ package DaoOfModding.Cultivationcraft.Common.Qi.BodyParts;
 
 import DaoOfModding.Cultivationcraft.Client.Animations.BodyPartModelNames;
 import DaoOfModding.Cultivationcraft.Client.Textures.TextureList;
-import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyForgeParts.ExpandingStomachPart;
-import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyForgeParts.GlidePart;
-import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyForgeParts.SingleLegPart;
-import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyForgeParts.StomachPart;
+import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyForgeParts.*;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.FoodStats.CarnivoreFoodStats;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.FoodStats.HerbivoreFoodStats;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.DefaultPlayerBodyPartWeights;
@@ -48,6 +45,7 @@ public class BodyPartNames
 
     public static final String wingPart = "wing";
     public static final String insectwingPart = "iwing";
+    public static final String jetPart = "jet";
 
     public static final String rubberSkinPart = "rubber";
     public static final String stretchySkinPart = "stretchy";
@@ -199,8 +197,16 @@ public class BodyPartNames
         addIWings.addUniqueTag(BodyPartTags.flight);
         addIWings.getStatChanges().setStat(StatIDs.weight, 0.01f);
 
+
+        JetPart jets = new JetPart(jetPart, bodyPosition, backSubPosition,  "cultivationcraft.gui.bodypart.back.jet", 1000);
+        jets.addModel(BodyPartModelNames.jetLeft);
+        jets.addModel(BodyPartModelNames.jetRight);
+        jets.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.skinSubPosition);
+        jets.getStatChanges().setStat(StatIDs.weight, 0.04f);
+
         addOption(addWings);
         addOption(addIWings);
+        addOption(jets);
     }
 
     private static void setupBodyParts()
@@ -315,9 +321,8 @@ public class BodyPartNames
         sixLegPart.getStatChanges().setStat(StatIDs.jumpHeight, 4);
         sixLegPart.getStatChanges().setStat(StatIDs.fallHeight, 4);
         sixLegPart.getStatChanges().setStat(StatIDs.movementSpeed, 0.1f);
-        oneLegPart.getStatChanges().setStat(StatIDs.weight, DefaultPlayerBodyPartWeights.legWeight * -1.5f);
-        // TODO: Change this after testing
-        sixLegPart.getStatChanges().setStat(StatIDs.legSupport, StatIDs.defaultLegSupport);
+        sixLegPart.getStatChanges().setStat(StatIDs.weight, DefaultPlayerBodyPartWeights.legWeight * -1.5f);
+        sixLegPart.getStatChanges().setStat(StatIDs.legSupport, StatIDs.defaultLegSupport * -0.5f);
 
         addPart(sixLegPart);
     }

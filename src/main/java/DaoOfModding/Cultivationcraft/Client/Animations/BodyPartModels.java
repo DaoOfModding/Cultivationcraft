@@ -3,9 +3,11 @@ package DaoOfModding.Cultivationcraft.Client.Animations;
 import DaoOfModding.mlmanimator.Client.Models.*;
 import DaoOfModding.mlmanimator.Client.Models.Quads.Quad;
 import DaoOfModding.mlmanimator.Client.Models.Quads.QuadLinkage;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.math.vector.Vector4f;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class BodyPartModels
@@ -142,6 +144,83 @@ public class BodyPartModels
     {
         setupWingModels();
         setupInsectWingModels();
+        setupJetModels();
+    }
+
+    private void setupJetModels()
+    {
+        defaultResizeModule jet = new defaultResizeModule(new Vector3d(0.1, 0.1, 4));
+
+        ExtendableModelRenderer JetModel = new ExtendableModelRenderer(16, 16);
+        JetModel.setPos(0.25F, 0.25F, 1F);
+        JetModel.setRotationPoint(new Vector3d(0.5, 0.5f, 1f));
+        JetModel.setDefaultResize(new Vector3d(20, 5, 1));
+        JetModel.extend(jet);
+
+        jet = new defaultResizeModule(new Vector3d(0.1, 0.1, 4));
+
+        ExtendableModelRenderer JetModelRight = new ExtendableModelRenderer(16, 16);
+        JetModelRight.setPos(1F, 1F, 0F);
+        JetModelRight.setRotationPoint(new Vector3d(0, 1f, 1f));
+        JetModelRight.setDefaultResize(new Vector3d(5, 10, 1));
+        JetModelRight.extend(jet);
+
+        jet = new defaultResizeModule(new Vector3d(0.1, 0.1, 4));
+
+        ExtendableModelRenderer JetModelBottom = new ExtendableModelRenderer(16, 16);
+        JetModelBottom.setPos(1F, 1F, 0F);
+        JetModelBottom.setRotationPoint(new Vector3d(0, 1f, 1f));
+        JetModelBottom.setDefaultResize(new Vector3d(20, 5, 1));
+        JetModelBottom.extend(jet);
+
+        jet = new defaultResizeModule(new Vector3d(0.1, 0.1, 4));
+
+        ExtendableModelRenderer JetModelLeft = new ExtendableModelRenderer(16, 16);
+        JetModelLeft.setPos(0F, 0F, 0F);
+        JetModelLeft.setRotationPoint(new Vector3d(1, 0f, 1f));
+        JetModelLeft.setDefaultResize(new Vector3d(5, 10, 1));
+        JetModelLeft.extend(jet);
+
+        JetModelBottom.addChild(JetModelLeft);
+        JetModelRight.addChild(JetModelBottom);
+        JetModel.addChild(JetModelRight);
+
+        ExtendableModelRenderer JetRight = JetModel.clone();
+        JetRight.setPos(0.75F, 0.25F, 1F);
+
+        ParticleEmitter jetSmoke = new ParticleEmitter(ParticleTypes.SMOKE);
+        jetSmoke.setInterval(20);
+        jetSmoke.setVelocity(new Vector3d(0, 0f, 0f));
+        jetSmoke.setPos(0.5f, 2, 1);
+
+        ParticleEmitter jetSmokeRight = new ParticleEmitter(ParticleTypes.SMOKE);
+        jetSmokeRight.setInterval(20);
+        jetSmokeRight.setVelocity(new Vector3d(0, 0f, 0f));
+        jetSmokeRight.setPos(0.5f, 2, 1);
+
+        ParticleEmitter jetFlame = new ParticleEmitter(ParticleTypes.FLAME);
+        jetFlame.setInterval(1);
+        jetFlame.setPos(0.5f, 2, 1);
+        jetFlame.setVelocity(new Vector3d(0, 0, -0.4f));
+        jetFlame.visible = false;
+
+        ParticleEmitter jetFlameRight = new ParticleEmitter(ParticleTypes.FLAME);
+        jetFlameRight.setInterval(1);
+        jetFlameRight.setVelocity(new Vector3d(0, 0f, -0.4f));
+        jetFlameRight.setPos(0.5f, 2, 1);
+        jetFlameRight.visible = false;
+
+        JetModel.addChild(jetSmoke);
+        JetRight.addChild(jetSmokeRight);
+        JetModel.addChild(jetFlame);
+        JetRight.addChild(jetFlameRight);
+
+        addModel(BodyPartModelNames.jetLeft, JetModel);
+        addModel(BodyPartModelNames.jetRight, JetRight);
+        addReference(BodyPartModelNames.jetLeft, BodyPartModelNames.jetLeftSmoke, jetSmoke);
+        addReference(BodyPartModelNames.jetRight, BodyPartModelNames.jetRightSmoke, jetSmokeRight);
+        addReference(BodyPartModelNames.jetLeft, BodyPartModelNames.jetLeftFlame, jetFlame);
+        addReference(BodyPartModelNames.jetRight, BodyPartModelNames.jetRightFlame, jetFlameRight);
     }
 
     private void setupWingModels()

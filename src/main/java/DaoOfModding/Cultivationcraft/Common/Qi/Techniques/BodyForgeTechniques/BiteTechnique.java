@@ -97,8 +97,6 @@ public class BiteTechnique extends AttackOverrideTechnique
             // Otherwise destroy the block
             else
             {
-                //player.level.levelEvent(2001, pos, Block.getId(Blocks.GRASS_BLOCK.defaultBlockState()));
-                //player.level.setBlock(pos, Blocks.AIR.defaultBlockState(), 2);
                 player.level.destroyBlock(pos, false);
             }
 

@@ -5,6 +5,7 @@ import DaoOfModding.mlmanimator.Client.Poses.GenericPoses;
 import DaoOfModding.mlmanimator.Client.Poses.PlayerPose;
 import DaoOfModding.mlmanimator.Client.Poses.PoseHandler;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.vector.Vector3d;
 
@@ -21,7 +22,7 @@ public class SingleLegPart extends MovementOverridePart
     }
 
     @Override
-    public void onClientTick(PlayerEntity player)
+    public void onClientTick(ClientPlayerEntity player)
     {
         // "Retract" leg whilst falling
         if (!player.isOnGround() && !Minecraft.getInstance().player.isInWater() && player.getDeltaMovement().y < 0)

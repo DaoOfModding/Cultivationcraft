@@ -60,6 +60,13 @@ public class ClientPacketHandler
         PacketHandler.channel.sendToServer(packet);
     }
 
+    public static void sendPartInfoToServer(UUID playerID, int info, String partID, String limbID)
+    {
+        PartInfoPacket packet = new PartInfoPacket(partID, limbID, info, playerID);
+
+        PacketHandler.channel.sendToServer(packet);
+    }
+
     public static void sendCultivatorTechniquesToServer()
     {
         ICultivatorTechniques techs = CultivatorTechniques.getCultivatorTechniques(Minecraft.getInstance().player);

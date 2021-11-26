@@ -62,4 +62,11 @@ public class BodyPartModelNames
 
 
     public static final String armglidequad = "ARM_GLIDING_QUADS";
+
+    public static final String jetLeft = "JET_LEFT";
+    public static final String jetRight = "JET_RIGHT";
+    public static final String jetLeftSmoke = "JET_LEFT_SMOKE";
+    public static final String jetRightSmoke = "JET_RIGHT_SMOKE";
+    public static final String jetLeftFlame = "JET_LEFT_FLAME";
+    public static final String jetRightFlame = "JET_RIGHT_FLAME";
 }

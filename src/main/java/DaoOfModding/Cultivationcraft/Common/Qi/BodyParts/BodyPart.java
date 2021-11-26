@@ -8,7 +8,10 @@ import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.Cultiva
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.ICultivatorStats;
 import DaoOfModding.Cultivationcraft.Common.Qi.CultivationTypes;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.PlayerStatModifications;
+import DaoOfModding.Cultivationcraft.Network.ClientPacketHandler;
 import javafx.util.Pair;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -200,7 +203,7 @@ public class BodyPart
             TextureManager.addTexture(playerID, entry.getKey(), entry.getValue());
     }
 
-    public void onClientTick(PlayerEntity player)
+    public void onClientTick(ClientPlayerEntity player)
     {
 
     }
@@ -357,5 +360,18 @@ public class BodyPart
         }
 
         return false;
+    }
+
+    // Send an int info packet to other clients
+    // Client only, only if owner of bodyPart
+    public void sendInfo(int info, String partID, String limbID)
+    {
+        ClientPacketHandler.sendPartInfoToServer(Minecraft.getInstance().player.getUUID(), info, partID, limbID);
+    }
+
+    // Process a received int info packet
+    public void processInfo(PlayerEntity player, int info)
+    {
+
     }
 }

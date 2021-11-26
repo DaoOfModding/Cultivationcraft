@@ -8,6 +8,7 @@ import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.Cu
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.ICultivatorTechniques;
 import DaoOfModding.Cultivationcraft.Common.Misc;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyForgeParts.MovementOverridePart;
+import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyForgeParts.MovementOverridePartOption;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPart;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartOption;
 import DaoOfModding.Cultivationcraft.Common.Qi.CultivatorControl;
@@ -207,6 +208,8 @@ public class KeybindingControl
         for (BodyPart part : modifications.getModifications().values())
             if (part instanceof MovementOverridePart)
                 handlePartMovementOverride((MovementOverridePart) part);
+            else if (part instanceof MovementOverridePartOption)
+                handlePartMovementOverride((MovementOverridePartOption) part);
     }
 
     private static void handleMovementTechOverrides()
@@ -224,46 +227,69 @@ public class KeybindingControl
 
     private static void handleTechMovementOverride(MovementOverrideTechnique movementTech)
     {
-        if (Minecraft.getInstance().options.keyUp.isDown())
+        if (isDown(Minecraft.getInstance().options.keyUp))
             if (movementTech.overwriteForward())
                 overwriteUp = true;
 
-        if (Minecraft.getInstance().options.keyDown.isDown())
+        if (isDown(Minecraft.getInstance().options.keyDown))
             if (movementTech.overwriteBackward())
                 overwriteDown = true;
 
-        if (Minecraft.getInstance().options.keyLeft.isDown())
+        if (isDown(Minecraft.getInstance().options.keyLeft))
             if (movementTech.overwriteLeft())
                 overwriteLeft = true;
 
-        if (Minecraft.getInstance().options.keyRight.isDown())
+        if (isDown(Minecraft.getInstance().options.keyRight))
             if (movementTech.overwriteRight())
                 overwriteRight = true;
 
-        if (Minecraft.getInstance().options.keyJump.isDown())
+        if (isDown(Minecraft.getInstance().options.keyJump))
             if (movementTech.overwriteJump())
                 overwriteJump = true;
     }
 
     private static void handlePartMovementOverride(MovementOverridePart movementPart)
     {
-        if (Minecraft.getInstance().options.keyUp.isDown())
+        if (isDown(Minecraft.getInstance().options.keyUp))
             if (movementPart.overwriteForward())
                 overwriteUp = true;
 
-        if (Minecraft.getInstance().options.keyDown.isDown())
+        if (isDown(Minecraft.getInstance().options.keyDown))
             if (movementPart.overwriteBackward())
                 overwriteDown = true;
 
-        if (Minecraft.getInstance().options.keyLeft.isDown())
+        if (isDown(Minecraft.getInstance().options.keyLeft))
             if (movementPart.overwriteLeft())
                 overwriteLeft = true;
 
-        if (Minecraft.getInstance().options.keyRight.isDown())
+        if (isDown(Minecraft.getInstance().options.keyRight))
             if (movementPart.overwriteRight())
                 overwriteRight = true;
 
-        if (Minecraft.getInstance().options.keyJump.isDown())
+        if (isDown(Minecraft.getInstance().options.keyJump))
+            if (movementPart.overwriteJump())
+                overwriteJump = true;
+    }
+
+    private static void handlePartMovementOverride(MovementOverridePartOption movementPart)
+    {
+        if (isDown(Minecraft.getInstance().options.keyUp))
+            if (movementPart.overwriteForward())
+                overwriteUp = true;
+
+        if (isDown(Minecraft.getInstance().options.keyDown))
+            if (movementPart.overwriteBackward())
+                overwriteDown = true;
+
+        if (isDown(Minecraft.getInstance().options.keyLeft))
+            if (movementPart.overwriteLeft())
+                overwriteLeft = true;
+
+        if (isDown(Minecraft.getInstance().options.keyRight))
+            if (movementPart.overwriteRight())
+                overwriteRight = true;
+
+        if (isDown(Minecraft.getInstance().options.keyJump))
             if (movementPart.overwriteJump())
                 overwriteJump = true;
     }

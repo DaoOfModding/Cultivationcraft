@@ -82,7 +82,7 @@ public class PlayerStatControl
                 BodyPartStatControl.addStats(player.getUUID(), tech.getStats());
         }
 
-        // Only apply player attribute modifiers on the server
+        // Only apply player attribute modifiers on the client
         if (!(player instanceof ClientPlayerEntity))
             applyStats(player);
 
