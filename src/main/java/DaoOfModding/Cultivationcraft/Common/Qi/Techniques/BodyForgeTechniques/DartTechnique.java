@@ -6,6 +6,7 @@ import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.Cultiva
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartNames;
 import DaoOfModding.Cultivationcraft.Common.Qi.CultivationTypes;
 import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
+import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.Technique;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import DaoOfModding.mlmanimator.Client.Models.GenericLimbNames;
@@ -92,8 +93,16 @@ public class DartTechnique extends Technique
             return;
         }
 
+        float weightModifier = BodyPartStatControl.getPlayerStatControl(event.player.getUUID()).getFlightWeightModifier();
+        float slowAmount = ((doubledCooldown * weightModifier) / (cooldown * 2));
+
+        if (slowAmount > 1)
+            slowAmount = 1;
+        else if (slowAmount < 0)
+            slowAmount = 0;
+
         // Slow the player speed based on the amount of cooldown remaining
-        Vector3d slowedSpeed = event.player.getDeltaMovement().scale(1 - (doubledCooldown / (cooldown * 2)));
+        Vector3d slowedSpeed = event.player.getDeltaMovement().scale(1 - slowAmount);
         event.player.setDeltaMovement(slowedSpeed.x, slowedSpeed.y, slowedSpeed.z);
     }
 
@@ -133,8 +142,11 @@ public class DartTechnique extends Technique
 
     public void dart(PlayerEntity player)
     {
-        // TODO: Calculate this
-        int speed = 20;
+        float weightModifier = BodyPartStatControl.getPlayerStatControl(player.getUUID()).getFlightWeightModifier();
+
+        float speed = 20 * weightModifier;
+
+        System.out.println(speed);
 
         Vector3d dash = player.getLookAngle().normalize().scale(speed);
         player.setDeltaMovement(dash.x, dash.y, dash.z);

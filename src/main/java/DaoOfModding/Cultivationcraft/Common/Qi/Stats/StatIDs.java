@@ -17,6 +17,7 @@ public class StatIDs
     public static final String healthStaminaConversion = "healthStaminaConversion";
 
     public static final String legSupport = "legWeight";
+    public static final String wingSupport = "wingWeight";
 
     public static final String boneAttackModifier = "boneAttackModifier";
     public static final String biteAttackModifier = "biteAttackModifier";

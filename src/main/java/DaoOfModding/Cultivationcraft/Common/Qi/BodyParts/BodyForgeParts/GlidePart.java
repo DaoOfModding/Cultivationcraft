@@ -1,11 +1,14 @@
 package DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyForgeParts;
 
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPart;
+import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
+import DaoOfModding.Cultivationcraft.Common.Qi.Stats.PlayerStatControl;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import DaoOfModding.mlmanimator.Client.Models.GenericLimbNames;
 import DaoOfModding.mlmanimator.Client.Poses.GenericPoses;
 import DaoOfModding.mlmanimator.Client.Poses.PlayerPose;
 import DaoOfModding.mlmanimator.Client.Poses.PoseHandler;
+import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.vector.Vector3d;
 
@@ -23,8 +26,8 @@ public class GlidePart extends BodyPart
         jump.addAngle(GenericLimbNames.rightArm, new Vector3d(Math.toRadians(0), 0, Math.toRadians(90)), GenericPoses.jumpArmPriority + 5);
     }
 
-
-    public void onClientTick(PlayerEntity player)
+    @Override
+    public void onClientTick(ClientPlayerEntity player)
     {
         // Do nothing if the player is not in the air
         if (player.isOnGround() || player.isInWater())
@@ -32,10 +35,11 @@ public class GlidePart extends BodyPart
 
         player.fallDistance = 0;
 
-        // TODO: Calculate this based on weight
+        float weightModifier = BodyPartStatControl.getPlayerStatControl(player.getUUID()).getFlightWeightModifier();
+
         float maxHorizontalSpeed = 0.75f;
-        float horizontalSpeedIncrease = 0.025f;
-        float minFallSpeed = 0.005f;
+        float horizontalSpeedIncrease = 0.025f * weightModifier;
+        float minFallSpeed = -0.005f * (float)Math.pow((1.0f / weightModifier), 2);
 
         // Get direction of player movement
         Vector3d currentMotion = player.getDeltaMovement();
@@ -59,7 +63,7 @@ public class GlidePart extends BodyPart
         // Only reduce fall speed if falling
         // Adjust fall speed based on horizontal movement
         if (yMotion < 0)
-            yMotion = minFallSpeed + (currentMotion.y - minFallSpeed) * horizontalSpeedPercentage;
+            yMotion = minFallSpeed + ((currentMotion.y - minFallSpeed) * horizontalSpeedPercentage);
 
         player.setDeltaMovement(xMotion, yMotion, zMotion);
 

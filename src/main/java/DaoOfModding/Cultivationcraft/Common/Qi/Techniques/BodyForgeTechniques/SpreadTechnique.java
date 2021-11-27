@@ -6,6 +6,7 @@ import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.Cultiva
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartNames;
 import DaoOfModding.Cultivationcraft.Common.Qi.CultivationTypes;
 import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
+import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.Technique;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import DaoOfModding.mlmanimator.Client.Models.GenericLimbNames;
@@ -187,9 +188,10 @@ public class SpreadTechnique extends Technique
 
         Vector3d motion = player.getDeltaMovement();
 
-        // TODO: Calculate this based on weight
-        float maxFallSpeed = -0.4f;
-        float FlapSpeed = 0.4f;
+        float weightModifier = BodyPartStatControl.getPlayerStatControl(player.getUUID()).getFlightWeightModifier();
+
+        float maxFallSpeed = -0.4f * (1 / weightModifier);
+        float FlapSpeed = 0.4f * weightModifier;
 
         // Ensure the player doesn't fall faster than set speed when gliding
         if (motion.y < maxFallSpeed)

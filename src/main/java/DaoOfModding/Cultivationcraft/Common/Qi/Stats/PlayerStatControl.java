@@ -105,6 +105,20 @@ public class PlayerStatControl
     }
 
     // Returns a modifier based on how overweight the player is
+    public float getFlightWeightModifier()
+    {
+        float support = stats.getStat(StatIDs.wingSupport);
+        float weight = stats.getStat(StatIDs.weight);
+
+        // No modifier if the players legSupport is not less than the players weight
+        if (support >= weight)
+            return 1;
+
+        // Return 0.1 if weight is (just under) double or more than the leg support
+        return Math.max(0.1f, 2 - weight / support);
+    }
+
+    // Returns a modifier based on how overweight the player is
     public float getLegWeightModifier()
     {
         float support = stats.getStat(StatIDs.legSupport);

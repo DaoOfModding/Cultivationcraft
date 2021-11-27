@@ -43,6 +43,7 @@ public class BodyPartControl
                 PacketHandler.sendBodyModificationsToClient(player);
 
                 BodyPartStatControl.addStats(player.getUUID(), toComplete.getStatChanges());
+                BodyPartStatControl.updateStats(player);
             }
         }
     }
