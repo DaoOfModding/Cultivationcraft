@@ -30,6 +30,7 @@ public class BodyPartNames
     public static final String glideArmPart = "glidearm";
 
     // LEGS
+    public static final String feetPart = "feet";
     public static final String reverseJointLegPart = "rjleg";
     public static final String hexaLegPart = "hexaleg";
     public static final String singleLegPart = "oneleg";
@@ -291,6 +292,16 @@ public class BodyPartNames
 
     private static void setupLegParts()
     {
+        BodyPart feetpart = new BodyPart(feetPart, legPosition, "cultivationcraft.gui.legpart.feet", 1000);
+        feetpart.addModel(BodyPartModelNames.footLeftModel);
+        feetpart.addModel(BodyPartModelNames.footRightModel);
+        feetpart.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.skinSubPosition);
+        feetpart.getStatChanges().setStat(StatIDs.movementSpeed, StatIDs.defaultMovementSpeed * -0.25f);
+        feetpart.getStatChanges().setStat(StatIDs.weight, DefaultPlayerBodyPartWeights.legWeight * -1.6f);
+        feetpart.getStatChanges().setStat(StatIDs.legSupport, StatIDs.defaultLegSupport * 3f);
+
+        addPart(feetpart);
+
         BodyPart rjLegPart = new BodyPart(reverseJointLegPart, legPosition, "cultivationcraft.gui.legpart.reversejoint", 1000);
         rjLegPart.addModel(BodyPartModelNames.reverseJointRightLegModel);
         rjLegPart.addModel(BodyPartModelNames.reverseJointLeftLegModel);

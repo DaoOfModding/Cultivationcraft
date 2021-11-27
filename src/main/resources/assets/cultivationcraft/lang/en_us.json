@@ -80,6 +80,9 @@
   "cultivationcraft.gui.armpart.glide": "Gliding Arms",
   "cultivationcraft.gui.armpart.glide.description": "Grow a thin membrane connecting your arms to your body, providing you with the ability to glide through the air that cannot be disabled",
 
+  "cultivationcraft.gui.legpart.feet": "Feet",
+  "cultivationcraft.gui.legpart.feet.description": "Remove the useless space between your feet and your body. Vastly increases the amount of weight your legs can support, but decreases movement speed",
+
   "cultivationcraft.gui.legpart.reversejoint": "Reverse-Jointed",
   "cultivationcraft.gui.legpart.reversejoint.description": "Reverse the joints in your knees allowing you to jump significantly higher",
 

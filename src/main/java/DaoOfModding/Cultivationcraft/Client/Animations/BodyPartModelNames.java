@@ -14,6 +14,9 @@ public class BodyPartModelNames
     public static final String sharpToothModel = "SHARP_TOOTH_MODEL";
     public static final String sharpToothLowerModel = "SHARP_TOOTH_LOWER_MODEL";
 
+    public static final String footLeftModel = "FOOT_LEFT_MODEL";
+    public static final String footRightModel = "FOOT_RIGHT_MODEL";
+
     public static final String reverseJointLeftLegModel = "RJL_LEFT_MODEL";
     public static final String reverseJointLeftLegLowerModel = "RJL_LEFT_LOWER_MODEL";
     public static final String reverseJointLeftFootModel = "RJL_LEFT_FOOT_MODEL";

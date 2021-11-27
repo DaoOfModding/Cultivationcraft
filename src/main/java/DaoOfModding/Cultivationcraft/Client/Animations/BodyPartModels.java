@@ -720,6 +720,24 @@ public class BodyPartModels
         addReference(BodyPartModelNames.reverseJointRightLegModel, BodyPartModelNames.reverseJointRightFootModel, rightFoot);
 
 
+        footResizer = new defaultResizeModule(new Vector3d(4, 2, 4));
+        ExtendableModelRenderer leftFootModel = new ExtendableModelRenderer(0, 26);
+        leftFootModel.setPos(0.75F, 1F, 0.5F);
+        leftFootModel.setRotationPoint(new Vector3d(0.5D, 1D, 0.5D));
+        leftFootModel.extend(footResizer);
+        leftFootModel.mirror = true;
+
+        footResizer = new defaultResizeModule(new Vector3d(4, 2, 4));
+        ExtendableModelRenderer rightFootModel = new ExtendableModelRenderer(0, 26);
+        rightFootModel.setPos(0.25F, 1F, 0.5F);
+        rightFootModel.setRotationPoint(new Vector3d(0.5D, 1D, 0.5D));
+        rightFootModel.extend(footResizer);
+        rightFootModel.mirror = true;
+
+        addModel(BodyPartModelNames.footLeftModel, leftFootModel);
+        addModel(BodyPartModelNames.footRightModel, rightFootModel);
+
+
         ExtendableModelRenderer singleLeg = new ExtendableModelRenderer(0, 16);
         singleLeg.setPos(0.5F, 1.0F, 0.5F);
         singleLeg.setRotationPoint(new Vector3d(0.5, 0.66, 0.5));
