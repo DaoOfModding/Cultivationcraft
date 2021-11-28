@@ -23,6 +23,7 @@ public class TechniqueControl
         TechniqueControl.addTechnique(FloatTechnique.class);
         TechniqueControl.addTechnique(DartTechnique.class);
         TechniqueControl.addTechnique(BounceTechnique.class);
+        TechniqueControl.addTechnique(JetLegTechnique.class);
     }
 
     // List of all techniques available in the game

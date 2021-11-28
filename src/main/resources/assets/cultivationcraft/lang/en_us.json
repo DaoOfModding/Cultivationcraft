@@ -117,6 +117,9 @@
   "cultivationcraft.technique.float": "Float",
   "cultivationcraft.technique.float.description": "Toggle on to replace your jump with the ability to blow yourself up into a balloon and slowly float upwards",
 
+  "cultivationcraft.technique.jetlegs": "Leg Jets",
+  "cultivationcraft.technique.jetlegs.description": "Toggle on activate your leg jets allowing you to propell yourself into the air by holding jump",
+
   "cultivationcraft.technique.spread": "Spread Wings",
   "cultivationcraft.technique.spread.description": "Toggle on to spread your wings. Hold jump whilst in the air to raise your wings and release jump to flap them downwards, raising your higher into the air",
 

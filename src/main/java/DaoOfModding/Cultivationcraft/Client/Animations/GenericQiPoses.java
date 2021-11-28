@@ -129,6 +129,26 @@ public class GenericQiPoses
         Walk.addAngle(BodyPartModelNames.hexaRightLegModelThree, new Vector3d(Math.toRadians(-160), Math.toRadians(0), 0), GenericPoses.walkLegPriority, 5f, 1);
         Walk.addAngle(BodyPartModelNames.hexaRightLegModelThree, new Vector3d(Math.toRadians(-120), Math.toRadians(0), 0), GenericPoses.walkLegPriority, 5f, 1);
 
+
+        walkAngle = new Vector3d[5];
+
+        walkAngle[0] = new Vector3d(Math.toRadians(-45), Math.toRadians(0), Math.toRadians(0));
+        walkAngle[1] = new Vector3d(Math.toRadians(-45), Math.toRadians(0), Math.toRadians(0));
+        walkAngle[2] = new Vector3d(Math.toRadians(0), Math.toRadians(0), Math.toRadians(0));
+        walkAngle[3] = new Vector3d(Math.toRadians(30), Math.toRadians(0), Math.toRadians(0));
+        walkAngle[4] = new Vector3d(Math.toRadians(30), Math.toRadians(0), Math.toRadians(0));
+
+        Walk = Walk.combine(AnimationBuilder.generateRepeatingMirroredLimbs(BodyPartModelNames.jetLegLeftModel, BodyPartModelNames.jetLegRightModel, walkAngle, GenericPoses.walkLegPriority, AnimationSpeedCalculator.defaultSpeedInTicks / 2, 1));
+
+        lowerWalkAngle = new Vector3d[5];
+        lowerWalkAngle[0] = new Vector3d(Math.toRadians(45), Math.toRadians(0), Math.toRadians(0));
+        lowerWalkAngle[1] = new Vector3d(Math.toRadians(0), Math.toRadians(0), Math.toRadians(0));
+        lowerWalkAngle[2] = new Vector3d(Math.toRadians(0), Math.toRadians(0), Math.toRadians(0));
+        lowerWalkAngle[3] = new Vector3d(Math.toRadians(0), Math.toRadians(0), Math.toRadians(0));
+        lowerWalkAngle[4] = new Vector3d(Math.toRadians(15), Math.toRadians(0), Math.toRadians(0));
+
+        Walk = Walk.combine(AnimationBuilder.generateRepeatingMirroredLimbs(BodyPartModelNames.jetLegLeftLowerModel, BodyPartModelNames.jetLegRightLowerModel, lowerWalkAngle, GenericPoses.walkLegPriority, AnimationSpeedCalculator.defaultSpeedInTicks / 2, 1));
+
         // Add the new walking poses to the generic walk pose*/
         GenericPoses.addToWalking(Walk);
     }
@@ -163,6 +183,12 @@ public class GenericQiPoses
 
     private static void setupSwimming()
     {
+        GenericPoses.SwimmingMoving.addAngle(BodyPartModelNames.jetLegLeftModel, new Vector3d(Math.toRadians(-30), 0, 0), GenericPoses.swimLegPriority, 15f, 1);
+        GenericPoses.SwimmingMoving.addAngle(BodyPartModelNames.jetLegRightModel, new Vector3d(Math.toRadians(30), 0, 0), GenericPoses.swimLegPriority, 15f, 1);
+        GenericPoses.SwimmingMoving.addAngle(BodyPartModelNames.jetLegLeftLowerModel, new Vector3d(Math.toRadians(30), 0, 0), GenericPoses.swimLegPriority, 15f, 1);
+        GenericPoses.SwimmingMoving.addAngle(BodyPartModelNames.jetLegRightLowerModel, new Vector3d(Math.toRadians(-30), 0, 0), GenericPoses.swimLegPriority, 15f, 1);
+
+
         GenericPoses.SwimmingMoving.addAngle(BodyPartModelNames.footLeftModel, new Vector3d(Math.toRadians(-60), 0, 0), GenericPoses.walkLegPriority, 10f, 1);
         GenericPoses.SwimmingMoving.addAngle(BodyPartModelNames.footLeftModel, new Vector3d(Math.toRadians(60), 0, 0), GenericPoses.walkLegPriority, 10f, 1);
 
@@ -228,6 +254,12 @@ public class GenericQiPoses
 
         CrossLegs.addAngle(GenericLimbNames.lowerLeftLeg, new Vector3d(Math.toRadians(90), 0, 0), GenericPoses.walkLegPriority + 4);
         CrossLegs.addAngle(GenericLimbNames.lowerRightLeg, new Vector3d(Math.toRadians(90), 0, 0), GenericPoses.walkLegPriority + 4);
+
+        CrossLegs.addAngle(BodyPartModelNames.jetLegLeftModel, new Vector3d(Math.toRadians(45), Math.toRadians(-180), Math.toRadians(-90)), GenericPoses.walkLegPriority + 4);
+        CrossLegs.addAngle(BodyPartModelNames.jetLegRightModel, new Vector3d(Math.toRadians(45), Math.toRadians(180), Math.toRadians(90)), GenericPoses.walkLegPriority + 4);
+
+        CrossLegs.addAngle(BodyPartModelNames.jetLegLeftLowerModel, new Vector3d(Math.toRadians(90), 0, 0), GenericPoses.walkLegPriority + 4);
+        CrossLegs.addAngle(BodyPartModelNames.jetLegRightLowerModel, new Vector3d(Math.toRadians(90), 0, 0), GenericPoses.walkLegPriority + 4);
 
 
         CrossLegs.addAngle(BodyPartModelNames.footLeftModel, new Vector3d(Math.toRadians(-90), 0, 0), GenericPoses.walkLegPriority + 4, 20f, -1);

@@ -787,6 +787,39 @@ public class BodyPartModels
         addReference(BodyPartModelNames.hexaRightLegModelTwo, BodyPartModelNames.hexaLowerRightLegModelTwo, hexaRightTwo.getChildren().get(0));
         addModel(BodyPartModelNames.hexaRightLegModelThree, hexaRightThree);
         addReference(BodyPartModelNames.hexaRightLegModelThree, BodyPartModelNames.hexaLowerRightLegModelThree, hexaRightThree.getChildren().get(0));
+
+
+        ExtendableModelRenderer rightLeg = new ExtendableModelRenderer(0, 16);
+        rightLeg.setPos(0.25F, 1.0F, 0.5F);
+        rightLeg.setRotationPoint(new Vector3d(0.5, 0.66, 0.5));
+        rightLeg.setFixedPosAdjustment(0F, 2F, 0.0F);
+        rightLeg.extend(GenericResizers.getLegResizer());
+
+        ExtendableModelRenderer leftLeg = new ExtendableModelRenderer(0, 16);
+        leftLeg.setPos(0.75F, 1.0F, 0.5F);
+        leftLeg.setRotationPoint(new Vector3d(0.5, 0.66, 0.5));
+        leftLeg.setFixedPosAdjustment(0F, 2F, 0.0F);
+        leftLeg.extend(GenericResizers.getLegResizer());
+        leftLeg.mirror = true;
+
+        ParticleEmitter leftLegEmitter = new ParticleEmitter(ParticleTypes.FLAME);
+        leftLegEmitter.setPos(0.5f, 1, 0.5f);
+        leftLegEmitter.setVelocity(new Vector3d(0, -0.5f, 0));
+        leftLegEmitter.setInterval(1);
+        leftLegEmitter.visible = false;
+
+        ParticleEmitter rightLegEmitter = (ParticleEmitter)leftLegEmitter.clone();
+        rightLegEmitter.visible = false;
+
+        leftLeg.getChildren().get(0).addChild(leftLegEmitter);
+        rightLeg.getChildren().get(0).addChild(rightLegEmitter);
+
+        addModel(BodyPartModelNames.jetLegLeftModel, leftLeg);
+        addModel(BodyPartModelNames.jetLegRightModel, rightLeg);
+        addReference(BodyPartModelNames.jetLegLeftModel, BodyPartModelNames.jetLegLeftLowerModel, leftLeg.getChildren().get(0));
+        addReference(BodyPartModelNames.jetLegRightModel, BodyPartModelNames.jetLegRightLowerModel, rightLeg.getChildren().get(0));
+        addReference(BodyPartModelNames.jetLegLeftModel, BodyPartModelNames.jetLegLeftEmitter, leftLegEmitter);
+        addReference(BodyPartModelNames.jetLegRightModel, BodyPartModelNames.jetLegRightEmitter, rightLegEmitter);
     }
 
     public void addQuadCollection(String ID, QuadCollection quad)

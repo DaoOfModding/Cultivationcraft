@@ -34,6 +34,7 @@ public class BodyPartNames
     public static final String reverseJointLegPart = "rjleg";
     public static final String hexaLegPart = "hexaleg";
     public static final String singleLegPart = "oneleg";
+    public static final String jetLegPart = "jetleg";
 
     // OPTIONS
     public static final String reinforceSkinPart = "reinforceSkin";
@@ -301,7 +302,7 @@ public class BodyPartNames
         feetpart.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.skinSubPosition);
         feetpart.getStatChanges().setStat(StatIDs.movementSpeed, StatIDs.defaultMovementSpeed * -0.25f);
         feetpart.getStatChanges().setStat(StatIDs.weight, DefaultPlayerBodyPartWeights.legWeight * -1.6f);
-        feetpart.getStatChanges().setStat(StatIDs.legSupport, StatIDs.defaultLegSupport * 3f);
+        feetpart.getStatChanges().setStat(StatIDs.legSupport, 2.5f);
 
         addPart(feetpart);
 
@@ -339,6 +340,19 @@ public class BodyPartNames
         sixLegPart.getStatChanges().setStat(StatIDs.legSupport, StatIDs.defaultLegSupport * -0.5f);
 
         addPart(sixLegPart);
+
+        BodyPart jetLeg = new BodyPart(jetLegPart, legPosition, "cultivationcraft.gui.legpart.jet", 1000);
+        jetLeg.addModel(BodyPartModelNames.jetLegLeftModel);
+        jetLeg.addModel(BodyPartModelNames.jetLegRightModel);
+        jetLeg.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.skinSubPosition);
+        jetLeg.getStatChanges().setStat(StatIDs.wingSupport, 10);
+        jetLeg.getStatChanges().setStat(StatIDs.flightSpeed, 0.4f);
+        jetLeg.getStatChanges().setStat(StatIDs.fallHeight, 4f);
+
+        // TODO: Add flame generating body part
+        //jetLeg.addNeededTags(BodyPartTags.flame);
+
+        addPart(jetLeg);
     }
 
     public static String getDisplayName(String position)
