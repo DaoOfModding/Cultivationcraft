@@ -802,8 +802,75 @@ public class BodyPartModels
         leftLeg.extend(GenericResizers.getLegResizer());
         leftLeg.mirror = true;
 
+        defaultResizeModule rightLegJetResizer = new defaultResizeModule(new Vector3d(2, 0.5, -0.1));
+        ExtendableModelRenderer rightLegJet = new ExtendableModelRenderer(1, 22);
+        rightLegJet.setPos(0.75F, 0F, 1F);
+        rightLegJet.setRotationPoint(new Vector3d(0, 0, 0));
+        rightLegJet.setDefaultResize(new Vector3d(1, 1, 20));
+        rightLegJet.extend(rightLegJetResizer);
+
+        rightLegJetResizer = new defaultResizeModule(new Vector3d(0.5, -4, -0.1));
+        ExtendableModelRenderer rightLegJetLeft = new ExtendableModelRenderer(1, 26);
+        rightLegJetLeft.setPos(1F, 0F, 1F);
+        rightLegJetLeft.setRotationPoint(new Vector3d(0, 0, 0));
+        rightLegJetLeft.setDefaultResize(new Vector3d(1, 1, 20));
+        rightLegJetLeft.extend(rightLegJetResizer);
+
+        rightLegJetResizer = new defaultResizeModule(new Vector3d(0.5, -4, -0.1));
+        ExtendableModelRenderer rightLegJetRight = new ExtendableModelRenderer(3, 26);
+        rightLegJetRight.setPos(0F, 0F, 1F);
+        rightLegJetRight.setRotationPoint(new Vector3d(1, 0, 0));
+        rightLegJetRight.setDefaultResize(new Vector3d(1, 1, 20));
+        rightLegJetRight.extend(rightLegJetResizer);
+
+        rightLegJetResizer = new defaultResizeModule(new Vector3d(2, -4, -0.1));
+        ExtendableModelRenderer rightLegJetFront = new ExtendableModelRenderer(1, 26);
+        rightLegJetFront.setPos(1F, 0F, 0F);
+        rightLegJetFront.setRotationPoint(new Vector3d(0, 0, 1));
+        rightLegJetFront.setDefaultResize(new Vector3d(1, 1, 5));
+        rightLegJetFront.extend(rightLegJetResizer);
+
+        rightLegJet.addChild(rightLegJetLeft);
+        rightLegJet.addChild(rightLegJetRight);
+        rightLegJet.addChild(rightLegJetFront);
+        rightLeg.getChildren().get(0).addChild(rightLegJet);
+
+
+        defaultResizeModule leftLegJetResizer = new defaultResizeModule(new Vector3d(2, 0.5, -0.1));
+        ExtendableModelRenderer leftLegJet = new ExtendableModelRenderer(1, 22);
+        leftLegJet.setPos(0.75F, 0F, 1F);
+        leftLegJet.setRotationPoint(new Vector3d(0, 0, 0));
+        leftLegJet.setDefaultResize(new Vector3d(1, 1, 20));
+        leftLegJet.extend(leftLegJetResizer);
+
+        leftLegJetResizer = new defaultResizeModule(new Vector3d(0.5, -4, -0.1));
+        ExtendableModelRenderer leftLegJetLeft = new ExtendableModelRenderer(1, 26);
+        leftLegJetLeft.setPos(1F, 0F, 1F);
+        leftLegJetLeft.setRotationPoint(new Vector3d(0, 0, 0));
+        leftLegJetLeft.setDefaultResize(new Vector3d(1, 1, 20));
+        leftLegJetLeft.extend(leftLegJetResizer);
+
+        leftLegJetResizer = new defaultResizeModule(new Vector3d(0.5, -4, -0.1));
+        ExtendableModelRenderer leftLegJetRight = new ExtendableModelRenderer(3, 26);
+        leftLegJetRight.setPos(0F, 0F, 1F);
+        leftLegJetRight.setRotationPoint(new Vector3d(1, 0, 0));
+        leftLegJetRight.setDefaultResize(new Vector3d(1, 1, 20));
+        leftLegJetRight.extend(leftLegJetResizer);
+
+        leftLegJetResizer = new defaultResizeModule(new Vector3d(2, -4, -0.1));
+        ExtendableModelRenderer leftLegJetFront = new ExtendableModelRenderer(1, 26);
+        leftLegJetFront.setPos(1F, 0F, 0F);
+        leftLegJetFront.setRotationPoint(new Vector3d(0, 0, 1));
+        leftLegJetFront.setDefaultResize(new Vector3d(1, 1, 5));
+        leftLegJetFront.extend(leftLegJetResizer);
+
+        leftLegJet.addChild(leftLegJetLeft);
+        leftLegJet.addChild(leftLegJetRight);
+        leftLegJet.addChild(leftLegJetFront);
+        leftLeg.getChildren().get(0).addChild(leftLegJet);
+
         ParticleEmitter leftLegEmitter = new ParticleEmitter(ParticleTypes.FLAME);
-        leftLegEmitter.setPos(0.5f, 1, 0.5f);
+        leftLegEmitter.setPos(0.5f, 8, 0.5f);
         leftLegEmitter.setVelocity(new Vector3d(0, -0.5f, 0));
         leftLegEmitter.setInterval(1);
         leftLegEmitter.visible = false;
@@ -811,8 +878,8 @@ public class BodyPartModels
         ParticleEmitter rightLegEmitter = (ParticleEmitter)leftLegEmitter.clone();
         rightLegEmitter.visible = false;
 
-        leftLeg.getChildren().get(0).addChild(leftLegEmitter);
-        rightLeg.getChildren().get(0).addChild(rightLegEmitter);
+        leftLegJet.addChild(leftLegEmitter);
+        rightLegJet.addChild(rightLegEmitter);
 
         addModel(BodyPartModelNames.jetLegLeftModel, leftLeg);
         addModel(BodyPartModelNames.jetLegRightModel, rightLeg);

@@ -58,6 +58,8 @@ public class JetLegTechnique extends MovementOverrideTechnique
         {
             model.getLimb(BodyPartModelNames.jetLegLeftEmitter).visible = true;
             model.getLimb(BodyPartModelNames.jetLegRightEmitter).visible = true;
+
+            PoseHandler.getPlayerPoseHandler(event.player.getUUID()).disableJumpingAnimationThisTick = true;
         }
         else
         {
