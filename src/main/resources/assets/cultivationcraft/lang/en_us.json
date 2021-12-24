@@ -32,6 +32,9 @@
   "cultivationcraft.gui.bodypart.expanding": "Expandable",
   "cultivationcraft.gui.bodypart.expanding.description": "Forge your body to enable it to increase and decrease in size",
 
+  "cultivationcraft.gui.bodypart.short": "Short",
+  "cultivationcraft.gui.bodypart.short.description": "Half the height, Half the weight, Half the health",
+
   "cultivationcraft.gui.bodypart.skin": "Skin",
   "cultivationcraft.gui.bodypart.bone": "Bones",
   "cultivationcraft.gui.bodypart.back": "Back",

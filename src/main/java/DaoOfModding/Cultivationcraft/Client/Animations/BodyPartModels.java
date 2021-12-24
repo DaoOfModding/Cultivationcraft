@@ -34,6 +34,15 @@ public class BodyPartModels
         body.extend(GenericResizers.getBodyResizer());
 
         addModel(GenericLimbNames.body, body);
+
+
+        ExtendableModelRenderer shortbody = new ExtendableModelRenderer(16, 16);
+        shortbody.setPos(0.0F, 0.0F, 0.0F);
+        shortbody.setRotationPoint(new Vector3d(0.5, 0.5, 0.5));
+        shortbody.setDefaultResize(new Vector3d(1, 0.5, 1));
+        shortbody.extend(GenericResizers.getBodyResizer());
+
+        addModel(BodyPartModelNames.shortBody, shortbody);
     }
 
     private void setupArmModels()

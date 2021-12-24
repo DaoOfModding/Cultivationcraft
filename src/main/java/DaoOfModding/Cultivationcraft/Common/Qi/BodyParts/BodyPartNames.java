@@ -1,6 +1,7 @@
 package DaoOfModding.Cultivationcraft.Common.Qi.BodyParts;
 
 import DaoOfModding.Cultivationcraft.Client.Animations.BodyPartModelNames;
+import DaoOfModding.Cultivationcraft.Client.Animations.BodyPartModels;
 import DaoOfModding.Cultivationcraft.Client.Textures.TextureList;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyForgeParts.*;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.FoodStats.CarnivoreFoodStats;
@@ -25,7 +26,8 @@ public class BodyPartNames
     public static final String reinforcedLegPart = "rleg";
     public static final String reinforcedHeadPart = "rhead";
 
-    public static final String expandingBodyPart = "expandingBody";
+    public static final String expandingBodyPart = "expandingbody";
+    public static final String shortBodyPart = "shortbody";
 
     public static final String glideArmPart = "glidearm";
 
@@ -218,14 +220,22 @@ public class BodyPartNames
         BodyPart reinforce = new BodyPart(reinforcedBodyPart, bodyPosition, "cultivationcraft.gui.generic.reinforce", 1000);
         reinforce.addModel(GenericLimbNames.body);
         reinforce.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.skinSubPosition);
+        reinforce.getStatChanges().setStat(StatIDs.maxHP, StatIDs.defaultMaxHP);
 
         BodyPart expanding = new BodyPart(expandingBodyPart, bodyPosition, "cultivationcraft.gui.bodypart.expanding", 1000);
         expanding.addModel(GenericLimbNames.body);
         expanding.addNeededTags(BodyPartTags.stretchy);
         expanding.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.skinSubPosition);
+        expanding.getStatChanges().setStat(StatIDs.maxHP, StatIDs.defaultMaxHP);
+
+        BodyPart shortBody = new BodyPart(shortBodyPart, bodyPosition, "cultivationcraft.gui.bodypart.short", 1000);
+        shortBody.addModel(BodyPartModelNames.shortBody);
+        shortBody.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.skinSubPosition);
+        shortBody.getStatChanges().setStat(StatIDs.weight, DefaultPlayerBodyPartWeights.bodyWeight / -2);
 
         addPart(reinforce);
         addPart(expanding);
+        addPart(shortBody);
     }
 
     private static void setupHeadParts()
