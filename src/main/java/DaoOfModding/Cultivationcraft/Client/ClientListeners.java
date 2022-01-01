@@ -61,11 +61,11 @@ public class ClientListeners
             IBodyModifications modifications = BodyModifications.getBodyModifications(event.player);
 
             for (BodyPart part : modifications.getModifications().values())
-                part.onClientTick((ClientPlayerEntity)event.player);
+                part.onClientTick(event.player);
 
             for (HashMap<String, BodyPartOption> parts : modifications.getModificationOptions().values())
                 for (BodyPartOption part : parts.values())
-                    part.onClientTick((ClientPlayerEntity)event.player);
+                    part.onClientTick(event.player);
         }
     }
 

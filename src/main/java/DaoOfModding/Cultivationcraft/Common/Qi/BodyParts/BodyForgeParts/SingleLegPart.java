@@ -22,7 +22,7 @@ public class SingleLegPart extends MovementOverridePart
     }
 
     @Override
-    public void onClientTick(ClientPlayerEntity player)
+    public void onClientTick(PlayerEntity player)
     {
         // "Retract" leg whilst falling
         if (!player.isOnGround() && !Minecraft.getInstance().player.isInWater() && player.getDeltaMovement().y < 0)

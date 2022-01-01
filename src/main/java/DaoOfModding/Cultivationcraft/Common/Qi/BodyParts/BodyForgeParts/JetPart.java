@@ -42,7 +42,7 @@ public class JetPart extends BodyPartOption
     }
 
     @Override
-    public void onClientTick(ClientPlayerEntity player)
+    public void onClientTick(PlayerEntity player)
     {
         // Disable jets if in water
         if (player.isInWater())

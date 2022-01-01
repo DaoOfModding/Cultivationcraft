@@ -15,6 +15,8 @@ import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -203,7 +205,7 @@ public class BodyPart
             TextureManager.addTexture(playerID, entry.getKey(), entry.getValue());
     }
 
-    public void onClientTick(ClientPlayerEntity player)
+    public void onClientTick(PlayerEntity player)
     {
 
     }

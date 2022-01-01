@@ -27,7 +27,7 @@ public class GlidePart extends BodyPart
     }
 
     @Override
-    public void onClientTick(ClientPlayerEntity player)
+    public void onClientTick(PlayerEntity player)
     {
         // Do nothing if the player is not in the air
         if (player.isOnGround() || player.isInWater())
