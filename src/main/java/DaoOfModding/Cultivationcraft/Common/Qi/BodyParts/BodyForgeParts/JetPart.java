@@ -51,7 +51,8 @@ public class JetPart extends BodyPartOption
             return;
         }
 
-        Vector3d move = new Vector3d(player.getDeltaMovement().x, 0, player.getDeltaMovement().z).normalize();
+        Vector3d delta = PoseHandler.getPlayerPoseHandler(player.getUUID()).getDeltaMovement();
+        Vector3d move = new Vector3d(delta.x, 0, delta.z).normalize();
         Vector3d direction = player.getForward().normalize();
 
         double dot = move.dot(direction);

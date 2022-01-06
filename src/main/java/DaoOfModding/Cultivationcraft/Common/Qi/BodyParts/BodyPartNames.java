@@ -268,6 +268,7 @@ public class BodyPartNames
         glide.addUniqueTag(BodyPartTags.flight);
         glide.getStatChanges().setStat(StatIDs.weight, 0.01f);
         glide.getStatChanges().setStat(StatIDs.wingSupport, 2f);
+        glide.getStatChanges().setStat(StatIDs.fallHeight, 99);
 
         addPart(glide);
     }

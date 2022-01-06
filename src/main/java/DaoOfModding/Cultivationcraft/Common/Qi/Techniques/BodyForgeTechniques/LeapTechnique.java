@@ -131,7 +131,7 @@ public class LeapTechnique extends Technique
         }
         else
         {
-            Vector3d currentMotion = player.getDeltaMovement().normalize();
+            Vector3d currentMotion = PoseHandler.getPlayerPoseHandler(player.getUUID()).getDeltaMovement().normalize();
 
             PlayerPose newPose = defaultLeapLegs.clone();
             newPose.addAngle(GenericLimbNames.body, new Vector3d(Math.toRadians((currentMotion.y - 1) * -90), 0, 0), 10);
@@ -156,7 +156,7 @@ public class LeapTechnique extends Technique
         handler.setJumping(true);
 
         // Get the current motion and forward vector of the player
-        Vector3d currentMotion = player.getDeltaMovement();
+        Vector3d currentMotion = PoseHandler.getPlayerPoseHandler(player.getUUID()).getDeltaMovement();
         Vector3d forward = player.getForward().normalize();
 
         // Get the modified jump height of the player

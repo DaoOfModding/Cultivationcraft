@@ -81,7 +81,7 @@ public class FloatTechnique extends Technique
     {
         PoseHandler.getPlayerPoseHandler(player.getUUID()).addPose(floating);
 
-        Vector3d movement = player.getDeltaMovement();
+        Vector3d movement = PoseHandler.getPlayerPoseHandler(player.getUUID()).getDeltaMovement();
 
         // TODO: Calc this based off weight
         float floating = 0.1f;

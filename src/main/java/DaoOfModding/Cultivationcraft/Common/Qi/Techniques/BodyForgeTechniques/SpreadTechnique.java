@@ -186,7 +186,7 @@ public class SpreadTechnique extends Technique
     {
         player.fallDistance = 0;
 
-        Vector3d motion = player.getDeltaMovement();
+        Vector3d motion = PoseHandler.getPlayerPoseHandler(player.getUUID()).getDeltaMovement();
 
         float weightModifier = BodyPartStatControl.getPlayerStatControl(player.getUUID()).getFlightWeightModifier();
 

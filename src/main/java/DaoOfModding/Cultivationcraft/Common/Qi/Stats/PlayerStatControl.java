@@ -7,11 +7,9 @@ import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPart;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartOption;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.PlayerHealthManager;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.Technique;
-import DaoOfModding.Cultivationcraft.Cultivationcraft;
-import net.minecraft.client.entity.player.ClientPlayerEntity;
+import net.minecraft.client.entity.player.AbstractClientPlayerEntity;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.attributes.ModifiableAttributeInstance;
 import net.minecraft.entity.player.PlayerEntity;
 
 import java.util.HashMap;
@@ -83,7 +81,7 @@ public class PlayerStatControl
         }
 
         // Only apply player attribute modifiers on the client
-        if (!(player instanceof ClientPlayerEntity))
+        if (!(player instanceof AbstractClientPlayerEntity))
             applyStats(player);
 
         PlayerHealthManager.updateFoodStats(player);

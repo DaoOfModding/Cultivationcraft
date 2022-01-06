@@ -67,7 +67,7 @@ public class RollTechnique extends Technique
 
         super.tickClient(event);
 
-        Vector3d motion = event.player.getDeltaMovement();
+        Vector3d motion = PoseHandler.getPlayerPoseHandler(event.player.getUUID()).getDeltaMovement();
         motion = motion.multiply(1, 0, 1);
 
         double speed = motion.length() * 0.75;

@@ -73,11 +73,11 @@ public class BounceTechnique extends Technique
         if (event.player.isInWater())
             return;
 
-        if (event.player.isOnGround() &&  event.player.getDeltaMovement().y <= 0)
+        if (event.player.isOnGround() && PoseHandler.getPlayerPoseHandler(event.player.getUUID()).getDeltaMovement().y <= 0)
             return;
 
         // Add the falling pose to the player if they are in the air
-        // if (event.player.getDeltaMovement().y < 0)
+        // if (PoseHandler.getPlayerPoseHandler(event.player.getUUID()).getDeltaMovement().y < 0)
             PoseHandler.addPose(event.player.getUUID(), fall);
     }
 }

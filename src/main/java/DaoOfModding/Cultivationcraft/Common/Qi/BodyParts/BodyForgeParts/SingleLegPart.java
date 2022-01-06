@@ -24,8 +24,10 @@ public class SingleLegPart extends MovementOverridePart
     @Override
     public void onClientTick(PlayerEntity player)
     {
+        Vector3d delta = PoseHandler.getPlayerPoseHandler(player.getUUID()).getDeltaMovement();
+
         // "Retract" leg whilst falling
-        if (!player.isOnGround() && !Minecraft.getInstance().player.isInWater() && player.getDeltaMovement().y < 0)
+        if (!player.isOnGround() && !Minecraft.getInstance().player.isInWater() && delta.y < 0)
             PoseHandler.addPose(player.getUUID(), Idle);
     }
 

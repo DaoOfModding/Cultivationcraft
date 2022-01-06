@@ -4,6 +4,7 @@ import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.PlayerStatControl;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.PlayerStatModifications;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.StatIDs;
+import DaoOfModding.mlmanimator.Client.Poses.PoseHandler;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.vector.Vector3d;
 
@@ -20,7 +21,7 @@ public class Physics
         PlayerStatControl stats = BodyPartStatControl.getPlayerStatControl(player.getUUID());
         float jumpHeight = stats.getStats().getStat(StatIDs.jumpHeight);
 
-        Vector3d currentMotion = player.getDeltaMovement();
+        Vector3d currentMotion = PoseHandler.getPlayerPoseHandler(player.getUUID()).getDeltaMovement();
 
         float movementSpeed = stats.getStats().getStat(StatIDs.movementSpeed);
 
@@ -43,6 +44,8 @@ public class Physics
             return;
         }
 
+        Vector3d delta = PoseHandler.getPlayerPoseHandler(player.getUUID()).getDeltaMovement();
+
         // If the player is on the ground then bounce if they have been falling, otherwise do nothing
         if (player.isOnGround())
         {
@@ -52,7 +55,7 @@ public class Physics
 
                 // Only bounce if above a certain threshold, to stop infinite micro-bounces
                 if (bounce > 0.25)
-                    player.setDeltaMovement(player.getDeltaMovement().x, bounce, player.getDeltaMovement().z);
+                    player.setDeltaMovement(delta.x, bounce, delta.z);
 
                 fallSpeed.remove(player.getUUID());
             }
@@ -61,7 +64,7 @@ public class Physics
         }
 
         // If the player is falling place their fall speed into the fallSpeed hashmap
-        double fall = player.getDeltaMovement().y;
+        double fall = delta.y;
 
         if (fall < 0)
             fallSpeed.put(player.getUUID(), fall);

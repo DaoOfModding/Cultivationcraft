@@ -102,7 +102,7 @@ public class DartTechnique extends Technique
             slowAmount = 0;
 
         // Slow the player speed based on the amount of cooldown remaining
-        Vector3d slowedSpeed = event.player.getDeltaMovement().scale(1 - slowAmount);
+        Vector3d slowedSpeed = PoseHandler.getPlayerPoseHandler(event.player.getUUID()).getDeltaMovement().scale(1 - slowAmount);
         event.player.setDeltaMovement(slowedSpeed.x, slowedSpeed.y, slowedSpeed.z);
     }
 

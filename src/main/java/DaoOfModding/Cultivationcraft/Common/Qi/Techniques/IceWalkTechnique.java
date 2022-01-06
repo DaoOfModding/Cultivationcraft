@@ -11,6 +11,7 @@ import DaoOfModding.Cultivationcraft.Common.Qi.CultivationTypes;
 import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
 import DaoOfModding.Cultivationcraft.Common.Qi.Freeze;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
+import DaoOfModding.mlmanimator.Client.Poses.PoseHandler;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
@@ -93,7 +94,7 @@ public class IceWalkTechnique extends Technique
         super.tickClient(event);
 
         // TODO: Better way of sliding
-        Vector3d test = event.player.getDeltaMovement().scale(0.04);
+        Vector3d test = PoseHandler.getPlayerPoseHandler(event.player.getUUID()).getDeltaMovement().scale(0.04);
         event.player.push(test.x, 0, test.z);
 
         BlockPos pos = event.player.blockPosition().below();

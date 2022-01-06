@@ -54,7 +54,7 @@ public class JetLegTechnique extends MovementOverrideTechnique
         MultiLimbedModel model = PoseHandler.getPlayerPoseHandler(event.player.getUUID()).getPlayerModel();
 
         // Active the leg jets if player is moving upwards
-        if (Minecraft.getInstance().player.getDeltaMovement().y > 0)
+        if (PoseHandler.getPlayerPoseHandler(event.player.getUUID()).getDeltaMovement().y > 0)
         {
             model.getLimb(BodyPartModelNames.jetLegLeftEmitter).visible = true;
             model.getLimb(BodyPartModelNames.jetLegRightEmitter).visible = true;

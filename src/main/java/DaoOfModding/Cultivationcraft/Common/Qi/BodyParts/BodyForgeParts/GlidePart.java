@@ -42,7 +42,7 @@ public class GlidePart extends BodyPart
         float minFallSpeed = -0.005f * (float)Math.pow((1.0f / weightModifier), 2);
 
         // Get direction of player movement
-        Vector3d currentMotion = player.getDeltaMovement();
+        Vector3d currentMotion = PoseHandler.getPlayerPoseHandler(player.getUUID()).getDeltaMovement();
 
         double horizontalSpeed = Math.abs(currentMotion.x) + Math.abs(currentMotion.z);
 
