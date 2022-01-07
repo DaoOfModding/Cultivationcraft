@@ -4,9 +4,12 @@ import DaoOfModding.Cultivationcraft.Client.ClientItemControl;
 import DaoOfModding.Cultivationcraft.Client.ClientListeners;
 import DaoOfModding.Cultivationcraft.Client.GUI.SkillHotbarOverlay;
 import DaoOfModding.Cultivationcraft.Client.Physics;
+import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.BodyModifications;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.ChunkQiSources.ChunkQiSources;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.ChunkQiSources.IChunkQiSources;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStats;
+import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPart;
+import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartOption;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.FoodStats.QiFoodStats;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
@@ -14,6 +17,7 @@ import DaoOfModding.Cultivationcraft.Network.PacketHandler;
 import DaoOfModding.Cultivationcraft.Server.ServerItemControl;
 import DaoOfModding.Cultivationcraft.Server.ServerListeners;
 import DaoOfModding.Cultivationcraft.Server.SkillHotbarServer;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.world.chunk.Chunk;
@@ -28,6 +32,9 @@ import net.minecraftforge.event.world.ChunkWatchEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+
+import java.util.Collection;
+import java.util.HashMap;
 
 @Mod.EventBusSubscriber()
 public class CommonListeners
@@ -111,7 +118,20 @@ public class CommonListeners
         // On server
         if (!event.getEntity().getCommandSenderWorld().isClientSide())
         {
-            ServerItemControl.sendPlayerStats(event.getPlayer(), event.getPlayer());
+            // Loop through every player in the server
+            for (PlayerEntity sendPlayer : event.getEntity().getCommandSenderWorld().players())
+            {
+                // Send player stats to the newly joined player
+                ServerItemControl.sendPlayerStats(sendPlayer, event.getPlayer());
+
+                // Do onJoin operations for every part of each player
+                for (BodyPart part : BodyModifications.getBodyModifications(sendPlayer).getModifications().values())
+                    part.onJoin(event.getPlayer());
+
+                for (HashMap<String, BodyPartOption> options : BodyModifications.getBodyModifications(sendPlayer).getModificationOptions().values())
+                    for (BodyPartOption option : options.values())
+                        option.onJoin(event.getPlayer());
+            }
             SkillHotbarServer.addPlayer(event.getPlayer().getUUID());
 
             BodyPartStatControl.updateStats(event.getPlayer());

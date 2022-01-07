@@ -376,4 +376,10 @@ public class BodyPart
     {
 
     }
+
+    // Calls this when "player" joins the server
+    public void onJoin(PlayerEntity player)
+    {
+
+    }
 }
