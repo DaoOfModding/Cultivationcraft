@@ -3,12 +3,14 @@ package DaoOfModding.Cultivationcraft.Client.Animations;
 import DaoOfModding.mlmanimator.Client.Models.*;
 import DaoOfModding.mlmanimator.Client.Models.Quads.Quad;
 import DaoOfModding.mlmanimator.Client.Models.Quads.QuadLinkage;
+import DaoOfModding.mlmanimator.Client.Poses.PoseHandler;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.math.vector.Vector4f;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.UUID;
 
 public class BodyPartModels
 {
@@ -16,8 +18,12 @@ public class BodyPartModels
     private HashMap<String, HashMap<String, ExtendableModelRenderer>> nonRenderingModels = new HashMap<String, HashMap<String, ExtendableModelRenderer>>();
     private HashMap<String, QuadCollection> quads = new HashMap<String, QuadCollection>();
 
-    public BodyPartModels()
+    private boolean slim = false;
+
+    public BodyPartModels(UUID playerID)
     {
+        slim = PoseHandler.getPlayerPoseHandler(playerID).isSlim();
+
         setupBodyModels();
         setupHeadModels();
         setupLegModels();
@@ -50,14 +56,29 @@ public class BodyPartModels
         ExtendableModelRenderer rightArm = new ExtendableModelRenderer(40, 16);
         rightArm.setRotationPoint(new Vector3d(0.5D, 0.66D, 0.5D));
         rightArm.setPos(0.0F, 0.0F, 0.5F);
-        rightArm.setFixedPosAdjustment(-2.0F, 2F, 0.0F);
-        rightArm.extend(GenericResizers.getArmResizer());
+
+        if (slim)
+            rightArm.setFixedPosAdjustment(-1.5F, 2F, 0.0F);
+        else
+            rightArm.setFixedPosAdjustment(-2.0F, 2F, 0.0F);
+
+        if (slim)
+            rightArm.extend(GenericResizers.getSlimArmResizer());
+        else
+            rightArm.extend(GenericResizers.getArmResizer());
 
         ExtendableModelRenderer leftArm = new ExtendableModelRenderer(32, 48);
         leftArm.setRotationPoint(new Vector3d(0.5D, 0.66D, 0.5D));
         leftArm.setPos(1.0F, 0.0F, 0.5F);
-        leftArm.setFixedPosAdjustment(2.0F, 2F, 0.0F);
-        leftArm.extend(GenericResizers.getArmResizer());
+        if (slim)
+            leftArm.setFixedPosAdjustment(1.5F, 2F, 0.0F);
+        else
+            leftArm.setFixedPosAdjustment(1.5F, 2F, 0.0F);
+
+        if (slim)
+            leftArm.extend(GenericResizers.getSlimArmResizer());
+        else
+            leftArm.extend(GenericResizers.getArmResizer());
         leftArm.mirror = true;
 
         addModel(GenericLimbNames.leftArm, leftArm);

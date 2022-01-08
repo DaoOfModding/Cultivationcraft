@@ -63,7 +63,10 @@ public class ExpandingStomachPart extends StomachPart
         {
             currentPercent = foodPercent;
 
-            getStatChanges().setStat(StatIDs.weight, DefaultPlayerBodyPartWeights.bodyWeight * ((maxXSize-1) * currentPercent) * ((maxYSize-1) * currentPercent) * ((maxZSize-1) * currentPercent));
+            // Maybe multiply other than add here
+            float weight = DefaultPlayerBodyPartWeights.bodyWeight * (((maxXSize-1) * currentPercent) + ((maxYSize-1) * currentPercent) + ((maxZSize-1) * currentPercent));
+
+            getStatChanges().setStat(StatIDs.weight, weight);
             BodyPartStatControl.updateStats(player);
 
             update = true;

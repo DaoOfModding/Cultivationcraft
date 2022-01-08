@@ -28,7 +28,7 @@ public class CultivatorModelHandler
     public static BodyPartModels getPlayerModels(UUID playerID)
     {
         if (!models.containsKey(playerID))
-            models.put(playerID, new BodyPartModels());
+            models.put(playerID, new BodyPartModels(playerID));
 
         return models.get(playerID);
     }
