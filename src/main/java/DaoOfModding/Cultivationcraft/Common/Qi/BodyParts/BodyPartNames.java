@@ -29,6 +29,9 @@ public class BodyPartNames
 
     public static final String glideArmPart = "glidearm";
 
+    // ARMS
+    public static final String shortArmPart = "shortarm";
+
     // LEGS
     public static final String feetPart = "feet";
     public static final String reverseJointLegPart = "rjleg";
@@ -257,6 +260,20 @@ public class BodyPartNames
         reinforce.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.basePosition);
 
         addPart(reinforce);
+
+
+        BodyPart shortArm = new BodyPart(shortArmPart, armPosition, "cultivationcraft.gui.armpart.short", 1000);
+        shortArm.addModel(BodyPartModelNames.shortArmLeftModel);
+        shortArm.addModel(BodyPartModelNames.shortArmRightModel);
+        // TODO: Hands not working here
+        shortArm.addHand(BodyPartModelNames.shortArmLeftModel, 1);
+        shortArm.addHand(BodyPartModelNames.shortArmRightModel, 0);
+        shortArm.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.basePosition);
+        shortArm.getStatChanges().setStat(StatIDs.weight, DefaultPlayerBodyPartWeights.armWeight * -1);
+        shortArm.getStatChanges().setStat(StatIDs.attackRange, StatIDs.defaultAttackRange * -0.5f);
+
+        addPart(shortArm);
+
 
         BodyPart glide = new GlidePart(glideArmPart, armPosition, "cultivationcraft.gui.armpart.glide", 1000);
         glide.addModel(GenericLimbNames.leftArm);

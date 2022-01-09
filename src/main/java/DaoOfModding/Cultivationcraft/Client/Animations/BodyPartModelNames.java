@@ -16,6 +16,9 @@ public class BodyPartModelNames
     public static final String sharpToothModel = "SHARP_TOOTH_MODEL";
     public static final String sharpToothLowerModel = "SHARP_TOOTH_LOWER_MODEL";
 
+    public static final String shortArmLeftModel = "SHORT_ARM_LEFT_MODEL";
+    public static final String shortArmRightModel = "SHORT_ARM_RIGHT_MODEL";
+
     public static final String footLeftModel = "FOOT_LEFT_MODEL";
     public static final String footRightModel = "FOOT_RIGHT_MODEL";
 

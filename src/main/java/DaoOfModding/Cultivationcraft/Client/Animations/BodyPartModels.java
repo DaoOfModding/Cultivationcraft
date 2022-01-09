@@ -87,6 +87,43 @@ public class BodyPartModels
         addReference(GenericLimbNames.rightArm, GenericLimbNames.lowerRightArm, rightArm.getChildren().get(0));
 
 
+
+        ExtendableModelRenderer shortRightArm = new ExtendableModelRenderer(40, 16);
+        shortRightArm.setRotationPoint(new Vector3d(0.5D, 0.66D, 0.5D));
+        shortRightArm.setPos(0.0F, 0.0F, 0.5F);
+        shortRightArm.setDefaultResize(new Vector3d(1, 0.5, 1));
+        if (slim)
+            shortRightArm.setFixedPosAdjustment(-1.5F, 2F, 0.0F);
+        else
+            shortRightArm.setFixedPosAdjustment(-2.0F, 2F, 0.0F);
+
+        if (slim)
+            shortRightArm.extend(new defaultResizeModule(new Vector3d(3.0D, 12.0D ,4.0D)));
+        else
+            shortRightArm.extend(new defaultResizeModule(new Vector3d(4.0D, 12.0D ,4.0D)));
+
+
+        ExtendableModelRenderer shortLeftArm = new ExtendableModelRenderer(32, 48);
+        shortLeftArm.setRotationPoint(new Vector3d(0.5D, 0.66D, 0.5D));
+        shortLeftArm.setPos(1.0F, 0.0F, 0.5F);
+        shortLeftArm.setDefaultResize(new Vector3d(1, 0.5, 1));
+        if (slim)
+            shortLeftArm.setFixedPosAdjustment(1.5F, 2F, 0.0F);
+        else
+            shortLeftArm.setFixedPosAdjustment(1.5F, 2F, 0.0F);
+
+        if (slim)
+            shortLeftArm.extend(new defaultResizeModule(new Vector3d(3.0D, 12.0D ,4.0D)));
+        else
+            shortLeftArm.extend(new defaultResizeModule(new Vector3d(4.0D, 12.0D ,4.0D)));
+
+
+        shortLeftArm.mirror = true;
+
+        addModel(BodyPartModelNames.shortArmLeftModel, shortLeftArm);
+        addModel(BodyPartModelNames.shortArmRightModel, shortRightArm);
+
+
         Quad larmConnector = new Quad(new Vector3d(0, 0, 0), new Vector3d(0, 0, 0),new Vector3d(0, 0, 0),new Vector3d(0, 0, 0));
         Quad rarmConnector = new Quad(new Vector3d(0, 0, 0), new Vector3d(0, 0, 0),new Vector3d(0, 0, 0),new Vector3d(0, 0, 0));
         getModel(GenericLimbNames.body).addQuadLinkage(new QuadLinkage(larmConnector, Quad.QuadVertex.TopLeft, new Vector3d(1, 1, 0.5)));

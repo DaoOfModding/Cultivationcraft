@@ -16,6 +16,9 @@ public class StatIDs
     public static final String healthRegen = "healthRegen";
     public static final String healthStaminaConversion = "healthStaminaConversion";
 
+    // TODO: Make this do something
+    public static final String attackRange = "attackRange";
+
     public static final String legSupport = "legWeight";
     public static final String wingSupport = "wingWeight";
 
@@ -35,4 +38,6 @@ public class StatIDs
     public static final float defaultFallHeight = 1.5f;
     public static final int defaulthealthStaminaConversion = 1;
     public static final float defaultHealthRegen = 0.1f;
+
+    public static final float defaultAttackRange = 5;
 }
