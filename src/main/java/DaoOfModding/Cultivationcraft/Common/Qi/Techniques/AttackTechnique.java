@@ -1,5 +1,6 @@
 package DaoOfModding.Cultivationcraft.Common.Qi.Techniques;
 
+import DaoOfModding.Cultivationcraft.Server.CultivatorAttackLogic;
 import DaoOfModding.mlmanimator.Client.Poses.PoseHandler;
 import DaoOfModding.mlmanimator.Client.Poses.PlayerPose;
 import DaoOfModding.Cultivationcraft.Client.KeybindingControl;
@@ -49,26 +50,29 @@ public class AttackTechnique extends Technique
     {
         attackAnimation(player);
 
-        // Get attack range
-        double range = getRange(player);
+        RayTraceResult.Type result = RayTraceResult.Type.MISS;
+        UUID attackUUID = null;
+        Entity attackEntity = CultivatorAttackLogic.tryAttackEntity(getRange(player));
+        Vector3d location = new Vector3d(0, 0, 0);
 
-        // If the mouse is over an entity in range, attack that entity
-        RayTraceResult result = KeybindingControl.getMouseOver(range);
-
-        UUID targetID = null;
-
-        if (result.getType() == RayTraceResult.Type.ENTITY)
-            targetID = Misc.getEntityAtLocation(result.getLocation(), Minecraft.getInstance().level).getUUID();
-
-        Vector3d Location = result.getLocation();
-
-        if (result.getType() == RayTraceResult.Type.BLOCK)
+        if (attackEntity != null)
         {
-            BlockPos blockpos = ((BlockRayTraceResult) result).getBlockPos();
-            Location = new Vector3d(blockpos.getX(), blockpos.getY(), blockpos.getZ());
+            attackUUID = attackEntity.getUUID();
+            location = attackEntity.position();
+            result = RayTraceResult.Type.ENTITY;
+        }
+        else
+        {
+            BlockPos blockpos = CultivatorAttackLogic.tryAttackBlock(getRange(player));
+
+            if (blockpos != null)
+            {
+                location = new Vector3d(blockpos.getX(), blockpos.getY(), blockpos.getZ());
+                result = RayTraceResult.Type.BLOCK;
+            }
         }
 
-        ClientPacketHandler.sendAttackToServer(player.getUUID(), result.getType(), Location, targetID, slot);
+        ClientPacketHandler.sendAttackToServer(player.getUUID(), result, location, attackUUID, slot);
     }
 
     public void attackAnimation(PlayerEntity player)
@@ -104,94 +108,8 @@ public class AttackTechnique extends Technique
     // Attack specified entity with specified player, server only
     public void attackEntity(PlayerEntity player, Entity toAttack)
     {
-        if (!toAttack.isAttackable())
+        if (!CultivatorAttackLogic.attackEntity(player, toAttack, getRange(player), getAttack(player), attackSound))
             return;
-
-        if (toAttack.skipAttackInteraction(player))
-            return;
-
-        // Get attack range
-        double range = getRange(player);
-
-        // Do nothing if entity is not in attack range
-        if (toAttack.position().subtract(player.position()).length() > range)
-            return;
-
-
-        float attack = getAttack(player);
-        // TODO: Add knockback as an attackModifier
-        float knockback = 1;
-
-        // TODO: Check if toAttack entity is a cultivator, apply damage resistances && any extra stuff if so
-
-        Vector3d entityMotion = toAttack.getDeltaMovement();
-        float entityHealth = 0;
-
-        if (toAttack instanceof LivingEntity)
-            entityHealth = ((LivingEntity) toAttack).getHealth();
-
-        // If player does no damage (?) then play a corresponding sound and do nothing
-        if (!toAttack.hurt(DamageSource.playerAttack(player), attack)) {
-            player.level.playSound((PlayerEntity) null, player.getX(), player.getY(), player.getZ(), SoundEvents.PLAYER_ATTACK_NODAMAGE, player.getSoundSource(), 1.0F, 1.0F);
-            return;
-        }
-
-        // Play attack sound
-        player.level.playSound((PlayerEntity) null, player.getX(), player.getY(), player.getZ(), attackSound, player.getSoundSource(), 1.0F, 1.0F);
-
-        // Apply knockback to attacked entity
-        if (knockback > 0) {
-            if (toAttack instanceof LivingEntity)
-                ((LivingEntity) toAttack).knockback(knockback, (double) MathHelper.sin(player.yRot * ((float) Math.PI / 180F)), (double) (-MathHelper.cos(player.yRot * ((float) Math.PI / 180F))));
-            else
-                toAttack.push((double) (-MathHelper.sin(player.yRot * ((float) Math.PI / 180F)) * knockback), 0.1D, (double) (MathHelper.cos(player.yRot * ((float) Math.PI / 180F)) * knockback));
-
-            player.setDeltaMovement(player.getDeltaMovement().multiply(0.6D, 1.0D, 0.6D));
-            player.setSprinting(false);
-        }
-
-        // Usefull code for AOE attacks
-        /*
-                        if (flag3) {
-                            float f3 = 1.0F + EnchantmentHelper.getSweepingDamageRatio(this) * attack;
-
-                            for(LivingEntity livingentity : this.world.getEntitiesWithinAABB(LivingEntity.class, targetEntity.getBoundingBox().grow(1.0D, 0.25D, 1.0D))) {
-                                if (livingentity != this && livingentity != targetEntity && !this.isOnSameTeam(livingentity) && (!(livingentity instanceof ArmorStandEntity) || !((ArmorStandEntity)livingentity).hasMarker()) && this.getDistanceSq(livingentity) < 9.0D) {
-                                    livingentity.applyKnockback(0.4F, (double)MathHelper.sin(this.rotationYaw * ((float)Math.PI / 180F)), (double)(-MathHelper.cos(this.rotationYaw * ((float)Math.PI / 180F))));
-                                    livingentity.attackEntityFrom(DamageSource.causePlayerDamage(this), f3);
-                                }
-                            }
-
-                            this.world.playSound((PlayerEntity)null, this.getPosX(), this.getPosY(), this.getPosZ(), SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, this.getSoundCategory(), 1.0F, 1.0F);
-                            this.spawnSweepParticles();
-                        }*/
-
-        // If attacking a player and they were knockedback, send a packed to them telling them so
-        if (toAttack instanceof ServerPlayerEntity && toAttack.hurtMarked) {
-            ((ServerPlayerEntity) toAttack).connection.send(new SEntityVelocityPacket(toAttack));
-            toAttack.hurtMarked = false;
-            toAttack.setDeltaMovement(entityMotion);
-        }
-
-        // Set the attacked entity as the last entity the player attacked
-        player.setLastHurtMob(toAttack);
-
-        // Apply any relevant thorn enchantments from the attacked entity
-        if (toAttack instanceof LivingEntity)
-            EnchantmentHelper.doPostHurtEffects((LivingEntity) toAttack, player);
-
-
-        // If attacked entity took enough damage, spawn a damage indicator
-        if (toAttack instanceof LivingEntity)
-        {
-            float rawDamage = entityHealth - ((LivingEntity) toAttack).getHealth();
-            player.awardStat(Stats.DAMAGE_DEALT, Math.round(rawDamage * 10.0F));
-
-            if (player.level instanceof ServerWorld && rawDamage > 2.0F) {
-                int k = (int) ((double) rawDamage * 0.5D);
-                ((ServerWorld) player.level).sendParticles(ParticleTypes.DAMAGE_INDICATOR, toAttack.getX(), toAttack.getY(0.5D), toAttack.getZ(), k, 0.1D, 0.0D, 0.1D, 0.2D);
-            }
-        }
 
         // If the entity is dead then call onKill
         if (toAttack instanceof LivingEntity && !((LivingEntity)toAttack).isAlive())

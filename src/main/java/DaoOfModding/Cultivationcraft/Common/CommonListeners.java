@@ -108,7 +108,6 @@ public class CommonListeners
         }
     }
 
-
     // Fired off when an player logs into the world
     @SubscribeEvent
     public static void playerJoinsWorld(PlayerEvent.PlayerLoggedInEvent event)
