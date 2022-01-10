@@ -68,6 +68,9 @@
   "cultivationcraft.gui.headpart.jaw": "Unhinged Jaw",
   "cultivationcraft.gui.headpart.jaw.description": "Unhinge your jaw to allow your mouth to open much wider than usually possible",
 
+  "cultivationcraft.gui.headpart.longneck": "Long Neck",
+  "cultivationcraft.gui.headpart.longneck.description": "~~~~~TODO~~~~~~",
+
   "cultivationcraft.gui.headpart.eye": "Eyes",
 
   "cultivationcraft.gui.headpart.eye.qisight": "Qi Sight",
@@ -98,6 +101,8 @@
   "cultivationcraft.gui.legpart.singleLeg": "Single Leg",
   "cultivationcraft.gui.legpart.singleLeg.description": "Remove one of your superfluous legs, allowing superior movement through hopping and greatly increasing jump height",
 
+  "cultivationcraft.gui.legpart.jet": "Jet Leg",
+  "cultivationcraft.gui.legpart.jet.description": "~~~~TODO~~~~~",
 
   "cultivationcraft.technique.example": "Example Technique",
   "cultivationcraft.technique.example.description": "This is an example description",

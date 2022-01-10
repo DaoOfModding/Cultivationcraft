@@ -81,7 +81,7 @@ public class BodyPartGUI
         if (y >= 0 && y <= 1)
             yPos += maxHeight * y;
         else if (y < 0)
-            yPos += getTextureWidth() * y * 2 + 1;
+            yPos += getTextureHeight() * y * 2 + 1;
         else if (y > 0)
             yPos += maxHeight + getTextureHeight() * (y - 1) * 2 - 1;
 

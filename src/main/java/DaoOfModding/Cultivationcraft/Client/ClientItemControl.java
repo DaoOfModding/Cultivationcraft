@@ -49,6 +49,7 @@ public class ClientItemControl
         BodyPartGUIs.addGUI(BodyPartNames.glideArmPart, new BodyPartGUI(new ResourceLocation(Cultivationcraft.MODID, "textures/gui/bodyparts/" + BodyPartNames.glideArmPart + "right.png"), -2, -1, 11, 29, true));
 
         BodyPartGUIs.addGUI(BodyPartNames.jawPart, new BodyPartGUI(new ResourceLocation(Cultivationcraft.MODID, "textures/gui/bodyparts/" + BodyPartNames.jawPart + ".png"), 0, -2, 18, 20, true));
+        BodyPartGUIs.addGUI(BodyPartNames.longNeckPart, new BodyPartGUI(new ResourceLocation(Cultivationcraft.MODID, "textures/gui/bodyparts/" + BodyPartNames.longNeckPart + ".png"), 0, -2, 18, 35, true));
 
         BodyPartGUIs.addGUI(BodyPartNames.feetPart, new BodyPartGUI(new ResourceLocation(Cultivationcraft.MODID, "textures/gui/bodyparts/" + BodyPartNames.feetPart + "left.png"), 1, 2, 8, 8, true));
         BodyPartGUIs.addGUI(BodyPartNames.feetPart, new BodyPartGUI(new ResourceLocation(Cultivationcraft.MODID, "textures/gui/bodyparts/" + BodyPartNames.feetPart + "right.png"), -1, 2, 8, 8, true));
@@ -57,8 +58,8 @@ public class ClientItemControl
         BodyPartGUIs.addGUI(BodyPartNames.singleLegPart, new BodyPartGUI(new ResourceLocation(Cultivationcraft.MODID, "textures/gui/bodyparts/" + BodyPartNames.DefaultRightLeg + ".png"), 0, 2, 8, 24, true));
         BodyPartGUIs.addGUI(BodyPartNames.hexaLegPart, new BodyPartGUI(new ResourceLocation(Cultivationcraft.MODID, "textures/gui/bodyparts/" + BodyPartNames.hexaLegPart + "left.png"), -1.6f, 2, 19, 19, true));
         BodyPartGUIs.addGUI(BodyPartNames.hexaLegPart, new BodyPartGUI(new ResourceLocation(Cultivationcraft.MODID, "textures/gui/bodyparts/" + BodyPartNames.hexaLegPart + "right.png"), 1.65f, 2, 19, 19, true));
-        BodyPartGUIs.addGUI(BodyPartNames.jetLegPart, new BodyPartGUI(new ResourceLocation(Cultivationcraft.MODID, "textures/gui/bodyparts/" + BodyPartNames.DefaultLeftLeg + ".png"), 1, 2, 8, 8, true));
-        BodyPartGUIs.addGUI(BodyPartNames.jetLegPart, new BodyPartGUI(new ResourceLocation(Cultivationcraft.MODID, "textures/gui/bodyparts/" + BodyPartNames.DefaultRightLeg + ".png"), -1, 2, 8, 8, true));
+        BodyPartGUIs.addGUI(BodyPartNames.jetLegPart, new BodyPartGUI(new ResourceLocation(Cultivationcraft.MODID, "textures/gui/bodyparts/" + BodyPartNames.DefaultLeftLeg + ".png"), 1, 2, 8, 30, true));
+        BodyPartGUIs.addGUI(BodyPartNames.jetLegPart, new BodyPartGUI(new ResourceLocation(Cultivationcraft.MODID, "textures/gui/bodyparts/" + BodyPartNames.DefaultRightLeg + ".png"), -1, 2, 8, 30, true));
 
     }
 }

@@ -1,5 +1,6 @@
 package DaoOfModding.Cultivationcraft.Client.Animations;
 
+import DaoOfModding.mlmanimator.Client.AnimationFramework.resizeModule;
 import DaoOfModding.mlmanimator.Client.Models.*;
 import DaoOfModding.mlmanimator.Client.Models.Quads.Quad;
 import DaoOfModding.mlmanimator.Client.Models.Quads.QuadLinkage;
@@ -154,6 +155,35 @@ public class BodyPartModels
 
     private void setupHeadModels()
     {
+        resizeModule headResizer = GenericResizers.getHeadResizer();
+        defaultResizeModule neckResizer = new defaultResizeModule(9, new Vector3d(0, -1, 0), new Vector3d(0.5, 1, 0.5), new Vector3d(8, 8, 8), new Vector3d(0.5, -1, 0.5));
+
+        ExtendableModelRenderer neckPart = new ExtendableModelRenderer(0, 7);
+        neckPart.setRotationPoint(new Vector3d(0.5D, 0.0D, 0.5D));
+        neckPart.setPos(0.5F, 0.0F, 0.5F);
+        neckPart.setDefaultResize(new Vector3d(0.5, 1, 0.5));
+        neckPart.extend(neckResizer);
+
+        LongNeckModelRenderer headPart = new LongNeckModelRenderer(0, 0, 9);
+        headPart.setRotationPoint(new Vector3d(0.5D, 0.0D, 0.5D));
+        headPart.setPos(0.5F, 0.0F, 0.5F);
+        headPart.extend(headResizer);
+        headPart.setLooking(true);
+        headPart.setFirstPersonRender(false);
+
+        ExtendableModelRenderer neckExplorer = neckPart;
+
+        while (neckExplorer.getChildren().size() > 0)
+        {
+            neckExplorer = neckExplorer.getChildren().get(0);
+            neckExplorer.setDefaultResize(new Vector3d(0.5, 1, 0.5));
+        }
+        neckExplorer.addChild(headPart);
+
+        addModel(BodyPartModelNames.longNeckModel, neckPart);
+        addReference(BodyPartModelNames.longNeckModel, BodyPartModelNames.longNeckModelHead, headPart);
+
+
         defaultResizeModule semiHeadResizer = new defaultResizeModule(new Vector3d(8, 5, 8));
         defaultResizeModule jawResizer = new defaultResizeModule(new Vector3d(8, 3, 8));
 

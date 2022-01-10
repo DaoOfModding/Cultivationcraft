@@ -9,6 +9,7 @@ import DaoOfModding.Cultivationcraft.Common.Qi.Stats.DefaultPlayerBodyPartWeight
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.StatIDs;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import DaoOfModding.mlmanimator.Client.Models.GenericLimbNames;
+import DaoOfModding.mlmanimator.Client.Models.MultiLimbedModel;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TranslationTextComponent;
 
@@ -19,6 +20,8 @@ public class BodyPartNames
 {
     // PARTS
     public static final String jawPart = "jaw";
+    public static final String longNeckPart = "longneck";
+
     public static final String reinforcedBodyPart = "rbody";
     public static final String reinforcedArmPart = "rarm";
     public static final String reinforcedLegPart = "rleg";
@@ -248,6 +251,14 @@ public class BodyPartNames
         jaw.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.basePosition);
 
         addPart(jaw);
+
+        BodyPart longneck = new BodyPart(longNeckPart, headPosition, "cultivationcraft.gui.headpart.longneck", 1000);
+        longneck.addModel(BodyPartModelNames.longNeckModel);
+        longneck.setViewPoint(BodyPartModelNames.longNeckModelHead);
+        longneck.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.basePosition);
+        longneck.getStatChanges().setStat(StatIDs.weight, DefaultPlayerBodyPartWeights.headWeight * 0.5f);
+
+        addPart(longneck);
     }
 
     private static void setupArmParts()

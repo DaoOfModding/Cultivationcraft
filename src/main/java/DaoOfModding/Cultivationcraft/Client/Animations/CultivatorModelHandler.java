@@ -92,10 +92,6 @@ public class CultivatorModelHandler
                     else
                         newModel.addLimb(modelID, modelPart);
 
-                    // Set this as the players view point if it is set to be a view point
-                    if (modelID == part.getViewPoint())
-                        newModel.setViewPoint(modelPart);
-
                     for (Map.Entry<String, ExtendableModelRenderer> entry : models.getReferences(modelID).entrySet())
                         newModel.addLimbReference(entry.getKey(), entry.getValue());
 
@@ -186,6 +182,10 @@ public class CultivatorModelHandler
                     for (Quad quad : collection.getQuads())
                         newModel.getBody().addQuad(quad);
                 }
+
+                // Set this as the players view point if it is set to be a view point
+                if (part.getViewPoint() != null)
+                    newModel.setViewPoint(newModel.getLimb(part.getViewPoint()));
 
             }
 

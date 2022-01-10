@@ -10,6 +10,9 @@ public class BodyPartModelNames
     public static final String FPjawModel = "FPJAW_MODEL";
     public static final String FPjawModelLower = "FPJAW_LOWER_MODEL";
 
+    public static final String longNeckModel = "LONG_NECK_MODEL";
+    public static final String longNeckModelHead = "LONG_NECK_HEAD_MODEL";
+
     public static final String flatToothModel = "FLAT_TOOTH_MODEL";
     public static final String flatToothLowerModel = "FLAT_TOOTH_LOWER_MODEL";
 
