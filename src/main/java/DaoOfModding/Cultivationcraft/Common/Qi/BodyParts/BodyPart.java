@@ -1,5 +1,6 @@
 package DaoOfModding.Cultivationcraft.Common.Qi.BodyParts;
 
+import DaoOfModding.Cultivationcraft.Client.Animations.BodyPartLocation;
 import DaoOfModding.Cultivationcraft.Client.Textures.TextureList;
 import DaoOfModding.Cultivationcraft.Client.Textures.TextureManager;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.BodyModifications;
@@ -35,6 +36,8 @@ public class BodyPart
     private PlayerStatModifications stats;
     private String textureID = TextureList.skin;
 
+    private BodyPartLocation connection = null;
+
     private String viewPoint;
 
     private ArrayList<String> neededToForge = new ArrayList<String>();
@@ -60,6 +63,24 @@ public class BodyPart
         qiNeeded = qiToForge;
 
         stats = new PlayerStatModifications();
+    }
+
+    public void setConnection(BodyPartLocation newConnection)
+    {
+        connection = newConnection;
+    }
+
+    public BodyPartLocation getConnection()
+    {
+        return connection;
+    }
+
+    public boolean hasConnection()
+    {
+        if (connection != null)
+            return true;
+
+        return false;
     }
 
     public void setViewPoint(String viewPoint)

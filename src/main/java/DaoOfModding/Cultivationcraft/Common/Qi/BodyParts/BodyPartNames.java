@@ -1,5 +1,6 @@
 package DaoOfModding.Cultivationcraft.Common.Qi.BodyParts;
 
+import DaoOfModding.Cultivationcraft.Client.Animations.BodyPartLocation;
 import DaoOfModding.Cultivationcraft.Client.Animations.BodyPartModelNames;
 import DaoOfModding.Cultivationcraft.Client.Textures.TextureList;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyForgeParts.*;
@@ -34,6 +35,8 @@ public class BodyPartNames
 
     // ARMS
     public static final String shortArmPart = "shortarm";
+
+    public static final String headArmsPart = "headarms";
 
     // LEGS
     public static final String feetPart = "feet";
@@ -80,6 +83,8 @@ public class BodyPartNames
     // SUB-POSITIONS
     public static final String basePosition = "BASE";
 
+    public static final String locationSubPosition = "LOCATION";
+
     public static final String eyeSubPosition = "EYE";
     public static final String mouthSubPosition = "MOUTH";
     public static final String skinSubPosition = "SKIN";
@@ -110,6 +115,9 @@ public class BodyPartNames
         addSubPartDisplayName(bodyPosition, backSubPosition, "cultivationcraft.gui.bodypart.back");
         addSubPartDisplayName(headPosition, eyeSubPosition, "cultivationcraft.gui.headpart.eye");
         addSubPartDisplayName(headPosition, mouthSubPosition, "cultivationcraft.gui.headpart.mouth");
+        addSubPartDisplayName(bodyPosition, locationSubPosition, "cultivationcraft.gui.generic.location");
+        addSubPartDisplayName(armPosition, locationSubPosition, "cultivationcraft.gui.generic.location");
+
 
         setupBodyParts();
         setupBodyOptions();
@@ -134,6 +142,19 @@ public class BodyPartNames
         setupSkinOptions();
         setupStomachOptions();
         setupBackOptions();
+
+
+        BodyPartOption longneck = new BodyPartOption(longNeckPart, bodyPosition, locationSubPosition, "cultivationcraft.gui.headpart.longneck", 1000);
+        longneck.addModel(BodyPartModelNames.longNeckModel);
+
+        BodyPartLocation longneckLocation = new BodyPartLocation(headPosition, basePosition, BodyPartModelNames.longNeckModelEnd);
+        longneckLocation.adjustDepth(9);
+        longneck.setConnection(longneckLocation);
+
+        longneck.addNeededPosition(BodyPartNames.headPosition, BodyPartNames.basePosition);
+        longneck.getStatChanges().setStat(StatIDs.weight, DefaultPlayerBodyPartWeights.headWeight * 0.5f);
+
+        addOption(longneck);
     }
 
     private static void setupStomachOptions()
@@ -251,14 +272,6 @@ public class BodyPartNames
         jaw.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.basePosition);
 
         addPart(jaw);
-
-        BodyPart longneck = new BodyPart(longNeckPart, headPosition, "cultivationcraft.gui.headpart.longneck", 1000);
-        longneck.addModel(BodyPartModelNames.longNeckModel);
-        longneck.setViewPoint(BodyPartModelNames.longNeckModelHead);
-        longneck.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.basePosition);
-        longneck.getStatChanges().setStat(StatIDs.weight, DefaultPlayerBodyPartWeights.headWeight * 0.5f);
-
-        addPart(longneck);
     }
 
     private static void setupArmParts()
@@ -299,6 +312,13 @@ public class BodyPartNames
         glide.getStatChanges().setStat(StatIDs.fallHeight, 99);
 
         addPart(glide);
+
+
+        BodyPartOption headArms = new BodyPartOption(headArmsPart, armPosition, locationSubPosition, "cultivationcraft.gui.armpart.headarms", 1000);
+        headArms.setConnection(new BodyPartLocation(armPosition, basePosition, headPosition, basePosition));
+        headArms.addNeededPosition(BodyPartNames.armPosition, BodyPartNames.basePosition);
+
+        addOption(headArms);
     }
 
     private static void setupHeadOptions()

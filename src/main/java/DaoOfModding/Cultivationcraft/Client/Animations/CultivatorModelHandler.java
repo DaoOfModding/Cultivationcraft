@@ -16,10 +16,7 @@ import net.minecraft.client.entity.player.AbstractClientPlayerEntity;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.renderer.entity.PlayerRenderer;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class CultivatorModelHandler
 {
@@ -62,132 +59,10 @@ public class CultivatorModelHandler
             // Create a new player model with the specified modifications
             MultiLimbedModel newModel = new MultiLimbedModel(renderer.getModel());
 
-            for (BodyPart part : modifications.getModifications().values())
-            {
-                // Remove vanilla body parts if the they have been replaced
-                if (part.getPosition().equalsIgnoreCase(BodyPartNames.armPosition))
-                {
-                    newModel.removeLimb(GenericLimbNames.rightArm);
-                    newModel.removeLimb(GenericLimbNames.leftArm);
-                    newModel.removeLimb(GenericLimbNames.lowerRightArm);
-                    newModel.removeLimb(GenericLimbNames.lowerLeftArm);
-                }
-                else if (part.getPosition().equalsIgnoreCase(BodyPartNames.legPosition))
-                {
-                    newModel.removeLimb(GenericLimbNames.rightLeg);
-                    newModel.removeLimb(GenericLimbNames.leftLeg);
-                    newModel.removeLimb(GenericLimbNames.lowerRightLeg);
-                    newModel.removeLimb(GenericLimbNames.lowerLeftLeg);
-                }
-                else if (part.getPosition().equalsIgnoreCase(BodyPartNames.headPosition))
-                    newModel.removeLimb(GenericLimbNames.head);
+            Collection<BodyPart> parts = modifications.getModifications().values();
+            HashMap<String, BodyPartLocation> partLocations = getPartLocations(parts, modifications);
 
-                for (String modelID : part.getModelIDs())
-                {
-                    ExtendableModelRenderer modelPart = models.getModel(modelID);
-
-                    // Set as the body if this is a body part
-                    if (part.getPosition().equalsIgnoreCase(BodyPartNames.bodyPosition))
-                        newModel.addBody(modelPart);
-                    else
-                        newModel.addLimb(modelID, modelPart);
-
-                    for (Map.Entry<String, ExtendableModelRenderer> entry : models.getReferences(modelID).entrySet())
-                        newModel.addLimbReference(entry.getKey(), entry.getValue());
-
-                    if (part.getHand(modelID) != -1)
-                        newModel.setHand(part.getHand(modelID), newModel.getLimb(modelID));
-
-                    // Add models for any valid options to this body part
-                    for (BodyPartOption option : modifications.getModificationOptions(part.getPosition()).values())
-                    {
-                        for (String optionModels : option.getDefaultOptionModels())
-                        {
-                            // Add to the body if the base part is a body part, otherwise reference the base modelID
-                            if (part.getPosition().equalsIgnoreCase(BodyPartNames.bodyPosition))
-                                newModel.addLimb(optionModels, models.getModel(optionModels));
-                            else
-                                newModel.addLimb(optionModels, models.getModel(optionModels), modelID);
-
-                            for (Map.Entry<String, ExtendableModelRenderer> entry : models.getReferences(optionModels).entrySet())
-                                newModel.addLimbReference(entry.getKey(), entry.getValue());
-
-                            if (option.getHand(optionModels) != -1)
-                                newModel.setHand(option.getHand(optionModels), newModel.getLimb(optionModels));
-                        }
-
-                        for (String quadID : option.getQuadIDs())
-                        {
-                            QuadCollection collection = models.getQuadCollection(quadID);
-
-                            for (Quad quad : collection.getQuads())
-                                newModel.getBody().addQuad(quad);
-                        }
-                    }
-                }
-
-                for (String modelID : part.getFirstPersonModelIDs())
-                {
-                    ExtendableModelRenderer modelPart = models.getModel(modelID);
-                    newModel.addFirstPersonLimb(modelID, modelPart);
-
-                    for (Map.Entry<String, ExtendableModelRenderer> entry : models.getReferences(modelID).entrySet())
-                        newModel.addLimbReference(entry.getKey(), entry.getValue());
-
-                    if (part.getHand(modelID) != -1)
-                        newModel.setHand(part.getHand(modelID), newModel.getLimb(modelID));
-
-                    // Add models for any valid options to this body part
-                    for (BodyPartOption option : modifications.getModificationOptions(part.getPosition()).values())
-                        for (String optionModels : option.getDefaultOptionModels())
-                        {
-                            newModel.addLimb(optionModels, models.getModel(optionModels), modelID);
-
-                            for (Map.Entry<String, ExtendableModelRenderer> entry : models.getReferences(optionModels).entrySet())
-                                newModel.addLimbReference(entry.getKey(), entry.getValue());
-
-                            if (option.getHand(optionModels) != -1)
-                                newModel.setHand(option.getHand(optionModels), newModel.getLimb(optionModels));
-                        }
-                }
-
-                // Add models for any options tied to specific body parts to this body part
-                for (BodyPartOption option : modifications.getModificationOptions(part.getPosition()).values())
-                    for (Map.Entry<String, ArrayList<String>> optionModelCollections : option.getOptionModels().entrySet())
-                    {
-                        // Get the ID of the model this model list is connected to
-                        String baseModelID = optionModelCollections.getKey();
-
-                        // If the model this collection is tied to exists
-                        if (newModel.hasLimb(baseModelID))
-                        {
-                            for (String optionModels : optionModelCollections.getValue())
-                            {
-                                newModel.addLimb(optionModels, models.getModel(optionModels), baseModelID);
-
-                                for (Map.Entry<String, ExtendableModelRenderer> entry : models.getReferences(optionModels).entrySet())
-                                    newModel.addLimbReference(entry.getKey(), entry.getValue());
-
-                                if (option.getHand(optionModels) != -1)
-                                    newModel.setHand(option.getHand(optionModels), newModel.getLimb(optionModels));
-                            }
-                        }
-                    }
-
-
-                for (String quadID : part.getQuadIDs())
-                {
-                    QuadCollection collection = models.getQuadCollection(quadID);
-
-                    for (Quad quad : collection.getQuads())
-                        newModel.getBody().addQuad(quad);
-                }
-
-                // Set this as the players view point if it is set to be a view point
-                if (part.getViewPoint() != null)
-                    newModel.setViewPoint(newModel.getLimb(part.getViewPoint()));
-
-            }
+            processParts(newModel, parts, models, modifications, partLocations);
 
             // Lock the handler so it can be modified without other threads messing with it
             handler.lock();
@@ -200,5 +75,244 @@ public class CultivatorModelHandler
 
             modifications.setUpdated(true);
         }
+    }
+
+    // Return list of what part every part supplied connects to
+    public static HashMap<String, BodyPartLocation> getPartLocations(Collection<BodyPart> parts, IBodyModifications modifications)
+    {
+        ArrayList<BodyPartLocation> partLocations = new ArrayList<>();
+
+        // Loop through every part, add it's connection to the arraylist if it has one
+        for (BodyPart part : parts)
+        {
+            if (part.hasConnection())
+                partLocations.add(part.getConnection());
+
+            for (BodyPartOption option : modifications.getModificationOptions(part.getPosition()).values())
+                if (option.hasConnection())
+                    partLocations.add(option.getConnection());
+        }
+
+        HashMap<String, BodyPartLocation> connectionList = new HashMap<>();
+
+        for (BodyPart part: parts)
+        {
+            connectionList.put(part.getID(), getPartConnection(part, partLocations, parts, modifications));
+
+            for (BodyPartOption option : modifications.getModificationOptions(part.getPosition()).values())
+                connectionList.put(option.getID(), getPartConnection(option, partLocations, parts, modifications));
+        }
+
+        return connectionList;
+    }
+
+    private static BodyPart getPartAtLocation(Collection<BodyPart> parts, String position, String subPosition, IBodyModifications modifications)
+    {
+        if (subPosition.equalsIgnoreCase(BodyPartNames.basePosition))
+            for (BodyPart part : parts)
+                if (part.getPosition().equalsIgnoreCase(position))
+                    return part;
+
+        for (BodyPartOption option : modifications.getModificationOptions(position).values())
+            if (option.getSubPosition().equalsIgnoreCase(subPosition))
+                return option;
+
+        return null;
+    }
+
+    private static BodyPartLocation getPartConnection(BodyPart part, ArrayList<BodyPartLocation> partLocations, Collection<BodyPart> parts, IBodyModifications modifications)
+    {
+        // If this BodyPart has an associated connection
+        BodyPartLocation location = getLocation(part, partLocations);
+
+        if (location != null)
+        {
+            if (location.modelID == null)
+            {
+                BodyPart connectedPart = getPartAtLocation(parts, location.modelPositionID, location.modelPositionSubID, modifications);
+
+                BodyPartLocation newLocation = new BodyPartLocation(null, null, connectedPart.getModelIDs().get(0));
+                newLocation.adjustDepth(location.rotationDepth);
+
+                return  newLocation;
+            }
+
+            return location;
+        }
+        else
+        {
+            return new BodyPartLocation(null, null, "Body");
+        }
+    }
+
+    // Return BodyPartLocation referring to the specified part in the supplied list of locations
+    public static BodyPartLocation getLocation(BodyPart part, ArrayList<BodyPartLocation> Locations)
+    {
+        String location = part.getPosition();
+        String subLocation = BodyPartNames.basePosition;
+
+        if (part instanceof BodyPartOption)
+            subLocation = ((BodyPartOption)part).getSubPosition();
+
+        for (BodyPartLocation BPLocation : Locations)
+        {
+            if (BPLocation.positionID == location)
+                if (BPLocation.positionSubID == subLocation)
+                    return BPLocation;
+        }
+
+        return null;
+    }
+
+    protected static void processParts (MultiLimbedModel model, Collection<BodyPart> parts, BodyPartModels models, IBodyModifications modifications, HashMap<String, BodyPartLocation> partLocations)
+    {
+        ArrayList<BodyPart> unprocessedParts = new ArrayList<BodyPart>();
+
+        // Try to add all parts int the provided collection to the model
+        for (BodyPart part : parts)
+        {
+            if (!processPart(model, part, models, modifications, partLocations.get(part.getID())))
+                unprocessedParts.add(part);
+        }
+
+        // Try to add any parts that were not added
+        if (unprocessedParts.size() > 0)
+            processParts(model, unprocessedParts, models, modifications, partLocations);
+    }
+
+    public static boolean processPart(MultiLimbedModel model, BodyPart part, BodyPartModels models, IBodyModifications modifications, BodyPartLocation connectTo)
+    {
+        // Don't add this part if the part it connects do has not yet been added to the model
+        if (!model.hasLimb(connectTo.modelID))
+            return false;
+
+        // Remove vanilla body parts if the they have been replaced
+        if (part.getPosition().equalsIgnoreCase(BodyPartNames.armPosition))
+        {
+            model.removeLimb(GenericLimbNames.rightArm);
+            model.removeLimb(GenericLimbNames.leftArm);
+            model.removeLimb(GenericLimbNames.lowerRightArm);
+            model.removeLimb(GenericLimbNames.lowerLeftArm);
+        }
+        else if (part.getPosition().equalsIgnoreCase(BodyPartNames.legPosition))
+        {
+            model.removeLimb(GenericLimbNames.rightLeg);
+            model.removeLimb(GenericLimbNames.leftLeg);
+            model.removeLimb(GenericLimbNames.lowerRightLeg);
+            model.removeLimb(GenericLimbNames.lowerLeftLeg);
+        }
+        else if (part.getPosition().equalsIgnoreCase(BodyPartNames.headPosition))
+            model.removeLimb(GenericLimbNames.head);
+
+        for (String modelID : part.getModelIDs())
+        {
+            ExtendableModelRenderer modelPart = models.getModel(modelID);
+
+            if (connectTo.rotationDepth > 0)
+                modelPart.setRotationDepth(connectTo.rotationDepth);
+
+            // Set as the body if this is a body part
+            if (part.getPosition().equalsIgnoreCase(BodyPartNames.bodyPosition))
+                model.addBody(modelPart);
+            else
+                // TODO: Apply this for bodypart options as well?
+                model.addLimb(modelID, modelPart, connectTo.modelID);
+
+            for (Map.Entry<String, ExtendableModelRenderer> entry : models.getReferences(modelID).entrySet())
+                model.addLimbReference(entry.getKey(), entry.getValue());
+
+            if (part.getHand(modelID) != -1)
+                model.setHand(part.getHand(modelID), model.getLimb(modelID));
+
+            // Add models for any valid options to this body part
+            for (BodyPartOption option : modifications.getModificationOptions(part.getPosition()).values())
+            {
+                for (String optionModels : option.getDefaultOptionModels())
+                {
+                    // Add to the body if the base part is a body part, otherwise reference the base modelID
+                    if (part.getPosition().equalsIgnoreCase(BodyPartNames.bodyPosition))
+                        model.addLimb(optionModels, models.getModel(optionModels));
+                    else
+                        model.addLimb(optionModels, models.getModel(optionModels), modelID);
+
+                    for (Map.Entry<String, ExtendableModelRenderer> entry : models.getReferences(optionModels).entrySet())
+                        model.addLimbReference(entry.getKey(), entry.getValue());
+
+                    if (option.getHand(optionModels) != -1)
+                        model.setHand(option.getHand(optionModels), model.getLimb(optionModels));
+                }
+
+                for (String quadID : option.getQuadIDs())
+                {
+                    QuadCollection collection = models.getQuadCollection(quadID);
+
+                    for (Quad quad : collection.getQuads())
+                        model.getBody().addQuad(quad);
+                }
+            }
+        }
+
+        for (String modelID : part.getFirstPersonModelIDs())
+        {
+            ExtendableModelRenderer modelPart = models.getModel(modelID);
+            model.addFirstPersonLimb(modelID, modelPart);
+
+            for (Map.Entry<String, ExtendableModelRenderer> entry : models.getReferences(modelID).entrySet())
+                model.addLimbReference(entry.getKey(), entry.getValue());
+
+            if (part.getHand(modelID) != -1)
+                model.setHand(part.getHand(modelID), model.getLimb(modelID));
+
+            // Add models for any valid options to this body part
+            for (BodyPartOption option : modifications.getModificationOptions(part.getPosition()).values())
+                for (String optionModels : option.getDefaultOptionModels())
+                {
+                    model.addLimb(optionModels, models.getModel(optionModels), modelID);
+
+                    for (Map.Entry<String, ExtendableModelRenderer> entry : models.getReferences(optionModels).entrySet())
+                        model.addLimbReference(entry.getKey(), entry.getValue());
+
+                    if (option.getHand(optionModels) != -1)
+                        model.setHand(option.getHand(optionModels), model.getLimb(optionModels));
+                }
+        }
+
+        // Add models for any options tied to specific body parts to this body part
+        for (BodyPartOption option : modifications.getModificationOptions(part.getPosition()).values())
+            for (Map.Entry<String, ArrayList<String>> optionModelCollections : option.getOptionModels().entrySet())
+            {
+                // Get the ID of the model this model list is connected to
+                String baseModelID = optionModelCollections.getKey();
+
+                // If the model this collection is tied to exists
+                if (model.hasLimb(baseModelID))
+                {
+                    for (String optionModels : optionModelCollections.getValue())
+                    {
+                        model.addLimb(optionModels, models.getModel(optionModels), baseModelID);
+
+                        for (Map.Entry<String, ExtendableModelRenderer> entry : models.getReferences(optionModels).entrySet())
+                            model.addLimbReference(entry.getKey(), entry.getValue());
+
+                        if (option.getHand(optionModels) != -1)
+                            model.setHand(option.getHand(optionModels), model.getLimb(optionModels));
+                    }
+                }
+            }
+
+
+        for (String quadID : part.getQuadIDs())
+        {
+            QuadCollection collection = models.getQuadCollection(quadID);
+
+            for (Quad quad : collection.getQuads())
+                model.getBody().addQuad(quad);
+        }
+
+        // Set this as the players view point if it is set to be a view point
+        if (part.getViewPoint() != null)
+            model.setViewPoint(model.getLimb(part.getViewPoint()));
+
+        return true;
     }
 }

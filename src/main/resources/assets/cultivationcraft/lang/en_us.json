@@ -29,6 +29,8 @@
   "cultivationcraft.gui.generic.reinforce": "Reinforce",
   "cultivationcraft.gui.generic.reinforce.description": "Reinforce this body part to be stronger without making any significant change to its structure",
 
+  "cultivationcraft.gui.generic.location": "Location",
+
   "cultivationcraft.gui.bodypart.expanding": "Expandable",
   "cultivationcraft.gui.bodypart.expanding.description": "Forge your body to enable it to increase and decrease in size",
 
@@ -64,6 +66,9 @@
 
   "cultivationcraft.gui.bodypart.back.jet": "Jet Boosters",
   "cultivationcraft.gui.bodypart.back.jet.description": "Grow flame spewing jet boosters from your back to increase your movement speed, but only when moving forwards.",
+
+  "cultivationcraft.gui.armpart.headarms": "Arms on Head",
+  "cultivationcraft.gui.armpart.headarms.description": "~~~~TODO~~~~~",
 
   "cultivationcraft.gui.headpart.jaw": "Unhinged Jaw",
   "cultivationcraft.gui.headpart.jaw.description": "Unhinge your jaw to allow your mouth to open much wider than usually possible",

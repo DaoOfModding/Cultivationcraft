@@ -74,7 +74,7 @@ public class BodyPartModels
         if (slim)
             leftArm.setFixedPosAdjustment(1.5F, 2F, 0.0F);
         else
-            leftArm.setFixedPosAdjustment(1.5F, 2F, 0.0F);
+            leftArm.setFixedPosAdjustment(2.0F, 2F, 0.0F);
 
         if (slim)
             leftArm.extend(GenericResizers.getSlimArmResizer());
@@ -155,7 +155,6 @@ public class BodyPartModels
 
     private void setupHeadModels()
     {
-        resizeModule headResizer = GenericResizers.getHeadResizer();
         defaultResizeModule neckResizer = new defaultResizeModule(9, new Vector3d(0, -1, 0), new Vector3d(0.5, 1, 0.5), new Vector3d(8, 8, 8), new Vector3d(0.5, -1, 0.5));
 
         ExtendableModelRenderer neckPart = new ExtendableModelRenderer(0, 7);
@@ -164,13 +163,6 @@ public class BodyPartModels
         neckPart.setDefaultResize(new Vector3d(0.5, 1, 0.5));
         neckPart.extend(neckResizer);
 
-        LongNeckModelRenderer headPart = new LongNeckModelRenderer(0, 0, 9);
-        headPart.setRotationPoint(new Vector3d(0.5D, 0.0D, 0.5D));
-        headPart.setPos(0.5F, 0.0F, 0.5F);
-        headPart.extend(headResizer);
-        headPart.setLooking(true);
-        headPart.setFirstPersonRender(false);
-
         ExtendableModelRenderer neckExplorer = neckPart;
 
         while (neckExplorer.getChildren().size() > 0)
@@ -178,10 +170,9 @@ public class BodyPartModels
             neckExplorer = neckExplorer.getChildren().get(0);
             neckExplorer.setDefaultResize(new Vector3d(0.5, 1, 0.5));
         }
-        neckExplorer.addChild(headPart);
 
         addModel(BodyPartModelNames.longNeckModel, neckPart);
-        addReference(BodyPartModelNames.longNeckModel, BodyPartModelNames.longNeckModelHead, headPart);
+        addReference(BodyPartModelNames.longNeckModel, BodyPartModelNames.longNeckModelEnd, neckExplorer);
 
 
         defaultResizeModule semiHeadResizer = new defaultResizeModule(new Vector3d(8, 5, 8));
