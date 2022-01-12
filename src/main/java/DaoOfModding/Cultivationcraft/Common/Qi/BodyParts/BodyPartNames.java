@@ -12,6 +12,7 @@ import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import DaoOfModding.mlmanimator.Client.Models.GenericLimbNames;
 import DaoOfModding.mlmanimator.Client.Models.MultiLimbedModel;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.TranslationTextComponent;
 
 import java.util.ArrayList;
@@ -66,6 +67,9 @@ public class BodyPartNames
     public static final String herbivorousStomachPart = "herbivorousStomachPart";
 
 
+    // LOCATIONS
+    public static final String headFrontPart = "headfront";
+
     // DEFAULTS
     public static final String DefaultLeftArm = "armleft";
     public static final String DefaultRightArm = "armright";
@@ -117,6 +121,7 @@ public class BodyPartNames
         addSubPartDisplayName(headPosition, mouthSubPosition, "cultivationcraft.gui.headpart.mouth");
         addSubPartDisplayName(bodyPosition, locationSubPosition, "cultivationcraft.gui.generic.location");
         addSubPartDisplayName(armPosition, locationSubPosition, "cultivationcraft.gui.generic.location");
+        addSubPartDisplayName(headPosition, locationSubPosition, "cultivationcraft.gui.generic.location");
 
 
         setupBodyParts();
@@ -349,6 +354,17 @@ public class BodyPartNames
         sharpTeeth.getStatChanges().setStat(StatIDs.biteAttackModifier, 1.5f);
 
         addOption(sharpTeeth);
+
+
+        BodyPartOption frontHead = new BodyPartOption(headFrontPart, headPosition, locationSubPosition, "cultivationcraft.gui.headpart.location.front", 1000);
+        BodyPartLocation frontHeadConnection = new BodyPartLocation(headPosition, basePosition, bodyPosition, basePosition);
+        frontHeadConnection.adjustPos(new Vector3d(0.5, 0.5, 0));
+        frontHeadConnection.adjustRotationPoint(new Vector3d(0.5, 0.5, 0));
+        //frontHeadConnection.adjustFixedPos(new Vector3d(0, 0, 0));
+        frontHead.setConnection(frontHeadConnection);
+        frontHead.addNeededPosition(BodyPartNames.headPosition, BodyPartNames.basePosition);
+
+        addOption(frontHead);
     }
 
     private static void setupLegParts()

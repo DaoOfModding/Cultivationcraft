@@ -133,6 +133,9 @@ public class CultivatorModelHandler
 
                 BodyPartLocation newLocation = new BodyPartLocation(null, null, connectedPart.getModelIDs().get(0));
                 newLocation.adjustDepth(location.rotationDepth);
+                newLocation.adjustPos(location.posOverride);
+                newLocation.adjustRotationPoint(location.rotationpointOverride);
+                newLocation.adjustFixedPos(location.fixedPosOverride);
 
                 return  newLocation;
             }
@@ -210,6 +213,18 @@ public class CultivatorModelHandler
 
             if (connectTo.rotationDepth > 0)
                 modelPart.setRotationDepth(connectTo.rotationDepth);
+
+            if (connectTo.posOverride != null)
+                modelPart.setPos((float)connectTo.posOverride.x, (float)connectTo.posOverride.y, (float)connectTo.posOverride.z);
+
+            if (connectTo.rotationpointOverride != null)
+                modelPart.setRotationPoint(connectTo.rotationpointOverride);
+
+            if (connectTo.fixedPosOverride != null)
+                modelPart.setFixedPosAdjustment((float)connectTo.fixedPosOverride.x, (float)connectTo.fixedPosOverride.y, (float)connectTo.fixedPosOverride.z);
+
+            // Regenerate the cube in case it's size or rotation points have changed
+            modelPart.generateCube(modelPart.getRotationPoint());
 
             // Set as the body if this is a body part
             if (part.getPosition().equalsIgnoreCase(BodyPartNames.bodyPosition))
