@@ -41,6 +41,7 @@ public class BodyPartNames
 
     // LEGS
     public static final String feetPart = "feet";
+    public static final String largeLegPart = "largeleg";
     public static final String reverseJointLegPart = "rjleg";
     public static final String hexaLegPart = "hexaleg";
     public static final String singleLegPart = "oneleg";
@@ -360,7 +361,6 @@ public class BodyPartNames
         BodyPartLocation frontHeadConnection = new BodyPartLocation(headPosition, basePosition, bodyPosition, basePosition);
         frontHeadConnection.adjustPos(new Vector3d(0.5, 0.5, 0));
         frontHeadConnection.adjustRotationPoint(new Vector3d(0.5, 0.5, 0));
-        //frontHeadConnection.adjustFixedPos(new Vector3d(0, 0, 0));
         frontHead.setConnection(frontHeadConnection);
         frontHead.addNeededPosition(BodyPartNames.headPosition, BodyPartNames.basePosition);
 
@@ -378,6 +378,15 @@ public class BodyPartNames
         feetpart.getStatChanges().setStat(StatIDs.legSupport, 2.5f);
 
         addPart(feetpart);
+
+        BodyPart largelegpart = new BodyPart(largeLegPart, legPosition, "cultivationcraft.gui.legpart.large", 1000);
+        largelegpart.addModel(BodyPartModelNames.largeLegLeftModel);
+        largelegpart.addModel(BodyPartModelNames.largeLegRightModel);
+        largelegpart.addNeededPosition(BodyPartNames.armPosition, BodyPartNames.locationSubPosition);
+        feetpart.getStatChanges().setStat(StatIDs.weight, DefaultPlayerBodyPartWeights.legWeight * 2f);
+        feetpart.getStatChanges().setStat(StatIDs.legSupport, 10);
+
+        addPart(largelegpart);
 
         BodyPart rjLegPart = new BodyPart(reverseJointLegPart, legPosition, "cultivationcraft.gui.legpart.reversejoint", 1000);
         rjLegPart.addModel(BodyPartModelNames.reverseJointRightLegModel);

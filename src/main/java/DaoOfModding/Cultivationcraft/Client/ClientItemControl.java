@@ -56,6 +56,8 @@ public class ClientItemControl
 
         BodyPartGUIs.addGUI(BodyPartNames.feetPart, new BodyPartGUI(new ResourceLocation(Cultivationcraft.MODID, "textures/gui/bodyparts/" + BodyPartNames.feetPart + "left.png"), 1, 2, 8, 8, true));
         BodyPartGUIs.addGUI(BodyPartNames.feetPart, new BodyPartGUI(new ResourceLocation(Cultivationcraft.MODID, "textures/gui/bodyparts/" + BodyPartNames.feetPart + "right.png"), -1, 2, 8, 8, true));
+        BodyPartGUIs.addGUI(BodyPartNames.largeLegPart, new BodyPartGUI(new ResourceLocation(Cultivationcraft.MODID, "textures/gui/bodyparts/" + BodyPartNames.largeLegPart + "left.png"), 2, -1, 16, 60, true));
+        BodyPartGUIs.addGUI(BodyPartNames.largeLegPart, new BodyPartGUI(new ResourceLocation(Cultivationcraft.MODID, "textures/gui/bodyparts/" + BodyPartNames.largeLegPart + "right.png"), -2, -1, 16, 60, true));
         BodyPartGUIs.addGUI(BodyPartNames.reverseJointLegPart, new BodyPartGUI(new ResourceLocation(Cultivationcraft.MODID, "textures/gui/bodyparts/" + BodyPartNames.reverseJointLegPart + "left.png"), 1, 2, 8, 24, true));
         BodyPartGUIs.addGUI(BodyPartNames.reverseJointLegPart, new BodyPartGUI(new ResourceLocation(Cultivationcraft.MODID, "textures/gui/bodyparts/" + BodyPartNames.reverseJointLegPart + "right.png"), -1, 2, 8, 24, true));
         BodyPartGUIs.addGUI(BodyPartNames.singleLegPart, new BodyPartGUI(new ResourceLocation(Cultivationcraft.MODID, "textures/gui/bodyparts/" + BodyPartNames.DefaultRightLeg + ".png"), 0, 2, 8, 24, true));

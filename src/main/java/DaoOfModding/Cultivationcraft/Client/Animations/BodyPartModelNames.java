@@ -48,6 +48,11 @@ public class BodyPartModelNames
     public static final String singleLegModel = "SINGLE_LEG_MODEL";
     public static final String singleLegLowerModel = "SINGLE_LEG_LOWER_MODEL";
 
+    public static final String largeLegLeftModel = "LARGE_LEG_LEFT_MODEL";
+    public static final String largeLegRightModel = "LARGE_LEG_RIGHT_MODEL";
+    public static final String largeLegLeftLowerModel = "LARGE_LEG_LEFT_LOWER_MODEL";
+    public static final String largeLegRightLowerModel = "LARGE_LEG_RIGHT_LOWER_MODEL";
+
     public static final String jetLegLeftModel = "JET_LEG_LEFT_MODEL";
     public static final String jetLegLeftLowerModel = "JET_LEG_LEFT_LOWER_MODEL";
     public static final String jetLegLeftEmitter = "JET_LEG_LEFT_EMITTER";

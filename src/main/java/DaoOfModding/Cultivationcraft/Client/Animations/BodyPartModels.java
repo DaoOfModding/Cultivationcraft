@@ -890,6 +890,9 @@ public class BodyPartModels
         leftLeg.extend(GenericResizers.getLegResizer());
         leftLeg.mirror = true;
 
+        ExtendableModelRenderer jLeftLeg = leftLeg.clone();
+        ExtendableModelRenderer jRightLeg = rightLeg.clone();
+
         defaultResizeModule rightLegJetResizer = new defaultResizeModule(new Vector3d(2, 0.5, -0.1));
         ExtendableModelRenderer rightLegJet = new ExtendableModelRenderer(1, 22);
         rightLegJet.setPos(0.75F, 0F, 1F);
@@ -921,7 +924,7 @@ public class BodyPartModels
         rightLegJet.addChild(rightLegJetLeft);
         rightLegJet.addChild(rightLegJetRight);
         rightLegJet.addChild(rightLegJetFront);
-        rightLeg.getChildren().get(0).addChild(rightLegJet);
+        jRightLeg.getChildren().get(0).addChild(rightLegJet);
 
 
         defaultResizeModule leftLegJetResizer = new defaultResizeModule(new Vector3d(2, 0.5, -0.1));
@@ -955,7 +958,7 @@ public class BodyPartModels
         leftLegJet.addChild(leftLegJetLeft);
         leftLegJet.addChild(leftLegJetRight);
         leftLegJet.addChild(leftLegJetFront);
-        leftLeg.getChildren().get(0).addChild(leftLegJet);
+        jLeftLeg.getChildren().get(0).addChild(leftLegJet);
 
         ParticleEmitter leftLegEmitter = new ParticleEmitter(ParticleTypes.FLAME);
         leftLegEmitter.setPos(0.5f, 8, 0.5f);
@@ -969,12 +972,35 @@ public class BodyPartModels
         leftLegJet.addChild(leftLegEmitter);
         rightLegJet.addChild(rightLegEmitter);
 
-        addModel(BodyPartModelNames.jetLegLeftModel, leftLeg);
-        addModel(BodyPartModelNames.jetLegRightModel, rightLeg);
+        addModel(BodyPartModelNames.jetLegLeftModel, jLeftLeg);
+        addModel(BodyPartModelNames.jetLegRightModel, jRightLeg);
         addReference(BodyPartModelNames.jetLegLeftModel, BodyPartModelNames.jetLegLeftLowerModel, leftLeg.getChildren().get(0));
         addReference(BodyPartModelNames.jetLegRightModel, BodyPartModelNames.jetLegRightLowerModel, rightLeg.getChildren().get(0));
         addReference(BodyPartModelNames.jetLegLeftModel, BodyPartModelNames.jetLegLeftEmitter, leftLegEmitter);
         addReference(BodyPartModelNames.jetLegRightModel, BodyPartModelNames.jetLegRightEmitter, rightLegEmitter);
+
+
+        ExtendableModelRenderer largeRightLeg = new ExtendableModelRenderer(0, 16);
+        largeRightLeg.setPos(0F, 0.25F, 0.5F);
+        largeRightLeg.setRotationPoint(new Vector3d(0, 0.75, 0.5));
+        largeRightLeg.setDefaultResize(new Vector3d(2, 2, 2));
+        //largeRightLeg.setFixedPosAdjustment(0F, 2F, 0.0F);
+        largeRightLeg.extend(GenericResizers.getLegResizer());
+        largeRightLeg.getChildren().get(0).setDefaultResize(new Vector3d(2, 2, 2));
+
+        ExtendableModelRenderer largeLeftLeg = new ExtendableModelRenderer(0, 16);
+        largeLeftLeg.setPos(1F, 0.25F, 0.5F);
+        largeLeftLeg.setRotationPoint(new Vector3d(1, 0.75, 0.5));
+        largeLeftLeg.setDefaultResize(new Vector3d(2, 2, 2));
+        //largeLeftLeg.setFixedPosAdjustment(0F, 2F, 0.0F);
+        largeLeftLeg.extend(GenericResizers.getLegResizer());
+        largeLeftLeg.getChildren().get(0).setDefaultResize(new Vector3d(2, 2, 2));
+        largeLeftLeg.mirror = true;
+
+        addModel(BodyPartModelNames.largeLegLeftModel, largeLeftLeg);
+        addModel(BodyPartModelNames.largeLegRightModel, largeRightLeg);
+        addReference(BodyPartModelNames.largeLegLeftModel, BodyPartModelNames.largeLegLeftLowerModel, largeLeftLeg.getChildren().get(0));
+        addReference(BodyPartModelNames.largeLegRightModel, BodyPartModelNames.largeLegRightLowerModel, largeRightLeg.getChildren().get(0));
     }
 
     public void addQuadCollection(String ID, QuadCollection quad)

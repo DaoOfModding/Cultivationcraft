@@ -132,6 +132,10 @@ public class CultivatorModelHandler
                 BodyPart connectedPart = getPartAtLocation(parts, location.modelPositionID, location.modelPositionSubID, modifications);
 
                 BodyPartLocation newLocation = new BodyPartLocation(null, null, connectedPart.getModelIDs().get(0));
+
+                if (location.modelPositionID == BodyPartNames.bodyPosition)
+                    newLocation.modelID = "Body";
+
                 newLocation.adjustDepth(location.rotationDepth);
                 newLocation.adjustPos(location.posOverride);
                 newLocation.adjustRotationPoint(location.rotationpointOverride);
@@ -187,7 +191,10 @@ public class CultivatorModelHandler
     {
         // Don't add this part if the part it connects do has not yet been added to the model
         if (!model.hasLimb(connectTo.modelID))
+        {
+            System.out.println(connectTo.modelID);
             return false;
+        }
 
         // Remove vanilla body parts if the they have been replaced
         if (part.getPosition().equalsIgnoreCase(BodyPartNames.armPosition))
