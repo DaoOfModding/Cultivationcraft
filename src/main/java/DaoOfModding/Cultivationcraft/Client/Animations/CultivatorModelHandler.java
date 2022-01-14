@@ -231,7 +231,7 @@ public class CultivatorModelHandler
                 modelPart.setFixedPosAdjustment((float)connectTo.fixedPosOverride.x, (float)connectTo.fixedPosOverride.y, (float)connectTo.fixedPosOverride.z);
 
             // Regenerate the cube in case it's size or rotation points have changed
-            modelPart.generateCube(modelPart.getRotationPoint());
+            modelPart.generateCube();
 
             // Set as the body if this is a body part
             if (part.getPosition().equalsIgnoreCase(BodyPartNames.bodyPosition))

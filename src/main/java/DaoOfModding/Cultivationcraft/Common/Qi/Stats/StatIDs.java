@@ -19,6 +19,12 @@ public class StatIDs
     // TODO: Make this do something
     public static final String attackRange = "attackRange";
 
+    // TODO: Make this do something
+    public static final String armAttackModifier = "armAttackModifier";
+
+    // TODO: Make this do something
+    public static final String swimSpeed = "swimSpeed";
+
     public static final String legSupport = "legWeight";
     public static final String wingSupport = "wingWeight";
 

@@ -36,6 +36,7 @@ public class BodyPartNames
 
     // ARMS
     public static final String shortArmPart = "shortarm";
+    public static final String flipperArmPart = "flipperarm";
 
     public static final String headArmsPart = "headarms";
 
@@ -303,6 +304,19 @@ public class BodyPartNames
         shortArm.getStatChanges().setStat(StatIDs.attackRange, StatIDs.defaultAttackRange * -0.5f);
 
         addPart(shortArm);
+
+
+        BodyPart fArm = new BodyPart(flipperArmPart, armPosition, "cultivationcraft.gui.armpart.flipper", 1000);
+        fArm.addModel(BodyPartModelNames.flipperLeftModel);
+        fArm.addModel(BodyPartModelNames.flipperRightModel);
+        fArm.addHand(BodyPartModelNames.flipperLeftModel, 1);
+        fArm.addHand(BodyPartModelNames.flipperRightModel, 0);
+        fArm.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.basePosition);
+        fArm.getStatChanges().setStat(StatIDs.weight, DefaultPlayerBodyPartWeights.armWeight * -1.8f);
+        fArm.getStatChanges().setStat(StatIDs.swimSpeed, 1);
+        fArm.getStatChanges().setStat(StatIDs.armAttackModifier, -0.5f);
+
+        addPart(fArm);
 
 
         BodyPart glide = new GlidePart(glideArmPart, armPosition, "cultivationcraft.gui.armpart.glide", 1000);

@@ -88,6 +88,22 @@ public class BodyPartModels
         addReference(GenericLimbNames.rightArm, GenericLimbNames.lowerRightArm, rightArm.getChildren().get(0));
 
 
+        ExtendableModelRenderer lFlipper = leftArm.clone();
+        ExtendableModelRenderer rFlipper = rightArm.clone();
+        lFlipper.setDefaultResize(new Vector3d(0.1, 1, 1));
+        rFlipper.setDefaultResize(new Vector3d(0.1, 1, 1));
+        lFlipper.getChildren().get(0).setDefaultResize(new Vector3d(0.1, 1, 1));
+        rFlipper.getChildren().get(0).setDefaultResize(new Vector3d(0.1, 1, 1));
+        lFlipper.setFixedPosAdjustment(0F, 2F, 0.0F);
+        rFlipper.setFixedPosAdjustment(0F, 2F, 0.0F);
+        lFlipper.generateCube();
+        rFlipper.generateCube();
+
+        addModel(BodyPartModelNames.flipperLeftModel, lFlipper);
+        addReference(BodyPartModelNames.flipperLeftModel, BodyPartModelNames.flipperLowerLeftModel, lFlipper.getChildren().get(0));
+        addModel(BodyPartModelNames.flipperRightModel, rFlipper);
+        addReference(BodyPartModelNames.flipperRightModel, BodyPartModelNames.flipperLowerRightModel, rFlipper.getChildren().get(0));
+
 
         ExtendableModelRenderer shortRightArm = new ExtendableModelRenderer(40, 16);
         shortRightArm.setRotationPoint(new Vector3d(0.5D, 0.66D, 0.5D));

@@ -48,6 +48,9 @@ public class ClientItemControl
         BodyPartGUIs.addGUI(BodyPartNames.shortArmPart, new BodyPartGUI(new ResourceLocation(Cultivationcraft.MODID, "textures/gui/bodyparts/" + BodyPartNames.shortArmPart + "left.png"), 2, -1, 11, 15, true));
         BodyPartGUIs.addGUI(BodyPartNames.shortArmPart, new BodyPartGUI(new ResourceLocation(Cultivationcraft.MODID, "textures/gui/bodyparts/" + BodyPartNames.shortArmPart + "right.png"), -2, -1, 11, 15, true));
 
+        BodyPartGUIs.addGUI(BodyPartNames.flipperArmPart, new BodyPartGUI(new ResourceLocation(Cultivationcraft.MODID, "textures/gui/bodyparts/" + BodyPartNames.flipperArmPart + "left.png"), 2, -1, 3, 29, true));
+        BodyPartGUIs.addGUI(BodyPartNames.flipperArmPart, new BodyPartGUI(new ResourceLocation(Cultivationcraft.MODID, "textures/gui/bodyparts/" + BodyPartNames.flipperArmPart + "right.png"), -2, -1, 3, 29, true));
+
         BodyPartGUIs.addGUI(BodyPartNames.glideArmPart, new BodyPartGUI(new ResourceLocation(Cultivationcraft.MODID, "textures/gui/bodyparts/" + BodyPartNames.glideArmPart + "left.png"), 2, -1, 11, 29, true));
         BodyPartGUIs.addGUI(BodyPartNames.glideArmPart, new BodyPartGUI(new ResourceLocation(Cultivationcraft.MODID, "textures/gui/bodyparts/" + BodyPartNames.glideArmPart + "right.png"), -2, -1, 11, 29, true));
 
