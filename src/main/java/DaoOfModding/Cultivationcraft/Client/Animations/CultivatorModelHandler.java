@@ -34,15 +34,12 @@ public class CultivatorModelHandler
     {
         IBodyModifications modifications = BodyModifications.getBodyModifications(player);
 
-        if (!modifications.hasUpdated())
+        if (!modifications.hasUpdated() || TextureManager.isTextureChanged(player.getUUID()))
         {
-            // Update the model textures to be using the players textures before adding them to the players model
             TextureManager.updateTextures(player);
             updateModel(player, modifications);
 
-            // If player hasn't loaded their skin, then try to update again next tick
-            if (!player.isSkinLoaded())
-                modifications.setUpdated(false);
+            TextureManager.clearTextureChange(player.getUUID());
         }
     }
 

@@ -36,6 +36,16 @@ public class TextureManager
         return manager;
     }
 
+    public static boolean isTextureChanged(UUID playerID)
+    {
+        return getTextureManager(playerID).hasChanged();
+    }
+
+    public static void clearTextureChange(UUID playerID)
+    {
+        getTextureManager(playerID).clearChanged();
+    }
+
     public static void addTexture(UUID playerID, String textureID, ResourceLocation textureLocation)
     {
         getTextureManager(playerID).addTexture(textureID, textureLocation);
