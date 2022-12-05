@@ -5,9 +5,9 @@ import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.Cultiva
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.ICultivatorStats;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import DaoOfModding.Cultivationcraft.Network.Packets.Packet;
-import net.minecraft.network.PacketBuffer;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.fml.LogicalSide;
-import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraftforge.network.NetworkEvent;
 
 import java.util.UUID;
 import java.util.function.Supplier;
@@ -35,7 +35,7 @@ public class CultivatorStatsPacket extends Packet
     }
 
     @Override
-    public void encode(PacketBuffer buffer)
+    public void encode(FriendlyByteBuf buffer)
     {
         if (owner != null)
         {
@@ -47,7 +47,7 @@ public class CultivatorStatsPacket extends Packet
         }
     }
 
-    public static CultivatorStatsPacket decode(PacketBuffer buffer)
+    public static CultivatorStatsPacket decode(FriendlyByteBuf buffer)
     {
         CultivatorStatsPacket returnValue = new CultivatorStatsPacket(null, null);
 

@@ -9,7 +9,7 @@ public class QiSourceConfig
 
     // Return the number of QiSources to spawn
     // Much more likely to be 0, but has a chance to be up to MaxSources
-    public static int getQiSourceInChunk()
+    public static int getQiSourceInLevelChunk()
     {
         return (int)Math.floor(Math.pow(Math.random(), rarity) * (MaxSources + 1));
     }

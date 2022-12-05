@@ -6,12 +6,11 @@ import DaoOfModding.Cultivationcraft.Common.Capabilities.ChunkQiSources.IChunkQi
 import DaoOfModding.Cultivationcraft.Common.Qi.QiSource;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import net.minecraft.client.Minecraft;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.world.chunk.Chunk;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraftforge.fml.LogicalSide;
-import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraftforge.network.NetworkEvent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,21 +18,21 @@ import java.util.function.Supplier;
 
 public class ChunkQiSourcesPacket extends Packet
 {
-    ChunkPos chunkPos;
+    ChunkPos ChunkPos;
     List<QiSource> QiSources;
 
-    public ChunkQiSourcesPacket(ChunkPos chunk,  List<QiSource> Qi)
+    public ChunkQiSourcesPacket(ChunkPos LevelChunk,  List<QiSource> Qi)
     {
-        chunkPos = chunk;
+        ChunkPos = LevelChunk;
         QiSources = Qi;
     }
 
     @Override
-    public void encode(PacketBuffer buffer)
+    public void encode(FriendlyByteBuf buffer)
     {
-        if (chunkPos != null)
+        if (ChunkPos != null)
         {
-            buffer.writeLong(chunkPos.toLong());
+            buffer.writeLong(ChunkPos.toLong());
 
             // Write the number of QiSources to loop through
             buffer.writeInt(QiSources.size());
@@ -46,14 +45,14 @@ public class ChunkQiSourcesPacket extends Packet
         }
     }
 
-    public static ChunkQiSourcesPacket decode(PacketBuffer buffer)
+    public static ChunkQiSourcesPacket decode(FriendlyByteBuf buffer)
     {
         ChunkQiSourcesPacket returnValue = new ChunkQiSourcesPacket(null, null);
 
         try
         {
             // Read in the send values
-            ChunkPos chunk = new ChunkPos(buffer.readLong());
+            ChunkPos LevelChunk = new ChunkPos(buffer.readLong());
 
             int numberOfSources = buffer.readInt();
 
@@ -62,7 +61,7 @@ public class ChunkQiSourcesPacket extends Packet
             for (int i = 0; i < numberOfSources; i++)
                 NewQiSources.add(QiSource.ReadBuffer(buffer));
 
-            return new ChunkQiSourcesPacket(chunk, NewQiSources);
+            return new ChunkQiSourcesPacket(LevelChunk, NewQiSources);
 
         }
         catch (IllegalArgumentException | IndexOutOfBoundsException e)
@@ -94,25 +93,25 @@ public class ChunkQiSourcesPacket extends Packet
         AddChunkQiSourceToClient.addPacket(this);
     }
 
-    // Try to process received packet on the client, will fail if the chunk is not yet loaded
+    // Try to process received packet on the client, will fail if the LevelChunk is not yet loaded
     public boolean processPacket()
     {
         // Disregard this packet if the world is unloaded
         if (Minecraft.getInstance().level == null)
             return true;
 
-        // If the current chunk isn't loaded return false
-        if (!Minecraft.getInstance().level.getChunkSource().isEntityTickingChunk(chunkPos))
+        // If the current LevelChunk isn't loaded return false
+        if (!Minecraft.getInstance().level.getChunkSource().hasChunk(ChunkPos.x, ChunkPos.z))
             return false;
 
-        // Get the specified chunk from the world
-        Chunk chunk = Minecraft.getInstance().level.getChunk(chunkPos.x, chunkPos.z);
+        // Get the specified LevelChunk from the world
+        LevelChunk LevelChunk = Minecraft.getInstance().level.getChunk(ChunkPos.x, ChunkPos.z);
 
-        // Get the ChunkQiSources instance from the chunk
-        IChunkQiSources sources = ChunkQiSources.getChunkQiSources(chunk);
+        // Get the ChunkQiSources instance from the LevelChunk
+        IChunkQiSources sources = ChunkQiSources.getChunkQiSources(LevelChunk);
 
         // Set the new values
-        sources.setChunkPos(new ChunkPos(chunkPos.x, chunkPos.z));
+        sources.setChunkPos(new ChunkPos(ChunkPos.x, ChunkPos.z));
         sources.setQiSources(new ArrayList(QiSources));
 
         return true;

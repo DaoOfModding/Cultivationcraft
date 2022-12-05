@@ -1,21 +1,21 @@
 package DaoOfModding.Cultivationcraft;
 
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.FoodStats.QiFoodStats;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.world.entity.player.Player;
 
 public class StaminaHandler
 {
-    public static void updateStamina(PlayerEntity player, float stamina)
+    public static void updateStamina(Player player, float stamina)
     {
         ((QiFoodStats) player.getFoodData()).setFoodLevel(stamina);
     }
 
-    public static float getStamina(PlayerEntity player)
+    public static float getStamina(Player player)
     {
         return ((QiFoodStats)player.getFoodData()).getTrueFoodLevel();
     }
 
-    public static float getMaxStamina(PlayerEntity player)
+    public static float getMaxStamina(Player player)
     {
         return ((QiFoodStats)player.getFoodData()).getMaxFood();
     }

@@ -10,10 +10,9 @@ import DaoOfModding.Cultivationcraft.Common.Qi.Stats.DefaultPlayerBodyPartWeight
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.StatIDs;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import DaoOfModding.mlmanimator.Client.Models.GenericLimbNames;
-import DaoOfModding.mlmanimator.Client.Models.MultiLimbedModel;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.phys.Vec3;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -373,8 +372,8 @@ public class BodyPartNames
 
         BodyPartOption frontHead = new BodyPartOption(headFrontPart, headPosition, locationSubPosition, "cultivationcraft.gui.headpart.location.front", 1000);
         BodyPartLocation frontHeadConnection = new BodyPartLocation(headPosition, basePosition, bodyPosition, basePosition);
-        frontHeadConnection.adjustPos(new Vector3d(0.5, 0.5, 0));
-        frontHeadConnection.adjustRotationPoint(new Vector3d(0.5, 0.5, 0));
+        frontHeadConnection.adjustPos(new Vec3(0.5, 0.5, 0));
+        frontHeadConnection.adjustRotationPoint(new Vec3(0.5, 0.5, 0));
         frontHead.setConnection(frontHeadConnection);
         frontHead.addNeededPosition(BodyPartNames.headPosition, BodyPartNames.basePosition);
 
@@ -453,7 +452,7 @@ public class BodyPartNames
 
     public static String getDisplayName(String position)
     {
-        return new TranslationTextComponent(displayNames.get(position)).getString();
+        return Component.translatable(displayNames.get(position)).getString();
     }
 
     public static String getDisplayName(String position, String subPosition)
@@ -461,7 +460,7 @@ public class BodyPartNames
         if (subPosition.compareTo(basePosition) == 0)
             return getDisplayName(subPosition);
 
-        return new TranslationTextComponent(subPartDisplayNames.get(position).get(subPosition)).getString();
+        return Component.translatable(subPartDisplayNames.get(position).get(subPosition)).getString();
     }
 
     public static void addDisplayName(String position, String name)

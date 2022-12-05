@@ -1,6 +1,7 @@
 package DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyForgeParts;
 
 import DaoOfModding.Cultivationcraft.Client.Animations.BodyPartModelNames;
+import DaoOfModding.Cultivationcraft.Client.Physics;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartNames;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartOption;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
@@ -8,9 +9,8 @@ import DaoOfModding.Cultivationcraft.Common.Qi.Stats.PlayerStatModifications;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.StatIDs;
 import DaoOfModding.mlmanimator.Client.Models.MultiLimbedModel;
 import DaoOfModding.mlmanimator.Client.Poses.PoseHandler;
-import net.minecraft.client.entity.player.ClientPlayerEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.phys.Vec3;
 
 public class JetPart extends BodyPartOption
 {
@@ -42,7 +42,7 @@ public class JetPart extends BodyPartOption
     }
 
     @Override
-    public void onClientTick(PlayerEntity player)
+    public void onClientTick(Player player)
     {
         // Disable jets if in water
         if (player.isInWater())
@@ -51,9 +51,9 @@ public class JetPart extends BodyPartOption
             return;
         }
 
-        Vector3d delta = PoseHandler.getPlayerPoseHandler(player.getUUID()).getDeltaMovement();
-        Vector3d move = new Vector3d(delta.x, 0, delta.z).normalize();
-        Vector3d direction = player.getForward().normalize();
+        Vec3 delta = Physics.getDelta(player);
+        Vec3 move = new Vec3(delta.x, 0, delta.z).normalize();
+        Vec3 direction = player.getForward().normalize();
 
         double dot = move.dot(direction);
 
@@ -63,7 +63,7 @@ public class JetPart extends BodyPartOption
             enableJets(false, player);
     }
 
-    protected void enableJets(Boolean on, PlayerEntity player)
+    protected void enableJets(Boolean on, Player player)
     {
 
         // Do nothing if not trying to change jet state
@@ -85,17 +85,17 @@ public class JetPart extends BodyPartOption
 
         if (on)
         {
-            model.getLimb(BodyPartModelNames.jetLeftFlame).visible = true;
-            model.getLimb(BodyPartModelNames.jetRightFlame).visible = true;
-            model.getLimb(BodyPartModelNames.jetLeftSmoke).visible = false;
-            model.getLimb(BodyPartModelNames.jetRightSmoke).visible = false;
+            model.getLimb(BodyPartModelNames.jetLeftFlame).getModelPart().visible = true;
+            model.getLimb(BodyPartModelNames.jetRightFlame).getModelPart().visible = true;
+            model.getLimb(BodyPartModelNames.jetLeftSmoke).getModelPart().visible = false;
+            model.getLimb(BodyPartModelNames.jetRightSmoke).getModelPart().visible = false;
         }
         else
         {
-            model.getLimb(BodyPartModelNames.jetLeftFlame).visible = false;
-            model.getLimb(BodyPartModelNames.jetRightFlame).visible = false;
-            model.getLimb(BodyPartModelNames.jetLeftSmoke).visible = true;
-            model.getLimb(BodyPartModelNames.jetRightSmoke).visible = true;
+            model.getLimb(BodyPartModelNames.jetLeftFlame).getModelPart().visible = false;
+            model.getLimb(BodyPartModelNames.jetRightFlame).getModelPart().visible = false;
+            model.getLimb(BodyPartModelNames.jetLeftSmoke).getModelPart().visible = true;
+            model.getLimb(BodyPartModelNames.jetRightSmoke).getModelPart().visible = true;
         }
 
         BodyPartStatControl.updateStats(player);
@@ -103,7 +103,7 @@ public class JetPart extends BodyPartOption
 
     @Override
     // Process a received int info packet
-    public void processInfo(PlayerEntity player, int info)
+    public void processInfo(Player player, int info)
     {
         if (info == 1)
             enabled = true;

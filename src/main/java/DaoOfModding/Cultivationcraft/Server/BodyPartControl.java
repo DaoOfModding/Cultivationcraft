@@ -10,11 +10,11 @@ import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartOption;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
 import DaoOfModding.Cultivationcraft.Common.Qi.CultivationTypes;
 import DaoOfModding.Cultivationcraft.Network.PacketHandler;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.world.entity.player.Player;
 
 public class BodyPartControl
 {
-    public static void checkForgeProgress(PlayerEntity player)
+    public static void checkForgeProgress(Player player)
     {
         ICultivatorStats stats = CultivatorStats.getCultivatorStats(player);
 

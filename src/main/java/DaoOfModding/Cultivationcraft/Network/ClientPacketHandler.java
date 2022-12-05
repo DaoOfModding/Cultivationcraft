@@ -1,17 +1,14 @@
 package DaoOfModding.Cultivationcraft.Network;
 
+import DaoOfModding.Cultivationcraft.Client.genericClientFunctions;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.CultivatorTechniques;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.ICultivatorTechniques;
 import DaoOfModding.Cultivationcraft.Common.Register;
 import DaoOfModding.Cultivationcraft.Network.Packets.*;
 import DaoOfModding.Cultivationcraft.Network.Packets.CultivatorStats.CultivatorTargetPacket;
 import DaoOfModding.Cultivationcraft.Network.Packets.CultivatorStats.RecallFlyingSwordPacket;
-import net.minecraft.client.Minecraft;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraftforge.fml.network.PacketDistributor;
-import net.minecraftforge.fml.server.ServerLifecycleHooks;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
 
 import java.util.UUID;
 
@@ -35,7 +32,7 @@ public class ClientPacketHandler
         PacketHandler.channel.sendToServer(pack);
     }
 
-    public static void sendAttackToServer(UUID playerID, RayTraceResult.Type type, Vector3d pos, UUID targetID, int slot)
+    public static void sendAttackToServer(UUID playerID, HitResult.Type type, Vec3 pos, UUID targetID, int slot)
     {
         AttackPacket pack = new AttackPacket(playerID, type, pos, targetID, slot);
         PacketHandler.channel.sendToServer(pack);
@@ -47,7 +44,7 @@ public class ClientPacketHandler
         PacketHandler.channel.sendToServer(pack);
     }
 
-    public static void sendCultivatorTargetToServer(UUID playerID, RayTraceResult.Type type, Vector3d pos, UUID targetID)
+    public static void sendCultivatorTargetToServer(UUID playerID, HitResult.Type type, Vec3 pos, UUID targetID)
     {
         CultivatorTargetPacket pack = new CultivatorTargetPacket(playerID, type, pos, targetID);
         PacketHandler.channel.sendToServer(pack);
@@ -69,9 +66,9 @@ public class ClientPacketHandler
 
     public static void sendCultivatorTechniquesToServer()
     {
-        ICultivatorTechniques techs = CultivatorTechniques.getCultivatorTechniques(Minecraft.getInstance().player);
+        ICultivatorTechniques techs = CultivatorTechniques.getCultivatorTechniques(genericClientFunctions.getPlayer());
 
-        CultivatorTechniquesPacket pack = new CultivatorTechniquesPacket(Minecraft.getInstance().player.getUUID(), techs);
+        CultivatorTechniquesPacket pack = new CultivatorTechniquesPacket(genericClientFunctions.getPlayer().getUUID(), techs);
         PacketHandler.channel.sendToServer(pack);
     }
 

@@ -1,7 +1,10 @@
 package DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques;
 
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.Technique;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.entity.player.Player;
+import net.minecraftforge.common.capabilities.Capability;
 
 public class CultivatorTechniques implements ICultivatorTechniques
 {
@@ -32,8 +35,30 @@ public class CultivatorTechniques implements ICultivatorTechniques
     }
 
     // Return a specified players CultivatorTechniques
-    public static ICultivatorTechniques getCultivatorTechniques(PlayerEntity player)
+    public static ICultivatorTechniques getCultivatorTechniques(Player player)
     {
-        return player.getCapability(CultivatorTechniquesCapability.CULTIVATOR_TECHINQUES_CAPABILITY_CAPABILITY).orElseThrow(() -> new IllegalArgumentException("getting cultivator techniques"));
+        return player.getCapability(CultivatorTechniquesCapability.INSTANCE).orElseThrow(() -> new IllegalArgumentException("getting cultivator techniques"));
+    }
+
+    public CompoundTag writeNBT()
+    {
+        CompoundTag nbt = new CompoundTag();
+
+        for (int i = 0; i < CultivatorTechniques.numberOfTechniques; i++)
+        {
+            Technique sending = getTechnique(i);
+
+            if (sending != null)
+                nbt.put(Integer.toString(i), sending.writeNBT());
+        }
+
+        return nbt;
+    }
+
+    public void readNBT(CompoundTag nbt)
+    {
+        for (int i = 0; i < CultivatorTechniques.numberOfTechniques; i++)
+            if (nbt.contains(Integer.toString(i)))
+                setTechnique(i, Technique.readNBT(nbt.getCompound(Integer.toString(i))));
     }
 }

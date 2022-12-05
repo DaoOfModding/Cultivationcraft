@@ -1,6 +1,6 @@
 package DaoOfModding.Cultivationcraft.Client.Animations;
 
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.world.phys.Vec3;
 
 public class BodyPartLocation
 {
@@ -14,9 +14,9 @@ public class BodyPartLocation
 
     int rotationDepth = 0;
 
-    Vector3d posOverride;
-    Vector3d rotationpointOverride;
-    Vector3d fixedPosOverride;
+    Vec3 posOverride;
+    Vec3 rotationpointOverride;
+    Vec3 fixedPosOverride;
 
     // Only works for BASE position atm
     public BodyPartLocation(String newPositionID, String newPositionsubID, String newModelID)
@@ -46,17 +46,17 @@ public class BodyPartLocation
         rotationDepth = newDepth;
     }
 
-    public void adjustPos(Vector3d pos)
+    public void adjustPos(Vec3 pos)
     {
         posOverride = pos;
     }
 
-    public void adjustRotationPoint(Vector3d rotationPoint)
+    public void adjustRotationPoint(Vec3 rotationPoint)
     {
         rotationpointOverride = rotationPoint;
     }
 
-    public void adjustFixedPos(Vector3d fixedPos)
+    public void adjustFixedPos(Vec3 fixedPos)
     {
         fixedPosOverride = fixedPos;
     }

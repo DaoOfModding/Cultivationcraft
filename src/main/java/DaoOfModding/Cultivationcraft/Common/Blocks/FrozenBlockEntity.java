@@ -1,35 +1,27 @@
 package DaoOfModding.Cultivationcraft.Common.Blocks;
 
-import DaoOfModding.Cultivationcraft.Common.BlockRegister;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.NBTUtil;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.SUpdateTileEntityPacket;
-import net.minecraft.tileentity.ITickableTileEntity;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Direction;
-import net.minecraftforge.client.model.data.IModelData;
-import net.minecraftforge.client.model.data.ModelDataMap;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.Direction;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.client.model.data.ModelProperty;
-
-public class FrozenTileEntity extends TileEntity implements ITickableTileEntity
+/*
+public class FrozenBlockEntity extends BlockEntity implements ITickableBlockEntity
 {
     public static final ModelProperty<BlockState> FROZEN_BLOCK = new ModelProperty<>();
     public static final ModelProperty<Integer> RAMP_BLOCK = new ModelProperty<>();
 
     private int unfreezeTicks = -1;
     private BlockState frozenBlock = Blocks.AIR.defaultBlockState();
-    private TileEntity frozenEntity = null;
+    private BlockEntity frozenEntity = null;
     private Direction ramp = Direction.DOWN;
 
     private Boolean isClient = false;
 
-    public FrozenTileEntity()
+    public FrozenBlockEntity()
     {
-        super(BlockRegister.frozenTileEntityType);
+        super(BlockRegister.frozenBlockEntityType);
     }
 
     public void setUnfreezeTicks(int ticks)
@@ -37,7 +29,7 @@ public class FrozenTileEntity extends TileEntity implements ITickableTileEntity
         unfreezeTicks = ticks;
     }
 
-    public void setFrozenBlock(BlockState state, TileEntity entity)
+    public void setFrozenBlock(BlockState state, BlockEntity entity)
     {
         frozenBlock = state;
         frozenEntity = entity;
@@ -94,24 +86,24 @@ public class FrozenTileEntity extends TileEntity implements ITickableTileEntity
     }
 
     @Override
-    public SUpdateTileEntityPacket getUpdatePacket()
+    public SUpdateBlockEntityPacket getUpdatePacket()
     {
-        CompoundNBT nbtTagCompound = new CompoundNBT();
+        CompoundTag nbtTagCompound = new CompoundTag();
         save(nbtTagCompound);
 
-        return new SUpdateTileEntityPacket(worldPosition, 76, nbtTagCompound);
+        return new SUpdateBlockEntityPacket(worldPosition, 76, nbtTagCompound);
     }
 
     @Override
-    public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt)
+    public void onDataPacket(NetworkManager net, SUpdateBlockEntityPacket pkt)
     {
         load(getBlockState(), pkt.getTag());
     }
 
     @Override
-    public CompoundNBT getUpdateTag()
+    public CompoundTag getUpdateTag()
     {
-        CompoundNBT nbtTagCompound = new CompoundNBT();
+        CompoundTag nbtTagCompound = new CompoundTag();
         save(nbtTagCompound);
         return nbtTagCompound;
     }
@@ -122,13 +114,13 @@ public class FrozenTileEntity extends TileEntity implements ITickableTileEntity
     }
 
     @Override
-    public void handleUpdateTag(BlockState state, CompoundNBT tag)
+    public void handleUpdateTag(BlockState state, CompoundTag tag)
     {
         load(state, tag);
     }
 
     @Override
-    public CompoundNBT save(CompoundNBT NBT)
+    public CompoundTag save(CompoundTag NBT)
     {
         super.save(NBT);
         NBT.putInt("unfreezeTicks", unfreezeTicks);
@@ -142,7 +134,7 @@ public class FrozenTileEntity extends TileEntity implements ITickableTileEntity
     }
 
     @Override
-    public void load(BlockState state, CompoundNBT NBT)
+    public void load(BlockState state, CompoundTag NBT)
     {
         super.load(state, NBT);
         unfreezeTicks = NBT.getInt("unfreezeTicks");
@@ -164,4 +156,4 @@ public class FrozenTileEntity extends TileEntity implements ITickableTileEntity
         // As soon as data is read in for this block, mark it as not being a client block
         isClient = false;
     }
-}
+}*/

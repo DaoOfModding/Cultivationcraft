@@ -1,12 +1,12 @@
 package DaoOfModding.Cultivationcraft.Client.Particles;
 
 import DaoOfModding.Cultivationcraft.Common.Qi.QiSource;
-import DaoOfModding.Cultivationcraft.Common.Register;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.particles.IParticleData;
-import net.minecraft.particles.ParticleType;
+import DaoOfModding.Cultivationcraft.Client.clientRegister;
+import net.minecraft.core.particles.ParticleType;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.core.particles.ParticleOptions;
 
-public class QiParticleData implements IParticleData
+public class QiParticleData implements ParticleOptions
 {
     QiSource source;
 
@@ -18,11 +18,11 @@ public class QiParticleData implements IParticleData
     @Override
     public ParticleType<QiParticleData> getType()
     {
-        return Register.qiParticleType;
+        return clientRegister.qiParticleType;
     }
 
     @Override
-    public void writeToNetwork(PacketBuffer buf)
+    public void writeToNetwork(FriendlyByteBuf buf)
     {
     }
 

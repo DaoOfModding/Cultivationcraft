@@ -2,13 +2,14 @@ package DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats;
 
 import DaoOfModding.Cultivationcraft.Common.Misc;
 import DaoOfModding.Cultivationcraft.Common.Qi.CultivationTypes;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,7 +25,7 @@ public class CultivatorStats implements ICultivatorStats
     private double flyingItemturnSpeed = 0.4;
     private double flyingItemControlRange = 25;
 
-    private RayTraceResult.Type targetType = RayTraceResult.Type.MISS;
+    private HitResult.Type targetType = HitResult.Type.MISS;
     private Entity targetEntity = null;
     private BlockPos targetBlock = null;
 
@@ -76,16 +77,16 @@ public class CultivatorStats implements ICultivatorStats
         cultivationType = newType;
     }
 
-    // Returns a Vector3d containing the location of the target, should ONLY be called if hasTarget is true
-    public Vector3d getTarget() {
-        if (targetType == RayTraceResult.Type.BLOCK)
-            return Misc.getVector3dFromBlockPos(targetBlock);
-        else if (targetType == RayTraceResult.Type.ENTITY)
+    // Returns a Vec3 containing the location of the target, should ONLY be called if hasTarget is true
+    public Vec3 getTarget() {
+        if (targetType == HitResult.Type.BLOCK)
+            return Misc.getVec3FromBlockPos(targetBlock);
+        else if (targetType == HitResult.Type.ENTITY)
             // Return new vector of the target's location, targeting the middle of the target rather than it's feet
-            return new Vector3d(targetEntity.getX(), targetEntity.getY() + (targetEntity.getBbHeight() / 2), targetEntity.getZ());
+            return new Vec3(targetEntity.getX(), targetEntity.getY() + (targetEntity.getBbHeight() / 2), targetEntity.getZ());
 
         // THIS SHOULD NEVER BE REACHED
-        return new Vector3d(0, 0, 0);
+        return new Vec3(0, 0, 0);
     }
 
     public StatModifier getModifier(String id)
@@ -101,33 +102,33 @@ public class CultivatorStats implements ICultivatorStats
         return modifiers;
     }
 
-    public RayTraceResult.Type getTargetType() {
+    public HitResult.Type getTargetType() {
         return targetType;
     }
 
     // Returns the UUID of the target if it is an entity
     public UUID getTargetID() {
-        if (targetType == RayTraceResult.Type.ENTITY)
+        if (targetType == HitResult.Type.ENTITY)
             return targetEntity.getUUID();
 
         return null;
     }
 
-    public void setTarget(Vector3d pos, RayTraceResult.Type type, World targetWorld, UUID targetID) {
-        targetType = RayTraceResult.Type.MISS;
+    public void setTarget(Vec3 pos, HitResult.Type type, Level targetWorld, UUID targetID) {
+        targetType = HitResult.Type.MISS;
 
-        if (type == RayTraceResult.Type.BLOCK) {
+        if (type == HitResult.Type.BLOCK) {
             // Set the target to the block at the specified position
             targetBlock = new BlockPos(pos);
 
             // Set the target type to block if the targeted block isn't air
             if (Misc.blockExists(targetWorld.getBlockState(targetBlock).getBlock()))
                 targetType = type;
-        } else if (type == RayTraceResult.Type.ENTITY) {
+        } else if (type == HitResult.Type.ENTITY) {
             // Create a large bounding box at the specified position then search for a list of entities at that location
-            AxisAlignedBB scan = new AxisAlignedBB(pos.x - 10, pos.y - 10, pos.z - 10, pos.x + 10, pos.y + 10, pos.z + 10);
+            AABB scan = new AABB(pos.x - 10, pos.y - 10, pos.z - 10, pos.x + 10, pos.y + 10, pos.z + 10);
 
-            List<Entity> entities = targetWorld.getLoadedEntitiesOfClass(Entity.class, scan);
+            List<Entity> entities = targetWorld.getEntitiesOfClass(Entity.class, scan);
 
             // If entities have been found, search through and try to find one with the targetID
             if (!entities.isEmpty()) {
@@ -141,16 +142,16 @@ public class CultivatorStats implements ICultivatorStats
     }
 
     // Returns whether a target has been set
-    public boolean hasTarget(World world) {
+    public boolean hasTarget(Level world) {
         return checkTargets(world);
     }
 
     // Checks whether current targets are valid, clearing the appropriate variables if they are not
     // Returns true if there is a valid target, false if not.
-    private boolean checkTargets(World world) {
-        if (targetType == RayTraceResult.Type.ENTITY)
+    private boolean checkTargets(Level world) {
+        if (targetType == HitResult.Type.ENTITY)
             return checkEntityTarget();
-        else if (targetType == RayTraceResult.Type.BLOCK)
+        else if (targetType == HitResult.Type.BLOCK)
             return checkBlockTarget(world);
 
         return false;
@@ -164,16 +165,16 @@ public class CultivatorStats implements ICultivatorStats
                 targetEntity = null;
         }
 
-        targetType = RayTraceResult.Type.MISS;
+        targetType = HitResult.Type.MISS;
 
         return false;
     }
 
-    private boolean checkBlockTarget(World world) {
+    private boolean checkBlockTarget(Level world) {
         if (targetBlock != null && Misc.blockExists(world.getBlockState(targetBlock).getBlock()))
             return true;
 
-        targetType = RayTraceResult.Type.MISS;
+        targetType = HitResult.Type.MISS;
         targetBlock = null;
 
         return false;
@@ -195,9 +196,31 @@ public class CultivatorStats implements ICultivatorStats
         return disconnected;
     }
 
+    public CompoundTag writeNBT()
+    {
+
+        CompoundTag nbt = new CompoundTag();
+        nbt.putInt("TYPE", getCultivationType());
+        nbt.putDouble("FIS", getFlyingItemSpeed());
+        nbt.putDouble("FITS", getFlyingItemTurnSpeed());
+        nbt.putDouble("FIMS", getFlyingItemMaxSpeed());
+        nbt.putDouble("FICR", getFlyingControlRange());
+
+        return nbt;
+    }
+
+    public void readNBT(CompoundTag nbt)
+    {
+        setCultivationType(nbt.getInt("TYPE"));
+        setFlyingItemSpeed(nbt.getDouble("FIS"));
+        setFlyingItemTurnSpeed(nbt.getDouble("FITS"));
+        setFlyingItemMaxSpeed(nbt.getDouble("FIMS"));
+        setFlyingControlRange(nbt.getDouble("FICR"));
+    }
+
     // Return a specified players CultivatorStats
-    public static ICultivatorStats getCultivatorStats(PlayerEntity player) {
-        return player.getCapability(CultivatorStatsCapability.CULTIVATOR_STATS_CAPABILITY).orElseThrow(() -> new IllegalArgumentException("getting cultivator stats"));
+    public static ICultivatorStats getCultivatorStats(Player player) {
+        return player.getCapability(CultivatorStatsCapability.INSTANCE).orElseThrow(() -> new IllegalArgumentException("getting cultivator stats"));
     }
 }
 

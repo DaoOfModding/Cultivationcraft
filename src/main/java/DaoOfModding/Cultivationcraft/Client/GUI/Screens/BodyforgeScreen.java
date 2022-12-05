@@ -1,5 +1,6 @@
 package DaoOfModding.Cultivationcraft.Client.GUI.Screens;
 
+import DaoOfModding.Cultivationcraft.Client.genericClientFunctions;
 import DaoOfModding.Cultivationcraft.Client.GUI.*;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartNames;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.BodyModifications;
@@ -8,13 +9,12 @@ import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPart;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartOption;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import DaoOfModding.Cultivationcraft.Network.ClientPacketHandler;
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.player.ClientPlayerEntity;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Player;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -59,15 +59,15 @@ public class BodyforgeScreen extends GenericTabScreen
 
     public BodyforgeScreen()
     {
-        super(2, new TranslationTextComponent("cultivationcraft.gui.bodyforge"), new ResourceLocation(Cultivationcraft.MODID, "textures/gui/bodyforge.png"));
+        super(2, Component.translatable("cultivationcraft.gui.bodyforge"), new ResourceLocation(Cultivationcraft.MODID, "textures/gui/bodyforge.png"));
 
-        String Selection = BodyModifications.getBodyModifications(Minecraft.getInstance().player).getSelection();
+        String Selection = BodyModifications.getBodyModifications(genericClientFunctions.getPlayer()).getSelection();
         updateBodyPartList();
 
-        String forgeString = new TranslationTextComponent("cultivationcraft.gui.forge").getString();
+        String forgeString = Component.translatable("cultivationcraft.gui.forge").getString();
         forge = new GUIButton("FORGE", forgeString);
 
-        String cancelString = new TranslationTextComponent("cultivationcraft.gui.cancel").getString();
+        String cancelString = Component.translatable("cultivationcraft.gui.cancel").getString();
         cancel = new GUIButton("CANCEL", cancelString);
 
         // Centre the buttons
@@ -79,7 +79,7 @@ public class BodyforgeScreen extends GenericTabScreen
     {
         bodyParts = new DropdownList();
 
-        ClientPlayerEntity player = Minecraft.getInstance().player;
+        Player player = genericClientFunctions.getPlayer();
 
         // Create a list of all body part positions that can currently be modified
         ArrayList<String> positions = new ArrayList<String>();
@@ -107,7 +107,7 @@ public class BodyforgeScreen extends GenericTabScreen
     {
         bodySubParts = new DropdownList();
 
-        ClientPlayerEntity player = Minecraft.getInstance().player;
+        Player player = genericClientFunctions.getPlayer();
         ArrayList<String> positions = new ArrayList<String>();
 
         for (BodyPart part : BodyPartNames.getParts())
@@ -133,7 +133,7 @@ public class BodyforgeScreen extends GenericTabScreen
         selectedPart = null;
         buttons.clear();
 
-        ClientPlayerEntity player = Minecraft.getInstance().player;
+        Player player = genericClientFunctions.getPlayer();
 
         // Add a button for each part that can be forged in the selected subposition
         if (getSelectedSubPosition().compareTo(BodyPartNames.basePosition) == 0)
@@ -258,14 +258,14 @@ public class BodyforgeScreen extends GenericTabScreen
     }
 
     @Override
-    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks)
+    public void render(PoseStack PoseStack, int mouseX, int mouseY, float partialTicks)
     {
-        super.render(matrixStack, mouseX, mouseY, partialTicks);
+        super.render(PoseStack, mouseX, mouseY, partialTicks);
 
-        drawGuiForgroundLayer(matrixStack, partialTicks, mouseX, mouseY);
+        drawGuiForgroundLayer(PoseStack, partialTicks, mouseX, mouseY);
     }
 
-    protected void drawGuiDetailsForgroundLayer(MatrixStack matrixStack)
+    protected void drawGuiDetailsForgroundLayer(PoseStack PoseStack)
     {
         if (selectedPart == null)
             return;
@@ -279,27 +279,27 @@ public class BodyforgeScreen extends GenericTabScreen
 
         String details = part.getDescription();
 
-        BetterFontRenderer.wordwrap(font, matrixStack, details ,edgeSpacingX + detailsMinXPos, edgeSpacingY + detailsYPos, Color.GRAY.getRGB(), detailsMaxXPos - detailsMinXPos);
+        BetterFontRenderer.wordwrap(font, PoseStack, details ,edgeSpacingX + detailsMinXPos, edgeSpacingY + detailsYPos, Color.GRAY.getRGB(), detailsMaxXPos - detailsMinXPos);
     }
 
-    protected void drawGuiForgroundLayer(MatrixStack matrixStack, float partialTicks, int mouseX, int mouseY)
+    protected void drawGuiForgroundLayer(PoseStack PoseStack, float partialTicks, int mouseX, int mouseY)
     {
-        drawBody(matrixStack);
+        drawBody(PoseStack);
 
         // If a part has already been selected then draw information on that selection
         // Otherwise draw the part selection menu
-        String Selection = BodyModifications.getBodyModifications(Minecraft.getInstance().player).getSelection();
+        String Selection = BodyModifications.getBodyModifications(genericClientFunctions.getPlayer()).getSelection();
         BodyPart part = BodyPartNames.getPart(Selection);
         if (part == null)
             part = BodyPartNames.getOption(Selection);
 
         if (part == null)
-            drawSelection(matrixStack, mouseX, mouseY);
+            drawSelection(PoseStack, mouseX, mouseY);
         else
-            drawSelected(matrixStack, part, mouseX, mouseY);
+            drawSelected(PoseStack, part, mouseX, mouseY);
     }
 
-    private void drawSelection(MatrixStack matrixStack, int mouseX, int mouseY)
+    private void drawSelection(PoseStack PoseStack, int mouseX, int mouseY)
     {
         if (mode == 1)
             updateBodyPartList();
@@ -323,22 +323,22 @@ public class BodyforgeScreen extends GenericTabScreen
 
             int currentY = buttonMinYPos + ypos * (4 + GUIButton.height);
 
-            button.render(matrixStack, edgeSpacingX + xpos, edgeSpacingY + currentY, mouseX, mouseY, this);
+            button.render(PoseStack, edgeSpacingX + xpos, edgeSpacingY + currentY, mouseX, mouseY, this);
 
             // Move the xpos next to this button
             xpos += button.width + 3;
         }
 
-        forge.render(matrixStack, edgeSpacingX + forgeXPos, edgeSpacingY + forgeYPos, mouseX, mouseY, this);
+        forge.render(PoseStack, edgeSpacingX + forgeXPos, edgeSpacingY + forgeYPos, mouseX, mouseY, this);
 
         // Render the BodyPart dropdown list
-        bodySubParts.render(matrixStack, edgeSpacingX + bodySubPartListXPos, edgeSpacingY + bodySubPartListYPos, mouseX, mouseY, this);
-        bodyParts.render(matrixStack, edgeSpacingX + bodyPartListXPos, edgeSpacingY + bodyPartListYPos, mouseX, mouseY, this);
+        bodySubParts.render(PoseStack, edgeSpacingX + bodySubPartListXPos, edgeSpacingY + bodySubPartListYPos, mouseX, mouseY, this);
+        bodyParts.render(PoseStack, edgeSpacingX + bodyPartListXPos, edgeSpacingY + bodyPartListYPos, mouseX, mouseY, this);
 
-        drawGuiDetailsForgroundLayer(matrixStack);
+        drawGuiDetailsForgroundLayer(PoseStack);
     }
 
-    private void drawSelected(MatrixStack matrixStack, BodyPart part, int mouseX, int mouseY)
+    private void drawSelected(PoseStack PoseStack, BodyPart part, int mouseX, int mouseY)
     {
         mode = 1;
 
@@ -351,25 +351,25 @@ public class BodyforgeScreen extends GenericTabScreen
         if (part instanceof BodyPartOption)
             subPosition = BodyPartNames.getDisplayName(part.getPosition(), ((BodyPartOption)part).getSubPosition());
 
-        font.draw(matrixStack, position,edgeSpacingX + selectedTextXPos - font.width(position) / 2, edgeSpacingY + selectedTextYPos, Color.GRAY.getRGB());
-        font.draw(matrixStack, subPosition, edgeSpacingX + selectedTextXPos- font.width(subPosition) / 2, edgeSpacingY + selectedTextYPos + font.lineHeight, Color.GRAY.getRGB());
-        font.draw(matrixStack,part.getDisplayName(), edgeSpacingX + selectedTextXPos - font.width(part.getDisplayName()) / 2, edgeSpacingY + selectedTextYPos + font.lineHeight*2, Color.BLACK.getRGB());
+        font.draw(PoseStack, position,edgeSpacingX + selectedTextXPos - font.width(position) / 2, edgeSpacingY + selectedTextYPos, Color.GRAY.getRGB());
+        font.draw(PoseStack, subPosition, edgeSpacingX + selectedTextXPos- font.width(subPosition) / 2, edgeSpacingY + selectedTextYPos + font.lineHeight, Color.GRAY.getRGB());
+        font.draw(PoseStack,part.getDisplayName(), edgeSpacingX + selectedTextXPos - font.width(part.getDisplayName()) / 2, edgeSpacingY + selectedTextYPos + font.lineHeight*2, Color.BLACK.getRGB());
 
         // Render the progress bar
-        IBodyModifications modifications = BodyModifications.getBodyModifications(Minecraft.getInstance().player);
+        IBodyModifications modifications = BodyModifications.getBodyModifications(genericClientFunctions.getPlayer());
         float progress = (float)modifications.getProgress() / (float)part.getQiNeeded();
 
-        Minecraft.getInstance().getTextureManager().bind(TEXTURE);
+        RenderSystem.setShaderTexture(0, TEXTURE);
 
         int length = xSize - (9 * 2);
 
-        this.blit(matrixStack, edgeSpacingX + 9, edgeSpacingY + 160, 0, 233, length, 6);
-        this.blit(matrixStack, edgeSpacingX + 10, edgeSpacingY + 161, 1, 239, (int)((length - 2) * progress), 4);
+        this.blit(PoseStack, edgeSpacingX + 9, edgeSpacingY + 160, 0, 233, length, 6);
+        this.blit(PoseStack, edgeSpacingX + 10, edgeSpacingY + 161, 1, 239, (int)((length - 2) * progress), 4);
 
-        cancel.render(matrixStack, edgeSpacingX + cancelXPos, edgeSpacingY + cancelYPos, mouseX, mouseY, this);
+        cancel.render(PoseStack, edgeSpacingX + cancelXPos, edgeSpacingY + cancelYPos, mouseX, mouseY, this);
     }
 
-    protected void drawBody(MatrixStack matrixStack)
+    protected void drawBody(PoseStack PoseStack)
     {
         // TODO: Lock and unlock the body whilst drawing to prevent crashes from changing body parts
 
@@ -380,7 +380,7 @@ public class BodyforgeScreen extends GenericTabScreen
         int bodyPosX = edgeSpacingX + 30;
         int bodyPosY = edgeSpacingY + 60;
 
-        IBodyModifications modifications = BodyModifications.getBodyModifications(Minecraft.getInstance().player);
+        IBodyModifications modifications = BodyModifications.getBodyModifications(genericClientFunctions.getPlayer());
 
         // Get the body GUI, this is special as all other GUIs positions are based off this
         BodyPartGUI base;
@@ -394,7 +394,7 @@ public class BodyforgeScreen extends GenericTabScreen
         if (equalsSelectedPosition(BodyPartNames.bodyPosition))
             highlight = true;
 
-        base.render(matrixStack, bodyPosX, bodyPosY, highlight, this);
+        base.render(PoseStack, bodyPosX, bodyPosY, highlight, this);
 
 
         // Draw generic body parts if alterations don't exist
@@ -404,7 +404,7 @@ public class BodyforgeScreen extends GenericTabScreen
             if (equalsSelectedPosition(BodyPartNames.headPosition))
                 highlight = true;
 
-            BodyPartGUIs.getGUI(BodyPartNames.DefaultHead).get(0).render(matrixStack, bodyPosX, bodyPosY, highlight, this, base);
+            BodyPartGUIs.getGUI(BodyPartNames.DefaultHead).get(0).render(PoseStack, bodyPosX, bodyPosY, highlight, this, base);
         }
 
 
@@ -414,8 +414,8 @@ public class BodyforgeScreen extends GenericTabScreen
             if (equalsSelectedPosition(BodyPartNames.armPosition))
                 highlight = true;
 
-            BodyPartGUIs.getGUI(BodyPartNames.DefaultRightArm).get(0).render(matrixStack, bodyPosX, bodyPosY, highlight, this, base);
-            BodyPartGUIs.getGUI(BodyPartNames.DefaultLeftArm).get(0).render(matrixStack, bodyPosX, bodyPosY, highlight,this, base);
+            BodyPartGUIs.getGUI(BodyPartNames.DefaultRightArm).get(0).render(PoseStack, bodyPosX, bodyPosY, highlight, this, base);
+            BodyPartGUIs.getGUI(BodyPartNames.DefaultLeftArm).get(0).render(PoseStack, bodyPosX, bodyPosY, highlight,this, base);
         }
 
         highlight = false;
@@ -424,8 +424,8 @@ public class BodyforgeScreen extends GenericTabScreen
             if (equalsSelectedPosition(BodyPartNames.legPosition))
                 highlight = true;
 
-            BodyPartGUIs.getGUI(BodyPartNames.DefaultRightLeg).get(0).render(matrixStack, bodyPosX, bodyPosY, highlight, this, base);
-            BodyPartGUIs.getGUI(BodyPartNames.DefaultLeftLeg).get(0).render(matrixStack, bodyPosX, bodyPosY, highlight, this, base);
+            BodyPartGUIs.getGUI(BodyPartNames.DefaultRightLeg).get(0).render(PoseStack, bodyPosX, bodyPosY, highlight, this, base);
+            BodyPartGUIs.getGUI(BodyPartNames.DefaultLeftLeg).get(0).render(PoseStack, bodyPosX, bodyPosY, highlight, this, base);
         }
 
         // Loop through and draw all other body part GUIs if they exist
@@ -443,7 +443,7 @@ public class BodyforgeScreen extends GenericTabScreen
 
                  for (BodyPartGUI gui : guis)
                     if (gui != null)
-                        gui.render(matrixStack, bodyPosX, bodyPosY, highlight, this, base);
+                        gui.render(PoseStack, bodyPosX, bodyPosY, highlight, this, base);
             }
         }
     }
@@ -454,7 +454,7 @@ public class BodyforgeScreen extends GenericTabScreen
         String selected = ((String)bodyParts.getSelected());
 
         // Change the position to check to the selected part's position if one exists
-        String Selection = BodyModifications.getBodyModifications(Minecraft.getInstance().player).getSelection();
+        String Selection = BodyModifications.getBodyModifications(genericClientFunctions.getPlayer()).getSelection();
         BodyPart part = BodyPartNames.getPart(Selection);
         if (part != null)
             selected = part.getPosition();

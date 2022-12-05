@@ -4,21 +4,21 @@ import DaoOfModding.Cultivationcraft.Client.Renderer;
 import DaoOfModding.Cultivationcraft.Client.Renderers.QiSourceRenderer;
 import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
 import com.mojang.blaze3d.platform.GlStateManager;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
-import net.minecraft.client.renderer.ActiveRenderInfo;
+import net.minecraft.client.Camera;
 import net.minecraft.client.renderer.LightTexture;
-import net.minecraft.client.world.ClientWorld;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 import java.awt.*;
 
-public class QiParticle extends SpriteTexturedParticle
+public class QiParticle extends TextureSheetParticle
 {
-    private final IAnimatedSprite sprites;
-
-    public QiParticle(ClientWorld world, double x, double y, double z, double velocityX, double velocityY, double velocityZ, int lifespan, IAnimatedSprite sprite)
+    public QiParticle(ClientLevel world, double x, double y, double z, double velocityX, double velocityY, double velocityZ, int lifespan, SpriteSet sprite)
     {
         super(world, x, y, z, velocityX, velocityY, velocityZ);
 
@@ -27,7 +27,6 @@ public class QiParticle extends SpriteTexturedParticle
         // Convert seconds into ticks
         this.lifetime = lifespan;
         this.alpha = 0.5F;
-        this.sprites = sprite;
 
         xd = velocityX;
         yd = velocityY;
@@ -46,9 +45,9 @@ public class QiParticle extends SpriteTexturedParticle
         return FULL_BRIGHTNESS_VALUE;
     }
 
-    public IParticleRenderType getRenderType()
+    public ParticleRenderType getRenderType()
     {
-        return IParticleRenderType.PARTICLE_SHEET_TRANSLUCENT;
+        return ParticleRenderType.PARTICLE_SHEET_TRANSLUCENT;
     }
 
     @Override
@@ -80,7 +79,7 @@ public class QiParticle extends SpriteTexturedParticle
     }
 
     @Override
-    public void render(IVertexBuilder buffer, ActiveRenderInfo renderInfo, float partialTicks)
+    public void render(VertexConsumer buffer, Camera renderInfo, float partialTicks)
     {
         GlStateManager._disableDepthTest();
         super.render(buffer, renderInfo, partialTicks);
@@ -88,12 +87,12 @@ public class QiParticle extends SpriteTexturedParticle
 
 
     @OnlyIn(Dist.CLIENT)
-    public static class Factory implements IParticleFactory<QiParticleData>
+    public static class Factory implements ParticleProvider<QiParticleData>
     {
-        private final IAnimatedSprite sprites;
+        private final SpriteSet sprites;
 
         @Override
-        public Particle createParticle(QiParticleData particleData, ClientWorld world, double xPos, double yPos, double zPos, double xVelocity, double yVelocity, double zVelocity)
+        public Particle createParticle(QiParticleData particleData, ClientLevel world, double xPos, double yPos, double zPos, double xVelocity, double yVelocity, double zVelocity)
         {
             QiParticle particle = new QiParticle(world, xPos, yPos, zPos, xVelocity, yVelocity, zVelocity, (int)(particleData.source.getSize() * ( 1 / QiSourceRenderer.speed)), sprites);
             particle.pickSprite(sprites);
@@ -105,7 +104,7 @@ public class QiParticle extends SpriteTexturedParticle
         }
 
 
-        public Factory(IAnimatedSprite sprite)
+        public Factory(SpriteSet sprite)
         {
             this.sprites = sprite;
         }

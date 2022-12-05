@@ -5,8 +5,8 @@ import DaoOfModding.Cultivationcraft.Common.Qi.Stats.PlayerStatControl;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.PlayerStatModifications;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.StatIDs;
 import DaoOfModding.mlmanimator.Client.Poses.PoseHandler;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.phys.Vec3;
 
 import java.util.HashMap;
 import java.util.UUID;
@@ -15,21 +15,30 @@ public class Physics
 {
     private static HashMap<UUID, Double> fallSpeed = new HashMap<>();
 
+    // PoseHandlers as client only
+    public static Vec3 getDelta(Player player)
+    {
+        Vec3 currentMotion = player.getDeltaMovement();
+
+        if (player.level.isClientSide)
+            currentMotion = PoseHandler.getPlayerPoseHandler(player.getUUID()).getDeltaMovement();
+
+        return currentMotion;
+    }
+
     // Increase player jump speed based on the jump height
-    public static void applyJump(PlayerEntity player)
+    public static void applyJump(Player player)
     {
         PlayerStatControl stats = BodyPartStatControl.getPlayerStatControl(player.getUUID());
         float jumpHeight = stats.getStats().getStat(StatIDs.jumpHeight);
 
-        Vector3d currentMotion = PoseHandler.getPlayerPoseHandler(player.getUUID()).getDeltaMovement();
-
-        float movementSpeed = stats.getStats().getStat(StatIDs.movementSpeed);
+        Vec3 currentMotion = getDelta(player);
 
         // Increase not only the height jump but also multiply X and Z momentum
         player.setDeltaMovement(currentMotion.x + (currentMotion.x * jumpHeight * 0.2f) * stats.getLegWeightModifier(), (0.42f + jumpHeight * 0.1f) * stats.getLegWeightModifier(), currentMotion.z + (currentMotion.z * jumpHeight * 0.2f) * stats.getLegWeightModifier());
     }
 
-    public static void Bounce(PlayerEntity player)
+    public static void Bounce(Player player)
     {
         float bounceHeight = BodyPartStatControl.getStats(player.getUUID()).getStat(StatIDs.bounceHeight);
 
@@ -44,7 +53,7 @@ public class Physics
             return;
         }
 
-        Vector3d delta = PoseHandler.getPlayerPoseHandler(player.getUUID()).getDeltaMovement();
+        Vec3 delta = getDelta(player);
 
         // If the player is on the ground then bounce if they have been falling, otherwise do nothing
         if (player.isOnGround())
@@ -73,7 +82,7 @@ public class Physics
     }
 
     // Increase the distance you can fall without taking damage by the fall height
-    public static float reduceFallDistance(PlayerEntity player, float distance)
+    public static float reduceFallDistance(Player player, float distance)
     {
         PlayerStatControl stats = BodyPartStatControl.getPlayerStatControl(player.getUUID());
 

@@ -1,33 +1,31 @@
 package DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyForgeParts;
 
+import DaoOfModding.Cultivationcraft.Client.Physics;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPart;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
-import DaoOfModding.Cultivationcraft.Common.Qi.Stats.PlayerStatControl;
-import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import DaoOfModding.mlmanimator.Client.Models.GenericLimbNames;
 import DaoOfModding.mlmanimator.Client.Poses.GenericPoses;
 import DaoOfModding.mlmanimator.Client.Poses.PlayerPose;
 import DaoOfModding.mlmanimator.Client.Poses.PoseHandler;
-import net.minecraft.client.entity.player.ClientPlayerEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.phys.Vec3;
 
 public class GlidePart extends BodyPart
 {
     PlayerPose jump = new PlayerPose();
 
-    Vector3d prevMotion = new Vector3d(0, 0, 0);
+    Vec3 prevMotion = new Vec3(0, 0, 0);
 
     public GlidePart(String partID, String position, String displayNamePos, int qiToForge)
     {
         super(partID, position, displayNamePos, qiToForge);
 
-        jump.addAngle(GenericLimbNames.leftArm, new Vector3d(Math.toRadians(0), 0, Math.toRadians(-90)), GenericPoses.jumpArmPriority + 5);
-        jump.addAngle(GenericLimbNames.rightArm, new Vector3d(Math.toRadians(0), 0, Math.toRadians(90)), GenericPoses.jumpArmPriority + 5);
+        jump.addAngle(GenericLimbNames.leftArm, new Vec3(Math.toRadians(0), 0, Math.toRadians(-90)), GenericPoses.jumpArmPriority + 5);
+        jump.addAngle(GenericLimbNames.rightArm, new Vec3(Math.toRadians(0), 0, Math.toRadians(90)), GenericPoses.jumpArmPriority + 5);
     }
 
     @Override
-    public void onClientTick(PlayerEntity player)
+    public void onClientTick(Player player)
     {
         // Do nothing if the player is not in the air
         if (player.isOnGround() || player.isInWater())
@@ -42,7 +40,7 @@ public class GlidePart extends BodyPart
         float minFallSpeed = -0.005f * (float)Math.pow((1.0f / weightModifier), 2);
 
         // Get direction of player movement
-        Vector3d currentMotion = PoseHandler.getPlayerPoseHandler(player.getUUID()).getDeltaMovement();
+        Vec3 currentMotion = Physics.getDelta(player);
 
         double horizontalSpeed = Math.abs(currentMotion.x) + Math.abs(currentMotion.z);
 
@@ -52,7 +50,7 @@ public class GlidePart extends BodyPart
         if (horizontalSpeed < maxHorizontalSpeed)
             speedModifer = horizontalSpeedIncrease;
 
-        Vector3d direction = new Vector3d(player.getLookAngle().x, 0, player.getLookAngle().z).normalize();
+        Vec3 direction = new Vec3(player.getLookAngle().x, 0, player.getLookAngle().z).normalize();
 
         double xMotion = currentMotion.x + direction.x * speedModifer;
         double zMotion = currentMotion.z + direction.z * speedModifer;
@@ -93,7 +91,7 @@ public class GlidePart extends BodyPart
 
         // Calculate xRot based on horizontal movement speed
         // Calculate zRot based on rotation
-        newPose.addAngle(GenericLimbNames.body, new Vector3d(Math.toRadians(90 * xRot), 0, Math.toRadians(180 * angle)), 11);
+        newPose.addAngle(GenericLimbNames.body, new Vec3(Math.toRadians(90 * xRot), 0, Math.toRadians(180 * angle)), 11);
         PoseHandler.addPose(player.getUUID(), newPose);
 
         prevMotion = direction;

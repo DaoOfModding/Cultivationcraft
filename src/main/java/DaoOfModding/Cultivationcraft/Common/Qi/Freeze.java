@@ -1,18 +1,11 @@
 package DaoOfModding.Cultivationcraft.Common.Qi;
 
-import DaoOfModding.Cultivationcraft.Common.BlockRegister;
-import DaoOfModding.Cultivationcraft.Common.Blocks.FrozenTileEntity;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.FireBlock;
-import net.minecraft.block.material.Material;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.core.Direction;
 
 public class Freeze
 {
+    // TODO: Fix freezing
+    /*
     // TODO: Freeze logic for containers
 
     // Freeze all blocks in an area around center for range blocks
@@ -39,10 +32,10 @@ public class Freeze
 
     public static boolean isFrozen(World world, BlockPos pos)
     {
-        TileEntity tileEntity = world.getBlockEntity(pos);
+        BlockEntity BlockEntity = world.getBlockEntity(pos);
 
         // If the block at the specified position is a frozen block refresh the freeze and finish
-        if (tileEntity!= null && tileEntity instanceof FrozenTileEntity)
+        if (BlockEntity!= null && BlockEntity instanceof FrozenBlockEntity)
             return true;
 
         return false;
@@ -53,7 +46,7 @@ public class Freeze
         // If the block at the specified position is a frozen block refresh the freeze and finish
         if (isFrozen(world, pos))
         {
-            ((FrozenTileEntity)world.getBlockEntity(pos)).setUnfreezeTicks(ticks);
+            ((FrozenBlockEntity)world.getBlockEntity(pos)).setUnfreezeTicks(ticks);
             return true;
         }
 
@@ -101,14 +94,14 @@ public class Freeze
     {
         // Get the block and tile entity at the freeze location
         BlockState toFreeze = world.getBlockState(pos);
-        TileEntity tileEntity = world.getBlockEntity(pos);
+        BlockEntity BlockEntity = world.getBlockEntity(pos);
 
         // If the block is already frozen, update the freeze duration and do nothing more
         if (tryUpdateFreeze(world, pos, forTicks))
             return;
 
         world.setBlock(pos, BlockRegister.frozenBlock.defaultBlockState(), 1 + 2 + 16 + 32);
-        FrozenTileEntity frozen = (FrozenTileEntity)world.getBlockEntity(pos);
+        FrozenBlockEntity frozen = (FrozenBlockEntity)world.getBlockEntity(pos);
 
         // Only set half blocks for air blocks
         if (toFreeze.getMaterial() == Material.AIR && dir != Direction.DOWN)
@@ -118,6 +111,6 @@ public class Freeze
             frozen.setIsClient();
 
         frozen.setUnfreezeTicks(20);
-        frozen.setFrozenBlock(toFreeze, tileEntity);
-    }
+        frozen.setFrozenBlock(toFreeze, BlockEntity);
+    }*/
 }

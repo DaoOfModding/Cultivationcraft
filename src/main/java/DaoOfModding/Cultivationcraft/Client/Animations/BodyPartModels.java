@@ -1,15 +1,13 @@
 package DaoOfModding.Cultivationcraft.Client.Animations;
 
-import DaoOfModding.mlmanimator.Client.AnimationFramework.resizeModule;
 import DaoOfModding.mlmanimator.Client.Models.*;
 import DaoOfModding.mlmanimator.Client.Models.Quads.Quad;
 import DaoOfModding.mlmanimator.Client.Models.Quads.QuadLinkage;
 import DaoOfModding.mlmanimator.Client.Poses.PoseHandler;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.math.vector.Vector4f;
+import com.mojang.math.Vector4f;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.world.phys.Vec3;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
 
@@ -35,18 +33,18 @@ public class BodyPartModels
 
     private void setupBodyModels()
     {
-        ExtendableModelRenderer body = new ExtendableModelRenderer(16, 16);
+        ExtendableModelRenderer body = new ExtendableModelRenderer(16, 16, GenericLimbNames.body);
         body.setPos(0.0F, 0.0F, 0.0F);
-        body.setRotationPoint(new Vector3d(0.5, 0.5, 0.5));
+        body.setRotationPoint(new Vec3(0.5, 0.5, 0.5));
         body.extend(GenericResizers.getBodyResizer());
 
         addModel(GenericLimbNames.body, body);
 
 
-        ExtendableModelRenderer shortbody = new ExtendableModelRenderer(16, 16);
+        ExtendableModelRenderer shortbody = new ExtendableModelRenderer(16, 16, BodyPartModelNames.shortBody);
         shortbody.setPos(0.0F, 0.0F, 0.0F);
-        shortbody.setRotationPoint(new Vector3d(0.5, 0.5, 0.5));
-        shortbody.setDefaultResize(new Vector3d(1, 0.5, 1));
+        shortbody.setRotationPoint(new Vec3(0.5, 0.5, 0.5));
+        shortbody.setDefaultResize(new Vec3(1, 0.5, 1));
         shortbody.extend(GenericResizers.getBodyResizer());
 
         addModel(BodyPartModelNames.shortBody, shortbody);
@@ -54,8 +52,8 @@ public class BodyPartModels
 
     private void setupArmModels()
     {
-        ExtendableModelRenderer rightArm = new ExtendableModelRenderer(40, 16);
-        rightArm.setRotationPoint(new Vector3d(0.5D, 0.66D, 0.5D));
+        ExtendableModelRenderer rightArm = new ExtendableModelRenderer(40, 16, GenericLimbNames.rightArm);
+        rightArm.setRotationPoint(new Vec3(0.5D, 0.66D, 0.5D));
         rightArm.setPos(0.0F, 0.0F, 0.5F);
 
         if (slim)
@@ -68,8 +66,8 @@ public class BodyPartModels
         else
             rightArm.extend(GenericResizers.getArmResizer());
 
-        ExtendableModelRenderer leftArm = new ExtendableModelRenderer(32, 48);
-        leftArm.setRotationPoint(new Vector3d(0.5D, 0.66D, 0.5D));
+        ExtendableModelRenderer leftArm = new ExtendableModelRenderer(32, 48, GenericLimbNames.leftArm);
+        leftArm.setRotationPoint(new Vec3(0.5D, 0.66D, 0.5D));
         leftArm.setPos(1.0F, 0.0F, 0.5F);
         if (slim)
             leftArm.setFixedPosAdjustment(1.5F, 2F, 0.0F);
@@ -90,10 +88,10 @@ public class BodyPartModels
 
         ExtendableModelRenderer lFlipper = leftArm.clone();
         ExtendableModelRenderer rFlipper = rightArm.clone();
-        lFlipper.setDefaultResize(new Vector3d(0.1, 1, 1));
-        rFlipper.setDefaultResize(new Vector3d(0.1, 1, 1));
-        lFlipper.getChildren().get(0).setDefaultResize(new Vector3d(0.1, 1, 1));
-        rFlipper.getChildren().get(0).setDefaultResize(new Vector3d(0.1, 1, 1));
+        lFlipper.setDefaultResize(new Vec3(0.1, 1, 1));
+        rFlipper.setDefaultResize(new Vec3(0.1, 1, 1));
+        lFlipper.getChildren().get(0).setDefaultResize(new Vec3(0.1, 1, 1));
+        rFlipper.getChildren().get(0).setDefaultResize(new Vec3(0.1, 1, 1));
         lFlipper.setFixedPosAdjustment(0F, 2F, 0.0F);
         rFlipper.setFixedPosAdjustment(0F, 2F, 0.0F);
         lFlipper.generateCube();
@@ -105,34 +103,34 @@ public class BodyPartModels
         addReference(BodyPartModelNames.flipperRightModel, BodyPartModelNames.flipperLowerRightModel, rFlipper.getChildren().get(0));
 
 
-        ExtendableModelRenderer shortRightArm = new ExtendableModelRenderer(40, 16);
-        shortRightArm.setRotationPoint(new Vector3d(0.5D, 0.66D, 0.5D));
+        ExtendableModelRenderer shortRightArm = new ExtendableModelRenderer(40, 16, BodyPartModelNames.shortArmRightModel);
+        shortRightArm.setRotationPoint(new Vec3(0.5D, 0.66D, 0.5D));
         shortRightArm.setPos(0.0F, 0.0F, 0.5F);
-        shortRightArm.setDefaultResize(new Vector3d(1, 0.5, 1));
+        shortRightArm.setDefaultResize(new Vec3(1, 0.5, 1));
         if (slim)
             shortRightArm.setFixedPosAdjustment(-1.5F, 2F, 0.0F);
         else
             shortRightArm.setFixedPosAdjustment(-2.0F, 2F, 0.0F);
 
         if (slim)
-            shortRightArm.extend(new defaultResizeModule(new Vector3d(3.0D, 12.0D ,4.0D)));
+            shortRightArm.extend(new defaultResizeModule(new Vec3(3.0D, 12.0D ,4.0D)));
         else
-            shortRightArm.extend(new defaultResizeModule(new Vector3d(4.0D, 12.0D ,4.0D)));
+            shortRightArm.extend(new defaultResizeModule(new Vec3(4.0D, 12.0D ,4.0D)));
 
 
-        ExtendableModelRenderer shortLeftArm = new ExtendableModelRenderer(32, 48);
-        shortLeftArm.setRotationPoint(new Vector3d(0.5D, 0.66D, 0.5D));
+        ExtendableModelRenderer shortLeftArm = new ExtendableModelRenderer(32, 48, BodyPartModelNames.shortArmLeftModel);
+        shortLeftArm.setRotationPoint(new Vec3(0.5D, 0.66D, 0.5D));
         shortLeftArm.setPos(1.0F, 0.0F, 0.5F);
-        shortLeftArm.setDefaultResize(new Vector3d(1, 0.5, 1));
+        shortLeftArm.setDefaultResize(new Vec3(1, 0.5, 1));
         if (slim)
             shortLeftArm.setFixedPosAdjustment(1.5F, 2F, 0.0F);
         else
             shortLeftArm.setFixedPosAdjustment(1.5F, 2F, 0.0F);
 
         if (slim)
-            shortLeftArm.extend(new defaultResizeModule(new Vector3d(3.0D, 12.0D ,4.0D)));
+            shortLeftArm.extend(new defaultResizeModule(new Vec3(3.0D, 12.0D ,4.0D)));
         else
-            shortLeftArm.extend(new defaultResizeModule(new Vector3d(4.0D, 12.0D ,4.0D)));
+            shortLeftArm.extend(new defaultResizeModule(new Vec3(4.0D, 12.0D ,4.0D)));
 
 
         shortLeftArm.mirror = true;
@@ -141,19 +139,19 @@ public class BodyPartModels
         addModel(BodyPartModelNames.shortArmRightModel, shortRightArm);
 
 
-        Quad larmConnector = new Quad(new Vector3d(0, 0, 0), new Vector3d(0, 0, 0),new Vector3d(0, 0, 0),new Vector3d(0, 0, 0));
-        Quad rarmConnector = new Quad(new Vector3d(0, 0, 0), new Vector3d(0, 0, 0),new Vector3d(0, 0, 0),new Vector3d(0, 0, 0));
-        getModel(GenericLimbNames.body).addQuadLinkage(new QuadLinkage(larmConnector, Quad.QuadVertex.TopLeft, new Vector3d(1, 1, 0.5)));
-        getModel(GenericLimbNames.body).addQuadLinkage(new QuadLinkage(larmConnector, Quad.QuadVertex.TopRight, new Vector3d(1, 0, 0.5)));
+        Quad larmConnector = new Quad(new Vec3(0, 0, 0), new Vec3(0, 0, 0),new Vec3(0, 0, 0),new Vec3(0, 0, 0));
+        Quad rarmConnector = new Quad(new Vec3(0, 0, 0), new Vec3(0, 0, 0),new Vec3(0, 0, 0),new Vec3(0, 0, 0));
+        getModel(GenericLimbNames.body).addQuadLinkage(new QuadLinkage(larmConnector, Quad.QuadVertex.TopLeft, new Vec3(1, 1, 0.5)));
+        getModel(GenericLimbNames.body).addQuadLinkage(new QuadLinkage(larmConnector, Quad.QuadVertex.TopRight, new Vec3(1, 0, 0.5)));
 
-        getModel(GenericLimbNames.body).addQuadLinkage(new QuadLinkage(rarmConnector, Quad.QuadVertex.TopLeft, new Vector3d(0, 0, 0.5)));
-        getModel(GenericLimbNames.body).addQuadLinkage(new QuadLinkage(rarmConnector, Quad.QuadVertex.BottomLeft, new Vector3d(0, 1, 0.5)));
+        getModel(GenericLimbNames.body).addQuadLinkage(new QuadLinkage(rarmConnector, Quad.QuadVertex.TopLeft, new Vec3(0, 0, 0.5)));
+        getModel(GenericLimbNames.body).addQuadLinkage(new QuadLinkage(rarmConnector, Quad.QuadVertex.BottomLeft, new Vec3(0, 1, 0.5)));
 
-        getModel(GenericLimbNames.leftArm).addQuadLinkage(new QuadLinkage(larmConnector, Quad.QuadVertex.BottomLeft, new Vector3d(0, 1, 0.5)));
-        getModel(GenericLimbNames.leftArm).getChildren().get(0).addQuadLinkage(new QuadLinkage(larmConnector, Quad.QuadVertex.BottomRight, new Vector3d(0, 0.5, 0.5)));
+        getModel(GenericLimbNames.leftArm).addQuadLinkage(new QuadLinkage(larmConnector, Quad.QuadVertex.BottomLeft, new Vec3(0, 1, 0.5)));
+        getModel(GenericLimbNames.leftArm).getChildren().get(0).addQuadLinkage(new QuadLinkage(larmConnector, Quad.QuadVertex.BottomRight, new Vec3(0, 0.5, 0.5)));
 
-        getModel(GenericLimbNames.rightArm).addQuadLinkage(new QuadLinkage(rarmConnector, Quad.QuadVertex.TopRight, new Vector3d(0, 1, 0.5)));
-        getModel(GenericLimbNames.rightArm).getChildren().get(0).addQuadLinkage(new QuadLinkage(rarmConnector, Quad.QuadVertex.BottomRight, new Vector3d(1, 0.5, 0.5)));
+        getModel(GenericLimbNames.rightArm).addQuadLinkage(new QuadLinkage(rarmConnector, Quad.QuadVertex.TopRight, new Vec3(0, 1, 0.5)));
+        getModel(GenericLimbNames.rightArm).getChildren().get(0).addQuadLinkage(new QuadLinkage(rarmConnector, Quad.QuadVertex.BottomRight, new Vec3(1, 0.5, 0.5)));
 
 
         QuadCollection glidingArms = new QuadCollection();
@@ -171,12 +169,12 @@ public class BodyPartModels
 
     private void setupHeadModels()
     {
-        defaultResizeModule neckResizer = new defaultResizeModule(9, new Vector3d(0, -1, 0), new Vector3d(0.5, 1, 0.5), new Vector3d(8, 8, 8), new Vector3d(0.5, -1, 0.5));
+        defaultResizeModule neckResizer = new defaultResizeModule(9, new Vec3(0, -1, 0), new Vec3(0.5, 1, 0.5), new Vec3(8, 8, 8), new Vec3(0.5, -1, 0.5));
 
-        ExtendableModelRenderer neckPart = new ExtendableModelRenderer(0, 7);
-        neckPart.setRotationPoint(new Vector3d(0.5D, 0.0D, 0.5D));
+        ExtendableModelRenderer neckPart = new ExtendableModelRenderer(0, 7, BodyPartModelNames.longNeckModel);
+        neckPart.setRotationPoint(new Vec3(0.5D, 0.0D, 0.5D));
         neckPart.setPos(0.5F, 0.0F, 0.5F);
-        neckPart.setDefaultResize(new Vector3d(0.5, 1, 0.5));
+        neckPart.setDefaultResize(new Vec3(0.5, 1, 0.5));
         neckPart.extend(neckResizer);
 
         ExtendableModelRenderer neckExplorer = neckPart;
@@ -184,19 +182,19 @@ public class BodyPartModels
         while (neckExplorer.getChildren().size() > 0)
         {
             neckExplorer = neckExplorer.getChildren().get(0);
-            neckExplorer.setDefaultResize(new Vector3d(0.5, 1, 0.5));
+            neckExplorer.setDefaultResize(new Vec3(0.5, 1, 0.5));
         }
 
         addModel(BodyPartModelNames.longNeckModel, neckPart);
         addReference(BodyPartModelNames.longNeckModel, BodyPartModelNames.longNeckModelEnd, neckExplorer);
 
 
-        defaultResizeModule semiHeadResizer = new defaultResizeModule(new Vector3d(8, 5, 8));
-        defaultResizeModule jawResizer = new defaultResizeModule(new Vector3d(8, 3, 8));
+        defaultResizeModule semiHeadResizer = new defaultResizeModule(new Vec3(8, 5, 8));
+        defaultResizeModule jawResizer = new defaultResizeModule(new Vec3(8, 3, 8));
 
         // Create the top half of the head
-        ExtendableModelRenderer semiHeadPart = new ExtendableModelRenderer(0, 0);
-        semiHeadPart.setRotationPoint(new Vector3d(0.5D, 0.0D, 0.5D));
+        ExtendableModelRenderer semiHeadPart = new ExtendableModelRenderer(0, 0,BodyPartModelNames.jawModel + "1");
+        semiHeadPart.setRotationPoint(new Vec3(0.5D, 0.0D, 0.5D));
         semiHeadPart.setPos(0.5F, 0.0F, 0.5F);
         semiHeadPart.setFixedPosAdjustment(0, -3, 0);
         semiHeadPart.extend(semiHeadResizer);
@@ -204,8 +202,8 @@ public class BodyPartModels
         semiHeadPart.setFirstPersonRender(false);
 
         // Create the jaw
-        ExtendableModelRenderer jawPart = new ExtendableModelRenderer(0, 5);
-        jawPart.setRotationPoint(new Vector3d(0.5D, 1, 0.3));
+        ExtendableModelRenderer jawPart = new ExtendableModelRenderer(0, 5, BodyPartModelNames.jawModel + "2");
+        jawPart.setRotationPoint(new Vec3(0.5D, 1, 0.3));
         jawPart.setPos(0.5F, 1F, 0.7F);
         jawPart.extend(jawResizer);
         jawPart.setFirstPersonRender(false);
@@ -220,20 +218,20 @@ public class BodyPartModels
 
         // TODO: Fix first person animations
         // Setup first person jaw models
-        semiHeadResizer = new defaultResizeModule(new Vector3d(8, 5, 8));
-        jawResizer = new defaultResizeModule(new Vector3d(8, 3, 8));
+        semiHeadResizer = new defaultResizeModule(new Vec3(8, 5, 8));
+        jawResizer = new defaultResizeModule(new Vec3(8, 3, 8));
 
         // Create the top half of the head
-        ExtendableModelRenderer FPsemiHeadPart = new ExtendableModelRenderer(0, 0);
-        FPsemiHeadPart.setRotationPoint(new Vector3d(0.5D, 0.0D, 0.5D));
+        ExtendableModelRenderer FPsemiHeadPart = new ExtendableModelRenderer(0, 0, BodyPartModelNames.FPjawModel + "1");
+        FPsemiHeadPart.setRotationPoint(new Vec3(0.5D, 0.0D, 0.5D));
         FPsemiHeadPart.setPos(0.5F, 0.0F, 0.5F);
         FPsemiHeadPart.setFixedPosAdjustment(0, -3, 0);
         FPsemiHeadPart.extend(semiHeadResizer);
         FPsemiHeadPart.setLooking(true);
 
         // Create the jaw
-        ExtendableModelRenderer FPjawPart = new ExtendableModelRenderer(0, 5);
-        FPjawPart.setRotationPoint(new Vector3d(0.5D, 1, 0));
+        ExtendableModelRenderer FPjawPart = new ExtendableModelRenderer(0, 5, BodyPartModelNames.FPjawModel + "2");
+        FPjawPart.setRotationPoint(new Vec3(0.5D, 1, 0));
         FPjawPart.setPos(0.5F, 1F, 1F);
         FPjawPart.extend(jawResizer);
 
@@ -253,36 +251,36 @@ public class BodyPartModels
 
     private void setupJetModels()
     {
-        defaultResizeModule jet = new defaultResizeModule(new Vector3d(0.1, 0.1, 4));
+        defaultResizeModule jet = new defaultResizeModule(new Vec3(0.1, 0.1, 4));
 
-        ExtendableModelRenderer JetModel = new ExtendableModelRenderer(16, 16);
+        ExtendableModelRenderer JetModel = new ExtendableModelRenderer(16, 16, BodyPartModelNames.jetLeft);
         JetModel.setPos(0.25F, 0.25F, 1F);
-        JetModel.setRotationPoint(new Vector3d(0.5, 0.5f, 1f));
-        JetModel.setDefaultResize(new Vector3d(20, 5, 1));
+        JetModel.setRotationPoint(new Vec3(0.5, 0.5f, 1f));
+        JetModel.setDefaultResize(new Vec3(20, 5, 1));
         JetModel.extend(jet);
 
-        jet = new defaultResizeModule(new Vector3d(0.1, 0.1, 4));
+        jet = new defaultResizeModule(new Vec3(0.1, 0.1, 4));
 
-        ExtendableModelRenderer JetModelRight = new ExtendableModelRenderer(16, 16);
+        ExtendableModelRenderer JetModelRight = new ExtendableModelRenderer(16, 16, BodyPartModelNames.jetRight);
         JetModelRight.setPos(1F, 1F, 0F);
-        JetModelRight.setRotationPoint(new Vector3d(0, 1f, 1f));
-        JetModelRight.setDefaultResize(new Vector3d(5, 10, 1));
+        JetModelRight.setRotationPoint(new Vec3(0, 1f, 1f));
+        JetModelRight.setDefaultResize(new Vec3(5, 10, 1));
         JetModelRight.extend(jet);
 
-        jet = new defaultResizeModule(new Vector3d(0.1, 0.1, 4));
+        jet = new defaultResizeModule(new Vec3(0.1, 0.1, 4));
 
-        ExtendableModelRenderer JetModelBottom = new ExtendableModelRenderer(16, 16);
+        ExtendableModelRenderer JetModelBottom = new ExtendableModelRenderer(16, 16, BodyPartModelNames.jetLeft + "2");
         JetModelBottom.setPos(1F, 1F, 0F);
-        JetModelBottom.setRotationPoint(new Vector3d(0, 1f, 1f));
-        JetModelBottom.setDefaultResize(new Vector3d(20, 5, 1));
+        JetModelBottom.setRotationPoint(new Vec3(0, 1f, 1f));
+        JetModelBottom.setDefaultResize(new Vec3(20, 5, 1));
         JetModelBottom.extend(jet);
 
-        jet = new defaultResizeModule(new Vector3d(0.1, 0.1, 4));
+        jet = new defaultResizeModule(new Vec3(0.1, 0.1, 4));
 
-        ExtendableModelRenderer JetModelLeft = new ExtendableModelRenderer(16, 16);
+        ExtendableModelRenderer JetModelLeft = new ExtendableModelRenderer(16, 16, BodyPartModelNames.jetRight + "2");
         JetModelLeft.setPos(0F, 0F, 0F);
-        JetModelLeft.setRotationPoint(new Vector3d(1, 0f, 1f));
-        JetModelLeft.setDefaultResize(new Vector3d(5, 10, 1));
+        JetModelLeft.setRotationPoint(new Vec3(1, 0f, 1f));
+        JetModelLeft.setDefaultResize(new Vec3(5, 10, 1));
         JetModelLeft.extend(jet);
 
         JetModelBottom.addChild(JetModelLeft);
@@ -292,27 +290,27 @@ public class BodyPartModels
         ExtendableModelRenderer JetRight = JetModel.clone();
         JetRight.setPos(0.75F, 0.25F, 1F);
 
-        ParticleEmitter jetSmoke = new ParticleEmitter(ParticleTypes.SMOKE);
+        ParticleEmitter jetSmoke = new ParticleEmitter(ParticleTypes.SMOKE, BodyPartModelNames.jetLeftSmoke);
         jetSmoke.setInterval(20);
-        jetSmoke.setVelocity(new Vector3d(0, 0f, 0f));
+        jetSmoke.setVelocity(new Vec3(0, 0f, 0f));
         jetSmoke.setPos(0.5f, 2, 1);
 
-        ParticleEmitter jetSmokeRight = new ParticleEmitter(ParticleTypes.SMOKE);
+        ParticleEmitter jetSmokeRight = new ParticleEmitter(ParticleTypes.SMOKE, BodyPartModelNames.jetRightSmoke);
         jetSmokeRight.setInterval(20);
-        jetSmokeRight.setVelocity(new Vector3d(0, 0f, 0f));
+        jetSmokeRight.setVelocity(new Vec3(0, 0f, 0f));
         jetSmokeRight.setPos(0.5f, 2, 1);
 
-        ParticleEmitter jetFlame = new ParticleEmitter(ParticleTypes.FLAME);
+        ParticleEmitter jetFlame = new ParticleEmitter(ParticleTypes.FLAME, BodyPartModelNames.jetLeftFlame);
         jetFlame.setInterval(1);
         jetFlame.setPos(0.5f, 2, 1);
-        jetFlame.setVelocity(new Vector3d(0, 0, -0.4f));
-        jetFlame.visible = false;
+        jetFlame.setVelocity(new Vec3(0, 0, -0.4f));
+        jetFlame.getModelPart().visible = false;
 
-        ParticleEmitter jetFlameRight = new ParticleEmitter(ParticleTypes.FLAME);
+        ParticleEmitter jetFlameRight = new ParticleEmitter(ParticleTypes.FLAME, BodyPartModelNames.jetRightFlame);
         jetFlameRight.setInterval(1);
-        jetFlameRight.setVelocity(new Vector3d(0, 0f, -0.4f));
+        jetFlameRight.setVelocity(new Vec3(0, 0f, -0.4f));
         jetFlameRight.setPos(0.5f, 2, 1);
-        jetFlameRight.visible = false;
+        jetFlameRight.getModelPart().visible = false;
 
         JetModel.addChild(jetSmoke);
         JetRight.addChild(jetSmokeRight);
@@ -329,31 +327,31 @@ public class BodyPartModels
 
     private void setupWingModels()
     {
-        defaultResizeModule wingTop = new defaultResizeModule(new Vector3d(16, 0.5, 1));
-        defaultResizeModule lwingTop = new defaultResizeModule(new Vector3d(-16, 0.5, 1));
+        defaultResizeModule wingTop = new defaultResizeModule(new Vec3(16, 0.5, 1));
+        defaultResizeModule lwingTop = new defaultResizeModule(new Vec3(-16, 0.5, 1));
 
-        ExtendableModelRenderer wingTopModel = new ExtendableModelRenderer(0, 0);
+        ExtendableModelRenderer wingTopModel = new ExtendableModelRenderer(0, 0, BodyPartModelNames.rwingUpperArmModel);
         wingTopModel.setPos(0.5F, 0.25F, 1F);
-        wingTopModel.setRotationPoint(new Vector3d(1, 0.5f, 0f));
+        wingTopModel.setRotationPoint(new Vec3(1, 0.5f, 0f));
         wingTopModel.extend(wingTop);
 
-        ExtendableModelRenderer lwingTopModel = new ExtendableModelRenderer(0, 0);
+        ExtendableModelRenderer lwingTopModel = new ExtendableModelRenderer(0, 0, BodyPartModelNames.lwingUpperArmModel);
         lwingTopModel.setPos(0.5F, 0.25F, 1F);
-        lwingTopModel.setRotationPoint(new Vector3d(1, 0.5f, 0f));
+        lwingTopModel.setRotationPoint(new Vec3(1, 0.5f, 0f));
         lwingTopModel.extend(lwingTop);
 
 
-        defaultResizeModule wingStrand = new defaultResizeModule(new Vector3d(0.5, 16, 1));
-        defaultResizeModule lwingStrand = new defaultResizeModule(new Vector3d(0.5, 16, 1));
+        defaultResizeModule wingStrand = new defaultResizeModule(new Vec3(0.5, 16, 1));
+        defaultResizeModule lwingStrand = new defaultResizeModule(new Vec3(0.5, 16, 1));
 
-        ExtendableModelRenderer wingStrandModel = new ExtendableModelRenderer(0, 0);
+        ExtendableModelRenderer wingStrandModel = new ExtendableModelRenderer(0, 0, BodyPartModelNames.rwingStrand1Model);
         wingStrandModel.setPos(1, 1F, 0.5F);
-        wingStrandModel.setRotationPoint(new Vector3d(0.5F, 1, 0.5f));
+        wingStrandModel.setRotationPoint(new Vec3(0.5F, 1, 0.5f));
         wingStrandModel.extend(wingStrand);
 
-        ExtendableModelRenderer lwingStrandModel = new ExtendableModelRenderer(0, 0);
+        ExtendableModelRenderer lwingStrandModel = new ExtendableModelRenderer(0, 0, BodyPartModelNames.lwingStrand1Model);
         lwingStrandModel.setPos(1, 1F, 0.5F);
-        lwingStrandModel.setRotationPoint(new Vector3d(0.5F, 1, 0.5f));
+        lwingStrandModel.setRotationPoint(new Vec3(0.5F, 1, 0.5f));
         lwingStrandModel.extend(lwingStrand);
 
 
@@ -374,54 +372,54 @@ public class BodyPartModels
         lwingTopModel.addChild(lwingStrandModel4);
 
 
-        Quad wing12Connector = new Quad(new Vector3d(0, 0, 0), new Vector3d(0, 0, 0),new Vector3d(0, 0, 0),new Vector3d(0, 0, 0));
-        wingStrandModel.addQuadLinkage(new QuadLinkage(wing12Connector, Quad.QuadVertex.TopLeft, new Vector3d(0, 0, 0.5)));
-        wingStrandModel.addQuadLinkage(new QuadLinkage(wing12Connector, Quad.QuadVertex.BottomLeft, new Vector3d(0, 0.95, 0.5)));
-        wingStrandModel2.addQuadLinkage(new QuadLinkage(wing12Connector, Quad.QuadVertex.TopRight, new Vector3d(1, 0, 0.5)));
-        wingStrandModel2.addQuadLinkage(new QuadLinkage(wing12Connector, Quad.QuadVertex.BottomRight, new Vector3d(1, 0.95, 0.5)));
+        Quad wing12Connector = new Quad(new Vec3(0, 0, 0), new Vec3(0, 0, 0),new Vec3(0, 0, 0),new Vec3(0, 0, 0));
+        wingStrandModel.addQuadLinkage(new QuadLinkage(wing12Connector, Quad.QuadVertex.TopLeft, new Vec3(0, 0, 0.5)));
+        wingStrandModel.addQuadLinkage(new QuadLinkage(wing12Connector, Quad.QuadVertex.BottomLeft, new Vec3(0, 0.95, 0.5)));
+        wingStrandModel2.addQuadLinkage(new QuadLinkage(wing12Connector, Quad.QuadVertex.TopRight, new Vec3(1, 0, 0.5)));
+        wingStrandModel2.addQuadLinkage(new QuadLinkage(wing12Connector, Quad.QuadVertex.BottomRight, new Vec3(1, 0.95, 0.5)));
 
-        Quad wing23Connector = new Quad(new Vector3d(0, 0, 0), new Vector3d(0, 0, 0),new Vector3d(0, 0, 0),new Vector3d(0, 0, 0));
-        wingStrandModel2.addQuadLinkage(new QuadLinkage(wing23Connector, Quad.QuadVertex.TopLeft, new Vector3d(0, 0, 0.5)));
-        wingStrandModel2.addQuadLinkage(new QuadLinkage(wing23Connector, Quad.QuadVertex.BottomLeft, new Vector3d(0, 0.95, 0.5)));
-        wingStrandModel3.addQuadLinkage(new QuadLinkage(wing23Connector, Quad.QuadVertex.TopRight, new Vector3d(1, 0, 0.5)));
-        wingStrandModel3.addQuadLinkage(new QuadLinkage(wing23Connector, Quad.QuadVertex.BottomRight, new Vector3d(1, 0.95, 0.5)));
+        Quad wing23Connector = new Quad(new Vec3(0, 0, 0), new Vec3(0, 0, 0),new Vec3(0, 0, 0),new Vec3(0, 0, 0));
+        wingStrandModel2.addQuadLinkage(new QuadLinkage(wing23Connector, Quad.QuadVertex.TopLeft, new Vec3(0, 0, 0.5)));
+        wingStrandModel2.addQuadLinkage(new QuadLinkage(wing23Connector, Quad.QuadVertex.BottomLeft, new Vec3(0, 0.95, 0.5)));
+        wingStrandModel3.addQuadLinkage(new QuadLinkage(wing23Connector, Quad.QuadVertex.TopRight, new Vec3(1, 0, 0.5)));
+        wingStrandModel3.addQuadLinkage(new QuadLinkage(wing23Connector, Quad.QuadVertex.BottomRight, new Vec3(1, 0.95, 0.5)));
 
-        Quad wing34Connector = new Quad(new Vector3d(0, 0, 0), new Vector3d(0, 0, 0),new Vector3d(0, 0, 0),new Vector3d(0, 0, 0));
-        wingStrandModel3.addQuadLinkage(new QuadLinkage(wing34Connector, Quad.QuadVertex.TopLeft, new Vector3d(0, 0, 0.5)));
-        wingStrandModel3.addQuadLinkage(new QuadLinkage(wing34Connector, Quad.QuadVertex.BottomLeft, new Vector3d(0, 0.95, 0.5)));
-        wingStrandModel4.addQuadLinkage(new QuadLinkage(wing34Connector, Quad.QuadVertex.TopRight, new Vector3d(1, 0, 0.5)));
-        wingStrandModel4.addQuadLinkage(new QuadLinkage(wing34Connector, Quad.QuadVertex.BottomRight, new Vector3d(1, 0.95, 0.5)));
+        Quad wing34Connector = new Quad(new Vec3(0, 0, 0), new Vec3(0, 0, 0),new Vec3(0, 0, 0),new Vec3(0, 0, 0));
+        wingStrandModel3.addQuadLinkage(new QuadLinkage(wing34Connector, Quad.QuadVertex.TopLeft, new Vec3(0, 0, 0.5)));
+        wingStrandModel3.addQuadLinkage(new QuadLinkage(wing34Connector, Quad.QuadVertex.BottomLeft, new Vec3(0, 0.95, 0.5)));
+        wingStrandModel4.addQuadLinkage(new QuadLinkage(wing34Connector, Quad.QuadVertex.TopRight, new Vec3(1, 0, 0.5)));
+        wingStrandModel4.addQuadLinkage(new QuadLinkage(wing34Connector, Quad.QuadVertex.BottomRight, new Vec3(1, 0.95, 0.5)));
 
-        Quad wing45Connector = new Quad(new Vector3d(0, 0, 0), new Vector3d(0, 0, 0),new Vector3d(0, 0, 0),new Vector3d(0, 0, 0));
-        wingStrandModel4.addQuadLinkage(new QuadLinkage(wing45Connector, Quad.QuadVertex.TopLeft, new Vector3d(0, 0, 0.5)));
-        wingStrandModel4.addQuadLinkage(new QuadLinkage(wing45Connector, Quad.QuadVertex.BottomLeft, new Vector3d(0, 0.95, 0.5)));
-        wingTopModel.addQuadLinkage(new QuadLinkage(wing45Connector, Quad.QuadVertex.TopRight, new Vector3d(1, 0, 0.5)));
-        wingTopModel.addQuadLinkage(new QuadLinkage(wing45Connector, Quad.QuadVertex.BottomRight, new Vector3d(0, 0, 0.5)));
+        Quad wing45Connector = new Quad(new Vec3(0, 0, 0), new Vec3(0, 0, 0),new Vec3(0, 0, 0),new Vec3(0, 0, 0));
+        wingStrandModel4.addQuadLinkage(new QuadLinkage(wing45Connector, Quad.QuadVertex.TopLeft, new Vec3(0, 0, 0.5)));
+        wingStrandModel4.addQuadLinkage(new QuadLinkage(wing45Connector, Quad.QuadVertex.BottomLeft, new Vec3(0, 0.95, 0.5)));
+        wingTopModel.addQuadLinkage(new QuadLinkage(wing45Connector, Quad.QuadVertex.TopRight, new Vec3(1, 0, 0.5)));
+        wingTopModel.addQuadLinkage(new QuadLinkage(wing45Connector, Quad.QuadVertex.BottomRight, new Vec3(0, 0, 0.5)));
 
 
-        Quad lwing12Connector = new Quad(new Vector3d(0, 0, 0), new Vector3d(0, 0, 0),new Vector3d(0, 0, 0),new Vector3d(0, 0, 0));
-        lwingStrandModel.addQuadLinkage(new QuadLinkage(lwing12Connector, Quad.QuadVertex.TopLeft, new Vector3d(0, 0, 0.5)));
-        lwingStrandModel.addQuadLinkage(new QuadLinkage(lwing12Connector, Quad.QuadVertex.TopRight, new Vector3d(0, 0.95, 0.5)));
-        lwingStrandModel2.addQuadLinkage(new QuadLinkage(lwing12Connector, Quad.QuadVertex.BottomLeft, new Vector3d(1, 0, 0.5)));
-        lwingStrandModel2.addQuadLinkage(new QuadLinkage(lwing12Connector, Quad.QuadVertex.BottomRight, new Vector3d(1, 0.95, 0.5)));
+        Quad lwing12Connector = new Quad(new Vec3(0, 0, 0), new Vec3(0, 0, 0),new Vec3(0, 0, 0),new Vec3(0, 0, 0));
+        lwingStrandModel.addQuadLinkage(new QuadLinkage(lwing12Connector, Quad.QuadVertex.TopLeft, new Vec3(0, 0, 0.5)));
+        lwingStrandModel.addQuadLinkage(new QuadLinkage(lwing12Connector, Quad.QuadVertex.TopRight, new Vec3(0, 0.95, 0.5)));
+        lwingStrandModel2.addQuadLinkage(new QuadLinkage(lwing12Connector, Quad.QuadVertex.BottomLeft, new Vec3(1, 0, 0.5)));
+        lwingStrandModel2.addQuadLinkage(new QuadLinkage(lwing12Connector, Quad.QuadVertex.BottomRight, new Vec3(1, 0.95, 0.5)));
 
-        Quad lwing23Connector = new Quad(new Vector3d(0, 0, 0), new Vector3d(0, 0, 0),new Vector3d(0, 0, 0),new Vector3d(0, 0, 0));
-        lwingStrandModel2.addQuadLinkage(new QuadLinkage(lwing23Connector, Quad.QuadVertex.TopLeft, new Vector3d(0, 0, 0.5)));
-        lwingStrandModel2.addQuadLinkage(new QuadLinkage(lwing23Connector, Quad.QuadVertex.TopRight, new Vector3d(0, 0.95, 0.5)));
-        lwingStrandModel3.addQuadLinkage(new QuadLinkage(lwing23Connector, Quad.QuadVertex.BottomLeft, new Vector3d(1, 0, 0.5)));
-        lwingStrandModel3.addQuadLinkage(new QuadLinkage(lwing23Connector, Quad.QuadVertex.BottomRight, new Vector3d(1, 0.95, 0.5)));
+        Quad lwing23Connector = new Quad(new Vec3(0, 0, 0), new Vec3(0, 0, 0),new Vec3(0, 0, 0),new Vec3(0, 0, 0));
+        lwingStrandModel2.addQuadLinkage(new QuadLinkage(lwing23Connector, Quad.QuadVertex.TopLeft, new Vec3(0, 0, 0.5)));
+        lwingStrandModel2.addQuadLinkage(new QuadLinkage(lwing23Connector, Quad.QuadVertex.TopRight, new Vec3(0, 0.95, 0.5)));
+        lwingStrandModel3.addQuadLinkage(new QuadLinkage(lwing23Connector, Quad.QuadVertex.BottomLeft, new Vec3(1, 0, 0.5)));
+        lwingStrandModel3.addQuadLinkage(new QuadLinkage(lwing23Connector, Quad.QuadVertex.BottomRight, new Vec3(1, 0.95, 0.5)));
 
-        Quad lwing34Connector = new Quad(new Vector3d(0, 0, 0), new Vector3d(0, 0, 0),new Vector3d(0, 0, 0),new Vector3d(0, 0, 0));
-        lwingStrandModel3.addQuadLinkage(new QuadLinkage(lwing34Connector, Quad.QuadVertex.TopLeft, new Vector3d(0, 0, 0.5)));
-        lwingStrandModel3.addQuadLinkage(new QuadLinkage(lwing34Connector, Quad.QuadVertex.TopRight, new Vector3d(0, 0.95, 0.5)));
-        lwingStrandModel4.addQuadLinkage(new QuadLinkage(lwing34Connector, Quad.QuadVertex.BottomLeft, new Vector3d(1, 0, 0.5)));
-        lwingStrandModel4.addQuadLinkage(new QuadLinkage(lwing34Connector, Quad.QuadVertex.BottomRight, new Vector3d(1, 0.95, 0.5)));
+        Quad lwing34Connector = new Quad(new Vec3(0, 0, 0), new Vec3(0, 0, 0),new Vec3(0, 0, 0),new Vec3(0, 0, 0));
+        lwingStrandModel3.addQuadLinkage(new QuadLinkage(lwing34Connector, Quad.QuadVertex.TopLeft, new Vec3(0, 0, 0.5)));
+        lwingStrandModel3.addQuadLinkage(new QuadLinkage(lwing34Connector, Quad.QuadVertex.TopRight, new Vec3(0, 0.95, 0.5)));
+        lwingStrandModel4.addQuadLinkage(new QuadLinkage(lwing34Connector, Quad.QuadVertex.BottomLeft, new Vec3(1, 0, 0.5)));
+        lwingStrandModel4.addQuadLinkage(new QuadLinkage(lwing34Connector, Quad.QuadVertex.BottomRight, new Vec3(1, 0.95, 0.5)));
 
-        Quad lwing45Connector = new Quad(new Vector3d(0, 0, 0), new Vector3d(0, 0, 0),new Vector3d(0, 0, 0),new Vector3d(0, 0, 0));
-        lwingStrandModel4.addQuadLinkage(new QuadLinkage(lwing45Connector, Quad.QuadVertex.TopLeft, new Vector3d(0, 0, 0.5)));
-        lwingStrandModel4.addQuadLinkage(new QuadLinkage(lwing45Connector, Quad.QuadVertex.TopRight, new Vector3d(0, 0.95, 0.5)));
-        lwingTopModel.addQuadLinkage(new QuadLinkage(lwing45Connector, Quad.QuadVertex.BottomLeft, new Vector3d(1, 0, 0.5)));
-        lwingTopModel.addQuadLinkage(new QuadLinkage(lwing45Connector, Quad.QuadVertex.BottomRight, new Vector3d(0, 0, 0.5)));
+        Quad lwing45Connector = new Quad(new Vec3(0, 0, 0), new Vec3(0, 0, 0),new Vec3(0, 0, 0),new Vec3(0, 0, 0));
+        lwingStrandModel4.addQuadLinkage(new QuadLinkage(lwing45Connector, Quad.QuadVertex.TopLeft, new Vec3(0, 0, 0.5)));
+        lwingStrandModel4.addQuadLinkage(new QuadLinkage(lwing45Connector, Quad.QuadVertex.TopRight, new Vec3(0, 0.95, 0.5)));
+        lwingTopModel.addQuadLinkage(new QuadLinkage(lwing45Connector, Quad.QuadVertex.BottomLeft, new Vec3(1, 0, 0.5)));
+        lwingTopModel.addQuadLinkage(new QuadLinkage(lwing45Connector, Quad.QuadVertex.BottomRight, new Vec3(0, 0, 0.5)));
 
 
         QuadCollection wingQuads = new QuadCollection();
@@ -450,49 +448,49 @@ public class BodyPartModels
 
     private void setupInsectWingModels()
     {
-        defaultResizeModule wingTop = new defaultResizeModule(new Vector3d(16, 0.25, 0.25));
-        defaultResizeModule lwingTop = new defaultResizeModule(new Vector3d(-16, 0.25, 0.25));
+        defaultResizeModule wingTop = new defaultResizeModule(new Vec3(16, 0.25, 0.25));
+        defaultResizeModule lwingTop = new defaultResizeModule(new Vec3(-16, 0.25, 0.25));
 
-        ExtendableModelRenderer wingTopModel = new ExtendableModelRenderer(0, 0);
+        ExtendableModelRenderer wingTopModel = new ExtendableModelRenderer(0, 0, BodyPartModelNames.rinsectWing);
         wingTopModel.setPos(0.5F, 0.1F, 1F);
-        wingTopModel.setRotationPoint(new Vector3d(1, 0.5f, 0f));
+        wingTopModel.setRotationPoint(new Vec3(1, 0.5f, 0f));
         wingTopModel.extend(wingTop);
 
-        ExtendableModelRenderer lwingTopModel = new ExtendableModelRenderer(0, 0);
+        ExtendableModelRenderer lwingTopModel = new ExtendableModelRenderer(0, 0, BodyPartModelNames.linsectWing);
         lwingTopModel.setPos(0.5F, 0.1F, 1F);
-        lwingTopModel.setRotationPoint(new Vector3d(1, 0.5f, 0f));
+        lwingTopModel.setRotationPoint(new Vec3(1, 0.5f, 0f));
         lwingTopModel.extend(lwingTop);
 
 
-        defaultResizeModule innerWingTop = new defaultResizeModule(new Vector3d(-14, 0.25, 0.25));
-        defaultResizeModule linnerWingTop = new defaultResizeModule(new Vector3d(14, 0.25, 0.25));
+        defaultResizeModule innerWingTop = new defaultResizeModule(new Vec3(-14, 0.25, 0.25));
+        defaultResizeModule linnerWingTop = new defaultResizeModule(new Vec3(14, 0.25, 0.25));
 
-        ExtendableModelRenderer innerWingModel = new ExtendableModelRenderer(0, 0);
+        ExtendableModelRenderer innerWingModel = new ExtendableModelRenderer(0, 0, BodyPartModelNames.rinsectWingInner);
         innerWingModel.setPos(0, 0F, 0.5F);
-        innerWingModel.setRotationPoint(new Vector3d(0F, 1, 0.5f));
+        innerWingModel.setRotationPoint(new Vec3(0F, 1, 0.5f));
         innerWingModel.extend(innerWingTop);
 
-        ExtendableModelRenderer linnerWingModel = new ExtendableModelRenderer(0, 0);
+        ExtendableModelRenderer linnerWingModel = new ExtendableModelRenderer(0, 0, BodyPartModelNames.linsectWingInner);
         linnerWingModel.setPos(0, 0F, 0.5F);
-        linnerWingModel.setRotationPoint(new Vector3d(0F, 1, 0.5f));
+        linnerWingModel.setRotationPoint(new Vec3(0F, 1, 0.5f));
         linnerWingModel.extend(linnerWingTop);
 
         wingTopModel.addChild(innerWingModel);
         lwingTopModel.addChild(linnerWingModel);
 
 
-        Quad lwingConnector = new Quad(new Vector3d(0, 0, 0), new Vector3d(0, 0, 0),new Vector3d(0, 0, 0),new Vector3d(0, 0, 0));
-        lwingTopModel.addQuadLinkage(new QuadLinkage(lwingConnector, Quad.QuadVertex.TopLeft, new Vector3d(0, 0, 0.5)));
-        lwingTopModel.addQuadLinkage(new QuadLinkage(lwingConnector, Quad.QuadVertex.BottomLeft, new Vector3d(1, 0, 0.5)));
-        linnerWingModel.addQuadLinkage(new QuadLinkage(lwingConnector, Quad.QuadVertex.TopRight, new Vector3d(1, 0, 0.5)));
-        linnerWingModel.addQuadLinkage(new QuadLinkage(lwingConnector, Quad.QuadVertex.BottomRight, new Vector3d(0, 0, 0.5)));
+        Quad lwingConnector = new Quad(new Vec3(0, 0, 0), new Vec3(0, 0, 0),new Vec3(0, 0, 0),new Vec3(0, 0, 0));
+        lwingTopModel.addQuadLinkage(new QuadLinkage(lwingConnector, Quad.QuadVertex.TopLeft, new Vec3(0, 0, 0.5)));
+        lwingTopModel.addQuadLinkage(new QuadLinkage(lwingConnector, Quad.QuadVertex.BottomLeft, new Vec3(1, 0, 0.5)));
+        linnerWingModel.addQuadLinkage(new QuadLinkage(lwingConnector, Quad.QuadVertex.TopRight, new Vec3(1, 0, 0.5)));
+        linnerWingModel.addQuadLinkage(new QuadLinkage(lwingConnector, Quad.QuadVertex.BottomRight, new Vec3(0, 0, 0.5)));
         lwingConnector.setColor(new Vector4f(1, 1, 1, 0.33f));
 
-        Quad rwingConnector = new Quad(new Vector3d(0, 0, 0), new Vector3d(0, 0, 0),new Vector3d(0, 0, 0),new Vector3d(0, 0, 0));
-        wingTopModel.addQuadLinkage(new QuadLinkage(rwingConnector, Quad.QuadVertex.TopLeft, new Vector3d(0, 0, 0.5)));
-        wingTopModel.addQuadLinkage(new QuadLinkage(rwingConnector, Quad.QuadVertex.BottomLeft, new Vector3d(1, 0, 0.5)));
-        innerWingModel.addQuadLinkage(new QuadLinkage(rwingConnector, Quad.QuadVertex.TopRight, new Vector3d(1, 0, 0.5)));
-        innerWingModel.addQuadLinkage(new QuadLinkage(rwingConnector, Quad.QuadVertex.BottomRight, new Vector3d(0, 0, 0.5)));
+        Quad rwingConnector = new Quad(new Vec3(0, 0, 0), new Vec3(0, 0, 0),new Vec3(0, 0, 0),new Vec3(0, 0, 0));
+        wingTopModel.addQuadLinkage(new QuadLinkage(rwingConnector, Quad.QuadVertex.TopLeft, new Vec3(0, 0, 0.5)));
+        wingTopModel.addQuadLinkage(new QuadLinkage(rwingConnector, Quad.QuadVertex.BottomLeft, new Vec3(1, 0, 0.5)));
+        innerWingModel.addQuadLinkage(new QuadLinkage(rwingConnector, Quad.QuadVertex.TopRight, new Vec3(1, 0, 0.5)));
+        innerWingModel.addQuadLinkage(new QuadLinkage(rwingConnector, Quad.QuadVertex.BottomRight, new Vec3(0, 0, 0.5)));
         rwingConnector.setColor(new Vector4f(1, 1, 1, 0.33f));
 
         QuadCollection wingQuads = new QuadCollection();
@@ -520,10 +518,10 @@ public class BodyPartModels
         // Create row of top teeth
         defaultResizeModule flatToothResizer = QiResizers.getTeethResizer(8, 8f, 1, 0.1f);
 
-        ExtendableModelRenderer flatToothPart = new ExtendableModelRenderer(64, 64, 0, 0);
+        ExtendableModelRenderer flatToothPart = new ExtendableModelRenderer(64, 64, 0, 0, BodyPartModelNames.flatToothModel);
         flatToothPart.setPos(0f, 1f, 0f);
         flatToothPart.setFixedPosAdjustment(0.05f, 0, 0.05f);
-        flatToothPart.setRotationPoint(new Vector3d(1f, 1, 1));
+        flatToothPart.setRotationPoint(new Vec3(1f, 1, 1));
         flatToothPart.extend(flatToothResizer);
 
         ExtendableModelRenderer lastTooth = flatToothPart;
@@ -535,20 +533,20 @@ public class BodyPartModels
         //Setup side teeth
         flatToothResizer = QiResizers.getSideTeethResizer(6, 5.8f, 1, 0.1f);
 
-        ExtendableModelRenderer flatToothSidePart = new ExtendableModelRenderer(64, 64, 0, 0);
+        ExtendableModelRenderer flatToothSidePart = new ExtendableModelRenderer(64, 64, 0, 0, BodyPartModelNames.flatToothModel + "1");
         flatToothSidePart.setPos(1f, 0.5f, 1f);
         flatToothSidePart.setFixedPosAdjustment(0f, 0, 0.1f);
-        flatToothSidePart.setRotationPoint(new Vector3d(0f, 0.5, 1));
+        flatToothSidePart.setRotationPoint(new Vec3(0f, 0.5, 1));
         flatToothSidePart.extend(flatToothResizer);
 
         flatToothPart.addChild(flatToothSidePart);
 
         flatToothResizer = QiResizers.getSideTeethResizer(6, 5.8f, 1, 0.1f);
 
-        flatToothSidePart = new ExtendableModelRenderer(64, 64, 0, 0);
+        flatToothSidePart = new ExtendableModelRenderer(64, 64, 0, 0, BodyPartModelNames.flatToothModel + "2");
         flatToothSidePart.setPos(1f, 0.5f, 1f);
         flatToothSidePart.setFixedPosAdjustment(0f, 0, 0.1f);
-        flatToothSidePart.setRotationPoint(new Vector3d(0f, 0.5, 1));
+        flatToothSidePart.setRotationPoint(new Vec3(0f, 0.5, 1));
         flatToothSidePart.extend(flatToothResizer);
 
         lastTooth.addChild(flatToothSidePart);
@@ -559,12 +557,12 @@ public class BodyPartModels
         // Create row of bottom teeth
         flatToothResizer = QiResizers.getTeethResizer(8, 7.8f, 1, 0.1f);
 
-        flatToothPart = new ExtendableModelRenderer(64, 64, 0, 0);
+        flatToothPart = new ExtendableModelRenderer(64, 64, 0, 0, BodyPartModelNames.flatToothLowerModel);
         flatToothPart.setPos(0f, 0, 0.3f);
         flatToothPart.setFixedPosAdjustment(0.05f, 0, 0.05f);
-        flatToothPart.setRotationPoint(new Vector3d(1f, 0, 1));
+        flatToothPart.setRotationPoint(new Vec3(1f, 0, 1));
         flatToothPart.extend(flatToothResizer);
-        flatToothPart.setRotationOffset(new Vector3d(Math.toRadians(-20), 0, 0));
+        flatToothPart.setRotationOffset(new Vec3(Math.toRadians(-20), 0, 0));
 
         lastTooth = flatToothPart;
 
@@ -574,20 +572,20 @@ public class BodyPartModels
         // Create row of bottom teeth
         flatToothResizer = QiResizers.getSideTeethResizer(6, 5.8f, 1, 0.1f);
 
-        flatToothSidePart = new ExtendableModelRenderer(64, 64, 0, 0);
+        flatToothSidePart = new ExtendableModelRenderer(64, 64, 0, 0, BodyPartModelNames.flatToothLowerModel + "1");
         flatToothSidePart.setPos(1f, 0.5f, 1f);
         flatToothSidePart.setFixedPosAdjustment(0f, 0, 0.1f);
-        flatToothSidePart.setRotationPoint(new Vector3d(0f, 0.5, 1));
+        flatToothSidePart.setRotationPoint(new Vec3(0f, 0.5, 1));
         flatToothSidePart.extend(flatToothResizer);
 
         flatToothPart.addChild(flatToothSidePart);
 
         flatToothResizer = QiResizers.getSideTeethResizer(6, 5.8f, 1, 0.1f);
 
-        flatToothSidePart = new ExtendableModelRenderer(64, 64, 0, 0);
+        flatToothSidePart = new ExtendableModelRenderer(64, 64, 0, 0, BodyPartModelNames.flatToothLowerModel + "2");
         flatToothSidePart.setPos(1f, 0.5f, 1f);
         flatToothSidePart.setFixedPosAdjustment(0f, 0, 0.1f);
-        flatToothSidePart.setRotationPoint(new Vector3d(0f, 0.5, 1));
+        flatToothSidePart.setRotationPoint(new Vec3(0f, 0.5, 1));
         flatToothSidePart.extend(flatToothResizer);
 
         lastTooth.addChild(flatToothSidePart);
@@ -601,28 +599,28 @@ public class BodyPartModels
     {
         // Create row of top teeth
         defaultResizeModule ToothResizer = QiResizers.getTeethResizer(8, 7.9f, 0.5f, 0.1f);
-        ExtendableModelRenderer ToothPart = new ExtendableModelRenderer(64, 64, 0, 0);
+        ExtendableModelRenderer ToothPart = new ExtendableModelRenderer(64, 64, 0, 0, BodyPartModelNames.sharpToothModel);
         ToothPart.setPos(0f, 1f, 0f);
         ToothPart.setFixedPosAdjustment(0.05f, 0, 0.05f);
-        ToothPart.setRotationPoint(new Vector3d(1f, 1, 1));
+        ToothPart.setRotationPoint(new Vec3(1f, 1, 1));
         ToothPart.extend(ToothResizer);
 
         ToothResizer = QiResizers.getTeethResizer(8, 7.9f, 0.5f, 0.3f);
-        ExtendableModelRenderer LowerToothPart = new ExtendableModelRenderer(64, 64, 0, 0);
+        ExtendableModelRenderer LowerToothPart = new ExtendableModelRenderer(64, 64, 0, 0, BodyPartModelNames.sharpToothModel + "1");
         LowerToothPart.setPos(0.1f, 0.5f, 0f);
         LowerToothPart.extend(ToothResizer);
 
         ToothPart.addChild(LowerToothPart);
 
         ToothResizer = QiResizers.getTeethResizer(8, 7.9f, 0.5f, 0.5f);
-        LowerToothPart = new ExtendableModelRenderer(64, 64, 0, 0);
+        LowerToothPart = new ExtendableModelRenderer(64, 64, 0, 0, BodyPartModelNames.sharpToothModel + "2");
         LowerToothPart.setPos(0.2f, 1f, 0f);
         LowerToothPart.extend(ToothResizer);
 
         ToothPart.addChild(LowerToothPart);
 
         ToothResizer = QiResizers.getTeethResizer(8, 7.9f, 0.49f, 0.7f);
-        LowerToothPart = new ExtendableModelRenderer(64, 64, 0, 0);
+        LowerToothPart = new ExtendableModelRenderer(64, 64, 0, 0, BodyPartModelNames.sharpToothModel + "3");
         LowerToothPart.setPos(0.3f, 1.5f, 0f);
         LowerToothPart.extend(ToothResizer);
 
@@ -631,24 +629,24 @@ public class BodyPartModels
         //Setup side teeth
         ToothResizer = QiResizers.getSideTeethResizer(5, 4.8f, 0.5f, 0.1f);
 
-        ExtendableModelRenderer ToothSidePart = new ExtendableModelRenderer(64, 64, 0, 0);
+        ExtendableModelRenderer ToothSidePart = new ExtendableModelRenderer(64, 64, 0, 0, BodyPartModelNames.sharpToothModel + "4");
         ToothSidePart.setPos(0f, 0f, 1.1f);
         ToothSidePart.extend(ToothResizer);
 
         ToothResizer = QiResizers.getSideTeethResizer(5, 4.8f, 0.5f, 0.3f);
-        ExtendableModelRenderer LowerToothSidePart = new ExtendableModelRenderer(64, 64, 0, 0);
+        ExtendableModelRenderer LowerToothSidePart = new ExtendableModelRenderer(64, 64, 0, 0, BodyPartModelNames.sharpToothModel + "5");
         LowerToothSidePart.setPos(0f, 0.5f, 0.1f);
         LowerToothSidePart.extend(ToothResizer);
         ToothSidePart.addChild(LowerToothSidePart);
 
         ToothResizer = QiResizers.getSideTeethResizer(5, 4.8f, 0.5f, 0.5f);
-        LowerToothSidePart = new ExtendableModelRenderer(64, 64, 0, 0);
+        LowerToothSidePart = new ExtendableModelRenderer(64, 64, 0, 0, BodyPartModelNames.sharpToothModel + "6");
         LowerToothSidePart.setPos(0f, 1f, 0.2f);
         LowerToothSidePart.extend(ToothResizer);
         ToothSidePart.addChild(LowerToothSidePart);
 
         ToothResizer = QiResizers.getSideTeethResizer(5, 4.8f, 0.49f, 0.7f);
-        LowerToothSidePart = new ExtendableModelRenderer(64, 64, 0, 0);
+        LowerToothSidePart = new ExtendableModelRenderer(64, 64, 0, 0, BodyPartModelNames.sharpToothModel + "7");
         LowerToothSidePart.setPos(0f, 1.5f, 0.3f);
         LowerToothSidePart.extend(ToothResizer);
         ToothSidePart.addChild(LowerToothSidePart);
@@ -658,24 +656,24 @@ public class BodyPartModels
 
         ToothResizer = QiResizers.getSideTeethResizer(5, 4.8f, 0.5f, 0.1f);
 
-        ToothSidePart = new ExtendableModelRenderer(64, 64, 0, 0);
+        ToothSidePart = new ExtendableModelRenderer(64, 64, 0, 0, BodyPartModelNames.sharpToothModel + "8");
         ToothSidePart.setPos(7.8f, 0f, 1.1f);
         ToothSidePart.extend(ToothResizer);
 
         ToothResizer = QiResizers.getSideTeethResizer(5, 4.8f, 0.5f, 0.3f);
-        LowerToothSidePart = new ExtendableModelRenderer(64, 64, 0, 0);
+        LowerToothSidePart = new ExtendableModelRenderer(64, 64, 0, 0, BodyPartModelNames.sharpToothModel + "9");
         LowerToothSidePart.setPos(0f, 0.5f, 0.1f);
         LowerToothSidePart.extend(ToothResizer);
         ToothSidePart.addChild(LowerToothSidePart);
 
         ToothResizer = QiResizers.getSideTeethResizer(5, 4.8f, 0.5f, 0.5f);
-        LowerToothSidePart = new ExtendableModelRenderer(64, 64, 0, 0);
+        LowerToothSidePart = new ExtendableModelRenderer(64, 64, 0, 0, BodyPartModelNames.sharpToothModel + "10");
         LowerToothSidePart.setPos(0f, 1f, 0.2f);
         LowerToothSidePart.extend(ToothResizer);
         ToothSidePart.addChild(LowerToothSidePart);
 
         ToothResizer = QiResizers.getSideTeethResizer(5, 4.8f, 0.49f, 0.7f);
-        LowerToothSidePart = new ExtendableModelRenderer(64, 64, 0, 0);
+        LowerToothSidePart = new ExtendableModelRenderer(64, 64, 0, 0, BodyPartModelNames.sharpToothModel + "11");
         LowerToothSidePart.setPos(0f, 1.5f, 0.3f);
         LowerToothSidePart.extend(ToothResizer);
         ToothSidePart.addChild(LowerToothSidePart);
@@ -689,29 +687,29 @@ public class BodyPartModels
 
         // Create row of bottom teeth
         ToothResizer = QiResizers.getTeethResizer(7, 7f, 0.5f, 0.1f);
-        ToothPart = new ExtendableModelRenderer(64, 64, 0, 0);
+        ToothPart = new ExtendableModelRenderer(64, 64, 0, 0, BodyPartModelNames.sharpToothLowerModel);
         ToothPart.setPos(0f, 0f, 0.3f);
         ToothPart.setFixedPosAdjustment(0.55f, 0, 0.1f);
-        ToothPart.setRotationPoint(new Vector3d(1f, 0, 1));
+        ToothPart.setRotationPoint(new Vec3(1f, 0, 1));
         ToothPart.extend(ToothResizer);
-        ToothPart.setRotationOffset(new Vector3d(Math.toRadians(-20), 0, 0));
+        ToothPart.setRotationOffset(new Vec3(Math.toRadians(-20), 0, 0));
 
         ToothResizer = QiResizers.getTeethResizer(7, 7f, 0.5f, 0.3f);
-        LowerToothPart = new ExtendableModelRenderer(64, 64, 0, 0);
+        LowerToothPart = new ExtendableModelRenderer(64, 64, 0, 0, BodyPartModelNames.sharpToothLowerModel + "1");
         LowerToothPart.setPos(0.1f, -0.5f, 0f);
         LowerToothPart.extend(ToothResizer);
 
         ToothPart.addChild(LowerToothPart);
 
         ToothResizer = QiResizers.getTeethResizer(7, 7f, 0.5f, 0.5f);
-        LowerToothPart = new ExtendableModelRenderer(64, 64, 0, 0);
+        LowerToothPart = new ExtendableModelRenderer(64, 64, 0, 0, BodyPartModelNames.sharpToothLowerModel + "2");
         LowerToothPart.setPos(0.2f, -1f, 0f);
         LowerToothPart.extend(ToothResizer);
 
         ToothPart.addChild(LowerToothPart);
 
         ToothResizer = QiResizers.getTeethResizer(7, 7f, 0.49f, 0.7f);
-        LowerToothPart = new ExtendableModelRenderer(64, 64, 0, 0);
+        LowerToothPart = new ExtendableModelRenderer(64, 64, 0, 0, BodyPartModelNames.sharpToothLowerModel + "3");
         LowerToothPart.setPos(0.3f, -1.5f, 0f);
         LowerToothPart.extend(ToothResizer);
 
@@ -723,24 +721,24 @@ public class BodyPartModels
         //Setup side teeth
         ToothResizer = QiResizers.getSideTeethResizer(4, sideTeethLength, 0.5f, 0.1f);
 
-        ToothSidePart = new ExtendableModelRenderer(64, 64, 0, 0);
+        ToothSidePart = new ExtendableModelRenderer(64, 64, 0, 0, BodyPartModelNames.sharpToothLowerModel + "4");
         ToothSidePart.setPos(-0.5f, 0f, 0.4f);
         ToothSidePart.extend(ToothResizer);
 
         ToothResizer = QiResizers.getSideTeethResizer(4, sideTeethLength, 0.5f, 0.3f);
-        LowerToothSidePart = new ExtendableModelRenderer(64, 64, 0, 0);
+        LowerToothSidePart = new ExtendableModelRenderer(64, 64, 0, 0, BodyPartModelNames.sharpToothLowerModel + "5");
         LowerToothSidePart.setPos(0f, -0.5f, 0.1f);
         LowerToothSidePart.extend(ToothResizer);
         ToothSidePart.addChild(LowerToothSidePart);
 
         ToothResizer = QiResizers.getSideTeethResizer(4, sideTeethLength, 0.5f, 0.5f);
-        LowerToothSidePart = new ExtendableModelRenderer(64, 64, 0, 0);
+        LowerToothSidePart = new ExtendableModelRenderer(64, 64, 0, 0, BodyPartModelNames.sharpToothLowerModel + "6");
         LowerToothSidePart.setPos(0f, -1f, 0.2f);
         LowerToothSidePart.extend(ToothResizer);
         ToothSidePart.addChild(LowerToothSidePart);
 
         ToothResizer = QiResizers.getSideTeethResizer(4, sideTeethLength, 0.49f, 0.7f);
-        LowerToothSidePart = new ExtendableModelRenderer(64, 64, 0, 0);
+        LowerToothSidePart = new ExtendableModelRenderer(64, 64, 0, 0, BodyPartModelNames.sharpToothLowerModel + "7");
         LowerToothSidePart.setPos(0f, -1.5f, 0.3f);
         LowerToothSidePart.extend(ToothResizer);
         ToothSidePart.addChild(LowerToothSidePart);
@@ -750,24 +748,24 @@ public class BodyPartModels
 
         ToothResizer = QiResizers.getSideTeethResizer(4, sideTeethLength, 0.5f, 0.1f);
 
-        ToothSidePart = new ExtendableModelRenderer(64, 64, 0, 0);
+        ToothSidePart = new ExtendableModelRenderer(64, 64, 0, 0, BodyPartModelNames.sharpToothLowerModel + "8");
         ToothSidePart.setPos(7.2f, 0f, 0.4f);
         ToothSidePart.extend(ToothResizer);
 
         ToothResizer = QiResizers.getSideTeethResizer(4, sideTeethLength, 0.5f, 0.3f);
-        LowerToothSidePart = new ExtendableModelRenderer(64, 64, 0, 0);
+        LowerToothSidePart = new ExtendableModelRenderer(64, 64, 0, 0, BodyPartModelNames.sharpToothLowerModel + "9");
         LowerToothSidePart.setPos(0f, -0.5f, 0.1f);
         LowerToothSidePart.extend(ToothResizer);
         ToothSidePart.addChild(LowerToothSidePart);
 
         ToothResizer = QiResizers.getSideTeethResizer(4, sideTeethLength, 0.5f, 0.5f);
-        LowerToothSidePart = new ExtendableModelRenderer(64, 64, 0, 0);
+        LowerToothSidePart = new ExtendableModelRenderer(64, 64, 0, 0, BodyPartModelNames.sharpToothLowerModel + "10");
         LowerToothSidePart.setPos(0f, -1f, 0.2f);
         LowerToothSidePart.extend(ToothResizer);
         ToothSidePart.addChild(LowerToothSidePart);
 
         ToothResizer = QiResizers.getSideTeethResizer(4, sideTeethLength, 0.49f, 0.7f);
-        LowerToothSidePart = new ExtendableModelRenderer(64, 64, 0, 0);
+        LowerToothSidePart = new ExtendableModelRenderer(64, 64, 0, 0, BodyPartModelNames.sharpToothLowerModel + "11");
         LowerToothSidePart.setPos(0f, -1.5f, 0.3f);
         LowerToothSidePart.extend(ToothResizer);
         ToothSidePart.addChild(LowerToothSidePart);
@@ -780,37 +778,37 @@ public class BodyPartModels
 
     private void setupLegModels()
     {
-        defaultResizeModule reverseJointResizer = new defaultResizeModule(2, new Vector3d(0, 1, 0), new Vector3d(0.5, 1, 1), new Vector3d(3.98, 10, 3.98), new Vector3d(0.5, 1, 0));
-        defaultResizeModule footResizer = new defaultResizeModule(new Vector3d(4, 2, 4));
+        defaultResizeModule reverseJointResizer = new defaultResizeModule(2, new Vec3(0, 1, 0), new Vec3(0.5, 1, 1), new Vec3(3.98, 10, 3.98), new Vec3(0.5, 1, 0));
+        defaultResizeModule footResizer = new defaultResizeModule(new Vec3(4, 2, 4));
 
-        ExtendableModelRenderer leftReverseJoint = new ExtendableModelRenderer(0, 16);
+        ExtendableModelRenderer leftReverseJoint = new ExtendableModelRenderer(0, 16, BodyPartModelNames.reverseJointLeftLegModel);
         leftReverseJoint.setPos(0.75F, 1.0F, 0.5F);
-        leftReverseJoint.setRotationPoint(new Vector3d(0.5D, 1D, 0.5D));
+        leftReverseJoint.setRotationPoint(new Vec3(0.5D, 1D, 0.5D));
         leftReverseJoint.setFixedPosAdjustment(0.0F, 0.0F, 0.0F);
         leftReverseJoint.extend(reverseJointResizer);
         leftReverseJoint.mirror = true;
 
-        ExtendableModelRenderer leftFoot = new ExtendableModelRenderer(0, 26);
+        ExtendableModelRenderer leftFoot = new ExtendableModelRenderer(0, 26, BodyPartModelNames.reverseJointLeftFootModel);
         leftFoot.setPos(0.5F, 1F, 0F);
-        leftFoot.setRotationPoint(new Vector3d(0.5D, 1D, 1D));
+        leftFoot.setRotationPoint(new Vec3(0.5D, 1D, 1D));
         leftFoot.extend(footResizer);
         leftFoot.mirror = true;
 
         leftReverseJoint.getChildren().get(0).addChild(leftFoot);
 
         // Reinitialize the resizers
-        reverseJointResizer = new defaultResizeModule(2, new Vector3d(0, 1, 0), new Vector3d(0.5, 1, 1), new Vector3d(3.98, 10, 3.98), new Vector3d(0.5, 1, 0));
-        footResizer = new defaultResizeModule(new Vector3d(4, 2, 4));
+        reverseJointResizer = new defaultResizeModule(2, new Vec3(0, 1, 0), new Vec3(0.5, 1, 1), new Vec3(3.98, 10, 3.98), new Vec3(0.5, 1, 0));
+        footResizer = new defaultResizeModule(new Vec3(4, 2, 4));
 
-        ExtendableModelRenderer rightReverseJoint = new ExtendableModelRenderer(0, 16);
+        ExtendableModelRenderer rightReverseJoint = new ExtendableModelRenderer(0, 16, BodyPartModelNames.reverseJointRightLegModel);
         rightReverseJoint.setPos(0.25F, 1.0F, 0.5F);
-        rightReverseJoint.setRotationPoint(new Vector3d(0.5D, 1, 0.5));
+        rightReverseJoint.setRotationPoint(new Vec3(0.5D, 1, 0.5));
         rightReverseJoint.setFixedPosAdjustment(0.0F, 0.0F, 0F);
         rightReverseJoint.extend(reverseJointResizer);
 
-        ExtendableModelRenderer rightFoot = new ExtendableModelRenderer(0, 26);
+        ExtendableModelRenderer rightFoot = new ExtendableModelRenderer(0, 26, BodyPartModelNames.reverseJointRightFootModel);
         rightFoot.setPos(0.5F, 1F, 0F);
-        rightFoot.setRotationPoint(new Vector3d(0.5D, 1D, 1D));
+        rightFoot.setRotationPoint(new Vec3(0.5D, 1D, 1D));
         rightFoot.extend(footResizer);
 
         rightReverseJoint.getChildren().get(0).addChild(rightFoot);
@@ -824,17 +822,17 @@ public class BodyPartModels
         addReference(BodyPartModelNames.reverseJointRightLegModel, BodyPartModelNames.reverseJointRightFootModel, rightFoot);
 
 
-        footResizer = new defaultResizeModule(new Vector3d(4, 2, 4));
-        ExtendableModelRenderer leftFootModel = new ExtendableModelRenderer(0, 26);
+        footResizer = new defaultResizeModule(new Vec3(4, 2, 4));
+        ExtendableModelRenderer leftFootModel = new ExtendableModelRenderer(0, 26, BodyPartModelNames.footLeftModel);
         leftFootModel.setPos(0.75F, 1F, 0.5F);
-        leftFootModel.setRotationPoint(new Vector3d(0.5D, 1D, 0.5D));
+        leftFootModel.setRotationPoint(new Vec3(0.5D, 1D, 0.5D));
         leftFootModel.extend(footResizer);
         leftFootModel.mirror = true;
 
-        footResizer = new defaultResizeModule(new Vector3d(4, 2, 4));
-        ExtendableModelRenderer rightFootModel = new ExtendableModelRenderer(0, 26);
+        footResizer = new defaultResizeModule(new Vec3(4, 2, 4));
+        ExtendableModelRenderer rightFootModel = new ExtendableModelRenderer(0, 26, BodyPartModelNames.footRightModel);
         rightFootModel.setPos(0.25F, 1F, 0.5F);
-        rightFootModel.setRotationPoint(new Vector3d(0.5D, 1D, 0.5D));
+        rightFootModel.setRotationPoint(new Vec3(0.5D, 1D, 0.5D));
         rightFootModel.extend(footResizer);
         rightFootModel.mirror = true;
 
@@ -842,9 +840,9 @@ public class BodyPartModels
         addModel(BodyPartModelNames.footRightModel, rightFootModel);
 
 
-        ExtendableModelRenderer singleLeg = new ExtendableModelRenderer(0, 16);
+        ExtendableModelRenderer singleLeg = new ExtendableModelRenderer(0, 16, BodyPartModelNames.singleLegModel);
         singleLeg.setPos(0.5F, 1.0F, 0.5F);
-        singleLeg.setRotationPoint(new Vector3d(0.5, 0.66, 0.5));
+        singleLeg.setRotationPoint(new Vec3(0.5, 0.66, 0.5));
         singleLeg.setFixedPosAdjustment(0F, 2F, 0.0F);
         singleLeg.extend(GenericResizers.getLegResizer());
 
@@ -852,28 +850,28 @@ public class BodyPartModels
         addReference(BodyPartModelNames.singleLegModel, BodyPartModelNames.singleLegLowerModel, singleLeg.getChildren().get(0));
 
 
-        defaultResizeModule hexaResizer = new defaultResizeModule(2, new Vector3d(0, 1, 0), new Vector3d(0.5, 1, 0.5), new Vector3d(4, 10, 4), new Vector3d(0.5, 1, 0.5));
+        defaultResizeModule hexaResizer = new defaultResizeModule(2, new Vec3(0, 1, 0), new Vec3(0.5, 1, 0.5), new Vec3(4, 10, 4), new Vec3(0.5, 1, 0.5));
 
-        ExtendableModelRenderer hexaLeft = new ExtendableModelRenderer(0, 16);
+        ExtendableModelRenderer hexaLeft = new ExtendableModelRenderer(0, 16, BodyPartModelNames.hexaLeftLegModel);
         hexaLeft.setPos(1F, 1.0F, 0.5F);
-        hexaLeft.setRotationPoint(new Vector3d(0.5D, 1D, 0.5D));
+        hexaLeft.setRotationPoint(new Vec3(0.5D, 1D, 0.5D));
         hexaLeft.extend(hexaResizer);
         hexaLeft.mirror = true;
-        hexaLeft.setDefaultResize(new Vector3d(0.5, 1.5, 0.5));
-        hexaLeft.getChildren().get(0).setDefaultResize(new Vector3d(0.5, 1.5, 0.5));
+        hexaLeft.setDefaultResize(new Vec3(0.5, 1.5, 0.5));
+        hexaLeft.getChildren().get(0).setDefaultResize(new Vec3(0.5, 1.5, 0.5));
 
         ExtendableModelRenderer hexaLeftTwo = hexaLeft.clone();
         ExtendableModelRenderer hexaLeftThree = hexaLeft.clone();
 
-        hexaResizer = new defaultResizeModule(2, new Vector3d(0, 1, 0), new Vector3d(0.5, 1, 0.5), new Vector3d(4, 10, 4), new Vector3d(0.5, 1, 0.5));
+        hexaResizer = new defaultResizeModule(2, new Vec3(0, 1, 0), new Vec3(0.5, 1, 0.5), new Vec3(4, 10, 4), new Vec3(0.5, 1, 0.5));
 
-        ExtendableModelRenderer hexaRight = new ExtendableModelRenderer(0, 16);
+        ExtendableModelRenderer hexaRight = new ExtendableModelRenderer(0, 16, BodyPartModelNames.hexaRightLegModel);
         hexaRight.setPos(0F, 1.0F, 0.5F);
-        hexaRight.setRotationPoint(new Vector3d(0.5D, 1D, 0.5D));
+        hexaRight.setRotationPoint(new Vec3(0.5D, 1D, 0.5D));
         hexaRight.extend(hexaResizer);
         hexaRight.mirror = true;
-        hexaRight.setDefaultResize(new Vector3d(0.5, 1.5, 0.5));
-        hexaRight.getChildren().get(0).setDefaultResize(new Vector3d(0.5, 1.5, 0.5));
+        hexaRight.setDefaultResize(new Vec3(0.5, 1.5, 0.5));
+        hexaRight.getChildren().get(0).setDefaultResize(new Vec3(0.5, 1.5, 0.5));
 
         ExtendableModelRenderer hexaRightTwo = hexaRight.clone();
         ExtendableModelRenderer hexaRightThree = hexaRight.clone();
@@ -893,48 +891,45 @@ public class BodyPartModels
         addReference(BodyPartModelNames.hexaRightLegModelThree, BodyPartModelNames.hexaLowerRightLegModelThree, hexaRightThree.getChildren().get(0));
 
 
-        ExtendableModelRenderer rightLeg = new ExtendableModelRenderer(0, 16);
-        rightLeg.setPos(0.25F, 1.0F, 0.5F);
-        rightLeg.setRotationPoint(new Vector3d(0.5, 0.66, 0.5));
-        rightLeg.setFixedPosAdjustment(0F, 2F, 0.0F);
-        rightLeg.extend(GenericResizers.getLegResizer());
+        ExtendableModelRenderer jLeftLeg = new ExtendableModelRenderer(0, 16, BodyPartModelNames.jetLegRightModel);
+        jLeftLeg.setPos(0.25F, 1.0F, 0.5F);
+        jLeftLeg.setRotationPoint(new Vec3(0.5, 0.66, 0.5));
+        jLeftLeg.setFixedPosAdjustment(0F, 2F, 0.0F);
+        jLeftLeg.extend(GenericResizers.getLegResizer());
 
-        ExtendableModelRenderer leftLeg = new ExtendableModelRenderer(0, 16);
-        leftLeg.setPos(0.75F, 1.0F, 0.5F);
-        leftLeg.setRotationPoint(new Vector3d(0.5, 0.66, 0.5));
-        leftLeg.setFixedPosAdjustment(0F, 2F, 0.0F);
-        leftLeg.extend(GenericResizers.getLegResizer());
-        leftLeg.mirror = true;
+        ExtendableModelRenderer jRightLeg = new ExtendableModelRenderer(0, 16, BodyPartModelNames.jetLegLeftModel);
+        jRightLeg.setPos(0.75F, 1.0F, 0.5F);
+        jRightLeg.setRotationPoint(new Vec3(0.5, 0.66, 0.5));
+        jRightLeg.setFixedPosAdjustment(0F, 2F, 0.0F);
+        jRightLeg.extend(GenericResizers.getLegResizer());
+        jRightLeg.mirror = true;
 
-        ExtendableModelRenderer jLeftLeg = leftLeg.clone();
-        ExtendableModelRenderer jRightLeg = rightLeg.clone();
-
-        defaultResizeModule rightLegJetResizer = new defaultResizeModule(new Vector3d(2, 0.5, -0.1));
-        ExtendableModelRenderer rightLegJet = new ExtendableModelRenderer(1, 22);
+        defaultResizeModule rightLegJetResizer = new defaultResizeModule(new Vec3(2, 0.5, -0.1));
+        ExtendableModelRenderer rightLegJet = new ExtendableModelRenderer(1, 22, BodyPartModelNames.jetLegRightModel + "1");
         rightLegJet.setPos(0.75F, 0F, 1F);
-        rightLegJet.setRotationPoint(new Vector3d(0, 0, 0));
-        rightLegJet.setDefaultResize(new Vector3d(1, 1, 20));
+        rightLegJet.setRotationPoint(new Vec3(0, 0, 0));
+        rightLegJet.setDefaultResize(new Vec3(1, 1, 20));
         rightLegJet.extend(rightLegJetResizer);
 
-        rightLegJetResizer = new defaultResizeModule(new Vector3d(0.5, -4, -0.1));
-        ExtendableModelRenderer rightLegJetLeft = new ExtendableModelRenderer(1, 26);
+        rightLegJetResizer = new defaultResizeModule(new Vec3(0.5, -4, -0.1));
+        ExtendableModelRenderer rightLegJetLeft = new ExtendableModelRenderer(1, 26, BodyPartModelNames.jetLegRightModel + "2");
         rightLegJetLeft.setPos(1F, 0F, 1F);
-        rightLegJetLeft.setRotationPoint(new Vector3d(0, 0, 0));
-        rightLegJetLeft.setDefaultResize(new Vector3d(1, 1, 20));
+        rightLegJetLeft.setRotationPoint(new Vec3(0, 0, 0));
+        rightLegJetLeft.setDefaultResize(new Vec3(1, 1, 20));
         rightLegJetLeft.extend(rightLegJetResizer);
 
-        rightLegJetResizer = new defaultResizeModule(new Vector3d(0.5, -4, -0.1));
-        ExtendableModelRenderer rightLegJetRight = new ExtendableModelRenderer(3, 26);
+        rightLegJetResizer = new defaultResizeModule(new Vec3(0.5, -4, -0.1));
+        ExtendableModelRenderer rightLegJetRight = new ExtendableModelRenderer(3, 26, BodyPartModelNames.jetLegRightModel + "3");
         rightLegJetRight.setPos(0F, 0F, 1F);
-        rightLegJetRight.setRotationPoint(new Vector3d(1, 0, 0));
-        rightLegJetRight.setDefaultResize(new Vector3d(1, 1, 20));
+        rightLegJetRight.setRotationPoint(new Vec3(1, 0, 0));
+        rightLegJetRight.setDefaultResize(new Vec3(1, 1, 20));
         rightLegJetRight.extend(rightLegJetResizer);
 
-        rightLegJetResizer = new defaultResizeModule(new Vector3d(2, -4, -0.1));
-        ExtendableModelRenderer rightLegJetFront = new ExtendableModelRenderer(1, 26);
+        rightLegJetResizer = new defaultResizeModule(new Vec3(2, -4, -0.1));
+        ExtendableModelRenderer rightLegJetFront = new ExtendableModelRenderer(1, 26, BodyPartModelNames.jetLegRightModel + "4");
         rightLegJetFront.setPos(1F, 0F, 0F);
-        rightLegJetFront.setRotationPoint(new Vector3d(0, 0, 1));
-        rightLegJetFront.setDefaultResize(new Vector3d(1, 1, 5));
+        rightLegJetFront.setRotationPoint(new Vec3(0, 0, 1));
+        rightLegJetFront.setDefaultResize(new Vec3(1, 1, 5));
         rightLegJetFront.extend(rightLegJetResizer);
 
         rightLegJet.addChild(rightLegJetLeft);
@@ -943,32 +938,32 @@ public class BodyPartModels
         jRightLeg.getChildren().get(0).addChild(rightLegJet);
 
 
-        defaultResizeModule leftLegJetResizer = new defaultResizeModule(new Vector3d(2, 0.5, -0.1));
-        ExtendableModelRenderer leftLegJet = new ExtendableModelRenderer(1, 22);
+        defaultResizeModule leftLegJetResizer = new defaultResizeModule(new Vec3(2, 0.5, -0.1));
+        ExtendableModelRenderer leftLegJet = new ExtendableModelRenderer(1, 22, BodyPartModelNames.jetLegLeftModel + "1");
         leftLegJet.setPos(0.75F, 0F, 1F);
-        leftLegJet.setRotationPoint(new Vector3d(0, 0, 0));
-        leftLegJet.setDefaultResize(new Vector3d(1, 1, 20));
+        leftLegJet.setRotationPoint(new Vec3(0, 0, 0));
+        leftLegJet.setDefaultResize(new Vec3(1, 1, 20));
         leftLegJet.extend(leftLegJetResizer);
 
-        leftLegJetResizer = new defaultResizeModule(new Vector3d(0.5, -4, -0.1));
-        ExtendableModelRenderer leftLegJetLeft = new ExtendableModelRenderer(1, 26);
+        leftLegJetResizer = new defaultResizeModule(new Vec3(0.5, -4, -0.1));
+        ExtendableModelRenderer leftLegJetLeft = new ExtendableModelRenderer(1, 26, BodyPartModelNames.jetLegLeftModel + "2");
         leftLegJetLeft.setPos(1F, 0F, 1F);
-        leftLegJetLeft.setRotationPoint(new Vector3d(0, 0, 0));
-        leftLegJetLeft.setDefaultResize(new Vector3d(1, 1, 20));
+        leftLegJetLeft.setRotationPoint(new Vec3(0, 0, 0));
+        leftLegJetLeft.setDefaultResize(new Vec3(1, 1, 20));
         leftLegJetLeft.extend(leftLegJetResizer);
 
-        leftLegJetResizer = new defaultResizeModule(new Vector3d(0.5, -4, -0.1));
-        ExtendableModelRenderer leftLegJetRight = new ExtendableModelRenderer(3, 26);
+        leftLegJetResizer = new defaultResizeModule(new Vec3(0.5, -4, -0.1));
+        ExtendableModelRenderer leftLegJetRight = new ExtendableModelRenderer(3, 26, BodyPartModelNames.jetLegLeftModel + "3");
         leftLegJetRight.setPos(0F, 0F, 1F);
-        leftLegJetRight.setRotationPoint(new Vector3d(1, 0, 0));
-        leftLegJetRight.setDefaultResize(new Vector3d(1, 1, 20));
+        leftLegJetRight.setRotationPoint(new Vec3(1, 0, 0));
+        leftLegJetRight.setDefaultResize(new Vec3(1, 1, 20));
         leftLegJetRight.extend(leftLegJetResizer);
 
-        leftLegJetResizer = new defaultResizeModule(new Vector3d(2, -4, -0.1));
-        ExtendableModelRenderer leftLegJetFront = new ExtendableModelRenderer(1, 26);
+        leftLegJetResizer = new defaultResizeModule(new Vec3(2, -4, -0.1));
+        ExtendableModelRenderer leftLegJetFront = new ExtendableModelRenderer(1, 26, BodyPartModelNames.jetLegLeftModel + "4");
         leftLegJetFront.setPos(1F, 0F, 0F);
-        leftLegJetFront.setRotationPoint(new Vector3d(0, 0, 1));
-        leftLegJetFront.setDefaultResize(new Vector3d(1, 1, 5));
+        leftLegJetFront.setRotationPoint(new Vec3(0, 0, 1));
+        leftLegJetFront.setDefaultResize(new Vec3(1, 1, 5));
         leftLegJetFront.extend(leftLegJetResizer);
 
         leftLegJet.addChild(leftLegJetLeft);
@@ -976,41 +971,44 @@ public class BodyPartModels
         leftLegJet.addChild(leftLegJetFront);
         jLeftLeg.getChildren().get(0).addChild(leftLegJet);
 
-        ParticleEmitter leftLegEmitter = new ParticleEmitter(ParticleTypes.FLAME);
+        ParticleEmitter leftLegEmitter = new ParticleEmitter(ParticleTypes.FLAME, BodyPartModelNames.jetLegLeftEmitter);
         leftLegEmitter.setPos(0.5f, 8, 0.5f);
-        leftLegEmitter.setVelocity(new Vector3d(0, -0.5f, 0));
+        leftLegEmitter.setVelocity(new Vec3(0, -0.5f, 0));
         leftLegEmitter.setInterval(1);
-        leftLegEmitter.visible = false;
+        leftLegEmitter.getModelPart().visible = false;
 
-        ParticleEmitter rightLegEmitter = (ParticleEmitter)leftLegEmitter.clone();
-        rightLegEmitter.visible = false;
+        ParticleEmitter rightLegEmitter = new ParticleEmitter(ParticleTypes.FLAME, BodyPartModelNames.jetLegRightEmitter);
+        rightLegEmitter.setPos(0.5f, 8, 0.5f);
+        rightLegEmitter.setVelocity(new Vec3(0, -0.5f, 0));
+        rightLegEmitter.setInterval(1);
+        rightLegEmitter.getModelPart().visible = false;
 
         leftLegJet.addChild(leftLegEmitter);
         rightLegJet.addChild(rightLegEmitter);
 
         addModel(BodyPartModelNames.jetLegLeftModel, jLeftLeg);
         addModel(BodyPartModelNames.jetLegRightModel, jRightLeg);
-        addReference(BodyPartModelNames.jetLegLeftModel, BodyPartModelNames.jetLegLeftLowerModel, leftLeg.getChildren().get(0));
-        addReference(BodyPartModelNames.jetLegRightModel, BodyPartModelNames.jetLegRightLowerModel, rightLeg.getChildren().get(0));
+        addReference(BodyPartModelNames.jetLegLeftModel, BodyPartModelNames.jetLegLeftLowerModel, jLeftLeg.getChildren().get(0));
+        addReference(BodyPartModelNames.jetLegRightModel, BodyPartModelNames.jetLegRightLowerModel, jRightLeg.getChildren().get(0));
         addReference(BodyPartModelNames.jetLegLeftModel, BodyPartModelNames.jetLegLeftEmitter, leftLegEmitter);
         addReference(BodyPartModelNames.jetLegRightModel, BodyPartModelNames.jetLegRightEmitter, rightLegEmitter);
 
 
-        ExtendableModelRenderer largeRightLeg = new ExtendableModelRenderer(0, 16);
+        ExtendableModelRenderer largeRightLeg = new ExtendableModelRenderer(0, 16, BodyPartModelNames.largeLegRightModel);
         largeRightLeg.setPos(0F, 0.25F, 0.5F);
-        largeRightLeg.setRotationPoint(new Vector3d(0, 0.75, 0.5));
-        largeRightLeg.setDefaultResize(new Vector3d(2, 2, 2));
+        largeRightLeg.setRotationPoint(new Vec3(0, 0.75, 0.5));
+        largeRightLeg.setDefaultResize(new Vec3(2, 2, 2));
         //largeRightLeg.setFixedPosAdjustment(0F, 2F, 0.0F);
         largeRightLeg.extend(GenericResizers.getLegResizer());
-        largeRightLeg.getChildren().get(0).setDefaultResize(new Vector3d(2, 2, 2));
+        largeRightLeg.getChildren().get(0).setDefaultResize(new Vec3(2, 2, 2));
 
-        ExtendableModelRenderer largeLeftLeg = new ExtendableModelRenderer(0, 16);
+        ExtendableModelRenderer largeLeftLeg = new ExtendableModelRenderer(0, 16, BodyPartModelNames.largeLegLeftModel);
         largeLeftLeg.setPos(1F, 0.25F, 0.5F);
-        largeLeftLeg.setRotationPoint(new Vector3d(1, 0.75, 0.5));
-        largeLeftLeg.setDefaultResize(new Vector3d(2, 2, 2));
+        largeLeftLeg.setRotationPoint(new Vec3(1, 0.75, 0.5));
+        largeLeftLeg.setDefaultResize(new Vec3(2, 2, 2));
         //largeLeftLeg.setFixedPosAdjustment(0F, 2F, 0.0F);
         largeLeftLeg.extend(GenericResizers.getLegResizer());
-        largeLeftLeg.getChildren().get(0).setDefaultResize(new Vector3d(2, 2, 2));
+        largeLeftLeg.getChildren().get(0).setDefaultResize(new Vec3(2, 2, 2));
         largeLeftLeg.mirror = true;
 
         addModel(BodyPartModelNames.largeLegLeftModel, largeLeftLeg);

@@ -11,9 +11,8 @@ import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartOption;
 import DaoOfModding.Cultivationcraft.Common.Qi.CultivationTypes;
 import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.resources.ResourceLocation;
 
 public class DivineSenseTechnique extends Technique
 {
@@ -32,7 +31,7 @@ public class DivineSenseTechnique extends Technique
     }
 
     @Override
-    public void useKeyPressed(boolean keyDown, PlayerEntity player)
+    public void useKeyPressed(boolean keyDown, Player player)
     {
         super.useKeyPressed(keyDown, player);
 
@@ -42,7 +41,7 @@ public class DivineSenseTechnique extends Technique
     }
 
     @Override
-    public boolean isValid(PlayerEntity player)
+    public boolean isValid(Player player)
     {
         ICultivatorStats stats = CultivatorStats.getCultivatorStats(player);
 

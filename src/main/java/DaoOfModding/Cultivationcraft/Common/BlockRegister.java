@@ -1,26 +1,12 @@
 package DaoOfModding.Cultivationcraft.Common;
 
-import DaoOfModding.Cultivationcraft.Client.Renderers.BakedModels.FrozenBlockBakedModel;
-import DaoOfModding.Cultivationcraft.Common.Blocks.FrozenBlock;
-import DaoOfModding.Cultivationcraft.Common.Blocks.FrozenTileEntity;
-import DaoOfModding.Cultivationcraft.Cultivationcraft;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.client.renderer.BlockModelShapes;
-import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.RenderTypeLookup;
-import net.minecraft.tileentity.TileEntityType;
-import net.minecraftforge.client.event.ModelBakeEvent;
-import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
 
-
+/*
 @Mod.EventBusSubscriber(bus=Mod.EventBusSubscriber.Bus.MOD)
 public class BlockRegister
 {
     public static FrozenBlock frozenBlock;
-    public static TileEntityType<FrozenTileEntity> frozenTileEntityType;
+    public static BlockEntityType<FrozenBlockEntity> frozenBlockEntityType;
 
 
     @SubscribeEvent
@@ -31,10 +17,10 @@ public class BlockRegister
     }
 
     @SubscribeEvent
-    public static void registerTileEntity(final RegistryEvent.Register<TileEntityType<?>> event)
+    public static void registerBlockEntity(final RegistryEvent.Register<BlockEntityType<?>> event)
     {
-        frozenTileEntityType = TileEntityType.Builder.of(FrozenTileEntity::new, frozenBlock).build(null);
-        frozenTileEntityType.setRegistryName(Cultivationcraft.MODID, "frozentileentity");
-        event.getRegistry().register(frozenTileEntityType);
+        frozenBlockEntityType = BlockEntityType.Builder.of(FrozenBlockEntity::new, frozenBlock).build(null);
+        frozenBlockEntityType.setRegistryName(Cultivationcraft.MODID, "frozenBlockEntity");
+        event.getRegistry().register(frozenBlockEntityType);
     }
-}
+}*/

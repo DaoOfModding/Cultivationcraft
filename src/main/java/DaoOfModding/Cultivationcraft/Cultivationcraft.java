@@ -34,14 +34,13 @@ public class Cultivationcraft {
 
         modEventBus.addListener(this::commonInit);
         modEventBus.addListener(this::clientInit);
-        Register.ENTITY_TYPES.register(modEventBus);
+
+        Register.init(modEventBus);
     }
 
     private void commonInit(final FMLCommonSetupEvent event)
     {
         PacketHandler.init();
-
-        Register.registerCapabilities();
 
         Elements.init();
         TechniqueControl.init();
@@ -53,6 +52,5 @@ public class Cultivationcraft {
     private void clientInit(final FMLClientSetupEvent event)
     {
         ClientItemControl.init(event);
-        Register.registerRenderers();
     }
 }

@@ -1,21 +1,12 @@
 package DaoOfModding.Cultivationcraft.Client.Renderers;
 
 import DaoOfModding.Cultivationcraft.Client.Particles.QiParticleData;
+import DaoOfModding.Cultivationcraft.Client.genericClientFunctions;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.ChunkQiSources.ChunkQiSources;
 import DaoOfModding.Cultivationcraft.Common.Qi.QiSource;
-import DaoOfModding.Cultivationcraft.Cultivationcraft;
-import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.SectionPos;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.LightType;
-import net.minecraft.world.chunk.Chunk;
-
+import net.minecraft.world.level.chunk.LevelChunk;
+import net.minecraft.world.phys.Vec3;
 import java.util.Random;
 
 public class QiSourceRenderer
@@ -25,19 +16,19 @@ public class QiSourceRenderer
 
     public static void renderQiSources()
     {
-        int chunks = Minecraft.getInstance().options.renderDistance-1;
-        int chunkX = Minecraft.getInstance().player.blockPosition().getX() >> 4;
-        int chunkZ = Minecraft.getInstance().player.blockPosition().getZ() >> 4;
+        int LevelChunks = Minecraft.getInstance().options.renderDistance().get()-1;
+        int LevelChunkX = genericClientFunctions.getPlayer().blockPosition().getX() >> 4;
+        int LevelChunkZ = genericClientFunctions.getPlayer().blockPosition().getZ() >> 4;
 
-        Chunk QiChunk;
+        LevelChunk QiLevelChunk;
 
-        // Cycle through all the chunks in render distance, rendering all the QI sources they contain
-        for (int x = -chunks; x < chunks; x++)
-            for (int z = -chunks; z < chunks; z++)
+        // Cycle through all the LevelChunks in render distance, rendering all the QI sources they contain
+        for (int x = -LevelChunks; x < LevelChunks; x++)
+            for (int z = -LevelChunks; z < LevelChunks; z++)
             {
-                QiChunk = Minecraft.getInstance().level.getChunk(chunkX + x, chunkZ + z);
+                QiLevelChunk = Minecraft.getInstance().level.getChunk(LevelChunkX + x, LevelChunkZ + z);
 
-                for (QiSource source : ChunkQiSources.getChunkQiSources(QiChunk).getQiSources())
+                for (QiSource source : ChunkQiSources.getChunkQiSources(QiLevelChunk).getQiSources())
                     QiSourceRenderer.render(source);
             }
     }
@@ -50,7 +41,7 @@ public class QiSourceRenderer
 
         Random random = new Random();
 
-            Vector3d direction = new Vector3d(random.nextDouble() - 0.5, random.nextDouble() - 0.5, random.nextDouble() - 0.5);
+            Vec3 direction = new Vec3(random.nextDouble() - 0.5, random.nextDouble() - 0.5, random.nextDouble() - 0.5);
             direction.normalize();
             direction = direction.scale(speed);
 

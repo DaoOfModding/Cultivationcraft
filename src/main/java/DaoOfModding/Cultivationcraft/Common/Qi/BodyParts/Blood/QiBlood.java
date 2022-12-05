@@ -3,15 +3,15 @@ package DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Blood;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.FoodStats.QiFoodStats;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.StatIDs;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.DamageSource;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.Difficulty;
-import net.minecraft.world.GameRules;
+import net.minecraft.world.level.GameRules;
 
 public class QiBlood extends Blood
 {
     @Override
-    public void regen(PlayerEntity player)
+    public void regen(Player player)
     {
         boolean flag = player.level.getGameRules().getBoolean(GameRules.RULE_NATURAL_REGENERATION);
         Difficulty difficulty = player.level.getDifficulty();

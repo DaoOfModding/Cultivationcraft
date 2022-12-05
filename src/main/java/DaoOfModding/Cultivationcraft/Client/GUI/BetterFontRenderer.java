@@ -1,15 +1,14 @@
 package DaoOfModding.Cultivationcraft.Client.GUI;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
-import net.minecraft.client.gui.FontRenderer;
+import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.Font;
 
-import java.awt.*;
 import java.util.ArrayList;
 
 public class BetterFontRenderer
 {
     // Makes "\n" work, cuz apparently that's too complicated for base Minecraft!?
-    public static void draw(FontRenderer font, MatrixStack stack, String string, float x, float y, int color)
+    public static void draw(Font font, PoseStack stack, String string, float x, float y, int color)
     {
         int line = 0;
 
@@ -35,13 +34,13 @@ public class BetterFontRenderer
 
     // Wrap the text to fit the specified width
     // Ensures whole words per line
-    public static void wordwrap(FontRenderer font, MatrixStack stack, String string, float x, float y, int color, int width)
+    public static void wordwrap(Font font, PoseStack stack, String string, float x, float y, int color, int width)
     {
         for (String newString : getNewLines(string))
             y += wordwrapSingleLine(font, stack, newString, x, y, color, width);
     }
 
-    private static float wordwrapSingleLine(FontRenderer font, MatrixStack stack, String string, float x, float y, int color, int width)
+    private static float wordwrapSingleLine(Font font, PoseStack stack, String string, float x, float y, int color, int width)
     {
         int line = 0;
 
@@ -68,7 +67,7 @@ public class BetterFontRenderer
     }
 
     // Wrap the text to fit the specified width
-    public static void wrap(FontRenderer font, MatrixStack stack, String string, float x, float y, int color, int width)
+    public static void wrap(Font font, PoseStack stack, String string, float x, float y, int color, int width)
     {
         int line = 0;
 

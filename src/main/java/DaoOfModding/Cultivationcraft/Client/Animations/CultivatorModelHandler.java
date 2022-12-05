@@ -12,9 +12,9 @@ import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPart;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartNames;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartOption;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.player.AbstractClientPlayerEntity;
-import net.minecraft.client.entity.player.ClientPlayerEntity;
-import net.minecraft.client.renderer.entity.PlayerRenderer;
+import net.minecraft.client.player.AbstractClientPlayer;
+import net.minecraft.client.renderer.entity.EntityRenderer;
+import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 
 import java.util.*;
 
@@ -30,7 +30,7 @@ public class CultivatorModelHandler
         return models.get(playerID);
     }
 
-    public static void updateModifications(AbstractClientPlayerEntity player)
+    public static void updateModifications(AbstractClientPlayer player)
     {
         IBodyModifications modifications = BodyModifications.getBodyModifications(player);
 
@@ -47,7 +47,7 @@ public class CultivatorModelHandler
     }
 
     // Update player model based on the supplied BodyModifications
-    public static void updateModel(AbstractClientPlayerEntity player, IBodyModifications modifications)
+    public static void updateModel(AbstractClientPlayer player, IBodyModifications modifications)
     {
         PlayerRenderer renderer = (PlayerRenderer)Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(player);
         PlayerPoseHandler handler = PoseHandler.getPlayerPoseHandler(player.getUUID());

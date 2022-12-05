@@ -1,8 +1,7 @@
 package DaoOfModding.Cultivationcraft.Common.Capabilities.FlyingSwordContainerItemStack;
 
 import DaoOfModding.Cultivationcraft.Common.Capabilities.FlyingSwordBind.FlyingSwordBind;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.SwordItem;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.ItemStackHandler;
 
 public class FlyingSwordContainerItemHandler extends ItemStackHandler

@@ -7,10 +7,10 @@ import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.Technique;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import DaoOfModding.Cultivationcraft.Network.PacketHandler;
 import DaoOfModding.Cultivationcraft.Server.ServerItemControl;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.network.PacketBuffer;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.fml.LogicalSide;
-import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraftforge.network.NetworkEvent;
 
 import java.util.UUID;
 import java.util.function.Supplier;
@@ -30,7 +30,7 @@ public class CultivatorTechniquesPacket extends Packet
     }
 
     @Override
-    public void encode(PacketBuffer buffer)
+    public void encode(FriendlyByteBuf buffer)
     {
         buffer.writeUUID(owner);
 
@@ -46,7 +46,7 @@ public class CultivatorTechniquesPacket extends Packet
         }
     }
 
-    public static CultivatorTechniquesPacket decode(PacketBuffer buffer)
+    public static CultivatorTechniquesPacket decode(FriendlyByteBuf buffer)
     {
         CultivatorTechniquesPacket returnValue = new CultivatorTechniquesPacket(null, null);
 
@@ -109,7 +109,7 @@ public class CultivatorTechniquesPacket extends Packet
     }
 
     // Process received packet on server
-    private void processPacketServer(PlayerEntity player)
+    private void processPacketServer(Player player)
     {
         // Get the stats for the specified player
         ICultivatorTechniques techs = CultivatorTechniques.getCultivatorTechniques(player);

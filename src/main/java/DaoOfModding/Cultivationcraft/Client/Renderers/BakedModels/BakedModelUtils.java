@@ -1,10 +1,6 @@
 package DaoOfModding.Cultivationcraft.Client.Renderers.BakedModels;
 
-import net.minecraft.client.renderer.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraftforge.client.model.pipeline.BakedQuadBuilder;
-import net.minecraftforge.client.model.pipeline.IVertexConsumer;
-import net.minecraftforge.client.model.pipeline.VertexTransformer;
 
 public class BakedModelUtils
 {
@@ -76,7 +72,7 @@ public class BakedModelUtils
         return vertex;
     }*/
 
-
+/*
     // Retexture an existing BakedQuad
     public static BakedQuad retextureQuad(BakedQuad quad, TextureAtlasSprite texture)
     {
@@ -123,5 +119,5 @@ public class BakedModelUtils
         float result = (((u - texture.getU0()) * 16) / f);
 
         return (int)(result + 0.1);
-    }
+    }*/
 }

@@ -1,6 +1,6 @@
 package DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.FoodStats;
 
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 
 public class CarnivoreFoodStats extends QiFoodStats
 {

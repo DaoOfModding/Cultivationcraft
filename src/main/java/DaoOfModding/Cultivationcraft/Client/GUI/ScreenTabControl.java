@@ -1,5 +1,6 @@
 package DaoOfModding.Cultivationcraft.Client.GUI;
 
+import DaoOfModding.Cultivationcraft.Client.genericClientFunctions;
 import DaoOfModding.Cultivationcraft.Client.GUI.Screens.BodyforgeScreen;
 import DaoOfModding.Cultivationcraft.Client.GUI.Screens.StatScreen;
 import DaoOfModding.Cultivationcraft.Client.GUI.Screens.TechniqueScreen;
@@ -7,9 +8,9 @@ import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.Cultiva
 import DaoOfModding.Cultivationcraft.Common.Qi.CultivationTypes;
 import DaoOfModding.Cultivationcraft.Common.Register;
 import DaoOfModding.Cultivationcraft.Network.ClientPacketHandler;
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.screens.Screen;
 
 public class ScreenTabControl
 {
@@ -22,7 +23,7 @@ public class ScreenTabControl
     private static final int TAB_BAR_U = 214;
     private static final int TAB_BAR_V = 243;
 
-    public static void highlightTabs(MatrixStack matrixStack, int tabSelected, int mouseX, int mouseY, int screenX, int screenY, Screen drawTo)
+    public static void highlightTabs(PoseStack PoseStack, int tabSelected, int mouseX, int mouseY, int screenX, int screenY, Screen drawTo)
     {
         mouseX = mouseX - screenX;
         mouseY = mouseY - screenY;
@@ -31,7 +32,7 @@ public class ScreenTabControl
         for (int i = 0; i < TAB_BAR_X_POS.length; i++)
             if (tabSelected != i)
                 if (mouseOver(mouseX, mouseY, i))
-                    drawTo.blit(matrixStack, screenX + TAB_BAR_X_POS[i], screenY + TAB_BAR_Y_POS[i], TAB_BAR_U, TAB_BAR_V, TAB_BAR_X_SIZE, TAB_BAR_Y_SIZE);
+                    drawTo.blit(PoseStack, screenX + TAB_BAR_X_POS[i], screenY + TAB_BAR_Y_POS[i], TAB_BAR_U, TAB_BAR_V, TAB_BAR_X_SIZE, TAB_BAR_Y_SIZE);
     }
 
     public static boolean mouseClick(int mouseX, int mouseY, int screenX, int screenY, int buttonPressed)
@@ -53,7 +54,7 @@ public class ScreenTabControl
                     Minecraft.getInstance().forceSetScreen(new TechniqueScreen());
                 else if (i == 2)
                 {
-                    int cultivationType = CultivatorStats.getCultivatorStats(Minecraft.getInstance().player).getCultivationType();
+                    int cultivationType = CultivatorStats.getCultivatorStats(genericClientFunctions.getPlayer()).getCultivationType();
 
                     if (cultivationType == CultivationTypes.QI_CONDENSER)
                         ClientPacketHandler.sendKeypressToServer(Register.keyPresses.FLYINGSWORDSCREEN);

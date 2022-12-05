@@ -5,7 +5,7 @@ import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.IBody
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStats;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.ICultivatorStats;
 import DaoOfModding.Cultivationcraft.Common.Qi.CultivationTypes;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.world.entity.player.Player;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -62,7 +62,7 @@ public class BodyPartOption extends BodyPart
     }
 
     @Override
-    public boolean canBeForged(PlayerEntity player)
+    public boolean canBeForged(Player player)
     {
         // Ensure the player is a body cultivator
         ICultivatorStats stats = CultivatorStats.getCultivatorStats(player);

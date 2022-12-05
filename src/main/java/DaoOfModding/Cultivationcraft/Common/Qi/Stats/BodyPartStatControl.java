@@ -2,7 +2,7 @@ package DaoOfModding.Cultivationcraft.Common.Qi.Stats;
 
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.PlayerStatControl;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.PlayerStatModifications;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.world.entity.player.Player;
 
 import java.util.HashMap;
 import java.util.UUID;
@@ -29,7 +29,7 @@ public class BodyPartStatControl
         return getPlayerStatControl(playerID).getStats();
     }
 
-    public static void updateStats(PlayerEntity player)
+    public static void updateStats(Player player)
     {
         getPlayerStatControl(player.getUUID()).updateStats(player);
     }

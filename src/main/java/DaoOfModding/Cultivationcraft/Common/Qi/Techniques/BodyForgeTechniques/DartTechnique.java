@@ -1,6 +1,8 @@
 package DaoOfModding.Cultivationcraft.Common.Qi.Techniques.BodyForgeTechniques;
 
+import DaoOfModding.Cultivationcraft.Client.genericClientFunctions;
 import DaoOfModding.Cultivationcraft.Client.Animations.BodyPartModelNames;
+import DaoOfModding.Cultivationcraft.Client.Physics;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.BodyModifications;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStats;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartNames;
@@ -14,9 +16,9 @@ import DaoOfModding.mlmanimator.Client.Poses.GenericPoses;
 import DaoOfModding.mlmanimator.Client.Poses.PlayerPose;
 import DaoOfModding.mlmanimator.Client.Poses.PoseHandler;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.TickEvent;
 
 public class DartTechnique extends Technique
@@ -40,17 +42,17 @@ public class DartTechnique extends Technique
         icon = new ResourceLocation(Cultivationcraft.MODID, "textures/techniques/icons/dart.png");
 
 
-        flap.addAngle(BodyPartModelNames.linsectWing, new Vector3d(0, Math.toRadians(0), Math.toRadians(-60)), 5, 3f, -1);
-        flap.addAngle(BodyPartModelNames.rinsectWing, new Vector3d(0, Math.toRadians(0), Math.toRadians(60)), 5, 3f, -1);
-        flap.addAngle(BodyPartModelNames.linsectWing, new Vector3d(0, Math.toRadians(0), Math.toRadians(-10)), 5, 3f, -1);
-        flap.addAngle(BodyPartModelNames.rinsectWing, new Vector3d(0, Math.toRadians(0), Math.toRadians(10)), 5, 3f, -1);
+        flap.addAngle(BodyPartModelNames.linsectWing, new Vec3(0, Math.toRadians(0), Math.toRadians(-60)), 5, 3f, -1);
+        flap.addAngle(BodyPartModelNames.rinsectWing, new Vec3(0, Math.toRadians(0), Math.toRadians(60)), 5, 3f, -1);
+        flap.addAngle(BodyPartModelNames.linsectWing, new Vec3(0, Math.toRadians(0), Math.toRadians(-10)), 5, 3f, -1);
+        flap.addAngle(BodyPartModelNames.rinsectWing, new Vec3(0, Math.toRadians(0), Math.toRadians(10)), 5, 3f, -1);
 
-        flap.addAngle(GenericLimbNames.leftArm, new Vector3d(0, 0, 0), GenericPoses.jumpArmPriority + 1);
-        flap.addAngle(GenericLimbNames.rightArm, new Vector3d(0, 0, 0), GenericPoses.jumpArmPriority + 1);
+        flap.addAngle(GenericLimbNames.leftArm, new Vec3(0, 0, 0), GenericPoses.jumpArmPriority + 1);
+        flap.addAngle(GenericLimbNames.rightArm, new Vec3(0, 0, 0), GenericPoses.jumpArmPriority + 1);
     }
 
     @Override
-    public boolean isValid(PlayerEntity player)
+    public boolean isValid(Player player)
     {
         // Technique is valid if the player is a body cultivator with Insect Wings
         if (CultivatorStats.getCultivatorStats(player).getCultivationType() == CultivationTypes.BODY_CULTIVATOR &&
@@ -82,7 +84,7 @@ public class DartTechnique extends Technique
 
         double yLook = 1 - event.player.getLookAngle().y;
 
-        flapping.addAngle(GenericLimbNames.body, new Vector3d(Math.toRadians(75 * yLook), 0, 0), 10, 5f, -1);
+        flapping.addAngle(GenericLimbNames.body, new Vec3(Math.toRadians(75 * yLook), 0, 0), 10, 5f, -1);
 
         PoseHandler.addPose(event.player.getUUID(), flapping);
 
@@ -102,7 +104,7 @@ public class DartTechnique extends Technique
             slowAmount = 0;
 
         // Slow the player speed based on the amount of cooldown remaining
-        Vector3d slowedSpeed = PoseHandler.getPlayerPoseHandler(event.player.getUUID()).getDeltaMovement().scale(1 - slowAmount);
+        Vec3 slowedSpeed = Physics.getDelta(event.player).scale(1 - slowAmount);
         event.player.setDeltaMovement(slowedSpeed.x, slowedSpeed.y, slowedSpeed.z);
     }
 
@@ -120,15 +122,15 @@ public class DartTechnique extends Technique
             return;
 
         // Check if the jump key is depressed
-        if (Minecraft.getInstance().options.keyJump.getKeyBinding().isDown())
+        if (Minecraft.getInstance().options.keyJump.isDown())
         {
             sendInfo(1);
-            dart(Minecraft.getInstance().player);
+            dart(genericClientFunctions.getPlayer());
         }
     }
 
     @Override
-    public void processInfo(PlayerEntity player, int info)
+    public void processInfo(Player player, int info)
     {
         if (!isValid(player))
         {
@@ -140,7 +142,7 @@ public class DartTechnique extends Technique
             dart(player);
     }
 
-    public void dart(PlayerEntity player)
+    public void dart(Player player)
     {
         float weightModifier = BodyPartStatControl.getPlayerStatControl(player.getUUID()).getFlightWeightModifier();
 
@@ -148,7 +150,7 @@ public class DartTechnique extends Technique
 
         System.out.println(speed);
 
-        Vector3d dash = player.getLookAngle().normalize().scale(speed);
+        Vec3 dash = player.getLookAngle().normalize().scale(speed);
         player.setDeltaMovement(dash.x, dash.y, dash.z);
 
         cooldownCount = cooldown;

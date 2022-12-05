@@ -1,30 +1,48 @@
 package DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications;
 
-import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStats;
-import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStatsStorage;
-import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.ICultivatorStats;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.Direction;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.CapabilityInject;
-import net.minecraftforge.common.capabilities.CapabilityManager;
-import net.minecraftforge.common.capabilities.ICapabilitySerializable;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.Direction;
+import net.minecraftforge.common.capabilities.*;
+import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.common.util.LazyOptional;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class BodyModificationsCapability implements ICapabilitySerializable<CompoundNBT>
+public class BodyModificationsCapability implements ICapabilityProvider, INBTSerializable<CompoundTag>
 {
-    @CapabilityInject(IBodyModifications.class)
-    public static final Capability<IBodyModifications> BODY_MODIFICATIONS_CAPABILITY = null;
-    private LazyOptional<IBodyModifications> instance = LazyOptional.of(BODY_MODIFICATIONS_CAPABILITY::getDefaultInstance);
+    public static final Capability<IBodyModifications> INSTANCE = CapabilityManager.get(new CapabilityToken<>() {});
 
-    public static void register()
-    {
-        CapabilityManager.INSTANCE.register(IBodyModifications.class, new BodyModificationsStorage(), BodyModifications::new);
+    private final IBodyModifications backend = new BodyModifications();
+    private final LazyOptional<IBodyModifications> optionalData = LazyOptional.of(() -> backend);
+
+    @NotNull
+    @Override
+    public <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
+        return INSTANCE.orEmpty(cap, this.optionalData);
     }
 
+    void invalidate() {
+        this.optionalData.invalidate();
+    }
+
+    @Override
+    public CompoundTag serializeNBT() {
+        return this.backend.write();
+    }
+
+    @Override
+    public void deserializeNBT(CompoundTag nbt) {
+        this.backend.read(nbt);
+    }
+
+    public static void register(RegisterCapabilitiesEvent event)
+    {
+        event.register(IBodyModifications.class);
+    }
+
+    /*
     @Nonnull
     @Override
     public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side)
@@ -33,12 +51,12 @@ public class BodyModificationsCapability implements ICapabilitySerializable<Comp
     }
 
     @Override
-    public CompoundNBT serializeNBT() {
-        return (CompoundNBT) BODY_MODIFICATIONS_CAPABILITY.getStorage().writeNBT(BODY_MODIFICATIONS_CAPABILITY, instance.orElseThrow(() -> new IllegalArgumentException("LazyOptional cannot be empty!")), null);
+    public CompoundTag serializeNBT() {
+        return (CompoundTag) BODY_MODIFICATIONS_CAPABILITY.getStorage().writeNBT(BODY_MODIFICATIONS_CAPABILITY, instance.orElseThrow(() -> new IllegalArgumentException("LazyOptional cannot be empty!")), null);
     }
 
     @Override
-    public void deserializeNBT(CompoundNBT nbt) {
+    public void deserializeNBT(CompoundTag nbt) {
         BODY_MODIFICATIONS_CAPABILITY.getStorage().readNBT(BODY_MODIFICATIONS_CAPABILITY, instance.orElseThrow(() -> new IllegalArgumentException("LazyOptional cannot be empty!")), null, nbt);
-    }
+    }*/
 }

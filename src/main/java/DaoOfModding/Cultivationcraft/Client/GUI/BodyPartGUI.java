@@ -1,10 +1,11 @@
 package DaoOfModding.Cultivationcraft.Client.GUI;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.AbstractGui;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.client.gui.Gui;
+import net.minecraft.client.gui.GuiComponent;
+import net.minecraft.resources.ResourceLocation;
 
 public class BodyPartGUI
 {
@@ -26,7 +27,7 @@ public class BodyPartGUI
     {
         TEXTURE = texture;
 
-        // Convert from -1 - 1 to 0 - 1
+        // Convert (-1 - 1) to (0 - 1)
         x = (xOffset + 1) / 2;
         y = (yOffset + 1) / 2;
 
@@ -51,21 +52,21 @@ public class BodyPartGUI
         return textureY;
     }
 
-    public void render(MatrixStack matrixStack, int xPos, int yPos, boolean highlight, AbstractGui gui)
+    public void render(PoseStack PoseStack, int xPos, int yPos, boolean highlight, GuiComponent gui)
     {
-        Minecraft.getInstance().getTextureManager().bind(TEXTURE);
+        RenderSystem.setShaderTexture(0, TEXTURE);
 
         if (highlight)
-            RenderSystem.color4f(0.5f, 1, 0.75f, 1);
+            RenderSystem.setShaderColor(0.5f, 1, 0.75f, 1);
 
-        gui.blit(matrixStack, xPos, yPos, gui.getBlitOffset(), 0, 0, textureX, textureY, textureY, textureX);
+        gui.blit(PoseStack, xPos, yPos, gui.getBlitOffset(), 0, 0, textureX, textureY, textureX, textureY);
 
 
-        RenderSystem.color4f(1, 1, 1, 1);
+        RenderSystem.setShaderColor(1, 1, 1, 1);
     }
 
     // Render based on base part
-    public void render(MatrixStack matrixStack, int xPos, int yPos, boolean highlight, AbstractGui gui, BodyPartGUI base)
+    public void render(PoseStack PoseStack, int xPos, int yPos, boolean highlight, GuiComponent gui, BodyPartGUI base)
     {
         float maxWidth = base.getTextureWidth() - getTextureWidth();
         float maxHeight = base.getTextureHeight() - getTextureHeight();
@@ -85,6 +86,6 @@ public class BodyPartGUI
         else if (y > 0)
             yPos += maxHeight + getTextureHeight() * (y - 1) * 2 - 1;
 
-        render(matrixStack, xPos, yPos, highlight, gui);
+        render(PoseStack, xPos, yPos, highlight, gui);
     }
 }

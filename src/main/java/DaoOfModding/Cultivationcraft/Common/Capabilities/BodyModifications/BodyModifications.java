@@ -4,8 +4,8 @@ import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartNames;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPart;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartOption;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.nbt.CompoundTag;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -153,23 +153,23 @@ public class BodyModifications implements IBodyModifications
         options.clear();
     }
 
-    public void read(CompoundNBT NBT)
+    public void read(CompoundTag NBT)
     {
         clearModifications();
 
         setSelection(NBT.getString("selection"));
         setProgress(NBT.getInt("progress"));
 
-        CompoundNBT modifications = NBT.getCompound("modifications");
+        CompoundTag modifications = NBT.getCompound("modifications");
 
         for (String limb : modifications.getAllKeys())
             setModification(BodyPartNames.getPart(modifications.getString(limb)));
 
-        CompoundNBT options = NBT.getCompound("options");
+        CompoundTag options = NBT.getCompound("options");
 
         for (String limb : options.getAllKeys())
         {
-            CompoundNBT option = options.getCompound(limb);
+            CompoundTag option = options.getCompound(limb);
 
             for (String part : option.getAllKeys())
                 setOption(BodyPartNames.getOption(option.getString(part)));
@@ -178,23 +178,23 @@ public class BodyModifications implements IBodyModifications
         setUpdated(false);
     }
 
-    public CompoundNBT write()
+    public CompoundTag write()
     {
-        CompoundNBT nbt = new CompoundNBT();
+        CompoundTag nbt = new CompoundTag();
 
         nbt.putString("selection", getSelection());
         nbt.putInt("progress", getProgress());
 
-        CompoundNBT modifications = new CompoundNBT();
+        CompoundTag modifications = new CompoundTag();
         for(Map.Entry<String, BodyPart> entry : getModifications().entrySet())
             modifications.putString(entry.getKey(), entry.getValue().getID());
 
         nbt.put("modifications", modifications);
 
-        CompoundNBT options = new CompoundNBT();
+        CompoundTag options = new CompoundTag();
         for(Map.Entry<String, HashMap<String, BodyPartOption>> entry : getModificationOptions().entrySet())
         {
-            CompoundNBT subOptions = new CompoundNBT();
+            CompoundTag subOptions = new CompoundTag();
 
             for(Map.Entry<String, BodyPartOption> entry2 : entry.getValue().entrySet())
                 subOptions.putString(entry2.getKey(), entry2.getValue().getID());
@@ -218,8 +218,8 @@ public class BodyModifications implements IBodyModifications
     }
 
     // Return a specified players BodyModifications
-    public static IBodyModifications getBodyModifications(PlayerEntity player)
+    public static IBodyModifications getBodyModifications(Player player)
     {
-        return player.getCapability(BodyModificationsCapability.BODY_MODIFICATIONS_CAPABILITY).orElseThrow(() -> new IllegalArgumentException("getting player body modifications"));
+        return player.getCapability(BodyModificationsCapability.INSTANCE).orElseThrow(() -> new IllegalArgumentException("getting player body modifications"));
     }
 }

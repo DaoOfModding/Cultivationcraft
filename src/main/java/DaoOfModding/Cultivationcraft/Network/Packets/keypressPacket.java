@@ -3,10 +3,10 @@ package DaoOfModding.Cultivationcraft.Network.Packets;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import DaoOfModding.Cultivationcraft.Common.Register;
 import DaoOfModding.Cultivationcraft.Server.ServerItemControl;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.network.PacketBuffer;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.fml.LogicalSide;
-import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraftforge.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
@@ -20,12 +20,12 @@ public class keypressPacket extends Packet
     }
 
     @Override
-    public void encode(PacketBuffer buffer)
+    public void encode(FriendlyByteBuf buffer)
     {
         buffer.writeEnum(keyPress);
     }
 
-    public static keypressPacket decode(PacketBuffer buffer)
+    public static keypressPacket decode(FriendlyByteBuf buffer)
     {
         keypressPacket returnValue = new keypressPacket(null);
 
@@ -68,7 +68,7 @@ public class keypressPacket extends Packet
     }
 
     // Process received packet on the Server
-    private void processPacket(ServerPlayerEntity sender)
+    private void processPacket(ServerPlayer sender)
     {
         ServerItemControl.handleKeyPress(keyPress, sender);
     }

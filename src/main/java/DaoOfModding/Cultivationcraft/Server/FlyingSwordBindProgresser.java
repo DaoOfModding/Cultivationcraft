@@ -4,13 +4,10 @@ import DaoOfModding.Cultivationcraft.Common.Capabilities.FlyingSwordBind.FlyingS
 import DaoOfModding.Cultivationcraft.Common.Capabilities.FlyingSwordBind.IFlyingSwordBind;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.FlyingSwordContainerItemStack.FlyingSwordContainerItemStack;
 import DaoOfModding.Cultivationcraft.Common.FlyingSwordController;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.INBT;
-import net.minecraft.nbt.LongNBT;
-import net.minecraftforge.fml.server.ServerLifecycleHooks;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraftforge.server.ServerLifecycleHooks;
 
 public class FlyingSwordBindProgresser
 {
@@ -19,7 +16,7 @@ public class FlyingSwordBindProgresser
     {
         // Cycle through list of all players, dealing with any flying swords they are currently binding
 
-        for(PlayerEntity player : ServerLifecycleHooks.getCurrentServer().getPlayerList().getPlayers())
+        for(Player player : ServerLifecycleHooks.getCurrentServer().getPlayerList().getPlayers())
         {
             ItemStack testItem = FlyingSwordContainerItemStack.getCapability(player).getItemStackHandler().getStackInSlot(0);
 
@@ -79,7 +76,7 @@ public class FlyingSwordBindProgresser
         bindData.setBindTime(time);
 
         // This could be done better, but screw it. BindTime is being stored as an NBT tag in the item for the client to read
-        CompoundNBT nbt = item.getTag();
+        CompoundTag nbt = item.getTag();
 
         long BindRemaining = (bindData.getBindTimeMax() - time);
         float percent = (float)(time / 1000000000f) / (float)(bindData.getBindTimeMax() / 1000000000f);

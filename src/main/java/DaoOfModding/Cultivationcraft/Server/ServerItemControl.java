@@ -5,18 +5,11 @@ import DaoOfModding.Cultivationcraft.Common.Containers.FlyingSwordContainerProvi
 import DaoOfModding.Cultivationcraft.Network.PacketHandler;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.ICultivatorStats;
 import DaoOfModding.Cultivationcraft.Common.Register;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.inventory.container.INamedContainerProvider;
-import net.minecraft.world.IWorld;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-
-import net.minecraftforge.fml.event.lifecycle.FMLDedicatedServerSetupEvent;
-import net.minecraftforge.fml.event.server.FMLServerStartedEvent;
-import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
-import net.minecraftforge.fml.network.NetworkHooks;
-import net.minecraftforge.fml.server.ServerLifecycleHooks;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.MenuProvider;
+import net.minecraft.world.entity.player.Player;
+import net.minecraftforge.network.NetworkHooks;
+import net.minecraftforge.server.ServerLifecycleHooks;
 
 public class ServerItemControl
 {
@@ -26,7 +19,7 @@ public class ServerItemControl
     // Check for any FlyingSword recalls on the server, set them to false and update clients
     public static void checkForRecalls()
     {
-        for(PlayerEntity player : ServerLifecycleHooks.getCurrentServer().getPlayerList().getPlayers())
+        for(Player player : ServerLifecycleHooks.getCurrentServer().getPlayerList().getPlayers())
         {
             ICultivatorStats playerStats = CultivatorStats.getCultivatorStats(player);
 
@@ -38,18 +31,18 @@ public class ServerItemControl
         }
     }
 
-    public static void sendPlayerStats(PlayerEntity player, PlayerEntity target)
+    public static void sendPlayerStats(Player player, Player target)
     {
-        PacketHandler.sendCultivatorStatsToSpecificClient(target, (ServerPlayerEntity)player);
-        PacketHandler.sendBodyModificationsToSpecificClient(target, (ServerPlayerEntity)player);
+        PacketHandler.sendCultivatorStatsToSpecificClient(target, (ServerPlayer)player);
+        PacketHandler.sendBodyModificationsToSpecificClient(target, (ServerPlayer)player);
     }
 
-    public static void handleKeyPress(Register.keyPresses keyPressed, ServerPlayerEntity pressedBy)
+    public static void handleKeyPress(Register.keyPresses keyPressed, ServerPlayer pressedBy)
     {
         if (keyPressed == Register.keyPresses.FLYINGSWORDSCREEN)
         {
-            INamedContainerProvider flyingSwordContainerProvider = new FlyingSwordContainerProvider(pressedBy);
-            NetworkHooks.openGui(pressedBy, flyingSwordContainerProvider);
+            MenuProvider flyingSwordContainerProvider = new FlyingSwordContainerProvider(pressedBy);
+            NetworkHooks.openScreen(pressedBy, flyingSwordContainerProvider);
         }
 
         if (keyPressed == Register.keyPresses.SKILLHOTBARSWITCH)

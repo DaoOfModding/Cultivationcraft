@@ -12,24 +12,20 @@ import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPart;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartOption;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.FoodStats.QiFoodStats;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
-import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import DaoOfModding.Cultivationcraft.Network.PacketHandler;
 import DaoOfModding.Cultivationcraft.Server.ServerItemControl;
 import DaoOfModding.Cultivationcraft.Server.ServerListeners;
 import DaoOfModding.Cultivationcraft.Server.SkillHotbarServer;
-import net.minecraft.client.Minecraft;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.world.chunk.Chunk;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.event.world.ChunkEvent;
-import net.minecraftforge.event.world.ChunkWatchEvent;
-import net.minecraftforge.event.world.WorldEvent;
+import net.minecraftforge.event.level.ChunkEvent;
+import net.minecraftforge.event.level.ChunkWatchEvent;
+import net.minecraftforge.event.level.LevelEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
@@ -52,10 +48,10 @@ public class CommonListeners
     }
 
     @SubscribeEvent
-    public static void worldLoad(WorldEvent.Load event)
+    public static void worldLoad(LevelEvent.Load event)
     {
-        if (event.getWorld().isClientSide())
-            ClientItemControl.thisWorld = event.getWorld();
+        if (event.getLevel().isClientSide())
+            ClientItemControl.thisWorld = event.getLevel();
         else
             ServerItemControl.loaded = true;
     }
@@ -63,8 +59,8 @@ public class CommonListeners
     @SubscribeEvent
     public static void playerJump(LivingEvent.LivingJumpEvent event)
     {
-        if (event.getEntity() instanceof PlayerEntity)
-            Physics.applyJump((PlayerEntity) event.getEntity());
+        if (event.getEntity() instanceof Player)
+            Physics.applyJump((Player) event.getEntity());
     }
 
     @SubscribeEvent
@@ -74,36 +70,36 @@ public class CommonListeners
 
         // Cancel the eat event if the players stomach is incompatible with the food type
         if (event.getItemStack().isEdible())
-            if (event.getPlayer().getFoodData() instanceof QiFoodStats)
-                if (!((QiFoodStats)((QiFoodStats) event.getPlayer().getFoodData())).isEdible(event.getItemStack()))
+            if (event.getEntity().getFoodData() instanceof QiFoodStats)
+                if (!((QiFoodStats)((QiFoodStats) event.getEntity().getFoodData())).isEdible(event.getItemStack()))
                     event.setCanceled(true);
     }
 
     @SubscribeEvent
     public static void playerFall(LivingFallEvent event)
     {
-        if (event.getEntity() instanceof PlayerEntity)
-            event.setDistance(Physics.reduceFallDistance((PlayerEntity) event.getEntity(), event.getDistance()));
+        if (event.getEntity() instanceof Player)
+            event.setDistance(Physics.reduceFallDistance((Player) event.getEntity(), event.getDistance()));
     }
 
     @SubscribeEvent
-    public static void chunkLoad(ChunkEvent.Load event)
+    public static void LevelChunkLoad(ChunkEvent.Load event)
     {
         // Only on server
-        if (!event.getWorld().isClientSide())
+        if (!event.getLevel().isClientSide())
         {
-            // If the Chunk's Qi sources have not been generated yet, generate them
-            IChunkQiSources sources = ChunkQiSources.getChunkQiSources((Chunk) event.getChunk());
+            // If the LevelChunk's Qi sources have not been generated yet, generate them
+            IChunkQiSources sources = ChunkQiSources.getChunkQiSources((LevelChunk) event.getChunk());
             if (sources.getChunkPos() == null)
             {
                 sources.setChunkPos(event.getChunk().getPos());
                 sources.generateQiSources();
 
-                // Mark the chunk as dirty so it will save the updated capability
-                ((Chunk) event.getChunk()).markUnsaved();
+                // Mark the LevelChunk as dirty so it will save the updated capability
+                event.getChunk().setUnsaved(true);
 
                 // Send the new capability data to all tracking clients
-                PacketHandler.sendChunkQiSourcesToClient((Chunk) event.getChunk());
+                PacketHandler.sendChunkQiSourcesToClient((LevelChunk) event.getChunk());
             }
         }
     }
@@ -112,28 +108,28 @@ public class CommonListeners
     @SubscribeEvent
     public static void playerJoinsWorld(PlayerEvent.PlayerLoggedInEvent event)
     {
-        CultivatorStats.getCultivatorStats(event.getPlayer()).setDisconnected(false);
+        CultivatorStats.getCultivatorStats(event.getEntity()).setDisconnected(false);
 
         // On server
         if (!event.getEntity().getCommandSenderWorld().isClientSide())
         {
             // Loop through every player in the server
-            for (PlayerEntity sendPlayer : event.getEntity().getCommandSenderWorld().players())
+            for (Player sendPlayer : event.getEntity().getCommandSenderWorld().players())
             {
                 // Send player stats to the newly joined player
-                ServerItemControl.sendPlayerStats(sendPlayer, event.getPlayer());
+                ServerItemControl.sendPlayerStats(sendPlayer, event.getEntity());
 
                 // Do onJoin operations for every part of each player
                 for (BodyPart part : BodyModifications.getBodyModifications(sendPlayer).getModifications().values())
-                    part.onJoin(event.getPlayer());
+                    part.onJoin(event.getEntity());
 
                 for (HashMap<String, BodyPartOption> options : BodyModifications.getBodyModifications(sendPlayer).getModificationOptions().values())
                     for (BodyPartOption option : options.values())
-                        option.onJoin(event.getPlayer());
+                        option.onJoin(event.getEntity());
             }
-            SkillHotbarServer.addPlayer(event.getPlayer().getUUID());
+            SkillHotbarServer.addPlayer(event.getEntity().getUUID());
 
-            BodyPartStatControl.updateStats(event.getPlayer());
+            BodyPartStatControl.updateStats(event.getEntity());
         }
     }
 
@@ -141,20 +137,20 @@ public class CommonListeners
     @SubscribeEvent
     public static void playerRespawns(PlayerEvent.PlayerRespawnEvent event)
     {
-        CultivatorStats.getCultivatorStats(event.getPlayer()).setDisconnected(false);
+        CultivatorStats.getCultivatorStats(event.getEntity()).setDisconnected(false);
 
         if (!event.getEntity().getCommandSenderWorld().isClientSide())
-            ServerItemControl.sendPlayerStats(event.getPlayer(), (PlayerEntity)event.getPlayer());
+            ServerItemControl.sendPlayerStats(event.getEntity(), (Player)event.getEntity());
     }
 
     // Fired off when an player changes dimension
     @SubscribeEvent
     public static void playerChangesDimension(PlayerEvent.PlayerChangedDimensionEvent event)
     {
-        CultivatorStats.getCultivatorStats(event.getPlayer()).setDisconnected(false);
+        CultivatorStats.getCultivatorStats(event.getEntity()).setDisconnected(false);
 
         if (!event.getEntity().getCommandSenderWorld().isClientSide())
-            ServerItemControl.sendPlayerStats(event.getPlayer(), (PlayerEntity)event.getPlayer());
+            ServerItemControl.sendPlayerStats(event.getEntity(), (Player)event.getEntity());
     }
 
     // Fired off when an player starts tracking a target
@@ -162,25 +158,25 @@ public class CommonListeners
     public static void playerStartsTracking(PlayerEvent.StartTracking event)
     {
         if (!event.getEntity().getCommandSenderWorld().isClientSide())
-            if (event.getTarget() instanceof PlayerEntity)
-                ServerItemControl.sendPlayerStats(event.getPlayer(), (PlayerEntity)event.getTarget());
+            if (event.getTarget() instanceof Player)
+                ServerItemControl.sendPlayerStats(event.getEntity(), (Player)event.getTarget());
     }
 
-    // Fired off when an player starts watching a chunk
+    // Fired off when an player starts watching a LevelChunk
     @SubscribeEvent
-    public static void onChunkWatch(ChunkWatchEvent.Watch event)
+    public static void onLevelChunkWatch(ChunkWatchEvent.Watch event)
     {
-        if (!event.getWorld().isClientSide())
-            PacketHandler.sendChunkQiSourcesToClient(event.getWorld().getChunk(event.getPos().x, event.getPos().z), event.getPlayer());
+        if (!event.getLevel().isClientSide())
+            PacketHandler.sendChunkQiSourcesToClient(event.getLevel().getChunk(event.getPos().x, event.getPos().z), event.getPlayer());
     }
 
     @SubscribeEvent
     public static void playerDisconnects(PlayerEvent.PlayerLoggedOutEvent event)
     {
-        CultivatorStats.getCultivatorStats(event.getPlayer()).setDisconnected(true);
+        CultivatorStats.getCultivatorStats(event.getEntity()).setDisconnected(true);
 
-        if (!event.getPlayer().getCommandSenderWorld().isClientSide())
-            SkillHotbarServer.removePlayer(event.getPlayer().getUUID());
+        if (!event.getEntity().getCommandSenderWorld().isClientSide())
+            SkillHotbarServer.removePlayer(event.getEntity().getUUID());
     }
 
     @SubscribeEvent
@@ -198,19 +194,13 @@ public class CommonListeners
     private static void cancelPlacement(PlayerInteractEvent event)
     {
         // Cancel placing item if the SkillHotbar is active
-        if (event.getWorld().isClientSide())
+        if (event.getLevel().isClientSide())
         {
             if (SkillHotbarOverlay.isActive())
                 event.setCanceled(true);
         }
         else
-        if (SkillHotbarServer.isActive(event.getPlayer().getUUID()))
+        if (SkillHotbarServer.isActive(event.getEntity().getUUID()))
             event.setCanceled(true);
-    }
-
-    // Fired off when an entity joins the world, this happens on both the client and the server
-    @SubscribeEvent
-    public void entityJoinWorld(EntityJoinWorldEvent event)
-    {
     }
 }

@@ -1,12 +1,11 @@
 package DaoOfModding.Cultivationcraft.Client.GUI.Screens;
 
 import DaoOfModding.Cultivationcraft.Client.GUI.ScreenTabControl;
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.platform.GlStateManager;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.ITextComponent;
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.network.chat.Component;
 
 public class GenericTabScreen extends Screen
 {
@@ -17,7 +16,7 @@ public class GenericTabScreen extends Screen
 
     protected int tab;
 
-    GenericTabScreen(int activeTab, ITextComponent name, ResourceLocation tabLocation)
+    GenericTabScreen(int activeTab, Component name, ResourceLocation tabLocation)
     {
         super(name);
 
@@ -47,22 +46,22 @@ public class GenericTabScreen extends Screen
     }
 
     @Override
-    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks)
+    public void render(PoseStack PoseStack, int mouseX, int mouseY, float partialTicks)
     {
-        this.renderBackground(matrixStack);
-        drawGuiBackgroundLayer(matrixStack, partialTicks, mouseX, mouseY);
-        super.render(matrixStack, mouseX, mouseY, partialTicks);
+        this.renderBackground(PoseStack);
+        drawGuiBackgroundLayer(PoseStack, partialTicks, mouseX, mouseY);
+        super.render(PoseStack, mouseX, mouseY, partialTicks);
     }
 
-    protected void drawGuiBackgroundLayer(MatrixStack matrixStack, float partialTicks, int mouseX, int mouseY)
+    protected void drawGuiBackgroundLayer(PoseStack PoseStack, float partialTicks, int mouseX, int mouseY)
     {
-        GlStateManager._color4f(1.0F, 1.0F, 1.0F, 1.0F);
-        Minecraft.getInstance().getTextureManager().bind(TEXTURE);
+        RenderSystem.setShaderTexture(0, TEXTURE);
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 
         int edgeSpacingX = (this.width - this.xSize) / 2;
         int edgeSpacingY = (this.height - this.ySize) / 2;
-        this.blit(matrixStack, edgeSpacingX, edgeSpacingY, 0, 0, this.xSize, this.ySize);
+        this.blit(PoseStack, edgeSpacingX, edgeSpacingY, 0, 0, this.xSize, this.ySize);
 
-        ScreenTabControl.highlightTabs(matrixStack, tab, mouseX, mouseY, edgeSpacingX, edgeSpacingY, this);
+        ScreenTabControl.highlightTabs(PoseStack, tab, mouseX, mouseY, edgeSpacingX, edgeSpacingY, this);
     }
 }

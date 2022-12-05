@@ -1,5 +1,7 @@
 package DaoOfModding.Cultivationcraft.Common.Capabilities.FlyingSwordBind;
 
+import net.minecraft.nbt.CompoundTag;
+
 import java.util.UUID;
 
 public interface IFlyingSwordBind
@@ -17,4 +19,7 @@ public interface IFlyingSwordBind
 
     public long getBindTimeMax();
     public void setBindTimeMax(long newTime);
+
+    public CompoundTag writeNBT();
+    public void readNBT(CompoundTag nbt);
 }

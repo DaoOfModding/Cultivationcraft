@@ -7,10 +7,9 @@ import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPart;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartOption;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.PlayerHealthManager;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.Technique;
-import net.minecraft.client.entity.player.AbstractClientPlayerEntity;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.player.Player;
 
 import java.util.HashMap;
 
@@ -48,7 +47,7 @@ public class PlayerStatControl
         return stats;
     }
 
-    public void updateStats(PlayerEntity player)
+    public void updateStats(Player player)
     {
         // Clear the existing stats
         setupStats();
@@ -81,14 +80,14 @@ public class PlayerStatControl
                 BodyPartStatControl.addStats(player.getUUID(), tech.getStats());
         }
 
-        // Only apply player attribute modifiers on the client
-        if (!(player instanceof AbstractClientPlayerEntity))
+        // Only apply player attribute modifiers on the server
+        if (!player.level.isClientSide)
             applyStats(player);
 
         PlayerHealthManager.updateFoodStats(player);
     }
 
-    private void applyStats(PlayerEntity player)
+    private void applyStats(Player player)
     {
         if (healthModifier != null)
             player.getAttribute(Attributes.MAX_HEALTH).removeModifier(healthModifier);

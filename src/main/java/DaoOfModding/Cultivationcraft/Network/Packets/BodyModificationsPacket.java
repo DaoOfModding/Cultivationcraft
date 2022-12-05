@@ -5,10 +5,10 @@ import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.BodyM
 import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.IBodyModifications;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.network.PacketBuffer;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.fml.LogicalSide;
-import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraftforge.network.NetworkEvent;
 
 import java.util.UUID;
 import java.util.function.Supplier;
@@ -26,13 +26,13 @@ public class BodyModificationsPacket extends Packet
     }
 
     @Override
-    public void encode(PacketBuffer buffer)
+    public void encode(FriendlyByteBuf buffer)
     {
         buffer.writeUUID(owner);
         buffer.writeNbt(mods.write());
     }
 
-    public static BodyModificationsPacket decode(PacketBuffer buffer)
+    public static BodyModificationsPacket decode(FriendlyByteBuf buffer)
     {
         BodyModificationsPacket returnValue = new BodyModificationsPacket(null, null);
 
@@ -76,7 +76,7 @@ public class BodyModificationsPacket extends Packet
     // Process received packet on client
     private void processPacket()
     {
-        PlayerEntity player = ClientItemControl.thisWorld.getPlayerByUUID(owner);
+        Player player = ClientItemControl.thisWorld.getPlayerByUUID(owner);
 
         // Get the modifications for the specified player
         IBodyModifications modifications = BodyModifications.getBodyModifications(player);

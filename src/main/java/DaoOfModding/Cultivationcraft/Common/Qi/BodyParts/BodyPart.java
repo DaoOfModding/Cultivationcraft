@@ -1,5 +1,6 @@
 package DaoOfModding.Cultivationcraft.Common.Qi.BodyParts;
 
+import DaoOfModding.Cultivationcraft.Client.genericClientFunctions;
 import DaoOfModding.Cultivationcraft.Client.Animations.BodyPartLocation;
 import DaoOfModding.Cultivationcraft.Client.Textures.TextureList;
 import DaoOfModding.Cultivationcraft.Client.Textures.TextureManager;
@@ -10,14 +11,10 @@ import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.ICultiv
 import DaoOfModding.Cultivationcraft.Common.Qi.CultivationTypes;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.PlayerStatModifications;
 import DaoOfModding.Cultivationcraft.Network.ClientPacketHandler;
-import javafx.util.Pair;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.player.ClientPlayerEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import com.mojang.datafixers.util.Pair;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.resources.ResourceLocation;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -143,12 +140,12 @@ public class BodyPart
 
     public String getDisplayName()
     {
-        return new TranslationTextComponent(displayNamePosition).getString();
+        return Component.translatable(displayNamePosition).getString();
     }
 
     public String getDescription()
     {
-        return new TranslationTextComponent(displayNamePosition + ".description").getString();
+        return Component.translatable(displayNamePosition + ".description").getString();
     }
 
     public String getID()
@@ -226,17 +223,17 @@ public class BodyPart
             TextureManager.addTexture(playerID, entry.getKey(), entry.getValue());
     }
 
-    public void onClientTick(PlayerEntity player)
+    public void onClientTick(Player player)
     {
 
     }
 
-    public void onServerTick(PlayerEntity player)
+    public void onServerTick(Player player)
     {
 
     }
 
-    public boolean canBeForged(PlayerEntity player)
+    public boolean canBeForged(Player player)
     {
         // Ensure the player is a body cultivator
         ICultivatorStats stats = CultivatorStats.getCultivatorStats(player);
@@ -310,13 +307,13 @@ public class BodyPart
         for (Pair<String, String> position : neededPositionToForge)
         {
             // If the subposition is basePosition then check if there is a modification at this position
-            if (position.getValue().compareTo(BodyPartNames.basePosition) == 0)
+            if (position.getSecond().compareTo(BodyPartNames.basePosition) == 0)
             {
-                if (!modifications.hasModification(position.getKey()))
+                if (!modifications.hasModification(position.getFirst()))
                     return false;
             }
             // Otherwise check if there is a modification option at this subposition
-            else if (!modifications.hasOption(position.getKey(), position.getValue()))
+            else if (!modifications.hasOption(position.getFirst(), position.getSecond()))
                 return false;
         }
 
@@ -329,13 +326,13 @@ public class BodyPart
         for (Pair<String, String> position : needNotPositionToForge)
         {
             // If the subposition is basePosition then check if there is a modification at this position
-            if (position.getValue().compareTo(BodyPartNames.basePosition) == 0)
+            if (position.getSecond().compareTo(BodyPartNames.basePosition) == 0)
             {
-                if (modifications.hasModification(position.getKey()))
+                if (modifications.hasModification(position.getFirst()))
                     return true;
             }
             // Otherwise check if there is a modification option at this subposition
-            else if (modifications.hasOption(position.getKey(), position.getValue()))
+            else if (modifications.hasOption(position.getFirst(), position.getSecond()))
                 return true;
         }
 
@@ -389,17 +386,17 @@ public class BodyPart
     // Client only, only if owner of bodyPart
     public void sendInfo(int info, String partID, String limbID)
     {
-        ClientPacketHandler.sendPartInfoToServer(Minecraft.getInstance().player.getUUID(), info, partID, limbID);
+        ClientPacketHandler.sendPartInfoToServer(genericClientFunctions.getPlayer().getUUID(), info, partID, limbID);
     }
 
     // Process a received int info packet
-    public void processInfo(PlayerEntity player, int info)
+    public void processInfo(Player player, int info)
     {
 
     }
 
     // Calls this when "player" joins the server
-    public void onJoin(PlayerEntity player)
+    public void onJoin(Player player)
     {
 
     }

@@ -1,9 +1,8 @@
 package DaoOfModding.Cultivationcraft.Common.Qi;
 
-import DaoOfModding.Cultivationcraft.Cultivationcraft;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.FriendlyByteBuf;
 
 public class QiSource
 {
@@ -34,9 +33,9 @@ public class QiSource
         return elementID;
     }
 
-    public CompoundNBT SerializeNBT()
+    public CompoundTag SerializeNBT()
     {
-        CompoundNBT nbt = new CompoundNBT();
+        CompoundTag nbt = new CompoundTag();
 
         nbt.putLong("pos", pos.asLong());
         nbt.putInt("range", range);
@@ -45,14 +44,14 @@ public class QiSource
         return nbt;
     }
 
-    public void WriteBuffer(PacketBuffer buffer)
+    public void WriteBuffer(FriendlyByteBuf buffer)
     {
         buffer.writeLong(pos.asLong());
         buffer.writeInt(range);
         buffer.writeInt(elementID);
     }
 
-    public static QiSource DeserializeNBT(CompoundNBT nbt)
+    public static QiSource DeserializeNBT(CompoundTag nbt)
     {
         BlockPos newPos = BlockPos.of(nbt.getLong("pos"));
         int size = nbt.getInt("range");
@@ -61,7 +60,7 @@ public class QiSource
         return new QiSource(newPos, size, element);
     }
 
-    public static QiSource ReadBuffer(PacketBuffer buffer)
+    public static QiSource ReadBuffer(FriendlyByteBuf buffer)
     {
         BlockPos newPos = BlockPos.of(buffer.readLong());
         int size = buffer.readInt();

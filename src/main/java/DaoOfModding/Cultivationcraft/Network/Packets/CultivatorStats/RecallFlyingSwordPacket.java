@@ -5,11 +5,11 @@ import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import DaoOfModding.Cultivationcraft.Network.Packets.Packet;
 import DaoOfModding.Cultivationcraft.Network.PacketHandler;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.network.PacketBuffer;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.fml.LogicalSide;
-import net.minecraftforge.fml.network.NetworkEvent;
-import net.minecraftforge.fml.server.ServerLifecycleHooks;
+import net.minecraftforge.network.NetworkEvent;
+import net.minecraftforge.server.ServerLifecycleHooks;
 
 import java.util.UUID;
 import java.util.function.Supplier;
@@ -26,7 +26,7 @@ public class RecallFlyingSwordPacket extends Packet
     }
 
     @Override
-    public void encode(PacketBuffer buffer)
+    public void encode(FriendlyByteBuf buffer)
     {
         if (owner != null)
         {
@@ -35,7 +35,7 @@ public class RecallFlyingSwordPacket extends Packet
         }
     }
 
-    public static RecallFlyingSwordPacket decode(PacketBuffer buffer)
+    public static RecallFlyingSwordPacket decode(FriendlyByteBuf buffer)
     {
         RecallFlyingSwordPacket returnValue = new RecallFlyingSwordPacket(false, null);
 
@@ -85,7 +85,7 @@ public class RecallFlyingSwordPacket extends Packet
         PacketHandler.sendRecallFlyingToClient(recallOn, owner);
 
         // Grab the player entity based on the read UUID
-        PlayerEntity ownerEntity = ServerLifecycleHooks.getCurrentServer().getPlayerList().getPlayer(owner);
+        Player ownerEntity = ServerLifecycleHooks.getCurrentServer().getPlayerList().getPlayer(owner);
 
         processPacket(ownerEntity);
     }
@@ -93,14 +93,14 @@ public class RecallFlyingSwordPacket extends Packet
     private void processClientPacket()
     {
         // Grab the player entity based on the read UUID
-        PlayerEntity ownerEntity = Minecraft.getInstance().level.getPlayerByUUID(owner);
+        Player ownerEntity = Minecraft.getInstance().level.getPlayerByUUID(owner);
 
         if (ownerEntity != null)
             processPacket(ownerEntity);
     }
 
     // Process received packet
-    private void processPacket(PlayerEntity ownerEntity)
+    private void processPacket(Player ownerEntity)
     {
         // Set the player's flying sword recall to the specified value
         CultivatorStats.getCultivatorStats(ownerEntity).setRecall(recallOn);

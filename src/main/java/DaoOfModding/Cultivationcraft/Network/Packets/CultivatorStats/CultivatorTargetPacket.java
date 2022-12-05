@@ -6,13 +6,13 @@ import DaoOfModding.Cultivationcraft.Network.Packets.Packet;
 import DaoOfModding.Cultivationcraft.Network.PacketHandler;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.ICultivatorStats;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.fml.LogicalSide;
-import net.minecraftforge.fml.network.NetworkEvent;
-import net.minecraftforge.fml.server.ServerLifecycleHooks;
+import net.minecraftforge.network.NetworkEvent;
+import net.minecraftforge.server.ServerLifecycleHooks;
 
 import java.util.UUID;
 import java.util.function.Supplier;
@@ -20,11 +20,11 @@ import java.util.function.Supplier;
 public class CultivatorTargetPacket extends Packet
 {
     private UUID player = null;
-    private RayTraceResult.Type targetType = RayTraceResult.Type.MISS;
-    private Vector3d targetPos = null;
+    private HitResult.Type targetType = HitResult.Type.MISS;
+    private Vec3 targetPos = null;
     private UUID target = null;
 
-    public CultivatorTargetPacket(UUID playerID, RayTraceResult.Type type, Vector3d pos, UUID targetUUID)
+    public CultivatorTargetPacket(UUID playerID, HitResult.Type type, Vec3 pos, UUID targetUUID)
     {
         player = playerID;
         targetType = type;
@@ -33,7 +33,7 @@ public class CultivatorTargetPacket extends Packet
     }
 
     @Override
-    public void encode(PacketBuffer buffer)
+    public void encode(FriendlyByteBuf buffer)
     {
         if (player != null)
         {
@@ -45,31 +45,31 @@ public class CultivatorTargetPacket extends Packet
                 buffer.writeDouble(targetPos.y);
                 buffer.writeDouble(targetPos.z);
 
-                if (targetType == RayTraceResult.Type.ENTITY)
+                if (targetType == HitResult.Type.ENTITY)
                     buffer.writeUUID(target);
             }
         }
     }
 
-    public static CultivatorTargetPacket decode(PacketBuffer buffer)
+    public static CultivatorTargetPacket decode(FriendlyByteBuf buffer)
     {
-        CultivatorTargetPacket returnValue = new CultivatorTargetPacket(null, RayTraceResult.Type.MISS, null, null);
+        CultivatorTargetPacket returnValue = new CultivatorTargetPacket(null, HitResult.Type.MISS, null, null);
 
         try
         {
             // Read in the send values
             UUID readingPlayer = buffer.readUUID();
-            RayTraceResult.Type readingType = buffer.readEnum(RayTraceResult.Type.class);
+            HitResult.Type readingType = buffer.readEnum(HitResult.Type.class);
 
-            Vector3d readingPos = null;
+            Vec3 readingPos = null;
             UUID readingTargetID = null;
 
             // Only read the target position if there is a target
-            if (readingType != RayTraceResult.Type.MISS) {
-                readingPos = new Vector3d(buffer.readDouble(), buffer.readDouble(), buffer.readDouble());
+            if (readingType != HitResult.Type.MISS) {
+                readingPos = new Vec3(buffer.readDouble(), buffer.readDouble(), buffer.readDouble());
 
                 // Only read the target ID if target is an entity
-                if (readingType == RayTraceResult.Type.ENTITY)
+                if (readingType == HitResult.Type.ENTITY)
                     readingTargetID = buffer.readUUID();
             }
 
@@ -106,7 +106,7 @@ public class CultivatorTargetPacket extends Packet
     private void processServerPacket()
     {
         // Grab the player entity based on the read UUID
-        PlayerEntity ownerEntity = ServerLifecycleHooks.getCurrentServer().getPlayerList().getPlayer(player);
+        Player ownerEntity = ServerLifecycleHooks.getCurrentServer().getPlayerList().getPlayer(player);
 
         // Process the packet
         processPacket(ownerEntity);
@@ -121,7 +121,7 @@ public class CultivatorTargetPacket extends Packet
     }
 
     // Process received packet
-    private void processPacket(PlayerEntity ownerEntity)
+    private void processPacket(Player ownerEntity)
     {
         // Grab the stats of the supplied player, if they exist, and set the new target
         if (ownerEntity != null)

@@ -8,9 +8,9 @@ import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPart;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartOption;
 import DaoOfModding.mlmanimator.Client.MultiLimbedRenderer;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.player.AbstractClientPlayerEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.client.player.AbstractClientPlayer;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.resources.ResourceLocation;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -42,7 +42,7 @@ public class TextureManager
     }
 
     // Update the textures for each model
-    public static void updateTextures(PlayerEntity player)
+    public static void updateTextures(Player player)
     {
         BodyPartModels modelParts = CultivatorModelHandler.getPlayerModels(player.getUUID());
 

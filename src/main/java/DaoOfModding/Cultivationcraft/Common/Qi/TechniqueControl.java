@@ -3,7 +3,7 @@ package DaoOfModding.Cultivationcraft.Common.Qi;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.*;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.BodyForgeTechniques.*;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.world.entity.player.Player;
 
 import java.util.ArrayList;
 
@@ -13,8 +13,8 @@ public class TechniqueControl
     public static void init()
     {
         TechniqueControl.addTechnique(DivineSenseTechnique.class);
-        TechniqueControl.addTechnique(IceWalkTechnique.class);
-        TechniqueControl.addTechnique(IceAuraTechnique.class);
+        //TechniqueControl.addTechnique(IceWalkTechnique.class);
+        //TechniqueControl.addTechnique(IceAuraTechnique.class);
         TechniqueControl.addTechnique(MeditateTechnique.class);
         TechniqueControl.addTechnique(LeapTechnique.class);
         TechniqueControl.addTechnique(BiteTechnique.class);
@@ -35,7 +35,7 @@ public class TechniqueControl
     }
 
     // Returns a list of all the techniques that can be used by the specified player
-    public static ArrayList<Class> getAvailableTechnics(PlayerEntity player)
+    public static ArrayList<Class> getAvailableTechnics(Player player)
     {
         ArrayList<Class> available = new ArrayList<Class>();
 
@@ -46,7 +46,7 @@ public class TechniqueControl
         return available;
     }
 
-    public static boolean isAvailable(Class technique, PlayerEntity player)
+    public static boolean isAvailable(Class technique, Player player)
     {
         try
         {

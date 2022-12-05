@@ -2,42 +2,32 @@ package DaoOfModding.Cultivationcraft.Common;
 
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStats;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.ICultivatorStats;
-import net.minecraft.block.*;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.enchantment.Enchantments;
-import net.minecraft.entity.*;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.attributes.ModifiableAttributeInstance;
-import net.minecraft.entity.boss.dragon.EnderDragonPartEntity;
-import net.minecraft.entity.item.ArmorStandEntity;
-import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.SwordItem;
-import net.minecraft.network.IPacket;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.network.play.server.SEntityVelocityPacket;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.potion.Effects;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientboundSetEntityMotionPacket;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.damagesource.EntityDamageSource;
+import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.boss.EnderDragonPart;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.stats.Stats;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.EntityDamageSource;
-import net.minecraft.util.Hand;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.GameType;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
-import net.minecraftforge.fml.network.NetworkHooks;
+import net.minecraft.util.Mth;
+import net.minecraft.world.item.SwordItem;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraftforge.network.NetworkHooks;
 
 import java.util.List;
 import java.util.Random;
@@ -45,19 +35,19 @@ import java.util.UUID;
 
 public class FlyingSwordEntity extends ItemEntity
 {
-    private static final DataParameter<ItemStack> ITEM = EntityDataManager.defineId(FlyingSwordEntity.class, DataSerializers.ITEM_STACK);
-    private static final DataParameter<Float> decaySpeed = EntityDataManager.defineId(FlyingSwordEntity.class, DataSerializers.FLOAT);
+    private static final EntityDataAccessor<ItemStack> ITEM = SynchedEntityData.defineId(FlyingSwordEntity.class, EntityDataSerializers.ITEM_STACK);
+    private static final EntityDataAccessor<Float> decaySpeed = SynchedEntityData.defineId(FlyingSwordEntity.class, EntityDataSerializers.FLOAT);
 
-    private static final DataParameter<Float> movementX = EntityDataManager.defineId(FlyingSwordEntity.class, DataSerializers.FLOAT);
-    private static final DataParameter<Float> movementY = EntityDataManager.defineId(FlyingSwordEntity.class, DataSerializers.FLOAT);
-    private static final DataParameter<Float> movementZ = EntityDataManager.defineId(FlyingSwordEntity.class, DataSerializers.FLOAT);
+    private static final EntityDataAccessor<Float> movementX = SynchedEntityData.defineId(FlyingSwordEntity.class, EntityDataSerializers.FLOAT);
+    private static final EntityDataAccessor<Float> movementY = SynchedEntityData.defineId(FlyingSwordEntity.class, EntityDataSerializers.FLOAT);
+    private static final EntityDataAccessor<Float> movementZ = SynchedEntityData.defineId(FlyingSwordEntity.class, EntityDataSerializers.FLOAT);
 
     private final double idleDistance = 3;
 
     private int age = 0;
-    public Vector3d direction = new Vector3d(1, 0, 0);
-    public Vector3d movement = new Vector3d(0, 0 ,0);
-    private PlayerEntity owner = null;
+    public Vec3 direction = new Vec3(1, 0, 0);
+    public Vec3 movement = new Vec3(0, 0 ,0);
+    private Player owner = null;
     private ICultivatorStats stats = null;
 
     private boolean recall = false;
@@ -66,19 +56,13 @@ public class FlyingSwordEntity extends ItemEntity
     // Testing thing
     private boolean orbit = false;
 
-    public FlyingSwordEntity(EntityType<? extends ItemEntity> type, World worldIn)
+    public FlyingSwordEntity(EntityType<? extends ItemEntity> type, Level worldIn)
     {
         super(type, worldIn);
         init();
     }
 
-    public FlyingSwordEntity(World worldIn, double x, double y, double z)
-    {
-        super(worldIn, x, y, z);
-        init();
-    }
-
-    public FlyingSwordEntity(World worldIn, double x, double y, double z, ItemStack stack)
+    public FlyingSwordEntity(Level worldIn, double x, double y, double z, ItemStack stack)
     {
         super(worldIn, x, y, z, stack);
         init();
@@ -149,20 +133,20 @@ public class FlyingSwordEntity extends ItemEntity
     private void calculatePitchAndYaw()
     {
         // Store the previous pitch and yaw
-        xRotO = xRot;
-        yRotO = yRot;
+        xRotO = getXRot();
+        yRotO = getYRot();
 
         // Calculate pitch and yaw based on direction
 
         // Subtracting quarter of PI to align yaw in the right direction
-        xRot = (float) Math.asin(direction.y) - (float)(Math.PI / 4.0);
+        setXRot((float) Math.asin(direction.y) - (float)(Math.PI / 4.0));
 
         // Subtracting half of PI to align yaw in the right direction
-        yRot = (float) Math.atan2(direction.x, direction.z) - (float)(Math.PI / 2.0);
+        setYRot((float) Math.atan2(direction.x, direction.z) - (float)(Math.PI / 2.0));
     }
 
     // Turn item towards specified direction
-    private void turnTowards(Vector3d newDirection)
+    private void turnTowards(Vec3 newDirection)
     {
         Double angle = Math.asin(direction.cross(newDirection).length());
 
@@ -173,12 +157,12 @@ public class FlyingSwordEntity extends ItemEntity
             if (theta > Math.abs(angle))
                 theta = angle;
 
-            Vector3d u = direction.cross(newDirection).normalize();
+            Vec3 u = direction.cross(newDirection).normalize();
 
             double cosTheta = Math.cos(theta);
             double sinTheta = Math.sin(theta);
 
-            Vector3d rotatedDirection = u.scale(u.dot(direction));
+            Vec3 rotatedDirection = u.scale(u.dot(direction));
             rotatedDirection = rotatedDirection.add(u.cross(direction).cross(u).scale(cosTheta));
             rotatedDirection = rotatedDirection.add(u.cross(direction).scale(sinTheta));
 
@@ -197,7 +181,7 @@ public class FlyingSwordEntity extends ItemEntity
     // Move flying sword forwards in specified direction
     private void moveForwards()
     {
-        Vector3d toMove = movement.add(direction.scale(stats.getFlyingItemSpeed()));
+        Vec3 toMove = movement.add(direction.scale(stats.getFlyingItemSpeed()));
 
         // If the movement vector is going faster than the item's max speed, lower it to the max speed
         if (toMove.length() > stats.getFlyingItemMaxSpeed())
@@ -208,14 +192,14 @@ public class FlyingSwordEntity extends ItemEntity
 
     private void moveToTarget()
     {
-        Vector3d targetPos = stats.getTarget();
+        Vec3 targetPos = stats.getTarget();
 
         // Check how far away the item is to the target
         double distX = getX() - targetPos.x;
         double distY = getY() - targetPos.y;
         double distZ = getZ() - targetPos.z;
 
-        Vector3d targetDir = new Vector3d(-distX, -distY, -distZ);
+        Vec3 targetDir = new Vec3(-distX, -distY, -distZ);
         targetDir = targetDir.normalize();
 
 
@@ -243,7 +227,7 @@ public class FlyingSwordEntity extends ItemEntity
         // Ignore distance limit if entity is recalling
         if (distance > idleDistance || recall)
         {
-            Vector3d ownerDir = new Vector3d(-distX, -distY, -distZ);
+            Vec3 ownerDir = new Vec3(-distX, -distY, -distZ);
             ownerDir = ownerDir.normalize();
 
             turnTowards(ownerDir);
@@ -319,19 +303,19 @@ public class FlyingSwordEntity extends ItemEntity
         if (Misc.blockExists(collisionBlock.getBlock()))
         {
             tryHarvestBlock(blockPosition);
-            bumpBackwards(0.4, Misc.getVector3dFromBlockPos(blockPosition));
+            bumpBackwards(0.4, Misc.getVec3FromBlockPos(blockPosition));
         }
     }
 
     // 'Bump' this entity backwards slightly
-    private void bumpBackwards(double power, Vector3d fromPos)
+    private void bumpBackwards(double power, Vec3 fromPos)
     {
         // Check how far away the item is to the target
         double distX = getX() - fromPos.x;
         double distY = getY() - fromPos.y;
         double distZ = getZ() - fromPos.z;
 
-        Vector3d targetDir = new Vector3d(distX, distY, distZ);
+        Vec3 targetDir = new Vec3(distX, distY, distZ);
         targetDir = targetDir.normalize();
 
         this.movement = targetDir.scale(stats.getFlyingItemMaxSpeed() * power);
@@ -353,7 +337,7 @@ public class FlyingSwordEntity extends ItemEntity
     }
 
     // Return true if Flying Sword is in control range of supplied vector
-    private boolean isInRange(Vector3d pos)
+    private boolean isInRange(Vec3 pos)
     {
         if (position().distanceTo(pos) < stats.getFlyingControlRange())
             return true;
@@ -364,7 +348,7 @@ public class FlyingSwordEntity extends ItemEntity
     // Make the flying Sword fall to the ground
     private void fall()
     {
-        direction = new Vector3d(0, -1, 0);
+        direction = new Vec3(0, -1, 0);
 
         movement = movement.add(direction.scale(2));
     }
@@ -374,7 +358,7 @@ public class FlyingSwordEntity extends ItemEntity
 
         if (getItem().onEntityItemUpdate((ItemEntity)this)) return;
         if (this.getItem().isEmpty()) {
-            this.remove();
+            this.remove(RemovalReason.DISCARDED);
         } else
         {
             updateOwner();
@@ -426,7 +410,7 @@ public class FlyingSwordEntity extends ItemEntity
             }
 
             if (this.getItem().isEmpty()) {
-                this.remove();
+                this.remove(RemovalReason.DISCARDED);
             }
 
             storeMovement();
@@ -444,7 +428,7 @@ public class FlyingSwordEntity extends ItemEntity
     // Updated the movement vector to match the values in the data manager
     private void retrieveMovement()
     {
-        movement = new Vector3d(getEntityData().get(movementX).floatValue(), getEntityData().get(movementY).floatValue(), getEntityData().get(movementZ).floatValue());
+        movement = new Vec3(getEntityData().get(movementX).floatValue(), getEntityData().get(movementY).floatValue(), getEntityData().get(movementZ).floatValue());
     }
 
     @Override
@@ -486,7 +470,7 @@ public class FlyingSwordEntity extends ItemEntity
     }
 
     @Override
-    public IPacket<?> getAddEntityPacket()
+    public Packet<?> getAddEntityPacket()
     {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
@@ -494,7 +478,7 @@ public class FlyingSwordEntity extends ItemEntity
 
     // Ripped almost word for word from ItemEntity.playerTouch. Stupid minecraft
     @Override
-    public void playerTouch(PlayerEntity entityIn)
+    public void playerTouch(Player entityIn)
     {
         if (!this.level.isClientSide)
         {
@@ -509,14 +493,14 @@ public class FlyingSwordEntity extends ItemEntity
             if (hook < 0) return;
 
             ItemStack copy = itemstack.copy();
-            if (hook == 1 || i <= 0 || entityIn.inventory.add(itemstack))
+            if (hook == 1 || i <= 0 || entityIn.getInventory().add(itemstack))
             {
                 copy.setCount(copy.getCount() - getItem().getCount());
-                net.minecraftforge.fml.hooks.BasicEventHooks.firePlayerItemPickupEvent(entityIn, this, copy);
+                net.minecraftforge.event.ForgeEventFactory.firePlayerItemPickupEvent(entityIn, this, copy);
 
                 if (itemstack.isEmpty())
                 {
-                    this.remove();
+                    this.remove(RemovalReason.DISCARDED);
                     itemstack.setCount(i);
                 }
 
@@ -536,7 +520,7 @@ public class FlyingSwordEntity extends ItemEntity
         // Only attempt a harvest on the server
         if (!this.level.isClientSide)
         {
-            ServerPlayerEntity serverOwner = ((ServerPlayerEntity)owner);
+            ServerPlayer serverOwner = ((ServerPlayer)owner);
             GameType gameType = serverOwner.interactionManager.getGameType();
 
             BlockState blockstate = this.world.getBlockState(pos);
@@ -544,7 +528,7 @@ public class FlyingSwordEntity extends ItemEntity
             if (exp == -1) {
                 return false;
             } else {
-                TileEntity tileentity = this.world.getTileEntity(pos);
+                BlockEntity BlockEntity = this.world.getBlockEntity(pos);
                 Block block = blockstate.getBlock();
 
 
@@ -566,7 +550,7 @@ public class FlyingSwordEntity extends ItemEntity
                     boolean flag = removeBlock(pos, flag1);
 
                     if (flag && flag1) {
-                        block.harvestBlock(this.world, owner, pos, blockstate, tileentity, getItem());
+                        block.harvestBlock(this.world, owner, pos, blockstate, BlockEntity, getItem());
                     }
 
                     if (flag && exp > 0)
@@ -580,7 +564,7 @@ public class FlyingSwordEntity extends ItemEntity
         return false;
     }
 
-    // Ripped almost word for word from PlayerEntity.attack. Stupid minecraft
+    // Ripped almost word for word from Player.attack. Stupid minecraft
     // Removed cooldown and some crit stuff, edited to attack from flying sword instead of player
     public void attackTargetEntity(Entity targetEntity)
     {
@@ -600,35 +584,35 @@ public class FlyingSwordEntity extends ItemEntity
                 if (targetEntity instanceof LivingEntity)
                     f1 = EnchantmentHelper.getDamageBonus(this.getItem(), ((LivingEntity)targetEntity).getMobType());
                 else
-                    f1 = EnchantmentHelper.getDamageBonus(this.getItem(), CreatureAttribute.UNDEFINED);
+                    f1 = EnchantmentHelper.getDamageBonus(this.getItem(), MobType.UNDEFINED);
 
                 f = f + f1;
 
                 // Knockback
                 int i = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.KNOCKBACK, getItem());
-                owner.level.playSound((PlayerEntity)null, getX(), getY(), getZ(), SoundEvents.PLAYER_ATTACK_KNOCKBACK, owner.getSoundSource(), 1.0F, 1.0F);
+                owner.level.playSound((Player)null, getX(), getY(), getZ(), SoundEvents.PLAYER_ATTACK_KNOCKBACK, owner.getSoundSource(), 1.0F, 1.0F);
                 ++i;
 
                 // Knockback target
-                Vector3d vector3d = targetEntity.getDeltaMovement();
+                Vec3 Vec3 = targetEntity.getDeltaMovement();
                 boolean flag5 = targetEntity.hurt(new EntityDamageSource("player", this), f);
 
                 if (flag5)
                 {
                     if (targetEntity instanceof LivingEntity)
-                        ((LivingEntity) targetEntity).knockback((float) i * 0.5F, (double) MathHelper.sin(yRot * ((float) Math.PI / 180F)), (double) (-MathHelper.cos(yRot * ((float) Math.PI / 180F))));
+                        ((LivingEntity) targetEntity).knockback((float) i * 0.5F, (double) Mth.sin(getYRot() * ((float) Math.PI / 180F)), (double) (-Mth.cos(getYRot() * ((float) Math.PI / 180F))));
                     else
-                        targetEntity.push((-MathHelper.sin(yRot * ((float)Math.PI / 180F)) * (float)i * 0.5F), 0.1D, (double)(MathHelper.cos(yRot * ((float)Math.PI / 180F)) * (float)i * 0.5F));
+                        targetEntity.push((-Mth.sin(getYRot() * ((float)Math.PI / 180F)) * (float)i * 0.5F), 0.1D, (double)(Mth.cos(getYRot() * ((float)Math.PI / 180F)) * (float)i * 0.5F));
 
                     // Tell client player has been knocked back if knocking back a player
-                    if (targetEntity instanceof ServerPlayerEntity && targetEntity.hurtMarked)
+                    if (targetEntity instanceof ServerPlayer && targetEntity.hurtMarked)
                     {
-                        ((ServerPlayerEntity)targetEntity).connection.send(new SEntityVelocityPacket(targetEntity));
+                        ((ServerPlayer)targetEntity).connection.send(new ClientboundSetEntityMotionPacket(targetEntity));
                         targetEntity.hurtMarked = false;
-                        targetEntity.setDeltaMovement(vector3d);
+                        targetEntity.setDeltaMovement(Vec3);
                     }
 
-                    owner.level.playSound((PlayerEntity)null, getX(), getY(), getZ(), SoundEvents.PLAYER_ATTACK_STRONG, owner.getSoundSource(), 1.0F, 1.0F);
+                    owner.level.playSound((Player)null, getX(), getY(), getZ(), SoundEvents.PLAYER_ATTACK_STRONG, owner.getSoundSource(), 1.0F, 1.0F);
 
 
                     if (f1 > 0.0F)
@@ -645,18 +629,18 @@ public class FlyingSwordEntity extends ItemEntity
                     EnchantmentHelper.applyArthropodEnchantments(owner, targetEntity);*/
 
                     Entity entity = targetEntity;
-                    if (targetEntity instanceof EnderDragonPartEntity)
-                        entity = ((EnderDragonPartEntity)targetEntity).parentMob;
+                    if (targetEntity instanceof EnderDragonPart)
+                        entity = ((EnderDragonPart)targetEntity).parentMob;
 
                     if (targetEntity instanceof LivingEntity)
                     {
                         float f5 = 0 - ((LivingEntity)targetEntity).getHealth();
                         owner.awardStat(Stats.DAMAGE_DEALT, Math.round(f5 * 10.0F));
 
-                        if (owner.level instanceof ServerWorld && f5 > 2.0F)
+                        if (owner.level instanceof ServerLevel && f5 > 2.0F)
                         {
                             int k = (int)((double)f5 * 0.5D);
-                            ((ServerWorld)owner.level).sendParticles(ParticleTypes.DAMAGE_INDICATOR, targetEntity.getX(), targetEntity.getY(0.5D), targetEntity.getZ(), k, 0.1D, 0.0D, 0.1D, 0.2D);
+                            ((ServerLevel)owner.level).sendParticles(ParticleTypes.DAMAGE_INDICATOR, targetEntity.getX(), targetEntity.getY(0.5D), targetEntity.getZ(), k, 0.1D, 0.0D, 0.1D, 0.2D);
                         }
                     }
                 }

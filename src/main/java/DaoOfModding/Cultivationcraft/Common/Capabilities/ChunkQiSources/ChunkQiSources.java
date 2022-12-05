@@ -4,10 +4,12 @@ import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Element;
 import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
 import DaoOfModding.Cultivationcraft.Common.Qi.QiSource;
 import DaoOfModding.Cultivationcraft.Common.Qi.QiSourceConfig;
-import DaoOfModding.Cultivationcraft.Cultivationcraft;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.world.chunk.Chunk;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.chunk.LevelChunk;
+import net.minecraftforge.common.capabilities.Capability;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,17 +18,17 @@ public class ChunkQiSources implements IChunkQiSources
 {
     // TODO: Different dimension spawning
 
-    ChunkPos chunkPos;
+    ChunkPos ChunkPos;
     List<QiSource> QiSources = new ArrayList<QiSource>();
 
     public void setChunkPos(ChunkPos position)
     {
-        chunkPos = position;
+        ChunkPos = position;
     }
 
     public ChunkPos getChunkPos()
     {
-        return chunkPos;
+        return ChunkPos;
     }
 
     public List<QiSource> getQiSources()
@@ -41,7 +43,7 @@ public class ChunkQiSources implements IChunkQiSources
 
     public void generateQiSources()
     {
-        int number = QiSourceConfig.getQiSourceInChunk();
+        int number = QiSourceConfig.getQiSourceInLevelChunk();
 
         for (int i = 0; i < number; i++)
             generateQiSource();
@@ -49,9 +51,9 @@ public class ChunkQiSources implements IChunkQiSources
 
     private void generateQiSource()
     {
-        // Generate a random xPos and zPos somewhere within the chunk
-        int xPos = (int)(Math.random() * 15) + (chunkPos.x << 4);
-        int zPos = (int)(Math.random() * 15) + (chunkPos.z << 4);
+        // Generate a random xPos and zPos somewhere within the LevelChunk
+        int xPos = (int)(Math.random() * 15) + (ChunkPos.x << 4);
+        int zPos = (int)(Math.random() * 15) + (ChunkPos.z << 4);
 
         // Generate a random yPos, more likely to be at ground level (0.32)
         double x = Math.random();
@@ -79,9 +81,52 @@ public class ChunkQiSources implements IChunkQiSources
         QiSources.add(new QiSource(new BlockPos(xPos, yPos, zPos), size, element));
     }
 
-    // Return a specified players CultivatorStats
-    public static IChunkQiSources getChunkQiSources(Chunk chunk)
+    public CompoundTag writeNBT()
     {
-        return chunk.getCapability(ChunkQiSourcesCapability.CULTIVATOR_STATS_CAPABILITY).orElseThrow(() -> new IllegalArgumentException("getting chunk Qi sources"));
+        CompoundTag nbt = new CompoundTag();
+
+        if (getChunkPos() != null)
+        {
+            nbt.putLong("QiSource", getChunkPos().toLong());
+
+            int count = 0;
+            // Add NBT data for each QiSource
+            for (QiSource source : getQiSources())
+            {
+                nbt.put("QiSource" + count, source.SerializeNBT());
+                count++;
+            }
+        }
+
+        return nbt;
+    }
+
+    public void readNBT(CompoundTag nbt)
+    {
+        if (nbt.contains("QiSource"))
+        {
+            setChunkPos(new ChunkPos(nbt.getLong("QiSource")));
+
+            List<QiSource> sourceList = new ArrayList<QiSource>();
+
+            int count = 0;
+            // Load each QiSource from NBT
+            while (nbt.contains("QiSource" + count))
+            {
+                QiSource source = QiSource.DeserializeNBT((CompoundTag)nbt.get("QiSource" + count));
+
+                sourceList.add(source);
+
+                count++;
+            }
+
+            setQiSources(sourceList);
+        }
+    }
+
+    // Return a specified players CultivatorStats
+    public static IChunkQiSources getChunkQiSources(LevelChunk LevelChunk)
+    {
+        return LevelChunk.getCapability(ChunkQiSourcesCapability.INSTANCE).orElseThrow(() -> new IllegalArgumentException("getting LevelChunk Qi sources"));
     }
 }

@@ -1,6 +1,5 @@
 package DaoOfModding.Cultivationcraft.Client;
 
-import DaoOfModding.Cultivationcraft.Client.Animations.BodyPartModelNames;
 import DaoOfModding.Cultivationcraft.Client.Animations.CultivatorModelHandler;
 import DaoOfModding.Cultivationcraft.Client.GUI.SkillHotbarOverlay;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.BodyModifications;
@@ -9,13 +8,14 @@ import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.Cu
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.ICultivatorTechniques;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPart;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartOption;
-import DaoOfModding.Cultivationcraft.StaminaHandler;
 import DaoOfModding.mlmanimator.Client.Poses.PoseHandler;
+import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.player.AbstractClientPlayerEntity;
-import net.minecraft.client.entity.player.ClientPlayerEntity;
+import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.client.event.*;
+import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.LogicalSide;
@@ -32,15 +32,15 @@ public class ClientListeners
     {
         if (event.side == LogicalSide.CLIENT && event.phase == TickEvent.Phase.START)
         {
-            if (event.player == Minecraft.getInstance().player)
+            if (event.player == genericClientFunctions.getPlayer())
                 KeybindingControl.handleMovementOverrides();
-
-            // Update the cultivator model if needed
-            CultivatorModelHandler.updateModifications((AbstractClientPlayerEntity)event.player);
 
             // Do nothing if the pose handler hasn't yet loaded
             if (PoseHandler.getPlayerPoseHandler(event.player.getUUID()) == null)
                 return;
+
+            // Update the cultivator model if needed
+            CultivatorModelHandler.updateModifications((AbstractClientPlayer)event.player);
 
             Physics.Bounce(event.player);
 
@@ -68,60 +68,57 @@ public class ClientListeners
         }
     }
 
+
     @SubscribeEvent
-    public static void overlayRender(RenderGameOverlayEvent.Pre event)
+    public static void overlayRender(RenderGuiOverlayEvent.Pre event)
     {
         // Do nothing if the player is dead
-        if (!Minecraft.getInstance().player.isAlive())
+        if (!genericClientFunctions.getPlayer().isAlive())
             return;
 
-        if (event.getType() == RenderGameOverlayEvent.ElementType.HOTBAR)
+        if (event.getOverlay().id() == VanillaGuiOverlay.HOTBAR.id())
         {
-            SkillHotbarOverlay.PreRenderSkillHotbar(event.getMatrixStack());
+            SkillHotbarOverlay.PreRenderSkillHotbar(event.getPoseStack());
         }
-        else if (event.getType() == RenderGameOverlayEvent.ElementType.HEALTH)
+        else if (event.getOverlay().id() == VanillaGuiOverlay.FOOD_LEVEL.id())
         {
             // Render stamina and health the other way around, so health renders ontop of stamina
             Renderer.renderStamina();
             event.setCanceled(true);
         }
-        else if (event.getType() == RenderGameOverlayEvent.ElementType.FOOD)
+        else if (event.getOverlay().id() == VanillaGuiOverlay.PLAYER_HEALTH.id())
         {
             Renderer.renderHP();
             event.setCanceled(true);
         }
-        else if (event.getType() == RenderGameOverlayEvent.ElementType.EXPERIENCE)
+        else if (event.getOverlay().id() == VanillaGuiOverlay.EXPERIENCE_BAR.id())
         {
             // Move the experience bar up slightly
-            event.getMatrixStack().pushPose();
-            event.getMatrixStack().translate(0, -10, 0);
+            event.getPoseStack().pushPose();
+            event.getPoseStack().translate(0, -10, 0);
         }
-        else if(event.getType() == RenderGameOverlayEvent.ElementType.ALL)
+        else if(event.getOverlay().id() == VanillaGuiOverlay.VIGNETTE.id())
         {
             Renderer.renderTechniqueOverlays();
         }
     }
 
     @SubscribeEvent
-    public static void overlayRenderPost(RenderGameOverlayEvent.Post event)
-    {
-        if (event.getType() == RenderGameOverlayEvent.ElementType.EXPERIENCE)
-        {
-            // Remove the upward translation
-            event.getMatrixStack().popPose();
-        }
-    }
-
-    @SubscribeEvent
-    public static void overlayRender(RenderGameOverlayEvent.Post event)
+    public static void overlayRenderPost(RenderGuiOverlayEvent.Post event)
     {
         // Do nothing if the player is dead
-        if (!Minecraft.getInstance().player.isAlive())
+        if (!genericClientFunctions.getPlayer().isAlive())
             return;
 
-        if (event.getType() == RenderGameOverlayEvent.ElementType.HOTBAR)
+        if (event.getOverlay().id() == VanillaGuiOverlay.EXPERIENCE_BAR.id())
         {
-            SkillHotbarOverlay.PostRenderSkillHotbar(event.getMatrixStack());
+            // Remove the upward translation
+            event.getPoseStack().popPose();
+        }
+
+        if (event.getOverlay().id() == VanillaGuiOverlay.HOTBAR.id())
+        {
+            SkillHotbarOverlay.PostRenderSkillHotbar(event.getPoseStack());
         }
     }
 

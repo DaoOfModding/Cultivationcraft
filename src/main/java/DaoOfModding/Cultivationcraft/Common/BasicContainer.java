@@ -1,15 +1,16 @@
 package DaoOfModding.Cultivationcraft.Common;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.inventory.container.Slot;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.ItemStack;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class BasicContainer extends Container
+public class BasicContainer extends AbstractContainerMenu
 {
     private static final int HOTBAR_SLOT_COUNT = 9;
     private static final int PLAYER_INVENTORY_ROW_COUNT = 3;
@@ -30,12 +31,12 @@ public class BasicContainer extends Container
     public static final int FIRST_FREE_SLOT_INDEX = VANILLA_FIRST_SLOT_INDEX + VANILLA_SLOT_COUNT;
 
 
-    public BasicContainer(@Nullable net.minecraft.inventory.container.ContainerType<?> type, int windowId)
+    public BasicContainer(@Nullable MenuType<?> type, int windowId)
     {
         super(type, windowId);
     }
 
-    public void addPlayerInventory(PlayerInventory playerInv)
+    public void addPlayerInventory(Inventory playerInv)
     {
 
         // Add the players hotbar to the gui - the [xpos, ypos] location of each item
@@ -59,14 +60,14 @@ public class BasicContainer extends Container
 
     @Override
     // Return true if player can interact with this container, false if not
-    public boolean stillValid(@Nonnull PlayerEntity player)
+    public boolean stillValid(@Nonnull Player player)
     {
         return true;
     }
 
     @Override
     // What happens when an item is SHIFT-clicked in this container
-    public ItemStack quickMoveStack(PlayerEntity player, int sourceSlotIndex)
+    public ItemStack quickMoveStack(Player player, int sourceSlotIndex)
     {
         return ItemStack.EMPTY;
     }

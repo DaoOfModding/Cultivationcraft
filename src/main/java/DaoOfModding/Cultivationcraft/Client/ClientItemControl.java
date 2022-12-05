@@ -6,22 +6,20 @@ import DaoOfModding.Cultivationcraft.Client.GUI.BodyPartGUI;
 import DaoOfModding.Cultivationcraft.Client.GUI.Screens.FlyingSwordContainerScreen;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import DaoOfModding.Cultivationcraft.Common.Register;
-import net.minecraft.client.gui.ScreenManager;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.IWorld;
+import net.minecraft.client.gui.screens.MenuScreens;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
 
 public class ClientItemControl
 {
-    public static IWorld thisWorld;
+    public static LevelAccessor thisWorld;
 
 
     public static void init(FMLClientSetupEvent event)
     {
-        KeybindingControl.init();
-
-        ScreenManager.register(Register.ContainerTypeFlyingSword, FlyingSwordContainerScreen::new);
+        MenuScreens.register(Register.ContainerTypeFlyingSword.get(), FlyingSwordContainerScreen::new);
 
         setupDefaultBodyPartGUIs();
     }

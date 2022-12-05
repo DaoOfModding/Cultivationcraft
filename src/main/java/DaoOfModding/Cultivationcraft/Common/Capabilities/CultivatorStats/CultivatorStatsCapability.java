@@ -1,41 +1,44 @@
 package DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats;
 
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.Direction;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.CapabilityInject;
-import net.minecraftforge.common.capabilities.CapabilityManager;
-import net.minecraftforge.common.capabilities.ICapabilitySerializable;
+import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.IBodyModifications;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.Direction;
+import net.minecraftforge.common.capabilities.*;
+import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.common.util.LazyOptional;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class CultivatorStatsCapability implements ICapabilitySerializable<CompoundNBT>
+public class CultivatorStatsCapability implements ICapabilityProvider, INBTSerializable<CompoundTag>
 {
-    @CapabilityInject(ICultivatorStats.class)
-    public static final Capability<ICultivatorStats> CULTIVATOR_STATS_CAPABILITY = null;
-    private LazyOptional<ICultivatorStats> instance = LazyOptional.of(CULTIVATOR_STATS_CAPABILITY::getDefaultInstance);
+    public static final Capability<ICultivatorStats> INSTANCE = CapabilityManager.get(new CapabilityToken<>() {});
 
-    public static void register()
+    private final ICultivatorStats backend = new CultivatorStats();
+    private final LazyOptional<ICultivatorStats> optionalData = LazyOptional.of(() -> backend);
+
+    @NotNull
+    @Override
+    public <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
+        return INSTANCE.orEmpty(cap, this.optionalData);
+    }
+
+    void invalidate() {
+        this.optionalData.invalidate();
+    }
+
+    @Override
+    public CompoundTag serializeNBT() {
+        return this.backend.writeNBT();
+    }
+
+    @Override
+    public void deserializeNBT(CompoundTag nbt) {
+        this.backend.readNBT(nbt);
+    }
+
+    public static void register(RegisterCapabilitiesEvent event)
     {
-        CapabilityManager.INSTANCE.register(ICultivatorStats.class, new CultivatorStatsStorage(), CultivatorStats::new);
-    }
-
-    @Nonnull
-    @Override
-    public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side)
-    {
-        return CULTIVATOR_STATS_CAPABILITY.orEmpty(cap, instance);
-    }
-
-    @Override
-    public CompoundNBT serializeNBT() {
-        return (CompoundNBT) CULTIVATOR_STATS_CAPABILITY.getStorage().writeNBT(CULTIVATOR_STATS_CAPABILITY, instance.orElseThrow(() -> new IllegalArgumentException("LazyOptional cannot be empty!")), null);
-    }
-
-    @Override
-    public void deserializeNBT(CompoundNBT nbt) {
-        CULTIVATOR_STATS_CAPABILITY.getStorage().readNBT(CULTIVATOR_STATS_CAPABILITY, instance.orElseThrow(() -> new IllegalArgumentException("LazyOptional cannot be empty!")), null, nbt);
+        event.register(ICultivatorStats.class);
     }
 }

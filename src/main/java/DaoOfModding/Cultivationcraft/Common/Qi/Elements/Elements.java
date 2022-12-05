@@ -1,9 +1,9 @@
 package DaoOfModding.Cultivationcraft.Common.Qi.Elements;
 
-import net.minecraft.util.text.TranslationTextComponent;
 
 import java.awt.*;
 import java.util.ArrayList;
+import net.minecraft.network.chat.Component;
 
 public class Elements
 {
@@ -25,13 +25,13 @@ public class Elements
 
     private static void createElements()
     {
-        noElementID = addElement(new TranslationTextComponent("cultivationcraft.elements.none").getString(), new Color(1f, 1f, 1f));
-        fireElementID = addElement(new TranslationTextComponent("cultivationcraft.elements.fire").getString(), new Color(1f, 0, 0));
-        earthElementID = addElement(new TranslationTextComponent("cultivationcraft.elements.earth").getString(), new Color(1f, 0.5f, 0));
-        woodElementID = addElement(new TranslationTextComponent("cultivationcraft.elements.wood").getString(), new Color(0, 1f, 0));
-        waterElementID = addElement(new TranslationTextComponent("cultivationcraft.elements.water").getString(), new Color(0, 0, 1f));
-        iceElementID = addElement(new TranslationTextComponent("cultivationcraft.elements.ice").getString(), new Color(0, 1f, 1f));
-        lightningElementID = addElement(new TranslationTextComponent("cultivationcraft.elements.lightning").getString(), new Color(1f, 1f, 0));
+        noElementID = addElement(Component.translatable("cultivationcraft.elements.none").getString(), new Color(1f, 1f, 1f));
+        fireElementID = addElement(Component.translatable("cultivationcraft.elements.fire").getString(), new Color(1f, 0, 0));
+        earthElementID = addElement(Component.translatable("cultivationcraft.elements.earth").getString(), new Color(1f, 0.5f, 0));
+        woodElementID = addElement(Component.translatable("cultivationcraft.elements.wood").getString(), new Color(0, 1f, 0));
+        waterElementID = addElement(Component.translatable("cultivationcraft.elements.water").getString(), new Color(0, 0, 1f));
+        iceElementID = addElement(Component.translatable("cultivationcraft.elements.ice").getString(), new Color(0, 1f, 1f));
+        lightningElementID = addElement(Component.translatable("cultivationcraft.elements.lightning").getString(), new Color(1f, 1f, 0));
     }
 
     private static void createElementRelationships()

@@ -1,6 +1,8 @@
 package DaoOfModding.Cultivationcraft.Common.Qi.Techniques.BodyForgeTechniques;
 
+import DaoOfModding.Cultivationcraft.Client.genericClientFunctions;
 import DaoOfModding.Cultivationcraft.Client.Animations.BodyPartModelNames;
+import DaoOfModding.Cultivationcraft.Client.Physics;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.BodyModifications;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStats;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartNames;
@@ -13,9 +15,9 @@ import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import DaoOfModding.mlmanimator.Client.Models.MultiLimbedModel;
 import DaoOfModding.mlmanimator.Client.Poses.PoseHandler;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.TickEvent;
 
 public class JetLegTechnique extends MovementOverrideTechnique
@@ -32,7 +34,7 @@ public class JetLegTechnique extends MovementOverrideTechnique
     }
 
     @Override
-    public boolean isValid(PlayerEntity player)
+    public boolean isValid(Player player)
     {
         // Technique is valid if the player is a body cultivator with Reverse Joint Legs
         if (CultivatorStats.getCultivatorStats(player).getCultivationType() == CultivationTypes.BODY_CULTIVATOR &&
@@ -54,17 +56,17 @@ public class JetLegTechnique extends MovementOverrideTechnique
         MultiLimbedModel model = PoseHandler.getPlayerPoseHandler(event.player.getUUID()).getPlayerModel();
 
         // Active the leg jets if player is moving upwards
-        if (PoseHandler.getPlayerPoseHandler(event.player.getUUID()).getDeltaMovement().y > 0)
+        if (Physics.getDelta(event.player).y > 0)
         {
-            model.getLimb(BodyPartModelNames.jetLegLeftEmitter).visible = true;
-            model.getLimb(BodyPartModelNames.jetLegRightEmitter).visible = true;
+            model.getLimb(BodyPartModelNames.jetLegLeftEmitter).getModelPart().visible = true;
+            model.getLimb(BodyPartModelNames.jetLegRightEmitter).getModelPart().visible = true;
 
             PoseHandler.getPlayerPoseHandler(event.player.getUUID()).disableJumpingAnimationThisTick = true;
         }
         else
         {
-            model.getLimb(BodyPartModelNames.jetLegLeftEmitter).visible = false;
-            model.getLimb(BodyPartModelNames.jetLegRightEmitter).visible = false;
+            model.getLimb(BodyPartModelNames.jetLegLeftEmitter).getModelPart().visible = false;
+            model.getLimb(BodyPartModelNames.jetLegRightEmitter).getModelPart().visible = false;
         }
     }
 
@@ -72,18 +74,18 @@ public class JetLegTechnique extends MovementOverrideTechnique
     public boolean overwriteJump()
     {
         // Do nothing if the player is in water
-        if (Minecraft.getInstance().player.isInWater())
+        if (genericClientFunctions.getPlayer().isInWater())
             return false;
 
-        PlayerStatControl stats = BodyPartStatControl.getPlayerStatControl(Minecraft.getInstance().player.getUUID());
+        PlayerStatControl stats = BodyPartStatControl.getPlayerStatControl(genericClientFunctions.getPlayer().getUUID());
 
         float weightModifier = stats.getFlightWeightModifier();
-        Vector3d delta = Minecraft.getInstance().player.getDeltaMovement();
+        Vec3 delta = genericClientFunctions.getPlayer().getDeltaMovement();
 
         float upwardsPower = stats.getStats().getStat(StatIDs.flightSpeed);
         double y = ((1 - weightModifier) * delta.y) + (upwardsPower * weightModifier);
 
-        Minecraft.getInstance().player.setDeltaMovement(new Vector3d(delta.x, y, delta.z));
+        genericClientFunctions.getPlayer().setDeltaMovement(new Vec3(delta.x, y, delta.z));
 
         return true;
     }

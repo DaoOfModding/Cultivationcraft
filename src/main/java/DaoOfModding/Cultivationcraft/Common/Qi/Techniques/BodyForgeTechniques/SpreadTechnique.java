@@ -1,6 +1,8 @@
 package DaoOfModding.Cultivationcraft.Common.Qi.Techniques.BodyForgeTechniques;
 
 import DaoOfModding.Cultivationcraft.Client.Animations.BodyPartModelNames;
+import DaoOfModding.Cultivationcraft.Client.Physics;
+import DaoOfModding.Cultivationcraft.Client.genericClientFunctions;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.BodyModifications;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStats;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartNames;
@@ -13,16 +15,15 @@ import DaoOfModding.mlmanimator.Client.Models.GenericLimbNames;
 import DaoOfModding.mlmanimator.Client.Poses.PlayerPose;
 import DaoOfModding.mlmanimator.Client.Poses.PoseHandler;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.TickEvent;
-
-import java.util.UUID;
 
 public class SpreadTechnique extends Technique
 {
+    // TODO: Fails to load on server as it's loading ClientPlayer?
+
     private boolean jumpPressed = false;
     private boolean groundCheck = false;
 
@@ -45,53 +46,53 @@ public class SpreadTechnique extends Technique
 
         icon = new ResourceLocation(Cultivationcraft.MODID, "textures/techniques/icons/wingspread.png");
 
-        pose.addAngle(BodyPartModelNames.rwingUpperArmModel, new Vector3d(Math.toRadians(45), Math.toRadians(-35), Math.toRadians(-25)), 1);
-        pose.addAngle(BodyPartModelNames.lwingUpperArmModel, new Vector3d(Math.toRadians(45), Math.toRadians(35), Math.toRadians(25)), 1);
+        pose.addAngle(BodyPartModelNames.rwingUpperArmModel, new Vec3(Math.toRadians(45), Math.toRadians(-35), Math.toRadians(-25)), 1);
+        pose.addAngle(BodyPartModelNames.lwingUpperArmModel, new Vec3(Math.toRadians(45), Math.toRadians(35), Math.toRadians(25)), 1);
 
-        pose.addAngle(BodyPartModelNames.rwingStrand1Model, new Vector3d(0, 0, Math.toRadians(-70)), 1);
-        pose.addAngle(BodyPartModelNames.rwingStrand2Model, new Vector3d(0, 0, Math.toRadians(-20)), 1);
-        pose.addAngle(BodyPartModelNames.rwingStrand3Model, new Vector3d(0, 0, Math.toRadians(20)), 1);
-        pose.addAngle(BodyPartModelNames.rwingStrand4Model, new Vector3d(0, 0, Math.toRadians(60)), 1);
+        pose.addAngle(BodyPartModelNames.rwingStrand1Model, new Vec3(0, 0, Math.toRadians(-70)), 1);
+        pose.addAngle(BodyPartModelNames.rwingStrand2Model, new Vec3(0, 0, Math.toRadians(-20)), 1);
+        pose.addAngle(BodyPartModelNames.rwingStrand3Model, new Vec3(0, 0, Math.toRadians(20)), 1);
+        pose.addAngle(BodyPartModelNames.rwingStrand4Model, new Vec3(0, 0, Math.toRadians(60)), 1);
 
-        pose.addAngle(BodyPartModelNames.lwingStrand1Model, new Vector3d(0, 0, Math.toRadians(70)), 1);
-        pose.addAngle(BodyPartModelNames.lwingStrand2Model, new Vector3d(0, 0, Math.toRadians(20)), 1);
-        pose.addAngle(BodyPartModelNames.lwingStrand3Model, new Vector3d(0, 0, Math.toRadians(-20)), 1);
-        pose.addAngle(BodyPartModelNames.lwingStrand4Model, new Vector3d(0, 0, Math.toRadians(-60)), 1);
+        pose.addAngle(BodyPartModelNames.lwingStrand1Model, new Vec3(0, 0, Math.toRadians(70)), 1);
+        pose.addAngle(BodyPartModelNames.lwingStrand2Model, new Vec3(0, 0, Math.toRadians(20)), 1);
+        pose.addAngle(BodyPartModelNames.lwingStrand3Model, new Vec3(0, 0, Math.toRadians(-20)), 1);
+        pose.addAngle(BodyPartModelNames.lwingStrand4Model, new Vec3(0, 0, Math.toRadians(-60)), 1);
 
 
-        flapUp.addAngle(BodyPartModelNames.rwingUpperArmModel, new Vector3d(Math.toRadians(45), Math.toRadians(-75), Math.toRadians(-25)), 5, 3f, -1);
-        flapUp.addAngle(BodyPartModelNames.lwingUpperArmModel, new Vector3d(Math.toRadians(45), Math.toRadians(75), Math.toRadians(25)), 5, 3f, -1);
-        flapDown.addAngle(BodyPartModelNames.rwingUpperArmModel, new Vector3d(Math.toRadians(45), Math.toRadians(0), Math.toRadians(-15)), 5);
-        flapDown.addAngle(BodyPartModelNames.lwingUpperArmModel, new Vector3d(Math.toRadians(45), Math.toRadians(0), Math.toRadians(15)), 5);
+        flapUp.addAngle(BodyPartModelNames.rwingUpperArmModel, new Vec3(Math.toRadians(45), Math.toRadians(-75), Math.toRadians(-25)), 5, 3f, -1);
+        flapUp.addAngle(BodyPartModelNames.lwingUpperArmModel, new Vec3(Math.toRadians(45), Math.toRadians(75), Math.toRadians(25)), 5, 3f, -1);
+        flapDown.addAngle(BodyPartModelNames.rwingUpperArmModel, new Vec3(Math.toRadians(45), Math.toRadians(0), Math.toRadians(-15)), 5);
+        flapDown.addAngle(BodyPartModelNames.lwingUpperArmModel, new Vec3(Math.toRadians(45), Math.toRadians(0), Math.toRadians(15)), 5);
 
-        flapUp.addAngle(BodyPartModelNames.rwingStrand1Model, new Vector3d(Math.toRadians(-45), 0, Math.toRadians(-70)), 5);
-        flapUp.addAngle(BodyPartModelNames.rwingStrand2Model, new Vector3d(Math.toRadians(-35), 0, Math.toRadians(-20)), 5);
-        flapUp.addAngle(BodyPartModelNames.rwingStrand3Model, new Vector3d(Math.toRadians(-25), 0, Math.toRadians(20)), 5);
-        flapUp.addAngle(BodyPartModelNames.rwingStrand4Model, new Vector3d(Math.toRadians(-15), 0, Math.toRadians(60)), 5);
+        flapUp.addAngle(BodyPartModelNames.rwingStrand1Model, new Vec3(Math.toRadians(-45), 0, Math.toRadians(-70)), 5);
+        flapUp.addAngle(BodyPartModelNames.rwingStrand2Model, new Vec3(Math.toRadians(-35), 0, Math.toRadians(-20)), 5);
+        flapUp.addAngle(BodyPartModelNames.rwingStrand3Model, new Vec3(Math.toRadians(-25), 0, Math.toRadians(20)), 5);
+        flapUp.addAngle(BodyPartModelNames.rwingStrand4Model, new Vec3(Math.toRadians(-15), 0, Math.toRadians(60)), 5);
 
-        flapDown.addAngle(BodyPartModelNames.rwingStrand1Model, new Vector3d(Math.toRadians(-20), 0, Math.toRadians(-70)), 5);
-        flapDown.addAngle(BodyPartModelNames.rwingStrand2Model, new Vector3d(Math.toRadians(-15), 0, Math.toRadians(-20)), 5);
-        flapDown.addAngle(BodyPartModelNames.rwingStrand3Model, new Vector3d(Math.toRadians(-10), 0, Math.toRadians(20)), 5);
-        flapDown.addAngle(BodyPartModelNames.rwingStrand4Model, new Vector3d(Math.toRadians(-5), 0, Math.toRadians(60)), 5);
+        flapDown.addAngle(BodyPartModelNames.rwingStrand1Model, new Vec3(Math.toRadians(-20), 0, Math.toRadians(-70)), 5);
+        flapDown.addAngle(BodyPartModelNames.rwingStrand2Model, new Vec3(Math.toRadians(-15), 0, Math.toRadians(-20)), 5);
+        flapDown.addAngle(BodyPartModelNames.rwingStrand3Model, new Vec3(Math.toRadians(-10), 0, Math.toRadians(20)), 5);
+        flapDown.addAngle(BodyPartModelNames.rwingStrand4Model, new Vec3(Math.toRadians(-5), 0, Math.toRadians(60)), 5);
 
-        flapUp.addAngle(BodyPartModelNames.lwingStrand1Model, new Vector3d(Math.toRadians(-45), 0, Math.toRadians(70)), 5);
-        flapUp.addAngle(BodyPartModelNames.lwingStrand2Model, new Vector3d(Math.toRadians(-35), 0, Math.toRadians(20)), 5);
-        flapUp.addAngle(BodyPartModelNames.lwingStrand3Model, new Vector3d(Math.toRadians(-25), 0, Math.toRadians(-20)), 5);
-        flapUp.addAngle(BodyPartModelNames.lwingStrand4Model, new Vector3d(Math.toRadians(-15), 0, Math.toRadians(-60)), 5);
+        flapUp.addAngle(BodyPartModelNames.lwingStrand1Model, new Vec3(Math.toRadians(-45), 0, Math.toRadians(70)), 5);
+        flapUp.addAngle(BodyPartModelNames.lwingStrand2Model, new Vec3(Math.toRadians(-35), 0, Math.toRadians(20)), 5);
+        flapUp.addAngle(BodyPartModelNames.lwingStrand3Model, new Vec3(Math.toRadians(-25), 0, Math.toRadians(-20)), 5);
+        flapUp.addAngle(BodyPartModelNames.lwingStrand4Model, new Vec3(Math.toRadians(-15), 0, Math.toRadians(-60)), 5);
 
-        flapDown.addAngle(BodyPartModelNames.lwingStrand1Model, new Vector3d(Math.toRadians(-20), 0, Math.toRadians(70)), 5);
-        flapDown.addAngle(BodyPartModelNames.lwingStrand2Model, new Vector3d(Math.toRadians(-15), 0, Math.toRadians(20)), 5);
-        flapDown.addAngle(BodyPartModelNames.lwingStrand3Model, new Vector3d(Math.toRadians(-10), 0, Math.toRadians(-20)), 5);
-        flapDown.addAngle(BodyPartModelNames.lwingStrand4Model, new Vector3d(Math.toRadians(-5), 0, Math.toRadians(-60)), 5);
+        flapDown.addAngle(BodyPartModelNames.lwingStrand1Model, new Vec3(Math.toRadians(-20), 0, Math.toRadians(70)), 5);
+        flapDown.addAngle(BodyPartModelNames.lwingStrand2Model, new Vec3(Math.toRadians(-15), 0, Math.toRadians(20)), 5);
+        flapDown.addAngle(BodyPartModelNames.lwingStrand3Model, new Vec3(Math.toRadians(-10), 0, Math.toRadians(-20)), 5);
+        flapDown.addAngle(BodyPartModelNames.lwingStrand4Model, new Vec3(Math.toRadians(-5), 0, Math.toRadians(-60)), 5);
 
-        inAir.addAngle(GenericLimbNames.leftArm, new Vector3d(Math.toRadians(0.0D), Math.toRadians(0.0D), Math.toRadians(-30.0D)), 11, 5.0F, -1);
-        inAir.addAngle(GenericLimbNames.rightArm, new Vector3d(Math.toRadians(0.0D), Math.toRadians(0.0D), Math.toRadians(30.0D)), 11, 5.0F, -1);
-        inAir.addAngle(GenericLimbNames.body, new Vector3d(Math.toRadians(30.0D), Math.toRadians(0.0D), Math.toRadians(0.0D)), 11, 5.0F, -1);
+        inAir.addAngle(GenericLimbNames.leftArm, new Vec3(Math.toRadians(0.0D), Math.toRadians(0.0D), Math.toRadians(-30.0D)), 11, 5.0F, -1);
+        inAir.addAngle(GenericLimbNames.rightArm, new Vec3(Math.toRadians(0.0D), Math.toRadians(0.0D), Math.toRadians(30.0D)), 11, 5.0F, -1);
+        inAir.addAngle(GenericLimbNames.body, new Vec3(Math.toRadians(30.0D), Math.toRadians(0.0D), Math.toRadians(0.0D)), 11, 5.0F, -1);
 
     }
 
     @Override
-    public boolean isValid(PlayerEntity player)
+    public boolean isValid(Player player)
     {
         // Technique is valid if the player is a body cultivator with Wings
         if (CultivatorStats.getCultivatorStats(player).getCultivationType() == CultivationTypes.BODY_CULTIVATOR &&
@@ -139,12 +140,12 @@ public class SpreadTechnique extends Technique
     public void onInput()
     {
         // Check if the jump key is depressed
-        if (Minecraft.getInstance().options.keyJump.getKeyBinding().isDown())
+        if (Minecraft.getInstance().options.keyJump.isDown())
         {
             if (jumpPressed == false)
                 sendInfo(1);
 
-            flapUp(Minecraft.getInstance().player);
+            flapUp(genericClientFunctions.getPlayer());
         }
         // If the jump key is released, reset the jump key checking boolean and set the cooldown
         else if (jumpPressed)
@@ -152,11 +153,11 @@ public class SpreadTechnique extends Technique
             sendInfo(2);
             jumpPressed = false;
 
-            flapDown(Minecraft.getInstance().player);
+            flapDown(genericClientFunctions.getPlayer());
         }
     }
 
-    private void flapUp(PlayerEntity player)
+    private void flapUp(Player player)
     {
         if (player.isOnGround() || player.isInWater())
             groundCheck = true;
@@ -164,7 +165,7 @@ public class SpreadTechnique extends Technique
         jumpPressed = true;
     }
 
-    private void flapDown(PlayerEntity player)
+    private void flapDown(Player player)
     {
         // Don't flap if jumping off the ground
         if (groundCheck == true)
@@ -174,7 +175,7 @@ public class SpreadTechnique extends Technique
     }
 
     @Override
-    public void processInfo(PlayerEntity player, int info)
+    public void processInfo(Player player, int info)
     {
         if (info == 2)
             flapDown(player);
@@ -182,11 +183,11 @@ public class SpreadTechnique extends Technique
             flapUp(player);
     }
 
-    private void glide(PlayerEntity player)
+    private void glide(Player player)
     {
         player.fallDistance = 0;
 
-        Vector3d motion = PoseHandler.getPlayerPoseHandler(player.getUUID()).getDeltaMovement();
+        Vec3 motion = Physics.getDelta(player);
 
         float weightModifier = BodyPartStatControl.getPlayerStatControl(player.getUUID()).getFlightWeightModifier();
 
@@ -197,8 +198,8 @@ public class SpreadTechnique extends Technique
         if (motion.y < maxFallSpeed)
             player.setDeltaMovement(motion.x, maxFallSpeed, motion.z);
 
-        Vector3d dir = player.getLookAngle();
-        dir.multiply(new Vector3d(1, 0, 1));
+        Vec3 dir = player.getLookAngle();
+        dir.multiply(new Vec3(1, 0, 1));
         dir.normalize();
 
         // If less than halfway through cooldown, then move upwards

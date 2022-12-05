@@ -2,10 +2,10 @@ package DaoOfModding.Cultivationcraft.Common.Containers;
 
 import DaoOfModding.Cultivationcraft.Common.BasicContainer;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.FlyingSwordContainerItemStack.FlyingSwordContainerItemHandler;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
 import DaoOfModding.Cultivationcraft.Common.Register;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.SlotItemHandler;
 
 import javax.annotation.Nonnull;
@@ -17,20 +17,20 @@ public class FlyingSwordContainer extends BasicContainer
 
     private final FlyingSwordContainerItemHandler itemStackHandler;
 
-    public static FlyingSwordContainer createContainerServerSide(int windowID, PlayerInventory playerInventory, FlyingSwordContainerItemHandler handler)
+    public static FlyingSwordContainer createContainerServerSide(int windowID, Inventory playerInventory, FlyingSwordContainerItemHandler handler)
     {
         return new FlyingSwordContainer(windowID, playerInventory, handler);
     }
 
 
-    public static FlyingSwordContainer createContainerClientSide(int windowID, PlayerInventory playerInventory, net.minecraft.network.PacketBuffer extraData)
+    public static FlyingSwordContainer createContainerClientSide(int windowID, Inventory playerInventory, net.minecraft.network.FriendlyByteBuf extraData)
     {
         return new FlyingSwordContainer(windowID, playerInventory, new FlyingSwordContainerItemHandler());
     }
 
-    private FlyingSwordContainer(int windowId, PlayerInventory playerInv, FlyingSwordContainerItemHandler handler)
+    private FlyingSwordContainer(int windowId, Inventory playerInv, FlyingSwordContainerItemHandler handler)
     {
-        super(Register.ContainerTypeFlyingSword, windowId);
+        super(Register.ContainerTypeFlyingSword.get(), windowId);
 
         itemStackHandler = handler;
 
@@ -63,7 +63,7 @@ public class FlyingSwordContainer extends BasicContainer
 
     @Override
     // Return true if player can interact with this container, false if not
-    public boolean stillValid(@Nonnull PlayerEntity player)
+    public boolean stillValid(@Nonnull Player player)
     {
         //TODO: Check if player cultivation high enough to use flying swords
         return true;

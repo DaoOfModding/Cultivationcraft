@@ -3,18 +3,14 @@ package DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.FoodStats;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.PlayerHealthManager;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.StatIDs;
-import DaoOfModding.Cultivationcraft.Cultivationcraft;
-import jdk.nashorn.internal.ir.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.material.Material;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.FoodStats;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.food.FoodData;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.Difficulty;
+import net.minecraft.world.level.block.state.BlockState;
 
-public class QiFoodStats extends FoodStats
+public class QiFoodStats extends FoodData
 {
     private int maxFood = 20;
     private float exhaustionLevel = 0;
@@ -41,7 +37,7 @@ public class QiFoodStats extends FoodStats
     }
 
     @Override
-    public void tick(PlayerEntity p_75118_1_)
+    public void tick(Player p_75118_1_)
     {
         // Handle stomach food drain here
         drainFood(p_75118_1_);
@@ -54,7 +50,7 @@ public class QiFoodStats extends FoodStats
         PlayerHealthManager.getBlood(p_75118_1_).regen(p_75118_1_);
     }
 
-    private void drainFood(PlayerEntity player)
+    private void drainFood(Player player)
     {
         float staminaUse = PlayerHealthManager.getStaminaUse(player);
 
@@ -79,14 +75,17 @@ public class QiFoodStats extends FoodStats
             exhaustionLevel = 0F;
 
             if (getSaturationLevel() > 0.0F)
-                setSaturation(Math.max(getSaturationLevel() - change, 0.0F));
+            {
+                if (player.level.isClientSide)
+                    setSaturation(Math.max(getSaturationLevel() - change, 0.0F));
+            }
             else if (difficulty != Difficulty.PEACEFUL)
                 setFoodLevel(Math.max(getTrueFoodLevel() - change, 0));
         }
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundNBT p_75112_1_)
+    public void readAdditionalSaveData(CompoundTag p_75112_1_)
     {
         if (p_75112_1_.contains("foodLevel", 99))
         {
@@ -98,7 +97,7 @@ public class QiFoodStats extends FoodStats
     }
 
     @Override
-    public void addAdditionalSaveData(CompoundNBT p_75117_1_)
+    public void addAdditionalSaveData(CompoundTag p_75117_1_)
     {
         p_75117_1_.putFloat("foodLevel", getTrueFoodLevel());
         //p_75117_1_.putFloat("foodSaturationLevel", getSaturationLevel());

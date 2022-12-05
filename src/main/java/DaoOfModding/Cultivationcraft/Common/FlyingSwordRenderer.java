@@ -1,30 +1,31 @@
 package DaoOfModding.Cultivationcraft.Common;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 
 import java.util.Random;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.entity.EntityRenderer;
-import net.minecraft.client.renderer.entity.EntityRendererManager;
-import net.minecraft.client.renderer.model.IBakedModel;
-import net.minecraft.client.renderer.model.ItemCameraTransforms;
-import net.minecraft.client.renderer.texture.AtlasTexture;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.vector.Vector3f;
+import net.minecraft.client.renderer.texture.TextureAtlas;
+import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
+import com.mojang.math.Vector3f;
 
 public class FlyingSwordRenderer extends EntityRenderer<FlyingSwordEntity>
 {
-    private final net.minecraft.client.renderer.ItemRenderer itemRenderer;
+    private final ItemRenderer itemRenderer;
     private final Random random = new Random();
 
-    public FlyingSwordRenderer(EntityRendererManager renderManagerIn)
+    public FlyingSwordRenderer(EntityRendererProvider.Context renderManagerIn)
     {
         super(renderManagerIn);
         this.itemRenderer = Minecraft.getInstance().getItemRenderer();
@@ -47,13 +48,13 @@ public class FlyingSwordRenderer extends EntityRenderer<FlyingSwordEntity>
         return i;
     }
 
-    public void render(FlyingSwordEntity entityIn, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn)
+    public void render(FlyingSwordEntity entityIn, float entityYaw, float partialTicks, PoseStack PoseStackIn, MultiBufferSource bufferIn, int packedLightIn)
     {
-        matrixStackIn.pushPose();
+        PoseStackIn.pushPose();
         ItemStack itemstack = entityIn.getItem();
         int i = itemstack.isEmpty() ? 187 : Item.getId(itemstack.getItem()) + itemstack.getDamageValue();
         this.random.setSeed((long)i);
-        IBakedModel ibakedmodel = this.itemRenderer.getModel(itemstack, entityIn.level, (LivingEntity)null);
+        BakedModel ibakedmodel = this.itemRenderer.getModel(itemstack, entityIn.level, (LivingEntity)null, 0);
         boolean flag = ibakedmodel.isGui3d();
         int j = this.getModelCount(itemstack);
         float f = 0.25F;
@@ -63,57 +64,56 @@ public class FlyingSwordRenderer extends EntityRenderer<FlyingSwordEntity>
 
         // Only bob if Flying Sword is in control range
         if (entityIn.isInRange())
-            f1 = shouldBob() ? MathHelper.sin(((float)entityIn.getAge() + partialTicks) / 10.0F + entityIn.bobOffs) * 0.1F + 0.1F : 0;
+            f1 = shouldBob() ? Mth.sin(((float)entityIn.getAge() + partialTicks) / 10.0F + entityIn.bobOffs) * 0.1F + 0.1F : 0;
 
 
-        float f2 = ibakedmodel.getTransforms().getTransform(ItemCameraTransforms.TransformType.GROUND).scale.y();
-        matrixStackIn.translate(0.0D, (double)(f1 + 0.25F * f2), 0.0D);
+        float f2 = ibakedmodel.getTransforms().getTransform(ItemTransforms.TransformType.GROUND).scale.y();
+        PoseStackIn.translate(0.0D, (double)(f1 + 0.25F * f2), 0.0D);
 
 
         // Rotate model to match items pitch and yaw
-        matrixStackIn.mulPose(Vector3f.YP.rotation(entityIn.yRot));
-        matrixStackIn.mulPose(Vector3f.ZP.rotation(entityIn.xRot));
+        PoseStackIn.mulPose(Vector3f.YP.rotation(entityIn.getYRot()));
+        PoseStackIn.mulPose(Vector3f.ZP.rotation(entityIn.getXRot()));
 
         if (!flag) {
             float f7 = -0.0F * (float)(j - 1) * 0.5F;
             float f8 = -0.0F * (float)(j - 1) * 0.5F;
             float f9 = -0.09375F * (float)(j - 1) * 0.5F;
-            matrixStackIn.translate((double)f7, (double)f8, (double)f9);
+            PoseStackIn.translate((double)f7, (double)f8, (double)f9);
         }
 
         for(int k = 0; k < j; ++k) {
-            matrixStackIn.pushPose();
+            PoseStackIn.pushPose();
             if (k > 0) {
                 if (flag) {
                     float f11 = (this.random.nextFloat() * 2.0F - 1.0F) * 0.15F;
                     float f13 = (this.random.nextFloat() * 2.0F - 1.0F) * 0.15F;
                     float f10 = (this.random.nextFloat() * 2.0F - 1.0F) * 0.15F;
-                    matrixStackIn.translate(shouldSpreadItems() ? f11 : 0, shouldSpreadItems() ? f13 : 0, shouldSpreadItems() ? f10 : 0);
+                    PoseStackIn.translate(shouldSpreadItems() ? f11 : 0, shouldSpreadItems() ? f13 : 0, shouldSpreadItems() ? f10 : 0);
                 } else {
                     float f12 = (this.random.nextFloat() * 2.0F - 1.0F) * 0.15F * 0.5F;
                     float f14 = (this.random.nextFloat() * 2.0F - 1.0F) * 0.15F * 0.5F;
-                    matrixStackIn.translate(shouldSpreadItems() ? f12 : 0, shouldSpreadItems() ? f14 : 0, 0.0D);
+                    PoseStackIn.translate(shouldSpreadItems() ? f12 : 0, shouldSpreadItems() ? f14 : 0, 0.0D);
                 }
             }
 
-            this.itemRenderer.render(itemstack, ItemCameraTransforms.TransformType.GROUND, false, matrixStackIn, bufferIn, packedLightIn, OverlayTexture.NO_OVERLAY, ibakedmodel);
-            matrixStackIn.popPose();
+            this.itemRenderer.render(itemstack, ItemTransforms.TransformType.GROUND, false, PoseStackIn, bufferIn, packedLightIn, OverlayTexture.NO_OVERLAY, ibakedmodel);
+            PoseStackIn.popPose();
             if (!flag) {
-                matrixStackIn.translate(0.0, 0.0, 0.09375F);
+                PoseStackIn.translate(0.0, 0.0, 0.09375F);
             }
         }
 
-        matrixStackIn.popPose();
-        super.render(entityIn, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);
+        PoseStackIn.popPose();
+        super.render(entityIn, entityYaw, partialTicks, PoseStackIn, bufferIn, packedLightIn);
     }
 
     /**
      * Returns the location of an entity's texture.
      */
     public ResourceLocation getTextureLocation(FlyingSwordEntity entity) {
-        return AtlasTexture.LOCATION_BLOCKS;
+        return TextureAtlas.LOCATION_BLOCKS;
     }
-
     /*==================================== FORGE START ===========================================*/
 
     /**

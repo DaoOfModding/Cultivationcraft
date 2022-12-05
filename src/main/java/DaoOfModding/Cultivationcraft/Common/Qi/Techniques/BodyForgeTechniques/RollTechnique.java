@@ -1,5 +1,6 @@
 package DaoOfModding.Cultivationcraft.Common.Qi.Techniques.BodyForgeTechniques;
 
+import DaoOfModding.Cultivationcraft.Client.Physics;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.Technique;
 import DaoOfModding.mlmanimator.Client.Poses.GenericPoses;
 import DaoOfModding.mlmanimator.Client.Models.GenericLimbNames;
@@ -10,9 +11,9 @@ import DaoOfModding.Cultivationcraft.Common.Qi.CultivationTypes;
 import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import DaoOfModding.mlmanimator.Client.Poses.PoseHandler;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.TickEvent;
 
 public class RollTechnique extends Technique
@@ -33,24 +34,24 @@ public class RollTechnique extends Technique
         icon = new ResourceLocation(Cultivationcraft.MODID, "textures/techniques/icons/roll.png");
 
 
-        moveDefaults.addAngle(GenericLimbNames.leftLeg, new Vector3d(Math.toRadians(-145), Math.toRadians(0), Math.toRadians(0)), GenericPoses.jumpLegPriority+1);
-        moveDefaults.addAngle(GenericLimbNames.lowerLeftLeg, new Vector3d(Math.toRadians(75), Math.toRadians(0), Math.toRadians(0)), GenericPoses.jumpLegPriority+1);
-        moveDefaults.addAngle(GenericLimbNames.rightLeg, new Vector3d(Math.toRadians(-145), Math.toRadians(0), Math.toRadians(0)), GenericPoses.jumpLegPriority+1);
-        moveDefaults.addAngle(GenericLimbNames.lowerRightLeg, new Vector3d(Math.toRadians(75), Math.toRadians(0), Math.toRadians(0)), GenericPoses.jumpLegPriority+1);
+        moveDefaults.addAngle(GenericLimbNames.leftLeg, new Vec3(Math.toRadians(-145), Math.toRadians(0), Math.toRadians(0)), GenericPoses.jumpLegPriority+1);
+        moveDefaults.addAngle(GenericLimbNames.lowerLeftLeg, new Vec3(Math.toRadians(75), Math.toRadians(0), Math.toRadians(0)), GenericPoses.jumpLegPriority+1);
+        moveDefaults.addAngle(GenericLimbNames.rightLeg, new Vec3(Math.toRadians(-145), Math.toRadians(0), Math.toRadians(0)), GenericPoses.jumpLegPriority+1);
+        moveDefaults.addAngle(GenericLimbNames.lowerRightLeg, new Vec3(Math.toRadians(75), Math.toRadians(0), Math.toRadians(0)), GenericPoses.jumpLegPriority+1);
 
-        moveDefaults.addAngle(BodyPartModelNames.reverseJointLeftLegModel, new Vector3d(Math.toRadians(-125), Math.toRadians(0), Math.toRadians(0)), GenericPoses.jumpLegPriority+1);
-        moveDefaults.addAngle(BodyPartModelNames.reverseJointLeftLegLowerModel, new Vector3d(Math.toRadians(-60), Math.toRadians(0), Math.toRadians(0)), GenericPoses.jumpLegPriority+1);
-        moveDefaults.addAngle(BodyPartModelNames.reverseJointRightLegModel, new Vector3d(Math.toRadians(-125), Math.toRadians(0), Math.toRadians(0)), GenericPoses.jumpLegPriority+1);
-        moveDefaults.addAngle(BodyPartModelNames.reverseJointRightLegLowerModel, new Vector3d(Math.toRadians(-60), Math.toRadians(0), Math.toRadians(0)), GenericPoses.jumpLegPriority+1);
+        moveDefaults.addAngle(BodyPartModelNames.reverseJointLeftLegModel, new Vec3(Math.toRadians(-125), Math.toRadians(0), Math.toRadians(0)), GenericPoses.jumpLegPriority+1);
+        moveDefaults.addAngle(BodyPartModelNames.reverseJointLeftLegLowerModel, new Vec3(Math.toRadians(-60), Math.toRadians(0), Math.toRadians(0)), GenericPoses.jumpLegPriority+1);
+        moveDefaults.addAngle(BodyPartModelNames.reverseJointRightLegModel, new Vec3(Math.toRadians(-125), Math.toRadians(0), Math.toRadians(0)), GenericPoses.jumpLegPriority+1);
+        moveDefaults.addAngle(BodyPartModelNames.reverseJointRightLegLowerModel, new Vec3(Math.toRadians(-60), Math.toRadians(0), Math.toRadians(0)), GenericPoses.jumpLegPriority+1);
 
-        moveDefaults.addAngle(GenericLimbNames.leftArm, new Vector3d(0, Math.toRadians(0), Math.toRadians(0)), GenericPoses.walkArmPriority+2);
-        moveDefaults.addAngle(GenericLimbNames.rightArm, new Vector3d(0, Math.toRadians(0), Math.toRadians(0)), GenericPoses.walkArmPriority+2);
+        moveDefaults.addAngle(GenericLimbNames.leftArm, new Vec3(0, Math.toRadians(0), Math.toRadians(0)), GenericPoses.walkArmPriority+2);
+        moveDefaults.addAngle(GenericLimbNames.rightArm, new Vec3(0, Math.toRadians(0), Math.toRadians(0)), GenericPoses.walkArmPriority+2);
 
         moveDefaults.disableHeadLook(true, 5);
     }
 
     @Override
-    public boolean isValid(PlayerEntity player)
+    public boolean isValid(Player player)
     {
         // TODO: Add
         // Technique is valid if the player is a body cultivator
@@ -67,7 +68,7 @@ public class RollTechnique extends Technique
 
         super.tickClient(event);
 
-        Vector3d motion = PoseHandler.getPlayerPoseHandler(event.player.getUUID()).getDeltaMovement();
+        Vec3 motion = Physics.getDelta(event.player);
         motion = motion.multiply(1, 0, 1);
 
         double speed = motion.length() * 0.75;
@@ -78,8 +79,8 @@ public class RollTechnique extends Technique
         // Determine if going in reverse or not
         if (speed > 0)
         {
-            Vector3d direction = new Vector3d(event.player.getLookAngle().x, 0, event.player.getLookAngle().z).normalize();
-            Vector3d movementDirection = motion.normalize();
+            Vec3 direction = new Vec3(event.player.getLookAngle().x, 0, event.player.getLookAngle().z).normalize();
+            Vec3 movementDirection = motion.normalize();
 
             if (direction.subtract(movementDirection).length() > 1.7)
                 speed *= -1;
@@ -105,22 +106,22 @@ public class RollTechnique extends Technique
         if (speed > 0)
         {
             // Start in the default standing position
-            move.addAngle(GenericLimbNames.body, new Vector3d(Math.toRadians(0), 0, 0), 5, movementSpeed, -1);
+            move.addAngle(GenericLimbNames.body, new Vec3(Math.toRadians(0), 0, 0), 5, movementSpeed, -1);
             // roll 180 degrees
-            move.addAngle(GenericLimbNames.body, new Vector3d(Math.toRadians(180), 0, 0), 5, movementSpeed, -1);
+            move.addAngle(GenericLimbNames.body, new Vec3(Math.toRadians(180), 0, 0), 5, movementSpeed, -1);
             // Instantly switch back to -180 degrees, which is the same position as 180
-            move.addAngle(GenericLimbNames.body, new Vector3d(Math.toRadians(-180), 0, 0), 5, 0f, -1);
+            move.addAngle(GenericLimbNames.body, new Vec3(Math.toRadians(-180), 0, 0), 5, 0f, -1);
         }
         else
         {
             movementSpeed = movementSpeed * -1;
 
             // Start in the default standing position
-            move.addAngle(GenericLimbNames.body, new Vector3d(Math.toRadians(0), 0, 0), 5, movementSpeed, -1);
+            move.addAngle(GenericLimbNames.body, new Vec3(Math.toRadians(0), 0, 0), 5, movementSpeed, -1);
             // roll -180 degrees
-            move.addAngle(GenericLimbNames.body, new Vector3d(Math.toRadians(-180), 0, 0), 5, movementSpeed, -1);
+            move.addAngle(GenericLimbNames.body, new Vec3(Math.toRadians(-180), 0, 0), 5, movementSpeed, -1);
             // Instantly switch back to 180 degrees, which is the same position as 180
-            move.addAngle(GenericLimbNames.body, new Vector3d(Math.toRadians(180), 0, 0), 5, 0f, -1);
+            move.addAngle(GenericLimbNames.body, new Vec3(Math.toRadians(180), 0, 0), 5, 0f, -1);
         }
     }
 }

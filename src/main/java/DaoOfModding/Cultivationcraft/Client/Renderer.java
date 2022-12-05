@@ -9,13 +9,15 @@ import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.StatIDs;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.BufferBuilder;
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
+import com.mojang.blaze3d.vertex.Tesselator;
+import com.mojang.blaze3d.vertex.VertexFormat;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.vector.Vector3f;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.resources.ResourceLocation;
+import com.mojang.math.Vector3f;
 
 public class Renderer
 {
@@ -36,7 +38,7 @@ public class Renderer
     public static void renderTechniques()
     {
         // Loop through all players in the world
-        for (PlayerEntity player : Minecraft.getInstance().level.players())
+        for (Player player : Minecraft.getInstance().level.players())
         {
             if (player.isAlive())
             {
@@ -50,9 +52,9 @@ public class Renderer
         }
 
         // Grab the player characters techniques and render them from the players view
-        if (Minecraft.getInstance().player != null && Minecraft.getInstance().player.isAlive())
+        if (genericClientFunctions.getPlayer() != null && genericClientFunctions.getPlayer().isAlive())
         {
-            ICultivatorTechniques techniques = CultivatorTechniques.getCultivatorTechniques(Minecraft.getInstance().player);
+            ICultivatorTechniques techniques = CultivatorTechniques.getCultivatorTechniques(genericClientFunctions.getPlayer());
 
             for (int i = 0; i < CultivatorTechniques.numberOfTechniques; i++)
                 if (techniques.getTechnique(i) != null && techniques.getTechnique(i).isActive())
@@ -63,9 +65,9 @@ public class Renderer
     public static void renderTechniqueOverlays()
     {
         // Grab the player characters techniques and render their overlays
-        if (Minecraft.getInstance().player != null)
+        if (genericClientFunctions.getPlayer() != null)
         {
-            ICultivatorTechniques techniques = CultivatorTechniques.getCultivatorTechniques(Minecraft.getInstance().player);
+            ICultivatorTechniques techniques = CultivatorTechniques.getCultivatorTechniques(genericClientFunctions.getPlayer());
 
             for (int i = 0; i < CultivatorTechniques.numberOfTechniques; i++)
                 if (techniques.getTechnique(i) != null && techniques.getTechnique(i).isActive())
@@ -83,35 +85,35 @@ public class Renderer
         width += x;
         height += y;
 
-        Minecraft.getInstance().getTextureManager().bind(texture);
+        RenderSystem.setShaderTexture(0, texture);
         GlStateManager._enableBlend();
 
-        Tessellator tessellator = Tessellator.getInstance();
-        BufferBuilder bufferbuilder = tessellator.getBuilder();
-        bufferbuilder.begin(7, DefaultVertexFormats.POSITION_TEX);
+        Tesselator tesselator = Tesselator.getInstance();
+        BufferBuilder bufferbuilder = tesselator.getBuilder();
+        bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
         bufferbuilder.vertex(x, height, -90.0D).uv(0.0f, 1f).endVertex();
         bufferbuilder.vertex(width, height, -90.0D).uv(1.0f, 1f).endVertex();
         bufferbuilder.vertex(width, y, -90.0D).uv(1.0f, 1 - texHeight).endVertex();
         bufferbuilder.vertex(x, y, -90.0D).uv(0.0f, 1 - texHeight).endVertex();
-        tessellator.end();
+        tesselator.end();
     }
 
     public static void renderHP()
     {
-        float health = Minecraft.getInstance().player.getHealth();
-        float maxHealth = BodyPartStatControl.getStats(Minecraft.getInstance().player.getUUID()).getStat(StatIDs.maxHP);
+        float health = genericClientFunctions.getPlayer().getHealth();
+        float maxHealth = BodyPartStatControl.getStats(genericClientFunctions.getPlayer().getUUID()).getStat(StatIDs.maxHP);
         float healthPercent = health/maxHealth;
 
         int scaledWidth = Minecraft.getInstance().getWindow().getGuiScaledWidth();
         int scaledHeight = Minecraft.getInstance().getWindow().getGuiScaledHeight();
 
-        Vector3f colour = PlayerHealthManager.getBlood(Minecraft.getInstance().player).getColour();
+        Vector3f colour = PlayerHealthManager.getBlood(genericClientFunctions.getPlayer()).getColour();
 
         //GlStateManager._blendColor(1, 0, 0, 1);
-        GlStateManager._color4f(colour.x(), colour.y(), colour.z(), 0.7f);
+        RenderSystem.setShaderColor(colour.x(), colour.y(), colour.z(), 0.7f);
         renderTexture(orbFilling, scaledWidth * 0.1, scaledHeight - (10 + 40 * healthPercent), 40, 40 * healthPercent, healthPercent);
 
-        GlStateManager._color4f(1, 1, 1, 1f);
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         renderTexture(healthOrb, scaledWidth * 0.1, scaledHeight - 50, 40, 40, 1);
     }
 
@@ -120,20 +122,20 @@ public class Renderer
         int scaledWidth = Minecraft.getInstance().getWindow().getGuiScaledWidth();
         int scaledHeight = Minecraft.getInstance().getWindow().getGuiScaledHeight();
 
-        float stamina = Minecraft.getInstance().player.getFoodData().getFoodLevel();
+        float stamina = genericClientFunctions.getPlayer().getFoodData().getFoodLevel();
 
-        if (Minecraft.getInstance().player.getFoodData() instanceof QiFoodStats)
-            stamina = ((QiFoodStats)Minecraft.getInstance().player.getFoodData()).getTrueFoodLevel();
+        if (genericClientFunctions.getPlayer().getFoodData() instanceof QiFoodStats)
+            stamina = ((QiFoodStats)genericClientFunctions.getPlayer().getFoodData()).getTrueFoodLevel();
 
-        float maxStamina = BodyPartStatControl.getStats(Minecraft.getInstance().player.getUUID()).getStat(StatIDs.maxStamina);
+        float maxStamina = BodyPartStatControl.getStats(genericClientFunctions.getPlayer().getUUID()).getStat(StatIDs.maxStamina);
 
         float staminaPercent = stamina/maxStamina;
 
 
-        GlStateManager._color4f(1, 0.5f, 0, 0.7f);
+        RenderSystem.setShaderColor(1.0F, 0.5F, 0.0F, 0.7F);
         renderTexture(outerfilling, scaledWidth * 0.1 - 5, scaledHeight - (5 + 50 * staminaPercent), 50, 50 * staminaPercent, staminaPercent);
 
-        GlStateManager._color4f(1, 1, 1, 1f);
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         renderTexture(healthOrb, scaledWidth * 0.1 - 5, scaledHeight - 55, 50, 50, 1);
     }
 }

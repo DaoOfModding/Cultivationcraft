@@ -2,19 +2,17 @@ package DaoOfModding.Cultivationcraft.Network.Packets;
 
 import DaoOfModding.Cultivationcraft.Common.FlyingSwordController;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.network.PacketBuffer;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.fml.LogicalSide;
-import net.minecraftforge.fml.network.NetworkEvent;
-import net.minecraftforge.fml.server.ServerLifecycleHooks;
+import net.minecraftforge.network.NetworkEvent;
 
-import java.util.UUID;
 import java.util.function.Supplier;
 
 public class ConvertToFlyingPacket extends Packet
 {
     int heldItem;
-    PlayerEntity owner;
+    Player owner;
 
     public ConvertToFlyingPacket(int heldItemID)
     {
@@ -22,7 +20,7 @@ public class ConvertToFlyingPacket extends Packet
     }
 
     @Override
-    public void encode(PacketBuffer buffer)
+    public void encode(FriendlyByteBuf buffer)
     {
         if (heldItem > -1)
         {
@@ -30,7 +28,7 @@ public class ConvertToFlyingPacket extends Packet
         }
     }
 
-    public static ConvertToFlyingPacket decode(PacketBuffer buffer)
+    public static ConvertToFlyingPacket decode(FriendlyByteBuf buffer)
     {
         ConvertToFlyingPacket returnValue = new ConvertToFlyingPacket(-1);
 
@@ -77,6 +75,6 @@ public class ConvertToFlyingPacket extends Packet
     private void processPacket()
     {
         // Convert the specified item to the flying item owned by the specified player entity
-        FlyingSwordController.addFlyingItem(owner.inventory.getItem(heldItem), owner.getUUID());
+        FlyingSwordController.addFlyingItem(owner.getInventory().getItem(heldItem), owner.getUUID());
     }
 }

@@ -4,11 +4,11 @@ import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.Cu
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.Technique;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import DaoOfModding.Cultivationcraft.Network.PacketHandler;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.network.PacketBuffer;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.fml.LogicalSide;
-import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraftforge.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
@@ -16,7 +16,7 @@ public class TechniqueUsePacket extends Packet
 {
     private int slotNumber;
     private boolean isKeyDown;
-    private PlayerEntity player;
+    private Player player;
 
     public TechniqueUsePacket(int slot, boolean keyDown)
     {
@@ -25,13 +25,13 @@ public class TechniqueUsePacket extends Packet
     }
 
     @Override
-    public void encode(PacketBuffer buffer)
+    public void encode(FriendlyByteBuf buffer)
     {
         buffer.writeInt(slotNumber);
         buffer.writeBoolean(isKeyDown);
     }
 
-    public static TechniqueUsePacket decode(PacketBuffer buffer)
+    public static TechniqueUsePacket decode(FriendlyByteBuf buffer)
     {
         TechniqueUsePacket returnValue = new TechniqueUsePacket(-1, false);
 
@@ -77,7 +77,7 @@ public class TechniqueUsePacket extends Packet
     }
 
     // Process received packet on the Server
-    private void processPacket(ServerPlayerEntity sender)
+    private void processPacket(ServerPlayer sender)
     {
         // Send the key press to the technique used
         Technique tech = CultivatorTechniques.getCultivatorTechniques(player).getTechnique(slotNumber);
@@ -85,7 +85,7 @@ public class TechniqueUsePacket extends Packet
         if (tech != null)
             tech.useKeyPressed(isKeyDown, player);
 
-        PacketHandler.sendCultivatorTechniquesToClient((ServerPlayerEntity)player);
+        PacketHandler.sendCultivatorTechniquesToClient(player);
     }
 }
 

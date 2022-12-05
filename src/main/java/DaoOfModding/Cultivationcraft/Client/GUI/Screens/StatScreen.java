@@ -1,6 +1,7 @@
 package DaoOfModding.Cultivationcraft.Client.GUI.Screens;
 
 import DaoOfModding.Cultivationcraft.Client.GUI.BetterFontRenderer;
+import DaoOfModding.Cultivationcraft.Client.genericClientFunctions;
 import DaoOfModding.Cultivationcraft.Client.GUI.BodyPartGUI;
 import DaoOfModding.Cultivationcraft.Client.GUI.BodyPartGUIs;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.BodyModifications;
@@ -9,10 +10,9 @@ import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPart;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartNames;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
-import com.mojang.blaze3d.matrix.MatrixStack;
-import net.minecraft.client.Minecraft;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.TranslationTextComponent;
+import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -28,25 +28,25 @@ public class StatScreen extends GenericTabScreen
 
     public StatScreen()
     {
-        super(0, new TranslationTextComponent("cultivationcraft.gui.stats"), new ResourceLocation(Cultivationcraft.MODID, "textures/gui/stats.png"));
+        super(0, Component.translatable("cultivationcraft.gui.stats"), new ResourceLocation(Cultivationcraft.MODID, "textures/gui/stats.png"));
 
-        statString = BodyPartStatControl.getStats(Minecraft.getInstance().player.getUUID()).toString();
+        statString = BodyPartStatControl.getStats(genericClientFunctions.getPlayer().getUUID()).toString();
     }
 
     @Override
-    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks)
+    public void render(PoseStack PoseStack, int mouseX, int mouseY, float partialTicks)
     {
-        super.render(matrixStack, mouseX, mouseY, partialTicks);
+        super.render(PoseStack, mouseX, mouseY, partialTicks);
 
-        drawBody(matrixStack);
+        drawBody(PoseStack);
 
         int edgeSpacingX = (this.width - this.xSize) / 2;
         int edgeSpacingY = (this.height - this.ySize) / 2;
 
-        BetterFontRenderer.wordwrap(font, matrixStack, statString, edgeSpacingX + statTextX, edgeSpacingY + statTextY, Color.WHITE.getRGB(), statTextWidth);
+        BetterFontRenderer.wordwrap(font, PoseStack, statString, edgeSpacingX + statTextX, edgeSpacingY + statTextY, Color.WHITE.getRGB(), statTextWidth);
     }
 
-    protected void drawBody(MatrixStack matrixStack)
+    protected void drawBody(PoseStack PoseStack)
     {
         int edgeSpacingX = (this.width - this.xSize) / 2;
         int edgeSpacingY = (this.height - this.ySize) / 2;
@@ -55,7 +55,7 @@ public class StatScreen extends GenericTabScreen
         int bodyPosX = edgeSpacingX + 30;
         int bodyPosY = edgeSpacingY + 60;
 
-        IBodyModifications modifications = BodyModifications.getBodyModifications(Minecraft.getInstance().player);
+        IBodyModifications modifications = BodyModifications.getBodyModifications(genericClientFunctions.getPlayer());
 
         // Get the body GUI, this is special as all other GUIs positions are based off this
         BodyPartGUI base;
@@ -66,26 +66,26 @@ public class StatScreen extends GenericTabScreen
             base = BodyPartGUIs.getGUI(modifications.getModification(BodyPartNames.bodyPosition).getID()).get(0);
 
 
-        base.render(matrixStack, bodyPosX, bodyPosY, false, this);
+        base.render(PoseStack, bodyPosX, bodyPosY, false, this);
 
 
         // Draw generic body parts if alterations don't exist
         if (!modifications.hasModification(BodyPartNames.headPosition))
         {
-            BodyPartGUIs.getGUI(BodyPartNames.DefaultHead).get(0).render(matrixStack, bodyPosX, bodyPosY, false, this, base);
+            BodyPartGUIs.getGUI(BodyPartNames.DefaultHead).get(0).render(PoseStack, bodyPosX, bodyPosY, false, this, base);
         }
 
 
         if (!modifications.hasModification(BodyPartNames.armPosition))
         {
-            BodyPartGUIs.getGUI(BodyPartNames.DefaultRightArm).get(0).render(matrixStack, bodyPosX, bodyPosY, false, this, base);
-            BodyPartGUIs.getGUI(BodyPartNames.DefaultLeftArm).get(0).render(matrixStack, bodyPosX, bodyPosY, false,this, base);
+            BodyPartGUIs.getGUI(BodyPartNames.DefaultRightArm).get(0).render(PoseStack, bodyPosX, bodyPosY, false, this, base);
+            BodyPartGUIs.getGUI(BodyPartNames.DefaultLeftArm).get(0).render(PoseStack, bodyPosX, bodyPosY, false,this, base);
         }
 
         if (!modifications.hasModification(BodyPartNames.legPosition))
         {
-            BodyPartGUIs.getGUI(BodyPartNames.DefaultRightLeg).get(0).render(matrixStack, bodyPosX, bodyPosY, false, this, base);
-            BodyPartGUIs.getGUI(BodyPartNames.DefaultLeftLeg).get(0).render(matrixStack, bodyPosX, bodyPosY, false, this, base);
+            BodyPartGUIs.getGUI(BodyPartNames.DefaultRightLeg).get(0).render(PoseStack, bodyPosX, bodyPosY, false, this, base);
+            BodyPartGUIs.getGUI(BodyPartNames.DefaultLeftLeg).get(0).render(PoseStack, bodyPosX, bodyPosY, false, this, base);
         }
 
         // Loop through and draw all other body part GUIs if they exist
@@ -98,7 +98,7 @@ public class StatScreen extends GenericTabScreen
 
                 for (BodyPartGUI gui : guis)
                     if (gui != null)
-                        gui.render(matrixStack, bodyPosX, bodyPosY, false, this, base);
+                        gui.render(PoseStack, bodyPosX, bodyPosY, false, this, base);
             }
         }
     }

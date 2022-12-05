@@ -1,6 +1,9 @@
 package DaoOfModding.Cultivationcraft.Common.Capabilities.FlyingSwordBind;
 
-import net.minecraft.item.ItemStack;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.common.capabilities.Capability;
 
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
@@ -67,6 +70,40 @@ public class FlyingSwordBind implements IFlyingSwordBind
 
     // Return a specified item's FlyingSwordBind
     public static IFlyingSwordBind getFlyingSwordBind(ItemStack item) {
-        return item.getCapability(FlyingSwordBindCapability.FLYING_SWORD_BIND_CAPABILITY_CAPABILITY).orElse(null);
+        return item.getCapability(FlyingSwordBindCapability.INSTANCE).orElse(null);
+    }
+
+    public CompoundTag writeNBT()
+    {
+        CompoundTag nbt = new CompoundTag();
+
+        nbt.putBoolean("Bound", isBound());
+        nbt.putLong("Time", getBindTime());
+        nbt.putLong("TimeMax", getBindTimeMax());
+
+        if (getOwner() != null)
+            nbt.putUUID("Owner", getOwner());
+
+        if (getBindingPlayer() != null)
+            nbt.putUUID("BindingPlayer", getBindingPlayer());
+
+        return nbt;
+    }
+
+    public void readNBT(CompoundTag nbt)
+    {
+        setBound(nbt.getBoolean("Bound"));
+        setBindTime(nbt.getLong("Time"));
+        setBindTimeMax(nbt.getLong("TimeMax"));
+
+        if (nbt.contains("Owner"))
+            setOwner(nbt.getUUID("Owner"));
+        else
+            setOwner(null);
+
+        if (nbt.contains("BindingPlayer"))
+            setBindingPlayer(nbt.getUUID("BindingPlayer"));
+        else
+            setBindingPlayer(null);
     }
 }

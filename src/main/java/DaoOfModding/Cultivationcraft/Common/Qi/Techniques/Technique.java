@@ -1,5 +1,6 @@
 package DaoOfModding.Cultivationcraft.Common.Qi.Techniques;
 
+import DaoOfModding.Cultivationcraft.Client.genericClientFunctions;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.PlayerStatModifications;
 import DaoOfModding.Cultivationcraft.Network.ClientPacketHandler;
@@ -8,19 +9,23 @@ import DaoOfModding.mlmanimator.Client.Poses.PlayerPose;
 import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.shaders.Effect;
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.BufferBuilder;
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
+import com.mojang.blaze3d.vertex.Tesselator;
+import com.mojang.blaze3d.vertex.VertexFormat;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.entity.ai.attributes.ModifiableAttributeInstance;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.potion.Effect;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.client.renderer.EffectInstance;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.event.TickEvent;
 
 import java.util.ArrayList;
@@ -54,7 +59,7 @@ public class Technique
     protected PlayerPose pose = new PlayerPose();
 
     protected ArrayList<AttributeModifier> modifiers = new ArrayList<AttributeModifier>();
-    protected ArrayList<Effect> effects = new ArrayList<Effect>();
+    protected ArrayList<MobEffect> effects = new ArrayList<MobEffect>();
 
     protected int slot;
 
@@ -75,7 +80,7 @@ public class Technique
 
     public String getDescription()
     {
-        return new TranslationTextComponent(langLocation + ".description").getString();
+        return Component.translatable(langLocation + ".description").getString();
     }
 
     public PlayerStatModifications getStats()
@@ -89,7 +94,7 @@ public class Technique
     }
 
     // Returns whether this technique can be used by the specified player
-    public boolean isValid(PlayerEntity player)
+    public boolean isValid(Player player)
     {
         return false;
     }
@@ -119,7 +124,7 @@ public class Technique
     // Returns the name of this technique
     public String getName()
     {
-        return new TranslationTextComponent(langLocation).getString();
+        return Component.translatable(langLocation).getString();
     }
 
     // Allow multiple copies of this technique to be equipped at once
@@ -130,7 +135,7 @@ public class Technique
 
     // What to do when the use key for this technique is pressed
     // keyDown = true when the key is pressed down, false when the key is released
-    public void useKeyPressed(boolean keyDown, PlayerEntity player)
+    public void useKeyPressed(boolean keyDown, Player player)
     {
         // Do nothing if this skill is on cooldown
         if (cooldownCount > 0)
@@ -164,14 +169,14 @@ public class Technique
                 activate(player);
     }
 
-    public void activate(PlayerEntity player)
+    public void activate(Player player)
     {
         active = true;
 
         addModifiers(player);
     }
 
-    public void deactivate(PlayerEntity player)
+    public void deactivate(Player player)
     {
         active = false;
         cooldownCount = cooldown;
@@ -180,30 +185,30 @@ public class Technique
         removeModifiers(player);
     }
 
-    private void addModifiers(PlayerEntity player)
+    private void addModifiers(Player player)
     {
-        ModifiableAttributeInstance modifierInstance = player.getAttribute(net.minecraftforge.common.ForgeMod.ENTITY_GRAVITY.get());
+        AttributeInstance modifierInstance = player.getAttribute(net.minecraftforge.common.ForgeMod.ENTITY_GRAVITY.get());
 
         for (AttributeModifier modifier : modifiers)
             if (!modifierInstance.hasModifier(modifier))
                 modifierInstance.addTransientModifier(modifier);
 
-        for (Effect effect : effects)
+        for (MobEffect effect : effects)
             if (!player.hasEffect(effect))
-                player.addEffect(new EffectInstance(effect, 9999999));
+                player.addEffect(new MobEffectInstance(effect, 9999999));
 
         if (stats != null)
             BodyPartStatControl.updateStats(player);
     }
 
-    private void removeModifiers(PlayerEntity player)
+    private void removeModifiers(Player player)
     {
-        ModifiableAttributeInstance modifierInstance = player.getAttribute(net.minecraftforge.common.ForgeMod.ENTITY_GRAVITY.get());
+        AttributeInstance modifierInstance = player.getAttribute(net.minecraftforge.common.ForgeMod.ENTITY_GRAVITY.get());
 
         for (AttributeModifier modifier : modifiers)
             modifierInstance.removeModifier(modifier);
 
-        for (Effect effect : effects)
+        for (MobEffect effect : effects)
             if (player.hasEffect(effect))
                 player.removeEffect(effect);
 
@@ -212,7 +217,7 @@ public class Technique
     }
 
     // Called when the use key is released for a channel skill
-    protected void onRelease(PlayerEntity player)
+    protected void onRelease(Player player)
     {
 
     }
@@ -223,15 +228,15 @@ public class Technique
         overlayOn = true;
     }
 
-    public void writeBuffer(PacketBuffer buffer)
+    public void writeBuffer(FriendlyByteBuf buffer)
     {
         buffer.writeNbt(writeNBT());
     }
 
-    public static Technique readBuffer(PacketBuffer buffer)
+    public static Technique readBuffer(FriendlyByteBuf buffer)
     {
         Technique newTech;
-        CompoundNBT nbt = buffer.readNbt();
+        CompoundTag nbt = buffer.readNbt();
 
         return readNBT(nbt);
     }
@@ -242,9 +247,9 @@ public class Technique
     }
 
     // Write a techniques data to NBT
-    public CompoundNBT writeNBT()
+    public CompoundTag writeNBT()
     {
-        CompoundNBT nbt = new CompoundNBT();
+        CompoundTag nbt = new CompoundTag();
 
         String className = this.getClass().getName();
 
@@ -257,7 +262,7 @@ public class Technique
     }
 
     // Read a Technique stored in NBT and create a technique from it
-    public static Technique readNBT(CompoundNBT nbt)
+    public static Technique readNBT(CompoundTag nbt)
     {
         String className = nbt.getString("className");
         Technique newTech;
@@ -278,13 +283,13 @@ public class Technique
         return newTech;
     }
 
-    public void readNBTData(CompoundNBT nbt)
+    public void readNBTData(CompoundTag nbt)
     {
         setActive(nbt.getBoolean("active"));
         setCooldown(nbt.getInt("cooldown"));
     }
 
-    public void readBufferData(PacketBuffer buffer)
+    public void readBufferData(FriendlyByteBuf buffer)
     {
         setActive(buffer.readBoolean());
     }
@@ -350,27 +355,26 @@ public class Technique
             float percent = (float)currentChannel / (float)channelLength;
             float adjustedWidth = minPercent + (maxPercent - minPercent) * percent;
 
-
-            Minecraft.getInstance().getTextureManager().bind(progress);
+            RenderSystem.setShaderTexture(0, progress);
 
             GlStateManager._enableBlend();
 
-            Tessellator tessellator = Tessellator.getInstance();
-            BufferBuilder bufferbuilder = tessellator.getBuilder();
-            bufferbuilder.begin(7, DefaultVertexFormats.POSITION_TEX);
+            Tesselator tesselator = Tesselator.getInstance();
+            BufferBuilder bufferbuilder = tesselator.getBuilder();
+            bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
             bufferbuilder.vertex(0.0D, scaledHeight, -90.0D).uv(0.0f, 0.5f).endVertex();
             bufferbuilder.vertex(scaledWidth, scaledHeight, -90.0D).uv(1.0f, 0.5f).endVertex();
             bufferbuilder.vertex(scaledWidth, 0.0D, -90.0D).uv(1.0f, 0.0f).endVertex();
             bufferbuilder.vertex(0.0D, 0.0D, -90.0D).uv(0.0f, 0.0f).endVertex();
-            tessellator.end();
+            tesselator.end();
 
-            bufferbuilder = tessellator.getBuilder();
-            bufferbuilder.begin(7, DefaultVertexFormats.POSITION_TEX);
+            bufferbuilder = tesselator.getBuilder();
+            bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
             bufferbuilder.vertex(0.0D, scaledHeight, -90.0D).uv(0.0f, 1f).endVertex();
             bufferbuilder.vertex(adjustedWidth * scaledWidth, scaledHeight, -90.0D).uv(1.0f * adjustedWidth, 1f).endVertex();
             bufferbuilder.vertex(adjustedWidth * scaledWidth, 0.0D, -90.0D).uv(1.0f * adjustedWidth, 0.5f).endVertex();
             bufferbuilder.vertex(0.0D, 0.0D, -90.0D).uv(0.0f, 0.5f).endVertex();
-            tessellator.end();
+            tesselator.end();
         }
     }
 
@@ -388,29 +392,29 @@ public class Technique
         int scaledWidth = Minecraft.getInstance().getWindow().getGuiScaledWidth();
         int scaledHeight = Minecraft.getInstance().getWindow().getGuiScaledHeight();
 
-        Minecraft.getInstance().getTextureManager().bind(overlay);
+        RenderSystem.setShaderTexture(0, overlay);
 
         GlStateManager._enableBlend();
 
-        Tessellator tessellator = Tessellator.getInstance();
-        BufferBuilder bufferbuilder = tessellator.getBuilder();
-        bufferbuilder.begin(7, DefaultVertexFormats.POSITION_TEX);
+        Tesselator tesselator = Tesselator.getInstance();
+        BufferBuilder bufferbuilder = tesselator.getBuilder();
+        bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
         bufferbuilder.vertex(0.0D, scaledHeight, -90.0D).uv(0.0f, 1.0f).endVertex();
         bufferbuilder.vertex(scaledWidth, scaledHeight, -90.0D).uv(1.0f, 1.0f).endVertex();
         bufferbuilder.vertex(scaledWidth, 0.0D, -90.0D).uv(1.0f, 0.0f).endVertex();
         bufferbuilder.vertex(0.0D, 0.0D, -90.0D).uv(0.0f, 0.0f).endVertex();
-        tessellator.end();
+        tesselator.end();
     }
 
     // Send an int info packet to other clients
     // Client only, only if owner of technique
     public void sendInfo(int info)
     {
-        ClientPacketHandler.sendTechniqueInfoToServer(Minecraft.getInstance().player.getUUID(), info, slot);
+        ClientPacketHandler.sendTechniqueInfoToServer(genericClientFunctions.getPlayer().getUUID(), info, slot);
     }
 
     // Process a received int info packet
-    public void processInfo(PlayerEntity player, int info)
+    public void processInfo(Player player, int info)
     {
 
     }

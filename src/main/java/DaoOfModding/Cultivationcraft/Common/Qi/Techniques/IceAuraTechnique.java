@@ -6,12 +6,12 @@ import DaoOfModding.Cultivationcraft.Common.Qi.CultivationTypes;
 import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
 import DaoOfModding.Cultivationcraft.Common.Qi.Freeze;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.event.TickEvent;
 
 public class IceAuraTechnique extends AuraTechnique
-{
+{/*
     // TODO: Temp
     protected int power = 20;
 
@@ -30,7 +30,7 @@ public class IceAuraTechnique extends AuraTechnique
     }
 
     @Override
-    public boolean isValid(PlayerEntity player)
+    public boolean isValid(Player player)
     {
         ICultivatorStats stats = CultivatorStats.getCultivatorStats(player);
 
@@ -38,5 +38,5 @@ public class IceAuraTechnique extends AuraTechnique
             return false;
 
         return true;
-    }
+    }*/
 }

@@ -1,18 +1,15 @@
 package DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyForgeParts;
 
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartNames;
-import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.FoodStats.QiFoodStats;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.DefaultPlayerBodyPartWeights;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.StatIDs;
-import DaoOfModding.Cultivationcraft.Network.PacketHandler;
 import DaoOfModding.Cultivationcraft.StaminaHandler;
 import DaoOfModding.mlmanimator.Client.Models.GenericLimbNames;
 import DaoOfModding.mlmanimator.Client.Poses.PlayerPose;
 import DaoOfModding.mlmanimator.Client.Poses.PoseHandler;
-import net.minecraft.client.entity.player.ClientPlayerEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.phys.Vec3;
 
 public class ExpandingStomachPart extends StomachPart
 {
@@ -35,10 +32,9 @@ public class ExpandingStomachPart extends StomachPart
     }
 
     @Override
-    public void onClientTick(PlayerEntity player)
+    public void onClientTick(Player player)
     {
-        if (player instanceof ClientPlayerEntity)
-            currentStamina = StaminaHandler.getStamina(player);
+        currentStamina = StaminaHandler.getStamina(player);
 
         updateSizeStats(player);
 
@@ -49,12 +45,13 @@ public class ExpandingStomachPart extends StomachPart
     }
 
     @Override
-    public void onServerTick(PlayerEntity player)
+    public void onServerTick(Player player)
     {
+        // TODO: ...should this happen on server?
         updateSizeStats(player);
     }
 
-    protected void updateSizeStats(PlayerEntity player)
+    protected void updateSizeStats(Player player)
     {
         float foodPercent = currentStamina / StaminaHandler.getMaxStamina(player);
 
@@ -73,7 +70,9 @@ public class ExpandingStomachPart extends StomachPart
 
             if (oldStamina != (int)currentStamina)
             {
-                sendInfo((int)currentStamina, BodyPartNames.stomachSubPosition, BodyPartNames.bodyPosition);
+                if (player.level.isClientSide)
+                    sendInfo((int)currentStamina, BodyPartNames.stomachSubPosition, BodyPartNames.bodyPosition);
+
                 oldStamina = (int) currentStamina;
             }
         }
@@ -82,19 +81,20 @@ public class ExpandingStomachPart extends StomachPart
     protected void updateExpandingPose()
     {
         expandingPose = new PlayerPose();
-        expandingPose.addSize(GenericLimbNames.body, new Vector3d(1 + (maxXSize - 1) * currentPercent, 1 + (maxYSize - 1) * currentPercent, 1 + (maxZSize- 1) * currentPercent), 99, 5);
+        expandingPose.addSize(GenericLimbNames.body, new Vec3(1 + (maxXSize - 1) * currentPercent, 1 + (maxYSize - 1) * currentPercent, 1 + (maxZSize- 1) * currentPercent), 99, 5);
     }
 
     @Override
-    public void processInfo(PlayerEntity player, int info)
+    public void processInfo(Player player, int info)
     {
         currentStamina = info;
         oldStamina = info;
     }
 
     @Override
-    public void onJoin(PlayerEntity player)
+    public void onJoin(Player player)
     {
-        sendInfo((int)currentStamina, BodyPartNames.stomachSubPosition, BodyPartNames.bodyPosition);
+        if (player.level.isClientSide)
+            sendInfo((int)currentStamina, BodyPartNames.stomachSubPosition, BodyPartNames.bodyPosition);
     }
 }

@@ -6,10 +6,10 @@ import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.IBody
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPart;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import DaoOfModding.Cultivationcraft.Network.PacketHandler;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.network.PacketBuffer;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.fml.LogicalSide;
-import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraftforge.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
@@ -23,12 +23,12 @@ public class BodyForgeSelectionPacket extends Packet
     }
 
     @Override
-    public void encode(PacketBuffer buffer)
+    public void encode(FriendlyByteBuf buffer)
     {
         buffer.writeUtf(selectionID);
     }
 
-    public static BodyForgeSelectionPacket decode(PacketBuffer buffer)
+    public static BodyForgeSelectionPacket decode(FriendlyByteBuf buffer)
     {
         BodyForgeSelectionPacket returnValue = new BodyForgeSelectionPacket("");
 
@@ -60,7 +60,7 @@ public class BodyForgeSelectionPacket extends Packet
     }
 
     // Process received packet on server
-    private void processPacket(PlayerEntity player)
+    private void processPacket(Player player)
     {
         // Do nothing if the received selection is already selected
         IBodyModifications modifications = BodyModifications.getBodyModifications(player);

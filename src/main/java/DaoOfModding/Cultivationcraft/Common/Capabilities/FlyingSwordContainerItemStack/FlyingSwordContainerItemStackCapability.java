@@ -1,41 +1,44 @@
 package DaoOfModding.Cultivationcraft.Common.Capabilities.FlyingSwordContainerItemStack;
 
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.Direction;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.CapabilityInject;
-import net.minecraftforge.common.capabilities.CapabilityManager;
-import net.minecraftforge.common.capabilities.ICapabilitySerializable;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.Direction;
+import net.minecraftforge.common.capabilities.*;
+import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.common.util.LazyOptional;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class FlyingSwordContainerItemStackCapability implements ICapabilitySerializable<CompoundNBT>
+public class FlyingSwordContainerItemStackCapability implements ICapabilityProvider, INBTSerializable<CompoundTag>
 {
-    @CapabilityInject(IFlyingSwordContainerItemStack.class)
-    public static final Capability<IFlyingSwordContainerItemStack> FSC_ITEM_STACK_CAPABILITY = null;
-    private LazyOptional<IFlyingSwordContainerItemStack> instance = LazyOptional.of(FSC_ITEM_STACK_CAPABILITY::getDefaultInstance);
+    public static final Capability<IFlyingSwordContainerItemStack> INSTANCE = CapabilityManager.get(new CapabilityToken<>() {});
 
-    public static void register()
+    private final IFlyingSwordContainerItemStack backend = new FlyingSwordContainerItemStack();
+    private final LazyOptional<IFlyingSwordContainerItemStack> optionalData = LazyOptional.of(() -> backend);
+
+    @NotNull
+    @Override
+    public <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
+        return INSTANCE.orEmpty(cap, this.optionalData);
+    }
+
+    void invalidate() {
+        this.optionalData.invalidate();
+    }
+
+    @Override
+    public CompoundTag serializeNBT() {
+        return this.backend.writeNBT();
+    }
+
+    @Override
+    public void deserializeNBT(CompoundTag nbt) {
+        this.backend.readNBT(nbt);
+    }
+
+    public static void register(RegisterCapabilitiesEvent event)
     {
-        CapabilityManager.INSTANCE.register(IFlyingSwordContainerItemStack.class, new FlyingSwordContainerItemStackStorage(), FlyingSwordContainerItemStack::new);
-    }
-
-    @Nonnull
-    @Override
-    public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side)
-    {
-        return FSC_ITEM_STACK_CAPABILITY.orEmpty(cap, instance);
-    }
-
-    @Override
-    public CompoundNBT serializeNBT() {
-        return (CompoundNBT) FSC_ITEM_STACK_CAPABILITY.getStorage().writeNBT(FSC_ITEM_STACK_CAPABILITY, instance.orElseThrow(() -> new IllegalArgumentException("LazyOptional cannot be empty!")), null);
-    }
-
-    @Override
-    public void deserializeNBT(CompoundNBT nbt) {
-        FSC_ITEM_STACK_CAPABILITY.getStorage().readNBT(FSC_ITEM_STACK_CAPABILITY, instance.orElseThrow(() -> new IllegalArgumentException("LazyOptional cannot be empty!")), null, nbt);
+        event.register(IFlyingSwordContainerItemStack.class);
     }
 }

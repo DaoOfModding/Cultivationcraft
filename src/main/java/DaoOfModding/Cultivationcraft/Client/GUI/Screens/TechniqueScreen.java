@@ -1,8 +1,8 @@
 package DaoOfModding.Cultivationcraft.Client.GUI.Screens;
 
 import DaoOfModding.Cultivationcraft.Client.GUI.BetterFontRenderer;
+import DaoOfModding.Cultivationcraft.Client.genericClientFunctions;
 import DaoOfModding.Cultivationcraft.Client.GUI.DropdownList;
-import DaoOfModding.Cultivationcraft.Client.GUI.ScreenTabControl;
 import DaoOfModding.Cultivationcraft.Client.GUI.TechniqueIcons;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.CultivatorTechniques;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.ICultivatorTechniques;
@@ -10,13 +10,9 @@ import DaoOfModding.Cultivationcraft.Common.Qi.TechniqueControl;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.Technique;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import DaoOfModding.Cultivationcraft.Network.ClientPacketHandler;
-import DaoOfModding.Cultivationcraft.Network.PacketHandler;
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.platform.GlStateManager;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.TranslationTextComponent;
+import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.network.chat.Component;
 
 import java.awt.*;
 
@@ -31,7 +27,7 @@ public class TechniqueScreen extends GenericTabScreen
 
     public TechniqueScreen()
     {
-        super(1, new TranslationTextComponent("cultivationcraft.gui.technique"), new ResourceLocation(Cultivationcraft.MODID, "textures/gui/technique.png"));
+        super(1, Component.translatable("cultivationcraft.gui.technique"), new ResourceLocation(Cultivationcraft.MODID, "textures/gui/technique.png"));
 
         updateTechniqueList();
     }
@@ -40,18 +36,18 @@ public class TechniqueScreen extends GenericTabScreen
     {
         techniques = new DropdownList();
 
-        techniques.addItem(new TranslationTextComponent("cultivationcraft.gui.notechnique").getString(), Technique.class);
+        techniques.addItem(Component.translatable("cultivationcraft.gui.notechnique").getString(), Technique.class);
 
-        ICultivatorTechniques techList = CultivatorTechniques.getCultivatorTechniques(Minecraft.getInstance().player);
+        ICultivatorTechniques techList = CultivatorTechniques.getCultivatorTechniques(genericClientFunctions.getPlayer());
 
-        for (Class tech : TechniqueControl.getAvailableTechnics(Minecraft.getInstance().player))
+        for (Class tech : TechniqueControl.getAvailableTechnics(genericClientFunctions.getPlayer()))
         {
             try
             {
                 Technique technique = (Technique) (tech.newInstance());
 
                 // Add the technique if it is valid and either multiple copies are allowed or it isn't already set
-                if (technique.isValid(Minecraft.getInstance().player) && (technique.allowMultiple() || !techList.techniqueExists(technique)))
+                if (technique.isValid(genericClientFunctions.getPlayer()) && (technique.allowMultiple() || !techList.techniqueExists(technique)))
                     techniques.addItem(technique.getName(), tech);
             }
             catch (Exception e)
@@ -66,20 +62,20 @@ public class TechniqueScreen extends GenericTabScreen
     // Update the settings screen to the currently selected technique
     private void updateSelection()
     {
-        Technique selectedTech = CultivatorTechniques.getCultivatorTechniques(Minecraft.getInstance().player).getTechnique(selected);
+        Technique selectedTech = CultivatorTechniques.getCultivatorTechniques(genericClientFunctions.getPlayer()).getTechnique(selected);
 
         if (selectedTech != null)
             techniques.changeSelection(selectedTech.getName());
         else
-            techniques.changeSelection(new TranslationTextComponent("cultivationcraft.gui.notechnique").getString());
+            techniques.changeSelection(Component.translatable("cultivationcraft.gui.notechnique").getString());
     }
 
     @Override
-    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks)
+    public void render(PoseStack PoseStack, int mouseX, int mouseY, float partialTicks)
     {
-        super.render(matrixStack, mouseX, mouseY, partialTicks);
+        super.render(PoseStack, mouseX, mouseY, partialTicks);
 
-        drawGuiForgroundLayer(matrixStack, partialTicks, mouseX, mouseY);
+        drawGuiForgroundLayer(PoseStack, partialTicks, mouseX, mouseY);
     }
 
     @Override
@@ -97,7 +93,7 @@ public class TechniqueScreen extends GenericTabScreen
     // Change the selected technique to a new technique of the specified type
     public void changeTechnique(Class newTech)
     {
-        ICultivatorTechniques techs = CultivatorTechniques.getCultivatorTechniques(Minecraft.getInstance().player);
+        ICultivatorTechniques techs = CultivatorTechniques.getCultivatorTechniques(genericClientFunctions.getPlayer());
 
         Technique newTechnique = null;
 
@@ -159,24 +155,24 @@ public class TechniqueScreen extends GenericTabScreen
         updateSelection();
     }
 
-    protected void drawGuiForgroundLayer(MatrixStack matrixStack, float partialTicks, int mouseX, int mouseY)
+    protected void drawGuiForgroundLayer(PoseStack PoseStack, float partialTicks, int mouseX, int mouseY)
     {
         int edgeSpacingX = (this.width - this.xSize) / 2;
         int edgeSpacingY = (this.height - this.ySize) / 2;
 
         // Draw icons in the selection box
-        TechniqueIcons.renderIcons(matrixStack, edgeSpacingX + 48,edgeSpacingY + 155, this, 18);
+        TechniqueIcons.renderIcons(PoseStack, edgeSpacingX + 48,edgeSpacingY + 155, this, 18);
 
         // Highlight the selected technique and the technique the mouse is hovering over
-        TechniqueIcons.mouseOverHighlight(matrixStack, edgeSpacingX + 48,edgeSpacingY + 155, this, 18, mouseX, mouseY);
-        TechniqueIcons.highlightIcon(matrixStack, edgeSpacingX + 48,edgeSpacingY + 155, this, 18, selected);
+        TechniqueIcons.mouseOverHighlight(PoseStack, edgeSpacingX + 48,edgeSpacingY + 155, this, 18, mouseX, mouseY);
+        TechniqueIcons.highlightIcon(PoseStack, edgeSpacingX + 48,edgeSpacingY + 155, this, 18, selected);
 
-        Technique selectedTech = CultivatorTechniques.getCultivatorTechniques(Minecraft.getInstance().player).getTechnique(selected);
+        Technique selectedTech = CultivatorTechniques.getCultivatorTechniques(genericClientFunctions.getPlayer()).getTechnique(selected);
 
         if (selectedTech != null)
-            BetterFontRenderer.wordwrap(font, matrixStack, selectedTech.getDescription(),edgeSpacingX + 30, edgeSpacingY + techniqueYPos + 20, Color.GRAY.getRGB(), xSize - 60);
+            BetterFontRenderer.wordwrap(font, PoseStack, selectedTech.getDescription(),edgeSpacingX + 30, edgeSpacingY + techniqueYPos + 20, Color.GRAY.getRGB(), xSize - 60);
 
         // Render the techniques dropdown list
-        techniques.render(matrixStack, edgeSpacingX + techniqueXPos, edgeSpacingY + techniqueYPos, mouseX, mouseY, this);
+        techniques.render(PoseStack, edgeSpacingX + techniqueXPos, edgeSpacingY + techniqueYPos, mouseX, mouseY, this);
     }
 }

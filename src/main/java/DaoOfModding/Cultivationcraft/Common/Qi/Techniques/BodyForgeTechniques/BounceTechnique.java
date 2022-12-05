@@ -1,6 +1,7 @@
 package DaoOfModding.Cultivationcraft.Common.Qi.Techniques.BodyForgeTechniques;
 
 import DaoOfModding.Cultivationcraft.Client.Animations.BodyPartModelNames;
+import DaoOfModding.Cultivationcraft.Client.Physics;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStats;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
 import DaoOfModding.Cultivationcraft.Common.Qi.CultivationTypes;
@@ -13,9 +14,9 @@ import DaoOfModding.mlmanimator.Client.Models.GenericLimbNames;
 import DaoOfModding.mlmanimator.Client.Poses.GenericPoses;
 import DaoOfModding.mlmanimator.Client.Poses.PlayerPose;
 import DaoOfModding.mlmanimator.Client.Poses.PoseHandler;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.TickEvent;
 
 public class BounceTechnique extends Technique
@@ -37,24 +38,24 @@ public class BounceTechnique extends Technique
         type = useType.Toggle;
 
 
-        fall.addAngle(GenericLimbNames.leftLeg, new Vector3d(Math.toRadians(-145), Math.toRadians(0), Math.toRadians(0)), GenericPoses.jumpLegPriority+1);
-        fall.addAngle(GenericLimbNames.lowerLeftLeg, new Vector3d(Math.toRadians(75), Math.toRadians(0), Math.toRadians(0)), GenericPoses.jumpLegPriority+1);
-        fall.addAngle(GenericLimbNames.rightLeg, new Vector3d(Math.toRadians(-145), Math.toRadians(0), Math.toRadians(0)), GenericPoses.jumpLegPriority+1);
-        fall.addAngle(GenericLimbNames.lowerRightLeg, new Vector3d(Math.toRadians(75), Math.toRadians(0), Math.toRadians(0)), GenericPoses.jumpLegPriority+1);
+        fall.addAngle(GenericLimbNames.leftLeg, new Vec3(Math.toRadians(-145), Math.toRadians(0), Math.toRadians(0)), GenericPoses.jumpLegPriority+1);
+        fall.addAngle(GenericLimbNames.lowerLeftLeg, new Vec3(Math.toRadians(75), Math.toRadians(0), Math.toRadians(0)), GenericPoses.jumpLegPriority+1);
+        fall.addAngle(GenericLimbNames.rightLeg, new Vec3(Math.toRadians(-145), Math.toRadians(0), Math.toRadians(0)), GenericPoses.jumpLegPriority+1);
+        fall.addAngle(GenericLimbNames.lowerRightLeg, new Vec3(Math.toRadians(75), Math.toRadians(0), Math.toRadians(0)), GenericPoses.jumpLegPriority+1);
 
-        fall.addAngle(BodyPartModelNames.reverseJointLeftLegModel, new Vector3d(Math.toRadians(-125), Math.toRadians(0), Math.toRadians(0)), GenericPoses.jumpLegPriority+1);
-        fall.addAngle(BodyPartModelNames.reverseJointLeftLegLowerModel, new Vector3d(Math.toRadians(-60), Math.toRadians(0), Math.toRadians(0)), GenericPoses.jumpLegPriority+1);
-        fall.addAngle(BodyPartModelNames.reverseJointRightLegModel, new Vector3d(Math.toRadians(-125), Math.toRadians(0), Math.toRadians(0)), GenericPoses.jumpLegPriority+1);
-        fall.addAngle(BodyPartModelNames.reverseJointRightLegLowerModel, new Vector3d(Math.toRadians(-60), Math.toRadians(0), Math.toRadians(0)), GenericPoses.jumpLegPriority+1);
+        fall.addAngle(BodyPartModelNames.reverseJointLeftLegModel, new Vec3(Math.toRadians(-125), Math.toRadians(0), Math.toRadians(0)), GenericPoses.jumpLegPriority+1);
+        fall.addAngle(BodyPartModelNames.reverseJointLeftLegLowerModel, new Vec3(Math.toRadians(-60), Math.toRadians(0), Math.toRadians(0)), GenericPoses.jumpLegPriority+1);
+        fall.addAngle(BodyPartModelNames.reverseJointRightLegModel, new Vec3(Math.toRadians(-125), Math.toRadians(0), Math.toRadians(0)), GenericPoses.jumpLegPriority+1);
+        fall.addAngle(BodyPartModelNames.reverseJointRightLegLowerModel, new Vec3(Math.toRadians(-60), Math.toRadians(0), Math.toRadians(0)), GenericPoses.jumpLegPriority+1);
 
-        //fall.addAngle(GenericLimbNames.leftArm, new Vector3d(0, Math.toRadians(0), Math.toRadians(0)), GenericPoses.jumpArmPriority+2);
-        //fall.addAngle(GenericLimbNames.rightArm, new Vector3d(0, Math.toRadians(0), Math.toRadians(0)), GenericPoses.jumpArmPriority+2);
+        //fall.addAngle(GenericLimbNames.leftArm, new Vec3(0, Math.toRadians(0), Math.toRadians(0)), GenericPoses.jumpArmPriority+2);
+        //fall.addAngle(GenericLimbNames.rightArm, new Vec3(0, Math.toRadians(0), Math.toRadians(0)), GenericPoses.jumpArmPriority+2);
 
-        //fall.addAngle(GenericLimbNames.body, new Vector3d(Math.toRadians(-45), 0, 0), GenericPoses.jumpArmPriority+1, 1f, -1);
+        //fall.addAngle(GenericLimbNames.body, new Vec3(Math.toRadians(-45), 0, 0), GenericPoses.jumpArmPriority+1, 1f, -1);
     }
 
     @Override
-    public boolean isValid(PlayerEntity player)
+    public boolean isValid(Player player)
     {
         // Technique is valid if the player is a body cultivator and has any bounceHeight stat
         if (CultivatorStats.getCultivatorStats(player).getCultivationType() == CultivationTypes.BODY_CULTIVATOR &&
@@ -73,7 +74,7 @@ public class BounceTechnique extends Technique
         if (event.player.isInWater())
             return;
 
-        if (event.player.isOnGround() && PoseHandler.getPlayerPoseHandler(event.player.getUUID()).getDeltaMovement().y <= 0)
+        if (event.player.isOnGround() && Physics.getDelta(event.player).y <= 0)
             return;
 
         // Add the falling pose to the player if they are in the air

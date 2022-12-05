@@ -2,13 +2,9 @@ package DaoOfModding.Cultivationcraft.Common;
 
 import DaoOfModding.Cultivationcraft.Common.Capabilities.FlyingSwordBind.FlyingSwordBind;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.FlyingSwordBind.IFlyingSwordBind;
-import net.minecraft.client.renderer.ItemRenderer;
-import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.RenderTypeLookup;
-import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.SwordItem;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,9 +16,9 @@ public class FlyingSwordController
 
     public static void addFlyingItem(ItemStack item, UUID owner)
     {
-        CompoundNBT nbt = item.getTag();
+        CompoundTag nbt = item.getTag();
         if (nbt == null)
-            nbt = new CompoundNBT();
+            nbt = new CompoundTag();
 
         nbt.putBoolean("Flying", true);
 
@@ -34,9 +30,9 @@ public class FlyingSwordController
 
     public static void removeFlyingItem(ItemStack item)
     {
-        CompoundNBT nbt = item.getTag();
+        CompoundTag nbt = item.getTag();
         if (nbt == null)
-            nbt = new CompoundNBT();
+            nbt = new CompoundTag();
 
         nbt.putBoolean("Flying", false);
 
@@ -46,7 +42,7 @@ public class FlyingSwordController
     // Returns true if the passed item is set as a flying item
     public static boolean isFlying(ItemStack item)
     {
-        CompoundNBT nbt = item.getTag();
+        CompoundTag nbt = item.getTag();
 
         if (nbt != null && nbt.contains("Flying"))
             return nbt.getBoolean("Flying");

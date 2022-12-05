@@ -2,11 +2,13 @@ package DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications;
 
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPart;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartOption;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraftforge.common.capabilities.AutoRegisterCapability;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
+@AutoRegisterCapability
 public interface IBodyModifications
 {
     public String getSelection();
@@ -29,8 +31,8 @@ public interface IBodyModifications
     public HashMap<String, HashMap<String, BodyPartOption>> getModificationOptions();
     public ArrayList<String> getTags();
 
-    public void read(CompoundNBT NBT);
-    public CompoundNBT write();
+    public void read(CompoundTag NBT);
+    public CompoundTag write();
 
     public void copy(IBodyModifications mod);
 

@@ -1,5 +1,6 @@
 package DaoOfModding.Cultivationcraft.Common.Qi.Techniques.BodyForgeTechniques;
 
+import DaoOfModding.Cultivationcraft.Client.Physics;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.StatIDs;
 import DaoOfModding.mlmanimator.Client.Poses.*;
 import DaoOfModding.mlmanimator.Client.Models.GenericLimbNames;
@@ -12,10 +13,10 @@ import DaoOfModding.Cultivationcraft.Common.Qi.CultivationTypes;
 import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.Technique;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.TickEvent;
 
 public class LeapTechnique extends Technique
@@ -35,19 +36,19 @@ public class LeapTechnique extends Technique
 
         icon = new ResourceLocation(Cultivationcraft.MODID, "textures/techniques/icons/leap.png");
 
-        pose.addAngle(GenericLimbNames.body, new Vector3d(Math.toRadians(90), 0, 0), 10);
-        defaultLeapLegs.addAngle(BodyPartModelNames.reverseJointLeftLegModel, new Vector3d(Math.toRadians(0), Math.toRadians(0), 0), GenericPoses.jumpLegPriority+3, 1f, -1);
-        defaultLeapLegs.addAngle(BodyPartModelNames.reverseJointRightLegModel, new Vector3d(Math.toRadians(0), Math.toRadians(0), 0), GenericPoses.jumpLegPriority+3, 1f, -1);
-        defaultLeapLegs.addAngle(BodyPartModelNames.reverseJointLeftLegLowerModel, new Vector3d(Math.toRadians(0), Math.toRadians(0), 0), GenericPoses.jumpLegPriority+3, 1f, -1);
-        defaultLeapLegs.addAngle(BodyPartModelNames.reverseJointRightLegLowerModel, new Vector3d(Math.toRadians(0), Math.toRadians(0), 0), GenericPoses.jumpLegPriority+3, 1f, -1);
-        defaultLeapLegs.addAngle(BodyPartModelNames.reverseJointLeftFootModel, new Vector3d(Math.toRadians(0), Math.toRadians(0), 0), GenericPoses.jumpLegPriority+3, 1f, -1);
-        defaultLeapLegs.addAngle(BodyPartModelNames.reverseJointRightFootModel, new Vector3d(Math.toRadians(0), Math.toRadians(0), 0), GenericPoses.jumpLegPriority+3, 1f, -1);
+        pose.addAngle(GenericLimbNames.body, new Vec3(Math.toRadians(90), 0, 0), 10);
+        defaultLeapLegs.addAngle(BodyPartModelNames.reverseJointLeftLegModel, new Vec3(Math.toRadians(0), Math.toRadians(0), 0), GenericPoses.jumpLegPriority+3, 1f, -1);
+        defaultLeapLegs.addAngle(BodyPartModelNames.reverseJointRightLegModel, new Vec3(Math.toRadians(0), Math.toRadians(0), 0), GenericPoses.jumpLegPriority+3, 1f, -1);
+        defaultLeapLegs.addAngle(BodyPartModelNames.reverseJointLeftLegLowerModel, new Vec3(Math.toRadians(0), Math.toRadians(0), 0), GenericPoses.jumpLegPriority+3, 1f, -1);
+        defaultLeapLegs.addAngle(BodyPartModelNames.reverseJointRightLegLowerModel, new Vec3(Math.toRadians(0), Math.toRadians(0), 0), GenericPoses.jumpLegPriority+3, 1f, -1);
+        defaultLeapLegs.addAngle(BodyPartModelNames.reverseJointLeftFootModel, new Vec3(Math.toRadians(0), Math.toRadians(0), 0), GenericPoses.jumpLegPriority+3, 1f, -1);
+        defaultLeapLegs.addAngle(BodyPartModelNames.reverseJointRightFootModel, new Vec3(Math.toRadians(0), Math.toRadians(0), 0), GenericPoses.jumpLegPriority+3, 1f, -1);
 
         defaultLeapLegs.disableHeadLook(false, 8);
     }
 
     @Override
-    public boolean isValid(PlayerEntity player)
+    public boolean isValid(Player player)
     {
         // Technique is valid if the player is a body cultivator with Reverse Joint Legs
         if (CultivatorStats.getCultivatorStats(player).getCultivationType() == CultivationTypes.BODY_CULTIVATOR &&
@@ -60,7 +61,7 @@ public class LeapTechnique extends Technique
     @Override
     // What to do when the use key for this technique is pressed
     // keyDown = true when the key is pressed down, false when the key is released
-    public void useKeyPressed(boolean keyDown, PlayerEntity player)
+    public void useKeyPressed(boolean keyDown, Player player)
     {
         // Do nothing if the technique is already active, the key has been released or the player is not on the ground
         if (active || leaping || !keyDown || !player.isOnGround() || player.isInWater())
@@ -108,7 +109,7 @@ public class LeapTechnique extends Technique
     }
 
     // Check if the leap has ended
-    private void continueLeap(PlayerEntity player)
+    private void continueLeap(Player player)
     {
         // If the player is no longer jumping turn the technique off
         if (player.isOnGround() || player.isInWater())
@@ -119,7 +120,7 @@ public class LeapTechnique extends Technique
     }
 
     // Check if the leap has ended
-    private void continueLeapClient(PlayerEntity player)
+    private void continueLeapClient(Player player)
     {
         PlayerPoseHandler handler = PoseHandler.getPlayerPoseHandler(player.getUUID());
 
@@ -131,17 +132,17 @@ public class LeapTechnique extends Technique
         }
         else
         {
-            Vector3d currentMotion = PoseHandler.getPlayerPoseHandler(player.getUUID()).getDeltaMovement().normalize();
+            Vec3 currentMotion = Physics.getDelta(player).normalize();
 
             PlayerPose newPose = defaultLeapLegs.clone();
-            newPose.addAngle(GenericLimbNames.body, new Vector3d(Math.toRadians((currentMotion.y - 1) * -90), 0, 0), 10);
+            newPose.addAngle(GenericLimbNames.body, new Vec3(Math.toRadians((currentMotion.y - 1) * -90), 0, 0), 10);
 
             pose = newPose;
         }
     }
 
     // Do the leap
-    private void doLeapClient(PlayerEntity player)
+    private void doLeapClient(Player player)
     {
         leaping = true;
         player.setOnGround(false);
@@ -156,8 +157,8 @@ public class LeapTechnique extends Technique
         handler.setJumping(true);
 
         // Get the current motion and forward vector of the player
-        Vector3d currentMotion = PoseHandler.getPlayerPoseHandler(player.getUUID()).getDeltaMovement();
-        Vector3d forward = player.getForward().normalize();
+        Vec3 currentMotion = Physics.getDelta(player);
+        Vec3 forward = player.getForward().normalize();
 
         // Get the modified jump height of the player
         float jumpPower = BodyPartStatControl.getStats(player.getUUID()).getStat(StatIDs.jumpHeight);
@@ -167,14 +168,14 @@ public class LeapTechnique extends Technique
     }
 
     // Do the leap
-    private void doLeap(PlayerEntity player)
+    private void doLeap(Player player)
     {
         leaping = true;
         player.setOnGround(false);
     }
 
     @Override
-    public void readNBTData(CompoundNBT nbt)
+    public void readNBTData(CompoundTag nbt)
     {
         super.readNBTData(nbt);
 
@@ -182,9 +183,9 @@ public class LeapTechnique extends Technique
     }
 
     @Override
-    public CompoundNBT writeNBT()
+    public CompoundTag writeNBT()
     {
-        CompoundNBT nbt = super.writeNBT();
+        CompoundTag nbt = super.writeNBT();
 
         nbt.putBoolean("leaping", leaping);
 

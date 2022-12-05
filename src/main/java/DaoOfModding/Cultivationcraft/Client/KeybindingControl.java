@@ -1,6 +1,5 @@
 package DaoOfModding.Cultivationcraft.Client;
 
-import DaoOfModding.Cultivationcraft.Client.Animations.CultivatorModelHandler;
 import DaoOfModding.Cultivationcraft.Client.GUI.SkillHotbarOverlay;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.BodyModifications;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.IBodyModifications;
@@ -15,27 +14,23 @@ import DaoOfModding.Cultivationcraft.Common.Qi.CultivatorControl;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.AttackOverrideTechnique;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.MovementOverrideTechnique;
 import DaoOfModding.Cultivationcraft.Common.Register;
-import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import DaoOfModding.Cultivationcraft.Network.ClientPacketHandler;
-import DaoOfModding.mlmanimator.Client.Poses.PoseHandler;
+import com.mojang.blaze3d.platform.InputConstants;
+import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.client.settings.KeyBinding;
-import net.minecraft.client.util.InputMappings;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.projectile.ProjectileHelper;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.EntityRayTraceResult;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.projectile.ProjectileUtil;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.InputEvent;
+import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.Mod;
 
-import java.util.HashMap;
 import java.util.UUID;
 
 import static org.lwjgl.glfw.GLFW.*;
@@ -44,7 +39,7 @@ import static org.lwjgl.glfw.GLFW.GLFW_KEY_L;
 @Mod.EventBusSubscriber(value = Dist.CLIENT)
 public class KeybindingControl
 {
-    public static KeyBinding[] keyBindings;
+    public static KeyMapping[] keyBindings;
 
     private static boolean usePressed = false;
 
@@ -59,16 +54,18 @@ public class KeybindingControl
     private static boolean overwriteRight = false;
     private static boolean overwriteJump = false;
 
-    public static void init()
+    public static void init(RegisterKeyMappingsEvent event)
     {
-        keyBindings = new KeyBinding[4];
-        keyBindings[0] = new KeyBinding("Switch Hotbar", GLFW_KEY_GRAVE_ACCENT, "Cultivation");
-        keyBindings[1] = new KeyBinding("Flying Sword Target", GLFW_KEY_R, "Cultivation");
-        keyBindings[2] = new KeyBinding("Flying Sword Recall", GLFW_KEY_O, "Cultivation");
-        keyBindings[3] = new KeyBinding("Flying Sword Screen Test", GLFW_KEY_L, "Cultivation");
+        keyBindings = new KeyMapping[4];
+        keyBindings[0] = new KeyMapping("Switch Hotbar", GLFW_KEY_GRAVE_ACCENT, "Cultivation");
+        keyBindings[1] = new KeyMapping("Flying Sword Target", GLFW_KEY_R, "Cultivation");
+        keyBindings[2] = new KeyMapping("Flying Sword Recall", GLFW_KEY_O, "Cultivation");
+        keyBindings[3] = new KeyMapping("Flying Sword Screen Test", GLFW_KEY_L, "Cultivation");
 
-        for (KeyBinding binding : keyBindings)
-            ClientRegistry.registerKeyBinding(binding);
+        event.register(keyBindings[0]);
+        event.register(keyBindings[1]);
+        event.register(keyBindings[2]);
+        event.register(keyBindings[3]);
     }
 
 
@@ -118,7 +115,7 @@ public class KeybindingControl
     {
         // Tell all active techniques that a button has been pressed
 
-        ICultivatorTechniques techs = CultivatorTechniques.getCultivatorTechniques(Minecraft.getInstance().player);
+        ICultivatorTechniques techs = CultivatorTechniques.getCultivatorTechniques(genericClientFunctions.getPlayer());
 
         for (int i = 0; i < CultivatorTechniques.numberOfTechniques; i++)
             if (techs.getTechnique(i) != null)
@@ -129,22 +126,22 @@ public class KeybindingControl
     public static boolean handleAttackOverrides()
     {
         // If something is held in the players hand do nothing
-        if (!Minecraft.getInstance().player.getMainHandItem().isEmpty())
+        if (!genericClientFunctions.getPlayer().getMainHandItem().isEmpty())
             return false;
 
         // Get all cultivator techniques and check if any of them are active attack overrides
-        int slot = CultivatorControl.getAttackOverride(Minecraft.getInstance().player);
+        int slot = CultivatorControl.getAttackOverride(genericClientFunctions.getPlayer());
 
         // Do nothing if there is no active attack override
         if (slot == -1)
             return false;
 
-        AttackOverrideTechnique attackTech = (AttackOverrideTechnique)CultivatorTechniques.getCultivatorTechniques(Minecraft.getInstance().player).getTechnique(slot);
+        AttackOverrideTechnique attackTech = (AttackOverrideTechnique)CultivatorTechniques.getCultivatorTechniques(genericClientFunctions.getPlayer()).getTechnique(slot);
 
-        Minecraft.getInstance().options.keyAttack.getKeyBinding().setDown(false);
+        Minecraft.getInstance().options.keyAttack.setDown(false);
 
         // Attack with the attack override
-        attackTech.attack(Minecraft.getInstance().player, slot);
+        attackTech.attack(genericClientFunctions.getPlayer(), slot);
 
         return true;
     }
@@ -162,29 +159,29 @@ public class KeybindingControl
     private static void handleKeyOverrides()
     {
         if (overwriteUp)
-            Minecraft.getInstance().options.keyUp.getKeyBinding().setDown(false);
+            Minecraft.getInstance().options.keyUp.setDown(false);
         else
-            Minecraft.getInstance().options.keyUp.getKeyBinding().setDown(isDown(Minecraft.getInstance().options.keyUp));
+            Minecraft.getInstance().options.keyUp.setDown(isDown(Minecraft.getInstance().options.keyUp));
 
         if (overwriteDown)
-            Minecraft.getInstance().options.keyDown.getKeyBinding().setDown(false);
+            Minecraft.getInstance().options.keyDown.setDown(false);
         else
-            Minecraft.getInstance().options.keyDown.getKeyBinding().setDown(isDown(Minecraft.getInstance().options.keyDown));
+            Minecraft.getInstance().options.keyDown.setDown(isDown(Minecraft.getInstance().options.keyDown));
 
         if (overwriteLeft)
-            Minecraft.getInstance().options.keyLeft.getKeyBinding().setDown(false);
+            Minecraft.getInstance().options.keyLeft.setDown(false);
         else
-            Minecraft.getInstance().options.keyLeft.getKeyBinding().setDown(isDown(Minecraft.getInstance().options.keyLeft));
+            Minecraft.getInstance().options.keyLeft.setDown(isDown(Minecraft.getInstance().options.keyLeft));
 
         if (overwriteRight)
-            Minecraft.getInstance().options.keyRight.getKeyBinding().setDown(false);
+            Minecraft.getInstance().options.keyRight.setDown(false);
         else
-            Minecraft.getInstance().options.keyRight.getKeyBinding().setDown(isDown(Minecraft.getInstance().options.keyRight));
+            Minecraft.getInstance().options.keyRight.setDown(isDown(Minecraft.getInstance().options.keyRight));
 
         if (overwriteJump)
-            Minecraft.getInstance().options.keyJump.getKeyBinding().setDown(false);
+            Minecraft.getInstance().options.keyJump.setDown(false);
         else
-            Minecraft.getInstance().options.keyJump.getKeyBinding().setDown(isDown(Minecraft.getInstance().options.keyJump));
+            Minecraft.getInstance().options.keyJump.setDown(isDown(Minecraft.getInstance().options.keyJump));
 
         overwriteUp = false;
         overwriteDown = false;
@@ -195,15 +192,15 @@ public class KeybindingControl
 
     // Check whether the key is press via InputMappings rather than keybindings
     // Fixes issues caused by pressing multiple keys at the same time
-    public static boolean isDown(KeyBinding key)
+    public static boolean isDown(KeyMapping key)
     {
-        return InputMappings.isKeyDown(Minecraft.getInstance().getWindow().getWindow(), key.getKeyBinding().getKey().getValue());
+        return InputConstants.isKeyDown(Minecraft.getInstance().getWindow().getWindow(), key.getKey().getValue());
     }
 
     private static void handleMovementPartOverrides()
     {
         // Tick through all body modifications on the player
-        IBodyModifications modifications = BodyModifications.getBodyModifications(Minecraft.getInstance().player);
+        IBodyModifications modifications = BodyModifications.getBodyModifications(genericClientFunctions.getPlayer());
 
         for (BodyPart part : modifications.getModifications().values())
             if (part instanceof MovementOverridePart)
@@ -215,13 +212,13 @@ public class KeybindingControl
     private static void handleMovementTechOverrides()
     {
         // Get all cultivator techniques and check if any of them are active movement overrides
-        int slot = CultivatorControl.getMovementOverride(Minecraft.getInstance().player);
+        int slot = CultivatorControl.getMovementOverride(genericClientFunctions.getPlayer());
 
         // Do nothing if there is no active movement override
         if (slot == -1)
             return;
 
-        MovementOverrideTechnique movementTech = (MovementOverrideTechnique)CultivatorTechniques.getCultivatorTechniques(Minecraft.getInstance().player).getTechnique(slot);
+        MovementOverrideTechnique movementTech = (MovementOverrideTechnique)CultivatorTechniques.getCultivatorTechniques(genericClientFunctions.getPlayer()).getTechnique(slot);
         handleTechMovementOverride(movementTech);
     }
 
@@ -296,7 +293,7 @@ public class KeybindingControl
 
 
     @SubscribeEvent
-    public static void mouseScroll(InputEvent.MouseScrollEvent event)
+    public static void mouseScroll(InputEvent.MouseScrollingEvent event)
     {
         // If the skill hotbar is active
         if (SkillHotbarOverlay.isActive())
@@ -310,9 +307,11 @@ public class KeybindingControl
     }
 
     @SubscribeEvent
-    public static void onInput(InputEvent.ClickInputEvent event)
+    public static void onInput(InputEvent.MouseButton event)
     {
-        if (event.getKeyBinding() == Minecraft.getInstance().options.keyAttack.getKeyBinding())
+        // TODO: Make this not shit -.-
+
+        if (Minecraft.getInstance().options.keyAttack.isDown())
         {
             event.setCanceled(handleAttackOverrides());
         }
@@ -322,7 +321,7 @@ public class KeybindingControl
     public static void onInput(InputEvent event)
     {
         // Only perform if the world is loaded and player is alive
-        if (Minecraft.getInstance().level != null && Minecraft.getInstance().player.isAlive())
+        if (Minecraft.getInstance().level != null && genericClientFunctions.getPlayer().isAlive())
         {
             handleHotbarKeybinds();
             handleHotbarInteracts();
@@ -337,34 +336,34 @@ public class KeybindingControl
 
             if (keyBindings[1].isDown())
             {
-                final RayTraceResult result = getMouseOver(100);
+                final HitResult result = getMouseOver(100);
 
-                RayTraceResult.Type type = result.getType();
+                HitResult.Type type = result.getType();
                 UUID targetID = null;
 
-                Vector3d pos = result.getLocation();
+                Vec3 pos = result.getLocation();
 
-                if (type == RayTraceResult.Type.ENTITY)
+                if (type == HitResult.Type.ENTITY)
                     targetID = Misc.getEntityAtLocation(result.getLocation(), Minecraft.getInstance().level).getUUID();
 
                 // If result is a block, move position vector inside the block
-                if (type == RayTraceResult.Type.BLOCK)
+                if (type == HitResult.Type.BLOCK)
                 {
                     if (Misc.enableHarvest)
                     {
-                        pos = pos.add(Minecraft.getInstance().player.getLookAngle().scale(0.1));
-                        pos = new Vector3d(Math.floor(pos.x), Math.floor(pos.y), Math.floor(pos.z));
+                        pos = pos.add(genericClientFunctions.getPlayer().getLookAngle().scale(0.1));
+                        pos = new Vec3(Math.floor(pos.x), Math.floor(pos.y), Math.floor(pos.z));
                     }
                     else
-                        type = RayTraceResult.Type.MISS;
+                        type = HitResult.Type.MISS;
                 }
 
-                ClientPacketHandler.sendCultivatorTargetToServer(Minecraft.getInstance().player.getUUID(), type, pos, targetID);
+                ClientPacketHandler.sendCultivatorTargetToServer(genericClientFunctions.getPlayer().getUUID(), type, pos, targetID);
             }
 
             if (keyBindings[2].isDown())
             {
-                ClientPacketHandler.sendRecallFlyingToServer(true, Minecraft.getInstance().player.getUUID());
+                ClientPacketHandler.sendRecallFlyingToServer(true, genericClientFunctions.getPlayer().getUUID());
             }
 
 
@@ -378,9 +377,9 @@ public class KeybindingControl
 
     // Extended getMouseOver class, ripped almost word for word from minecraft's GameRenderer.pick class
     // double d0 = the distance the raytrace should cover
-    public static RayTraceResult getMouseOver(double d0)
+    public static HitResult getMouseOver(double d0)
     {
-        RayTraceResult result = null;
+        HitResult result = null;
 
         Entity entity = Minecraft.getInstance().getCameraEntity();
         if (entity != null) {
@@ -388,26 +387,26 @@ public class KeybindingControl
                 Minecraft.getInstance().getProfiler().push("pick");
                 Minecraft.getInstance().crosshairPickEntity = null;
                 result = entity.pick(d0, 1, false);
-                Vector3d vector3d = entity.getEyePosition(1);
+                Vec3 Vec3 = entity.getEyePosition(1);
 
                 int i = 3;
                 double d1 = d0;
 
                 d1 = d1 * d1;
                 if (result != null) {
-                    d1 = result.getLocation().distanceToSqr(vector3d);
+                    d1 = result.getLocation().distanceToSqr(Vec3);
                 }
 
-                Vector3d vector3d1 = entity.getViewVector(1.0F);
-                Vector3d vector3d2 = vector3d.add(vector3d1.x * d0, vector3d1.y * d0, vector3d1.z * d0);
+                Vec3 Vec31 = entity.getViewVector(1.0F);
+                Vec3 Vec32 = Vec3.add(Vec31.x * d0, Vec31.y * d0, Vec31.z * d0);
                 float f = 1.0F;
-                AxisAlignedBB axisalignedbb = entity.getBoundingBox().expandTowards(vector3d1.scale(d0)).inflate(1.0D, 1.0D, 1.0D);
-                EntityRayTraceResult entityraytraceresult = ProjectileHelper.getEntityHitResult(entity, vector3d, vector3d2, axisalignedbb, (p_215312_0_) -> {
+                AABB AABB = entity.getBoundingBox().expandTowards(Vec31.scale(d0)).inflate(1.0D, 1.0D, 1.0D);
+                EntityHitResult entityHitResult = ProjectileUtil.getEntityHitResult(entity, Vec3, Vec32, AABB, (p_215312_0_) -> {
                     return !p_215312_0_.isSpectator() && p_215312_0_.isPickable();
                 }, d1);
-                if (entityraytraceresult != null)
+                if (entityHitResult != null)
                 {
-                    result = entityraytraceresult;
+                    result = entityHitResult;
                 }
             }
         }

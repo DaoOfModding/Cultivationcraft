@@ -1,13 +1,11 @@
 package DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Blood;
 
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.FoodStats.QiFoodStats;
-import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
-import DaoOfModding.Cultivationcraft.Common.Qi.Stats.StatIDs;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.math.vector.Vector3f;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.player.Player;
+import com.mojang.math.Vector3f;
 import net.minecraft.world.Difficulty;
-import net.minecraft.world.GameRules;
+import net.minecraft.world.level.GameRules;
 
 public class Blood
 {
@@ -19,7 +17,7 @@ public class Blood
     }
 
     // Handle passive player regen here
-    public void regen(PlayerEntity player)
+    public void regen(Player player)
     {
         // Vanilla health regen
         boolean flag = player.level.getGameRules().getBoolean(GameRules.RULE_NATURAL_REGENERATION);

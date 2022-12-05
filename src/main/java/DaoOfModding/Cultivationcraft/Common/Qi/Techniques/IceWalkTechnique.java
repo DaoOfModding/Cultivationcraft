@@ -1,8 +1,8 @@
 package DaoOfModding.Cultivationcraft.Common.Qi.Techniques;
 
+import DaoOfModding.Cultivationcraft.Client.Physics;
 import DaoOfModding.mlmanimator.Client.Models.GenericLimbNames;
 import DaoOfModding.mlmanimator.Client.Poses.GenericPoses;
-import DaoOfModding.mlmanimator.Client.Poses.PlayerPose;
 import DaoOfModding.Cultivationcraft.Client.Animations.GenericQiPoses;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStats;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.ICultivatorStats;
@@ -11,17 +11,15 @@ import DaoOfModding.Cultivationcraft.Common.Qi.CultivationTypes;
 import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
 import DaoOfModding.Cultivationcraft.Common.Qi.Freeze;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
-import DaoOfModding.mlmanimator.Client.Poses.PoseHandler;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.Direction;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.TickEvent;
 
 public class IceWalkTechnique extends Technique
-{
+{/*
     // TODO: This is temporary
     private int power = 20;
 
@@ -39,13 +37,13 @@ public class IceWalkTechnique extends Technique
 
         pose = GenericQiPoses.HandsBehind.clone();
 
-        pose.addAngle(GenericLimbNames.leftLeg, new Vector3d(Math.toRadians(-30), 0, Math.toRadians(-10)), GenericPoses.walkLegPriority + 2);
-        pose.addAngle(GenericLimbNames.rightLeg, new Vector3d(Math.toRadians(30), 0, Math.toRadians(10)), GenericPoses.walkLegPriority + 2);
-        pose.addAngle(GenericLimbNames.lowerLeftLeg, new Vector3d(Math.toRadians(0), 0, Math.toRadians(0)), GenericPoses.walkLegPriority + 2);
-        pose.addAngle(GenericLimbNames.lowerRightLeg, new Vector3d(Math.toRadians(0), 0, Math.toRadians(0)), GenericPoses.walkLegPriority + 2);
+        pose.addAngle(GenericLimbNames.leftLeg, new Vec3(Math.toRadians(-30), 0, Math.toRadians(-10)), GenericPoses.walkLegPriority + 2);
+        pose.addAngle(GenericLimbNames.rightLeg, new Vec3(Math.toRadians(30), 0, Math.toRadians(10)), GenericPoses.walkLegPriority + 2);
+        pose.addAngle(GenericLimbNames.lowerLeftLeg, new Vec3(Math.toRadians(0), 0, Math.toRadians(0)), GenericPoses.walkLegPriority + 2);
+        pose.addAngle(GenericLimbNames.lowerRightLeg, new Vec3(Math.toRadians(0), 0, Math.toRadians(0)), GenericPoses.walkLegPriority + 2);
     }
 
-    public boolean calculateStairOrNot(PlayerEntity player)
+    public boolean calculateStairOrNot(Player player)
     {
         if (PlayerUtils.lookingUp(player) || PlayerUtils.lookingDown(player))
             return true;
@@ -94,7 +92,7 @@ public class IceWalkTechnique extends Technique
         super.tickClient(event);
 
         // TODO: Better way of sliding
-        Vector3d test = PoseHandler.getPlayerPoseHandler(event.player.getUUID()).getDeltaMovement().scale(0.04);
+        Vec3 test = Physics.getDelta(event.player).scale(0.04);
         event.player.push(test.x, 0, test.z);
 
         BlockPos pos = event.player.blockPosition().below();
@@ -127,7 +125,7 @@ public class IceWalkTechnique extends Technique
     }
 
     @Override
-    public boolean isValid(PlayerEntity player)
+    public boolean isValid(Player player)
     {
         ICultivatorStats stats = CultivatorStats.getCultivatorStats(player);
 
@@ -135,5 +133,5 @@ public class IceWalkTechnique extends Technique
             return false;
 
         return true;
-    }
+    }*/
 }

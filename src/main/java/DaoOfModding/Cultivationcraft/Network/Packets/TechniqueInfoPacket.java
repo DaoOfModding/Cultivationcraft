@@ -5,13 +5,11 @@ import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.Cu
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.Technique;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import DaoOfModding.Cultivationcraft.Network.PacketHandler;
-import DaoOfModding.Cultivationcraft.Server.ServerItemControl;
-import net.minecraft.client.entity.player.ClientPlayerEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.network.PacketBuffer;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.fml.LogicalSide;
-import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraftforge.network.NetworkEvent;
 
 import java.util.UUID;
 import java.util.function.Supplier;
@@ -30,14 +28,14 @@ public class TechniqueInfoPacket extends Packet
     }
 
     @Override
-    public void encode(PacketBuffer buffer)
+    public void encode(FriendlyByteBuf buffer)
     {
         buffer.writeInt(slotNumber);
         buffer.writeInt(info);
         buffer.writeUUID(player);
     }
 
-    public static TechniqueInfoPacket decode(PacketBuffer buffer)
+    public static TechniqueInfoPacket decode(FriendlyByteBuf buffer)
     {
         TechniqueInfoPacket returnValue = new TechniqueInfoPacket(-1, -1, null);
 
@@ -80,7 +78,7 @@ public class TechniqueInfoPacket extends Packet
     }
 
     // Process received packet on the Server
-    private void processPacket(ServerPlayerEntity sender)
+    private void processPacket(ServerPlayer sender)
     {
         // Send the key press to the technique used
         Technique tech = CultivatorTechniques.getCultivatorTechniques(sender).getTechnique(slotNumber);
@@ -95,12 +93,12 @@ public class TechniqueInfoPacket extends Packet
     // Process received packet on the Client
     private void processPacket()
     {
-        PlayerEntity playerEntity = ClientItemControl.thisWorld.getPlayerByUUID(player);
+        Player Player = ClientItemControl.thisWorld.getPlayerByUUID(player);
 
         // Send the key press to the technique used
-        Technique tech = CultivatorTechniques.getCultivatorTechniques(playerEntity).getTechnique(slotNumber);
+        Technique tech = CultivatorTechniques.getCultivatorTechniques(Player).getTechnique(slotNumber);
 
         if (tech != null)
-            tech.processInfo(playerEntity, info);
+            tech.processInfo(Player, info);
     }
 }

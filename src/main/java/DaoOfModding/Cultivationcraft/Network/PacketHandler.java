@@ -11,19 +11,17 @@ import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.IC
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import DaoOfModding.Cultivationcraft.Network.Packets.*;
 import DaoOfModding.Cultivationcraft.Network.Packets.CultivatorStats.*;
-import DaoOfModding.Cultivationcraft.Common.Register;
 import DaoOfModding.Cultivationcraft.Network.Packets.keypressPacket;
-import net.minecraft.client.Minecraft;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.chunk.Chunk;
-import net.minecraftforge.fml.network.NetworkRegistry;
-import net.minecraftforge.fml.network.PacketDistributor;
-import net.minecraftforge.fml.network.simple.SimpleChannel;
-import net.minecraftforge.fml.server.ServerLifecycleHooks;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.chunk.LevelChunk;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.network.NetworkRegistry;
+import net.minecraftforge.network.PacketDistributor;
+import net.minecraftforge.network.simple.SimpleChannel;
+import net.minecraftforge.server.ServerLifecycleHooks;
 
 import java.util.UUID;
 
@@ -31,7 +29,7 @@ public class PacketHandler
 {
     private static final byte KEYPRESS = 03;
     private static final byte ATTACK = 07;
-    private static final byte CHUNK_QI_SOURCES = 10;
+    private static final byte LevelChunk_QI_SOURCES = 10;
     private static final byte TECHNIQUE_USE = 20;
     private static final byte TECHNIQUE_INFO = 21;
     private static final byte PART_INFO = 22;
@@ -55,7 +53,7 @@ public class PacketHandler
     {
         channel.registerMessage(KEYPRESS, keypressPacket.class, keypressPacket::encode, keypressPacket::decode, keypressPacket::handle);
         channel.registerMessage(ATTACK, AttackPacket.class, AttackPacket::encode, AttackPacket::decode, AttackPacket::handle);
-        channel.registerMessage(CHUNK_QI_SOURCES, ChunkQiSourcesPacket.class, ChunkQiSourcesPacket::encode, ChunkQiSourcesPacket::decode, ChunkQiSourcesPacket::handle);
+        channel.registerMessage(LevelChunk_QI_SOURCES, ChunkQiSourcesPacket.class, ChunkQiSourcesPacket::encode, ChunkQiSourcesPacket::decode, ChunkQiSourcesPacket::handle);
         channel.registerMessage(TECHNIQUE_USE, TechniqueUsePacket.class, TechniqueUsePacket::encode, TechniqueUsePacket::decode, TechniqueUsePacket::handle);
         channel.registerMessage(TECHNIQUE_INFO, TechniqueInfoPacket.class, TechniqueInfoPacket::encode, TechniqueInfoPacket::decode, TechniqueInfoPacket::handle);
         channel.registerMessage(PART_INFO, PartInfoPacket.class, PartInfoPacket::encode, PartInfoPacket::decode, PartInfoPacket::handle);
@@ -74,35 +72,35 @@ public class PacketHandler
         channel.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> ServerLifecycleHooks.getCurrentServer().getPlayerList().getPlayer(playerID)), pack);
     }
 
-    public static void sendCultivatorTargetToClient(UUID playerID, RayTraceResult.Type type, Vector3d pos, UUID targetID)
+    public static void sendCultivatorTargetToClient(UUID playerID, HitResult.Type type, Vec3 pos, UUID targetID)
     {
         CultivatorTargetPacket pack = new CultivatorTargetPacket(playerID, type, pos, targetID);
         channel.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> ServerLifecycleHooks.getCurrentServer().getPlayerList().getPlayer(playerID)), pack);
     }
 
-    public static void sendAttackToClient(UUID playerID, RayTraceResult.Type type, Vector3d pos, UUID targetID, int slot)
+    public static void sendAttackToClient(UUID playerID, HitResult.Type type, Vec3 pos, UUID targetID, int slot)
     {
         AttackPacket pack = new AttackPacket(playerID, type, pos, targetID, slot);
         channel.send(PacketDistributor.TRACKING_ENTITY.with(() -> ServerLifecycleHooks.getCurrentServer().getPlayerList().getPlayer(playerID)), pack);
     }
 
-    public static void sendChunkQiSourcesToClient(Chunk chunk)
+    public static void sendChunkQiSourcesToClient(LevelChunk LevelChunk)
     {
-        IChunkQiSources sources = ChunkQiSources.getChunkQiSources(chunk);
+        IChunkQiSources sources = ChunkQiSources.getChunkQiSources(LevelChunk);
         ChunkQiSourcesPacket pack = new ChunkQiSourcesPacket(sources.getChunkPos(), sources.getQiSources());
 
-        channel.send(PacketDistributor.TRACKING_CHUNK.with(() -> chunk), pack);
+        channel.send(PacketDistributor.TRACKING_CHUNK.with(() -> LevelChunk), pack);
     }
 
-    public static void sendChunkQiSourcesToClient(Chunk chunk, ServerPlayerEntity player)
+    public static void sendChunkQiSourcesToClient(LevelChunk LevelChunk, ServerPlayer player)
     {
-        IChunkQiSources sources = ChunkQiSources.getChunkQiSources(chunk);
+        IChunkQiSources sources = ChunkQiSources.getChunkQiSources(LevelChunk);
         ChunkQiSourcesPacket pack = new ChunkQiSourcesPacket(sources.getChunkPos(), sources.getQiSources());
 
         channel.send(PacketDistributor.PLAYER.with(() -> player), pack);
     }
 
-    public static void sendCultivatorStatsToClient(PlayerEntity player)
+    public static void sendCultivatorStatsToClient(Player player)
     {
         PacketDistributor.PacketTarget target = PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> player);
 
@@ -110,7 +108,7 @@ public class PacketHandler
         sendCultivatorTechniquesToClient(player);
     }
 
-    public static void sendCultivatorStatsToSpecificClient(PlayerEntity player, ServerPlayerEntity toSend)
+    public static void sendCultivatorStatsToSpecificClient(Player player, ServerPlayer toSend)
     {
         PacketDistributor.PacketTarget target = PacketDistributor.PLAYER.with(() -> toSend);
 
@@ -118,7 +116,7 @@ public class PacketHandler
         sendCultivatorTechniquesToSpecificClient(player, toSend);
     }
 
-    private static void sendCultivatorStatsToClient(PlayerEntity player, PacketDistributor.PacketTarget distribute)
+    private static void sendCultivatorStatsToClient(Player player, PacketDistributor.PacketTarget distribute)
     {
         ICultivatorStats stats = CultivatorStats.getCultivatorStats(player);
 
@@ -131,21 +129,21 @@ public class PacketHandler
         channel.send(distribute, pack2);
     }
 
-    public static void sendBodyModificationsToSpecificClient(PlayerEntity player, ServerPlayerEntity toSend)
+    public static void sendBodyModificationsToSpecificClient(Player player, ServerPlayer toSend)
     {
         PacketDistributor.PacketTarget target = PacketDistributor.PLAYER.with(() -> toSend);
 
         sendBodyModificationsToClient(player, target);
     }
 
-    public static void sendBodyModificationsToClient(PlayerEntity player)
+    public static void sendBodyModificationsToClient(Player player)
     {
         PacketDistributor.PacketTarget target = PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> player);
 
         sendBodyModificationsToClient(player, target);
     }
 
-    private static void sendBodyModificationsToClient(PlayerEntity player, PacketDistributor.PacketTarget distribute)
+    private static void sendBodyModificationsToClient(Player player, PacketDistributor.PacketTarget distribute)
     {
         IBodyModifications modifications = BodyModifications.getBodyModifications(player);
 
@@ -154,17 +152,17 @@ public class PacketHandler
         channel.send(distribute, pack);
     }
 
-    public static void sendTechniqueInfoToClients(TechniqueInfoPacket packet, PlayerEntity except)
+    public static void sendTechniqueInfoToClients(TechniqueInfoPacket packet, Player except)
     {
         channel.send(PacketDistributor.TRACKING_ENTITY.with(() -> except), packet);
     }
 
-    public static void sendPartInfoToClients(PartInfoPacket packet, PlayerEntity except)
+    public static void sendPartInfoToClients(PartInfoPacket packet, Player except)
     {
         channel.send(PacketDistributor.TRACKING_ENTITY.with(() -> except), packet);
     }
 
-    public static void sendCultivatorTechniquesToClient(PlayerEntity player)
+    public static void sendCultivatorTechniquesToClient(Player player)
     {
         ICultivatorTechniques techs = CultivatorTechniques.getCultivatorTechniques(player);
 
@@ -172,7 +170,7 @@ public class PacketHandler
         channel.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> player), pack);
     }
 
-    public static void sendCultivatorTechniquesToSpecificClient(PlayerEntity player, ServerPlayerEntity toSend)
+    public static void sendCultivatorTechniquesToSpecificClient(Player player, ServerPlayer toSend)
     {
         ICultivatorTechniques techs = CultivatorTechniques.getCultivatorTechniques(player);
 

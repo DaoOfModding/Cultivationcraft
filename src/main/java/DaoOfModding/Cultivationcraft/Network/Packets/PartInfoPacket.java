@@ -2,19 +2,14 @@ package DaoOfModding.Cultivationcraft.Network.Packets;
 
 import DaoOfModding.Cultivationcraft.Client.ClientItemControl;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.BodyModifications;
-import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.CultivatorTechniques;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPart;
-import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.Technique;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import DaoOfModding.Cultivationcraft.Network.PacketHandler;
-import DaoOfModding.Cultivationcraft.Server.BodyPartControl;
-import DaoOfModding.Cultivationcraft.Server.ServerItemControl;
-import net.minecraft.client.entity.player.ClientPlayerEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.network.PacketBuffer;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.fml.LogicalSide;
-import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraftforge.network.NetworkEvent;
 
 import java.util.UUID;
 import java.util.function.Supplier;
@@ -35,7 +30,7 @@ public class PartInfoPacket extends Packet
     }
 
     @Override
-    public void encode(PacketBuffer buffer)
+    public void encode(FriendlyByteBuf buffer)
     {
         buffer.writeInt(info);
         buffer.writeUUID(player);
@@ -43,7 +38,7 @@ public class PartInfoPacket extends Packet
         buffer.writeUtf(limbID);
     }
 
-    public static PartInfoPacket decode(PacketBuffer buffer)
+    public static PartInfoPacket decode(FriendlyByteBuf buffer)
     {
         PartInfoPacket returnValue = new PartInfoPacket("", "", -1, null);
 
@@ -79,7 +74,7 @@ public class PartInfoPacket extends Packet
     }
 
     // Process received packet on the Server
-    private void processPacket(ServerPlayerEntity sender)
+    private void processPacket(ServerPlayer sender)
     {
         BodyPart part;
 
@@ -104,14 +99,14 @@ public class PartInfoPacket extends Packet
     // Process received packet on the Client
     private void processPacket()
     {
-        PlayerEntity playerEntity = ClientItemControl.thisWorld.getPlayerByUUID(player);
+        Player Player = ClientItemControl.thisWorld.getPlayerByUUID(player);
 
         BodyPart part;
         // Send the key press to the technique used
         if (sublimbID == "")
-            part = BodyModifications.getBodyModifications(playerEntity).getModification(limbID);
+            part = BodyModifications.getBodyModifications(Player).getModification(limbID);
         else
-            part = BodyModifications.getBodyModifications(playerEntity).getOption(limbID, sublimbID);
+            part = BodyModifications.getBodyModifications(Player).getOption(limbID, sublimbID);
 
 
         if (part == null)
@@ -120,6 +115,6 @@ public class PartInfoPacket extends Packet
             return;
         }
 
-        part.processInfo(playerEntity, info);
+        part.processInfo(Player, info);
     }
 }

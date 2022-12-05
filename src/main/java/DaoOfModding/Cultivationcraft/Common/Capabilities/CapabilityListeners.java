@@ -7,12 +7,12 @@ import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.Cu
 import DaoOfModding.Cultivationcraft.Common.Capabilities.FlyingSwordBind.FlyingSwordBindCapability;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.FlyingSwordContainerItemStack.FlyingSwordContainerItemStackCapability;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.SwordItem;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.chunk.Chunk;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.SwordItem;
+import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -28,16 +28,15 @@ public class CapabilityListeners
     public static final ResourceLocation BodyModificationsCapabilityLocation = new ResourceLocation(Cultivationcraft.MODID, "bodymodification");
 
     @SubscribeEvent
-    public static void attachCapabilitiesChunk(final AttachCapabilitiesEvent<Chunk> event)
+    public static void attachCapabilitiesLevelChunk(final AttachCapabilitiesEvent<LevelChunk> event)
     {
-        ChunkQiSourcesCapability newCapability = new ChunkQiSourcesCapability();
-        event.addCapability(ChunkQiSourcesLocation, newCapability);
+        event.addCapability(ChunkQiSourcesLocation, new ChunkQiSourcesCapability());
     }
 
     @SubscribeEvent
     public static void attachCapabilitiesEntity(final AttachCapabilitiesEvent<Entity> event)
     {
-        if(event.getObject() instanceof PlayerEntity)
+        if(event.getObject() instanceof Player)
         {
             event.addCapability(CultivatorStatsCapabilityLocation, new CultivatorStatsCapability());
             event.addCapability(BodyModificationsCapabilityLocation, new BodyModificationsCapability());

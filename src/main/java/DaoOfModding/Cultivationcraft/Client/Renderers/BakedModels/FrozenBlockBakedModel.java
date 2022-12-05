@@ -1,28 +1,16 @@
 package DaoOfModding.Cultivationcraft.Client.Renderers.BakedModels;
 
-import DaoOfModding.Cultivationcraft.Common.Blocks.FrozenTileEntity;
-import DaoOfModding.Cultivationcraft.Cultivationcraft;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.FlowingFluidBlock;
-import net.minecraft.block.StairsBlock;
-import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.model.*;
-import net.minecraft.client.renderer.texture.AtlasTexture;
+import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.state.StateHolder;
-import net.minecraft.state.properties.Half;
-import net.minecraft.state.properties.StairsShape;
-import net.minecraft.util.Direction;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.model.data.IDynamicBakedModel;
-import net.minecraftforge.client.model.data.IModelData;
+import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.client.model.IDynamicBakedModel;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
-
+/*
 public class FrozenBlockBakedModel implements IDynamicBakedModel
 {
     public static final ResourceLocation TEXTURE = new ResourceLocation("block/ice");
@@ -37,7 +25,7 @@ public class FrozenBlockBakedModel implements IDynamicBakedModel
     {
         // TODO: Sometimes treats normal blocks as air
 
-        BlockState frozenBlock = extraData.getData(FrozenTileEntity.FROZEN_BLOCK);
+        BlockState frozenBlock = extraData.getData(FrozenBlockEntity.FROZEN_BLOCK);
 
         IBakedModel model = Minecraft.getInstance().getBlockRenderer().getBlockModel(frozenBlock);
 
@@ -47,7 +35,7 @@ public class FrozenBlockBakedModel implements IDynamicBakedModel
 
         List<BakedQuad> frozenQuads = new ArrayList<>();
 
-        Direction dir = Direction.from3DDataValue(extraData.getData(FrozenTileEntity.RAMP_BLOCK));
+        Direction dir = Direction.from3DDataValue(extraData.getData(FrozenBlockEntity.RAMP_BLOCK));
         // If the frozen block is air, use the default ice model instead
         if (frozenBlock.getMaterial() == Material.AIR)
         {
@@ -132,4 +120,4 @@ public class FrozenBlockBakedModel implements IDynamicBakedModel
     {
         return ItemCameraTransforms.NO_TRANSFORMS;
     }
-}
+}*/

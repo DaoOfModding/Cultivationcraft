@@ -1,91 +1,70 @@
 package DaoOfModding.Cultivationcraft.Common;
 
-import DaoOfModding.Cultivationcraft.Client.ClientBlockRegister;
-import DaoOfModding.Cultivationcraft.Client.Particles.QiParticle;
-import DaoOfModding.Cultivationcraft.Client.Particles.QiParticleData;
-import DaoOfModding.Cultivationcraft.Client.Particles.QiParticleType;
-import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.BodyModifications;
-import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.BodyModificationsCapability;
-import DaoOfModding.Cultivationcraft.Common.Capabilities.ChunkQiSources.ChunkQiSourcesCapability;
-import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStatsCapability;
-import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.CultivatorTechniquesCapability;
-import DaoOfModding.Cultivationcraft.Common.Capabilities.FlyingSwordBind.FlyingSwordBindCapability;
-import DaoOfModding.Cultivationcraft.Common.Capabilities.FlyingSwordContainerItemStack.FlyingSwordContainerItemStackCapability;
 import DaoOfModding.Cultivationcraft.Common.Containers.FlyingSwordContainer;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
-import net.minecraft.client.Minecraft;
-import net.minecraft.entity.EntityClassification;
-import net.minecraft.entity.EntityType;
-import net.minecraft.inventory.container.ContainerType;
-import net.minecraft.particles.ParticleType;
-import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
-import net.minecraftforge.common.extensions.IForgeContainerType;
-import net.minecraftforge.event.RegistryEvent;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.inventory.MenuType;
+import net.minecraftforge.client.event.EntityRenderersEvent;
+import net.minecraftforge.common.extensions.IForgeMenuType;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.RegistryObject;
-import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegisterEvent;
+import net.minecraftforge.registries.RegistryObject;
 
 public class Register
 {
     public enum keyPresses { FLYINGSWORDSCREEN, SKILLHOTBARSWITCH }
 
-    public static DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.ENTITIES, Cultivationcraft.MODID);
+    public static DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, Cultivationcraft.MODID);
+    public static DeferredRegister<MenuType<?>> CONTAINERS = DeferredRegister.create(ForgeRegistries.MENU_TYPES, Cultivationcraft.MODID);
 
     public static RegistryObject<EntityType<FlyingSwordEntity>> FLYINGSWORD = ENTITY_TYPES.register("flyingsword", () ->
-                                                                                EntityType.Builder.<FlyingSwordEntity>of(FlyingSwordEntity::new, EntityClassification.MISC)
+                                                                                EntityType.Builder.<FlyingSwordEntity>of(FlyingSwordEntity::new, MobCategory.MISC)
                                                                                         .sized(0.5f, 0.5f)
                                                                                         .setUpdateInterval(3)
                                                                                         .build("flyingsword"));
 
-    public static ParticleType<QiParticleData> qiParticleType;
+    public static RegistryObject<MenuType<FlyingSwordContainer>> ContainerTypeFlyingSword = CONTAINERS.register("flyingsword", () -> IForgeMenuType.create(FlyingSwordContainer::createContainerClientSide));
 
-    public static ContainerType<FlyingSwordContainer> ContainerTypeFlyingSword;
 
-    public static void registerCapabilities()
+    public static void init(IEventBus bus)
     {
-        CultivatorStatsCapability.register();
-        BodyModificationsCapability.register();
-        FlyingSwordContainerItemStackCapability.register();
-        FlyingSwordBindCapability.register();
-        ChunkQiSourcesCapability.register();
-        CultivatorTechniquesCapability.register();
+        ENTITY_TYPES.register(bus);
+        CONTAINERS.register(bus);
     }
-
-    public static void registerRenderers()
-    {
-        RenderingRegistry.registerEntityRenderingHandler(Register.FLYINGSWORD.get(), FlyingSwordRenderer::new);
-
-        ClientBlockRegister.registerBlockRenderers();
-    }
-
 
     @Mod.EventBusSubscriber(bus=Mod.EventBusSubscriber.Bus.MOD)
     public static class RegistryEvents
     {
-
         @SubscribeEvent
-        public static void registerContainers(final RegistryEvent.Register<ContainerType<?>> event)
+        public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event)
         {
-            Register.ContainerTypeFlyingSword = IForgeContainerType.create(FlyingSwordContainer::createContainerClientSide);
-            Register.ContainerTypeFlyingSword.setRegistryName("flyingswordcontainer");
-            event.getRegistry().register(Register.ContainerTypeFlyingSword);
+            event.registerEntityRenderer(Register.FLYINGSWORD.get(), FlyingSwordRenderer::new);
+
+            // ClientBlockRegister.registerBlockRenderers();
         }
 
+        // TODO : Look at this, is it needed?
+/*
         @SubscribeEvent
-        public static void onIParticleTypeRegistration(final RegistryEvent.Register<ParticleType<?>> event)
+        public static void registerCapabilities(RegisterCapabilitiesEvent event)
         {
-            Register.qiParticleType = new QiParticleType();
-            Register.qiParticleType.setRegistryName(Cultivationcraft.MODID, "qiparticle");
-            event.getRegistry().register(Register.qiParticleType);
-        }
+            CultivatorStatsCapability.register(event);
+            BodyModificationsCapability.register(event);
+            FlyingSwordContainerItemStackCapability.register(event);
+            FlyingSwordBindCapability.register(event);
+            ChunkQiSourcesCapability.register(event);
+            CultivatorTechniquesCapability.register(event);
+        }*/
 
         @SubscribeEvent
-        public static void onParticleFactoryRegistration(final ParticleFactoryRegisterEvent event)
+        public static void register(RegisterEvent event)
         {
-            Minecraft.getInstance().particleEngine.register(Register.qiParticleType, QiParticle.Factory::new);
+            event.register(ForgeRegistries.Keys.MENU_TYPES, helper -> helper.register("flyingswordcontainer", IForgeMenuType.create(FlyingSwordContainer::createContainerClientSide)));
         }
     }
 }

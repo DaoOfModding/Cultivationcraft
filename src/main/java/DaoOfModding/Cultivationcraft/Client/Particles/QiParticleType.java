@@ -1,7 +1,7 @@
 package DaoOfModding.Cultivationcraft.Client.Particles;
 
 import com.mojang.serialization.Codec;
-import net.minecraft.particles.ParticleType;
+import net.minecraft.core.particles.ParticleType;
 
 public class QiParticleType extends ParticleType<QiParticleData>
 {

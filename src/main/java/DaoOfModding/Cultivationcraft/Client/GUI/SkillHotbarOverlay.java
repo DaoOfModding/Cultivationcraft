@@ -1,17 +1,12 @@
 package DaoOfModding.Cultivationcraft.Client.GUI;
 
-import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.CultivatorTechniques;
-import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.CultivatorTechniquesCapability;
-import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.ICultivatorTechniques;
-import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import DaoOfModding.Cultivationcraft.Network.ClientPacketHandler;
-import DaoOfModding.Cultivationcraft.Network.PacketHandler;
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.IngameGui;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.client.gui.Gui;
+import net.minecraft.client.gui.GuiComponent;
+import net.minecraft.resources.ResourceLocation;
 
 public class SkillHotbarOverlay
 {
@@ -26,26 +21,26 @@ public class SkillHotbarOverlay
     // Render in the post-render phase if the hotbar is active
     // In the pre-render phase if it isn't
     // This is necessary so that it renders in the right order for transparency to work properly
-    public static void PreRenderSkillHotbar(MatrixStack stack)
+    public static void PreRenderSkillHotbar(PoseStack stack)
     {
         if (!isActive)
             RenderSkillHotbar(stack);
     }
 
-    public static void PostRenderSkillHotbar(MatrixStack stack)
+    public static void PostRenderSkillHotbar(PoseStack stack)
     {
         if (isActive)
             RenderSkillHotbar(stack);
     }
 
-    private static void RenderSkillHotbar(MatrixStack stack)
+    private static void RenderSkillHotbar(PoseStack stack)
     {
         // Enable transparency
         RenderSystem.enableBlend();
 
-        IngameGui gui = Minecraft.getInstance().gui;
+        GuiComponent gui = Minecraft.getInstance().gui;
 
-        Minecraft.getInstance().getTextureManager().bind(WIDGETS_TEX_PATH);
+        RenderSystem.setShaderTexture(0, WIDGETS_TEX_PATH);
 
         int scaledWidth = Minecraft.getInstance().getWindow().getGuiScaledWidth() / 2;
         int scaledHeight = Minecraft.getInstance().getWindow().getGuiScaledHeight();

@@ -1,66 +1,56 @@
 package DaoOfModding.Cultivationcraft.Common.Blocks;
 
-import DaoOfModding.Cultivationcraft.Cultivationcraft;
-import net.minecraft.block.*;
-import net.minecraft.block.material.Material;
-import net.minecraft.state.properties.Half;
-import net.minecraft.state.properties.StairsShape;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.world.IBlockReader;
-
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.StairBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.Half;
+import net.minecraft.world.level.block.state.properties.StairsShape;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
+/*
 public class FrozenBlock extends Block
 {
     protected static final VoxelShape BLOCK = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D);
     BlockState[] stairStates = new BlockState[4];
-    StairsBlock[] stair = new StairsBlock[4];
+    StairBlock[] stair = new StairBlock[4];
 
     public FrozenBlock()
     {
-        super(AbstractBlock.Properties.of(Material.ICE).strength(-1.0F, 3600000.0F).friction(0.989f).noDrops().noOcclusion());
+        super(Block.Properties.of(Material.ICE).strength(-1.0F, 3600000.0F).friction(0.989f).noLootTable().noOcclusion());
 
         // Create appropriate block states for each stair direction
-        stairStates[Direction.EAST.get2DDataValue()] = Blocks.COBBLESTONE_STAIRS.defaultBlockState().setValue(StairsBlock.FACING, Direction.EAST).setValue(StairsBlock.HALF, Half.BOTTOM).setValue(StairsBlock.SHAPE, StairsShape.STRAIGHT).setValue(StairsBlock.WATERLOGGED, false);
-        stairStates[Direction.WEST.get2DDataValue()] = Blocks.COBBLESTONE_STAIRS.defaultBlockState().setValue(StairsBlock.FACING, Direction.WEST).setValue(StairsBlock.HALF, Half.BOTTOM).setValue(StairsBlock.SHAPE, StairsShape.STRAIGHT).setValue(StairsBlock.WATERLOGGED, false);
-        stairStates[Direction.SOUTH.get2DDataValue()] = Blocks.COBBLESTONE_STAIRS.defaultBlockState().setValue(StairsBlock.FACING, Direction.SOUTH).setValue(StairsBlock.HALF, Half.BOTTOM).setValue(StairsBlock.SHAPE, StairsShape.STRAIGHT).setValue(StairsBlock.WATERLOGGED, false);
-        stairStates[Direction.NORTH.get2DDataValue()] = Blocks.COBBLESTONE_STAIRS.defaultBlockState().setValue(StairsBlock.FACING, Direction.NORTH).setValue(StairsBlock.HALF, Half.BOTTOM).setValue(StairsBlock.SHAPE, StairsShape.STRAIGHT).setValue(StairsBlock.WATERLOGGED, false);
+        stairStates[Direction.EAST.get2DDataValue()] = Blocks.COBBLESTONE_STAIRS.defaultBlockState().setValue(StairBlock.FACING, Direction.EAST).setValue(StairBlock.HALF, Half.BOTTOM).setValue(StairBlock.SHAPE, StairsShape.STRAIGHT).setValue(StairBlock.WATERLOGGED, false);
+        stairStates[Direction.WEST.get2DDataValue()] = Blocks.COBBLESTONE_STAIRS.defaultBlockState().setValue(StairBlock.FACING, Direction.WEST).setValue(StairBlock.HALF, Half.BOTTOM).setValue(StairBlock.SHAPE, StairsShape.STRAIGHT).setValue(StairBlock.WATERLOGGED, false);
+        stairStates[Direction.SOUTH.get2DDataValue()] = Blocks.COBBLESTONE_STAIRS.defaultBlockState().setValue(StairBlock.FACING, Direction.SOUTH).setValue(StairBlock.HALF, Half.BOTTOM).setValue(StairBlock.SHAPE, StairsShape.STRAIGHT).setValue(StairBlock.WATERLOGGED, false);
+        stairStates[Direction.NORTH.get2DDataValue()] = Blocks.COBBLESTONE_STAIRS.defaultBlockState().setValue(StairBlock.FACING, Direction.NORTH).setValue(StairBlock.HALF, Half.BOTTOM).setValue(StairBlock.SHAPE, StairsShape.STRAIGHT).setValue(StairBlock.WATERLOGGED, false);
 
         for (int i = 0; i < 4; i++)
-            stair[i] = new StairsBlock(stairStates[i], this.properties);
-
+            stair[i] = new StairBlock(stairStates[i], this.properties);
     }
 
     @Override
-    public boolean hasTileEntity(BlockState state)
+    public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context)
     {
-        return true;
-    }
+        BlockEntity BlockEntityntity = worldIn.getBlockEntity(pos);
 
-    @Override
-    public TileEntity createTileEntity(BlockState state, IBlockReader world)
-    {
-        return new FrozenTileEntity();
-    }
-
-    @Override
-    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
-    {
-        TileEntity tileEntityntity = worldIn.getBlockEntity(pos);
-
-        if (worldIn != null && tileEntityntity != null)
+        if (worldIn != null && BlockEntityntity != null)
         {
-            Direction dir = ((FrozenTileEntity)tileEntityntity).getRamp();
-            BlockState frozen = ((FrozenTileEntity)tileEntityntity).getFrozenBlock();
+            Direction dir = ((FrozenBlockEntity)BlockEntityntity).getRamp();
+            BlockState frozen = ((FrozenBlockEntity)BlockEntityntity).getFrozenBlock();
 
             // If the frozen block is a stair return the voxel shape of an appropriately rotated stair
             if (dir != Direction.DOWN)
                 return stair[dir.get2DDataValue()].getShape(stairStates[dir.get2DDataValue()], worldIn, pos, context);
             // If the frozen block isn't air or liquid then return the VoxelShape of the frozen block
             else if (frozen.getMaterial() != Material.AIR && !frozen.getMaterial().isLiquid())
-                return ((FrozenTileEntity)worldIn.getBlockEntity(pos)).getFrozenBlock().getBlock().getShape(frozen, worldIn, pos, context);
+                return ((FrozenBlockEntity)worldIn.getBlockEntity(pos)).getFrozenBlock().getBlock().getShape(frozen, worldIn, pos, context);
         }
 
         // Return a normal block VoxelShape
@@ -69,7 +59,7 @@ public class FrozenBlock extends Block
 
 
     @Override
-    public BlockRenderType getRenderShape(BlockState iBlockState) {
-        return BlockRenderType.MODEL;
+    public RenderShape getRenderShape(BlockState iBlockState) {
+        return RenderShape.MODEL;
     }
-}
+}*/

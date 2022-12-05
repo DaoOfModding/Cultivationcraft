@@ -1,8 +1,7 @@
 package DaoOfModding.Cultivationcraft.Common.Qi.Techniques.BodyForgeTechniques;
 
-import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.BodyModifications;
+import DaoOfModding.Cultivationcraft.Client.Physics;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStats;
-import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartNames;
 import DaoOfModding.Cultivationcraft.Common.Qi.CultivationTypes;
 import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.Technique;
@@ -12,10 +11,9 @@ import DaoOfModding.mlmanimator.Client.Poses.GenericPoses;
 import DaoOfModding.mlmanimator.Client.Poses.PlayerPose;
 import DaoOfModding.mlmanimator.Client.Poses.PoseHandler;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.TickEvent;
 
 public class FloatTechnique extends Technique
@@ -38,19 +36,19 @@ public class FloatTechnique extends Technique
 
         icon = new ResourceLocation(Cultivationcraft.MODID, "textures/techniques/icons/float.png");
 
-        floating.addSize(GenericLimbNames.body, new Vector3d(3, 2, 4), 9999, 0.1f);
-        floating.addAngle(GenericLimbNames.body, new Vector3d(0, 0, Math.toRadians(-15)), GenericPoses.jumpArmPriority+2, 40f, -1);
-        floating.addAngle(GenericLimbNames.body, new Vector3d(0, 0, Math.toRadians(15)), GenericPoses.jumpArmPriority+2, 40f, -1);
+        floating.addSize(GenericLimbNames.body, new Vec3(3, 2, 4), 9999, 0.1f);
+        floating.addAngle(GenericLimbNames.body, new Vec3(0, 0, Math.toRadians(-15)), GenericPoses.jumpArmPriority+2, 40f, -1);
+        floating.addAngle(GenericLimbNames.body, new Vec3(0, 0, Math.toRadians(15)), GenericPoses.jumpArmPriority+2, 40f, -1);
 
-        floating.addAngle(GenericLimbNames.leftArm, new Vector3d(Math.toRadians(0), 0, Math.toRadians(-130)), GenericPoses.jumpArmPriority + 5, 5f,-1);
-        floating.addAngle(GenericLimbNames.leftArm, new Vector3d(Math.toRadians(0), 0, Math.toRadians(0)), GenericPoses.jumpArmPriority + 5, 5f, -1);
-        floating.addAngle(GenericLimbNames.rightArm, new Vector3d(Math.toRadians(0), 0, Math.toRadians(130)), GenericPoses.jumpArmPriority + 5, 5f, -1);
-        floating.addAngle(GenericLimbNames.rightArm, new Vector3d(Math.toRadians(0), 0, Math.toRadians(0)), GenericPoses.jumpArmPriority + 5, 5f, -1);
+        floating.addAngle(GenericLimbNames.leftArm, new Vec3(Math.toRadians(0), 0, Math.toRadians(-130)), GenericPoses.jumpArmPriority + 5, 5f,-1);
+        floating.addAngle(GenericLimbNames.leftArm, new Vec3(Math.toRadians(0), 0, Math.toRadians(0)), GenericPoses.jumpArmPriority + 5, 5f, -1);
+        floating.addAngle(GenericLimbNames.rightArm, new Vec3(Math.toRadians(0), 0, Math.toRadians(130)), GenericPoses.jumpArmPriority + 5, 5f, -1);
+        floating.addAngle(GenericLimbNames.rightArm, new Vec3(Math.toRadians(0), 0, Math.toRadians(0)), GenericPoses.jumpArmPriority + 5, 5f, -1);
 
     }
 
     @Override
-    public boolean isValid(PlayerEntity player)
+    public boolean isValid(Player player)
     {
         // TODO: add body parts for this technique
         if (CultivatorStats.getCultivatorStats(player).getCultivationType() == CultivationTypes.BODY_CULTIVATOR)
@@ -77,11 +75,11 @@ public class FloatTechnique extends Technique
         tickInactiveServer(event);
     }
 
-    public void floatUp(PlayerEntity player)
+    public void floatUp(Player player)
     {
         PoseHandler.getPlayerPoseHandler(player.getUUID()).addPose(floating);
 
-        Vector3d movement = PoseHandler.getPlayerPoseHandler(player.getUUID()).getDeltaMovement();
+        Vec3 movement = Physics.getDelta(player);
 
         // TODO: Calc this based off weight
         float floating = 0.1f;
@@ -93,7 +91,7 @@ public class FloatTechnique extends Technique
     public void onInput()
     {
         // Check if the jump key is depressed
-        boolean newJump = Minecraft.getInstance().options.keyJump.getKeyBinding().isDown();
+        boolean newJump = Minecraft.getInstance().options.keyJump.isDown();
 
         if (jumpPressed != newJump)
         {
@@ -107,7 +105,7 @@ public class FloatTechnique extends Technique
     }
 
     @Override
-    public void processInfo(PlayerEntity player, int info)
+    public void processInfo(Player player, int info)
     {
         if (info == 2)
             jumpPressed = false;

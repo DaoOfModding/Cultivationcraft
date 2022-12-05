@@ -1,8 +1,8 @@
 package DaoOfModding.Cultivationcraft.Common.Qi.Techniques;
 
 import DaoOfModding.mlmanimator.Client.Poses.PoseHandler;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.event.TickEvent;
 
 public class AttackOverrideTechnique extends AttackTechnique
@@ -17,7 +17,7 @@ public class AttackOverrideTechnique extends AttackTechnique
     }
 
     @Override
-    public void attack(PlayerEntity player, int slot)
+    public void attack(Player player, int slot)
     {
         // Do nothing if on cooldown
         if (cooldownCount > 0)
@@ -30,7 +30,7 @@ public class AttackOverrideTechnique extends AttackTechnique
     }
 
     @Override
-    public void attackEntity(PlayerEntity player, Entity toAttack)
+    public void attackEntity(Player player, Entity toAttack)
     {
         // Do nothing if on cooldown
         if (cooldownCount > 0)
