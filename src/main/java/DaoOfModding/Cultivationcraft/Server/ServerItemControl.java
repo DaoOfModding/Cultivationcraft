@@ -21,12 +21,14 @@ public class ServerItemControl
     {
         for(Player player : ServerLifecycleHooks.getCurrentServer().getPlayerList().getPlayers())
         {
-            ICultivatorStats playerStats = CultivatorStats.getCultivatorStats(player);
-
-            if (playerStats != null && playerStats.getRecall())
+            if (player.isAlive())
             {
-                playerStats.setRecall(false);
-                PacketHandler.sendRecallFlyingToClient(false, player.getUUID());
+                ICultivatorStats playerStats = CultivatorStats.getCultivatorStats(player);
+
+                if (playerStats != null && playerStats.getRecall()) {
+                    playerStats.setRecall(false);
+                    PacketHandler.sendRecallFlyingToClient(false, player.getUUID());
+                }
             }
         }
     }

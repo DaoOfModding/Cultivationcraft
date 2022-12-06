@@ -18,34 +18,33 @@ public class FlyingSwordBindProgresser
 
         for(Player player : ServerLifecycleHooks.getCurrentServer().getPlayerList().getPlayers())
         {
-            ItemStack testItem = FlyingSwordContainerItemStack.getCapability(player).getItemStackHandler().getStackInSlot(0);
-
-            // If the item in the binding slot exists
-            if (!testItem.isEmpty())
+            if (player.isAlive())
             {
-                // If the item int the binding slot is able to be bound, try to bind it
-                if (FlyingSwordController.startFlyingSwordBind(testItem, player.getUUID()))
-                {
-                    IFlyingSwordBind bindData = FlyingSwordBind.getFlyingSwordBind(testItem);
+                ItemStack testItem = FlyingSwordContainerItemStack.getCapability(player).getItemStackHandler().getStackInSlot(0);
 
-                    increaseBindTime(testItem, time);
+                // If the item in the binding slot exists
+                if (!testItem.isEmpty()) {
+                    // If the item int the binding slot is able to be bound, try to bind it
+                    if (FlyingSwordController.startFlyingSwordBind(testItem, player.getUUID())) {
+                        IFlyingSwordBind bindData = FlyingSwordBind.getFlyingSwordBind(testItem);
 
-                    // If the bind item is already bound to someone else but the bind time is now greater than 0
-                    // Mark the item as unbound
-                    if (bindData.isBound() && bindData.getBindTime() > 0)
-                    {
-                        bindData.setBound(false);
-                        bindData.setOwner(null);
-                    }
+                        increaseBindTime(testItem, time);
 
-                    // If the bind time has reached the max bind time then mark this item as bound to its new owner
-                    // And convert it into a flying sword
-                    if (bindData.getBindTime() > bindData.getBindTimeMax())
-                    {
-                        bindData.setOwner(bindData.getBindingPlayer());
-                        bindData.setBound(true);
+                        // If the bind item is already bound to someone else but the bind time is now greater than 0
+                        // Mark the item as unbound
+                        if (bindData.isBound() && bindData.getBindTime() > 0) {
+                            bindData.setBound(false);
+                            bindData.setOwner(null);
+                        }
 
-                        FlyingSwordController.addFlyingItem(testItem, player.getUUID());
+                        // If the bind time has reached the max bind time then mark this item as bound to its new owner
+                        // And convert it into a flying sword
+                        if (bindData.getBindTime() > bindData.getBindTimeMax()) {
+                            bindData.setOwner(bindData.getBindingPlayer());
+                            bindData.setBound(true);
+
+                            FlyingSwordController.addFlyingItem(testItem, player.getUUID());
+                        }
                     }
                 }
             }

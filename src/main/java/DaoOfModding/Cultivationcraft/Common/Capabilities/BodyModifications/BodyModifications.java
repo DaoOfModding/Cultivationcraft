@@ -163,7 +163,11 @@ public class BodyModifications implements IBodyModifications
         CompoundTag modifications = NBT.getCompound("modifications");
 
         for (String limb : modifications.getAllKeys())
-            setModification(BodyPartNames.getPart(modifications.getString(limb)));
+        {
+            BodyPart part = BodyPartNames.getPart(modifications.getString(limb));
+            setModification(part);
+            addTags(part);
+        }
 
         CompoundTag options = NBT.getCompound("options");
 
@@ -172,7 +176,11 @@ public class BodyModifications implements IBodyModifications
             CompoundTag option = options.getCompound(limb);
 
             for (String part : option.getAllKeys())
-                setOption(BodyPartNames.getOption(option.getString(part)));
+            {
+                BodyPartOption optionPart = BodyPartNames.getOption(option.getString(part));
+                setOption(optionPart);
+                addTags(optionPart);
+            }
         }
 
         setUpdated(false);
@@ -209,10 +217,11 @@ public class BodyModifications implements IBodyModifications
     public void copy(IBodyModifications mod)
     {
         setSelection(mod.getSelection());
-        modifications = mod.getModifications();
-        options = mod.getModificationOptions();
+        modifications = (HashMap<String, BodyPart>)mod.getModifications().clone();
+        options = (HashMap<String, HashMap<String, BodyPartOption>>)mod.getModificationOptions().clone();
+        tags = (ArrayList<String>)mod.getTags().clone();
+
         progress = mod.getProgress();
-        tags = mod.getTags();
 
         setUpdated(false);
     }

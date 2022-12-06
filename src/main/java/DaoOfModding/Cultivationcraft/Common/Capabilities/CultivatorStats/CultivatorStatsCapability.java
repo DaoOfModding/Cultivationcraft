@@ -23,10 +23,6 @@ public class CultivatorStatsCapability implements ICapabilityProvider, INBTSeria
         return INSTANCE.orEmpty(cap, this.optionalData);
     }
 
-    void invalidate() {
-        this.optionalData.invalidate();
-    }
-
     @Override
     public CompoundTag serializeNBT() {
         return this.backend.writeNBT();

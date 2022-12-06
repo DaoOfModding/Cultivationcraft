@@ -8,6 +8,9 @@ import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.BodyM
 import DaoOfModding.Cultivationcraft.Common.Capabilities.ChunkQiSources.ChunkQiSources;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.ChunkQiSources.IChunkQiSources;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStats;
+import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStatsCapability;
+import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.CultivatorTechniques;
+import DaoOfModding.Cultivationcraft.Common.Capabilities.FlyingSwordBind.FlyingSwordBind;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPart;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartOption;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.FoodStats.QiFoodStats;
@@ -16,6 +19,7 @@ import DaoOfModding.Cultivationcraft.Network.PacketHandler;
 import DaoOfModding.Cultivationcraft.Server.ServerItemControl;
 import DaoOfModding.Cultivationcraft.Server.ServerListeners;
 import DaoOfModding.Cultivationcraft.Server.SkillHotbarServer;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraftforge.event.TickEvent;
@@ -177,6 +181,24 @@ public class CommonListeners
 
         if (!event.getEntity().getCommandSenderWorld().isClientSide())
             SkillHotbarServer.removePlayer(event.getEntity().getUUID());
+    }
+
+    @SubscribeEvent
+    public static void onPlayerDeath(PlayerEvent.Clone event)
+    {
+        // Do nothing if this wasn't a death
+        if (!event.isWasDeath())
+            return;
+
+        event.getOriginal().reviveCaps();
+
+        // Copy across the player's capabilities to the revived entity
+        CultivatorStats.getCultivatorStats(event.getEntity()).readNBT(CultivatorStats.getCultivatorStats(event.getOriginal()).writeNBT());
+        BodyModifications.getBodyModifications(event.getEntity()).read(BodyModifications.getBodyModifications(event.getOriginal()).write());
+        CultivatorTechniques.getCultivatorTechniques(event.getEntity()).readNBT(CultivatorTechniques.getCultivatorTechniques(event.getOriginal()).writeNBT());
+
+        event.getOriginal().invalidateCaps();
+
     }
 
     @SubscribeEvent

@@ -148,8 +148,6 @@ public class DartTechnique extends Technique
 
         float speed = 20 * weightModifier;
 
-        System.out.println(speed);
-
         Vec3 dash = player.getLookAngle().normalize().scale(speed);
         player.setDeltaMovement(dash.x, dash.y, dash.z);
 

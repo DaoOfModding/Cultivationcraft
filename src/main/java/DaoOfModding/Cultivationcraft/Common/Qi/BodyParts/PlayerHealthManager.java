@@ -40,7 +40,7 @@ public class PlayerHealthManager
 
     public static Blood getBlood(Player player)
     {
-        // If the player is not a body cultivator or has not forged their blood, then return the defauly bloody type
+        // If the player is not a body cultivator or has not forged their blood, then return the default bloody type
         if (CultivatorStats.getCultivatorStats(player).getCultivationType() != CultivationTypes.BODY_CULTIVATOR)
             return defaultBlood;
 

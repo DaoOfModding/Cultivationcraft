@@ -39,6 +39,10 @@ public class QiFoodStats extends FoodData
     @Override
     public void tick(Player p_75118_1_)
     {
+        // Do nothing is player is dead
+        if (!p_75118_1_.isAlive())
+            return;
+
         // Handle stomach food drain here
         drainFood(p_75118_1_);
 

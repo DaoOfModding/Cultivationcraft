@@ -11,8 +11,6 @@ import java.util.UUID;
 
 public class PlayerTextureManager
 {
-    private String testName = "";
-
     private HashMap<String, ResourceLocation> textureList = new HashMap<String, ResourceLocation>();
 
     Boolean changed = false;
@@ -25,8 +23,6 @@ public class PlayerTextureManager
     public void update(UUID playerID)
     {
         AbstractClientPlayer player = (AbstractClientPlayer) Minecraft.getInstance().level.getPlayerByUUID(playerID);
-
-        testName = player.getDisplayName().getString();
 
         if (player.isSkinLoaded())
             addTexture(TextureList.skin, MultiLimbedRenderer.getSkin(player));
@@ -47,8 +43,6 @@ public class PlayerTextureManager
         // Do nothing if the added texture location already exists
         if (textureList.containsKey(textureID) && textureList.get(textureID) == textureLocation)
             return;
-
-        System.out.println("Adding texture " + textureID + " for player " + testName + " as " + textureLocation.toString());
 
         changed = true;
         textureList.put(textureID, textureLocation);

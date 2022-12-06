@@ -55,7 +55,9 @@ public class PlayerStatControl
         // Add all existing body part stats to the players stats
         for (BodyPart part : BodyModifications.getBodyModifications(player).getModifications().values())
         {
-            part.onLoad(player.getUUID());
+            if (player.level.isClientSide())
+                part.onLoad(player.getUUID());
+
             BodyPartStatControl.addStats(player.getUUID(), part.getStatChanges());
         }
 
@@ -63,8 +65,7 @@ public class PlayerStatControl
         for (HashMap<String, BodyPartOption> options : BodyModifications.getBodyModifications(player).getModificationOptions().values())
             for (BodyPartOption part : options.values())
             {
-                // Only do bodyPart onLoads on client
-                if (player.isLocalPlayer())
+                if (player.level.isClientSide())
                     part.onLoad(player.getUUID());
 
                 BodyPartStatControl.addStats(player.getUUID(), part.getStatChanges());

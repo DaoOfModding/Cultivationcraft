@@ -186,12 +186,9 @@ public class CultivatorModelHandler
 
     public static boolean processPart(MultiLimbedModel model, BodyPart part, BodyPartModels models, IBodyModifications modifications, BodyPartLocation connectTo)
     {
-        // Don't add this part if the part it connects do has not yet been added to the model
+        // Don't add this part if the part it connects to has not yet been added to the model
         if (!model.hasLimb(connectTo.modelID))
-        {
-            System.out.println(connectTo.modelID);
             return false;
-        }
 
         // Remove vanilla body parts if the they have been replaced
         if (part.getPosition().equalsIgnoreCase(BodyPartNames.armPosition))
