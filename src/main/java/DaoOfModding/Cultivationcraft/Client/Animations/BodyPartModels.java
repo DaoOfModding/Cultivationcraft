@@ -7,6 +7,7 @@ import DaoOfModding.mlmanimator.Client.Models.Quads.QuadLinkage;
 import DaoOfModding.mlmanimator.Client.Poses.PoseHandler;
 import com.mojang.math.Vector4f;
 import net.minecraft.client.model.geom.builders.UVPair;
+import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.phys.Vec3;
 
@@ -84,7 +85,6 @@ public class BodyPartModels
             leftArm.extend(GenericResizers.getSlimArmResizer());
         else
             leftArm.extend(GenericResizers.getArmResizer());
-        leftArm.mirror = true;
 
         leftArm.setHitbox(false);
         rightArm.setHitbox(false);
@@ -132,7 +132,7 @@ public class BodyPartModels
 
 
         ExtendableModelRenderer shortLeftArm = new ExtendableModelRenderer(BodyPartModelNames.shortArmLeftModel);
-        GenericTextureValues.addGenericRightArmLayers(shortLeftArm);
+        GenericTextureValues.addGenericLeftArmLayers(shortLeftArm);
         shortLeftArm.setRotationPoint(new Vec3(0.5D, 0.66D, 0.5D));
         shortLeftArm.setPos(1.0F, 0.0F, 0.5F);
         shortLeftArm.setDefaultResize(new Vec3(1, 0.5, 1));
@@ -146,8 +146,6 @@ public class BodyPartModels
         else
             shortLeftArm.extend(new defaultResizeModule(new Vec3(4.0D, 12.0D ,4.0D)));
 
-
-        shortLeftArm.mirror = true;
 
         shortLeftArm.setHitbox(false);
         shortRightArm.setHitbox(false);
@@ -225,12 +223,13 @@ public class BodyPartModels
         // Create the jaw
         ExtendableModelRenderer jawPart = new ExtendableModelRenderer( BodyPartModelNames.jawModel + "2");
         jawPart.addLayer(new UVPair(GenericTextureValues.head.u(), GenericTextureValues.head.v() + 5), GenericTextureValues.skin_Size, 0.0F, "PLAYERSKIN");
-        jawPart.addLayer(new UVPair(GenericTextureValues.hat.u(), GenericTextureValues.hat.v() + 5), GenericTextureValues.skin_Size, 0.5F, "PLAYERSKIN");
-        jawPart.addLayer(new UVPair(GenericTextureValues.head.u(), GenericTextureValues.head.v() + 5), GenericTextureValues.armor_Size, 1.0F, "HEADARMOR");
+        jawPart.addLayer(new UVPair(GenericTextureValues.hat.u(), GenericTextureValues.hat.v() + 5), GenericTextureValues.skin_Size, 0.51F, "PLAYERSKIN", Direction.UP);
+        jawPart.addLayer(new UVPair(GenericTextureValues.head.u(), GenericTextureValues.head.v() + 5), GenericTextureValues.armor_Size, 1.01F, "HEADARMOR", Direction.UP);
         jawPart.setRotationPoint(new Vec3(0.5D, 1, 0.3));
         jawPart.setPos(0.5F, 1F, 0.7F);
         jawPart.extend(jawResizer);
         jawPart.setFirstPersonRender(false);
+        jawPart.setUsedSize(new Vec3(0, 5, 0));
 
         // Attach the jaw to the head
         semiHeadPart.addChild(jawPart);
@@ -247,7 +246,7 @@ public class BodyPartModels
 
         // Create the top half of the head
         ExtendableModelRenderer FPsemiHeadPart = new ExtendableModelRenderer(BodyPartModelNames.FPjawModel + "1");
-        GenericTextureValues.addGenericHeadLayers(FPsemiHeadPart);
+        FPsemiHeadPart.addLayer(GenericTextureValues.head, GenericTextureValues.skin_Size, 0.0F, "PLAYERSKIN");
         FPsemiHeadPart.setRotationPoint(new Vec3(0.5D, 0.0D, 0.5D));
         FPsemiHeadPart.setPos(0.5F, 0.0F, 0.5F);
         FPsemiHeadPart.setFixedPosAdjustment(0, -3, 0);
@@ -256,12 +255,11 @@ public class BodyPartModels
 
         // Create the jaw
         ExtendableModelRenderer FPjawPart = new ExtendableModelRenderer(BodyPartModelNames.FPjawModel + "2");
-        FPjawPart.addLayer(new UVPair(GenericTextureValues.head.u(), GenericTextureValues.head.v() + 5), GenericTextureValues.skin_Size, 0.0F, "PLAYERSKIN");
-        FPjawPart.addLayer(new UVPair(GenericTextureValues.hat.u(), GenericTextureValues.hat.v() + 5), GenericTextureValues.skin_Size, 0.5F, "PLAYERSKIN");
-        FPjawPart.addLayer(new UVPair(GenericTextureValues.head.u(), GenericTextureValues.head.v() + 5), GenericTextureValues.armor_Size, 1.0F, "HEADARMOR");
+        FPjawPart.addLayer(new UVPair(GenericTextureValues.head.u(), GenericTextureValues.head.v() + 5), GenericTextureValues.skin_Size, 0.01F, "PLAYERSKIN");
         FPjawPart.setRotationPoint(new Vec3(0.5D, 1, 0));
         FPjawPart.setPos(0.5F, 1F, 1F);
         FPjawPart.extend(jawResizer);
+        FPjawPart.setUsedSize(new Vec3(0, 5, 0));
 
         // Attach the jaw to the head
         FPsemiHeadPart.addChild(FPjawPart);
@@ -282,7 +280,7 @@ public class BodyPartModels
         defaultResizeModule jet = new defaultResizeModule(new Vec3(0.1, 0.1, 4));
 
         ExtendableModelRenderer JetModel = new ExtendableModelRenderer(BodyPartModelNames.jetLeft);
-        GenericTextureValues.addGenericBodyLayers(JetModel);
+        JetModel.addLayer(GenericTextureValues.chest, GenericTextureValues.skin_Size, 0.0F, "PLAYERSKIN");
         JetModel.setPos(0.25F, 0.25F, 1F);
         JetModel.setRotationPoint(new Vec3(0.5, 0.5f, 1f));
         JetModel.setDefaultResize(new Vec3(20, 5, 1));
@@ -291,7 +289,7 @@ public class BodyPartModels
         jet = new defaultResizeModule(new Vec3(0.1, 0.1, 4));
 
         ExtendableModelRenderer JetModelRight = new ExtendableModelRenderer(BodyPartModelNames.jetRight);
-        GenericTextureValues.addGenericBodyLayers(JetModelRight);
+        JetModelRight.addLayer(GenericTextureValues.chest, GenericTextureValues.skin_Size, 0.0F, "PLAYERSKIN");
         JetModelRight.setPos(1F, 1F, 0F);
         JetModelRight.setRotationPoint(new Vec3(0, 1f, 1f));
         JetModelRight.setDefaultResize(new Vec3(5, 10, 1));
@@ -300,7 +298,7 @@ public class BodyPartModels
         jet = new defaultResizeModule(new Vec3(0.1, 0.1, 4));
 
         ExtendableModelRenderer JetModelBottom = new ExtendableModelRenderer(BodyPartModelNames.jetLeft + "2");
-        GenericTextureValues.addGenericBodyLayers(JetModelBottom);
+        JetModelBottom.addLayer(GenericTextureValues.chest, GenericTextureValues.skin_Size, 0.0F, "PLAYERSKIN");
         JetModelBottom.setPos(1F, 1F, 0F);
         JetModelBottom.setRotationPoint(new Vec3(0, 1f, 1f));
         JetModelBottom.setDefaultResize(new Vec3(20, 5, 1));
@@ -309,7 +307,7 @@ public class BodyPartModels
         jet = new defaultResizeModule(new Vec3(0.1, 0.1, 4));
 
         ExtendableModelRenderer JetModelLeft = new ExtendableModelRenderer(BodyPartModelNames.jetRight + "2");
-        GenericTextureValues.addGenericBodyLayers(JetModelLeft);
+        JetModelLeft.addLayer(GenericTextureValues.chest, GenericTextureValues.skin_Size, 0.0F, "PLAYERSKIN");
         JetModelLeft.setPos(0F, 0F, 0F);
         JetModelLeft.setRotationPoint(new Vec3(1, 0f, 1f));
         JetModelLeft.setDefaultResize(new Vec3(5, 10, 1));
@@ -860,7 +858,6 @@ public class BodyPartModels
         leftReverseJoint.setRotationPoint(new Vec3(0.5D, 1D, 0.5D));
         leftReverseJoint.setFixedPosAdjustment(0.0F, 0.0F, 0.0F);
         leftReverseJoint.extend(reverseJointResizer);
-        leftReverseJoint.mirror = true;
 
         ExtendableModelRenderer leftFoot = new ExtendableModelRenderer(BodyPartModelNames.reverseJointLeftFootModel);
         leftFoot.addLayer(new UVPair(GenericTextureValues.leftLeg.u(), GenericTextureValues.leftLeg.u() + 10), GenericTextureValues.skin_Size, 0.0F, "PLAYERSKIN");
@@ -870,7 +867,6 @@ public class BodyPartModels
         leftFoot.setPos(0.5F, 1F, 0F);
         leftFoot.setRotationPoint(new Vec3(0.5D, 1D, 1D));
         leftFoot.extend(footResizer);
-        leftFoot.mirror = true;
 
         leftReverseJoint.getChildren().get(0).addChild(leftFoot);
 
@@ -888,8 +884,8 @@ public class BodyPartModels
         ExtendableModelRenderer rightFoot = new ExtendableModelRenderer(BodyPartModelNames.reverseJointRightFootModel);
         rightFoot.addLayer(new UVPair(GenericTextureValues.rightLeg.u(), GenericTextureValues.rightLeg.u() + 10), GenericTextureValues.skin_Size, 0.0F, "PLAYERSKIN");
         rightFoot.addLayer(new UVPair(GenericTextureValues.rightPants.u(), GenericTextureValues.rightPants.u() + 10), GenericTextureValues.skin_Size, 0.5F, "PLAYERSKIN");
-        rightFoot.addLayer(new UVPair(GenericTextureValues.rightLegArmor.u(), GenericTextureValues.rightLegArmor.u() + 10), GenericTextureValues.armor_Size, 0.512F, "LEGARMOR");
-        rightFoot.addLayer(new UVPair(GenericTextureValues.rightLegArmor.u(), GenericTextureValues.rightLegArmor.u() + 10), GenericTextureValues.armor_Size, 1.0F, "FOOTARMOR");
+        rightFoot.addLayer(new UVPair(GenericTextureValues.rightLegArmor.u(), GenericTextureValues.rightLegArmor.u() + 10), GenericTextureValues.armor_Size, 0.512F, "LEGARMOR", true);
+        rightFoot.addLayer(new UVPair(GenericTextureValues.rightLegArmor.u(), GenericTextureValues.rightLegArmor.u() + 10), GenericTextureValues.armor_Size, 1.0F, "FOOTARMOR", true);
         rightFoot.setPos(0.5F, 1F, 0F);
         rightFoot.setRotationPoint(new Vec3(0.5D, 1D, 1D));
         rightFoot.extend(footResizer);
@@ -914,18 +910,16 @@ public class BodyPartModels
         leftFootModel.setPos(0.75F, 1F, 0.5F);
         leftFootModel.setRotationPoint(new Vec3(0.5D, 1D, 0.5D));
         leftFootModel.extend(footResizer);
-        leftFootModel.mirror = true;
 
         footResizer = new defaultResizeModule(new Vec3(4, 2, 4));
         ExtendableModelRenderer rightFootModel = new ExtendableModelRenderer(BodyPartModelNames.footRightModel);
         rightFootModel.addLayer(new UVPair(GenericTextureValues.rightLeg.u(), GenericTextureValues.rightLeg.u() + 10), GenericTextureValues.skin_Size, 0.0F, "PLAYERSKIN");
         rightFootModel.addLayer(new UVPair(GenericTextureValues.rightPants.u(), GenericTextureValues.rightPants.u() + 10), GenericTextureValues.skin_Size, 0.5F, "PLAYERSKIN");
-        rightFootModel.addLayer(new UVPair(GenericTextureValues.rightLegArmor.u(), GenericTextureValues.rightLegArmor.u() + 10), GenericTextureValues.armor_Size, 0.512F, "LEGARMOR");
-        rightFootModel.addLayer(new UVPair(GenericTextureValues.rightLegArmor.u(), GenericTextureValues.rightLegArmor.u() + 10), GenericTextureValues.armor_Size, 1.0F, "FOOTARMOR");
+        rightFootModel.addLayer(new UVPair(GenericTextureValues.rightLegArmor.u(), GenericTextureValues.rightLegArmor.u() + 10), GenericTextureValues.armor_Size, 0.512F, "LEGARMOR", true);
+        rightFootModel.addLayer(new UVPair(GenericTextureValues.rightLegArmor.u(), GenericTextureValues.rightLegArmor.u() + 10), GenericTextureValues.armor_Size, 1.0F, "FOOTARMOR", true);
         rightFootModel.setPos(0.25F, 1F, 0.5F);
         rightFootModel.setRotationPoint(new Vec3(0.5D, 1D, 0.5D));
         rightFootModel.extend(footResizer);
-        rightFootModel.mirror = true;
 
         addModel(BodyPartModelNames.footLeftModel, leftFootModel);
         addModel(BodyPartModelNames.footRightModel, rightFootModel);
@@ -949,7 +943,6 @@ public class BodyPartModels
         hexaLeft.setPos(1F, 1.0F, 0.5F);
         hexaLeft.setRotationPoint(new Vec3(0.5D, 1D, 0.5D));
         hexaLeft.extend(hexaResizer);
-        hexaLeft.mirror = true;
         hexaLeft.setDefaultResize(new Vec3(0.5, 1.5, 0.5));
         hexaLeft.getChildren().get(0).setDefaultResize(new Vec3(0.5, 1.5, 0.5));
 
@@ -963,7 +956,6 @@ public class BodyPartModels
         hexaRight.setPos(0F, 1.0F, 0.5F);
         hexaRight.setRotationPoint(new Vec3(0.5D, 1D, 0.5D));
         hexaRight.extend(hexaResizer);
-        hexaRight.mirror = true;
         hexaRight.setDefaultResize(new Vec3(0.5, 1.5, 0.5));
         hexaRight.getChildren().get(0).setDefaultResize(new Vec3(0.5, 1.5, 0.5));
 
@@ -998,13 +990,10 @@ public class BodyPartModels
         jRightLeg.setRotationPoint(new Vec3(0.5, 0.66, 0.5));
         jRightLeg.setFixedPosAdjustment(0F, 2F, 0.0F);
         jRightLeg.extend(GenericResizers.getLegResizer());
-        jRightLeg.mirror = true;
 
         defaultResizeModule rightLegJetResizer = new defaultResizeModule(new Vec3(2, 0.5, -0.1));
         ExtendableModelRenderer rightLegJet = new ExtendableModelRenderer(BodyPartModelNames.jetLegRightModel + "1");
         rightLegJet.addLayer(new UVPair(GenericTextureValues.rightLeg.u() + 1, GenericTextureValues.rightLeg.u() + 6), GenericTextureValues.skin_Size, 0.0F, "PLAYERSKIN");
-        rightLegJet.addLayer(new UVPair(GenericTextureValues.rightLegArmor.u() + 1, GenericTextureValues.rightLegArmor.u() + 6), GenericTextureValues.armor_Size, 0.512F, "LEGARMOR");
-        rightLegJet.addLayer(new UVPair(GenericTextureValues.rightLegArmor.u() + 1, GenericTextureValues.rightLegArmor.u() + 6), GenericTextureValues.armor_Size, 1.0F, "FOOTARMOR");
         rightLegJet.setPos(0.75F, 0F, 1F);
         rightLegJet.setRotationPoint(new Vec3(0, 0, 0));
         rightLegJet.setDefaultResize(new Vec3(1, 1, 20));
@@ -1013,8 +1002,6 @@ public class BodyPartModels
         rightLegJetResizer = new defaultResizeModule(new Vec3(0.5, -4, -0.1));
         ExtendableModelRenderer rightLegJetLeft = new ExtendableModelRenderer( BodyPartModelNames.jetLegRightModel + "2");
         rightLegJetLeft.addLayer(new UVPair(GenericTextureValues.rightLeg.u() + 1, GenericTextureValues.rightLeg.u() + 10), GenericTextureValues.skin_Size, 0.0F, "PLAYERSKIN");
-        rightLegJetLeft.addLayer(new UVPair(GenericTextureValues.rightLegArmor.u() + 1, GenericTextureValues.rightLegArmor.u() + 10), GenericTextureValues.armor_Size, 0.512F, "LEGARMOR");
-        rightLegJetLeft.addLayer(new UVPair(GenericTextureValues.rightLegArmor.u() + 1, GenericTextureValues.rightLegArmor.u() + 10), GenericTextureValues.armor_Size, 1.0F, "FOOTARMOR");
         rightLegJetLeft.setPos(1F, 0F, 1F);
         rightLegJetLeft.setRotationPoint(new Vec3(0, 0, 0));
         rightLegJetLeft.setDefaultResize(new Vec3(1, 1, 20));
@@ -1023,8 +1010,6 @@ public class BodyPartModels
         rightLegJetResizer = new defaultResizeModule(new Vec3(0.5, -4, -0.1));
         ExtendableModelRenderer rightLegJetRight = new ExtendableModelRenderer(BodyPartModelNames.jetLegRightModel + "3");
         rightLegJetRight.addLayer(new UVPair(GenericTextureValues.rightLeg.u() + 3, GenericTextureValues.rightLeg.u() + 10), GenericTextureValues.skin_Size, 0.0F, "PLAYERSKIN");
-        rightLegJetRight.addLayer(new UVPair(GenericTextureValues.rightLegArmor.u() + 3, GenericTextureValues.rightLegArmor.u() + 10), GenericTextureValues.armor_Size, 0.512F, "LEGARMOR");
-        rightLegJetRight.addLayer(new UVPair(GenericTextureValues.rightLegArmor.u() + 3, GenericTextureValues.rightLegArmor.u() + 10), GenericTextureValues.armor_Size, 1.0F, "FOOTARMOR");
         rightLegJetRight.setPos(0F, 0F, 1F);
         rightLegJetRight.setRotationPoint(new Vec3(1, 0, 0));
         rightLegJetRight.setDefaultResize(new Vec3(1, 1, 20));
@@ -1033,8 +1018,6 @@ public class BodyPartModels
         rightLegJetResizer = new defaultResizeModule(new Vec3(2, -4, -0.1));
         ExtendableModelRenderer rightLegJetFront = new ExtendableModelRenderer( BodyPartModelNames.jetLegRightModel + "4");
         rightLegJetFront.addLayer(new UVPair(GenericTextureValues.rightLeg.u() + 1, GenericTextureValues.rightLeg.u() + 10), GenericTextureValues.skin_Size, 0.0F, "PLAYERSKIN");
-        rightLegJetFront.addLayer(new UVPair(GenericTextureValues.rightLegArmor.u() + 1, GenericTextureValues.rightLegArmor.u() + 10), GenericTextureValues.armor_Size, 0.512F, "LEGARMOR");
-        rightLegJetFront.addLayer(new UVPair(GenericTextureValues.rightLegArmor.u() + 1, GenericTextureValues.rightLegArmor.u() + 10), GenericTextureValues.armor_Size, 1.0F, "FOOTARMOR");
         rightLegJetFront.setPos(1F, 0F, 0F);
         rightLegJetFront.setRotationPoint(new Vec3(0, 0, 1));
         rightLegJetFront.setDefaultResize(new Vec3(1, 1, 5));
@@ -1049,8 +1032,6 @@ public class BodyPartModels
         defaultResizeModule leftLegJetResizer = new defaultResizeModule(new Vec3(2, 0.5, -0.1));
         ExtendableModelRenderer leftLegJet = new ExtendableModelRenderer(BodyPartModelNames.jetLegLeftModel + "1");
         leftLegJet.addLayer(new UVPair(GenericTextureValues.leftLeg.u() + 1, GenericTextureValues.leftLeg.u() + 6), GenericTextureValues.skin_Size, 0.0F, "PLAYERSKIN");
-        leftLegJet.addLayer(new UVPair(GenericTextureValues.leftLegArmor.u() + 1, GenericTextureValues.leftLegArmor.u() + 6), GenericTextureValues.armor_Size, 0.512F, "LEGARMOR");
-        leftLegJet.addLayer(new UVPair(GenericTextureValues.leftLegArmor.u() + 1, GenericTextureValues.leftLegArmor.u() + 6), GenericTextureValues.armor_Size, 1.0F, "FOOTARMOR");
         leftLegJet.setPos(0.75F, 0F, 1F);
         leftLegJet.setRotationPoint(new Vec3(0, 0, 0));
         leftLegJet.setDefaultResize(new Vec3(1, 1, 20));
@@ -1059,8 +1040,6 @@ public class BodyPartModels
         leftLegJetResizer = new defaultResizeModule(new Vec3(0.5, -4, -0.1));
         ExtendableModelRenderer leftLegJetLeft = new ExtendableModelRenderer(BodyPartModelNames.jetLegLeftModel + "2");
         leftLegJetLeft.addLayer(new UVPair(GenericTextureValues.leftLeg.u() + 1, GenericTextureValues.leftLeg.u() + 10), GenericTextureValues.skin_Size, 0.0F, "PLAYERSKIN");
-        leftLegJetLeft.addLayer(new UVPair(GenericTextureValues.leftLegArmor.u() + 1, GenericTextureValues.leftLegArmor.u() + 10), GenericTextureValues.armor_Size, 0.512F, "LEGARMOR");
-        leftLegJetLeft.addLayer(new UVPair(GenericTextureValues.leftLegArmor.u() + 1, GenericTextureValues.leftLegArmor.u() + 10), GenericTextureValues.armor_Size, 1.0F, "FOOTARMOR");
         leftLegJetLeft.setPos(1F, 0F, 1F);
         leftLegJetLeft.setRotationPoint(new Vec3(0, 0, 0));
         leftLegJetLeft.setDefaultResize(new Vec3(1, 1, 20));
@@ -1069,8 +1048,6 @@ public class BodyPartModels
         leftLegJetResizer = new defaultResizeModule(new Vec3(0.5, -4, -0.1));
         ExtendableModelRenderer leftLegJetRight = new ExtendableModelRenderer(BodyPartModelNames.jetLegLeftModel + "3");
         leftLegJetRight.addLayer(new UVPair(GenericTextureValues.leftLeg.u() + 3, GenericTextureValues.leftLeg.u() + 10), GenericTextureValues.skin_Size, 0.0F, "PLAYERSKIN");
-        leftLegJetRight.addLayer(new UVPair(GenericTextureValues.leftLegArmor.u() + 3, GenericTextureValues.leftLegArmor.u() + 10), GenericTextureValues.armor_Size, 0.512F, "LEGARMOR");
-        leftLegJetRight.addLayer(new UVPair(GenericTextureValues.leftLegArmor.u() + 3, GenericTextureValues.leftLegArmor.u() + 10), GenericTextureValues.armor_Size, 1.0F, "FOOTARMOR");
         leftLegJetRight.setPos(0F, 0F, 1F);
         leftLegJetRight.setRotationPoint(new Vec3(1, 0, 0));
         leftLegJetRight.setDefaultResize(new Vec3(1, 1, 20));
@@ -1079,8 +1056,6 @@ public class BodyPartModels
         leftLegJetResizer = new defaultResizeModule(new Vec3(2, -4, -0.1));
         ExtendableModelRenderer leftLegJetFront = new ExtendableModelRenderer( BodyPartModelNames.jetLegLeftModel + "4");
         leftLegJetFront.addLayer(new UVPair(GenericTextureValues.leftLeg.u() + 1, GenericTextureValues.leftLeg.u() + 10), GenericTextureValues.skin_Size, 0.0F, "PLAYERSKIN");
-        leftLegJetFront.addLayer(new UVPair(GenericTextureValues.leftLegArmor.u() + 1, GenericTextureValues.leftLegArmor.u() + 10), GenericTextureValues.armor_Size, 0.512F, "LEGARMOR");
-        leftLegJetFront.addLayer(new UVPair(GenericTextureValues.leftLegArmor.u() + 1, GenericTextureValues.leftLegArmor.u() + 10), GenericTextureValues.armor_Size, 1.0F, "FOOTARMOR");
         leftLegJetFront.setPos(1F, 0F, 0F);
         leftLegJetFront.setRotationPoint(new Vec3(0, 0, 1));
         leftLegJetFront.setDefaultResize(new Vec3(1, 1, 5));
@@ -1131,7 +1106,6 @@ public class BodyPartModels
         //largeLeftLeg.setFixedPosAdjustment(0F, 2F, 0.0F);
         largeLeftLeg.extend(GenericResizers.getLegResizer());
         largeLeftLeg.getChildren().get(0).setDefaultResize(new Vec3(2, 2, 2));
-        largeLeftLeg.mirror = true;
 
         addModel(BodyPartModelNames.largeLegLeftModel, largeLeftLeg);
         addModel(BodyPartModelNames.largeLegRightModel, largeRightLeg);

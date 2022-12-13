@@ -8,7 +8,7 @@ public class teethResizeModule extends defaultResizeModule
 {
     public teethResizeModule(int maxDepth, Vec3 direction, Vec3 position, Vec3 fullSize, Vec3 rotationPoint, Vec3 spacing)
     {
-        super(maxDepth, direction, position, fullSize, rotationPoint, spacing, 0.0F);
+        super(maxDepth, direction, position, fullSize, rotationPoint, spacing);
     }
 
     @Override
