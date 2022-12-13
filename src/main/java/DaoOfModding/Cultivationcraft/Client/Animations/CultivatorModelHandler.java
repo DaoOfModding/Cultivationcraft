@@ -1,11 +1,9 @@
 package DaoOfModding.Cultivationcraft.Client.Animations;
 
-import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import DaoOfModding.mlmanimator.Client.Models.Quads.Quad;
 import DaoOfModding.mlmanimator.Client.Poses.PlayerPoseHandler;
 import DaoOfModding.mlmanimator.Client.Poses.PoseHandler;
 import DaoOfModding.mlmanimator.Client.Models.*;
-import DaoOfModding.Cultivationcraft.Client.Textures.TextureManager;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.BodyModifications;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.IBodyModifications;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPart;
@@ -34,13 +32,8 @@ public class CultivatorModelHandler
     {
         IBodyModifications modifications = BodyModifications.getBodyModifications(player);
 
-        if (!modifications.hasUpdated() || TextureManager.isTextureChanged(player.getUUID()))
-        {
-            TextureManager.updateTextures(player);
+        if (!modifications.hasUpdated())
             updateModel(player, modifications);
-
-            TextureManager.clearTextureChange(player.getUUID());
-        }
     }
 
     // Update player model based on the supplied BodyModifications

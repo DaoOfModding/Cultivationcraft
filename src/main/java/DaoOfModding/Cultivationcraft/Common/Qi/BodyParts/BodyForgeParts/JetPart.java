@@ -9,6 +9,7 @@ import DaoOfModding.Cultivationcraft.Common.Qi.Stats.PlayerStatModifications;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.StatIDs;
 import DaoOfModding.mlmanimator.Client.Models.MultiLimbedModel;
 import DaoOfModding.mlmanimator.Client.Poses.PoseHandler;
+import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 
@@ -78,10 +79,14 @@ public class JetPart extends BodyPartOption
 
         enabled = on;
 
-        if (enabled)
-            sendInfo(1, BodyPartNames.backSubPosition, BodyPartNames.bodyPosition);
-        else
-            sendInfo(0, BodyPartNames.backSubPosition, BodyPartNames.bodyPosition);
+        // Only send info if this is the player character
+        if (Minecraft.getInstance().player == player)
+        {
+            if (enabled)
+                sendInfo(1, BodyPartNames.backSubPosition, BodyPartNames.bodyPosition);
+            else
+                sendInfo(0, BodyPartNames.backSubPosition, BodyPartNames.bodyPosition);
+        }
 
         if (on)
         {

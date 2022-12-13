@@ -3,7 +3,6 @@ package DaoOfModding.Cultivationcraft.Common.Qi.BodyParts;
 import DaoOfModding.Cultivationcraft.Client.genericClientFunctions;
 import DaoOfModding.Cultivationcraft.Client.Animations.BodyPartLocation;
 import DaoOfModding.Cultivationcraft.Client.Textures.TextureList;
-import DaoOfModding.Cultivationcraft.Client.Textures.TextureManager;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.BodyModifications;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.IBodyModifications;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStats;
@@ -11,6 +10,8 @@ import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.ICultiv
 import DaoOfModding.Cultivationcraft.Common.Qi.CultivationTypes;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.PlayerStatModifications;
 import DaoOfModding.Cultivationcraft.Network.ClientPacketHandler;
+import DaoOfModding.mlmanimator.Client.Poses.PlayerPoseHandler;
+import DaoOfModding.mlmanimator.Client.Poses.PoseHandler;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
@@ -32,6 +33,7 @@ public class BodyPart
     private int qiNeeded;
     private PlayerStatModifications stats;
     private String textureID = TextureList.skin;
+    private boolean texturesUpdated = false;
 
     private BodyPartLocation connection = null;
 
@@ -217,15 +219,29 @@ public class BodyPart
         return uniqueTags;
     }
 
+    // Maybe not be being called...?
     public void onLoad(UUID playerID)
     {
+
+    }
+
+    public void updateTextures(UUID playerID)
+    {
+        PlayerPoseHandler handler = PoseHandler.getPlayerPoseHandler(playerID);
+
+        if (handler == null)
+            return;
+
         for (Map.Entry<String, ResourceLocation> entry : textureChanges.entrySet())
-            TextureManager.addTexture(playerID, entry.getKey(), entry.getValue());
+            handler.getPlayerModel().getTextureHandler().addTexture(entry.getKey(), entry.getValue());
+
+        texturesUpdated = true;
     }
 
     public void onClientTick(Player player)
     {
-
+        if (!texturesUpdated)
+            updateTextures(player.getUUID());
     }
 
     public void onServerTick(Player player)

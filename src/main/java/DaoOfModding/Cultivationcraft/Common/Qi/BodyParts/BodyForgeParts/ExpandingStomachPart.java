@@ -8,6 +8,7 @@ import DaoOfModding.Cultivationcraft.StaminaHandler;
 import DaoOfModding.mlmanimator.Client.Models.GenericLimbNames;
 import DaoOfModding.mlmanimator.Client.Poses.PlayerPose;
 import DaoOfModding.mlmanimator.Client.Poses.PoseHandler;
+import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 
@@ -70,7 +71,7 @@ public class ExpandingStomachPart extends StomachPart
 
             if (oldStamina != (int)currentStamina)
             {
-                if (player.level.isClientSide)
+                if (player.level.isClientSide && Minecraft.getInstance().player == player)
                     sendInfo((int)currentStamina, BodyPartNames.stomachSubPosition, BodyPartNames.bodyPosition);
 
                 oldStamina = (int) currentStamina;

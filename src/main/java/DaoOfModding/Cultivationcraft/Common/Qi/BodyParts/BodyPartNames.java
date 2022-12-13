@@ -325,7 +325,6 @@ public class BodyPartNames
         glide.addHand(GenericLimbNames.rightArm, 0);
         glide.addQuad(BodyPartModelNames.armglidequad);
         glide.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.basePosition);
-        glide.addNotNeededPart(BodyPartNames.headArmsPart);
         glide.addUniqueTag(BodyPartTags.flight);
         glide.getStatChanges().setStat(StatIDs.weight, 0.01f);
         glide.getStatChanges().setStat(StatIDs.wingSupport, 2f);
@@ -337,7 +336,9 @@ public class BodyPartNames
         BodyPartOption headArms = new BodyPartOption(headArmsPart, armPosition, locationSubPosition, "cultivationcraft.gui.armpart.headarms", 1000);
         headArms.setConnection(new BodyPartLocation(armPosition, basePosition, headPosition, basePosition));
         headArms.addNeededPosition(BodyPartNames.armPosition, BodyPartNames.basePosition);
-        headArms.addNotNeededPart(BodyPartNames.glideArmPart);
+
+        // TODO: this doesn't work
+        //headArms.addNotNeededPart(BodyPartNames.glideArmPart);
 
         addOption(headArms);
     }
