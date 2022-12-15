@@ -993,7 +993,7 @@ public class BodyPartModels
 
         defaultResizeModule rightLegJetResizer = new defaultResizeModule(new Vec3(2, 0.5, -0.1));
         ExtendableModelRenderer rightLegJet = new ExtendableModelRenderer(BodyPartModelNames.jetLegRightModel + "1");
-        rightLegJet.addLayer(new UVPair(GenericTextureValues.rightLeg.u() + 1, GenericTextureValues.rightLeg.u() + 6), GenericTextureValues.skin_Size, 0.0F, "PLAYERSKIN");
+        rightLegJet.addLayer(new UVPair(GenericTextureValues.rightLeg.u() + 1, GenericTextureValues.rightLeg.v() + 6), GenericTextureValues.skin_Size, 0.0F, "PLAYERSKIN");
         rightLegJet.setPos(0.75F, 0F, 1F);
         rightLegJet.setRotationPoint(new Vec3(0, 0, 0));
         rightLegJet.setDefaultResize(new Vec3(1, 1, 20));
@@ -1001,7 +1001,7 @@ public class BodyPartModels
 
         rightLegJetResizer = new defaultResizeModule(new Vec3(0.5, -4, -0.1));
         ExtendableModelRenderer rightLegJetLeft = new ExtendableModelRenderer( BodyPartModelNames.jetLegRightModel + "2");
-        rightLegJetLeft.addLayer(new UVPair(GenericTextureValues.rightLeg.u() + 1, GenericTextureValues.rightLeg.u() + 10), GenericTextureValues.skin_Size, 0.0F, "PLAYERSKIN");
+        rightLegJetLeft.addLayer(new UVPair(GenericTextureValues.rightLeg.u() + 1, GenericTextureValues.rightLeg.v() + 10), GenericTextureValues.skin_Size, 0.0F, "PLAYERSKIN");
         rightLegJetLeft.setPos(1F, 0F, 1F);
         rightLegJetLeft.setRotationPoint(new Vec3(0, 0, 0));
         rightLegJetLeft.setDefaultResize(new Vec3(1, 1, 20));
@@ -1009,7 +1009,7 @@ public class BodyPartModels
 
         rightLegJetResizer = new defaultResizeModule(new Vec3(0.5, -4, -0.1));
         ExtendableModelRenderer rightLegJetRight = new ExtendableModelRenderer(BodyPartModelNames.jetLegRightModel + "3");
-        rightLegJetRight.addLayer(new UVPair(GenericTextureValues.rightLeg.u() + 3, GenericTextureValues.rightLeg.u() + 10), GenericTextureValues.skin_Size, 0.0F, "PLAYERSKIN");
+        rightLegJetRight.addLayer(new UVPair(GenericTextureValues.rightLeg.u() + 3, GenericTextureValues.rightLeg.v() + 10), GenericTextureValues.skin_Size, 0.0F, "PLAYERSKIN");
         rightLegJetRight.setPos(0F, 0F, 1F);
         rightLegJetRight.setRotationPoint(new Vec3(1, 0, 0));
         rightLegJetRight.setDefaultResize(new Vec3(1, 1, 20));
@@ -1017,7 +1017,7 @@ public class BodyPartModels
 
         rightLegJetResizer = new defaultResizeModule(new Vec3(2, -4, -0.1));
         ExtendableModelRenderer rightLegJetFront = new ExtendableModelRenderer( BodyPartModelNames.jetLegRightModel + "4");
-        rightLegJetFront.addLayer(new UVPair(GenericTextureValues.rightLeg.u() + 1, GenericTextureValues.rightLeg.u() + 10), GenericTextureValues.skin_Size, 0.0F, "PLAYERSKIN");
+        rightLegJetFront.addLayer(new UVPair(GenericTextureValues.rightLeg.u() + 1, GenericTextureValues.rightLeg.v() + 10), GenericTextureValues.skin_Size, 0.0F, "PLAYERSKIN");
         rightLegJetFront.setPos(1F, 0F, 0F);
         rightLegJetFront.setRotationPoint(new Vec3(0, 0, 1));
         rightLegJetFront.setDefaultResize(new Vec3(1, 1, 5));
@@ -1031,7 +1031,7 @@ public class BodyPartModels
 
         defaultResizeModule leftLegJetResizer = new defaultResizeModule(new Vec3(2, 0.5, -0.1));
         ExtendableModelRenderer leftLegJet = new ExtendableModelRenderer(BodyPartModelNames.jetLegLeftModel + "1");
-        leftLegJet.addLayer(new UVPair(GenericTextureValues.leftLeg.u() + 1, GenericTextureValues.leftLeg.u() + 6), GenericTextureValues.skin_Size, 0.0F, "PLAYERSKIN");
+        leftLegJet.addLayer(new UVPair(GenericTextureValues.leftLeg.u() + 1, GenericTextureValues.leftLeg.v() + 6), GenericTextureValues.skin_Size, 0.0F, "PLAYERSKIN");
         leftLegJet.setPos(0.75F, 0F, 1F);
         leftLegJet.setRotationPoint(new Vec3(0, 0, 0));
         leftLegJet.setDefaultResize(new Vec3(1, 1, 20));
@@ -1039,7 +1039,7 @@ public class BodyPartModels
 
         leftLegJetResizer = new defaultResizeModule(new Vec3(0.5, -4, -0.1));
         ExtendableModelRenderer leftLegJetLeft = new ExtendableModelRenderer(BodyPartModelNames.jetLegLeftModel + "2");
-        leftLegJetLeft.addLayer(new UVPair(GenericTextureValues.leftLeg.u() + 1, GenericTextureValues.leftLeg.u() + 10), GenericTextureValues.skin_Size, 0.0F, "PLAYERSKIN");
+        leftLegJetLeft.addLayer(new UVPair(GenericTextureValues.leftLeg.u() + 1, GenericTextureValues.leftLeg.v() + 10), GenericTextureValues.skin_Size, 0.0F, "PLAYERSKIN");
         leftLegJetLeft.setPos(1F, 0F, 1F);
         leftLegJetLeft.setRotationPoint(new Vec3(0, 0, 0));
         leftLegJetLeft.setDefaultResize(new Vec3(1, 1, 20));
@@ -1047,7 +1047,7 @@ public class BodyPartModels
 
         leftLegJetResizer = new defaultResizeModule(new Vec3(0.5, -4, -0.1));
         ExtendableModelRenderer leftLegJetRight = new ExtendableModelRenderer(BodyPartModelNames.jetLegLeftModel + "3");
-        leftLegJetRight.addLayer(new UVPair(GenericTextureValues.leftLeg.u() + 3, GenericTextureValues.leftLeg.u() + 10), GenericTextureValues.skin_Size, 0.0F, "PLAYERSKIN");
+        leftLegJetRight.addLayer(new UVPair(GenericTextureValues.leftLeg.u() + 3, GenericTextureValues.leftLeg.v() + 10), GenericTextureValues.skin_Size, 0.0F, "PLAYERSKIN");
         leftLegJetRight.setPos(0F, 0F, 1F);
         leftLegJetRight.setRotationPoint(new Vec3(1, 0, 0));
         leftLegJetRight.setDefaultResize(new Vec3(1, 1, 20));
@@ -1055,7 +1055,7 @@ public class BodyPartModels
 
         leftLegJetResizer = new defaultResizeModule(new Vec3(2, -4, -0.1));
         ExtendableModelRenderer leftLegJetFront = new ExtendableModelRenderer( BodyPartModelNames.jetLegLeftModel + "4");
-        leftLegJetFront.addLayer(new UVPair(GenericTextureValues.leftLeg.u() + 1, GenericTextureValues.leftLeg.u() + 10), GenericTextureValues.skin_Size, 0.0F, "PLAYERSKIN");
+        leftLegJetFront.addLayer(new UVPair(GenericTextureValues.leftLeg.u() + 1, GenericTextureValues.leftLeg.v() + 10), GenericTextureValues.skin_Size, 0.0F, "PLAYERSKIN");
         leftLegJetFront.setPos(1F, 0F, 0F);
         leftLegJetFront.setRotationPoint(new Vec3(0, 0, 1));
         leftLegJetFront.setDefaultResize(new Vec3(1, 1, 5));

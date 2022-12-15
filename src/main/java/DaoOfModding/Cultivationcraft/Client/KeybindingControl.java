@@ -78,12 +78,8 @@ public class KeybindingControl
 
         // Cancel the hotbar key press and change the skill hotbar selection to the pressed button
         for (int i = 0; i < 9; i++)
-            if(Minecraft.getInstance().options.keyHotbarSlots[i].isDown())
-            {
+            if(Minecraft.getInstance().options.keyHotbarSlots[i].consumeClick())
                 SkillHotbarOverlay.setSelection(i);
-
-                Minecraft.getInstance().options.keyHotbarSlots[i].setDown(false);
-            }
     }
 
     public static void handleHotbarInteracts()

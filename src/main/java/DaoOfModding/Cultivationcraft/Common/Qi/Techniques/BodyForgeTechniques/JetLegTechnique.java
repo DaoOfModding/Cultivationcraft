@@ -36,7 +36,7 @@ public class JetLegTechnique extends MovementOverrideTechnique
     @Override
     public boolean isValid(Player player)
     {
-        // Technique is valid if the player is a body cultivator with Reverse Joint Legs
+        // Technique is valid if the player is a body cultivator with Jet Legs
         if (CultivatorStats.getCultivatorStats(player).getCultivationType() == CultivationTypes.BODY_CULTIVATOR &&
                 BodyModifications.getBodyModifications(player).hasModification(BodyPartNames.legPosition, BodyPartNames.jetLegPart))
             return true;
@@ -88,5 +88,16 @@ public class JetLegTechnique extends MovementOverrideTechnique
         genericClientFunctions.getPlayer().setDeltaMovement(new Vec3(delta.x, y, delta.z));
 
         return true;
+    }
+
+    @Override
+    public void deactivate(Player player)
+    {
+        MultiLimbedModel model = PoseHandler.getPlayerPoseHandler(player.getUUID()).getPlayerModel();
+
+        model.getLimb(BodyPartModelNames.jetLegLeftEmitter).getModelPart().visible = false;
+        model.getLimb(BodyPartModelNames.jetLegRightEmitter).getModelPart().visible = false;
+
+        super.deactivate(player);
     }
 }
