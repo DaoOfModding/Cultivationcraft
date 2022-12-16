@@ -7,8 +7,8 @@ public class BodyPartModelNames
     public static final String jawModel = "JAW_MODEL";
     public static final String jawModelLower = "JAW_LOWER_MODEL";
 
-    public static final String FPjawModel = "FPJAW_MODEL";
-    public static final String FPjawModelLower = "FPJAW_LOWER_MODEL";
+    public static final String FPjawModel = "FP_JAW_MODEL";
+    public static final String FPjawModelLower = "FP_JAW_LOWER_MODEL";
 
     public static final String longNeckModel = "LONG_NECK_MODEL";
     public static final String longNeckModelEnd = "LONG_NECK_MODEL_END";
@@ -16,8 +16,14 @@ public class BodyPartModelNames
     public static final String flatToothModel = "FLAT_TOOTH_MODEL";
     public static final String flatToothLowerModel = "FLAT_TOOTH_LOWER_MODEL";
 
+    public static final String FPflatToothModel = "FP_FLAT_TOOTH_MODEL";
+    public static final String FPflatToothLowerModel = "FP_FLAT_TOOTH_LOWER_MODEL";
+
     public static final String sharpToothModel = "SHARP_TOOTH_MODEL";
     public static final String sharpToothLowerModel = "SHARP_TOOTH_LOWER_MODEL";
+
+    public static final String FPsharpToothModel = "FP_SHARP_TOOTH_MODEL";
+    public static final String FPsharpToothLowerModel = "FP_SHARP_TOOTH_LOWER_MODEL";
 
     public static final String shortArmLeftModel = "SHORT_ARM_LEFT_MODEL";
     public static final String shortArmRightModel = "SHORT_ARM_RIGHT_MODEL";

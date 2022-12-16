@@ -351,7 +351,8 @@ public class BodyPartNames
         BodyPartOption flatTeeth = new BodyPartOption(flatTeethPart, headPosition, mouthSubPosition, "cultivationcraft.gui.headpart.mouth.flatteeth", 1000);
         flatTeeth.addModel(BodyPartModelNames.flatToothModel);
         flatTeeth.addModel(BodyPartModelNames.flatToothLowerModel, BodyPartModelNames.jawModelLower);
-        flatTeeth.addModel(BodyPartModelNames.flatToothLowerModel, BodyPartModelNames.FPjawModelLower);
+        flatTeeth.addModel(BodyPartModelNames.FPflatToothModel, BodyPartModelNames.FPjawModel);
+        flatTeeth.addModel(BodyPartModelNames.FPflatToothLowerModel, BodyPartModelNames.FPjawModelLower);
         flatTeeth.addNeededPart(BodyPartNames.jawPart);
         flatTeeth.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.boneSubPosition);
         flatTeeth.setTexture(TextureList.bone);
@@ -363,7 +364,8 @@ public class BodyPartNames
         BodyPartOption sharpTeeth = new BodyPartOption(sharpTeethPart, headPosition, mouthSubPosition, "cultivationcraft.gui.headpart.mouth.sharpteeth", 1000);
         sharpTeeth.addModel(BodyPartModelNames.sharpToothModel);
         sharpTeeth.addModel(BodyPartModelNames.sharpToothLowerModel, BodyPartModelNames.jawModelLower);
-        sharpTeeth.addModel(BodyPartModelNames.sharpToothLowerModel, BodyPartModelNames.FPjawModelLower);
+        sharpTeeth.addModel(BodyPartModelNames.FPsharpToothModel, BodyPartModelNames.FPjawModel);
+        sharpTeeth.addModel(BodyPartModelNames.FPsharpToothLowerModel, BodyPartModelNames.FPjawModelLower);
         sharpTeeth.addNeededPart(BodyPartNames.jawPart);
         sharpTeeth.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.boneSubPosition);
         sharpTeeth.setTexture(TextureList.bone);

@@ -235,6 +235,7 @@ public class CultivatorModelHandler
             // Add models for any valid options to this body part
             for (BodyPartOption option : modifications.getModificationOptions(part.getPosition()).values())
             {
+
                 for (String optionModels : option.getDefaultOptionModels())
                 {
                     // Add to the body if the base part is a body part, otherwise reference the base modelID
@@ -270,19 +271,6 @@ public class CultivatorModelHandler
 
             if (part.getHand(modelID) != -1)
                 model.setHand(part.getHand(modelID), model.getLimb(modelID));
-
-            // Add models for any valid options to this body part
-            for (BodyPartOption option : modifications.getModificationOptions(part.getPosition()).values())
-                for (String optionModels : option.getDefaultOptionModels())
-                {
-                    model.addLimb(optionModels, models.getModel(optionModels), modelID);
-
-                    for (Map.Entry<String, ExtendableModelRenderer> entry : models.getReferences(optionModels).entrySet())
-                        model.addLimbReference(entry.getKey(), entry.getValue());
-
-                    if (option.getHand(optionModels) != -1)
-                        model.setHand(option.getHand(optionModels), model.getLimb(optionModels));
-                }
         }
 
         // Add models for any options tied to specific body parts to this body part

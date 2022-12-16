@@ -248,8 +248,8 @@ public class BodyPartModels
         ExtendableModelRenderer FPsemiHeadPart = new ExtendableModelRenderer(BodyPartModelNames.FPjawModel + "1");
         FPsemiHeadPart.addLayer(GenericTextureValues.head, GenericTextureValues.skin_Size, 0.0F, "PLAYERSKIN");
         FPsemiHeadPart.setRotationPoint(new Vec3(0.5D, 0.0D, 0.5D));
-        FPsemiHeadPart.setPos(0.5F, 0.0F, 0.5F);
-        FPsemiHeadPart.setFixedPosAdjustment(0, -3, 0);
+        FPsemiHeadPart.setPos(0F, 0.0F, 0.5F);
+        FPsemiHeadPart.setFixedPosAdjustment(0, -0.5f, -1.25f);
         FPsemiHeadPart.extend(semiHeadResizer);
         FPsemiHeadPart.setLooking(true);
 
@@ -257,7 +257,8 @@ public class BodyPartModels
         ExtendableModelRenderer FPjawPart = new ExtendableModelRenderer(BodyPartModelNames.FPjawModel + "2");
         FPjawPart.addLayer(new UVPair(GenericTextureValues.head.u(), GenericTextureValues.head.v() + 5), GenericTextureValues.skin_Size, 0.01F, "PLAYERSKIN");
         FPjawPart.setRotationPoint(new Vec3(0.5D, 1, 0));
-        FPjawPart.setPos(0.5F, 1F, 1F);
+        FPjawPart.setPos(0.5F, 1F, 0.7F);
+        FPjawPart.setFixedPosAdjustment(0, -2, 2f);
         FPjawPart.extend(jawResizer);
         FPjawPart.setUsedSize(new Vec3(0, 5, 0));
 
@@ -558,6 +559,7 @@ public class BodyPartModels
 
         ExtendableModelRenderer flatToothPart = new ExtendableModelRenderer(BodyPartModelNames.flatToothModel);
         flatToothPart.addLayer(new UVPair(0, 0), TextureList.boneSize, 0, TextureList.bone);
+        // TODO: Ypos here not working when head moves
         flatToothPart.setPos(0f, 1f, 0f);
         flatToothPart.setFixedPosAdjustment(0.05f, 0, 0.05f);
         flatToothPart.setRotationPoint(new Vec3(1f, 1, 1));
@@ -596,13 +598,17 @@ public class BodyPartModels
         flatToothPart.setHitbox(false);
         addModel(BodyPartModelNames.flatToothModel, flatToothPart);
 
+        ExtendableModelRenderer FPflatToothPart = flatToothPart.clone();
+        FPflatToothPart.setName(BodyPartModelNames.FPflatToothModel);
+        addModel(BodyPartModelNames.FPflatToothModel, FPflatToothPart);
+
 
         // Create row of bottom teeth
         flatToothResizer = QiResizers.getTeethResizer(8, 7.8f, 1, 0.1f);
 
         flatToothPart = new ExtendableModelRenderer(BodyPartModelNames.flatToothLowerModel);
         flatToothPart.addLayer(new UVPair(0, 0), TextureList.boneSize, 0, TextureList.bone);
-        flatToothPart.setPos(0f, 0, 0.3f);
+        flatToothPart.setPos(0f, 0, 0f);
         flatToothPart.setFixedPosAdjustment(0.05f, 0, 0.05f);
         flatToothPart.setRotationPoint(new Vec3(1f, 0, 1));
         flatToothPart.extend(flatToothResizer);
@@ -639,6 +645,10 @@ public class BodyPartModels
         flatToothPart.setFirstPersonRenderForSelfAndChildren(false);
         flatToothPart.setHitbox(false);
         addModel(BodyPartModelNames.flatToothLowerModel, flatToothPart);
+
+        FPflatToothPart = flatToothPart.clone();
+        FPflatToothPart.setName(BodyPartModelNames.FPflatToothLowerModel);
+        addModel(BodyPartModelNames.FPflatToothLowerModel, FPflatToothPart);
     }
 
     private void setupSharpTeethModels()
@@ -742,6 +752,9 @@ public class BodyPartModels
         ToothPart.setHitbox(false);
         addModel(BodyPartModelNames.sharpToothModel, ToothPart);
 
+        ExtendableModelRenderer FPToothPart = ToothPart.clone();
+        FPToothPart.setName(BodyPartModelNames.FPsharpToothModel);
+        addModel(BodyPartModelNames.FPsharpToothModel, FPToothPart);
 
         // Create row of bottom teeth
         ToothResizer = QiResizers.getTeethResizer(7, 7f, 0.5f, 0.1f);
@@ -845,6 +858,10 @@ public class BodyPartModels
 
         ToothPart.setHitbox(false);
         addModel(BodyPartModelNames.sharpToothLowerModel, ToothPart);
+
+        FPToothPart = ToothPart.clone();
+        FPToothPart.setName(BodyPartModelNames.FPsharpToothLowerModel);
+        addModel(BodyPartModelNames.FPsharpToothLowerModel, FPToothPart);
     }
 
     private void setupLegModels()
