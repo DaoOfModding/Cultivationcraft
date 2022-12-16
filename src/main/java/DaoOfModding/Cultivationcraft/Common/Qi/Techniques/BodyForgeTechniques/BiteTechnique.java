@@ -46,10 +46,10 @@ public class BiteTechnique extends AttackOverrideTechnique
         pose.addAngle(BodyPartModelNames.jawModelLower, new Vec3(Math.toRadians(40), 0, 0), GenericQiPoses.attackPriority-1, 5f, -1);
         attack.addAngle(BodyPartModelNames.jawModelLower, new Vec3(Math.toRadians(20), 0, 0), GenericQiPoses.attackPriority, 0f, -1);
 
-        pose.addAngle(BodyPartModelNames.FPjawModel, new Vec3(Math.toRadians(-50), 0, 0), GenericQiPoses.attackPriority-1, 5f, -1);
-        pose.addAngle(BodyPartModelNames.FPjawModelLower, new Vec3(Math.toRadians(70), 0, 0), GenericQiPoses.attackPriority-1, 5f, -1);
-        attack.addAngle(BodyPartModelNames.FPjawModel, new Vec3(Math.toRadians(0), 0, 0), GenericQiPoses.attackPriority, 0f, -1);
-        attack.addAngle(BodyPartModelNames.FPjawModelLower, new Vec3(Math.toRadians(20), 0, 0), GenericQiPoses.attackPriority, 0f, -1);
+        pose.addAngle(BodyPartModelNames.FPjawModel, new Vec3(Math.toRadians(-40), 0, 0), GenericQiPoses.attackPriority-1, 5f, -1);
+        pose.addAngle(BodyPartModelNames.FPjawModelLower, new Vec3(Math.toRadians(60), 0, 0), GenericQiPoses.attackPriority-1, 5f, -1);
+        attack.addAngle(BodyPartModelNames.FPjawModel, new Vec3(Math.toRadians(-10), 0, 0), GenericQiPoses.attackPriority, 0f, -1);
+        attack.addAngle(BodyPartModelNames.FPjawModelLower, new Vec3(Math.toRadians(30), 0, 0), GenericQiPoses.attackPriority, 0f, -1);
     }
 
     @Override

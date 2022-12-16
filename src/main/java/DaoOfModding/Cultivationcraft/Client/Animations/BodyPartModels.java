@@ -760,7 +760,7 @@ public class BodyPartModels
         ToothResizer = QiResizers.getTeethResizer(7, 7f, 0.5f, 0.1f);
         ToothPart = new ExtendableModelRenderer(BodyPartModelNames.sharpToothLowerModel);
         ToothPart.addLayer(new UVPair(0, 0), TextureList.boneSize, 0, TextureList.bone);
-        ToothPart.setPos(0f, 0f, 0.3f);
+        ToothPart.setPos(0f, 0f, 0f);
         ToothPart.setFixedPosAdjustment(0.55f, 0, 0.1f);
         ToothPart.setRotationPoint(new Vec3(1f, 0, 1));
         ToothPart.extend(ToothResizer);
