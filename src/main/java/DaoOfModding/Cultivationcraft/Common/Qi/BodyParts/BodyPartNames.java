@@ -336,9 +336,7 @@ public class BodyPartNames
         BodyPartOption headArms = new BodyPartOption(headArmsPart, armPosition, locationSubPosition, "cultivationcraft.gui.armpart.headarms", 1000);
         headArms.setConnection(new BodyPartLocation(armPosition, basePosition, headPosition, basePosition));
         headArms.addNeededPosition(BodyPartNames.armPosition, BodyPartNames.basePosition);
-
-        // TODO: this doesn't work
-        //headArms.addNotNeededPart(BodyPartNames.glideArmPart);
+        headArms.addNotNeededPart(BodyPartNames.glideArmPart);
 
         addOption(headArms);
     }

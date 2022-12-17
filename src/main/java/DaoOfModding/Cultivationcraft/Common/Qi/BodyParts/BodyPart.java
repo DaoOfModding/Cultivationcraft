@@ -384,15 +384,17 @@ public class BodyPart
             BodyPart test = BodyPartNames.getPart(testPart);
 
             if (test != null)
-                return true;
+            {
+                if (modifications.hasModification(test.limbPosition, test.ID))
+                    return true;
+            }
+            else
+            {
+                test = BodyPartNames.getOption(testPart);
 
-            test = BodyPartNames.getOption(testPart);
-
-            if (modifications.hasOption(test.getPosition(), ((BodyPartOption) test).getSubPosition(), test.ID))
-                return true;
-
-            if (modifications.hasModification(test.getPosition(), test.ID))
-                return true;
+                if (modifications.hasOption(test.getPosition(), ((BodyPartOption) test).getSubPosition(), test.ID))
+                    return true;
+            }
         }
 
         return false;
