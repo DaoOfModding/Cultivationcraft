@@ -1,5 +1,6 @@
 package DaoOfModding.Cultivationcraft.Client.Animations;
 
+import DaoOfModding.Cultivationcraft.Client.Textures.TextureList;
 import DaoOfModding.mlmanimator.Client.Models.Quads.Quad;
 import DaoOfModding.mlmanimator.Client.Poses.PlayerPoseHandler;
 import DaoOfModding.mlmanimator.Client.Poses.PoseHandler;
@@ -47,6 +48,7 @@ public class CultivatorModelHandler
 
             // Create a new player model with the specified modifications
             MultiLimbedModel newModel = new MultiLimbedModel(renderer.getModel());
+            newModel.setTextureHandler(handler.getPlayerModel().getTextureHandler());
 
             Collection<BodyPart> parts = modifications.getModifications().values();
             HashMap<String, BodyPartLocation> partLocations = getPartLocations(parts, modifications);
@@ -164,7 +166,7 @@ public class CultivatorModelHandler
     {
         ArrayList<BodyPart> unprocessedParts = new ArrayList<BodyPart>();
 
-        // Try to add all parts int the provided collection to the model
+        // Try to add all parts in the provided collection to the model
         for (BodyPart part : parts)
         {
             if (!processPart(model, part, models, modifications, partLocations.get(part.getID())))
@@ -235,7 +237,6 @@ public class CultivatorModelHandler
             // Add models for any valid options to this body part
             for (BodyPartOption option : modifications.getModificationOptions(part.getPosition()).values())
             {
-
                 for (String optionModels : option.getDefaultOptionModels())
                 {
                     // Add to the body if the base part is a body part, otherwise reference the base modelID

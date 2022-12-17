@@ -105,6 +105,7 @@ public class BodyModifications implements IBodyModifications
 
         options.get(option.getPosition()).put(option.getSubPosition(), option);
         addTags(option);
+        setUpdated(false);
     }
 
     protected void addTags(BodyPart part)
