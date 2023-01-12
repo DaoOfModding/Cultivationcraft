@@ -877,10 +877,10 @@ public class BodyPartModels
         leftReverseJoint.extend(reverseJointResizer);
 
         ExtendableModelRenderer leftFoot = new ExtendableModelRenderer(BodyPartModelNames.reverseJointLeftFootModel);
-        leftFoot.addLayer(new UVPair(GenericTextureValues.leftLeg.u(), GenericTextureValues.leftLeg.u() + 10), GenericTextureValues.skin_Size, 0.0F, "PLAYERSKIN");
-        leftFoot.addLayer(new UVPair(GenericTextureValues.leftPants.u(), GenericTextureValues.leftPants.u() + 10), GenericTextureValues.skin_Size, 0.5F, "PLAYERSKIN");
-        leftFoot.addLayer(new UVPair(GenericTextureValues.leftLegArmor.u(), GenericTextureValues.leftLegArmor.u() + 10), GenericTextureValues.armor_Size, 0.512F, "LEGARMOR");
-        leftFoot.addLayer(new UVPair(GenericTextureValues.leftLegArmor.u(), GenericTextureValues.leftLegArmor.u() + 10), GenericTextureValues.armor_Size, 1.0F, "FOOTARMOR");
+        leftFoot.addLayer(new UVPair(GenericTextureValues.leftLeg.u(), GenericTextureValues.leftLeg.v() + 10), GenericTextureValues.skin_Size, 0.0F, "PLAYERSKIN");
+        leftFoot.addLayer(new UVPair(GenericTextureValues.leftPants.u(), GenericTextureValues.leftPants.v() + 10), GenericTextureValues.skin_Size, 0.5F, "PLAYERSKIN");
+        leftFoot.addLayer(new UVPair(GenericTextureValues.leftLegArmor.u(), GenericTextureValues.leftLegArmor.v() + 10), GenericTextureValues.armor_Size, 0.512F, "LEGARMOR");
+        leftFoot.addLayer(new UVPair(GenericTextureValues.leftLegArmor.u(), GenericTextureValues.leftLegArmor.v() + 10), GenericTextureValues.armor_Size, 1.0F, "FOOTARMOR");
         leftFoot.setPos(0.5F, 1F, 0F);
         leftFoot.setRotationPoint(new Vec3(0.5D, 1D, 1D));
         leftFoot.extend(footResizer);
@@ -892,17 +892,17 @@ public class BodyPartModels
         footResizer = new defaultResizeModule(new Vec3(4, 2, 4));
 
         ExtendableModelRenderer rightReverseJoint = new ExtendableModelRenderer(BodyPartModelNames.reverseJointRightLegModel);
-        GenericTextureValues.addGenericRightLegLayers(leftReverseJoint);
+        GenericTextureValues.addGenericRightLegLayers(rightReverseJoint);
         rightReverseJoint.setPos(0.25F, 1.0F, 0.5F);
         rightReverseJoint.setRotationPoint(new Vec3(0.5D, 1, 0.5));
         rightReverseJoint.setFixedPosAdjustment(0.0F, 0.0F, 0F);
         rightReverseJoint.extend(reverseJointResizer);
 
         ExtendableModelRenderer rightFoot = new ExtendableModelRenderer(BodyPartModelNames.reverseJointRightFootModel);
-        rightFoot.addLayer(new UVPair(GenericTextureValues.rightLeg.u(), GenericTextureValues.rightLeg.u() + 10), GenericTextureValues.skin_Size, 0.0F, "PLAYERSKIN");
-        rightFoot.addLayer(new UVPair(GenericTextureValues.rightPants.u(), GenericTextureValues.rightPants.u() + 10), GenericTextureValues.skin_Size, 0.5F, "PLAYERSKIN");
-        rightFoot.addLayer(new UVPair(GenericTextureValues.rightLegArmor.u(), GenericTextureValues.rightLegArmor.u() + 10), GenericTextureValues.armor_Size, 0.512F, "LEGARMOR", true);
-        rightFoot.addLayer(new UVPair(GenericTextureValues.rightLegArmor.u(), GenericTextureValues.rightLegArmor.u() + 10), GenericTextureValues.armor_Size, 1.0F, "FOOTARMOR", true);
+        rightFoot.addLayer(new UVPair(GenericTextureValues.rightLeg.u(), GenericTextureValues.rightLeg.v() + 10), GenericTextureValues.skin_Size, 0.0F, "PLAYERSKIN");
+        rightFoot.addLayer(new UVPair(GenericTextureValues.rightPants.u(), GenericTextureValues.rightPants.v() + 10), GenericTextureValues.skin_Size, 0.5F, "PLAYERSKIN");
+        rightFoot.addLayer(new UVPair(GenericTextureValues.rightLegArmor.u(), GenericTextureValues.rightLegArmor.v() + 10), GenericTextureValues.armor_Size, 0.512F, "LEGARMOR", true);
+        rightFoot.addLayer(new UVPair(GenericTextureValues.rightLegArmor.u(), GenericTextureValues.rightLegArmor.v() + 10), GenericTextureValues.armor_Size, 1.0F, "FOOTARMOR", true);
         rightFoot.setPos(0.5F, 1F, 0F);
         rightFoot.setRotationPoint(new Vec3(0.5D, 1D, 1D));
         rightFoot.extend(footResizer);
