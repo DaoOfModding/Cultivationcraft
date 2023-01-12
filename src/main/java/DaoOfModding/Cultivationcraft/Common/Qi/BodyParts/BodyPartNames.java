@@ -162,7 +162,8 @@ public class BodyPartNames
         longneck.addNeededPosition(BodyPartNames.headPosition, BodyPartNames.basePosition);
         longneck.getStatChanges().setStat(StatIDs.weight, DefaultPlayerBodyPartWeights.headWeight * 0.5f);
 
-        addOption(longneck);
+        // TODO - Disabled longneck for the moment as it's buggy and has no point
+        //addOption(longneck);
     }
 
     private static void setupStomachOptions()

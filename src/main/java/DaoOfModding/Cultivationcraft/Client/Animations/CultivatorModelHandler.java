@@ -54,7 +54,7 @@ public class CultivatorModelHandler
             Collection<BodyPart> parts = modifications.getModifications().values();
             HashMap<String, BodyPartLocation> partLocations = getPartLocations(parts, modifications);
 
-            processParts(newModel, parts, models, modifications, partLocations);
+            processParts(newModel, parts, models, modifications, partLocations, handler);
 
             // Lock the handler so it can be modified without other threads messing with it
             handler.lock();
@@ -163,23 +163,23 @@ public class CultivatorModelHandler
         return null;
     }
 
-    protected static void processParts (MultiLimbedModel model, Collection<BodyPart> parts, BodyPartModels models, IBodyModifications modifications, HashMap<String, BodyPartLocation> partLocations)
+    protected static void processParts (MultiLimbedModel model, Collection<BodyPart> parts, BodyPartModels models, IBodyModifications modifications, HashMap<String, BodyPartLocation> partLocations, PlayerPoseHandler handler)
     {
         ArrayList<BodyPart> unprocessedParts = new ArrayList<BodyPart>();
 
         // Try to add all parts in the provided collection to the model
         for (BodyPart part : parts)
         {
-            if (!processPart(model, part, models, modifications, partLocations.get(part.getID())))
+            if (!processPart(model, part, models, modifications, partLocations.get(part.getID()), handler))
                 unprocessedParts.add(part);
         }
 
         // Try to add any parts that were not added
         if (unprocessedParts.size() > 0)
-            processParts(model, unprocessedParts, models, modifications, partLocations);
+            processParts(model, unprocessedParts, models, modifications, partLocations, handler);
     }
 
-    public static boolean processPart(MultiLimbedModel model, BodyPart part, BodyPartModels models, IBodyModifications modifications, BodyPartLocation connectTo)
+    public static boolean processPart(MultiLimbedModel model, BodyPart part, BodyPartModels models, IBodyModifications modifications, BodyPartLocation connectTo, PlayerPoseHandler handler)
     {
         // Don't add this part if the part it connects to has not yet been added to the model
         if (!model.hasLimb(connectTo.modelID))
@@ -197,6 +197,8 @@ public class CultivatorModelHandler
             model.setRightShoulder(null);
             model.setHand(0, null);
             model.setHand(1, null);
+
+            handler.removeArms();
         }
         else if (part.getPosition().equalsIgnoreCase(BodyPartNames.legPosition))
         {
@@ -249,6 +251,8 @@ public class CultivatorModelHandler
                     model.setHand(1, model.getLimb(arm.lowerLimb));
                     model.setLeftShoulder(model.getLimb(arm.upperLimb));
                 }
+
+                handler.addArm(arm);
             }
 
             // Add models for any valid options to this body part
@@ -277,6 +281,8 @@ public class CultivatorModelHandler
                             model.setHand(1, model.getLimb(arm.lowerLimb));
                             model.setLeftShoulder(model.getLimb(arm.upperLimb));
                         }
+
+                        handler.addArm(arm);
                     }
                 }
 
@@ -328,6 +334,8 @@ public class CultivatorModelHandler
                                 model.setHand(1, model.getLimb(arm.lowerLimb));
                                 model.setLeftShoulder(model.getLimb(arm.upperLimb));
                             }
+
+                            handler.addArm(arm);
                         }
                     }
                 }

@@ -156,8 +156,8 @@ public class BodyPartModels
 
         Quad larmConnector = new Quad(new Vec3(0, 0, 0), new Vec3(0, 0, 0),new Vec3(0, 0, 0),new Vec3(0, 0, 0));
         Quad rarmConnector = new Quad(new Vec3(0, 0, 0), new Vec3(0, 0, 0),new Vec3(0, 0, 0),new Vec3(0, 0, 0));
-        getModel(GenericLimbNames.body).addQuadLinkage(new QuadLinkage(larmConnector, Quad.QuadVertex.TopLeft, new Vec3(1, 1, 0.5)));
-        getModel(GenericLimbNames.body).addQuadLinkage(new QuadLinkage(larmConnector, Quad.QuadVertex.TopRight, new Vec3(1, 0, 0.5)));
+        getModel(GenericLimbNames.body).addQuadLinkage(new QuadLinkage(larmConnector, Quad.QuadVertex.TopLeft, new Vec3(1, 0, 0.5)));
+        getModel(GenericLimbNames.body).addQuadLinkage(new QuadLinkage(larmConnector, Quad.QuadVertex.TopRight, new Vec3(1, 1, 0.5)));
 
         getModel(GenericLimbNames.body).addQuadLinkage(new QuadLinkage(rarmConnector, Quad.QuadVertex.TopLeft, new Vec3(0, 0, 0.5)));
         getModel(GenericLimbNames.body).addQuadLinkage(new QuadLinkage(rarmConnector, Quad.QuadVertex.BottomLeft, new Vec3(0, 1, 0.5)));
@@ -165,7 +165,7 @@ public class BodyPartModels
         getModel(GenericLimbNames.leftArm).addQuadLinkage(new QuadLinkage(larmConnector, Quad.QuadVertex.BottomLeft, new Vec3(0, 1, 0.5)));
         getModel(GenericLimbNames.leftArm).getChildren().get(0).addQuadLinkage(new QuadLinkage(larmConnector, Quad.QuadVertex.BottomRight, new Vec3(0, 0.5, 0.5)));
 
-        getModel(GenericLimbNames.rightArm).addQuadLinkage(new QuadLinkage(rarmConnector, Quad.QuadVertex.TopRight, new Vec3(0, 1, 0.5)));
+        getModel(GenericLimbNames.rightArm).addQuadLinkage(new QuadLinkage(rarmConnector, Quad.QuadVertex.TopRight, new Vec3(1, 1, 0.5)));
         getModel(GenericLimbNames.rightArm).getChildren().get(0).addQuadLinkage(new QuadLinkage(rarmConnector, Quad.QuadVertex.BottomRight, new Vec3(1, 0.5, 0.5)));
 
 
