@@ -9,6 +9,7 @@ import DaoOfModding.Cultivationcraft.Common.Capabilities.ChunkQiSources.ChunkQiS
 import DaoOfModding.Cultivationcraft.Common.Capabilities.ChunkQiSources.IChunkQiSources;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStats;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStatsCapability;
+import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.ICultivatorStats;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.CultivatorTechniques;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.FlyingSwordBind.FlyingSwordBind;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPart;
@@ -177,7 +178,10 @@ public class CommonListeners
     @SubscribeEvent
     public static void playerDisconnects(PlayerEvent.PlayerLoggedOutEvent event)
     {
-        CultivatorStats.getCultivatorStats(event.getEntity()).setDisconnected(true);
+        ICultivatorStats stats = CultivatorStats.getCultivatorStats(event.getEntity());
+
+        if (stats != null)
+            stats.setDisconnected(true);
 
         if (!event.getEntity().getCommandSenderWorld().isClientSide())
             SkillHotbarServer.removePlayer(event.getEntity().getUUID());

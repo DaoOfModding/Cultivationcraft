@@ -10,8 +10,10 @@ import DaoOfModding.Cultivationcraft.Common.Qi.Stats.DefaultPlayerBodyPartWeight
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.StatIDs;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import DaoOfModding.mlmanimator.Client.Models.GenericLimbNames;
+import DaoOfModding.mlmanimator.Client.Poses.Arm;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.ArrayList;
@@ -285,8 +287,8 @@ public class BodyPartNames
         BodyPart reinforce = new BodyPart(reinforcedArmPart, armPosition, "cultivationcraft.gui.generic.reinforce", 1000);
         reinforce.addModel(GenericLimbNames.leftArm);
         reinforce.addModel(GenericLimbNames.rightArm);
-        reinforce.addHand(GenericLimbNames.leftArm, 1);
-        reinforce.addHand(GenericLimbNames.rightArm, 0);
+        reinforce.addArm(new Arm(InteractionHand.OFF_HAND, GenericLimbNames.leftArm, GenericLimbNames.lowerLeftArm, true));
+        reinforce.addArm(new Arm(InteractionHand.MAIN_HAND, GenericLimbNames.rightArm, GenericLimbNames.lowerRightArm, false));
         reinforce.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.basePosition);
 
         addPart(reinforce);
@@ -296,8 +298,8 @@ public class BodyPartNames
         shortArm.addModel(BodyPartModelNames.shortArmLeftModel);
         shortArm.addModel(BodyPartModelNames.shortArmRightModel);
         // TODO: Hands not working here
-        shortArm.addHand(BodyPartModelNames.shortArmLeftModel, 1);
-        shortArm.addHand(BodyPartModelNames.shortArmRightModel, 0);
+        shortArm.addArm(new Arm(InteractionHand.OFF_HAND, BodyPartModelNames.shortArmLeftModel, BodyPartModelNames.shortArmLeftModel, true));
+        shortArm.addArm(new Arm(InteractionHand.MAIN_HAND, BodyPartModelNames.shortArmRightModel, BodyPartModelNames.shortArmRightModel, false));
         shortArm.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.basePosition);
         shortArm.getStatChanges().setStat(StatIDs.weight, DefaultPlayerBodyPartWeights.armWeight * -1);
         shortArm.getStatChanges().setStat(StatIDs.attackRange, StatIDs.defaultAttackRange * -0.5f);
@@ -308,8 +310,8 @@ public class BodyPartNames
         BodyPart fArm = new BodyPart(flipperArmPart, armPosition, "cultivationcraft.gui.armpart.flipper", 1000);
         fArm.addModel(BodyPartModelNames.flipperLeftModel);
         fArm.addModel(BodyPartModelNames.flipperRightModel);
-        fArm.addHand(BodyPartModelNames.flipperLeftModel, 1);
-        fArm.addHand(BodyPartModelNames.flipperRightModel, 0);
+        fArm.addArm(new Arm(InteractionHand.OFF_HAND, BodyPartModelNames.flipperLeftModel, BodyPartModelNames.flipperLowerLeftModel, true));
+        fArm.addArm(new Arm(InteractionHand.MAIN_HAND, BodyPartModelNames.flipperRightModel, BodyPartModelNames.flipperLowerRightModel, false));
         fArm.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.basePosition);
         fArm.getStatChanges().setStat(StatIDs.weight, DefaultPlayerBodyPartWeights.armWeight * -1.8f);
         fArm.getStatChanges().setStat(StatIDs.swimSpeed, 1);
@@ -321,8 +323,8 @@ public class BodyPartNames
         BodyPart glide = new GlidePart(glideArmPart, armPosition, "cultivationcraft.gui.armpart.glide", 1000);
         glide.addModel(GenericLimbNames.leftArm);
         glide.addModel(GenericLimbNames.rightArm);
-        glide.addHand(GenericLimbNames.leftArm, 1);
-        glide.addHand(GenericLimbNames.rightArm, 0);
+        glide.addArm(new Arm(InteractionHand.OFF_HAND, GenericLimbNames.leftArm, GenericLimbNames.lowerLeftArm, true));
+        glide.addArm(new Arm(InteractionHand.MAIN_HAND, GenericLimbNames.rightArm, GenericLimbNames.lowerRightArm, false));
         glide.addQuad(BodyPartModelNames.armglidequad);
         glide.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.basePosition);
         glide.addUniqueTag(BodyPartTags.flight);
@@ -446,6 +448,7 @@ public class BodyPartNames
         jetLeg.getStatChanges().setStat(StatIDs.wingSupport, 10);
         jetLeg.getStatChanges().setStat(StatIDs.flightSpeed, 0.4f);
         jetLeg.getStatChanges().setStat(StatIDs.fallHeight, 4f);
+        jetLeg.addUniqueTag(BodyPartTags.flight);
 
         // TODO: Add flame generating body part
         //jetLeg.addNeededTags(BodyPartTags.flame);

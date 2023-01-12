@@ -1,7 +1,7 @@
 package DaoOfModding.Cultivationcraft.Client.Animations;
 
-import DaoOfModding.Cultivationcraft.Client.Textures.TextureList;
 import DaoOfModding.mlmanimator.Client.Models.Quads.Quad;
+import DaoOfModding.mlmanimator.Client.Poses.Arm;
 import DaoOfModding.mlmanimator.Client.Poses.PlayerPoseHandler;
 import DaoOfModding.mlmanimator.Client.Poses.PoseHandler;
 import DaoOfModding.mlmanimator.Client.Models.*;
@@ -13,6 +13,7 @@ import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartOption;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
+import net.minecraft.world.InteractionHand;
 
 import java.util.*;
 
@@ -191,6 +192,11 @@ public class CultivatorModelHandler
             model.removeLimb(GenericLimbNames.leftArm);
             model.removeLimb(GenericLimbNames.lowerRightArm);
             model.removeLimb(GenericLimbNames.lowerLeftArm);
+
+            model.setLeftShoulder(null);
+            model.setRightShoulder(null);
+            model.setHand(0, null);
+            model.setHand(1, null);
         }
         else if (part.getPosition().equalsIgnoreCase(BodyPartNames.legPosition))
         {
@@ -231,8 +237,19 @@ public class CultivatorModelHandler
             for (Map.Entry<String, ExtendableModelRenderer> entry : models.getReferences(modelID).entrySet())
                 model.addLimbReference(entry.getKey(), entry.getValue());
 
-            if (part.getHand(modelID) != -1)
-                model.setHand(part.getHand(modelID), model.getLimb(modelID));
+            for (Arm arm : part.getArms())
+            {
+                if (arm.hand == InteractionHand.MAIN_HAND && model.getHand(0) == null)
+                {
+                    model.setHand(0, model.getLimb(arm.lowerLimb));
+                    model.setRightShoulder(model.getLimb(arm.upperLimb));
+                }
+                else if (arm.hand == InteractionHand.OFF_HAND && model.getHand(1) == null)
+                {
+                    model.setHand(1, model.getLimb(arm.lowerLimb));
+                    model.setLeftShoulder(model.getLimb(arm.upperLimb));
+                }
+            }
 
             // Add models for any valid options to this body part
             for (BodyPartOption option : modifications.getModificationOptions(part.getPosition()).values())
@@ -248,8 +265,19 @@ public class CultivatorModelHandler
                     for (Map.Entry<String, ExtendableModelRenderer> entry : models.getReferences(optionModels).entrySet())
                         model.addLimbReference(entry.getKey(), entry.getValue());
 
-                    if (option.getHand(optionModels) != -1)
-                        model.setHand(option.getHand(optionModels), model.getLimb(optionModels));
+                    for (Arm arm : option.getArms())
+                    {
+                        if (arm.hand == InteractionHand.MAIN_HAND && model.getHand(0) == null)
+                        {
+                            model.setHand(0, model.getLimb(arm.lowerLimb));
+                            model.setRightShoulder(model.getLimb(arm.upperLimb));
+                        }
+                        else if (arm.hand == InteractionHand.OFF_HAND && model.getHand(1) == null)
+                        {
+                            model.setHand(1, model.getLimb(arm.lowerLimb));
+                            model.setLeftShoulder(model.getLimb(arm.upperLimb));
+                        }
+                    }
                 }
 
                 for (String quadID : option.getQuadIDs())
@@ -269,9 +297,6 @@ public class CultivatorModelHandler
 
             for (Map.Entry<String, ExtendableModelRenderer> entry : models.getReferences(modelID).entrySet())
                 model.addLimbReference(entry.getKey(), entry.getValue());
-
-            if (part.getHand(modelID) != -1)
-                model.setHand(part.getHand(modelID), model.getLimb(modelID));
         }
 
         // Add models for any options tied to specific body parts to this body part
@@ -291,8 +316,19 @@ public class CultivatorModelHandler
                         for (Map.Entry<String, ExtendableModelRenderer> entry : models.getReferences(optionModels).entrySet())
                             model.addLimbReference(entry.getKey(), entry.getValue());
 
-                        if (option.getHand(optionModels) != -1)
-                            model.setHand(option.getHand(optionModels), model.getLimb(optionModels));
+                        for (Arm arm : option.getArms())
+                        {
+                            if (arm.hand == InteractionHand.MAIN_HAND && model.getHand(0) == null)
+                            {
+                                model.setHand(0, model.getLimb(arm.lowerLimb));
+                                model.setRightShoulder(model.getLimb(arm.upperLimb));
+                            }
+                            else if (arm.hand == InteractionHand.OFF_HAND && model.getHand(1) == null)
+                            {
+                                model.setHand(1, model.getLimb(arm.lowerLimb));
+                                model.setLeftShoulder(model.getLimb(arm.upperLimb));
+                            }
+                        }
                     }
                 }
             }

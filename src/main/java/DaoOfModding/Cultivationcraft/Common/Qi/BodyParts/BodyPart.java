@@ -10,6 +10,7 @@ import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.ICultiv
 import DaoOfModding.Cultivationcraft.Common.Qi.CultivationTypes;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.PlayerStatModifications;
 import DaoOfModding.Cultivationcraft.Network.ClientPacketHandler;
+import DaoOfModding.mlmanimator.Client.Poses.Arm;
 import DaoOfModding.mlmanimator.Client.Poses.PlayerPoseHandler;
 import DaoOfModding.mlmanimator.Client.Poses.PoseHandler;
 import com.mojang.datafixers.util.Pair;
@@ -49,6 +50,7 @@ public class BodyPart
     private ArrayList<String> uniqueTags = new ArrayList<String>();
 
     private HashMap<String, Integer> hands = new HashMap<String, Integer>();
+    private ArrayList<Arm> arms = new ArrayList<Arm>();
 
     private HashMap<String, ResourceLocation> textureChanges = new HashMap<String, ResourceLocation>();
 
@@ -97,17 +99,14 @@ public class BodyPart
         modelIDs.add(modelID);
     }
 
-    public void addHand(String modelID, int slot)
+    public void addArm(Arm newArm)
     {
-        hands.put(modelID, slot);
+        arms.add(newArm);
     }
 
-    public int getHand(String modelID)
+    public ArrayList<Arm> getArms()
     {
-        if (hands.containsKey(modelID))
-            return hands.get(modelID);
-
-        return -1;
+        return arms;
     }
 
     public void addQuad(String quadID)
