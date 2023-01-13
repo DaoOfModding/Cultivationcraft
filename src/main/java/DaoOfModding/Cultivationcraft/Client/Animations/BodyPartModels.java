@@ -1,6 +1,7 @@
 package DaoOfModding.Cultivationcraft.Client.Animations;
 
 import DaoOfModding.Cultivationcraft.Client.Textures.TextureList;
+import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartNames;
 import DaoOfModding.mlmanimator.Client.Models.*;
 import DaoOfModding.mlmanimator.Client.Models.Quads.Quad;
 import DaoOfModding.mlmanimator.Client.Models.Quads.QuadLinkage;
@@ -11,16 +12,18 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.phys.Vec3;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
 
 public class BodyPartModels
 {
-    private HashMap<String, ExtendableModelRenderer> models = new HashMap<String, ExtendableModelRenderer>();
-    private HashMap<String, HashMap<String, ExtendableModelRenderer>> nonRenderingModels = new HashMap<String, HashMap<String, ExtendableModelRenderer>>();
-    private HashMap<String, QuadCollection> quads = new HashMap<String, QuadCollection>();
+    protected HashMap<String, ExtendableModelRenderer> models = new HashMap<String, ExtendableModelRenderer>();
+    protected HashMap<String, HashMap<String, ExtendableModelRenderer>> nonRenderingModels = new HashMap<String, HashMap<String, ExtendableModelRenderer>>();
+    protected HashMap<String, QuadCollection> quads = new HashMap<String, QuadCollection>();
+    protected HashMap<String, ArrayList<QuadLinkage>> quadLinks = new HashMap<String, ArrayList<QuadLinkage>>();
 
-    private boolean slim = false;
+    protected boolean slim = false;
 
     public BodyPartModels(UUID playerID)
     {
@@ -33,8 +36,28 @@ public class BodyPartModels
 
         setupBackModels();
     }
+    
+    public ArrayList<QuadLinkage> getQuadLinks(String position)
+    {
+        if (!quadLinks.containsKey(position))
+            quadLinks.put(position, new ArrayList<QuadLinkage>());
 
-    private void setupBodyModels()
+        return quadLinks.get(position);
+    }
+    
+    protected void addQuadLink(String position, QuadLinkage link)
+    {
+        getQuadLinks(position).add(link);
+    }
+
+    public void transferQuadLinks(String position, ExtendableModelRenderer model)
+    {
+        for (QuadLinkage link : getQuadLinks(position))
+            if (!model.hasQuadLinkage(link))
+                model.addQuadLinkage(link);
+    }
+
+    protected void setupBodyModels()
     {
         ExtendableModelRenderer body = new ExtendableModelRenderer(GenericLimbNames.body);
         GenericTextureValues.addGenericBodyLayers(body);
@@ -55,7 +78,7 @@ public class BodyPartModels
         addModel(BodyPartModelNames.shortBody, shortbody);
     }
 
-    private void setupArmModels()
+    protected void setupArmModels()
     {
         ExtendableModelRenderer rightArm = new ExtendableModelRenderer(GenericLimbNames.rightArm);
         GenericTextureValues.addGenericRightArmLayers(rightArm);
@@ -156,11 +179,11 @@ public class BodyPartModels
 
         Quad larmConnector = new Quad(new Vec3(0, 0, 0), new Vec3(0, 0, 0),new Vec3(0, 0, 0),new Vec3(0, 0, 0));
         Quad rarmConnector = new Quad(new Vec3(0, 0, 0), new Vec3(0, 0, 0),new Vec3(0, 0, 0),new Vec3(0, 0, 0));
-        getModel(GenericLimbNames.body).addQuadLinkage(new QuadLinkage(larmConnector, Quad.QuadVertex.TopLeft, new Vec3(1, 0, 0.5)));
-        getModel(GenericLimbNames.body).addQuadLinkage(new QuadLinkage(larmConnector, Quad.QuadVertex.TopRight, new Vec3(1, 1, 0.5)));
+        addQuadLink(BodyPartNames.bodyPosition, new QuadLinkage(larmConnector, Quad.QuadVertex.TopLeft, new Vec3(1, 0, 0.5)));
+        addQuadLink(BodyPartNames.bodyPosition, new QuadLinkage(larmConnector, Quad.QuadVertex.TopRight, new Vec3(1, 1, 0.5)));
 
-        getModel(GenericLimbNames.body).addQuadLinkage(new QuadLinkage(rarmConnector, Quad.QuadVertex.TopLeft, new Vec3(0, 0, 0.5)));
-        getModel(GenericLimbNames.body).addQuadLinkage(new QuadLinkage(rarmConnector, Quad.QuadVertex.BottomLeft, new Vec3(0, 1, 0.5)));
+        addQuadLink(BodyPartNames.bodyPosition, new QuadLinkage(rarmConnector, Quad.QuadVertex.TopLeft, new Vec3(0, 0, 0.5)));
+        addQuadLink(BodyPartNames.bodyPosition, new QuadLinkage(rarmConnector, Quad.QuadVertex.BottomLeft, new Vec3(0, 1, 0.5)));
 
         getModel(GenericLimbNames.leftArm).addQuadLinkage(new QuadLinkage(larmConnector, Quad.QuadVertex.BottomLeft, new Vec3(0, 1, 0.5)));
         getModel(GenericLimbNames.leftArm).getChildren().get(0).addQuadLinkage(new QuadLinkage(larmConnector, Quad.QuadVertex.BottomRight, new Vec3(0, 0.5, 0.5)));
@@ -178,11 +201,11 @@ public class BodyPartModels
         setupArmOptions();
     }
 
-    private void setupArmOptions()
+    protected void setupArmOptions()
     {
     }
 
-    private void setupHeadModels()
+    protected void setupHeadModels()
     {
         defaultResizeModule neckResizer = new defaultResizeModule(9, new Vec3(0, -1, 0), new Vec3(0.5, 1, 0.5), new Vec3(8, 8, 8), new Vec3(0.5, -1, 0.5));
 
@@ -269,14 +292,14 @@ public class BodyPartModels
         addReference(BodyPartModelNames.FPjawModel, BodyPartModelNames.FPjawModelLower, FPjawPart);
     }
 
-    private void setupBackModels()
+    protected void setupBackModels()
     {
         setupWingModels();
         setupInsectWingModels();
         setupJetModels();
     }
 
-    private void setupJetModels()
+    protected void setupJetModels()
     {
         defaultResizeModule jet = new defaultResizeModule(new Vec3(0.1, 0.1, 4));
 
@@ -356,7 +379,7 @@ public class BodyPartModels
         addReference(BodyPartModelNames.jetRight, BodyPartModelNames.jetRightFlame, jetFlameRight);
     }
 
-    private void setupWingModels()
+    protected void setupWingModels()
     {
         defaultResizeModule wingTop = new defaultResizeModule(new Vec3(16, 0.5, 1));
         defaultResizeModule lwingTop = new defaultResizeModule(new Vec3(-16, 0.5, 1));
@@ -481,7 +504,7 @@ public class BodyPartModels
         addQuadCollection(BodyPartModelNames.wingquad, wingQuads);
     }
 
-    private void setupInsectWingModels()
+    protected void setupInsectWingModels()
     {
         defaultResizeModule wingTop = new defaultResizeModule(new Vec3(16, 0.25, 0.25));
         defaultResizeModule lwingTop = new defaultResizeModule(new Vec3(-16, 0.25, 0.25));
@@ -546,13 +569,13 @@ public class BodyPartModels
         addQuadCollection(BodyPartModelNames.insectQuads, wingQuads);
     }
 
-    private void setupTeethModels()
+    protected void setupTeethModels()
     {
         setupFlatTeethModels();
         setupSharpTeethModels();
     }
 
-    private void setupFlatTeethModels()
+    protected void setupFlatTeethModels()
     {
         // Create row of top teeth
         defaultResizeModule flatToothResizer = QiResizers.getTeethResizer(8, 8f, 1, 0.1f);
@@ -651,7 +674,7 @@ public class BodyPartModels
         addModel(BodyPartModelNames.FPflatToothLowerModel, FPflatToothPart);
     }
 
-    private void setupSharpTeethModels()
+    protected void setupSharpTeethModels()
     {
         // Create row of top teeth
         defaultResizeModule ToothResizer = QiResizers.getTeethResizer(8, 7.9f, 0.5f, 0.1f);
@@ -864,7 +887,7 @@ public class BodyPartModels
         addModel(BodyPartModelNames.FPsharpToothLowerModel, FPToothPart);
     }
 
-    private void setupLegModels()
+    protected void setupLegModels()
     {
         defaultResizeModule reverseJointResizer = new defaultResizeModule(2, new Vec3(0, 1, 0), new Vec3(0.5, 1, 1), new Vec3(3.98, 10, 3.98), new Vec3(0.5, 1, 0));
         defaultResizeModule footResizer = new defaultResizeModule(new Vec3(4, 2, 4));
@@ -920,20 +943,20 @@ public class BodyPartModels
 
         footResizer = new defaultResizeModule(new Vec3(4, 2, 4));
         ExtendableModelRenderer leftFootModel = new ExtendableModelRenderer( BodyPartModelNames.footLeftModel);
-        leftFootModel.addLayer(new UVPair(GenericTextureValues.leftLeg.u(), GenericTextureValues.leftLeg.u() + 10), GenericTextureValues.skin_Size, 0.0F, "PLAYERSKIN");
-        leftFootModel.addLayer(new UVPair(GenericTextureValues.leftPants.u(), GenericTextureValues.leftPants.u() + 10), GenericTextureValues.skin_Size, 0.5F, "PLAYERSKIN");
-        leftFootModel.addLayer(new UVPair(GenericTextureValues.leftLegArmor.u(), GenericTextureValues.leftLegArmor.u() + 10), GenericTextureValues.armor_Size, 0.512F, "LEGARMOR");
-        leftFootModel.addLayer(new UVPair(GenericTextureValues.leftLegArmor.u(), GenericTextureValues.leftLegArmor.u() + 10), GenericTextureValues.armor_Size, 1.0F, "FOOTARMOR");
+        leftFootModel.addLayer(new UVPair(GenericTextureValues.leftLeg.u(), GenericTextureValues.leftLeg.v() + 10), GenericTextureValues.skin_Size, 0.0F, "PLAYERSKIN");
+        leftFootModel.addLayer(new UVPair(GenericTextureValues.leftPants.u(), GenericTextureValues.leftPants.v() + 10), GenericTextureValues.skin_Size, 0.5F, "PLAYERSKIN");
+        leftFootModel.addLayer(new UVPair(GenericTextureValues.leftLegArmor.u(), GenericTextureValues.leftLegArmor.v() + 10), GenericTextureValues.armor_Size, 0.512F, "LEGARMOR");
+        leftFootModel.addLayer(new UVPair(GenericTextureValues.leftLegArmor.u(), GenericTextureValues.leftLegArmor.v() + 10), GenericTextureValues.armor_Size, 1.0F, "FOOTARMOR");
         leftFootModel.setPos(0.75F, 1F, 0.5F);
         leftFootModel.setRotationPoint(new Vec3(0.5D, 1D, 0.5D));
         leftFootModel.extend(footResizer);
 
         footResizer = new defaultResizeModule(new Vec3(4, 2, 4));
         ExtendableModelRenderer rightFootModel = new ExtendableModelRenderer(BodyPartModelNames.footRightModel);
-        rightFootModel.addLayer(new UVPair(GenericTextureValues.rightLeg.u(), GenericTextureValues.rightLeg.u() + 10), GenericTextureValues.skin_Size, 0.0F, "PLAYERSKIN");
-        rightFootModel.addLayer(new UVPair(GenericTextureValues.rightPants.u(), GenericTextureValues.rightPants.u() + 10), GenericTextureValues.skin_Size, 0.5F, "PLAYERSKIN");
-        rightFootModel.addLayer(new UVPair(GenericTextureValues.rightLegArmor.u(), GenericTextureValues.rightLegArmor.u() + 10), GenericTextureValues.armor_Size, 0.512F, "LEGARMOR", true);
-        rightFootModel.addLayer(new UVPair(GenericTextureValues.rightLegArmor.u(), GenericTextureValues.rightLegArmor.u() + 10), GenericTextureValues.armor_Size, 1.0F, "FOOTARMOR", true);
+        rightFootModel.addLayer(new UVPair(GenericTextureValues.rightLeg.u(), GenericTextureValues.rightLeg.v() + 10), GenericTextureValues.skin_Size, 0.0F, "PLAYERSKIN");
+        rightFootModel.addLayer(new UVPair(GenericTextureValues.rightPants.u(), GenericTextureValues.rightPants.v() + 10), GenericTextureValues.skin_Size, 0.5F, "PLAYERSKIN");
+        rightFootModel.addLayer(new UVPair(GenericTextureValues.rightLegArmor.u(), GenericTextureValues.rightLegArmor.v() + 10), GenericTextureValues.armor_Size, 0.512F, "LEGARMOR", true);
+        rightFootModel.addLayer(new UVPair(GenericTextureValues.rightLegArmor.u(), GenericTextureValues.rightLegArmor.v() + 10), GenericTextureValues.armor_Size, 1.0F, "FOOTARMOR", true);
         rightFootModel.setPos(0.25F, 1F, 0.5F);
         rightFootModel.setRotationPoint(new Vec3(0.5D, 1D, 0.5D));
         rightFootModel.extend(footResizer);
@@ -1160,6 +1183,15 @@ public class BodyPartModels
     public ExtendableModelRenderer getModel(String ID)
     {
         return models.get(ID);
+    }
+
+    // Returns the specified model
+    public ExtendableModelRenderer getModel(String ID, String position)
+    {
+        ExtendableModelRenderer model = models.get(ID);
+        transferQuadLinks(position, model);
+
+        return model;
     }
 
     // Returns the specified quad

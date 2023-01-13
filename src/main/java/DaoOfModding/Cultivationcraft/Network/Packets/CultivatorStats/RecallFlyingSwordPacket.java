@@ -80,7 +80,7 @@ public class RecallFlyingSwordPacket extends Packet
     }
 
     // Process received packet on the Server
-    private void processServerPacket()
+    protected void processServerPacket()
     {
         PacketHandler.sendRecallFlyingToClient(recallOn, owner);
 
@@ -90,7 +90,7 @@ public class RecallFlyingSwordPacket extends Packet
         processPacket(ownerEntity);
     }
 
-    private void processClientPacket()
+    protected void processClientPacket()
     {
         // Grab the player entity based on the read UUID
         Player ownerEntity = Minecraft.getInstance().level.getPlayerByUUID(owner);
@@ -100,7 +100,7 @@ public class RecallFlyingSwordPacket extends Packet
     }
 
     // Process received packet
-    private void processPacket(Player ownerEntity)
+    protected void processPacket(Player ownerEntity)
     {
         // Set the player's flying sword recall to the specified value
         CultivatorStats.getCultivatorStats(ownerEntity).setRecall(recallOn);

@@ -18,9 +18,9 @@ import net.minecraftforge.event.TickEvent;
 
 public class FloatTechnique extends Technique
 {
-    private boolean jumpPressed = false;
+    protected boolean jumpPressed = false;
 
-    private PlayerPose floating = new PlayerPose();
+    protected PlayerPose floating = new PlayerPose();
 
     public FloatTechnique()
     {

@@ -88,7 +88,7 @@ public class PlayerStatControl
         PlayerHealthManager.updateFoodStats(player);
     }
 
-    private void applyStats(Player player)
+    protected void applyStats(Player player)
     {
         if (healthModifier != null)
             player.getAttribute(Attributes.MAX_HEALTH).removeModifier(healthModifier);

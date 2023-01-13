@@ -9,7 +9,7 @@ import net.minecraft.world.MenuProvider;
 
 public class FlyingSwordContainerProvider implements MenuProvider
 {
-    private ServerPlayer owner;
+    protected ServerPlayer owner;
 
     public FlyingSwordContainerProvider(ServerPlayer player)
     {

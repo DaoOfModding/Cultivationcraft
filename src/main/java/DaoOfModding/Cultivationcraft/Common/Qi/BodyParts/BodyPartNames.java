@@ -101,10 +101,10 @@ public class BodyPartNames
     public static final String backSubPosition = "BACK";
 
 
-    private static ArrayList<BodyPart> parts = new ArrayList<BodyPart>();
-    private static ArrayList<BodyPartOption> options = new ArrayList<BodyPartOption>();
-    private static HashMap<String, String> displayNames = new HashMap<String, String>();
-    private static HashMap<String, HashMap<String, String>> subPartDisplayNames = new HashMap<String, HashMap<String, String>>();
+    protected static ArrayList<BodyPart> parts = new ArrayList<BodyPart>();
+    protected static ArrayList<BodyPartOption> options = new ArrayList<BodyPartOption>();
+    protected static HashMap<String, String> displayNames = new HashMap<String, String>();
+    protected static HashMap<String, HashMap<String, String>> subPartDisplayNames = new HashMap<String, HashMap<String, String>>();
 
     public static void init()
     {
@@ -138,7 +138,7 @@ public class BodyPartNames
         setupLegParts();
     }
 
-    private static void setupBodyOptions()
+    protected static void setupBodyOptions()
     {
         BodyPartOption reinforceBones = new BodyPartOption(reinforceBonePart, bodyPosition, boneSubPosition,  "cultivationcraft.gui.generic.reinforce", 1000);
         reinforceBones.addTextureChange(TextureList.bone, new ResourceLocation(Cultivationcraft.MODID, "textures/models/bone/bone.png"));
@@ -152,7 +152,8 @@ public class BodyPartNames
         setupBackOptions();
 
 
-        BodyPartOption longneck = new BodyPartOption(longNeckPart, bodyPosition, locationSubPosition, "cultivationcraft.gui.headpart.longneck", 1000);
+        // TODO - Disabled longneck for the moment as it's buggy and has no point
+        /*BodyPartOption longneck = new BodyPartOption(longNeckPart, bodyPosition, locationSubPosition, "cultivationcraft.gui.headpart.longneck", 1000);
         longneck.addModel(BodyPartModelNames.longNeckModel);
 
         BodyPartLocation longneckLocation = new BodyPartLocation(headPosition, basePosition, BodyPartModelNames.longNeckModelEnd);
@@ -162,11 +163,10 @@ public class BodyPartNames
         longneck.addNeededPosition(BodyPartNames.headPosition, BodyPartNames.basePosition);
         longneck.getStatChanges().setStat(StatIDs.weight, DefaultPlayerBodyPartWeights.headWeight * 0.5f);
 
-        // TODO - Disabled longneck for the moment as it's buggy and has no point
-        //addOption(longneck);
+        addOption(longneck);*/
     }
 
-    private static void setupStomachOptions()
+    protected static void setupStomachOptions()
     {
         ExpandingStomachPart expandingStomach = new ExpandingStomachPart(expandingStomachPart, bodyPosition, stomachSubPosition,  "cultivationcraft.gui.bodypart.stomach.expanding", 1000);
         expandingStomach.addUniqueTag(BodyPartTags.hunger);
@@ -191,7 +191,7 @@ public class BodyPartNames
         addOption(herbivoreStomach);
     }
 
-    private static void setupSkinOptions()
+    protected static void setupSkinOptions()
     {
         BodyPartOption rubberSkin = new BodyPartOption(rubberSkinPart, bodyPosition, skinSubPosition,  "cultivationcraft.gui.bodypart.skin.rubber", 1000);
         //rubberSkin.addTextureChange(TextureList.skin, new ResourceLocation(Cultivationcraft.MODID, "textures/models/bone/bone.png"));
@@ -215,7 +215,7 @@ public class BodyPartNames
     }
 
 
-    private static void setupBackOptions()
+    protected static void setupBackOptions()
     {
         BodyPartOption addWings = new BodyPartOption(wingPart, bodyPosition, backSubPosition,  "cultivationcraft.gui.bodypart.back.wings", 1000);
         addWings.addModel(BodyPartModelNames.rwingUpperArmModel);
@@ -249,7 +249,7 @@ public class BodyPartNames
         addOption(jets);
     }
 
-    private static void setupBodyParts()
+    protected static void setupBodyParts()
     {
         BodyPart reinforce = new BodyPart(reinforcedBodyPart, bodyPosition, "cultivationcraft.gui.generic.reinforce", 1000);
         reinforce.addModel(GenericLimbNames.body);
@@ -272,7 +272,7 @@ public class BodyPartNames
         addPart(shortBody);
     }
 
-    private static void setupHeadParts()
+    protected static void setupHeadParts()
     {
         BodyPart jaw = new BodyPart(jawPart, headPosition, "cultivationcraft.gui.headpart.jaw", 1000);
         jaw.addModel(BodyPartModelNames.jawModel);
@@ -283,7 +283,7 @@ public class BodyPartNames
         addPart(jaw);
     }
 
-    private static void setupArmParts()
+    protected static void setupArmParts()
     {
         BodyPart reinforce = new BodyPart(reinforcedArmPart, armPosition, "cultivationcraft.gui.generic.reinforce", 1000);
         reinforce.addModel(GenericLimbNames.leftArm);
@@ -344,7 +344,7 @@ public class BodyPartNames
         addOption(headArms);
     }
 
-    private static void setupHeadOptions()
+    protected static void setupHeadOptions()
     {
         addOption(new BodyPartOption(startingEyesPart, headPosition, eyeSubPosition, "cultivationcraft.gui.headpart.eye.qisight", 1000));
 
@@ -386,7 +386,7 @@ public class BodyPartNames
         addOption(frontHead);
     }
 
-    private static void setupLegParts()
+    protected static void setupLegParts()
     {
         BodyPart feetpart = new BodyPart(feetPart, legPosition, "cultivationcraft.gui.legpart.feet", 1000);
         feetpart.addModel(BodyPartModelNames.footLeftModel);

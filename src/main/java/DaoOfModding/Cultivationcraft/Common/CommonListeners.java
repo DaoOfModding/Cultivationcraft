@@ -217,7 +217,7 @@ public class CommonListeners
         cancelPlacement(event);
     }
 
-    private static void cancelPlacement(PlayerInteractEvent event)
+    protected static void cancelPlacement(PlayerInteractEvent event)
     {
         // Cancel placing item if the SkillHotbar is active
         if (event.getLevel().isClientSide())

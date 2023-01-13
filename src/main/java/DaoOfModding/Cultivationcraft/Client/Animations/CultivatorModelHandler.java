@@ -19,7 +19,7 @@ import java.util.*;
 
 public class CultivatorModelHandler
 {
-    private static HashMap<UUID, BodyPartModels> models = new HashMap<UUID, BodyPartModels>();
+    protected static HashMap<UUID, BodyPartModels> models = new HashMap<UUID, BodyPartModels>();
 
     public static BodyPartModels getPlayerModels(UUID playerID)
     {
@@ -98,7 +98,7 @@ public class CultivatorModelHandler
         return connectionList;
     }
 
-    private static BodyPart getPartAtLocation(Collection<BodyPart> parts, String position, String subPosition, IBodyModifications modifications)
+    protected static BodyPart getPartAtLocation(Collection<BodyPart> parts, String position, String subPosition, IBodyModifications modifications)
     {
         if (subPosition.equalsIgnoreCase(BodyPartNames.basePosition))
             for (BodyPart part : parts)
@@ -112,7 +112,7 @@ public class CultivatorModelHandler
         return null;
     }
 
-    private static BodyPartLocation getPartConnection(BodyPart part, ArrayList<BodyPartLocation> partLocations, Collection<BodyPart> parts, IBodyModifications modifications)
+    protected static BodyPartLocation getPartConnection(BodyPart part, ArrayList<BodyPartLocation> partLocations, Collection<BodyPart> parts, IBodyModifications modifications)
     {
         // If this BodyPart has an associated connection
         BodyPartLocation location = getLocation(part, partLocations);
@@ -212,7 +212,7 @@ public class CultivatorModelHandler
 
         for (String modelID : part.getModelIDs())
         {
-            ExtendableModelRenderer modelPart = models.getModel(modelID);
+            ExtendableModelRenderer modelPart = models.getModel(modelID, part.getPosition());
 
             if (connectTo.rotationDepth > 0)
                 modelPart.setRotationDepth(connectTo.rotationDepth);
@@ -262,9 +262,9 @@ public class CultivatorModelHandler
                 {
                     // Add to the body if the base part is a body part, otherwise reference the base modelID
                     if (part.getPosition().equalsIgnoreCase(BodyPartNames.bodyPosition))
-                        model.addLimb(optionModels, models.getModel(optionModels));
+                        model.addLimb(optionModels, models.getModel(optionModels, option.getPosition()));
                     else
-                        model.addLimb(optionModels, models.getModel(optionModels), modelID);
+                        model.addLimb(optionModels, models.getModel(optionModels, option.getPosition()), modelID);
 
                     for (Map.Entry<String, ExtendableModelRenderer> entry : models.getReferences(optionModels).entrySet())
                         model.addLimbReference(entry.getKey(), entry.getValue());
@@ -298,7 +298,7 @@ public class CultivatorModelHandler
 
         for (String modelID : part.getFirstPersonModelIDs())
         {
-            ExtendableModelRenderer modelPart = models.getModel(modelID);
+            ExtendableModelRenderer modelPart = models.getModel(modelID, part.getPosition());
             model.addFirstPersonLimb(modelID, modelPart);
 
             for (Map.Entry<String, ExtendableModelRenderer> entry : models.getReferences(modelID).entrySet())
@@ -317,7 +317,7 @@ public class CultivatorModelHandler
                 {
                     for (String optionModels : optionModelCollections.getValue())
                     {
-                        model.addLimb(optionModels, models.getModel(optionModels), baseModelID);
+                        model.addLimb(optionModels, models.getModel(optionModels, option.getPosition()), baseModelID);
 
                         for (Map.Entry<String, ExtendableModelRenderer> entry : models.getReferences(optionModels).entrySet())
                             model.addLimbReference(entry.getKey(), entry.getValue());

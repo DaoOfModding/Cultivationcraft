@@ -13,8 +13,8 @@ import net.minecraft.resources.ResourceLocation;
 
 public class TechniqueIcons
 {
-    private static final ResourceLocation HIGHLIGHT = new ResourceLocation(Cultivationcraft.MODID, "textures/techniques/icons/highlight.png");
-    private static final ResourceLocation COOLDOWN = new ResourceLocation(Cultivationcraft.MODID, "textures/techniques/icons/cooldown.png");
+    protected static final ResourceLocation HIGHLIGHT = new ResourceLocation(Cultivationcraft.MODID, "textures/techniques/icons/highlight.png");
+    protected static final ResourceLocation COOLDOWN = new ResourceLocation(Cultivationcraft.MODID, "textures/techniques/icons/cooldown.png");
 
 
     // Loop through all player icons and draw them from the supplied coordinates

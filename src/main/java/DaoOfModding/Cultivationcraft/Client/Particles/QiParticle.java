@@ -89,7 +89,7 @@ public class QiParticle extends TextureSheetParticle
     @OnlyIn(Dist.CLIENT)
     public static class Factory implements ParticleProvider<QiParticleData>
     {
-        private final SpriteSet sprites;
+        protected final SpriteSet sprites;
 
         @Override
         public Particle createParticle(QiParticleData particleData, ClientLevel world, double xPos, double yPos, double zPos, double xVelocity, double yVelocity, double zVelocity)

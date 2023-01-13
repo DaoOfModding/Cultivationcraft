@@ -10,13 +10,13 @@ import java.util.concurrent.TimeUnit;
 
 public class FlyingSwordBind implements IFlyingSwordBind
 {
-    private long bindTimeMax = TimeUnit.SECONDS.toNanos(10);
+    protected long bindTimeMax = TimeUnit.SECONDS.toNanos(10);
 
-    private boolean bound = false;
+    protected boolean bound = false;
 
-    private UUID owner = null;
-    private UUID bindingPlayer = null;
-    private long time = 0;
+    protected UUID owner = null;
+    protected UUID bindingPlayer = null;
+    protected long time = 0;
 
     public boolean isBound()
     {

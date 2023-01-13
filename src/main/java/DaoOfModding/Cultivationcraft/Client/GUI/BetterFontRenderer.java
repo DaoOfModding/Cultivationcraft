@@ -19,7 +19,7 @@ public class BetterFontRenderer
         }
     }
 
-    private static ArrayList<String> getNewLines(String string)
+    protected static ArrayList<String> getNewLines(String string)
     {
         ArrayList<String> newLined = new ArrayList<>();
 
@@ -40,7 +40,7 @@ public class BetterFontRenderer
             y += wordwrapSingleLine(font, stack, newString, x, y, color, width);
     }
 
-    private static float wordwrapSingleLine(Font font, PoseStack stack, String string, float x, float y, int color, int width)
+    protected static float wordwrapSingleLine(Font font, PoseStack stack, String string, float x, float y, int color, int width)
     {
         int line = 0;
 

@@ -41,18 +41,18 @@ public class KeybindingControl
 {
     public static KeyMapping[] keyBindings;
 
-    private static boolean usePressed = false;
+    protected static boolean usePressed = false;
 
     public static double x = 0;
     public static double y = 0;
     public static double z = 0;
 
 
-    private static boolean overwriteUp = false;
-    private static boolean overwriteDown = false;
-    private static boolean overwriteLeft = false;
-    private static boolean overwriteRight = false;
-    private static boolean overwriteJump = false;
+    protected static boolean overwriteUp = false;
+    protected static boolean overwriteDown = false;
+    protected static boolean overwriteLeft = false;
+    protected static boolean overwriteRight = false;
+    protected static boolean overwriteJump = false;
 
     public static void init(RegisterKeyMappingsEvent event)
     {
@@ -152,7 +152,7 @@ public class KeybindingControl
 
     // Set keyBindings to false if their overwrite has been set
     // Otherwise set them to the state of the key (to avoid issues with multiple key presses at the same time)
-    private static void handleKeyOverrides()
+    protected static void handleKeyOverrides()
     {
         if (overwriteUp)
             Minecraft.getInstance().options.keyUp.setDown(false);
@@ -193,7 +193,7 @@ public class KeybindingControl
         return InputConstants.isKeyDown(Minecraft.getInstance().getWindow().getWindow(), key.getKey().getValue());
     }
 
-    private static void handleMovementPartOverrides()
+    protected static void handleMovementPartOverrides()
     {
         // Tick through all body modifications on the player
         IBodyModifications modifications = BodyModifications.getBodyModifications(genericClientFunctions.getPlayer());
@@ -205,7 +205,7 @@ public class KeybindingControl
                 handlePartMovementOverride((MovementOverridePartOption) part);
     }
 
-    private static void handleMovementTechOverrides()
+    protected static void handleMovementTechOverrides()
     {
         // Get all cultivator techniques and check if any of them are active movement overrides
         int slot = CultivatorControl.getMovementOverride(genericClientFunctions.getPlayer());
@@ -218,7 +218,7 @@ public class KeybindingControl
         handleTechMovementOverride(movementTech);
     }
 
-    private static void handleTechMovementOverride(MovementOverrideTechnique movementTech)
+    protected static void handleTechMovementOverride(MovementOverrideTechnique movementTech)
     {
         if (isDown(Minecraft.getInstance().options.keyUp))
             if (movementTech.overwriteForward())
@@ -241,7 +241,7 @@ public class KeybindingControl
                 overwriteJump = true;
     }
 
-    private static void handlePartMovementOverride(MovementOverridePart movementPart)
+    protected static void handlePartMovementOverride(MovementOverridePart movementPart)
     {
         if (isDown(Minecraft.getInstance().options.keyUp))
             if (movementPart.overwriteForward())
@@ -264,7 +264,7 @@ public class KeybindingControl
                 overwriteJump = true;
     }
 
-    private static void handlePartMovementOverride(MovementOverridePartOption movementPart)
+    protected static void handlePartMovementOverride(MovementOverridePartOption movementPart)
     {
         if (isDown(Minecraft.getInstance().options.keyUp))
             if (movementPart.overwriteForward())

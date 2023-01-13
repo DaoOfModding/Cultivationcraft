@@ -68,7 +68,7 @@ public class keypressPacket extends Packet
     }
 
     // Process received packet on the Server
-    private void processPacket(ServerPlayer sender)
+    protected void processPacket(ServerPlayer sender)
     {
         ServerItemControl.handleKeyPress(keyPress, sender);
     }

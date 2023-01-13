@@ -20,7 +20,7 @@ import java.util.Map;
 
 public class StatScreen extends GenericTabScreen
 {
-    private String statString;
+    protected String statString;
 
     protected int statTextX = 100;
     protected int statTextY = 45;

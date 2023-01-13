@@ -18,7 +18,7 @@ public class Freeze
                         Freeze(world, new BlockPos(center.getX() + x, center.getY() + y, center.getZ() + z), forTicks);
     }
 
-    private static boolean tryExtinguish(World world, BlockPos pos)
+    protected static boolean tryExtinguish(World world, BlockPos pos)
     {
         if (world.getBlockState(pos).getBlock() instanceof FireBlock)
         {
@@ -90,7 +90,7 @@ public class Freeze
     }
 
     // Freeze the block at the specified location
-    private static void FreezeBlock(World world, BlockPos pos, int forTicks, Direction dir, boolean client)
+    protected static void FreezeBlock(World world, BlockPos pos, int forTicks, Direction dir, boolean client)
     {
         // Get the block and tile entity at the freeze location
         BlockState toFreeze = world.getBlockState(pos);

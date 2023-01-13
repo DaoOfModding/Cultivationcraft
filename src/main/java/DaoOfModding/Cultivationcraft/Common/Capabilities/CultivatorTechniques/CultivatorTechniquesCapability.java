@@ -15,8 +15,8 @@ public class CultivatorTechniquesCapability implements ICapabilityProvider, INBT
 {
     public static final Capability<ICultivatorTechniques> INSTANCE = CapabilityManager.get(new CapabilityToken<>() {});
 
-    private final ICultivatorTechniques backend = new CultivatorTechniques();
-    private final LazyOptional<ICultivatorTechniques> optionalData = LazyOptional.of(() -> backend);
+    protected final ICultivatorTechniques backend = new CultivatorTechniques();
+    protected final LazyOptional<ICultivatorTechniques> optionalData = LazyOptional.of(() -> backend);
 
     @NotNull
     @Override

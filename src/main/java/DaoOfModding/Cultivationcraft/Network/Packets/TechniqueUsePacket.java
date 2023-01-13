@@ -14,9 +14,9 @@ import java.util.function.Supplier;
 
 public class TechniqueUsePacket extends Packet
 {
-    private int slotNumber;
-    private boolean isKeyDown;
-    private Player player;
+    protected int slotNumber;
+    protected boolean isKeyDown;
+    protected Player player;
 
     public TechniqueUsePacket(int slot, boolean keyDown)
     {
@@ -77,7 +77,7 @@ public class TechniqueUsePacket extends Packet
     }
 
     // Process received packet on the Server
-    private void processPacket(ServerPlayer sender)
+    protected void processPacket(ServerPlayer sender)
     {
         // Send the key press to the technique used
         Technique tech = CultivatorTechniques.getCultivatorTechniques(player).getTechnique(slotNumber);

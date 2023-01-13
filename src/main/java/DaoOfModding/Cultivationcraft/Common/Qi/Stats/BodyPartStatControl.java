@@ -9,7 +9,7 @@ import java.util.UUID;
 
 public class BodyPartStatControl
 {
-    private static HashMap<UUID, PlayerStatControl> stats = new HashMap<UUID, PlayerStatControl>();
+    protected static HashMap<UUID, PlayerStatControl> stats = new HashMap<UUID, PlayerStatControl>();
 
     public static void addStats(UUID playerID, PlayerStatModifications statsToAdd)
     {

@@ -13,7 +13,7 @@ import java.util.UUID;
 
 public class Physics
 {
-    private static HashMap<UUID, Double> fallSpeed = new HashMap<>();
+    protected static HashMap<UUID, Double> fallSpeed = new HashMap<>();
 
     // PoseHandlers as client only
     public static Vec3 getDelta(Player player)

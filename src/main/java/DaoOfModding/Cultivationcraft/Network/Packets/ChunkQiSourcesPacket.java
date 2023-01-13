@@ -88,7 +88,7 @@ public class ChunkQiSourcesPacket extends Packet
     }
 
     // Set this packet to try and process, will repeat until successful
-    private void setToProcess()
+    protected void setToProcess()
     {
         AddChunkQiSourceToClient.addPacket(this);
     }

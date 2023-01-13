@@ -5,7 +5,7 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 public class BakedModelUtils
 {
 /*
-    private static BakedQuad buildQuad(Vector3f[] vertices, TextureAtlasSprite texture, Direction face)
+    protected static BakedQuad buildQuad(Vector3f[] vertices, TextureAtlasSprite texture, Direction face)
     {
         BakedQuadBuilder build = new BakedQuadBuilder(texture);
         build.setQuadOrientation(face);
@@ -27,7 +27,7 @@ public class BakedModelUtils
         return build.build();
     }
 
-    private static void makeVertex(BakedQuadBuilder build, Vector3f normal, Vector3f pos, float u, float v, TextureAtlasSprite texture, Vector4f color)
+    protected static void makeVertex(BakedQuadBuilder build, Vector3f normal, Vector3f pos, float u, float v, TextureAtlasSprite texture, Vector4f color)
     {
         u = texture.getInterpolatedU(u);
         v = texture.getInterpolatedV(v);
@@ -42,7 +42,7 @@ public class BakedModelUtils
         build.put(5, 0f);
     }
 
-    private static Vector3f[] getVertices(BakedQuad Quad)
+    protected static Vector3f[] getVertices(BakedQuad Quad)
     {
         int[] vertexData = Quad.getVertexData();
 
@@ -104,7 +104,7 @@ public class BakedModelUtils
     }
 
     // Functions to UnInterpolate texture values from TextureAtlasSprites
-    private static int getUnInterpolatedV(TextureAtlasSprite texture, float v)
+    protected static int getUnInterpolatedV(TextureAtlasSprite texture, float v)
     {
         float f = texture.getV1() - texture.getV0();
         float result = (((v - texture.getV0()) * 16) / f);
@@ -113,7 +113,7 @@ public class BakedModelUtils
         return (int)(result + 0.1);
     }
 
-    private static int getUnInterpolatedU(TextureAtlasSprite texture, float u)
+    protected static int getUnInterpolatedU(TextureAtlasSprite texture, float u)
     {
         float f = texture.getU1() - texture.getU0();
         float result = (((u - texture.getU0()) * 16) / f);

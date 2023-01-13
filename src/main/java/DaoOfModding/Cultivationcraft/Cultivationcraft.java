@@ -26,7 +26,7 @@ public class Cultivationcraft {
     // Directly reference a log4j logger.
     public static final Logger LOGGER = LogManager.getLogger();
 
-    private static final ModList MOD_LIST = ModList.get();
+    protected static final ModList MOD_LIST = ModList.get();
 
     public Cultivationcraft()
     {
@@ -38,7 +38,7 @@ public class Cultivationcraft {
         Register.init(modEventBus);
     }
 
-    private void commonInit(final FMLCommonSetupEvent event)
+    protected void commonInit(final FMLCommonSetupEvent event)
     {
         PacketHandler.init();
 
@@ -49,7 +49,7 @@ public class Cultivationcraft {
         PlayerHealthManager.setup();
     }
 
-    private void clientInit(final FMLClientSetupEvent event)
+    protected void clientInit(final FMLClientSetupEvent event)
     {
         ClientItemControl.init(event);
     }

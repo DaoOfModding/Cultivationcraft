@@ -28,7 +28,7 @@ public class GenericQiPoses
         setupSwimming();
     }
 
-    private static void setupIdle()
+    protected static void setupIdle()
     {
         Idle.addAngle(BodyPartModelNames.reverseJointLeftLegModel, new Vec3(Math.toRadians(30), 0, 0), 0);
         Idle.addAngle(BodyPartModelNames.reverseJointLeftLegLowerModel, new Vec3(Math.toRadians(-60), 0, 0), 0);
@@ -83,7 +83,7 @@ public class GenericQiPoses
         GenericPoses.addToIdle(Idle);
     }
 
-    private static void setupWalking()
+    protected static void setupWalking()
     {
         Vec3[] walkAngle = new Vec3[2];
 
@@ -166,7 +166,7 @@ public class GenericQiPoses
         GenericPoses.addToWalking(Walk);
     }
 
-    private static void setupJumping()
+    protected static void setupJumping()
     {
         GenericPoses.Jumping.addAngle(BodyPartModelNames.reverseJointLeftLegModel, new Vec3(Math.toRadians(0), Math.toRadians(0), 0), GenericPoses.jumpLegPriority, 1f, -1);
         GenericPoses.Jumping.addAngle(BodyPartModelNames.reverseJointRightLegModel, new Vec3(Math.toRadians(0), Math.toRadians(0), 0), GenericPoses.jumpLegPriority, 1f, -1);
@@ -200,7 +200,7 @@ public class GenericQiPoses
         GenericPoses.Jumping.addAngle(BodyPartModelNames.shortArmRightModel, new Vec3(Math.toRadians(-180.0D), Math.toRadians(0.0D), Math.toRadians(-30.0D)), 10, 5.0F, -1);
     }
 
-    private static void setupSwimming()
+    protected static void setupSwimming()
     {
         GenericPoses.SwimmingMoving.addAngle(BodyPartModelNames.flipperLeftModel, new Vec3(0, Math.toRadians(90), Math.toRadians(-90)), GenericPoses.swimLegPriority, 15f, 1);
         GenericPoses.SwimmingMoving.addAngle(BodyPartModelNames.flipperRightModel, new Vec3(0, Math.toRadians(-90), Math.toRadians(90)), GenericPoses.swimLegPriority, 15f, 1);
@@ -264,7 +264,7 @@ public class GenericQiPoses
         GenericPoses.SwimmingMoving.addAngle(BodyPartModelNames.hexaLowerRightLegModelThree, new Vec3(0, 0, 0), GenericPoses.swimLegPriority, 5f, 2);
     }
 
-    private static void setupHandsBehind()
+    protected static void setupHandsBehind()
     {
         HandsBehind.addAngle(GenericLimbNames.leftArm, new Vec3(Math.toRadians(30), 0, Math.toRadians(15)), GenericPoses.walkArmPriority + 2);
         HandsBehind.addAngle(GenericLimbNames.rightArm, new Vec3(Math.toRadians(30), 0, Math.toRadians(-15)), GenericPoses.walkArmPriority + 2);
@@ -273,7 +273,7 @@ public class GenericQiPoses
         HandsBehind.addAngle(GenericLimbNames.lowerRightArm, new Vec3(0, 0, Math.toRadians(-30)), GenericPoses.walkArmPriority + 2);
     }
 
-    private static void setupCrossLegs()
+    protected static void setupCrossLegs()
     {
         CrossLegs.addAngle(GenericLimbNames.leftArm, new Vec3(Math.toRadians(0), Math.toRadians(-30), 0), GenericPoses.walkArmPriority + 4);
         CrossLegs.addAngle(GenericLimbNames.rightArm, new Vec3(Math.toRadians(0), Math.toRadians(30), 0), GenericPoses.walkArmPriority + 4);

@@ -99,7 +99,7 @@ public class CultivatorTechniquesPacket extends Packet
     }
 
     // Process received packet on client
-    private void processPacket()
+    protected void processPacket()
     {
         // Get the stats for the specified player
         ICultivatorTechniques techs = CultivatorTechniques.getCultivatorTechniques(ClientItemControl.thisWorld.getPlayerByUUID(owner));
@@ -109,7 +109,7 @@ public class CultivatorTechniquesPacket extends Packet
     }
 
     // Process received packet on server
-    private void processPacketServer(Player player)
+    protected void processPacketServer(Player player)
     {
         // Get the stats for the specified player
         ICultivatorTechniques techs = CultivatorTechniques.getCultivatorTechniques(player);

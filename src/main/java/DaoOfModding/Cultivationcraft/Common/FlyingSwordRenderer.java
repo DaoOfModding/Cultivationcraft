@@ -22,8 +22,8 @@ import com.mojang.math.Vector3f;
 
 public class FlyingSwordRenderer extends EntityRenderer<FlyingSwordEntity>
 {
-    private final ItemRenderer itemRenderer;
-    private final Random random = new Random();
+    protected final ItemRenderer itemRenderer;
+    protected final Random random = new Random();
 
     public FlyingSwordRenderer(EntityRendererProvider.Context renderManagerIn)
     {

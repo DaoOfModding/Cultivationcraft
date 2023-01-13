@@ -72,7 +72,7 @@ public class ConvertToFlyingPacket extends Packet
     }
 
     // Process received packet on the Server
-    private void processPacket()
+    protected void processPacket()
     {
         // Convert the specified item to the flying item owned by the specified player entity
         FlyingSwordController.addFlyingItem(owner.getInventory().getItem(heldItem), owner.getUUID());

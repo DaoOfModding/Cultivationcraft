@@ -14,8 +14,8 @@ public class FlyingSwordBindCapability implements ICapabilityProvider, INBTSeria
 {
     public static final Capability<IFlyingSwordBind> INSTANCE = CapabilityManager.get(new CapabilityToken<>() {});
 
-    private final IFlyingSwordBind backend = new FlyingSwordBind();
-    private final LazyOptional<IFlyingSwordBind> optionalData = LazyOptional.of(() -> backend);
+    protected final IFlyingSwordBind backend = new FlyingSwordBind();
+    protected final LazyOptional<IFlyingSwordBind> optionalData = LazyOptional.of(() -> backend);
 
     @NotNull
     @Override

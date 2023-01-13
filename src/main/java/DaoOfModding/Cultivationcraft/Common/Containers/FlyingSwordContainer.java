@@ -15,7 +15,7 @@ public class FlyingSwordContainer extends BasicContainer
     public static final int FLYING_SWORD_ITEM_YPOS = 43;
     public static final int FLYING_SWORD_ITEM_XPOS = 80;
 
-    private final FlyingSwordContainerItemHandler itemStackHandler;
+    protected final FlyingSwordContainerItemHandler itemStackHandler;
 
     public static FlyingSwordContainer createContainerServerSide(int windowID, Inventory playerInventory, FlyingSwordContainerItemHandler handler)
     {
@@ -28,7 +28,7 @@ public class FlyingSwordContainer extends BasicContainer
         return new FlyingSwordContainer(windowID, playerInventory, new FlyingSwordContainerItemHandler());
     }
 
-    private FlyingSwordContainer(int windowId, Inventory playerInv, FlyingSwordContainerItemHandler handler)
+    protected FlyingSwordContainer(int windowId, Inventory playerInv, FlyingSwordContainerItemHandler handler)
     {
         super(Register.ContainerTypeFlyingSword.get(), windowId);
 
@@ -50,7 +50,7 @@ public class FlyingSwordContainer extends BasicContainer
         return getNbt("BindPercent");
     }
 
-    private float getNbt(String tag)
+    protected float getNbt(String tag)
     {
         if (itemStackHandler.getStackInSlot(0) == ItemStack.EMPTY)
             return 0;

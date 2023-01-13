@@ -13,19 +13,19 @@ import java.awt.*;
 
 public class GUIButton
 {
-    private static final ResourceLocation TEXTURE = new ResourceLocation(Cultivationcraft.MODID, "textures/gui/button.png");
+    protected static final ResourceLocation TEXTURE = new ResourceLocation(Cultivationcraft.MODID, "textures/gui/button.png");
 
     public static final int height = 11;
     public static final int baseWidth = 6;
     public int width = 6;
 
-    private static final int textureWidth = 20;
+    protected static final int textureWidth = 20;
 
-    private boolean selected = false;
-    private boolean hover = false;
+    protected boolean selected = false;
+    protected boolean hover = false;
 
-    private String name;
-    private String ID;
+    protected String name;
+    protected String ID;
 
     public GUIButton(String buttonID, String text)
     {

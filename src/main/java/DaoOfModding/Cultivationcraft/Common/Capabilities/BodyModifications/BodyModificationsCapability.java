@@ -14,8 +14,8 @@ public class BodyModificationsCapability implements ICapabilityProvider, INBTSer
 {
     public static final Capability<IBodyModifications> INSTANCE = CapabilityManager.get(new CapabilityToken<>() {});
 
-    private final IBodyModifications backend = new BodyModifications();
-    private final LazyOptional<IBodyModifications> optionalData = LazyOptional.of(() -> backend);
+    protected final IBodyModifications backend = new BodyModifications();
+    protected final LazyOptional<IBodyModifications> optionalData = LazyOptional.of(() -> backend);
 
     @NotNull
     @Override

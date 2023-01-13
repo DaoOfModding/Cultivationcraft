@@ -7,7 +7,7 @@ import net.minecraft.network.chat.Component;
 
 public class Elements
 {
-    private static ArrayList<Element> Elements = new ArrayList<Element>();
+    protected static ArrayList<Element> Elements = new ArrayList<Element>();
 
     public static int noElementID;
     public static int fireElementID;
@@ -23,7 +23,7 @@ public class Elements
         createElementRelationships();
     }
 
-    private static void createElements()
+    protected static void createElements()
     {
         noElementID = addElement(Component.translatable("cultivationcraft.elements.none").getString(), new Color(1f, 1f, 1f));
         fireElementID = addElement(Component.translatable("cultivationcraft.elements.fire").getString(), new Color(1f, 0, 0));
@@ -34,7 +34,7 @@ public class Elements
         lightningElementID = addElement(Component.translatable("cultivationcraft.elements.lightning").getString(), new Color(1f, 1f, 0));
     }
 
-    private static void createElementRelationships()
+    protected static void createElementRelationships()
     {
         // Temp modifiers for now, may look at later
         getElement(fireElementID).setAttackModifier(waterElementID, 0.5);

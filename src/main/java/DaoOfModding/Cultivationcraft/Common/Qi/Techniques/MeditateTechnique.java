@@ -47,7 +47,7 @@ public class MeditateTechnique extends MovementOverrideTechnique
     }
 
     // Increase the bodyforge progress
-    private void increaseProgress(TickEvent.PlayerTickEvent event)
+    protected void increaseProgress(TickEvent.PlayerTickEvent event)
     {
         ICultivatorStats stats = CultivatorStats.getCultivatorStats(event.player);
 

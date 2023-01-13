@@ -24,13 +24,13 @@ public class SpreadTechnique extends Technique
 {
     // TODO: Fails to load on server as it's loading ClientPlayer?
 
-    private boolean jumpPressed = false;
-    private boolean groundCheck = false;
+    protected boolean jumpPressed = false;
+    protected boolean groundCheck = false;
 
-    private PlayerPose flapUp = new PlayerPose();
-    private PlayerPose flapDown = new PlayerPose();
+    protected PlayerPose flapUp = new PlayerPose();
+    protected PlayerPose flapDown = new PlayerPose();
 
-    private PlayerPose inAir = new PlayerPose();
+    protected PlayerPose inAir = new PlayerPose();
 
     public SpreadTechnique()
     {
@@ -157,7 +157,7 @@ public class SpreadTechnique extends Technique
         }
     }
 
-    private void flapUp(Player player)
+    protected void flapUp(Player player)
     {
         if (player.isOnGround() || player.isInWater())
             groundCheck = true;
@@ -165,7 +165,7 @@ public class SpreadTechnique extends Technique
         jumpPressed = true;
     }
 
-    private void flapDown(Player player)
+    protected void flapDown(Player player)
     {
         // Don't flap if jumping off the ground
         if (groundCheck == true)
@@ -183,7 +183,7 @@ public class SpreadTechnique extends Technique
             flapUp(player);
     }
 
-    private void glide(Player player)
+    protected void glide(Player player)
     {
         player.fallDistance = 0;
 

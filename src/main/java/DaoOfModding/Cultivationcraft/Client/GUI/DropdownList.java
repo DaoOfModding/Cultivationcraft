@@ -14,7 +14,7 @@ import java.util.HashMap;
 
 public class DropdownList
 {
-    private static final ResourceLocation TEXTURE = new ResourceLocation(Cultivationcraft.MODID, "textures/gui/dropdownlist.png");
+    protected static final ResourceLocation TEXTURE = new ResourceLocation(Cultivationcraft.MODID, "textures/gui/dropdownlist.png");
 
     public static final int width = 85;
     public static final int closedHeight = 11;
@@ -26,18 +26,18 @@ public class DropdownList
     public static final int scrollBarTop = 11;
     public static final int scrollBarBottom = 51;
 
-    private static final int scrollBarSize = 9;
+    protected static final int scrollBarSize = 9;
 
-    private static final int MaxSize = 6;
+    protected static final int MaxSize = 6;
 
-    private int scrollOffset = 0;
+    protected int scrollOffset = 0;
 
     // Map String, String = Name, Value
     // Name is what the entry displays
     // Value is the data stored in the entry
-    private HashMap<String, Object> items = new HashMap<String, Object>();
+    protected HashMap<String, Object> items = new HashMap<String, Object>();
 
-    private String selected = null;
+    protected String selected = null;
 
     boolean isOpen = false;
 
@@ -233,7 +233,7 @@ public class DropdownList
     }
 
     // Draw visible list items
-    private void renderListText(PoseStack PoseStack, int xpos, int ypos, GuiComponent gui)
+    protected void renderListText(PoseStack PoseStack, int xpos, int ypos, GuiComponent gui)
     {
         int i = 0;
 

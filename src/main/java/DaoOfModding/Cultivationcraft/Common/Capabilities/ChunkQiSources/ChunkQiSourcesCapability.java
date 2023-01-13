@@ -14,8 +14,8 @@ public class ChunkQiSourcesCapability implements ICapabilityProvider, INBTSerial
     public static final Capability<IChunkQiSources> INSTANCE = CapabilityManager.get(new CapabilityToken<>() {
     });
 
-    private final IChunkQiSources backend = new ChunkQiSources();
-    private final LazyOptional<IChunkQiSources> optionalData = LazyOptional.of(() -> backend);
+    protected final IChunkQiSources backend = new ChunkQiSources();
+    protected final LazyOptional<IChunkQiSources> optionalData = LazyOptional.of(() -> backend);
 
     @NotNull
     @Override

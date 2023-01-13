@@ -22,40 +22,40 @@ import java.util.Map;
 
 public class BodyforgeScreen extends GenericTabScreen
 {
-    private DropdownList bodyParts;
-    private DropdownList bodySubParts;
+    protected DropdownList bodyParts;
+    protected DropdownList bodySubParts;
 
-    private ArrayList<GUIButton> buttons = new ArrayList<GUIButton>();
-    private GUIButton forge;
-    private GUIButton cancel;
+    protected ArrayList<GUIButton> buttons = new ArrayList<GUIButton>();
+    protected GUIButton forge;
+    protected GUIButton cancel;
 
-    private final int bodyPartListXPos = 75;
-    private final int bodyPartListYPos = 50;
+    protected final int bodyPartListXPos = 75;
+    protected final int bodyPartListYPos = 50;
 
-    private final int bodySubPartListXPos = 75;
-    private final int bodySubPartListYPos = 75;
+    protected final int bodySubPartListXPos = 75;
+    protected final int bodySubPartListYPos = 75;
 
-    private final int detailsMinXPos = 165;
-    private final int detailsMaxXPos = 250;
-    private final int detailsYPos = 50;
+    protected final int detailsMinXPos = 165;
+    protected final int detailsMaxXPos = 250;
+    protected final int detailsYPos = 50;
 
-    private int cancelXPos = 118;
-    private final int cancelYPos = 110;
+    protected int cancelXPos = 118;
+    protected final int cancelYPos = 110;
 
-    private final int buttonMinXPos = 75;
-    private final int buttonMaxXPos = 160;
+    protected final int buttonMinXPos = 75;
+    protected final int buttonMaxXPos = 160;
 
-    private final int buttonMinYPos = 100;
+    protected final int buttonMinYPos = 100;
 
-    private int forgeXPos = xSize / 2;
-    private final int forgeYPos = 150;
+    protected int forgeXPos = xSize / 2;
+    protected final int forgeYPos = 150;
 
-    private final int selectedTextXPos = xSize / 2;
-    private final int selectedTextYPos = 70;
+    protected final int selectedTextXPos = xSize / 2;
+    protected final int selectedTextYPos = 70;
 
-    private String selectedPart = null;
+    protected String selectedPart = null;
 
-    private int mode = 0;
+    protected int mode = 0;
 
     public BodyforgeScreen()
     {
@@ -75,7 +75,7 @@ public class BodyforgeScreen extends GenericTabScreen
         cancelXPos -= Minecraft.getInstance().font.width(cancelString) / 2;
     }
 
-    private void updateBodyPartList()
+    protected void updateBodyPartList()
     {
         bodyParts = new DropdownList();
 
@@ -103,7 +103,7 @@ public class BodyforgeScreen extends GenericTabScreen
         updateBodySubPartList();
     }
 
-    private void updateBodySubPartList()
+    protected void updateBodySubPartList()
     {
         bodySubParts = new DropdownList();
 
@@ -128,7 +128,7 @@ public class BodyforgeScreen extends GenericTabScreen
         updateButtons();
     }
 
-    private void updateButtons()
+    protected void updateButtons()
     {
         selectedPart = null;
         buttons.clear();
@@ -299,7 +299,7 @@ public class BodyforgeScreen extends GenericTabScreen
             drawSelected(PoseStack, part, mouseX, mouseY);
     }
 
-    private void drawSelection(PoseStack PoseStack, int mouseX, int mouseY)
+    protected void drawSelection(PoseStack PoseStack, int mouseX, int mouseY)
     {
         if (mode == 1)
             updateBodyPartList();
@@ -338,7 +338,7 @@ public class BodyforgeScreen extends GenericTabScreen
         drawGuiDetailsForgroundLayer(PoseStack);
     }
 
-    private void drawSelected(PoseStack PoseStack, BodyPart part, int mouseX, int mouseY)
+    protected void drawSelected(PoseStack PoseStack, BodyPart part, int mouseX, int mouseY)
     {
         mode = 1;
 
@@ -448,7 +448,7 @@ public class BodyforgeScreen extends GenericTabScreen
         }
     }
 
-    private String getSelectedPosition()
+    protected String getSelectedPosition()
     {
         // Check against the position selected in the drop down menu
         String selected = ((String)bodyParts.getSelected());
@@ -465,7 +465,7 @@ public class BodyforgeScreen extends GenericTabScreen
         return selected;
     }
 
-    private String getSelectedSubPosition()
+    protected String getSelectedSubPosition()
     {
         String selected = ((String)bodySubParts.getSelected());
         if (selected == null)
@@ -473,7 +473,7 @@ public class BodyforgeScreen extends GenericTabScreen
 
         return selected;
     }
-    private Boolean equalsSelectedPosition(String compare)
+    protected Boolean equalsSelectedPosition(String compare)
     {
         if (getSelectedPosition().compareTo(compare) == 0)
             return true;
@@ -481,7 +481,7 @@ public class BodyforgeScreen extends GenericTabScreen
         return false;
     }
 
-    private Boolean equalsSelectedSubPosition(String compare)
+    protected Boolean equalsSelectedSubPosition(String compare)
     {
         if (getSelectedSubPosition().compareTo(compare) == 0)
             return true;

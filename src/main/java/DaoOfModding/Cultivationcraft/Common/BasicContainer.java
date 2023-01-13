@@ -12,20 +12,20 @@ import javax.annotation.Nullable;
 
 public class BasicContainer extends AbstractContainerMenu
 {
-    private static final int HOTBAR_SLOT_COUNT = 9;
-    private static final int PLAYER_INVENTORY_ROW_COUNT = 3;
-    private static final int PLAYER_INVENTORY_COLUMN_COUNT = 9;
-    private static final int PLAYER_INVENTORY_SLOT_COUNT = PLAYER_INVENTORY_COLUMN_COUNT * PLAYER_INVENTORY_ROW_COUNT;
-    private static final int VANILLA_SLOT_COUNT = HOTBAR_SLOT_COUNT + PLAYER_INVENTORY_SLOT_COUNT;
+    protected static final int HOTBAR_SLOT_COUNT = 9;
+    protected static final int PLAYER_INVENTORY_ROW_COUNT = 3;
+    protected static final int PLAYER_INVENTORY_COLUMN_COUNT = 9;
+    protected static final int PLAYER_INVENTORY_SLOT_COUNT = PLAYER_INVENTORY_COLUMN_COUNT * PLAYER_INVENTORY_ROW_COUNT;
+    protected static final int VANILLA_SLOT_COUNT = HOTBAR_SLOT_COUNT + PLAYER_INVENTORY_SLOT_COUNT;
 
-    private static final int VANILLA_FIRST_SLOT_INDEX = 0;
+    protected static final int VANILLA_FIRST_SLOT_INDEX = 0;
 
-    private static final int SLOT_X_SPACING = 18;
-    private static final int SLOT_Y_SPACING = 18;
-    private static final int HOTBAR_XPOS = 8;
-    private static final int HOTBAR_YPOS = 155;
+    protected static final int SLOT_X_SPACING = 18;
+    protected static final int SLOT_Y_SPACING = 18;
+    protected static final int HOTBAR_XPOS = 8;
+    protected static final int HOTBAR_YPOS = 155;
 
-    private static final int PLAYER_INVENTORY_YPOS = 97;
+    protected static final int PLAYER_INVENTORY_YPOS = 97;
 
 
     public static final int FIRST_FREE_SLOT_INDEX = VANILLA_FIRST_SLOT_INDEX + VANILLA_SLOT_COUNT;

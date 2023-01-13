@@ -12,12 +12,12 @@ public class FrozenBlockEntity extends BlockEntity implements ITickableBlockEnti
     public static final ModelProperty<BlockState> FROZEN_BLOCK = new ModelProperty<>();
     public static final ModelProperty<Integer> RAMP_BLOCK = new ModelProperty<>();
 
-    private int unfreezeTicks = -1;
-    private BlockState frozenBlock = Blocks.AIR.defaultBlockState();
-    private BlockEntity frozenEntity = null;
-    private Direction ramp = Direction.DOWN;
+    protected int unfreezeTicks = -1;
+    protected BlockState frozenBlock = Blocks.AIR.defaultBlockState();
+    protected BlockEntity frozenEntity = null;
+    protected Direction ramp = Direction.DOWN;
 
-    private Boolean isClient = false;
+    protected Boolean isClient = false;
 
     public FrozenBlockEntity()
     {

@@ -15,7 +15,7 @@ import java.util.function.Supplier;
 
 public class BodyForgeSelectionPacket extends Packet
 {
-    private String selectionID;
+    protected String selectionID;
 
     public BodyForgeSelectionPacket(String ID)
     {
@@ -60,7 +60,7 @@ public class BodyForgeSelectionPacket extends Packet
     }
 
     // Process received packet on server
-    private void processPacket(Player player)
+    protected void processPacket(Player player)
     {
         // Do nothing if the received selection is already selected
         IBodyModifications modifications = BodyModifications.getBodyModifications(player);

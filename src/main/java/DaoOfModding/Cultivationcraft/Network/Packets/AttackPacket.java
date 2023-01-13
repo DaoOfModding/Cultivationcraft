@@ -26,11 +26,11 @@ import java.util.function.Supplier;
 
 public class AttackPacket extends Packet
 {
-    private UUID player = null;
-    private HitResult.Type targetType = HitResult.Type.MISS;
-    private Vec3 targetPos = null;
-    private UUID target = null;
-    private int techSlot = 0;
+    protected UUID player = null;
+    protected HitResult.Type targetType = HitResult.Type.MISS;
+    protected Vec3 targetPos = null;
+    protected UUID target = null;
+    protected int techSlot = 0;
 
     public AttackPacket(UUID playerID, HitResult.Type type, Vec3 pos, UUID targetUUID, int slot)
     {
@@ -114,7 +114,7 @@ public class AttackPacket extends Packet
 
 
     // Process received packet on the Server
-    private void processServerPacket()
+    protected void processServerPacket()
     {
         // Grab the player entity based on the read UUID
         Player ownerEntity = ServerLifecycleHooks.getCurrentServer().getPlayerList().getPlayer(player);
@@ -160,7 +160,7 @@ public class AttackPacket extends Packet
             ((AttackTechnique)tech).attackNothing(ownerEntity);
     }
 
-    private void processClientPacket()
+    protected void processClientPacket()
     {
         // Do nothing if this is a packet for the current player
         if (player.compareTo(genericClientFunctions.getPlayer().getUUID()) == 0)

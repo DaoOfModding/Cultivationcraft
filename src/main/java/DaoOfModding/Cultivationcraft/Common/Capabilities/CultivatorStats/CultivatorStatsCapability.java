@@ -14,8 +14,8 @@ public class CultivatorStatsCapability implements ICapabilityProvider, INBTSeria
 {
     public static final Capability<ICultivatorStats> INSTANCE = CapabilityManager.get(new CapabilityToken<>() {});
 
-    private final ICultivatorStats backend = new CultivatorStats();
-    private final LazyOptional<ICultivatorStats> optionalData = LazyOptional.of(() -> backend);
+    protected final ICultivatorStats backend = new CultivatorStats();
+    protected final LazyOptional<ICultivatorStats> optionalData = LazyOptional.of(() -> backend);
 
     @NotNull
     @Override

@@ -35,26 +35,26 @@ import java.util.UUID;
 
 public class FlyingSwordEntity extends ItemEntity
 {
-    private static final EntityDataAccessor<ItemStack> ITEM = SynchedEntityData.defineId(FlyingSwordEntity.class, EntityDataSerializers.ITEM_STACK);
-    private static final EntityDataAccessor<Float> decaySpeed = SynchedEntityData.defineId(FlyingSwordEntity.class, EntityDataSerializers.FLOAT);
+    protected static final EntityDataAccessor<ItemStack> ITEM = SynchedEntityData.defineId(FlyingSwordEntity.class, EntityDataSerializers.ITEM_STACK);
+    protected static final EntityDataAccessor<Float> decaySpeed = SynchedEntityData.defineId(FlyingSwordEntity.class, EntityDataSerializers.FLOAT);
 
-    private static final EntityDataAccessor<Float> movementX = SynchedEntityData.defineId(FlyingSwordEntity.class, EntityDataSerializers.FLOAT);
-    private static final EntityDataAccessor<Float> movementY = SynchedEntityData.defineId(FlyingSwordEntity.class, EntityDataSerializers.FLOAT);
-    private static final EntityDataAccessor<Float> movementZ = SynchedEntityData.defineId(FlyingSwordEntity.class, EntityDataSerializers.FLOAT);
+    protected static final EntityDataAccessor<Float> movementX = SynchedEntityData.defineId(FlyingSwordEntity.class, EntityDataSerializers.FLOAT);
+    protected static final EntityDataAccessor<Float> movementY = SynchedEntityData.defineId(FlyingSwordEntity.class, EntityDataSerializers.FLOAT);
+    protected static final EntityDataAccessor<Float> movementZ = SynchedEntityData.defineId(FlyingSwordEntity.class, EntityDataSerializers.FLOAT);
 
-    private final double idleDistance = 3;
+    protected final double idleDistance = 3;
 
-    private int age = 0;
+    protected int age = 0;
     public Vec3 direction = new Vec3(1, 0, 0);
     public Vec3 movement = new Vec3(0, 0 ,0);
-    private Player owner = null;
-    private ICultivatorStats stats = null;
+    protected Player owner = null;
+    protected ICultivatorStats stats = null;
 
-    private boolean recall = false;
+    protected boolean recall = false;
 
 
     // Testing thing
-    private boolean orbit = false;
+    protected boolean orbit = false;
 
     public FlyingSwordEntity(EntityType<? extends ItemEntity> type, Level worldIn)
     {
@@ -68,7 +68,7 @@ public class FlyingSwordEntity extends ItemEntity
         init();
     }
 
-    private void init()
+    protected void init()
     {
         this.setNeverPickUp();
 
@@ -84,7 +84,7 @@ public class FlyingSwordEntity extends ItemEntity
         return true;
     }
 
-    private void generateDecay()
+    protected void generateDecay()
     {
         if (!level.isClientSide)
         {
@@ -96,7 +96,7 @@ public class FlyingSwordEntity extends ItemEntity
     }
 
     // Check if owner is null, try to update if it is
-    private void updateOwner()
+    protected void updateOwner()
     {
         // If owner has disconnected, clear the owner instance
         if (owner != null && stats != null)
@@ -130,7 +130,7 @@ public class FlyingSwordEntity extends ItemEntity
         owner = null;
     }
 
-    private void calculatePitchAndYaw()
+    protected void calculatePitchAndYaw()
     {
         // Store the previous pitch and yaw
         xRotO = getXRot();
@@ -146,7 +146,7 @@ public class FlyingSwordEntity extends ItemEntity
     }
 
     // Turn item towards specified direction
-    private void turnTowards(Vec3 newDirection)
+    protected void turnTowards(Vec3 newDirection)
     {
         Double angle = Math.asin(direction.cross(newDirection).length());
 
@@ -172,14 +172,14 @@ public class FlyingSwordEntity extends ItemEntity
     }
 
     // Lower velocity by a specified amount
-    private void moveDecay()
+    protected void moveDecay()
     {
         movement = movement.scale(0.85 + getDecaySpeed());
     }
 
 
     // Move flying sword forwards in specified direction
-    private void moveForwards()
+    protected void moveForwards()
     {
         Vec3 toMove = movement.add(direction.scale(stats.getFlyingItemSpeed()));
 
@@ -190,7 +190,7 @@ public class FlyingSwordEntity extends ItemEntity
         movement = toMove;
     }
 
-    private void moveToTarget()
+    protected void moveToTarget()
     {
         Vec3 targetPos = stats.getTarget();
 
@@ -210,7 +210,7 @@ public class FlyingSwordEntity extends ItemEntity
     }
 
     // Move flying sword towards owner if it is outside set range
-    private void moveToOwner()
+    protected void moveToOwner()
     {
         // Get coordinates of owner
         double oPosX = owner.getX();
@@ -238,14 +238,14 @@ public class FlyingSwordEntity extends ItemEntity
 
     }
 
-    private void updateMotion()
+    protected void updateMotion()
     {
         // For the moment, motion is solely based on movement, will add other external forces later
         this.setDeltaMovement(movement);
     }
 
     // Deal with any collisions made by this entity
-    private void handleCollisions()
+    protected void handleCollisions()
     {
         handleEntityCollisions();
 
@@ -253,7 +253,7 @@ public class FlyingSwordEntity extends ItemEntity
             handleBlockCollisions();
     }
 
-    private void handleEntityCollisions()
+    protected void handleEntityCollisions()
     {
         // Get a list of entities within this entities bounding box
         List<Entity> collisionEntities = this.level.getEntities(this, getBoundingBox(), null);
@@ -278,7 +278,7 @@ public class FlyingSwordEntity extends ItemEntity
     }
 
     // Handle collision with specified entity
-    private boolean collideWithEntity(Entity collisionEntity)
+    protected boolean collideWithEntity(Entity collisionEntity)
     {
         // Do nothing if colliding with owner
         if (collisionEntity == this.owner)
@@ -295,7 +295,7 @@ public class FlyingSwordEntity extends ItemEntity
         return false;
     }
 
-    private void handleBlockCollisions()
+    protected void handleBlockCollisions()
     {
         BlockPos blockPosition = new BlockPos(position());
         BlockState collisionBlock = owner.getCommandSenderWorld().getBlockState(blockPosition);
@@ -308,7 +308,7 @@ public class FlyingSwordEntity extends ItemEntity
     }
 
     // 'Bump' this entity backwards slightly
-    private void bumpBackwards(double power, Vec3 fromPos)
+    protected void bumpBackwards(double power, Vec3 fromPos)
     {
         // Check how far away the item is to the target
         double distX = getX() - fromPos.x;
@@ -322,7 +322,7 @@ public class FlyingSwordEntity extends ItemEntity
     }
 
     // 'Bump' this entity backwards slightly
-    private void bumpBackwards(double power)
+    protected void bumpBackwards(double power)
     {
         this.movement = direction.scale(stats.getFlyingItemMaxSpeed() * -power);
     }
@@ -337,7 +337,7 @@ public class FlyingSwordEntity extends ItemEntity
     }
 
     // Return true if Flying Sword is in control range of supplied vector
-    private boolean isInRange(Vec3 pos)
+    protected boolean isInRange(Vec3 pos)
     {
         if (position().distanceTo(pos) < stats.getFlyingControlRange())
             return true;
@@ -346,7 +346,7 @@ public class FlyingSwordEntity extends ItemEntity
     }
 
     // Make the flying Sword fall to the ground
-    private void fall()
+    protected void fall()
     {
         direction = new Vec3(0, -1, 0);
 
@@ -404,7 +404,7 @@ public class FlyingSwordEntity extends ItemEntity
 
             this.move(MoverType.SELF, this.getDeltaMovement());
 
-            // Increase the age, VERY important for rendering stuff (Stupid ItemEntity age being private ;( )
+            // Increase the age, VERY important for rendering stuff (Stupid ItemEntity age being protected ;( )
             if (this.age != -32768) {
                 ++this.age;
             }
@@ -418,7 +418,7 @@ public class FlyingSwordEntity extends ItemEntity
     }
 
     // Store the movement vector in the data manager
-    private void storeMovement()
+    protected void storeMovement()
     {
         getEntityData().set(movementX, (float)movement.x);
         getEntityData().set(movementY, (float)movement.y);
@@ -426,7 +426,7 @@ public class FlyingSwordEntity extends ItemEntity
     }
 
     // Updated the movement vector to match the values in the data manager
-    private void retrieveMovement()
+    protected void retrieveMovement()
     {
         movement = new Vec3(getEntityData().get(movementX).floatValue(), getEntityData().get(movementY).floatValue(), getEntityData().get(movementZ).floatValue());
     }
@@ -448,7 +448,7 @@ public class FlyingSwordEntity extends ItemEntity
         getEntityData().set(ITEM, stack);
     }
 
-    private float getDecaySpeed()
+    protected float getDecaySpeed()
     {
         return getEntityData().get(decaySpeed).floatValue();
     }

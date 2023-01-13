@@ -49,7 +49,7 @@ public class ChunkQiSources implements IChunkQiSources
             generateQiSource();
     }
 
-    private void generateQiSource()
+    protected void generateQiSource()
     {
         // Generate a random xPos and zPos somewhere within the LevelChunk
         int xPos = (int)(Math.random() * 15) + (ChunkPos.x << 4);

@@ -2,10 +2,10 @@ package DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats;
 
 public class StatModifier
 {
-    private String id;
+    protected String id;
 
-    private int attack = 0;
-    private double attackRange = 0;
+    protected int attack = 0;
+    protected double attackRange = 0;
 
     public StatModifier(String newID)
     {

@@ -21,7 +21,7 @@ import net.minecraftforge.event.TickEvent;
 public class IceWalkTechnique extends Technique
 {/*
     // TODO: This is temporary
-    private int power = 20;
+    protected int power = 20;
 
     public IceWalkTechnique()
     {

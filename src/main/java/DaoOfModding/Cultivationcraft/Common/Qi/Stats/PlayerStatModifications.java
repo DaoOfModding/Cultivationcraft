@@ -17,7 +17,7 @@ import java.util.Map;
 
 public class PlayerStatModifications
 {
-    private HashMap<String, Float> stats = new HashMap<String, Float>();
+    protected HashMap<String, Float> stats = new HashMap<String, Float>();
 
     public float getStat(String ID)
     {

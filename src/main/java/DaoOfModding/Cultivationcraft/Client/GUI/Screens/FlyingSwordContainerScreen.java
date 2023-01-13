@@ -15,16 +15,16 @@ import java.awt.*;
 
 public class FlyingSwordContainerScreen extends AbstractContainerScreen<FlyingSwordContainer>
 {
-    private Button bindButton;
+    protected Button bindButton;
 
-    private static final int PROGRESS_BAR_X_POS = 43;
-    private static final int PROGRESS_BAR_Y_POS = 77;
+    protected static final int PROGRESS_BAR_X_POS = 43;
+    protected static final int PROGRESS_BAR_Y_POS = 77;
 
-    private static final int PROGRESS_BAR_X_SIZE = 89;
-    private static final int PROGRESS_BAR_Y_SIZE = 4;
+    protected static final int PROGRESS_BAR_X_SIZE = 89;
+    protected static final int PROGRESS_BAR_Y_SIZE = 4;
 
-    private static final int PROGRESS_BAR_U = 0;
-    private static final int PROGRESS_BAR_V = 252;
+    protected static final int PROGRESS_BAR_U = 0;
+    protected static final int PROGRESS_BAR_V = 252;
 
     public FlyingSwordContainerScreen(FlyingSwordContainer container, Inventory playerInv, Component title)
     {
@@ -116,5 +116,5 @@ public class FlyingSwordContainerScreen extends AbstractContainerScreen<FlyingSw
         ScreenTabControl.highlightTabs(PoseStack, 2, mouseX, mouseY, edgeSpacingX, edgeSpacingY, this);
     }
 
-    private static final ResourceLocation TEXTURE = new ResourceLocation(Cultivationcraft.MODID, "textures/gui/bindingcontainer.png");
+    protected static final ResourceLocation TEXTURE = new ResourceLocation(Cultivationcraft.MODID, "textures/gui/bindingcontainer.png");
 }

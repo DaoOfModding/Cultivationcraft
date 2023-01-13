@@ -18,22 +18,22 @@ import java.util.UUID;
 
 public class CultivatorStats implements ICultivatorStats
 {
-    private int cultivationType = CultivationTypes.BODY_CULTIVATOR;
+    protected int cultivationType = CultivationTypes.BODY_CULTIVATOR;
 
-    private double flyingItemSpeed = 0.06;
-    private double flyingItemMAXSpeed = 2;
-    private double flyingItemturnSpeed = 0.4;
-    private double flyingItemControlRange = 25;
+    protected double flyingItemSpeed = 0.06;
+    protected double flyingItemMAXSpeed = 2;
+    protected double flyingItemturnSpeed = 0.4;
+    protected double flyingItemControlRange = 25;
 
-    private HitResult.Type targetType = HitResult.Type.MISS;
-    private Entity targetEntity = null;
-    private BlockPos targetBlock = null;
+    protected HitResult.Type targetType = HitResult.Type.MISS;
+    protected Entity targetEntity = null;
+    protected BlockPos targetBlock = null;
 
-    private boolean recallOn = false;
+    protected boolean recallOn = false;
 
-    private boolean disconnected = false;
+    protected boolean disconnected = false;
 
-    private HashMap<String, StatModifier> modifiers = new HashMap<String, StatModifier>();
+    protected HashMap<String, StatModifier> modifiers = new HashMap<String, StatModifier>();
 
     public double getFlyingItemSpeed() {
         return flyingItemSpeed;
@@ -148,7 +148,7 @@ public class CultivatorStats implements ICultivatorStats
 
     // Checks whether current targets are valid, clearing the appropriate variables if they are not
     // Returns true if there is a valid target, false if not.
-    private boolean checkTargets(Level world) {
+    protected boolean checkTargets(Level world) {
         if (targetType == HitResult.Type.ENTITY)
             return checkEntityTarget();
         else if (targetType == HitResult.Type.BLOCK)
@@ -157,7 +157,7 @@ public class CultivatorStats implements ICultivatorStats
         return false;
     }
 
-    private boolean checkEntityTarget() {
+    protected boolean checkEntityTarget() {
         if (targetEntity != null) {
             if (targetEntity.isAlive())
                 return true;
@@ -170,7 +170,7 @@ public class CultivatorStats implements ICultivatorStats
         return false;
     }
 
-    private boolean checkBlockTarget(Level world) {
+    protected boolean checkBlockTarget(Level world) {
         if (targetBlock != null && Misc.blockExists(world.getBlockState(targetBlock).getBlock()))
             return true;
 

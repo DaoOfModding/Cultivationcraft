@@ -76,7 +76,7 @@ public class PlayerHealthManager
         setFoodStats(player, food);
     }
 
-    private static void setFoodStats(Player player, QiFoodStats newFood)
+    protected static void setFoodStats(Player player, QiFoodStats newFood)
     {
         FoodData oldFood = player.getFoodData();
 
@@ -90,7 +90,7 @@ public class PlayerHealthManager
         catch (Exception e) { Cultivationcraft.LOGGER.error("Error setting food stats: " + e); }
     }
 
-    private static void updateQiFoodStats(QiFoodStats oldFoodStats, QiFoodStats newFoodStats)
+    protected static void updateQiFoodStats(QiFoodStats oldFoodStats, QiFoodStats newFoodStats)
     {
         newFoodStats.setFoodLevel(oldFoodStats.getTrueFoodLevel());
         newFoodStats.setExhaustion(oldFoodStats.getExhaustion());
@@ -99,7 +99,7 @@ public class PlayerHealthManager
         //newFoodStats.setSaturation(oldFoodStats.getSaturationLevel());
     }
 
-    private static void updateOldFoodStats(FoodData oldFoodStats, QiFoodStats newFoodStats)
+    protected static void updateOldFoodStats(FoodData oldFoodStats, QiFoodStats newFoodStats)
     {
         newFoodStats.setFoodLevel(oldFoodStats.getFoodLevel());
 

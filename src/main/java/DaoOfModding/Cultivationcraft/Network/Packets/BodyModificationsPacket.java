@@ -15,8 +15,8 @@ import java.util.function.Supplier;
 
 public class BodyModificationsPacket extends Packet
 {
-    private UUID owner;
-    private IBodyModifications mods;
+    protected UUID owner;
+    protected IBodyModifications mods;
 
     public BodyModificationsPacket(UUID ownerID, IBodyModifications modifications)
     {
@@ -74,7 +74,7 @@ public class BodyModificationsPacket extends Packet
     }
 
     // Process received packet on client
-    private void processPacket()
+    protected void processPacket()
     {
         Player player = ClientItemControl.thisWorld.getPlayerByUUID(owner);
 

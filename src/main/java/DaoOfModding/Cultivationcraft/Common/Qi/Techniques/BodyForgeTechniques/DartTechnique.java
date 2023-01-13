@@ -23,9 +23,9 @@ import net.minecraftforge.event.TickEvent;
 
 public class DartTechnique extends Technique
 {
-    private PlayerPose flap = new PlayerPose();
-    private float doubledCooldown;
-    private boolean firstDash = false;
+    protected PlayerPose flap = new PlayerPose();
+    protected float doubledCooldown;
+    protected boolean firstDash = false;
 
     public DartTechnique()
     {

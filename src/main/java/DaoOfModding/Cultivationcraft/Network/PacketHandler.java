@@ -27,20 +27,20 @@ import java.util.UUID;
 
 public class PacketHandler
 {
-    private static final byte KEYPRESS = 03;
-    private static final byte ATTACK = 07;
-    private static final byte LevelChunk_QI_SOURCES = 10;
-    private static final byte TECHNIQUE_USE = 20;
-    private static final byte TECHNIQUE_INFO = 21;
-    private static final byte PART_INFO = 22;
-    private static final byte FLYING_SWORD_NBT_ID = 35;
-    private static final byte FLYING_SWORD_RECALL = 36;
-    private static final byte CULTIVATOR_TARGET_ID = 76;
-    private static final byte BODY_FORGE_SELECTION = 96;
-    private static final byte BODY_MODIFICATIONS = 97;
-    private static final byte CULTIVATOR_TECHNIQUES = 98;
-    private static final byte CULTIVATOR_STATS = 99;
-    private static final String PROTOCOL_VERSION = "1";
+    protected static final byte KEYPRESS = 03;
+    protected static final byte ATTACK = 07;
+    protected static final byte LevelChunk_QI_SOURCES = 10;
+    protected static final byte TECHNIQUE_USE = 20;
+    protected static final byte TECHNIQUE_INFO = 21;
+    protected static final byte PART_INFO = 22;
+    protected static final byte FLYING_SWORD_NBT_ID = 35;
+    protected static final byte FLYING_SWORD_RECALL = 36;
+    protected static final byte CULTIVATOR_TARGET_ID = 76;
+    protected static final byte BODY_FORGE_SELECTION = 96;
+    protected static final byte BODY_MODIFICATIONS = 97;
+    protected static final byte CULTIVATOR_TECHNIQUES = 98;
+    protected static final byte CULTIVATOR_STATS = 99;
+    protected static final String PROTOCOL_VERSION = "1";
 
     public static final SimpleChannel channel = NetworkRegistry.newSimpleChannel(
             new ResourceLocation(Cultivationcraft.MODID, "main"),
@@ -116,7 +116,7 @@ public class PacketHandler
         sendCultivatorTechniquesToSpecificClient(player, toSend);
     }
 
-    private static void sendCultivatorStatsToClient(Player player, PacketDistributor.PacketTarget distribute)
+    protected static void sendCultivatorStatsToClient(Player player, PacketDistributor.PacketTarget distribute)
     {
         ICultivatorStats stats = CultivatorStats.getCultivatorStats(player);
 
@@ -143,7 +143,7 @@ public class PacketHandler
         sendBodyModificationsToClient(player, target);
     }
 
-    private static void sendBodyModificationsToClient(Player player, PacketDistributor.PacketTarget distribute)
+    protected static void sendBodyModificationsToClient(Player player, PacketDistributor.PacketTarget distribute)
     {
         IBodyModifications modifications = BodyModifications.getBodyModifications(player);
 

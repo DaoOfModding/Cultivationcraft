@@ -18,12 +18,12 @@ import java.awt.*;
 
 public class TechniqueScreen extends GenericTabScreen
 {
-    private DropdownList techniques;
+    protected DropdownList techniques;
 
     public static int selected = 0;
 
-    private final int techniqueXPos = (xSize - 85) / 2;
-    private final int techniqueYPos = 50;
+    protected final int techniqueXPos = (xSize - 85) / 2;
+    protected final int techniqueYPos = 50;
 
     public TechniqueScreen()
     {
@@ -32,7 +32,7 @@ public class TechniqueScreen extends GenericTabScreen
         updateTechniqueList();
     }
 
-    private void updateTechniqueList()
+    protected void updateTechniqueList()
     {
         techniques = new DropdownList();
 
@@ -60,7 +60,7 @@ public class TechniqueScreen extends GenericTabScreen
     }
 
     // Update the settings screen to the currently selected technique
-    private void updateSelection()
+    protected void updateSelection()
     {
         Technique selectedTech = CultivatorTechniques.getCultivatorTechniques(genericClientFunctions.getPlayer()).getTechnique(selected);
 

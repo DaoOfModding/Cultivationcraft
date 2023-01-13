@@ -16,10 +16,10 @@ import java.util.function.Supplier;
 
 public class PartInfoPacket extends Packet
 {
-    private String sublimbID;
-    private String limbID;
-    private int info;
-    private UUID player;
+    protected String sublimbID;
+    protected String limbID;
+    protected int info;
+    protected UUID player;
 
     public PartInfoPacket(String subLimbid, String limb, int newInfo, UUID owner)
     {
@@ -74,7 +74,7 @@ public class PartInfoPacket extends Packet
     }
 
     // Process received packet on the Server
-    private void processPacket(ServerPlayer sender)
+    protected void processPacket(ServerPlayer sender)
     {
         BodyPart part;
 
@@ -97,7 +97,7 @@ public class PartInfoPacket extends Packet
     }
 
     // Process received packet on the Client
-    private void processPacket()
+    protected void processPacket()
     {
         Player Player = ClientItemControl.thisWorld.getPlayerByUUID(player);
 

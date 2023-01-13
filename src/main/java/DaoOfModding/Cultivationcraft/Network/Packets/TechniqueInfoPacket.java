@@ -16,9 +16,9 @@ import java.util.function.Supplier;
 
 public class TechniqueInfoPacket extends Packet
 {
-    private int slotNumber;
-    private int info;
-    private UUID player;
+    protected int slotNumber;
+    protected int info;
+    protected UUID player;
 
     public TechniqueInfoPacket(int slot, int newInfo, UUID owner)
     {
@@ -78,7 +78,7 @@ public class TechniqueInfoPacket extends Packet
     }
 
     // Process received packet on the Server
-    private void processPacket(ServerPlayer sender)
+    protected void processPacket(ServerPlayer sender)
     {
         // Send the key press to the technique used
         Technique tech = CultivatorTechniques.getCultivatorTechniques(sender).getTechnique(slotNumber);
@@ -91,7 +91,7 @@ public class TechniqueInfoPacket extends Packet
     }
 
     // Process received packet on the Client
-    private void processPacket()
+    protected void processPacket()
     {
         Player Player = ClientItemControl.thisWorld.getPlayerByUUID(player);
 

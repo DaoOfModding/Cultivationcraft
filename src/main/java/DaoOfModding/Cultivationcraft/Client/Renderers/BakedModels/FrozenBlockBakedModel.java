@@ -15,7 +15,7 @@ public class FrozenBlockBakedModel implements IDynamicBakedModel
 {
     public static final ResourceLocation TEXTURE = new ResourceLocation("block/ice");
 
-    private TextureAtlasSprite getTexture()
+    protected TextureAtlasSprite getTexture()
     {
         return Minecraft.getInstance().getTextureAtlas(AtlasTexture.LOCATION_BLOCKS).apply(TEXTURE);
     }

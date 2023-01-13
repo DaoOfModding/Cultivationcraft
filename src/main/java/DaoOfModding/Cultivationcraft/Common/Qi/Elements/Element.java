@@ -11,7 +11,7 @@ public class Element
     public final String name;
     public final Color color;
 
-    private ArrayList<ElementRelationship> relationships = new ArrayList<ElementRelationship>();
+    protected ArrayList<ElementRelationship> relationships = new ArrayList<ElementRelationship>();
 
     public Element (int elementID, String elementName, Color elementColor)
     {

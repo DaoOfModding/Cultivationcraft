@@ -8,7 +8,7 @@ import net.minecraftforge.common.capabilities.Capability;
 
 public class FlyingSwordContainerItemStack implements IFlyingSwordContainerItemStack
 {
-    private FlyingSwordContainerItemHandler item = new FlyingSwordContainerItemHandler();
+    protected FlyingSwordContainerItemHandler item = new FlyingSwordContainerItemHandler();
 
     public FlyingSwordContainerItemHandler getItemStackHandler()
     {

@@ -25,34 +25,34 @@ import java.util.UUID;
 
 public class BodyPart
 {
-    private String ID;
-    private ArrayList<String> modelIDs = new ArrayList<String>();
-    private ArrayList<String> quadIDs = new ArrayList<String>();
-    private ArrayList<String> firstPersonModelIDs = new ArrayList<String>();
-    private String limbPosition;
-    private String displayNamePosition;
-    private int qiNeeded;
-    private PlayerStatModifications stats;
-    private String textureID = TextureList.skin;
-    private boolean texturesUpdated = false;
+    protected String ID;
+    protected ArrayList<String> modelIDs = new ArrayList<String>();
+    protected ArrayList<String> quadIDs = new ArrayList<String>();
+    protected ArrayList<String> firstPersonModelIDs = new ArrayList<String>();
+    protected String limbPosition;
+    protected String displayNamePosition;
+    protected int qiNeeded;
+    protected PlayerStatModifications stats;
+    protected String textureID = TextureList.skin;
+    protected boolean texturesUpdated = false;
 
-    private BodyPartLocation connection = null;
+    protected BodyPartLocation connection = null;
 
-    private String viewPoint;
+    protected String viewPoint;
 
-    private ArrayList<String> neededToForge = new ArrayList<String>();
-    private ArrayList<String> neededNotToForge = new ArrayList<String>();
-    private ArrayList<Pair<String, String>> neededPositionToForge = new ArrayList<Pair<String, String>>();
-    private ArrayList<Pair<String, String>> needNotPositionToForge = new ArrayList<Pair<String, String>>();
-    private ArrayList<String> neededTags = new ArrayList<String>();
-    private ArrayList<String> neededNotTags = new ArrayList<String>();
+    protected ArrayList<String> neededToForge = new ArrayList<String>();
+    protected ArrayList<String> neededNotToForge = new ArrayList<String>();
+    protected ArrayList<Pair<String, String>> neededPositionToForge = new ArrayList<Pair<String, String>>();
+    protected ArrayList<Pair<String, String>> needNotPositionToForge = new ArrayList<Pair<String, String>>();
+    protected ArrayList<String> neededTags = new ArrayList<String>();
+    protected ArrayList<String> neededNotTags = new ArrayList<String>();
 
-    private ArrayList<String> uniqueTags = new ArrayList<String>();
+    protected ArrayList<String> uniqueTags = new ArrayList<String>();
 
-    private HashMap<String, Integer> hands = new HashMap<String, Integer>();
-    private ArrayList<Arm> arms = new ArrayList<Arm>();
+    protected HashMap<String, Integer> hands = new HashMap<String, Integer>();
+    protected ArrayList<Arm> arms = new ArrayList<Arm>();
 
-    private HashMap<String, ResourceLocation> textureChanges = new HashMap<String, ResourceLocation>();
+    protected HashMap<String, ResourceLocation> textureChanges = new HashMap<String, ResourceLocation>();
 
     public BodyPart(String partID, String position, String displayNamePos, int qiToForge)
     {

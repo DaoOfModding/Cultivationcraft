@@ -14,14 +14,14 @@ import net.minecraft.client.gui.screens.Screen;
 
 public class ScreenTabControl
 {
-    private static final int[] TAB_BAR_X_POS = {0, 43, 86, 129};
-    private static final int[] TAB_BAR_Y_POS = {0, 0, 0, 0};
+    protected static final int[] TAB_BAR_X_POS = {0, 43, 86, 129};
+    protected static final int[] TAB_BAR_Y_POS = {0, 0, 0, 0};
 
-    private static final int TAB_BAR_X_SIZE = 41;
-    private static final int TAB_BAR_Y_SIZE = 13;
+    protected static final int TAB_BAR_X_SIZE = 41;
+    protected static final int TAB_BAR_Y_SIZE = 13;
 
-    private static final int TAB_BAR_U = 214;
-    private static final int TAB_BAR_V = 243;
+    protected static final int TAB_BAR_U = 214;
+    protected static final int TAB_BAR_V = 243;
 
     public static void highlightTabs(PoseStack PoseStack, int tabSelected, int mouseX, int mouseY, int screenX, int screenY, Screen drawTo)
     {

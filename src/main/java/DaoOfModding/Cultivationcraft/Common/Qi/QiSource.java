@@ -6,9 +6,9 @@ import net.minecraft.network.FriendlyByteBuf;
 
 public class QiSource
 {
-    private BlockPos pos;
-    private int range;
-    private int elementID;
+    protected BlockPos pos;
+    protected int range;
+    protected int elementID;
 
     // Todo: QiSource stats
     public QiSource(BlockPos position, int size, int element)

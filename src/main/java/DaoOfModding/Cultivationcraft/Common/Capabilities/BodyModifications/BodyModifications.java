@@ -148,7 +148,7 @@ public class BodyModifications implements IBodyModifications
         hasUpdated = updated;
     }
 
-    private void clearModifications()
+    protected void clearModifications()
     {
         modifications.clear();
         options.clear();

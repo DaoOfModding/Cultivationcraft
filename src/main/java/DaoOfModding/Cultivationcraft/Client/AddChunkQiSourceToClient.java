@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 public class AddChunkQiSourceToClient
 {
-    private static ArrayList<ChunkQiSourcesPacket> packets = new ArrayList<ChunkQiSourcesPacket>();
+    protected static ArrayList<ChunkQiSourcesPacket> packets = new ArrayList<ChunkQiSourcesPacket>();
 
     public static void addPacket(ChunkQiSourcesPacket packet)
     {

@@ -185,7 +185,7 @@ public class Technique
         removeModifiers(player);
     }
 
-    private void addModifiers(Player player)
+    protected void addModifiers(Player player)
     {
         AttributeInstance modifierInstance = player.getAttribute(net.minecraftforge.common.ForgeMod.ENTITY_GRAVITY.get());
 
@@ -201,7 +201,7 @@ public class Technique
             BodyPartStatControl.updateStats(player);
     }
 
-    private void removeModifiers(Player player)
+    protected void removeModifiers(Player player)
     {
         AttributeInstance modifierInstance = player.getAttribute(net.minecraftforge.common.ForgeMod.ENTITY_GRAVITY.get());
 

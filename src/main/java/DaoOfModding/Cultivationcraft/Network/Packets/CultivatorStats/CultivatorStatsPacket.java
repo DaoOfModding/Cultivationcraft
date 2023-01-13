@@ -14,12 +14,12 @@ import java.util.function.Supplier;
 
 public class CultivatorStatsPacket extends Packet
 {
-    private UUID owner;
+    protected UUID owner;
 
-    private double flyingItemSpeed;
-    private double flyingItemMAXSpeed;
-    private double flyingItemturnSpeed;
-    private double flyingItemControlRange;
+    protected double flyingItemSpeed;
+    protected double flyingItemMAXSpeed;
+    protected double flyingItemturnSpeed;
+    protected double flyingItemControlRange;
 
     public CultivatorStatsPacket(UUID ownerID, ICultivatorStats stats)
     {
@@ -92,7 +92,7 @@ public class CultivatorStatsPacket extends Packet
     }
 
     // Process received packet on client
-    private void processPacket()
+    protected void processPacket()
     {
         // Get the stats for the specified player
         ICultivatorStats stats = CultivatorStats.getCultivatorStats(ClientItemControl.thisWorld.getPlayerByUUID(owner));

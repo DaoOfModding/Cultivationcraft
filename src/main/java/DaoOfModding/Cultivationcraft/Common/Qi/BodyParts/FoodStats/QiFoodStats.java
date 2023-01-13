@@ -12,9 +12,9 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public class QiFoodStats extends FoodData
 {
-    private int maxFood = 20;
-    private float exhaustionLevel = 0;
-    private float foodLevel = 20;
+    protected int maxFood = 20;
+    protected float exhaustionLevel = 0;
+    protected float foodLevel = 20;
     public int tickTimer = 0;
 
     public void setMaxFood(int newMaxFood)
@@ -54,7 +54,7 @@ public class QiFoodStats extends FoodData
         PlayerHealthManager.getBlood(p_75118_1_).regen(p_75118_1_);
     }
 
-    private void drainFood(Player player)
+    protected void drainFood(Player player)
     {
         float staminaUse = PlayerHealthManager.getStaminaUse(player);
 

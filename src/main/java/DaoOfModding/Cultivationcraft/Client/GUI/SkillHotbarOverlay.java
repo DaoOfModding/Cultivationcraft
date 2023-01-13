@@ -13,10 +13,10 @@ public class SkillHotbarOverlay
     protected static final ResourceLocation WIDGETS_TEX_PATH = new ResourceLocation("textures/gui/widgets.png");
 
     // Whether the hotbar is active or not
-    private static boolean isActive = false;
+    protected static boolean isActive = false;
 
     // The hotbar slot currently selected
-    private static int skillSelected = 0;
+    protected static int skillSelected = 0;
 
     // Render in the post-render phase if the hotbar is active
     // In the pre-render phase if it isn't
@@ -33,7 +33,7 @@ public class SkillHotbarOverlay
             RenderSkillHotbar(stack);
     }
 
-    private static void RenderSkillHotbar(PoseStack stack)
+    protected static void RenderSkillHotbar(PoseStack stack)
     {
         // Enable transparency
         RenderSystem.enableBlend();

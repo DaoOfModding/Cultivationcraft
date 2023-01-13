@@ -14,8 +14,8 @@ public class FlyingSwordContainerItemStackCapability implements ICapabilityProvi
 {
     public static final Capability<IFlyingSwordContainerItemStack> INSTANCE = CapabilityManager.get(new CapabilityToken<>() {});
 
-    private final IFlyingSwordContainerItemStack backend = new FlyingSwordContainerItemStack();
-    private final LazyOptional<IFlyingSwordContainerItemStack> optionalData = LazyOptional.of(() -> backend);
+    protected final IFlyingSwordContainerItemStack backend = new FlyingSwordContainerItemStack();
+    protected final LazyOptional<IFlyingSwordContainerItemStack> optionalData = LazyOptional.of(() -> backend);
 
     @NotNull
     @Override

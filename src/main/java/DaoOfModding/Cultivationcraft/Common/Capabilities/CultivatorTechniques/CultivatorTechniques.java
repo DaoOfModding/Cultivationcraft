@@ -10,7 +10,7 @@ public class CultivatorTechniques implements ICultivatorTechniques
 {
     public static final int numberOfTechniques = 9;
 
-    private Technique[] techniques = new Technique[numberOfTechniques];
+    protected Technique[] techniques = new Technique[numberOfTechniques];
 
     public Technique getTechnique(int slot)
     {

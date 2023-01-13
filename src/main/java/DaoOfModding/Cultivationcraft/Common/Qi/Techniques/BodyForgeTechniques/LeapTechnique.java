@@ -23,7 +23,7 @@ public class LeapTechnique extends Technique
 {
     protected PlayerPose defaultLeapLegs = new PlayerPose();
 
-    private boolean leaping = false;
+    protected boolean leaping = false;
 
     public LeapTechnique()
     {
@@ -89,7 +89,7 @@ public class LeapTechnique extends Technique
     }
 
     // Start the leap if not already started, otherwise check if the technique has ended
-    private void continueTech(TickEvent.PlayerTickEvent event)
+    protected void continueTech(TickEvent.PlayerTickEvent event)
     {
         if (!leaping)
             doLeap(event.player);
@@ -99,7 +99,7 @@ public class LeapTechnique extends Technique
     }
 
     // Start the leap if not already started, otherwise check if the technique has ended
-    private void continueTechClient(TickEvent.PlayerTickEvent event)
+    protected void continueTechClient(TickEvent.PlayerTickEvent event)
     {
         if (!leaping)
             doLeapClient(event.player);
@@ -109,7 +109,7 @@ public class LeapTechnique extends Technique
     }
 
     // Check if the leap has ended
-    private void continueLeap(Player player)
+    protected void continueLeap(Player player)
     {
         // If the player is no longer jumping turn the technique off
         if (player.isOnGround() || player.isInWater())
@@ -120,7 +120,7 @@ public class LeapTechnique extends Technique
     }
 
     // Check if the leap has ended
-    private void continueLeapClient(Player player)
+    protected void continueLeapClient(Player player)
     {
         PlayerPoseHandler handler = PoseHandler.getPlayerPoseHandler(player.getUUID());
 
@@ -142,7 +142,7 @@ public class LeapTechnique extends Technique
     }
 
     // Do the leap
-    private void doLeapClient(Player player)
+    protected void doLeapClient(Player player)
     {
         leaping = true;
         player.setOnGround(false);
@@ -168,7 +168,7 @@ public class LeapTechnique extends Technique
     }
 
     // Do the leap
-    private void doLeap(Player player)
+    protected void doLeap(Player player)
     {
         leaping = true;
         player.setOnGround(false);

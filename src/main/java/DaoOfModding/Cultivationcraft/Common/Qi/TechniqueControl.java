@@ -27,7 +27,7 @@ public class TechniqueControl
     }
 
     // List of all techniques available in the game
-    private static ArrayList<Class> techniques = new ArrayList<Class>();
+    protected static ArrayList<Class> techniques = new ArrayList<Class>();
 
     public static void addTechnique(Class technique)
     {

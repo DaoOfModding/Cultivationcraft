@@ -19,10 +19,10 @@ import java.util.function.Supplier;
 
 public class CultivatorTargetPacket extends Packet
 {
-    private UUID player = null;
-    private HitResult.Type targetType = HitResult.Type.MISS;
-    private Vec3 targetPos = null;
-    private UUID target = null;
+    protected UUID player = null;
+    protected HitResult.Type targetType = HitResult.Type.MISS;
+    protected Vec3 targetPos = null;
+    protected UUID target = null;
 
     public CultivatorTargetPacket(UUID playerID, HitResult.Type type, Vec3 pos, UUID targetUUID)
     {
@@ -103,7 +103,7 @@ public class CultivatorTargetPacket extends Packet
 
 
     // Process received packet on the Server
-    private void processServerPacket()
+    protected void processServerPacket()
     {
         // Grab the player entity based on the read UUID
         Player ownerEntity = ServerLifecycleHooks.getCurrentServer().getPlayerList().getPlayer(player);
@@ -115,13 +115,13 @@ public class CultivatorTargetPacket extends Packet
         PacketHandler.sendCultivatorTargetToClient(player, targetType, targetPos, target);
     }
 
-    private void processClientPacket()
+    protected void processClientPacket()
     {
         processPacket(ClientItemControl.thisWorld.getPlayerByUUID(player));
     }
 
     // Process received packet
-    private void processPacket(Player ownerEntity)
+    protected void processPacket(Player ownerEntity)
     {
         // Grab the stats of the supplied player, if they exist, and set the new target
         if (ownerEntity != null)
