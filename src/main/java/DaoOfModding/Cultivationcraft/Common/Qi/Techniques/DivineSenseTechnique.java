@@ -13,6 +13,7 @@ import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraftforge.event.TickEvent;
 
 public class DivineSenseTechnique extends Technique
 {
@@ -27,17 +28,22 @@ public class DivineSenseTechnique extends Technique
         multiple = false;
 
         icon = new ResourceLocation(Cultivationcraft.MODID, "textures/techniques/icons/divinesense.png");
-        //setOverlay(new ResourceLocation(Cultivationcraft.MODID, "textures/techniques/overlays/divinesense.png"));
+        setOverlay(new ResourceLocation(Cultivationcraft.MODID, "textures/techniques/overlays/divinesense.png"));
     }
 
     @Override
-    public void useKeyPressed(boolean keyDown, Player player)
+    public void tickClient(TickEvent.PlayerTickEvent event)
     {
-        super.useKeyPressed(keyDown, player);
+        Renderer.QiSourcesVisible = true;
+    }
 
-        // Only do this on the client
+    @Override
+    public void deactivate(Player player)
+    {
+        super.deactivate(player);
+
         if (ClientItemControl.thisWorld != null)
-            Renderer.QiSourcesVisible = active;
+            Renderer.QiSourcesVisible = false;
     }
 
     @Override

@@ -4,11 +4,14 @@ import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Element;
 import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
 import DaoOfModding.Cultivationcraft.Common.Qi.QiSource;
 import DaoOfModding.Cultivationcraft.Common.Qi.QiSourceConfig;
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.chunk.LevelChunk;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.capabilities.Capability;
 
 import java.util.ArrayList;
@@ -60,9 +63,6 @@ public class ChunkQiSources implements IChunkQiSources
 
         int yPos = (int)(((4 * Math.pow(x, 3)) - (5.28 * Math.pow(x, 2)) + (2.28 * x)) * 200);
 
-        // Generate a random size for the QiSource
-        int size = QiSourceConfig.generateRandomSize();
-
         // TODO: Generate different elemental spawns BETTER THAN THIS
         int element = (int)(Math.random() * Elements.getElements().size());
 
@@ -78,7 +78,7 @@ public class ChunkQiSources implements IChunkQiSources
             }
         }
 
-        QiSources.add(new QiSource(new BlockPos(xPos, yPos, zPos), size, element));
+        QiSources.add(new QiSource(new BlockPos(xPos, yPos, zPos), QiSourceConfig.generateRandomSize(), element, QiSourceConfig.generateRandomQiOutput()));
     }
 
     public CompoundTag writeNBT()
@@ -128,5 +128,32 @@ public class ChunkQiSources implements IChunkQiSources
     public static IChunkQiSources getChunkQiSources(LevelChunk LevelChunk)
     {
         return LevelChunk.getCapability(ChunkQiSourcesCapability.INSTANCE).orElseThrow(() -> new IllegalArgumentException("getting LevelChunk Qi sources"));
+    }
+
+    public static List<QiSource> getQiSourcesInRange(Level level, Vec3 position, int range)
+    {
+        ArrayList<QiSource> sources = new ArrayList<QiSource>();
+
+        int searchRange = (range + QiSourceConfig.MaxSize) / 16 + 1;
+
+        ChunkPos test = new ChunkPos(new BlockPos(position));
+
+        // Loop through each chunk within possible range
+        for (int x = -searchRange; x <= searchRange; x++)
+            for (int z = -searchRange; z <= searchRange; z++)
+            {
+                List<QiSource> possibleSources = getChunkQiSources(level.getChunk(test.x + x, test.z + z)).getQiSources();
+
+                // Check each source in the chunk to see if it is within range
+                for (QiSource source : possibleSources)
+                {
+                    double distance = position.subtract(source.getPos().getX(), source.getPos().getY(), source.getPos().getZ()).length();
+
+                    if (distance < range + source.getSize())
+                        sources.add(source);
+                }
+            }
+
+        return sources;
     }
 }

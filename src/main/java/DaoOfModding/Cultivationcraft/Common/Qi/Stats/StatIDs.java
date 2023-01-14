@@ -16,6 +16,9 @@ public class StatIDs
     public static final String healthRegen = "healthRegen";
     public static final String healthStaminaConversion = "healthStaminaConversion";
 
+    public static final String qiAbsorb = "qiAbsorb";
+    public static final String qiAbsorbRange = "qiAbsorbRange";
+
     // TODO: Make this do something
     public static final String attackRange = "attackRange";
 
@@ -46,4 +49,7 @@ public class StatIDs
     public static final float defaultHealthRegen = 0.1f;
 
     public static final float defaultAttackRange = 5;
+
+    public static final float deafultQiAbsorb = 1000;
+    public static final float deafultQiAbsorbRange = 1;
 }

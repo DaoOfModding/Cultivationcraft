@@ -3,15 +3,23 @@ package DaoOfModding.Cultivationcraft.Common.Qi.Techniques;
 import DaoOfModding.Cultivationcraft.Client.Animations.GenericQiPoses;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.BodyModifications;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.IBodyModifications;
+import DaoOfModding.Cultivationcraft.Common.Capabilities.ChunkQiSources.ChunkQiSources;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStats;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.ICultivatorStats;
 import DaoOfModding.Cultivationcraft.Common.Qi.CultivationTypes;
 import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
+import DaoOfModding.Cultivationcraft.Common.Qi.QiSource;
+import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
+import DaoOfModding.Cultivationcraft.Common.Qi.Stats.PlayerStatControl;
+import DaoOfModding.Cultivationcraft.Common.Qi.Stats.StatIDs;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import DaoOfModding.Cultivationcraft.Server.BodyPartControl;
+import DaoOfModding.Cultivationcraft.debug;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.event.TickEvent;
+
+import java.util.List;
 
 public class MeditateTechnique extends MovementOverrideTechnique
 {
@@ -51,8 +59,21 @@ public class MeditateTechnique extends MovementOverrideTechnique
     {
         ICultivatorStats stats = CultivatorStats.getCultivatorStats(event.player);
 
-        // TODO: Get QI from QI sources
-        int toAdd = 5;
+        float absorbSpeed = BodyPartStatControl.getPlayerStatControl(event.player.getUUID()).getStats().getStat(StatIDs.qiAbsorb);
+
+        int toAdd = QiSource.getDefaultQi();
+
+        // Draw Qi from each Qi source available
+        // TODO: Elemental stuff
+        for (QiSource source : ChunkQiSources.getQiSourcesInRange(event.player.level, event.player.position(), (int)BodyPartStatControl.getPlayerStatControl(event.player.getUUID()).getStats().getStat(StatIDs.qiAbsorbRange)))
+            toAdd += source.getQiOutput();
+
+        // Do not absorb more qi than the players max absorb speed
+        if (toAdd > absorbSpeed)
+            toAdd = (int)absorbSpeed;
+
+        // DEBUG - increase qiAbsorption speed by the debug amount
+        toAdd *= debug.qiCollectingSpeed;
 
         if (stats.getCultivationType() == CultivationTypes.BODY_CULTIVATOR)
         {

@@ -3,6 +3,7 @@ package DaoOfModding.Cultivationcraft.Client.Particles;
 import DaoOfModding.Cultivationcraft.Client.Renderer;
 import DaoOfModding.Cultivationcraft.Client.Renderers.QiSourceRenderer;
 import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
+import DaoOfModding.Cultivationcraft.Common.Qi.QiSourceConfig;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -94,7 +95,13 @@ public class QiParticle extends TextureSheetParticle
         @Override
         public Particle createParticle(QiParticleData particleData, ClientLevel world, double xPos, double yPos, double zPos, double xVelocity, double yVelocity, double zVelocity)
         {
-            QiParticle particle = new QiParticle(world, xPos, yPos, zPos, xVelocity, yVelocity, zVelocity, (int)(particleData.source.getSize() * ( 1 / QiSourceRenderer.speed)), sprites);
+            float size = (particleData.source.getSize() - QiSourceConfig.MinSize) / (QiSourceConfig.MaxSize - QiSourceConfig.MinSize);
+            float amount = (particleData.source.getQiOutput() - QiSourceConfig.MinOutput) / (QiSourceConfig.MaxOutput - QiSourceConfig.MinOutput);
+
+            double velocityModifier = 1 + size * 3;
+            double lifeModifier = 30 + amount * 270;
+
+            QiParticle particle = new QiParticle(world, xPos, yPos, zPos, xVelocity * velocityModifier, yVelocity * velocityModifier, zVelocity * velocityModifier, (int)(lifeModifier * ( 1 / QiSourceRenderer.speed)), sprites);
             particle.pickSprite(sprites);
 
             Color color = Elements.getElement(particleData.source.getElementID()).color;

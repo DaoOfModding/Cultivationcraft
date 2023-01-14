@@ -222,6 +222,7 @@ public class BodyPartNames
         addWings.addModel(BodyPartModelNames.lwingUpperArmModel);
         addWings.addQuad(BodyPartModelNames.wingquad);
         addWings.setTexture(TextureList.bone);
+        addWings.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.basePosition);
         addWings.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.boneSubPosition);
         addWings.addUniqueTag(BodyPartTags.flight);
         addWings.getStatChanges().setStat(StatIDs.weight, 0.2f);
@@ -232,6 +233,7 @@ public class BodyPartNames
         addIWings.addModel(BodyPartModelNames.linsectWing);
         addIWings.addQuad(BodyPartModelNames.insectQuads);
         addIWings.setTexture(TextureList.bone);
+        addWings.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.basePosition);
         addIWings.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.boneSubPosition);
         addIWings.addUniqueTag(BodyPartTags.flight);
         addIWings.getStatChanges().setStat(StatIDs.weight, 0.01f);
@@ -241,7 +243,7 @@ public class BodyPartNames
         JetPart jets = new JetPart(jetPart, bodyPosition, backSubPosition,  "cultivationcraft.gui.bodypart.back.jet", 1000);
         jets.addModel(BodyPartModelNames.jetLeft);
         jets.addModel(BodyPartModelNames.jetRight);
-        jets.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.skinSubPosition);
+        jets.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.basePosition);
         jets.getStatChanges().setStat(StatIDs.weight, 0.04f);
 
         addOption(addWings);

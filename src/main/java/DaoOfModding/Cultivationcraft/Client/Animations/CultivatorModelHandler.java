@@ -262,9 +262,9 @@ public class CultivatorModelHandler
                 {
                     // Add to the body if the base part is a body part, otherwise reference the base modelID
                     if (part.getPosition().equalsIgnoreCase(BodyPartNames.bodyPosition))
-                        model.addLimb(optionModels, models.getModel(optionModels, option.getPosition()));
+                        model.addLimb(optionModels, models.getModel(optionModels, option.getSubPosition()));
                     else
-                        model.addLimb(optionModels, models.getModel(optionModels, option.getPosition()), modelID);
+                        model.addLimb(optionModels, models.getModel(optionModels, option.getSubPosition()), modelID);
 
                     for (Map.Entry<String, ExtendableModelRenderer> entry : models.getReferences(optionModels).entrySet())
                         model.addLimbReference(entry.getKey(), entry.getValue());
@@ -317,7 +317,7 @@ public class CultivatorModelHandler
                 {
                     for (String optionModels : optionModelCollections.getValue())
                     {
-                        model.addLimb(optionModels, models.getModel(optionModels, option.getPosition()), baseModelID);
+                        model.addLimb(optionModels, models.getModel(optionModels, option.getSubPosition()), baseModelID);
 
                         for (Map.Entry<String, ExtendableModelRenderer> entry : models.getReferences(optionModels).entrySet())
                             model.addLimbReference(entry.getKey(), entry.getValue());

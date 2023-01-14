@@ -4,6 +4,7 @@ import DaoOfModding.Cultivationcraft.Client.Animations.CultivatorModelHandler;
 import DaoOfModding.Cultivationcraft.Client.GUI.SkillHotbarOverlay;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.BodyModifications;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.IBodyModifications;
+import DaoOfModding.Cultivationcraft.Common.Capabilities.ChunkQiSources.ChunkQiSources;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.CultivatorTechniques;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.ICultivatorTechniques;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPart;
@@ -12,6 +13,9 @@ import DaoOfModding.mlmanimator.Client.Poses.PoseHandler;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.AbstractClientPlayer;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.client.event.*;
@@ -79,6 +83,7 @@ public class ClientListeners
         if (event.getOverlay().id() == VanillaGuiOverlay.HOTBAR.id())
         {
             SkillHotbarOverlay.PreRenderSkillHotbar(event.getPoseStack());
+            Renderer.renderTechniqueOverlays();
         }
         else if (event.getOverlay().id() == VanillaGuiOverlay.FOOD_LEVEL.id())
         {
@@ -99,7 +104,6 @@ public class ClientListeners
         }
         else if(event.getOverlay().id() == VanillaGuiOverlay.VIGNETTE.id())
         {
-            Renderer.renderTechniqueOverlays();
         }
     }
 
