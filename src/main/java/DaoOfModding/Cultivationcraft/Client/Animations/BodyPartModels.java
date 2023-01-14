@@ -388,12 +388,14 @@ public class BodyPartModels
         wingTopModel.addLayer(new UVPair(0, 0), TextureList.boneSize, 0, TextureList.bone);
         wingTopModel.setPos(0.5F, 0.25F, 1F);
         wingTopModel.setRotationPoint(new Vec3(1, 0.5f, 0f));
+        wingTopModel.setHitbox(false);
         wingTopModel.extend(wingTop);
 
         ExtendableModelRenderer lwingTopModel = new ExtendableModelRenderer(BodyPartModelNames.lwingUpperArmModel);
         lwingTopModel.addLayer(new UVPair(0, 0), TextureList.boneSize, 0, TextureList.bone);
         lwingTopModel.setPos(0.5F, 0.25F, 1F);
         lwingTopModel.setRotationPoint(new Vec3(1, 0.5f, 0f));
+        lwingTopModel.setHitbox(false);
         lwingTopModel.extend(lwingTop);
 
 
@@ -404,12 +406,14 @@ public class BodyPartModels
         wingStrandModel.addLayer(new UVPair(0, 0), TextureList.boneSize, 0, TextureList.bone);
         wingStrandModel.setPos(1, 1F, 0.5F);
         wingStrandModel.setRotationPoint(new Vec3(0.5F, 1, 0.5f));
+        wingStrandModel.setHitbox(false);
         wingStrandModel.extend(wingStrand);
 
         ExtendableModelRenderer lwingStrandModel = new ExtendableModelRenderer( BodyPartModelNames.lwingStrand1Model);
-        wingStrandModel.addLayer(new UVPair(0, 0), TextureList.boneSize, 0, TextureList.bone);
+        lwingStrandModel.addLayer(new UVPair(0, 0), TextureList.boneSize, 0, TextureList.bone);
         lwingStrandModel.setPos(1, 1F, 0.5F);
         lwingStrandModel.setRotationPoint(new Vec3(0.5F, 1, 0.5f));
+        lwingStrandModel.setHitbox(false);
         lwingStrandModel.extend(lwingStrand);
 
 
@@ -513,12 +517,14 @@ public class BodyPartModels
         wingTopModel.addLayer(new UVPair(0, 0), TextureList.boneSize, 0, TextureList.bone);
         wingTopModel.setPos(0.5F, 0.1F, 1F);
         wingTopModel.setRotationPoint(new Vec3(1, 0.5f, 0f));
+        wingTopModel.setHitbox(false);
         wingTopModel.extend(wingTop);
 
         ExtendableModelRenderer lwingTopModel = new ExtendableModelRenderer(BodyPartModelNames.linsectWing);
         lwingTopModel.addLayer(new UVPair(0, 0), TextureList.boneSize, 0, TextureList.bone);
         lwingTopModel.setPos(0.5F, 0.1F, 1F);
         lwingTopModel.setRotationPoint(new Vec3(1, 0.5f, 0f));
+        lwingTopModel.setHitbox(false);
         lwingTopModel.extend(lwingTop);
 
 
@@ -529,12 +535,14 @@ public class BodyPartModels
         innerWingModel.addLayer(new UVPair(0, 0), TextureList.boneSize, 0, TextureList.bone);
         innerWingModel.setPos(0, 0F, 0.5F);
         innerWingModel.setRotationPoint(new Vec3(0F, 1, 0.5f));
+        innerWingModel.setHitbox(false);
         innerWingModel.extend(innerWingTop);
 
         ExtendableModelRenderer linnerWingModel = new ExtendableModelRenderer( BodyPartModelNames.linsectWingInner);
         linnerWingModel.addLayer(new UVPair(0, 0), TextureList.boneSize, 0, TextureList.bone);
         linnerWingModel.setPos(0, 0F, 0.5F);
         linnerWingModel.setRotationPoint(new Vec3(0F, 1, 0.5f));
+        linnerWingModel.setHitbox(false);
         linnerWingModel.extend(linnerWingTop);
 
         wingTopModel.addChild(innerWingModel);
@@ -582,7 +590,6 @@ public class BodyPartModels
 
         ExtendableModelRenderer flatToothPart = new ExtendableModelRenderer(BodyPartModelNames.flatToothModel);
         flatToothPart.addLayer(new UVPair(0, 0), TextureList.boneSize, 0, TextureList.bone);
-        // TODO: Ypos here not working when head moves
         flatToothPart.setPos(0f, 1f, 0f);
         flatToothPart.setFixedPosAdjustment(0.05f, 0, 0.05f);
         flatToothPart.setRotationPoint(new Vec3(1f, 1, 1));

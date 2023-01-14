@@ -9,16 +9,27 @@ public class QiSource
     protected BlockPos pos;
     protected int range;
     protected int elementID;
-    protected int qiOutput;
 
-    // Todo: QiSource stats
-    public QiSource(BlockPos position, int size, int element, int qi)
+    protected int qiMax;
+    protected int qiCurrent;
+    protected int qiRegen;
+
+    protected int previousCurrent = 0;
+
+    public QiSource(BlockPos position, int size, int element, int qi, int regen)
+    {
+        this(position, size, element, qi, qi, regen);
+    }
+
+    public QiSource(BlockPos position, int size, int element, int qi, int current, int regen)
     {
         pos = position;
         range = size;
         elementID = element;
 
-        qiOutput = qi;
+        qiMax = qi;
+        qiCurrent = current;
+        qiRegen = regen;
     }
 
     public BlockPos getPos()
@@ -36,7 +47,35 @@ public class QiSource
         return elementID;
     }
 
-    public int getQiOutput() { return qiOutput; }
+    public int getQiCurrent() { return qiCurrent; }
+
+    public boolean tick()
+    {
+        qiCurrent += qiRegen;
+
+        if (qiCurrent > qiMax)
+            qiCurrent = qiMax;
+
+        boolean updated = false;
+
+        if (previousCurrent != qiCurrent)
+            updated = true;
+
+        previousCurrent = qiCurrent;
+
+        return updated;
+    }
+
+    // Try to absorb the specified amount of qi, returning the amount absorbed
+    public int absorbQi(int toAbsorb)
+    {
+        if (toAbsorb > qiCurrent)
+            toAbsorb = qiCurrent;
+
+        qiCurrent -= toAbsorb;
+
+        return toAbsorb;
+    }
 
     public CompoundTag SerializeNBT()
     {
@@ -45,7 +84,9 @@ public class QiSource
         nbt.putLong("pos", pos.asLong());
         nbt.putInt("range", range);
         nbt.putInt("element", elementID);
-        nbt.putInt("qioutput", qiOutput);
+        nbt.putInt("qimax", qiMax);
+        nbt.putInt("qicurrent", qiCurrent);
+        nbt.putInt("qiregen", qiRegen);
 
         return nbt;
     }
@@ -55,7 +96,9 @@ public class QiSource
         buffer.writeLong(pos.asLong());
         buffer.writeInt(range);
         buffer.writeInt(elementID);
-        buffer.writeInt(qiOutput);
+        buffer.writeInt(qiMax);
+        buffer.writeInt(qiCurrent);
+        buffer.writeInt(qiRegen);
     }
 
     public static QiSource DeserializeNBT(CompoundTag nbt)
@@ -63,9 +106,11 @@ public class QiSource
         BlockPos newPos = BlockPos.of(nbt.getLong("pos"));
         int size = nbt.getInt("range");
         int element = nbt.getInt("element");
-        int qiOutput = nbt.getInt("qioutput");
+        int qiMax = nbt.getInt("qimax");
+        int qiCurrent = nbt.getInt("qicurrent");
+        int qiRegen = nbt.getInt("qiregen");
 
-        return new QiSource(newPos, size, element, qiOutput);
+        return new QiSource(newPos, size, element, qiMax, qiCurrent, qiRegen);
     }
 
     public static QiSource ReadBuffer(FriendlyByteBuf buffer)
@@ -73,9 +118,11 @@ public class QiSource
         BlockPos newPos = BlockPos.of(buffer.readLong());
         int size = buffer.readInt();
         int element = buffer.readInt();
-        int qioutput = buffer.readInt();
+        int qimax = buffer.readInt();
+        int qicurrent = buffer.readInt();
+        int qiregen = buffer.readInt();
 
-        return new QiSource(newPos, size, element, qioutput);
+        return new QiSource(newPos, size, element, qimax, qicurrent, qiregen);
     }
 
     // Default Qi to absorb without using a QiSource

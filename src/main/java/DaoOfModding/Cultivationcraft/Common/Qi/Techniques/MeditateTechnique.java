@@ -59,29 +59,36 @@ public class MeditateTechnique extends MovementOverrideTechnique
     {
         ICultivatorStats stats = CultivatorStats.getCultivatorStats(event.player);
 
-        float absorbSpeed = BodyPartStatControl.getPlayerStatControl(event.player.getUUID()).getStats().getStat(StatIDs.qiAbsorb);
-
-        int toAdd = QiSource.getDefaultQi();
-
-        // Draw Qi from each Qi source available
-        // TODO: Elemental stuff
-        for (QiSource source : ChunkQiSources.getQiSourcesInRange(event.player.level, event.player.position(), (int)BodyPartStatControl.getPlayerStatControl(event.player.getUUID()).getStats().getStat(StatIDs.qiAbsorbRange)))
-            toAdd += source.getQiOutput();
-
-        // Do not absorb more qi than the players max absorb speed
-        if (toAdd > absorbSpeed)
-            toAdd = (int)absorbSpeed;
-
-        // DEBUG - increase qiAbsorption speed by the debug amount
-        toAdd *= debug.qiCollectingSpeed;
-
         if (stats.getCultivationType() == CultivationTypes.BODY_CULTIVATOR)
         {
             IBodyModifications modifications = BodyModifications.getBodyModifications(event.player);
 
-            // Only progress if a part has been selected
+            // Only absorb Qi if a part has been selected
             if (modifications.getSelection().compareTo("") != 0)
+            {
+                float absorbSpeed = BodyPartStatControl.getPlayerStatControl(event.player.getUUID()).getStats().getStat(StatIDs.qiAbsorb);
+
+                int toAdd = QiSource.getDefaultQi();
+                int remaining = (int)absorbSpeed;
+
+                // Draw Qi from each Qi source available
+                // TODO: Elemental stuff
+                for (QiSource source : ChunkQiSources.getQiSourcesInRange(event.player.level, event.player.position(), (int)BodyPartStatControl.getPlayerStatControl(event.player.getUUID()).getStats().getStat(StatIDs.qiAbsorbRange)))
+                {
+                    // Do not absorb more qi than the players max absorb speed
+                    if (remaining > 0)
+                    {
+                        int absorbed = source.absorbQi(remaining);
+                        remaining -= absorbed;
+                        toAdd += absorbed;
+                    }
+                }
+
+                // DEBUG - increase qiAbsorption speed by the debug amount
+                toAdd *= debug.qiCollectingSpeed;
+
                 modifications.addProgress(toAdd);
+            }
         }
     }
 

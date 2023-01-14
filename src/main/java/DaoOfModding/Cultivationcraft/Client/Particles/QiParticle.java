@@ -96,7 +96,7 @@ public class QiParticle extends TextureSheetParticle
         public Particle createParticle(QiParticleData particleData, ClientLevel world, double xPos, double yPos, double zPos, double xVelocity, double yVelocity, double zVelocity)
         {
             float size = (particleData.source.getSize() - QiSourceConfig.MinSize) / (QiSourceConfig.MaxSize - QiSourceConfig.MinSize);
-            float amount = (particleData.source.getQiOutput() - QiSourceConfig.MinOutput) / (QiSourceConfig.MaxOutput - QiSourceConfig.MinOutput);
+            float amount = (particleData.source.getQiCurrent() - QiSourceConfig.MinStorage) / (QiSourceConfig.MaxStorage - QiSourceConfig.MinStorage);
 
             double velocityModifier = 1 + size * 3;
             double lifeModifier = 30 + amount * 270;

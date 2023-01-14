@@ -34,6 +34,8 @@ public class ClientListeners
 
     public static void playerTick(TickEvent.PlayerTickEvent event)
     {
+        // TODO: VERY rare freeze seems to happen somewhere here
+
         if (event.side == LogicalSide.CLIENT && event.phase == TickEvent.Phase.START)
         {
             if (event.player == genericClientFunctions.getPlayer())

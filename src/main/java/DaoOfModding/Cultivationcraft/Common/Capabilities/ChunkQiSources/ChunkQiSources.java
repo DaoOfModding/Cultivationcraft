@@ -78,7 +78,7 @@ public class ChunkQiSources implements IChunkQiSources
             }
         }
 
-        QiSources.add(new QiSource(new BlockPos(xPos, yPos, zPos), QiSourceConfig.generateRandomSize(), element, QiSourceConfig.generateRandomQiOutput()));
+        QiSources.add(new QiSource(new BlockPos(xPos, yPos, zPos), QiSourceConfig.generateRandomSize(), element, QiSourceConfig.generateRandomQiStorage(), QiSourceConfig.generateRandomQiRegen()));
     }
 
     public CompoundTag writeNBT()

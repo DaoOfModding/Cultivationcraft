@@ -15,12 +15,15 @@ import DaoOfModding.Cultivationcraft.Common.Capabilities.FlyingSwordBind.FlyingS
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPart;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartOption;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.FoodStats.QiFoodStats;
+import DaoOfModding.Cultivationcraft.Common.Qi.QiSource;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
 import DaoOfModding.Cultivationcraft.Network.PacketHandler;
 import DaoOfModding.Cultivationcraft.Server.ServerItemControl;
 import DaoOfModding.Cultivationcraft.Server.ServerListeners;
 import DaoOfModding.Cultivationcraft.Server.SkillHotbarServer;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraftforge.event.TickEvent;
@@ -32,14 +35,19 @@ import net.minecraftforge.event.level.ChunkEvent;
 import net.minecraftforge.event.level.ChunkWatchEvent;
 import net.minecraftforge.event.level.LevelEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.common.Mod;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 
 @Mod.EventBusSubscriber()
 public class CommonListeners
 {
+    protected static ArrayList<IChunkQiSources> tickingQiSources = new ArrayList<IChunkQiSources>();
+
     @SubscribeEvent
     public static void playerTick(TickEvent.PlayerTickEvent event)
     {
@@ -50,6 +58,30 @@ public class CommonListeners
             ClientListeners.playerTick(event);
         else
             ServerListeners.playerTick(event);
+    }
+
+    @SubscribeEvent
+    public static void LevelTick(TickEvent.LevelTickEvent event)
+    {
+        if (event.phase == TickEvent.Phase.START && event.side == LogicalSide.SERVER)
+        {
+            // Clone the array list so it doesn't bork out if modified during ticking
+            ArrayList<IChunkQiSources> ticking = (ArrayList<IChunkQiSources>)tickingQiSources.clone();
+
+            for (IChunkQiSources sources : ticking)
+            {
+                boolean update = false;
+
+                for (QiSource source : sources.getQiSources())
+                    if (source.tick())
+                        update = true;
+
+                // Send the updated capability data to all tracking clients
+                // TODO - Is this updating too much?
+                if (update)
+                    PacketHandler.sendChunkQiSourcesToClient(event.level.getChunk(sources.getChunkPos().x, sources.getChunkPos().z));
+            }
+        }
     }
 
     @SubscribeEvent
@@ -90,11 +122,12 @@ public class CommonListeners
     @SubscribeEvent
     public static void LevelChunkLoad(ChunkEvent.Load event)
     {
+        IChunkQiSources sources = ChunkQiSources.getChunkQiSources((LevelChunk) event.getChunk());
+
         // Only on server
         if (!event.getLevel().isClientSide())
         {
             // If the LevelChunk's Qi sources have not been generated yet, generate them
-            IChunkQiSources sources = ChunkQiSources.getChunkQiSources((LevelChunk) event.getChunk());
             if (sources.getChunkPos() == null)
             {
                 sources.setChunkPos(event.getChunk().getPos());
@@ -107,6 +140,17 @@ public class CommonListeners
                 PacketHandler.sendChunkQiSourcesToClient((LevelChunk) event.getChunk());
             }
         }
+
+        if (sources.getQiSources().size() > 0)
+            tickingQiSources.add(sources);
+
+    }
+
+    @SubscribeEvent
+    public static void LevelChunkLoad(ChunkEvent.Unload event)
+    {
+        IChunkQiSources sources = ChunkQiSources.getChunkQiSources((LevelChunk) event.getChunk());
+        tickingQiSources.remove(sources);
     }
 
     // Fired off when an player logs into the world
