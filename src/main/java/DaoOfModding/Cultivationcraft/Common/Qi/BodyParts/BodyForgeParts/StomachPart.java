@@ -7,9 +7,9 @@ public class StomachPart extends BodyPartOption
 {
     QiFoodStats foodStats = new QiFoodStats();
 
-    public StomachPart(String partID, String position, String subPosition, String displayNamePos, int qiToForge)
+    public StomachPart(String partID, String position, String subPosition, String displayNamePos)
     {
-        super(partID, position, subPosition, displayNamePos, qiToForge);
+        super(partID, position, subPosition, displayNamePos);
     }
 
     public void setFoodStats(QiFoodStats newFoodStats)

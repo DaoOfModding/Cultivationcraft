@@ -32,8 +32,7 @@ public class PlayerStatControl
         stats.setStat(StatIDs.weight, StatIDs.defaultWeight);
         stats.setStat(StatIDs.maxHP, StatIDs.defaultMaxHP);
         stats.setStat(StatIDs.maxStamina, StatIDs.defaultMaxStamina);
-        stats.setStat(StatIDs.qiAbsorb, StatIDs.deafultQiAbsorb);
-        stats.setStat(StatIDs.qiAbsorbRange, StatIDs.deafultQiAbsorbRange);
+        stats.setStat(StatIDs.qiAbsorbRange, StatIDs.defaultQiAbsorbRange);
         stats.setStat(StatIDs.staminaUse, StatIDs.defaultStaminaUse);
         stats.setStat(StatIDs.healthRegen, StatIDs.defaultHealthRegen);
         stats.setStat(StatIDs.healthStaminaConversion, StatIDs.defaulthealthStaminaConversion);
@@ -53,6 +52,9 @@ public class PlayerStatControl
     {
         // Clear the existing stats
         setupStats();
+
+        stats.setStat(StatIDs.qiAbsorb, BodyPartQiCostController.calculateQiAbsorb(player));
+        stats.setStat(StatIDs.qiCost, BodyPartQiCostController.calculateQiCost(player));
 
         // Add all existing body part stats to the players stats
         for (BodyPart part : BodyModifications.getBodyModifications(player).getModifications().values())

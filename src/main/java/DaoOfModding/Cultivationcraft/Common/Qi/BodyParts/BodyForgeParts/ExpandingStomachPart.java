@@ -27,9 +27,9 @@ public class ExpandingStomachPart extends StomachPart
 
     PlayerPose expandingPose = new PlayerPose();
 
-    public ExpandingStomachPart(String partID, String position, String subPosition, String displayNamePos, int qiToForge)
+    public ExpandingStomachPart(String partID, String position, String subPosition, String displayNamePos)
     {
-        super(partID, position, subPosition, displayNamePos, qiToForge);
+        super(partID, position, subPosition, displayNamePos);
     }
 
     @Override

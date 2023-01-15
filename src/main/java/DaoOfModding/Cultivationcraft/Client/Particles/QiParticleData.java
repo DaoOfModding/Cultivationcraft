@@ -5,10 +5,12 @@ import DaoOfModding.Cultivationcraft.Client.clientRegister;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.world.entity.player.Player;
 
 public class QiParticleData implements ParticleOptions
 {
     QiSource source;
+    Player target;
 
     public QiParticleData(QiSource newSource)
     {
@@ -30,5 +32,10 @@ public class QiParticleData implements ParticleOptions
     public String writeToString()
     {
         return "Source: " + source.toString();
+    }
+
+    public void setTarget(Player player)
+    {
+        target = player;
     }
 }

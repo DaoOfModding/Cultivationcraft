@@ -3,6 +3,10 @@ package DaoOfModding.Cultivationcraft.Common.Qi;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.entity.player.Player;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class QiSource
 {
@@ -15,6 +19,12 @@ public class QiSource
     protected int qiRegen;
 
     protected int previousCurrent = 0;
+
+    protected int lastSpawned = 0;
+    protected static final int minSpawnTime = 30;
+
+    public HashMap<Player, Integer> absorbing = new HashMap<Player, Integer>();
+    public HashMap<Player, Integer> currentAbsorbing = new HashMap<Player, Integer>();
 
     public QiSource(BlockPos position, int size, int element, int qi, int regen)
     {
@@ -49,8 +59,20 @@ public class QiSource
 
     public int getQiCurrent() { return qiCurrent; }
 
+    // Return how many ticks should wait before a QiParticle spawn
+    public int getSpawnTick()
+    {
+        float fullness = (float)qiCurrent / (float)qiMax;
+
+        return (int)((1 - fullness) * minSpawnTime);
+    }
+
     public boolean tick()
     {
+        // Clear the list of players absorbing from this source
+        currentAbsorbing = absorbing;
+        absorbing = new HashMap();
+
         qiCurrent += qiRegen;
 
         if (qiCurrent > qiMax)
@@ -67,12 +89,15 @@ public class QiSource
     }
 
     // Try to absorb the specified amount of qi, returning the amount absorbed
-    public int absorbQi(int toAbsorb)
+    public int absorbQi(int toAbsorb, Player player)
     {
         if (toAbsorb > qiCurrent)
             toAbsorb = qiCurrent;
 
         qiCurrent -= toAbsorb;
+
+        if (toAbsorb > 0)
+            absorbing.put(player, toAbsorb);
 
         return toAbsorb;
     }

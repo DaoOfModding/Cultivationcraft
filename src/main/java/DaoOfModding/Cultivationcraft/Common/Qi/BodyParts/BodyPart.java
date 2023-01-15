@@ -31,7 +31,6 @@ public class BodyPart
     protected ArrayList<String> firstPersonModelIDs = new ArrayList<String>();
     protected String limbPosition;
     protected String displayNamePosition;
-    protected int qiNeeded;
     protected PlayerStatModifications stats;
     protected String textureID = TextureList.skin;
     protected boolean texturesUpdated = false;
@@ -54,14 +53,12 @@ public class BodyPart
 
     protected HashMap<String, ResourceLocation> textureChanges = new HashMap<String, ResourceLocation>();
 
-    public BodyPart(String partID, String position, String displayNamePos, int qiToForge)
+    public BodyPart(String partID, String position, String displayNamePos)
     {
         ID = partID;
 
         limbPosition = position;
         displayNamePosition = displayNamePos;
-
-        qiNeeded = qiToForge;
 
         stats = new PlayerStatModifications();
     }
@@ -157,11 +154,6 @@ public class BodyPart
     public String getPosition()
     {
         return limbPosition;
-    }
-
-    public int getQiNeeded()
-    {
-        return qiNeeded;
     }
 
     public ArrayList<String> getModelIDs()

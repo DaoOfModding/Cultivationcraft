@@ -16,9 +16,9 @@ public class GlidePart extends BodyPart
 
     Vec3 prevMotion = new Vec3(0, 0, 0);
 
-    public GlidePart(String partID, String position, String displayNamePos, int qiToForge)
+    public GlidePart(String partID, String position, String displayNamePos)
     {
-        super(partID, position, displayNamePos, qiToForge);
+        super(partID, position, displayNamePos);
 
         jump.addAngle(GenericLimbNames.leftArm, new Vec3(Math.toRadians(0), 0, Math.toRadians(-90)), GenericPoses.jumpArmPriority + 5);
         jump.addAngle(GenericLimbNames.rightArm, new Vec3(Math.toRadians(0), 0, Math.toRadians(90)), GenericPoses.jumpArmPriority + 5);

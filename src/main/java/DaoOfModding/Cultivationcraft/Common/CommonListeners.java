@@ -76,10 +76,17 @@ public class CommonListeners
                     if (source.tick())
                         update = true;
 
-                // Send the updated capability data to all tracking clients
-                // TODO - Is this updating too much?
                 if (update)
-                    PacketHandler.sendChunkQiSourcesToClient(event.level.getChunk(sources.getChunkPos().x, sources.getChunkPos().z));
+                {
+                    LevelChunk chunk = event.level.getChunk(sources.getChunkPos().x, sources.getChunkPos().z);
+
+                    // Mark the LevelChunk as dirty so it will save the updated capability
+                    chunk.setUnsaved(true);
+
+                    // Send the updated capability data to all tracking clients
+                    // TODO - Is this updating too much?
+                    PacketHandler.sendChunkQiSourcesToClient(chunk);
+                }
             }
         }
     }

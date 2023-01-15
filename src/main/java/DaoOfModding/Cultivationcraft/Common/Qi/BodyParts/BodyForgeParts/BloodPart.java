@@ -8,9 +8,9 @@ public class BloodPart extends BodyPartOption
 {
     Blood bloodType = new QiBlood();
 
-    public BloodPart(String partID, String position, String subPosition, String displayNamePos, int qiToForge)
+    public BloodPart(String partID, String position, String subPosition, String displayNamePos)
     {
-        super(partID, position, subPosition, displayNamePos, qiToForge);
+        super(partID, position, subPosition, displayNamePos);
     }
 
     public void setBloodType(Blood newBloodType)

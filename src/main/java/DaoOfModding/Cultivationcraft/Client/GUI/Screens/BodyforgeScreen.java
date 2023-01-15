@@ -7,6 +7,8 @@ import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.BodyM
 import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.IBodyModifications;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPart;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartOption;
+import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
+import DaoOfModding.Cultivationcraft.Common.Qi.Stats.StatIDs;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import DaoOfModding.Cultivationcraft.Network.ClientPacketHandler;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -357,7 +359,7 @@ public class BodyforgeScreen extends GenericTabScreen
 
         // Render the progress bar
         IBodyModifications modifications = BodyModifications.getBodyModifications(genericClientFunctions.getPlayer());
-        float progress = (float)modifications.getProgress() / (float)part.getQiNeeded();
+        float progress = (float)modifications.getProgress() / (float) BodyPartStatControl.getStats(genericClientFunctions.getPlayer().getUUID()).getStat(StatIDs.qiCost);
 
         RenderSystem.setShaderTexture(0, TEXTURE);
 

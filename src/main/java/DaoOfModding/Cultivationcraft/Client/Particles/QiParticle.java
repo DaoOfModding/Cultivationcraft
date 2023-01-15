@@ -3,6 +3,7 @@ package DaoOfModding.Cultivationcraft.Client.Particles;
 import DaoOfModding.Cultivationcraft.Client.Renderer;
 import DaoOfModding.Cultivationcraft.Client.Renderers.QiSourceRenderer;
 import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
+import DaoOfModding.Cultivationcraft.Common.Qi.QiSource;
 import DaoOfModding.Cultivationcraft.Common.Qi.QiSourceConfig;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -12,6 +13,9 @@ import net.minecraft.client.Camera;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.levelgen.structure.structures.NetherFortressPieces;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -19,6 +23,10 @@ import java.awt.*;
 
 public class QiParticle extends TextureSheetParticle
 {
+    Player target;
+
+    // How fast the Qi Particles should move a tick
+
     public QiParticle(ClientLevel world, double x, double y, double z, double velocityX, double velocityY, double velocityZ, int lifespan, SpriteSet sprite)
     {
         super(world, x, y, z, velocityX, velocityY, velocityZ);
@@ -31,7 +39,7 @@ public class QiParticle extends TextureSheetParticle
 
         xd = velocityX;
         yd = velocityY;
-        xd = velocityZ;
+        zd = velocityZ;
     }
 
     @Override
@@ -60,6 +68,9 @@ public class QiParticle extends TextureSheetParticle
 
         move(this.xd, this.yd, this.zd);
 
+        if (!Renderer.QiSourcesVisible)
+            this.remove();
+
         if (onGround)
         {  // onGround is only true if the particle collides while it is moving downwards...
             this.remove();
@@ -75,8 +86,11 @@ public class QiParticle extends TextureSheetParticle
             this.remove();
         }
 
-        if (!Renderer.QiSourcesVisible)
+        // If particle collides with absorbing player
+        if (target != null && target.getBoundingBox().contains(this.x, this.y, this.z))
+        {
             this.remove();
+        }
     }
 
     @Override
@@ -95,17 +109,26 @@ public class QiParticle extends TextureSheetParticle
         @Override
         public Particle createParticle(QiParticleData particleData, ClientLevel world, double xPos, double yPos, double zPos, double xVelocity, double yVelocity, double zVelocity)
         {
-            float size = (particleData.source.getSize() - QiSourceConfig.MinSize) / (QiSourceConfig.MaxSize - QiSourceConfig.MinSize);
-            float amount = (particleData.source.getQiCurrent() - QiSourceConfig.MinStorage) / (QiSourceConfig.MaxStorage - QiSourceConfig.MinStorage);
+            // The distance particles should reach
+            float distance = particleData.source.getSize();
 
-            double velocityModifier = 1 + size * 3;
-            double lifeModifier = 30 + amount * 270;
+            // Value from 0-1 signifying how dense this QiSource currently is
+            double density = Math.sqrt(particleData.source.getQiCurrent()) / Math.sqrt((float)QiSourceConfig.MaxStorage);
 
-            QiParticle particle = new QiParticle(world, xPos, yPos, zPos, xVelocity * velocityModifier, yVelocity * velocityModifier, zVelocity * velocityModifier, (int)(lifeModifier * ( 1 / QiSourceRenderer.speed)), sprites);
+            // How long the particles last is calculated based on the QiSource density
+            int life = (int)(density * 3000);
+
+            // Determine the velocity of the particles based on their lifespan and the distance they need to travel
+            Vec3 direction = new Vec3(xVelocity, yVelocity, zVelocity);
+            direction = direction.scale(distance/(float)life);
+
+            QiParticle particle = new QiParticle(world, xPos, yPos, zPos, direction.x, direction.y, direction.z, life, sprites);
             particle.pickSprite(sprites);
 
             Color color = Elements.getElement(particleData.source.getElementID()).color;
             particle.setColor(color.getRed() / 255f, color.getGreen() / 255f, color.getBlue() / 255f);
+
+            particle.target = particleData.target;
 
             return particle;
         }

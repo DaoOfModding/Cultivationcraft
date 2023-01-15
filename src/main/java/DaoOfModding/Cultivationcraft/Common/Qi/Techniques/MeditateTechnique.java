@@ -78,7 +78,7 @@ public class MeditateTechnique extends MovementOverrideTechnique
                     // Do not absorb more qi than the players max absorb speed
                     if (remaining > 0)
                     {
-                        int absorbed = source.absorbQi(remaining);
+                        int absorbed = source.absorbQi(remaining, event.player);
                         remaining -= absorbed;
                         toAdd += absorbed;
                     }

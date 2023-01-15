@@ -18,9 +18,9 @@ public class BodyPartOption extends BodyPart
     // If the key is "" then it is applied to all models in this position
     HashMap<String, ArrayList<String>> modelIDs = new HashMap<String, ArrayList<String>>();
 
-    public BodyPartOption(String partID, String position, String subPosition, String displayNamePos, int qiToForge)
+    public BodyPartOption(String partID, String position, String subPosition, String displayNamePos)
     {
-        super(partID, position, displayNamePos, qiToForge);
+        super(partID, position, displayNamePos);
 
         limbSubPosition = subPosition;
     }

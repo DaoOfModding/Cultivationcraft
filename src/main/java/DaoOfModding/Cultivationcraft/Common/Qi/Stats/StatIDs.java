@@ -18,6 +18,7 @@ public class StatIDs
 
     public static final String qiAbsorb = "qiAbsorb";
     public static final String qiAbsorbRange = "qiAbsorbRange";
+    public static final String qiCost = "qiCost";
 
     // TODO: Make this do something
     public static final String attackRange = "attackRange";
@@ -50,6 +51,5 @@ public class StatIDs
 
     public static final float defaultAttackRange = 5;
 
-    public static final float deafultQiAbsorb = 1000;
-    public static final float deafultQiAbsorbRange = 1;
+    public static final float defaultQiAbsorbRange = 1;
 }

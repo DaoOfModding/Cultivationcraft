@@ -4,9 +4,9 @@ import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPart;
 
 public class MovementOverridePart extends BodyPart
 {
-    public MovementOverridePart(String partID, String position, String displayNamePos, int qiToForge)
+    public MovementOverridePart(String partID, String position, String displayNamePos)
     {
-        super(partID, position, displayNamePos, qiToForge);
+        super(partID, position, displayNamePos);
     }
 
     // Called when the keybinding for the specified input is pressed

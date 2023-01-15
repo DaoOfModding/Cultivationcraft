@@ -13,9 +13,9 @@ public class SingleLegPart extends MovementOverridePart
 {
     PlayerPose Idle = new PlayerPose();
 
-    public SingleLegPart(String partID, String position, String displayNamePos, int qiToForge)
+    public SingleLegPart(String partID, String position, String displayNamePos)
     {
-        super(partID, position, displayNamePos, qiToForge);
+        super(partID, position, displayNamePos);
 
         Idle.addAngle(BodyPartModelNames.singleLegModel, new Vec3(Math.toRadians(-30), 0, 0), GenericPoses.jumpLegPriority + 1, 5f, -1);
         Idle.addAngle(BodyPartModelNames.singleLegLowerModel, new Vec3(Math.toRadians(60), 0, 0), GenericPoses.jumpLegPriority + 1, 5f, -1);

@@ -1,5 +1,6 @@
 package DaoOfModding.Cultivationcraft.Server;
 
+import DaoOfModding.Cultivationcraft.Client.genericClientFunctions;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartNames;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.BodyModifications;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.IBodyModifications;
@@ -9,6 +10,7 @@ import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPart;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartOption;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
 import DaoOfModding.Cultivationcraft.Common.Qi.CultivationTypes;
+import DaoOfModding.Cultivationcraft.Common.Qi.Stats.StatIDs;
 import DaoOfModding.Cultivationcraft.Network.PacketHandler;
 import net.minecraft.world.entity.player.Player;
 
@@ -30,7 +32,7 @@ public class BodyPartControl
 
             // If the QI progress is higher than the QI needed for this part
             // Add this part onto player's body modifications and clear the selection
-            if (toComplete.getQiNeeded() < modifications.getProgress())
+            if (BodyPartStatControl.getStats(player.getUUID()).getStat(StatIDs.qiCost) < modifications.getProgress())
             {
                 if (toComplete instanceof BodyPartOption)
                     modifications.setOption((BodyPartOption)toComplete);

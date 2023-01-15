@@ -19,9 +19,9 @@ public class JetPart extends BodyPartOption
 
     PlayerStatModifications enabledStats = new PlayerStatModifications();
 
-    public JetPart(String partID, String position, String subPosition, String displayNamePos, int qiToForge)
+    public JetPart(String partID, String position, String subPosition, String displayNamePos)
     {
-        super(partID, position, subPosition, displayNamePos, qiToForge);
+        super(partID, position, subPosition, displayNamePos);
 
         enabledStats.setStat(StatIDs.movementSpeed, 0.1f);
     }
