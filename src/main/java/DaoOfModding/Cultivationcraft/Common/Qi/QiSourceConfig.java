@@ -7,9 +7,9 @@ public class QiSourceConfig
     public final static int MinSize = 16;
     public final static int rarity = 500;
     public final static int MaxStorage = 1000000000;
-    public final static int MinStorage = 100000;
-    public final static int MaxRegen = 100000;
-    public final static int MinRegen = 10;
+    public final static int MinStorage = 1000000;
+    public final static int MaxRegen = 1000000;
+    public final static int MinRegen = 100;
 
     // Return the number of QiSources to spawn
     // Much more likely to be 0, but has a chance to be up to MaxSources
