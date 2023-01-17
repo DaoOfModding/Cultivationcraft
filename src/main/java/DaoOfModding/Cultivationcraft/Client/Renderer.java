@@ -27,10 +27,11 @@ public class Renderer
 
     public static boolean QiSourcesVisible = false;
 
-    public static void render()
+    public static void render(float partialTick)
     {
-        if (QiSourcesVisible)
-            QiSourceRenderer.renderQiSources();
+        if (!Minecraft.getInstance().isPaused())
+            if (QiSourcesVisible)
+                QiSourceRenderer.renderQiSources(partialTick);
 
         renderTechniques();
     }

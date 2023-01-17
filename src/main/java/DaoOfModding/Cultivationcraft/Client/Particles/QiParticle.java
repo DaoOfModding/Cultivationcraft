@@ -115,12 +115,22 @@ public class QiParticle extends TextureSheetParticle
             // Value from 0-1 signifying how dense this QiSource currently is
             double density = Math.sqrt(particleData.source.getQiCurrent()) / Math.sqrt((float)QiSourceConfig.MaxStorage);
 
-            // How long the particles last is calculated based on the QiSource density
-            int life = (int)(density * 3000);
-
-            // Determine the velocity of the particles based on their lifespan and the distance they need to travel
+            int life;
             Vec3 direction = new Vec3(xVelocity, yVelocity, zVelocity);
-            direction = direction.scale(distance/(float)life);
+
+            if (particleData.target == null)
+            {
+                // How long the particles last is calculated based on the QiSource density
+                life = 5 + (int)(density * 2999);
+
+                // Determine the velocity of the particles based on their lifespan and the distance they need to travel
+                direction = direction.scale(distance/(float)life);
+            }
+            else
+            {
+                life = (int)distance * 2;
+                direction = direction.scale(0.5);
+            }
 
             QiParticle particle = new QiParticle(world, xPos, yPos, zPos, direction.x, direction.y, direction.z, life, sprites);
             particle.pickSprite(sprites);

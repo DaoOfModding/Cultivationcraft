@@ -7,6 +7,7 @@ import net.minecraft.world.entity.player.Player;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 public class QiSource
 {
@@ -14,24 +15,28 @@ public class QiSource
     protected int range;
     protected int elementID;
 
-    protected int qiMax;
-    protected int qiCurrent;
+    protected double qiMax;
+    protected double qiCurrent;
+
     protected int qiRegen;
 
-    protected int previousCurrent = 0;
+    protected double previousCurrent = 0;
 
-    protected int lastSpawned = 0;
+    protected boolean toUpdate = true;
+
     protected static final int minSpawnTime = 30;
 
-    public HashMap<Player, Integer> absorbing = new HashMap<Player, Integer>();
-    public HashMap<Player, Integer> currentAbsorbing = new HashMap<Player, Integer>();
+    public static int spawnedTick = 0;
 
-    public QiSource(BlockPos position, int size, int element, int qi, int regen)
+    protected HashMap<UUID, Integer> currentAbsorbing = new HashMap();
+    protected HashMap<UUID, Integer> absorbing = new HashMap();
+
+    public QiSource(BlockPos position, int size, int element, double qi, int regen)
     {
-        this(position, size, element, qi, qi, regen);
+        this(position, size, element, qi, 1, regen);
     }
 
-    public QiSource(BlockPos position, int size, int element, int qi, int current, int regen)
+    public QiSource(BlockPos position, int size, int element, double qi, double current, int regen)
     {
         pos = position;
         range = size;
@@ -57,47 +62,62 @@ public class QiSource
         return elementID;
     }
 
-    public int getQiCurrent() { return qiCurrent; }
+    public int getQiCurrent()
+    {
+        return (int)(qiCurrent * getQiMax());
+    }
 
     // Return how many ticks should wait before a QiParticle spawn
     public int getSpawnTick()
     {
-        float fullness = (float)qiCurrent / (float)qiMax;
+        return (int)((1 - qiCurrent) * minSpawnTime);
+    }
 
-        return (int)((1 - fullness) * minSpawnTime);
+    public int getQiMax()
+    {
+        return (int)(qiMax * (QiSourceConfig.MaxStorage - QiSourceConfig.MinStorage)) + QiSourceConfig.MinStorage;
+    }
+
+    public HashMap<UUID, Integer> getAbsorbingPlayers()
+    {
+        return currentAbsorbing;
     }
 
     public boolean tick()
     {
+        boolean update = toUpdate;
+        toUpdate = false;
+
         // Clear the list of players absorbing from this source
         currentAbsorbing = absorbing;
         absorbing = new HashMap();
 
-        qiCurrent += qiRegen;
+        qiCurrent += (1.0 / qiRegen);
 
-        if (qiCurrent > qiMax)
-            qiCurrent = qiMax;
-
-        boolean updated = false;
+        if (qiCurrent > 1)
+            qiCurrent = 1;
 
         if (previousCurrent != qiCurrent)
-            updated = true;
+            update = true;
 
         previousCurrent = qiCurrent;
 
-        return updated;
+        return update;
     }
 
     // Try to absorb the specified amount of qi, returning the amount absorbed
     public int absorbQi(int toAbsorb, Player player)
     {
-        if (toAbsorb > qiCurrent)
-            toAbsorb = qiCurrent;
+        if (toAbsorb > getQiCurrent())
+            toAbsorb = getQiCurrent();
 
-        qiCurrent -= toAbsorb;
+        qiCurrent -= (double)toAbsorb / (double)getQiMax();
 
         if (toAbsorb > 0)
-            absorbing.put(player, toAbsorb);
+        {
+            absorbing.put(player.getUUID(), toAbsorb);
+            toUpdate = true;
+        }
 
         return toAbsorb;
     }
@@ -109,21 +129,24 @@ public class QiSource
         nbt.putLong("pos", pos.asLong());
         nbt.putInt("range", range);
         nbt.putInt("element", elementID);
-        nbt.putInt("qimax", qiMax);
-        nbt.putInt("qicurrent", qiCurrent);
+        nbt.putDouble("qimax", qiMax);
+        nbt.putDouble("qicurrent", qiCurrent);
         nbt.putInt("qiregen", qiRegen);
+
+        int i = 0;
+        for (Map.Entry<UUID, Integer> player : currentAbsorbing.entrySet())
+        {
+            nbt.putUUID("player" + i, player.getKey());
+            nbt.putInt("amount" + i, player.getValue());
+            i++;
+        }
 
         return nbt;
     }
 
     public void WriteBuffer(FriendlyByteBuf buffer)
     {
-        buffer.writeLong(pos.asLong());
-        buffer.writeInt(range);
-        buffer.writeInt(elementID);
-        buffer.writeInt(qiMax);
-        buffer.writeInt(qiCurrent);
-        buffer.writeInt(qiRegen);
+        buffer.writeNbt(SerializeNBT());
     }
 
     public static QiSource DeserializeNBT(CompoundTag nbt)
@@ -131,23 +154,28 @@ public class QiSource
         BlockPos newPos = BlockPos.of(nbt.getLong("pos"));
         int size = nbt.getInt("range");
         int element = nbt.getInt("element");
-        int qiMax = nbt.getInt("qimax");
-        int qiCurrent = nbt.getInt("qicurrent");
+        double qiMax = nbt.getDouble("qimax");
+        double qiCurrent = nbt.getDouble("qicurrent");
         int qiRegen = nbt.getInt("qiregen");
 
-        return new QiSource(newPos, size, element, qiMax, qiCurrent, qiRegen);
+        HashMap<UUID, Integer> absorbing = new HashMap();
+
+        int i = 0;
+        while (nbt.hasUUID("player" + i))
+        {
+            absorbing.put(nbt.getUUID("player" + i), nbt.getInt("amount" + i));
+            i++;
+        }
+
+        QiSource newSource = new QiSource(newPos, size, element, qiMax, qiCurrent, qiRegen);
+        newSource.currentAbsorbing = absorbing;
+
+        return newSource;
     }
 
     public static QiSource ReadBuffer(FriendlyByteBuf buffer)
     {
-        BlockPos newPos = BlockPos.of(buffer.readLong());
-        int size = buffer.readInt();
-        int element = buffer.readInt();
-        int qimax = buffer.readInt();
-        int qicurrent = buffer.readInt();
-        int qiregen = buffer.readInt();
-
-        return new QiSource(newPos, size, element, qimax, qicurrent, qiregen);
+        return DeserializeNBT(buffer.readNbt());
     }
 
     // Default Qi to absorb without using a QiSource

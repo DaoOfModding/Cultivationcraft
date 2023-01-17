@@ -148,6 +148,6 @@ public class ClientListeners
     {
         if (event.phase == TickEvent.Phase.END)
             if (Minecraft.getInstance().level != null)
-                Renderer.render();
+                Renderer.render(event.renderTickTime);
     }
 }

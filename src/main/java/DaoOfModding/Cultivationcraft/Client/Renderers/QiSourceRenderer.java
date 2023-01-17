@@ -4,6 +4,7 @@ import DaoOfModding.Cultivationcraft.Client.Particles.QiParticleData;
 import DaoOfModding.Cultivationcraft.Client.genericClientFunctions;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.ChunkQiSources.ChunkQiSources;
 import DaoOfModding.Cultivationcraft.Common.Qi.QiSource;
+import DaoOfModding.mlmanimator.Client.Poses.PoseHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.chunk.LevelChunk;
@@ -12,12 +13,13 @@ import net.minecraft.world.phys.Vec3;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
+import java.util.UUID;
 
 public class QiSourceRenderer
 {
-    protected static int tick = 0;
+    protected static float tick = 0;
 
-    public static void renderQiSources()
+    public static void renderQiSources(float partialTick)
     {
         int LevelChunks = Minecraft.getInstance().options.renderDistance().get()-1;
         int LevelChunkX = genericClientFunctions.getPlayer().blockPosition().getX() >> 4;
@@ -35,25 +37,24 @@ public class QiSourceRenderer
                     QiSourceRenderer.render(source);
             }
 
-        tick += 1;
+        tick += partialTick;
 
-        if (tick == 30)
+        if (tick >= 30*30)
             tick = 0;
     }
 
     // Return a random player absorbing from this source, weighted by the amount they are absorbing
     protected static Player getRandomAbsorbingPlayer(QiSource source)
     {
+        HashMap<UUID, Integer> players = source.getAbsorbingPlayers();
+
         // Return null if no players are absorbing from this source
-        if (source.absorbing.size() == 0)
+        if (players.size() == 0)
             return null;
 
         // If only one player is absorbing return that player
-        if (source.absorbing.size() == 1)
-            return (Player)source.absorbing.keySet().toArray()[0];
-
-        // Clone the hashmap so it can't be modified during calculations
-        HashMap<Player, Integer> players = (HashMap<Player, Integer>)source.absorbing.clone();
+        if (players.size() == 1)
+            return  Minecraft.getInstance().level.getPlayerByUUID((UUID)players.keySet().toArray()[0]);
 
         int absorbingAmount = 0;
 
@@ -65,12 +66,12 @@ public class QiSourceRenderer
 
         // Go through every absorbing player, subtracting the amount they are absorbing from the randomly chosen number
         // Until it hits 0
-        for (Map.Entry<Player, Integer> entry : players.entrySet())
+        for (Map.Entry<UUID, Integer> entry : players.entrySet())
         {
             absorbingAmount -= entry.getValue();
 
             if (absorbingAmount <= 0)
-                return entry.getKey();
+                return Minecraft.getInstance().level.getPlayerByUUID(entry.getKey());
         }
 
         // THIS SHOULD NOT HAPPEN
@@ -79,8 +80,13 @@ public class QiSourceRenderer
 
     public static void render(QiSource source)
     {
-        if ((tick + 1) % (source.getSpawnTick() +1) > 0)
+        if (source.spawnedTick == (int)(tick + 1))
             return;
+
+        if ((int)(tick + 1) % (source.getSpawnTick() +1) > 0)
+            return;
+
+        source.spawnedTick = (int)(tick + 1);
 
         Random random = new Random();
 
@@ -95,7 +101,8 @@ public class QiSourceRenderer
         // If a player is absorbing from this QiSource then particles move towards one of the players
         if (absorbing != null)
         {
-            direction = absorbing.position().subtract(source.getPos().getX(), source.getPos().getY(), source.getPos().getZ());
+            float height = PoseHandler.getPlayerPoseHandler(absorbing.getUUID()).getPlayerModel().getHeightAdjustment();
+            direction = absorbing.position().add(0, height, 0).subtract(source.getPos().getX(), source.getPos().getY(), source.getPos().getZ());
         }
         // If not player is absorbing from this QiSource then particles move in random directions
         else
