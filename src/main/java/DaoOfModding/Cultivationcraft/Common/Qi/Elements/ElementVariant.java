@@ -9,7 +9,7 @@ public class ElementVariant extends Element
 
     public ElementVariant(int elementID, String elementName, Color elementColor, double chance)
     {
-        super(elementID, elementName, elementColor);
+        super(elementID, elementName, elementColor, 0);
 
         mutateChance = chance;
     }

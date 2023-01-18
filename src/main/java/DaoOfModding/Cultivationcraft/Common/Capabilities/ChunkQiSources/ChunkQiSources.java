@@ -65,6 +65,7 @@ public class ChunkQiSources implements IChunkQiSources
 
     public boolean tick(Level level)
     {
+        // Qi sources deleting when player gets too close to them!?
         boolean updated = false;
 
         for (QiSource source : getQiSources())
@@ -134,12 +135,23 @@ public class ChunkQiSources implements IChunkQiSources
                         count++;
                     }
 
-        // Return and elementID if more than half the sphere contains that element
-        for (int elementID = 0; elementID < elements.length; elementID++)
-            if (elements[elementID] > count/2)
-                return elementID;
+        // TODO: change this to be weighted
 
-        return Elements.noElementID;
+        int foundElement = Elements.noElementID;
+
+        // Set the element to be any element that has the specified density of blocks within it's sphere
+        // If two elements match the requirements then set as no element
+        for (int elementID = 0; elementID < elements.length; elementID++)
+            if (elementID != Elements.noElementID)
+                if (elements[elementID] > Elements.getElement(elementID).density * count)
+                {
+                    if (foundElement == Elements.noElementID)
+                        foundElement = elementID;
+                    else
+                        return Elements.noElementID;
+                }
+
+        return foundElement;
     }
 
     protected void generateQiSource(LevelAccessor level)

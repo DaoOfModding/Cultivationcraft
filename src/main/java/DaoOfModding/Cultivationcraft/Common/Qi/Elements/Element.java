@@ -10,16 +10,18 @@ public class Element
     public final int ID;
     public final String name;
     public final Color color;
+    public final double density;
 
     protected ArrayList<ElementVariant> variant = new ArrayList<>();
 
     protected ArrayList<ElementRelationship> relationships = new ArrayList<ElementRelationship>();
 
-    public Element (int elementID, String elementName, Color elementColor)
+    public Element (int elementID, String elementName, Color elementColor, double newDensity)
     {
         ID = elementID;
         name = elementName;
         color = elementColor;
+        density = newDensity;
     }
 
     // Adds an attack modifier of the specified value for the specified element

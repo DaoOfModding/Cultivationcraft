@@ -26,7 +26,7 @@ public class QiSource
 
     protected static final int minSpawnTime = 30;
 
-    public static int spawnedTick = 0;
+    public int spawnedTick = 0;
 
     protected HashMap<UUID, Integer> currentAbsorbing = new HashMap();
     protected HashMap<UUID, Integer> absorbing = new HashMap();

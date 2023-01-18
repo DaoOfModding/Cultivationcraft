@@ -31,13 +31,13 @@ public class Elements
 
     protected static void createElements()
     {
-        noElementID = addElement(Component.translatable("cultivationcraft.elements.none").getString(), new Color(1f, 1f, 1f));
-        fireElementID = addElement(Component.translatable("cultivationcraft.elements.fire").getString(), new Color(1f, 0, 0));
-        earthElementID = addElement(Component.translatable("cultivationcraft.elements.earth").getString(), new Color(1f, 0.5f, 0));
-        woodElementID = addElement(Component.translatable("cultivationcraft.elements.wood").getString(), new Color(0, 0.5f, 0));
-        windElementID = addElement(Component.translatable("cultivationcraft.elements.wood").getString(), new Color(0, 1f, 0.5f));
-        waterElementID = addElement(Component.translatable("cultivationcraft.elements.water").getString(), new Color(0, 0, 1f));
-        iceElementID = addElement(Component.translatable("cultivationcraft.elements.ice").getString(), new Color(0, 1f, 1f));
+        noElementID = addElement(Component.translatable("cultivationcraft.elements.none").getString(), new Color(1f, 1f, 1f), 0);
+        fireElementID = addElement(Component.translatable("cultivationcraft.elements.fire").getString(), new Color(1f, 0, 0), 0.2);
+        earthElementID = addElement(Component.translatable("cultivationcraft.elements.earth").getString(), new Color(1f, 0.5f, 0), 0.75);
+        woodElementID = addElement(Component.translatable("cultivationcraft.elements.wood").getString(), new Color(0, 0.5f, 0), 0.1);
+        windElementID = addElement(Component.translatable("cultivationcraft.elements.wood").getString(), new Color(0, 1f, 0.5f), 0.8);
+        waterElementID = addElement(Component.translatable("cultivationcraft.elements.water").getString(), new Color(0, 0, 1f), 0.3);
+        iceElementID = addElement(Component.translatable("cultivationcraft.elements.ice").getString(), new Color(0, 1f, 1f), 0.5);
 
         lightningElementID = addVariant(windElementID, Component.translatable("cultivationcraft.elements.lightning").getString(), new Color(1f, 1f, 0), 0.02);
     }
@@ -124,11 +124,11 @@ public class Elements
 
     // Adds a new element of the specified name to the Elements list
     // Returns the elements ID
-    public static int addElement(String name, Color color)
+    public static int addElement(String name, Color color, double density)
     {
         // As elements should NEVER be removed from the Elements list, the size before adding the element should always be the elements ID
         int id = Elements.size();
-        Elements.add(new Element(id, name, color));
+        Elements.add(new Element(id, name, color, density));
 
         return id;
     }
