@@ -111,6 +111,9 @@ public class ChunkQiSources implements IChunkQiSources
     {
         int element = getElement(level, pos, size);
 
+        // Try to mutate this QiSource
+        element = Elements.getElement(element).getMutation().ID;
+
         QiSources.add(new QiSource(new BlockPos(pos), size, element, QiSourceConfig.generateRandomQiStorage(), QiSourceConfig.generateRandomQiRegen()));
     }
 

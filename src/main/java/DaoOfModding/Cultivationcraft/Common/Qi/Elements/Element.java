@@ -11,6 +11,8 @@ public class Element
     public final String name;
     public final Color color;
 
+    protected ArrayList<ElementVariant> variant = new ArrayList<>();
+
     protected ArrayList<ElementRelationship> relationships = new ArrayList<ElementRelationship>();
 
     public Element (int elementID, String elementName, Color elementColor)
@@ -37,8 +39,17 @@ public class Element
         return 1;
     }
 
-    public void QiSourceTick(QiSource source)
+    public void addVariant(ElementVariant element)
     {
+        variant.add(element);
+    }
 
+    public Element getMutation()
+    {
+        for (ElementVariant variant : variant)
+            if (variant.tryMutate())
+                return variant;
+
+        return this;
     }
 }

@@ -17,6 +17,7 @@ public class Elements
     public static int windElementID;
     public static int waterElementID;
     public static int iceElementID;
+
     public static int lightningElementID;
 
     public static void init()
@@ -33,11 +34,12 @@ public class Elements
         noElementID = addElement(Component.translatable("cultivationcraft.elements.none").getString(), new Color(1f, 1f, 1f));
         fireElementID = addElement(Component.translatable("cultivationcraft.elements.fire").getString(), new Color(1f, 0, 0));
         earthElementID = addElement(Component.translatable("cultivationcraft.elements.earth").getString(), new Color(1f, 0.5f, 0));
-        woodElementID = addElement(Component.translatable("cultivationcraft.elements.wood").getString(), new Color(0, 1f, 0));
+        woodElementID = addElement(Component.translatable("cultivationcraft.elements.wood").getString(), new Color(0, 0.5f, 0));
         windElementID = addElement(Component.translatable("cultivationcraft.elements.wood").getString(), new Color(0, 1f, 0.5f));
         waterElementID = addElement(Component.translatable("cultivationcraft.elements.water").getString(), new Color(0, 0, 1f));
         iceElementID = addElement(Component.translatable("cultivationcraft.elements.ice").getString(), new Color(0, 1f, 1f));
-        lightningElementID = addElement(Component.translatable("cultivationcraft.elements.lightning").getString(), new Color(1f, 1f, 0));
+
+        lightningElementID = addVariant(windElementID, Component.translatable("cultivationcraft.elements.lightning").getString(), new Color(1f, 1f, 0), 0.02);
     }
 
     protected static void createMaterialElements()
@@ -120,13 +122,27 @@ public class Elements
         getElement(lightningElementID).setAttackModifier(iceElementID, 1.5);
     }
 
-    // Adds a new elements of the specified name to the Elements list
+    // Adds a new element of the specified name to the Elements list
     // Returns the elements ID
     public static int addElement(String name, Color color)
     {
         // As elements should NEVER be removed from the Elements list, the size before adding the element should always be the elements ID
         int id = Elements.size();
         Elements.add(new Element(id, name, color));
+
+        return id;
+    }
+
+    // Adds a new variant of the specified name to the Elements list
+    // Returns the elements ID
+    public static int addVariant(int ElementID, String name, Color color, double chance)
+    {
+        // As elements should NEVER be removed from the Elements list, the size before adding the element should always be the elements ID
+        int id = Elements.size();
+        ElementVariant variant = new ElementVariant(id, name, color, chance);
+
+        Elements.add(variant);
+        getElement(ElementID).addVariant(variant);
 
         return id;
     }
