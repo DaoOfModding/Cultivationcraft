@@ -4,6 +4,7 @@ package DaoOfModding.Cultivationcraft.Common.Qi.Elements;
 import java.awt.*;
 import java.util.ArrayList;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.level.material.Material;
 
 public class Elements
 {
@@ -13,6 +14,7 @@ public class Elements
     public static int fireElementID;
     public static int earthElementID;
     public static int woodElementID;
+    public static int windElementID;
     public static int waterElementID;
     public static int iceElementID;
     public static int lightningElementID;
@@ -20,6 +22,9 @@ public class Elements
     public static void init()
     {
         createElements();
+        createMaterialElements();
+
+        // TODO: Is this even necessary?
         createElementRelationships();
     }
 
@@ -29,9 +34,51 @@ public class Elements
         fireElementID = addElement(Component.translatable("cultivationcraft.elements.fire").getString(), new Color(1f, 0, 0));
         earthElementID = addElement(Component.translatable("cultivationcraft.elements.earth").getString(), new Color(1f, 0.5f, 0));
         woodElementID = addElement(Component.translatable("cultivationcraft.elements.wood").getString(), new Color(0, 1f, 0));
+        windElementID = addElement(Component.translatable("cultivationcraft.elements.wood").getString(), new Color(0, 1f, 0.5f));
         waterElementID = addElement(Component.translatable("cultivationcraft.elements.water").getString(), new Color(0, 0, 1f));
         iceElementID = addElement(Component.translatable("cultivationcraft.elements.ice").getString(), new Color(0, 1f, 1f));
         lightningElementID = addElement(Component.translatable("cultivationcraft.elements.lightning").getString(), new Color(1f, 1f, 0));
+    }
+
+    protected static void createMaterialElements()
+    {
+        BlockElements.addMaterial(Material.AIR, windElementID);
+
+        BlockElements.addMaterial(Material.BUBBLE_COLUMN, waterElementID);
+        BlockElements.addMaterial(Material.WATER_PLANT, waterElementID);
+        BlockElements.addMaterial(Material.REPLACEABLE_WATER_PLANT , waterElementID);
+        BlockElements.addMaterial(Material.WATER , waterElementID);
+        BlockElements.addMaterial(Material.SPONGE , waterElementID);
+
+        BlockElements.addMaterial(Material.ICE, iceElementID);
+        BlockElements.addMaterial(Material.ICE_SOLID, iceElementID);
+        BlockElements.addMaterial(Material.TOP_SNOW, iceElementID);
+        BlockElements.addMaterial(Material.POWDER_SNOW, iceElementID);
+        BlockElements.addMaterial(Material.SNOW, iceElementID);
+
+        BlockElements.addMaterial(Material.BAMBOO, woodElementID);
+        BlockElements.addMaterial(Material.BAMBOO_SAPLING, woodElementID);
+        BlockElements.addMaterial(Material.PLANT, woodElementID);
+        BlockElements.addMaterial(Material.REPLACEABLE_PLANT, woodElementID);
+        BlockElements.addMaterial(Material.REPLACEABLE_FIREPROOF_PLANT, woodElementID);
+        BlockElements.addMaterial(Material.CACTUS, woodElementID);
+        BlockElements.addMaterial(Material.WOOD, woodElementID);
+        BlockElements.addMaterial(Material.NETHER_WOOD, woodElementID);
+        BlockElements.addMaterial(Material.LEAVES, woodElementID);
+        BlockElements.addMaterial(Material.MOSS, woodElementID);
+        BlockElements.addMaterial(Material.VEGETABLE, woodElementID);
+
+        BlockElements.addMaterial(Material.CLAY, earthElementID);
+        BlockElements.addMaterial(Material.DIRT, earthElementID);
+        BlockElements.addMaterial(Material.GRASS, earthElementID);
+        BlockElements.addMaterial(Material.SAND, earthElementID);
+        BlockElements.addMaterial(Material.STONE, earthElementID);
+        BlockElements.addMaterial(Material.METAL, earthElementID);
+        BlockElements.addMaterial(Material.HEAVY_METAL, earthElementID);
+
+        BlockElements.addMaterial(Material.EXPLOSIVE, fireElementID);
+        BlockElements.addMaterial(Material.FIRE, fireElementID);
+        BlockElements.addMaterial(Material.LAVA, fireElementID);
     }
 
     protected static void createElementRelationships()

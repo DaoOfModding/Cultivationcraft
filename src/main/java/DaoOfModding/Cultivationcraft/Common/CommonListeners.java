@@ -72,9 +72,8 @@ public class CommonListeners
             {
                 boolean update = false;
 
-                for (QiSource source : sources.getQiSources())
-                    if (source.tick())
-                        update = true;
+                if (sources.tick(event.level))
+                    update = true;
 
                 if (update)
                 {
@@ -138,7 +137,7 @@ public class CommonListeners
             if (sources.getChunkPos() == null)
             {
                 sources.setChunkPos(event.getChunk().getPos());
-                sources.generateQiSources();
+                sources.generateQiSources(event.getLevel());
 
                 // Mark the LevelChunk as dirty so it will save the updated capability
                 event.getChunk().setUnsaved(true);
@@ -148,7 +147,7 @@ public class CommonListeners
             }
         }
 
-        if (sources.getQiSources().size() > 0)
+        if (sources.countQiSources() > 0)
             tickingQiSources.add(sources);
 
     }
