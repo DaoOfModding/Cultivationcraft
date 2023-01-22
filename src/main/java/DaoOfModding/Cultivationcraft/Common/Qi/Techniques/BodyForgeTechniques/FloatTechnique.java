@@ -27,7 +27,7 @@ public class FloatTechnique extends Technique
         super();
 
         langLocation = "cultivationcraft.technique.float";
-        elementID = Elements.noElementID;
+        Element = Elements.noElement;
 
         type = useType.Toggle;
         multiple = false;

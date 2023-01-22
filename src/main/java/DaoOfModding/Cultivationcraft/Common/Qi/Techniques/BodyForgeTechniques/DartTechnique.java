@@ -32,7 +32,7 @@ public class DartTechnique extends Technique
         super();
 
         langLocation = "cultivationcraft.technique.dart";
-        elementID = Elements.noElementID;
+        Element = Elements.noElement;
 
         type = useType.Toggle;
         multiple = false;

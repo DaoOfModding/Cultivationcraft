@@ -37,7 +37,7 @@ public class SpreadTechnique extends Technique
         super();
 
         langLocation = "cultivationcraft.technique.spread";
-        elementID = Elements.noElementID;
+        Element = Elements.noElement;
 
         type = useType.Toggle;
         multiple = false;

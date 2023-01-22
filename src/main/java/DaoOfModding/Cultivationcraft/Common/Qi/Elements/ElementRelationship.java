@@ -1,13 +1,15 @@
 package DaoOfModding.Cultivationcraft.Common.Qi.Elements;
 
+import net.minecraft.resources.ResourceLocation;
+
 public class ElementRelationship
 {
-    public int defendingElementID;
+    public ResourceLocation defendingElement;
     public double modifier;
 
-    public ElementRelationship(int ID, double damageModifier)
+    public ElementRelationship(ResourceLocation ID, double damageModifier)
     {
-        defendingElementID = ID;
+        defendingElement = ID;
         modifier = damageModifier;
     }
 }

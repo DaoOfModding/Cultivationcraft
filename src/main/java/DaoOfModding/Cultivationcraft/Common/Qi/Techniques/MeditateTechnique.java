@@ -28,7 +28,7 @@ public class MeditateTechnique extends MovementOverrideTechnique
         super();
 
         langLocation = "cultivationcraft.technique.meditate";
-        elementID = Elements.noElementID;
+        Element = Elements.noElement;
 
         type = Technique.useType.Toggle;
         multiple = false;

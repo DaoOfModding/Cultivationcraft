@@ -30,7 +30,7 @@ public class LeapTechnique extends Technique
         super();
 
         langLocation = "cultivationcraft.technique.leap";
-        elementID = Elements.noElementID;
+        Element = Elements.noElement;
 
         multiple = true;
 

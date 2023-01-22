@@ -1,14 +1,16 @@
 package DaoOfModding.Cultivationcraft.Common.Qi.Elements;
 
 import DaoOfModding.Cultivationcraft.Common.Qi.QiSource;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.block.state.BlockState;
 
 import java.awt.*;
 import java.util.ArrayList;
 
 public class Element
 {
-    public final int ID;
-    public final String name;
+    protected final ResourceLocation name;
     public final Color color;
     public final double density;
 
@@ -16,29 +18,43 @@ public class Element
 
     protected ArrayList<ElementRelationship> relationships = new ArrayList<ElementRelationship>();
 
-    public Element (int elementID, String elementName, Color elementColor, double newDensity)
+    public Element (ResourceLocation resourcelocation, Color elementColor, double newDensity)
     {
-        ID = elementID;
-        name = elementName;
+        name = resourcelocation;
         color = elementColor;
         density = newDensity;
     }
 
     // Adds an attack modifier of the specified value for the specified element
-    public void setAttackModifier(int ElementID, double value)
+    public void setAttackModifier(ResourceLocation Element, double value)
     {
-        relationships.add(new ElementRelationship(ElementID, value));
+        relationships.add(new ElementRelationship(Element, value));
     }
 
     // Return the attack modifier against the specified element
-    public double getAttackModifier(int ElementID)
+    public double getAttackModifier(ResourceLocation Element)
     {
         for (ElementRelationship relationship : relationships)
-            if (relationship.defendingElementID == ElementID)
+            if (relationship.defendingElement == Element)
                 return relationship.modifier;
 
         // If there is no modifier for the specified element in the relationship list return a modifier of 1
         return 1;
+    }
+
+    public String getName()
+    {
+        return Component.translatable(name.getPath()).getString();
+    }
+
+    public ResourceLocation getResourceLocation()
+    {
+        return name;
+    }
+
+    public void affectBlock(BlockState block)
+    {
+
     }
 
     public void addVariant(ElementVariant element)

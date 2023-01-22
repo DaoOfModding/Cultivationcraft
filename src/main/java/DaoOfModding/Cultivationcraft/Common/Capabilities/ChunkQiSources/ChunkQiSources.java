@@ -9,6 +9,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -26,6 +27,7 @@ public class ChunkQiSources implements IChunkQiSources
 {
     // TODO: Different dimension spawning
 
+    ResourceLocation dimension;
     ChunkPos ChunkPos;
     List<QiSource> QiSources = new ArrayList<QiSource>();
     HashMap<Vec3, Integer> pendingQiSource = new HashMap<Vec3, Integer>();
@@ -33,6 +35,16 @@ public class ChunkQiSources implements IChunkQiSources
     public void setChunkPos(ChunkPos position)
     {
         ChunkPos = position;
+    }
+
+    public void setDimension(ResourceLocation dim)
+    {
+        dimension = dim;
+    }
+
+    public ResourceLocation getDimension()
+    {
+        return dimension;
     }
 
     public ChunkPos getChunkPos()
@@ -110,20 +122,29 @@ public class ChunkQiSources implements IChunkQiSources
 
     protected void createQiSource(Level level, Vec3 pos, int size)
     {
-        int element = getElement(level, pos, size);
+        ResourceLocation element = getElement(level, pos, size);
 
         // Try to mutate this QiSource
-        element = Elements.getElement(element).getMutation().ID;
+        element = Elements.getElement(element).getMutation().getResourceLocation();
 
         QiSources.add(new QiSource(new BlockPos(pos), size, element, QiSourceConfig.generateRandomQiStorage(), QiSourceConfig.generateRandomQiRegen()));
     }
 
     // Get the element majorly contained within a sphere of range centered at pos
     // Return no element if mixed
-    protected int getElement(LevelAccessor level, Vec3 pos, int range)
+    protected ResourceLocation getElement(Level level, Vec3 pos, int range)
     {
         int count = 0;
-        int[] elements = new int[Elements.getElements().size()];
+        HashMap<ResourceLocation, Integer> elements = new HashMap<>();
+
+        ArrayList<ResourceLocation> rules = Elements.getDimensionRules(level.dimension());
+
+        // Don't bother checking block elements if the dimension only allows the one element
+        if (rules.size() == 1)
+            return rules.get(0);
+
+        for (ResourceLocation element : rules)
+            elements.put(element, 0);
 
         // Cycle through each block in the sphere and count the elements inside
         for (int x = -range; x <= range; x++)
@@ -131,24 +152,29 @@ public class ChunkQiSources implements IChunkQiSources
                 for (int z = -range; z <= range; z++)
                     if (new Vec3(x, y, z).length() < range)
                     {
-                        elements[BlockElements.getMaterialElement(level.getBlockState(new BlockPos(pos.add(x, y, z))).getMaterial())]++;
-                        count++;
+                        ResourceLocation element = BlockElements.getMaterialElement(level.getBlockState(new BlockPos(pos.add(x, y, z))).getMaterial());
+
+                        // Don't do anything if this element is not contained in this dimensions ruleset
+                        if (rules.contains(element))
+                        {
+                            elements.put(element, elements.get(element) + 1);
+
+                            count++;
+                        }
                     }
 
-        // TODO: change this to be weighted
-
-        int foundElement = Elements.noElementID;
+        ResourceLocation foundElement = rules.get(0);
 
         // Set the element to be any element that has the specified density of blocks within it's sphere
-        // If two elements match the requirements then set as no element
-        for (int elementID = 0; elementID < elements.length; elementID++)
-            if (elementID != Elements.noElementID)
-                if (elements[elementID] > Elements.getElement(elementID).density * count)
+        // If two elements match the requirements then set as the dimensions default element
+        for (ResourceLocation element : rules)
+            if (element != rules.get(0))
+                if (elements.get(element) > Elements.getElement(element).density * count)
                 {
-                    if (foundElement == Elements.noElementID)
-                        foundElement = elementID;
+                    if (foundElement == rules.get(0))
+                        foundElement = element;
                     else
-                        return Elements.noElementID;
+                        return rules.get(0);
                 }
 
         return foundElement;
@@ -163,7 +189,7 @@ public class ChunkQiSources implements IChunkQiSources
         // Generate a random yPos, more likely to be at ground level (0.32)
         double x = Math.random();
 
-        int yPos = (int)(((4 * Math.pow(x, 3)) - (5.28 * Math.pow(x, 2)) + (2.28 * x)) * 200);
+        int yPos = (int)(((4 * Math.pow(x, 3)) - (5.28 * Math.pow(x, 2)) + (2.28 * x)) * level.dimensionType().logicalHeight());
 
         int size = QiSourceConfig.generateRandomSize();
 
@@ -177,6 +203,7 @@ public class ChunkQiSources implements IChunkQiSources
         if (getChunkPos() != null)
         {
             nbt.putLong("QiSource", getChunkPos().toLong());
+            nbt.putString("Dimension", dimension.toString());
 
             int count = 0;
             // Add NBT data for each QiSource
@@ -206,6 +233,7 @@ public class ChunkQiSources implements IChunkQiSources
         if (nbt.contains("QiSource"))
         {
             setChunkPos(new ChunkPos(nbt.getLong("QiSource")));
+            dimension = new ResourceLocation(nbt.getString("Dimension"));
 
             List<QiSource> sourceList = new ArrayList<QiSource>();
             pendingQiSource.clear();

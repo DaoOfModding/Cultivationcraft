@@ -22,7 +22,7 @@ public class DivineSenseTechnique extends Technique
         super();
 
         langLocation = "cultivationcraft.technique.divinesense";
-        elementID = Elements.noElementID;
+        Element = Elements.noElement;
 
         type = useType.Toggle;
         multiple = false;

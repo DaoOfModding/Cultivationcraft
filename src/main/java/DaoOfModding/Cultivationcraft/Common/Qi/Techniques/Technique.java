@@ -41,7 +41,7 @@ public class Technique
 
     protected String langLocation;
 
-    protected int elementID;
+    protected ResourceLocation Element;
     protected boolean active = false;
 
     protected boolean overlayOn = false;
@@ -71,7 +71,7 @@ public class Technique
     public Technique()
     {
         langLocation = "cultivationcraft.technique.example";
-        elementID = Elements.noElementID;
+        Element = Elements.noElement;
         type = useType.Toggle;
         multiple = true;
 
@@ -99,9 +99,9 @@ public class Technique
         return false;
     }
 
-    public int getElementID()
+    public ResourceLocation getElement()
     {
-        return elementID;
+        return Element;
     }
 
     // Returns whether this technique is currently active or not

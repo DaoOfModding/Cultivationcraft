@@ -70,21 +70,23 @@ public class CommonListeners
 
             for (IChunkQiSources sources : ticking)
             {
-                boolean update = false;
-
-                if (sources.tick(event.level))
-                    update = true;
-
-                if (update)
+                if (sources.getDimension() == event.level.dimension().location())
                 {
-                    LevelChunk chunk = event.level.getChunk(sources.getChunkPos().x, sources.getChunkPos().z);
+                    boolean update = false;
 
-                    // Mark the LevelChunk as dirty so it will save the updated capability
-                    chunk.setUnsaved(true);
+                    if (sources.tick(event.level))
+                        update = true;
 
-                    // Send the updated capability data to all tracking clients
-                    // TODO - Is this updating too much?
-                    PacketHandler.sendChunkQiSourcesToClient(chunk);
+                    if (update) {
+                        LevelChunk chunk = event.level.getChunk(sources.getChunkPos().x, sources.getChunkPos().z);
+
+                        // Mark the LevelChunk as dirty so it will save the updated capability
+                        chunk.setUnsaved(true);
+
+                        // Send the updated capability data to all tracking clients
+                        // TODO - Is this updating too much?
+                        PacketHandler.sendChunkQiSourcesToClient(chunk);
+                    }
                 }
             }
         }
@@ -137,7 +139,8 @@ public class CommonListeners
             if (sources.getChunkPos() == null)
             {
                 sources.setChunkPos(event.getChunk().getPos());
-                sources.generateQiSources(event.getLevel());
+                sources.setDimension(((LevelChunk) event.getChunk()).getLevel().dimension().location());
+                sources.generateQiSources(((LevelChunk) event.getChunk()).getLevel());
 
                 // Mark the LevelChunk as dirty so it will save the updated capability
                 event.getChunk().setUnsaved(true);

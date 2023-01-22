@@ -1,5 +1,7 @@
 package DaoOfModding.Cultivationcraft.Common.Qi.Elements;
 
+import net.minecraft.resources.ResourceLocation;
+
 import java.awt.*;
 
 public class ElementVariant extends Element
@@ -7,9 +9,9 @@ public class ElementVariant extends Element
     // The chance for the base element to mutate into this one
     double mutateChance;
 
-    public ElementVariant(int elementID, String elementName, Color elementColor, double chance)
+    public ElementVariant(ResourceLocation Element, Color elementColor, double newDensity, double chance)
     {
-        super(elementID, elementName, elementColor, 0);
+        super(Element, elementColor, newDensity);
 
         mutateChance = chance;
     }

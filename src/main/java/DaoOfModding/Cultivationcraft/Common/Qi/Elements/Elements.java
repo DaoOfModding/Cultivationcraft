@@ -3,22 +3,32 @@ package DaoOfModding.Cultivationcraft.Common.Qi.Elements;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.HashMap;
+
+import DaoOfModding.Cultivationcraft.Cultivationcraft;
+import net.minecraft.core.Registry;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.Material;
 
 public class Elements
 {
-    protected static ArrayList<Element> Elements = new ArrayList<Element>();
+    protected static HashMap<ResourceLocation, Element> Elements = new HashMap<>();
 
-    public static int noElementID;
-    public static int fireElementID;
-    public static int earthElementID;
-    public static int woodElementID;
-    public static int windElementID;
-    public static int waterElementID;
-    public static int iceElementID;
+    public static final ResourceLocation noElement = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.elements.none");
+    public static final ResourceLocation fireElement = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.elements.fire");
+    public static final ResourceLocation earthElement = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.elements.earth");
+    public static final ResourceLocation woodElement = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.elements.wood");
+    public static final ResourceLocation windElement = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.elements.wind");
+    public static final ResourceLocation waterElement = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.elements.water");
 
-    public static int lightningElementID;
+    public static final ResourceLocation iceElement = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.elements.ice");
+    public static final ResourceLocation lightningElement = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.elements.lightning");
+
+    protected static ArrayList<ResourceLocation> defaultElements = new ArrayList<>();
+    protected static HashMap<ResourceKey<Level>, ArrayList<ResourceLocation>> dimensionElements = new HashMap<>();
 
     public static void init()
     {
@@ -27,134 +37,161 @@ public class Elements
 
         // TODO: Is this even necessary?
         createElementRelationships();
+
+        createDimensionRules();
+    }
+
+    protected static void createDimensionRules()
+    {
+        addDefaultDimensionRule(noElement);
+        addDefaultDimensionRule(fireElement);
+        addDefaultDimensionRule(earthElement);
+        addDefaultDimensionRule(woodElement);
+        addDefaultDimensionRule(windElement);
+        addDefaultDimensionRule(waterElement);
+        addDefaultDimensionRule(iceElement);
+        addDefaultDimensionRule(lightningElement);
+
+        addDimensionRule(Level.NETHER, fireElement);
+    }
+
+    public static void addDefaultDimensionRule(ResourceLocation element)
+    {
+        defaultElements.add(element);
+    }
+
+    public static void addDimensionRule(ResourceKey<Level> dimension, ResourceLocation element)
+    {
+        if (!dimensionElements.containsKey(dimension))
+            dimensionElements.put(dimension, new ArrayList<ResourceLocation>());
+
+        dimensionElements.get(dimension).add(element);
+    }
+
+    public static ArrayList<ResourceLocation> getDimensionRules(ResourceKey<Level> dimension)
+    {
+        if (dimensionElements.containsKey(dimension))
+            return dimensionElements.get(dimension);
+
+        return defaultElements;
     }
 
     protected static void createElements()
     {
-        noElementID = addElement(Component.translatable("cultivationcraft.elements.none").getString(), new Color(1f, 1f, 1f), 0);
-        fireElementID = addElement(Component.translatable("cultivationcraft.elements.fire").getString(), new Color(1f, 0, 0), 0.2);
-        earthElementID = addElement(Component.translatable("cultivationcraft.elements.earth").getString(), new Color(1f, 0.5f, 0), 0.75);
-        woodElementID = addElement(Component.translatable("cultivationcraft.elements.wood").getString(), new Color(0, 0.5f, 0), 0.1);
-        windElementID = addElement(Component.translatable("cultivationcraft.elements.wood").getString(), new Color(0, 1f, 0.5f), 0.8);
-        waterElementID = addElement(Component.translatable("cultivationcraft.elements.water").getString(), new Color(0, 0, 1f), 0.3);
-        iceElementID = addElement(Component.translatable("cultivationcraft.elements.ice").getString(), new Color(0, 1f, 1f), 0.5);
+        addElement(noElement, new Color(1f, 1f, 1f), 0);
+        addElement(fireElement, new Color(1f, 0, 0), 0.2);
+        addElement(earthElement, new Color(1f, 0.5f, 0), 0.75);
+        addElement(woodElement, new Color(0, 0.5f, 0), 0.05);
+        addElement(windElement, new Color(0, 1f, 0.5f), 0.8);
+        addElement(waterElement, new Color(0, 0, 1f), 0.3);
 
-        lightningElementID = addVariant(windElementID, Component.translatable("cultivationcraft.elements.lightning").getString(), new Color(1f, 1f, 0), 0.02);
+        addVariant(waterElement, iceElement, new Color(0, 1f, 1f), 0.5, 0.02);
+        addVariant(windElement, lightningElement, new Color(1f, 1f, 0), 0, 0.02);
     }
 
     protected static void createMaterialElements()
     {
-        BlockElements.addMaterial(Material.AIR, windElementID);
+        BlockElements.addMaterial(Material.AIR, windElement);
 
-        BlockElements.addMaterial(Material.BUBBLE_COLUMN, waterElementID);
-        BlockElements.addMaterial(Material.WATER_PLANT, waterElementID);
-        BlockElements.addMaterial(Material.REPLACEABLE_WATER_PLANT , waterElementID);
-        BlockElements.addMaterial(Material.WATER , waterElementID);
-        BlockElements.addMaterial(Material.SPONGE , waterElementID);
+        BlockElements.addMaterial(Material.BUBBLE_COLUMN, waterElement);
+        BlockElements.addMaterial(Material.WATER_PLANT, waterElement);
+        BlockElements.addMaterial(Material.REPLACEABLE_WATER_PLANT , waterElement);
+        BlockElements.addMaterial(Material.WATER , waterElement);
+        BlockElements.addMaterial(Material.SPONGE , waterElement);
 
-        BlockElements.addMaterial(Material.ICE, iceElementID);
-        BlockElements.addMaterial(Material.ICE_SOLID, iceElementID);
-        BlockElements.addMaterial(Material.TOP_SNOW, iceElementID);
-        BlockElements.addMaterial(Material.POWDER_SNOW, iceElementID);
-        BlockElements.addMaterial(Material.SNOW, iceElementID);
+        BlockElements.addMaterial(Material.ICE, iceElement);
+        BlockElements.addMaterial(Material.ICE_SOLID, iceElement);
+        BlockElements.addMaterial(Material.TOP_SNOW, iceElement);
+        BlockElements.addMaterial(Material.POWDER_SNOW, iceElement);
+        BlockElements.addMaterial(Material.SNOW, iceElement);
 
-        BlockElements.addMaterial(Material.BAMBOO, woodElementID);
-        BlockElements.addMaterial(Material.BAMBOO_SAPLING, woodElementID);
-        BlockElements.addMaterial(Material.PLANT, woodElementID);
-        BlockElements.addMaterial(Material.REPLACEABLE_PLANT, woodElementID);
-        BlockElements.addMaterial(Material.REPLACEABLE_FIREPROOF_PLANT, woodElementID);
-        BlockElements.addMaterial(Material.CACTUS, woodElementID);
-        BlockElements.addMaterial(Material.WOOD, woodElementID);
-        BlockElements.addMaterial(Material.NETHER_WOOD, woodElementID);
-        BlockElements.addMaterial(Material.LEAVES, woodElementID);
-        BlockElements.addMaterial(Material.MOSS, woodElementID);
-        BlockElements.addMaterial(Material.VEGETABLE, woodElementID);
+        BlockElements.addMaterial(Material.BAMBOO, woodElement);
+        BlockElements.addMaterial(Material.BAMBOO_SAPLING, woodElement);
+        BlockElements.addMaterial(Material.PLANT, woodElement);
+        BlockElements.addMaterial(Material.REPLACEABLE_PLANT, woodElement);
+        BlockElements.addMaterial(Material.REPLACEABLE_FIREPROOF_PLANT, woodElement);
+        BlockElements.addMaterial(Material.CACTUS, woodElement);
+        BlockElements.addMaterial(Material.WOOD, woodElement);
+        BlockElements.addMaterial(Material.NETHER_WOOD, woodElement);
+        BlockElements.addMaterial(Material.LEAVES, woodElement);
+        BlockElements.addMaterial(Material.MOSS, woodElement);
+        BlockElements.addMaterial(Material.VEGETABLE, woodElement);
 
-        BlockElements.addMaterial(Material.CLAY, earthElementID);
-        BlockElements.addMaterial(Material.DIRT, earthElementID);
-        BlockElements.addMaterial(Material.GRASS, earthElementID);
-        BlockElements.addMaterial(Material.SAND, earthElementID);
-        BlockElements.addMaterial(Material.STONE, earthElementID);
-        BlockElements.addMaterial(Material.METAL, earthElementID);
-        BlockElements.addMaterial(Material.HEAVY_METAL, earthElementID);
+        BlockElements.addMaterial(Material.CLAY, earthElement);
+        BlockElements.addMaterial(Material.DIRT, earthElement);
+        BlockElements.addMaterial(Material.GRASS, earthElement);
+        BlockElements.addMaterial(Material.SAND, earthElement);
+        BlockElements.addMaterial(Material.STONE, earthElement);
+        BlockElements.addMaterial(Material.METAL, earthElement);
+        BlockElements.addMaterial(Material.HEAVY_METAL, earthElement);
 
-        BlockElements.addMaterial(Material.EXPLOSIVE, fireElementID);
-        BlockElements.addMaterial(Material.FIRE, fireElementID);
-        BlockElements.addMaterial(Material.LAVA, fireElementID);
+        BlockElements.addMaterial(Material.EXPLOSIVE, fireElement);
+        BlockElements.addMaterial(Material.FIRE, fireElement);
+        BlockElements.addMaterial(Material.LAVA, fireElement);
     }
 
     protected static void createElementRelationships()
     {
         // Temp modifiers for now, may look at later
-        getElement(fireElementID).setAttackModifier(waterElementID, 0.5);
-        getElement(fireElementID).setAttackModifier(earthElementID, 0.5);
-        getElement(fireElementID).setAttackModifier(iceElementID, 2);
-        getElement(fireElementID).setAttackModifier(woodElementID, 2);
+        getElement(fireElement).setAttackModifier(waterElement, 0.5);
+        getElement(fireElement).setAttackModifier(earthElement, 0.5);
+        getElement(fireElement).setAttackModifier(iceElement, 2);
+        getElement(fireElement).setAttackModifier(woodElement, 2);
 
-        getElement(earthElementID).setAttackModifier(woodElementID, 0.5);
-        getElement(earthElementID).setAttackModifier(fireElementID, 2);
+        getElement(earthElement).setAttackModifier(woodElement, 0.5);
+        getElement(earthElement).setAttackModifier(fireElement, 2);
 
-        getElement(woodElementID).setAttackModifier(fireElementID, 0.5);
-        getElement(woodElementID).setAttackModifier(iceElementID, 0.5);
-        getElement(woodElementID).setAttackModifier(waterElementID, 2);
-        getElement(woodElementID).setAttackModifier(earthElementID, 2);
+        getElement(woodElement).setAttackModifier(fireElement, 0.5);
+        getElement(woodElement).setAttackModifier(iceElement, 0.5);
+        getElement(woodElement).setAttackModifier(waterElement, 2);
+        getElement(woodElement).setAttackModifier(earthElement, 2);
 
-        getElement(waterElementID).setAttackModifier(woodElementID, 0.5);
-        getElement(waterElementID).setAttackModifier(fireElementID, 2);
+        getElement(waterElement).setAttackModifier(woodElement, 0.5);
+        getElement(waterElement).setAttackModifier(fireElement, 2);
 
-        getElement(iceElementID).setAttackModifier(fireElementID, 0.5);
-        getElement(iceElementID).setAttackModifier(woodElementID, 2);
+        getElement(iceElement).setAttackModifier(fireElement, 0.5);
+        getElement(iceElement).setAttackModifier(woodElement, 2);
 
 
         // Lightning is strong against everything, but is a lot harder to cultivate and has much less QI available to it
-        getElement(noElementID).setAttackModifier(lightningElementID, 0.75);
-        getElement(fireElementID).setAttackModifier(lightningElementID, 0.75);
-        getElement(earthElementID).setAttackModifier(lightningElementID, 0.75);
-        getElement(woodElementID).setAttackModifier(lightningElementID, 0.75);
-        getElement(waterElementID).setAttackModifier(lightningElementID, 0.75);
-        getElement(iceElementID).setAttackModifier(lightningElementID, 0.75);
+        getElement(noElement).setAttackModifier(lightningElement, 0.75);
+        getElement(fireElement).setAttackModifier(lightningElement, 0.75);
+        getElement(earthElement).setAttackModifier(lightningElement, 0.75);
+        getElement(woodElement).setAttackModifier(lightningElement, 0.75);
+        getElement(waterElement).setAttackModifier(lightningElement, 0.75);
+        getElement(iceElement).setAttackModifier(lightningElement, 0.75);
 
-        getElement(lightningElementID).setAttackModifier(noElementID, 1.5);
-        getElement(lightningElementID).setAttackModifier(fireElementID, 1.5);
-        getElement(lightningElementID).setAttackModifier(earthElementID, 1.5);
-        getElement(lightningElementID).setAttackModifier(woodElementID, 1.5);
-        getElement(lightningElementID).setAttackModifier(waterElementID, 1.5);
-        getElement(lightningElementID).setAttackModifier(iceElementID, 1.5);
+        getElement(lightningElement).setAttackModifier(noElement, 1.5);
+        getElement(lightningElement).setAttackModifier(fireElement, 1.5);
+        getElement(lightningElement).setAttackModifier(earthElement, 1.5);
+        getElement(lightningElement).setAttackModifier(woodElement, 1.5);
+        getElement(lightningElement).setAttackModifier(waterElement, 1.5);
+        getElement(lightningElement).setAttackModifier(iceElement, 1.5);
     }
 
-    // Adds a new element of the specified name to the Elements list
-    // Returns the elements ID
-    public static int addElement(String name, Color color, double density)
+    // Adds a new element of the specified resourceLocation to the Elements list
+    public static void addElement(ResourceLocation resourceLocation, Color color, double density)
     {
-        // As elements should NEVER be removed from the Elements list, the size before adding the element should always be the elements ID
-        int id = Elements.size();
-        Elements.add(new Element(id, name, color, density));
-
-        return id;
+        Elements.put(resourceLocation, new Element(resourceLocation, color, density));
     }
 
     // Adds a new variant of the specified name to the Elements list
-    // Returns the elements ID
-    public static int addVariant(int ElementID, String name, Color color, double chance)
+    public static void addVariant(ResourceLocation sourceLocation, ResourceLocation variantLocation, Color color, double density, double chance)
     {
-        // As elements should NEVER be removed from the Elements list, the size before adding the element should always be the elements ID
-        int id = Elements.size();
-        ElementVariant variant = new ElementVariant(id, name, color, chance);
+        ElementVariant variant = new ElementVariant(variantLocation, color, density, chance);
+        Elements.put(variantLocation, variant);
 
-        Elements.add(variant);
-        getElement(ElementID).addVariant(variant);
-
-        return id;
+        getElement(sourceLocation).addVariant(variant);
     }
 
-    public static ArrayList<Element> getElements()
+    /*public static ArrayList<Element> getElements()
     {
         return Elements;
-    }
+    }*/
 
     // Returns the element of the supplied id
-    public static Element getElement(int ID)
+    public static Element getElement(ResourceLocation element)
     {
-        return Elements.get(ID);
+        return Elements.get(element);
     }
 }

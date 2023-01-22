@@ -135,7 +135,7 @@ public class QiParticle extends TextureSheetParticle
             QiParticle particle = new QiParticle(world, xPos, yPos, zPos, direction.x, direction.y, direction.z, life, sprites);
             particle.pickSprite(sprites);
 
-            Color color = Elements.getElement(particleData.source.getElementID()).color;
+            Color color = Elements.getElement(particleData.source.getElement()).color;
             particle.setColor(color.getRed() / 255f, color.getGreen() / 255f, color.getBlue() / 255f);
 
             particle.target = particleData.target;

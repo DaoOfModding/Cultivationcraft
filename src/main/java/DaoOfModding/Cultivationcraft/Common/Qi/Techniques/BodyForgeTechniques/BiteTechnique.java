@@ -33,7 +33,7 @@ public class BiteTechnique extends AttackOverrideTechnique
         super();
 
         langLocation = "cultivationcraft.technique.bite";
-        elementID = Elements.noElementID;
+        Element = Elements.noElement;
 
         icon = new ResourceLocation(Cultivationcraft.MODID, "textures/techniques/icons/bite.png");
 

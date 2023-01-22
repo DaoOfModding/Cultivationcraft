@@ -28,7 +28,7 @@ public class IceWalkTechnique extends Technique
         super();
 
         langLocation = "cultivationcraft.technique.icewalk";
-        elementID = Elements.iceElementID;
+        Element = Elements.iceElement;
 
         type = useType.Toggle;
         multiple = false;

@@ -29,7 +29,7 @@ public class RollTechnique extends Technique
         multiple = false;
 
         langLocation = "cultivationcraft.technique.roll";
-        elementID = Elements.noElementID;
+        Element = Elements.noElement;
 
         icon = new ResourceLocation(Cultivationcraft.MODID, "textures/techniques/icons/roll.png");
 

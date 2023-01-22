@@ -3,6 +3,7 @@ package DaoOfModding.Cultivationcraft.Common.Capabilities.ChunkQiSources;
 import DaoOfModding.Cultivationcraft.Common.Qi.QiSource;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -14,6 +15,8 @@ public interface IChunkQiSources
 {
     public void setChunkPos(ChunkPos position);
     public ChunkPos getChunkPos();
+    public void setDimension(ResourceLocation dim);
+    public ResourceLocation getDimension();
 
     public List<QiSource> getQiSources();
     public void setQiSources(List<QiSource> sources);

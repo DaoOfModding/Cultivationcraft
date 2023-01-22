@@ -3,6 +3,7 @@ package DaoOfModding.Cultivationcraft.Common.Qi;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 
 import java.util.HashMap;
@@ -13,7 +14,7 @@ public class QiSource
 {
     protected BlockPos pos;
     protected int range;
-    protected int elementID;
+    protected ResourceLocation Element;
 
     protected double qiMax;
     protected double qiCurrent;
@@ -31,16 +32,16 @@ public class QiSource
     protected HashMap<UUID, Integer> currentAbsorbing = new HashMap();
     protected HashMap<UUID, Integer> absorbing = new HashMap();
 
-    public QiSource(BlockPos position, int size, int element, double qi, int regen)
+    public QiSource(BlockPos position, int size, ResourceLocation element, double qi, int regen)
     {
         this(position, size, element, qi, 1, regen);
     }
 
-    public QiSource(BlockPos position, int size, int element, double qi, double current, int regen)
+    public QiSource(BlockPos position, int size, ResourceLocation element, double qi, double current, int regen)
     {
         pos = position;
         range = size;
-        elementID = element;
+        Element = element;
 
         qiMax = qi;
         qiCurrent = current;
@@ -57,9 +58,9 @@ public class QiSource
         return range;
     }
 
-    public int getElementID()
+    public ResourceLocation getElement()
     {
-        return elementID;
+        return Element;
     }
 
     public int getQiCurrent()
@@ -128,7 +129,7 @@ public class QiSource
 
         nbt.putLong("pos", pos.asLong());
         nbt.putInt("range", range);
-        nbt.putInt("element", elementID);
+        nbt.putString("element", Element.toString());
         nbt.putDouble("qimax", qiMax);
         nbt.putDouble("qicurrent", qiCurrent);
         nbt.putInt("qiregen", qiRegen);
@@ -153,7 +154,7 @@ public class QiSource
     {
         BlockPos newPos = BlockPos.of(nbt.getLong("pos"));
         int size = nbt.getInt("range");
-        int element = nbt.getInt("element");
+        ResourceLocation element = new ResourceLocation(nbt.getString("element"));
         double qiMax = nbt.getDouble("qimax");
         double qiCurrent = nbt.getDouble("qicurrent");
         int qiRegen = nbt.getInt("qiregen");
