@@ -17,20 +17,15 @@ public class FireElement extends Element
         super(resourcelocation, elementColor, newDensity);
 
         effectTickChance = 1.0;
-        effectCost = QiSourceConfig.MinSize / 10;
     }
 
     @Override
-    public int effectBlock(Level level, BlockPos pos)
+    public void effectBlock(Level level, BlockPos pos)
     {
         if (BaseFireBlock.canBePlacedAt(level, pos, Direction.DOWN))
         {
             level.setBlockAndUpdate(pos, BaseFireBlock.getState(level, pos));
             level.gameEvent(null, GameEvent.BLOCK_PLACE, pos);
-
-            return effectCost;
         }
-
-        return 0;
     }
 }

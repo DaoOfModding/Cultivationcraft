@@ -18,11 +18,10 @@ public class IceElement extends ElementVariant
         super(Element, elementColor, newDensity, chance);
 
         effectTickChance = 1.0 / 20.0;
-        effectCost = QiSourceConfig.MinSize / 20;
     }
 
     @Override
-    public int effectBlock(Level level, BlockPos pos)
+    public void effectBlock(Level level, BlockPos pos)
     {
         BlockState block = level.getBlockState(pos);
 
@@ -30,10 +29,6 @@ public class IceElement extends ElementVariant
         {
             level.setBlockAndUpdate(pos, Blocks.ICE.defaultBlockState());
             level.gameEvent(null, GameEvent.BLOCK_PLACE, pos);
-
-            return effectCost;
         }
-
-        return 0;
     }
 }

@@ -17,7 +17,6 @@ public class Element
     public final double density;
 
     protected double effectTickChance;
-    protected int effectCost;
 
     protected ArrayList<ElementVariant> variant = new ArrayList<>();
 
@@ -29,7 +28,6 @@ public class Element
         color = elementColor;
         density = newDensity;
         effectTickChance = 0;
-        effectCost = 0;
     }
 
     // Adds an attack modifier of the specified value for the specified element
@@ -67,14 +65,8 @@ public class Element
         return false;
     }
 
-    public int effectBlock(Level level, BlockPos pos)
+    public void effectBlock(Level level, BlockPos pos)
     {
-        return 0;
-    }
-
-    public int getEffectCost()
-    {
-        return effectCost;
     }
 
     public void addVariant(ElementVariant element)

@@ -116,8 +116,8 @@ public class QiSource
     {
         Element element = Elements.getElement(getElement());
 
-        if (getQiCurrent() > element.getEffectCost() && element.shouldDoBlockEffect())
-            subtractQi(element.effectBlock(level, getRandomPos()));
+        if (element.shouldDoBlockEffect())
+            element.effectBlock(level, getRandomPos());
 
 
         boolean update = toUpdate;
