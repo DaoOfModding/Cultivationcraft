@@ -6,8 +6,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
-import net.minecraft.core.Registry;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
@@ -78,15 +76,15 @@ public class Elements
 
     protected static void createElements()
     {
-        addElement(noElement, new Color(1f, 1f, 1f), 0);
-        addElement(fireElement, new Color(1f, 0, 0), 0.2);
-        addElement(earthElement, new Color(1f, 0.5f, 0), 0.75);
-        addElement(woodElement, new Color(0, 0.5f, 0), 0.05);
-        addElement(windElement, new Color(0, 1f, 0.5f), 0.8);
-        addElement(waterElement, new Color(0, 0, 1f), 0.3);
+        addElement(new Element(noElement, new Color(1f, 1f, 1f), 0));
+        addElement(new FireElement(fireElement, new Color(1f, 0, 0), 0.2));
+        addElement(new Element(earthElement, new Color(1f, 0.5f, 0), 0.75));
+        addElement(new Element(woodElement, new Color(0, 0.5f, 0), 0.05));
+        addElement(new Element(windElement, new Color(0, 1f, 0.5f), 0.8));
+        addElement(new Element(waterElement, new Color(0, 0, 1f), 0.3));
 
-        addVariant(waterElement, iceElement, new Color(0, 1f, 1f), 0.5, 0.02);
-        addVariant(windElement, lightningElement, new Color(1f, 1f, 0), 0, 0.02);
+        addVariant(waterElement, new IceElement(iceElement, new Color(0, 1f, 1f), 0.5, 0.02));
+        addVariant(windElement, new ElementVariant(lightningElement, new Color(1f, 1f, 0), 0, 0.02));
     }
 
     protected static void createMaterialElements()
@@ -170,18 +168,17 @@ public class Elements
     }
 
     // Adds a new element of the specified resourceLocation to the Elements list
-    public static void addElement(ResourceLocation resourceLocation, Color color, double density)
+    public static void addElement(Element element)
     {
-        Elements.put(resourceLocation, new Element(resourceLocation, color, density));
+        Elements.put(element.getResourceLocation(), element);
     }
 
     // Adds a new variant of the specified name to the Elements list
-    public static void addVariant(ResourceLocation sourceLocation, ResourceLocation variantLocation, Color color, double density, double chance)
+    public static void addVariant(ResourceLocation elementLocation, ElementVariant variant)
     {
-        ElementVariant variant = new ElementVariant(variantLocation, color, density, chance);
-        Elements.put(variantLocation, variant);
+        Elements.put(variant.getResourceLocation(), variant);
 
-        getElement(sourceLocation).addVariant(variant);
+        getElement(elementLocation).addVariant(variant);
     }
 
     /*public static ArrayList<Element> getElements()

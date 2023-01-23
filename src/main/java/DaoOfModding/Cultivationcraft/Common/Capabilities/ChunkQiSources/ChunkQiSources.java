@@ -67,9 +67,9 @@ public class ChunkQiSources implements IChunkQiSources
         QiSources = sources;
     }
 
-    public void generateQiSources(LevelAccessor level)
+    public void generateQiSources(Level level)
     {
-        int number = QiSourceConfig.getQiSourceInLevelChunk();
+        int number = QiSourceConfig.getQiSourceInLevelChunk(level.dimension());
 
         for (int i = 0; i < number; i++)
             generateQiSource(level);
@@ -81,7 +81,7 @@ public class ChunkQiSources implements IChunkQiSources
         boolean updated = false;
 
         for (QiSource source : getQiSources())
-            if (source.tick())
+            if (source.tick(level))
                 updated = true;
 
         // Try to create any pending QiSources
@@ -127,7 +127,12 @@ public class ChunkQiSources implements IChunkQiSources
         // Try to mutate this QiSource
         element = Elements.getElement(element).getMutation().getResourceLocation();
 
-        QiSources.add(new QiSource(new BlockPos(pos), size, element, QiSourceConfig.generateRandomQiStorage(), QiSourceConfig.generateRandomQiRegen()));
+        QiSource newSource = new QiSource(new BlockPos(pos), size, element, QiSourceConfig.generateRandomQiStorage(), QiSourceConfig.generateRandomQiRegen());
+        QiSources.add(newSource);
+
+        // TODO: Unsure if this should be done or not
+        //newSource.effectAllBlocks(level);
+
     }
 
     // Get the element majorly contained within a sphere of range centered at pos
@@ -189,7 +194,7 @@ public class ChunkQiSources implements IChunkQiSources
         // Generate a random yPos, more likely to be at ground level (0.32)
         double x = Math.random();
 
-        int yPos = (int)(((4 * Math.pow(x, 3)) - (5.28 * Math.pow(x, 2)) + (2.28 * x)) * level.dimensionType().logicalHeight());
+        int yPos = (int)(((4 * Math.pow(x, 3)) - (5.28 * Math.pow(x, 2)) + (2.28 * x)) * level.dimensionType().logicalHeight()) + level.dimensionType().minY();
 
         int size = QiSourceConfig.generateRandomSize();
 

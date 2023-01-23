@@ -24,7 +24,7 @@ public interface IChunkQiSources
 
     public boolean tick(Level level);
 
-    public void generateQiSources(LevelAccessor level);
+    public void generateQiSources(Level level);
 
     public CompoundTag writeNBT();
     public void readNBT(CompoundTag nbt);

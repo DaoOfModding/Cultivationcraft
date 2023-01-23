@@ -1,10 +1,14 @@
 package DaoOfModding.Cultivationcraft.Common.Qi;
 
+import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Element;
+import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -84,8 +88,38 @@ public class QiSource
         return currentAbsorbing;
     }
 
-    public boolean tick()
+    public BlockPos getRandomPos()
     {
+        Vec3 randomPos;
+
+        do
+        {
+            randomPos = new Vec3((Math.random() * getSize() * 2) - getSize(), Math.random() * getSize() * 2 - getSize(),  Math.random() * getSize() * 2 - getSize());
+        } while (randomPos.length() > getSize());
+
+        return new BlockPos(pos.getX() + randomPos.x, pos.getY() + randomPos.y, pos.getZ() + randomPos.z);
+    }
+
+    // Apply elemental effects to all blocks in range
+    public void effectAllBlocks(Level level)
+    {
+        Element element = Elements.getElement(getElement());
+
+        for (int x = -range; x <= range; x++)
+            for (int y = -range; y <= range; y++)
+                for (int z = -range; z <= range; z++)
+                    if (new Vec3(x, y, z).length() <= range)
+                        element.effectBlock(level, new BlockPos(pos.getX() + x, pos.getY() + y, pos.getZ() + z));
+    }
+
+    public boolean tick(Level level)
+    {
+        Element element = Elements.getElement(getElement());
+
+        if (getQiCurrent() > element.getEffectCost() && element.shouldDoBlockEffect())
+            subtractQi(element.effectBlock(level, getRandomPos()));
+
+
         boolean update = toUpdate;
         toUpdate = false;
 
@@ -112,7 +146,7 @@ public class QiSource
         if (toAbsorb > getQiCurrent())
             toAbsorb = getQiCurrent();
 
-        qiCurrent -= (double)toAbsorb / (double)getQiMax();
+        subtractQi(toAbsorb);
 
         if (toAbsorb > 0)
         {
@@ -121,6 +155,14 @@ public class QiSource
         }
 
         return toAbsorb;
+    }
+
+    public void subtractQi(int toSubtract)
+    {
+        qiCurrent -= (double)toSubtract / (double)getQiMax();
+
+        if (qiCurrent < 0)
+            qiCurrent = 0;
     }
 
     public CompoundTag SerializeNBT()

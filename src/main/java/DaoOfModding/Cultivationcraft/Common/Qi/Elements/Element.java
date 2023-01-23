@@ -1,8 +1,10 @@
 package DaoOfModding.Cultivationcraft.Common.Qi.Elements;
 
 import DaoOfModding.Cultivationcraft.Common.Qi.QiSource;
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
 import java.awt.*;
@@ -14,6 +16,9 @@ public class Element
     public final Color color;
     public final double density;
 
+    protected double effectTickChance;
+    protected int effectCost;
+
     protected ArrayList<ElementVariant> variant = new ArrayList<>();
 
     protected ArrayList<ElementRelationship> relationships = new ArrayList<ElementRelationship>();
@@ -23,6 +28,8 @@ public class Element
         name = resourcelocation;
         color = elementColor;
         density = newDensity;
+        effectTickChance = 0;
+        effectCost = 0;
     }
 
     // Adds an attack modifier of the specified value for the specified element
@@ -52,9 +59,22 @@ public class Element
         return name;
     }
 
-    public void affectBlock(BlockState block)
+    public boolean shouldDoBlockEffect()
     {
+        if (Math.random() < effectTickChance)
+            return true;
 
+        return false;
+    }
+
+    public int effectBlock(Level level, BlockPos pos)
+    {
+        return 0;
+    }
+
+    public int getEffectCost()
+    {
+        return effectCost;
     }
 
     public void addVariant(ElementVariant element)
