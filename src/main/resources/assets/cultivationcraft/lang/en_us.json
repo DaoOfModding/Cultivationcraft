@@ -7,6 +7,8 @@
   "cultivationcraft.elements.ice": "Ice",
   "cultivationcraft.elements.lightning": "Lightning",
 
+  "cultivationcraft.quest.qisource": "Seconds spent cultivating from a QiSource",
+
   "cultivationcraft.gui.bind": "Bind Item",
   "cultivationcraft.gui.done": "Done",
   "cultivationcraft.gui.cancel": "Cancel",
@@ -30,6 +32,8 @@
   "cultivationcraft.gui.generic.reinforce.description": "Reinforce this body part to be stronger without making any significant change to its structure",
 
   "cultivationcraft.gui.generic.location": "Location",
+
+  "cultivationcraft.gui.generic.stabilizing": "Stabilizing",
 
   "cultivationcraft.gui.bodypart.expanding": "Expandable",
   "cultivationcraft.gui.bodypart.expanding.description": "Forge your body to enable it to increase and decrease in size",

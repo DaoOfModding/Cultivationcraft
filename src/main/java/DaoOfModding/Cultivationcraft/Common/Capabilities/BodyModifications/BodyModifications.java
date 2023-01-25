@@ -20,6 +20,9 @@ public class BodyModifications implements IBodyModifications
     boolean hasUpdated = false;
     int progress = 0;
 
+    String lastForged = "";
+    double questProgress = 0;
+
     public String getSelection()
     {
         return selected;
@@ -28,6 +31,26 @@ public class BodyModifications implements IBodyModifications
     public void setSelection(String selection)
     {
         selected = selection;
+    }
+
+    public String getLastForged()
+    {
+        return lastForged;
+    }
+
+    public void setLastForged(String last)
+    {
+        lastForged = last;
+    }
+
+    public double getQuestProgress()
+    {
+        return questProgress;
+    }
+
+    public void setQuestProgress(double newProgress)
+    {
+        questProgress = newProgress;
     }
 
     public void setProgress(int number)
@@ -159,7 +182,9 @@ public class BodyModifications implements IBodyModifications
         clearModifications();
 
         setSelection(NBT.getString("selection"));
+        setLastForged(NBT.getString("last"));
         setProgress(NBT.getInt("progress"));
+        setQuestProgress(NBT.getDouble("questprogress"));
 
         CompoundTag modifications = NBT.getCompound("modifications");
 
@@ -192,7 +217,9 @@ public class BodyModifications implements IBodyModifications
         CompoundTag nbt = new CompoundTag();
 
         nbt.putString("selection", getSelection());
+        nbt.putString("last", getLastForged());
         nbt.putInt("progress", getProgress());
+        nbt.putDouble("questprogress", getQuestProgress());
 
         CompoundTag modifications = new CompoundTag();
         for(Map.Entry<String, BodyPart> entry : getModifications().entrySet())
@@ -222,7 +249,9 @@ public class BodyModifications implements IBodyModifications
         options = (HashMap<String, HashMap<String, BodyPartOption>>)mod.getModificationOptions().clone();
         tags = (ArrayList<String>)mod.getTags().clone();
 
+        lastForged = mod.getLastForged();
         progress = mod.getProgress();
+        questProgress = mod.getQuestProgress();
 
         setUpdated(false);
     }

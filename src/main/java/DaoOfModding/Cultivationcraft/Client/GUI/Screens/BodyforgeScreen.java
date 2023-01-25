@@ -7,6 +7,8 @@ import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.BodyM
 import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.IBodyModifications;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPart;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartOption;
+import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.Quest;
+import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.QuestHandler;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.StatIDs;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
@@ -286,19 +288,36 @@ public class BodyforgeScreen extends GenericTabScreen
 
     protected void drawGuiForgroundLayer(PoseStack PoseStack, float partialTicks, int mouseX, int mouseY)
     {
-        drawBody(PoseStack);
+        if (mode == 1)
+            drawBody(PoseStack);
 
         // If a part has already been selected then draw information on that selection
         // Otherwise draw the part selection menu
-        String Selection = BodyModifications.getBodyModifications(genericClientFunctions.getPlayer()).getSelection();
-        BodyPart part = BodyPartNames.getPart(Selection);
-        if (part == null)
-            part = BodyPartNames.getOption(Selection);
+        IBodyModifications modifications = BodyModifications.getBodyModifications(genericClientFunctions.getPlayer());
 
-        if (part == null)
-            drawSelection(PoseStack, mouseX, mouseY);
+        String questPart = modifications.getLastForged();
+
+        // If there is a current in-progress quest part then draw the quest screen, otherwise draw the part screen
+        if (questPart.compareTo("") != 0)
+        {
+            BodyPart part = BodyPartNames.getPart(questPart);
+            if (part == null)
+                part = BodyPartNames.getOption(questPart);
+
+            drawQuest(PoseStack, part, mouseX, mouseY);
+        }
         else
-            drawSelected(PoseStack, part, mouseX, mouseY);
+        {
+            String Selection = modifications.getSelection();
+            BodyPart part = BodyPartNames.getPart(Selection);
+            if (part == null)
+                part = BodyPartNames.getOption(Selection);
+
+            if (part == null)
+                drawSelection(PoseStack, mouseX, mouseY);
+            else
+                drawSelected(PoseStack, part, mouseX, mouseY);
+        }
     }
 
     protected void drawSelection(PoseStack PoseStack, int mouseX, int mouseY)
@@ -369,6 +388,40 @@ public class BodyforgeScreen extends GenericTabScreen
         this.blit(PoseStack, edgeSpacingX + 10, edgeSpacingY + 161, 1, 239, (int)((length - 2) * progress), 4);
 
         cancel.render(PoseStack, edgeSpacingX + cancelXPos, edgeSpacingY + cancelYPos, mouseX, mouseY, this);
+    }
+
+    protected void drawQuest(PoseStack PoseStack, BodyPart part, int mouseX, int mouseY)
+    {
+        mode = 2;
+
+        Quest quest = part.getQuest();
+        double progress = QuestHandler.getQuestProgress(Minecraft.getInstance().player);
+
+        int edgeSpacingX = (this.width - this.xSize) / 2;
+        int edgeSpacingY = (this.height - this.ySize) / 2;
+
+        String partName = part.getDisplayName();
+
+        String position = BodyPartNames.getDisplayName(part.getPosition());
+
+        String subPosition = BodyPartNames.getDisplayName(BodyPartNames.basePosition);
+        if (part instanceof BodyPartOption)
+            subPosition = BodyPartNames.getDisplayName(part.getPosition(), ((BodyPartOption)part).getSubPosition());
+
+        String stabilizing = Component.translatable("cultivationcraft.gui.generic.stabilizing").getString();
+
+        font.draw(PoseStack, stabilizing + ": " + position + "->" + subPosition + "->" + partName, edgeSpacingX + 10, edgeSpacingY + 30, Color.GRAY.getRGB());
+
+
+        font.draw(PoseStack, quest.getDescription(), edgeSpacingX + 10, edgeSpacingY + 100, Color.GRAY.getRGB());
+        font.draw(PoseStack, (int)progress + "/" + (int)quest.complete, edgeSpacingX + 10, edgeSpacingY + 120, Color.GRAY.getRGB());
+
+        RenderSystem.setShaderTexture(0, TEXTURE);
+
+        int length = xSize - (9 * 2);
+
+        this.blit(PoseStack, edgeSpacingX + 9, edgeSpacingY + 160, 0, 233, length, 6);
+        this.blit(PoseStack, edgeSpacingX + 10, edgeSpacingY + 161, 1, 239, (int)((length - 2) * (progress / quest.complete)), 4);
     }
 
     protected void drawBody(PoseStack PoseStack)

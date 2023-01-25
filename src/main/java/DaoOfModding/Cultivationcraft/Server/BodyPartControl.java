@@ -39,6 +39,8 @@ public class BodyPartControl
                 else
                     modifications.setModification(toComplete);
 
+                modifications.setLastForged(modifications.getSelection());
+                modifications.setQuestProgress(0);
                 modifications.setSelection("");
                 modifications.setProgress(0);
 

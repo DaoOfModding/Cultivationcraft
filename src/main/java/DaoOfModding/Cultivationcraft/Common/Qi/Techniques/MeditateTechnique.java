@@ -6,6 +6,8 @@ import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.IBody
 import DaoOfModding.Cultivationcraft.Common.Capabilities.ChunkQiSources.ChunkQiSources;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStats;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.ICultivatorStats;
+import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.Quest;
+import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.QuestHandler;
 import DaoOfModding.Cultivationcraft.Common.Qi.CultivationTypes;
 import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
 import DaoOfModding.Cultivationcraft.Common.Qi.QiSource;
@@ -63,6 +65,12 @@ public class MeditateTechnique extends MovementOverrideTechnique
         {
             IBodyModifications modifications = BodyModifications.getBodyModifications(event.player);
 
+            List<QiSource> sources = ChunkQiSources.getQiSourcesInRange(event.player.level, event.player.position(), (int)BodyPartStatControl.getPlayerStatControl(event.player.getUUID()).getStats().getStat(StatIDs.qiAbsorbRange));
+
+            // If meditating in a Qi Source, increase the quest by 1 second
+            if (sources.size() > 0)
+                QuestHandler.progressQuest(event.player, Quest.QI_SOURCE_MEDITATION, 1.0/20.0);
+
             // Only absorb Qi if a part has been selected
             if (modifications.getSelection().compareTo("") != 0)
             {
@@ -73,7 +81,7 @@ public class MeditateTechnique extends MovementOverrideTechnique
 
                 // Draw Qi from each Qi source available
                 // TODO: Elemental stuff
-                for (QiSource source : ChunkQiSources.getQiSourcesInRange(event.player.level, event.player.position(), (int)BodyPartStatControl.getPlayerStatControl(event.player.getUUID()).getStats().getStat(StatIDs.qiAbsorbRange)))
+                for (QiSource source : sources)
                 {
                     // Do not absorb more qi than the players max absorb speed
                     if (remaining > 0)

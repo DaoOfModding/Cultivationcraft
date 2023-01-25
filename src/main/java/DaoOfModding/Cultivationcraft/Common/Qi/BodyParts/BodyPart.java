@@ -7,6 +7,7 @@ import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.BodyM
 import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.IBodyModifications;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStats;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.ICultivatorStats;
+import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.Quest;
 import DaoOfModding.Cultivationcraft.Common.Qi.CultivationTypes;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.PlayerStatModifications;
 import DaoOfModding.Cultivationcraft.Network.ClientPacketHandler;
@@ -34,6 +35,7 @@ public class BodyPart
     protected PlayerStatModifications stats;
     protected String textureID = TextureList.skin;
     protected boolean texturesUpdated = false;
+    protected Quest quest;
 
     protected BodyPartLocation connection = null;
 
@@ -61,6 +63,16 @@ public class BodyPart
         displayNamePosition = displayNamePos;
 
         stats = new PlayerStatModifications();
+    }
+
+    public void setQuest(Quest newQuest)
+    {
+        quest = newQuest;
+    }
+
+    public Quest getQuest()
+    {
+        return quest;
     }
 
     public void setConnection(BodyPartLocation newConnection)

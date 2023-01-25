@@ -6,6 +6,7 @@ import DaoOfModding.Cultivationcraft.Client.Textures.TextureList;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyForgeParts.*;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.FoodStats.CarnivoreFoodStats;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.FoodStats.HerbivoreFoodStats;
+import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.Quest;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.DefaultPlayerBodyPartWeights;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.StatIDs;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
@@ -300,7 +301,6 @@ public class BodyPartNames
         BodyPart shortArm = new BodyPart(shortArmPart, armPosition, "cultivationcraft.gui.armpart.short");
         shortArm.addModel(BodyPartModelNames.shortArmLeftModel);
         shortArm.addModel(BodyPartModelNames.shortArmRightModel);
-        // TODO: Hands not working here
         shortArm.addArm(new Arm(InteractionHand.OFF_HAND, BodyPartModelNames.shortArmLeftModel, BodyPartModelNames.shortArmLeftModel, true));
         shortArm.addArm(new Arm(InteractionHand.MAIN_HAND, BodyPartModelNames.shortArmRightModel, BodyPartModelNames.shortArmRightModel, false));
         shortArm.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.basePosition);
@@ -348,7 +348,9 @@ public class BodyPartNames
 
     protected static void setupHeadOptions()
     {
-        addOption(new BodyPartOption(startingEyesPart, headPosition, eyeSubPosition, "cultivationcraft.gui.headpart.eye.qisight"));
+        BodyPartOption qiSight = new BodyPartOption(startingEyesPart, headPosition, eyeSubPosition, "cultivationcraft.gui.headpart.eye.qisight");
+        qiSight.setQuest(new Quest(Quest.QI_SOURCE_MEDITATION, 10));
+        addOption(qiSight);
 
 
         BodyPartOption flatTeeth = new BodyPartOption(flatTeethPart, headPosition, mouthSubPosition, "cultivationcraft.gui.headpart.mouth.flatteeth");

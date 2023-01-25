@@ -14,6 +14,11 @@ public interface IBodyModifications
     public String getSelection();
     public void setSelection(String selection);
 
+    public String getLastForged();
+    public void setLastForged(String last);
+    public double getQuestProgress();
+    public void setQuestProgress(double newProgress);
+
     public void setProgress(int number);
     public void addProgress(int number);
     public int getProgress();
