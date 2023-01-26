@@ -33,6 +33,7 @@ public class PacketHandler
     protected static final byte TECHNIQUE_USE = 20;
     protected static final byte TECHNIQUE_INFO = 21;
     protected static final byte PART_INFO = 22;
+    protected static final byte QUEST_PROGRESS = 30;
     protected static final byte FLYING_SWORD_NBT_ID = 35;
     protected static final byte FLYING_SWORD_RECALL = 36;
     protected static final byte CULTIVATOR_TARGET_ID = 76;
@@ -57,6 +58,7 @@ public class PacketHandler
         channel.registerMessage(TECHNIQUE_USE, TechniqueUsePacket.class, TechniqueUsePacket::encode, TechniqueUsePacket::decode, TechniqueUsePacket::handle);
         channel.registerMessage(TECHNIQUE_INFO, TechniqueInfoPacket.class, TechniqueInfoPacket::encode, TechniqueInfoPacket::decode, TechniqueInfoPacket::handle);
         channel.registerMessage(PART_INFO, PartInfoPacket.class, PartInfoPacket::encode, PartInfoPacket::decode, PartInfoPacket::handle);
+        channel.registerMessage(QUEST_PROGRESS, QuestPacket.class, QuestPacket::encode, QuestPacket::decode, QuestPacket::handle);
         channel.registerMessage(FLYING_SWORD_NBT_ID, ConvertToFlyingPacket.class, ConvertToFlyingPacket::encode, ConvertToFlyingPacket::decode, ConvertToFlyingPacket::handle);
         channel.registerMessage(FLYING_SWORD_RECALL, RecallFlyingSwordPacket.class, RecallFlyingSwordPacket::encode, RecallFlyingSwordPacket::decode, RecallFlyingSwordPacket::handle);
         channel.registerMessage(CULTIVATOR_TARGET_ID, CultivatorTargetPacket.class, CultivatorTargetPacket::encode, CultivatorTargetPacket::decode, CultivatorTargetPacket::handle);

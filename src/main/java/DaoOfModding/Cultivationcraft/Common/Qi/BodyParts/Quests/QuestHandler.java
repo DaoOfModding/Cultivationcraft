@@ -7,6 +7,7 @@ import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.ICultiv
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPart;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartNames;
 import DaoOfModding.Cultivationcraft.Common.Qi.CultivationTypes;
+import DaoOfModding.Cultivationcraft.Network.ClientPacketHandler;
 import DaoOfModding.Cultivationcraft.Network.PacketHandler;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
@@ -21,10 +22,6 @@ public class QuestHandler
 
     public static void progressQuest(Player player, ResourceLocation mode, double amount)
     {
-        // Do nothing if this is client side
-        if (player.isLocalPlayer())
-            return;
-
         ICultivatorStats stats = CultivatorStats.getCultivatorStats(player);
 
         // Do nothing if not a body cultivator
@@ -37,10 +34,7 @@ public class QuestHandler
         if (modifications.getLastForged().compareTo("") == 0)
             return;
 
-        BodyPart part = BodyPartNames.getPart(modifications.getLastForged());
-
-        if (part == null)
-            part = BodyPartNames.getOption(modifications.getLastForged());
+        BodyPart part = BodyPartNames.getPartOrOption(modifications.getLastForged());
 
         Quest quest = part.getQuest();
 
@@ -57,13 +51,30 @@ public class QuestHandler
         if (progress == 0)
             return;
 
+        progressQuest(player, progress);
+    }
+
+    public static void progressQuest(Player player, double progress)
+    {
+        if (player.isLocalPlayer())
+        {
+            ClientPacketHandler.sendQuestProgressToServer(player.getUUID(), progress);
+            return;
+        }
+
+        IBodyModifications modifications = BodyModifications.getBodyModifications(player);
+        BodyPart part = BodyPartNames.getPartOrOption(modifications.getLastForged());
+        Quest quest = part.getQuest();
+
         progress = modifications.getQuestProgress() + progress;
 
         // If the quest isn't complete then update the progress for everyone
         if (progress < quest.complete)
         {
             modifications.setQuestProgress(progress);
+
             PacketHandler.sendBodyModificationsToClient(player);
+
             return;
         }
 

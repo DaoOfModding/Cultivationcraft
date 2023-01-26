@@ -291,7 +291,8 @@ public class CommonListeners
     {
         if (event.getEntity() instanceof Player)
         {
-            QuestHandler.progressQuest((Player)event.getEntity(), Quest.DAMAGE_TAKEN, event.getAmount());
+            if (!(((Player) event.getEntity()).isLocalPlayer()))
+                QuestHandler.progressQuest((Player)event.getEntity(), Quest.DAMAGE_TAKEN, event.getAmount());
         }
     }
 }

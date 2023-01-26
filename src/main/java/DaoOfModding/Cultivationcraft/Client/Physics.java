@@ -1,5 +1,7 @@
 package DaoOfModding.Cultivationcraft.Client;
 
+import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.Quest;
+import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.QuestHandler;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.PlayerStatControl;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.PlayerStatModifications;
@@ -64,7 +66,10 @@ public class Physics
 
                 // Only bounce if above a certain threshold, to stop infinite micro-bounces
                 if (bounce > 0.25)
+                {
+                    QuestHandler.progressQuest(player, Quest.BOUNCE, bounce);
                     player.setDeltaMovement(delta.x, bounce, delta.z);
+                }
 
                 fallSpeed.remove(player.getUUID());
             }

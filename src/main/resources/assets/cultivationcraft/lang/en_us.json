@@ -9,6 +9,7 @@
 
   "cultivationcraft.quest.qisource": "Seconds spent cultivating from a QiSource",
   "cultivationcraft.quest.damagetaken": "Damage taken",
+  "cultivationcraft.quest.bounce": "Height bounced",
 
   "cultivationcraft.gui.bind": "Bind Item",
   "cultivationcraft.gui.done": "Done",

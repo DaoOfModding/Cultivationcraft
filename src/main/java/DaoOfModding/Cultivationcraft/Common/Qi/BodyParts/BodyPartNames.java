@@ -199,7 +199,7 @@ public class BodyPartNames
         rubberSkin.addNeededPart(BodyPartNames.startingEyesPart);
         rubberSkin.addUniqueTag(BodyPartTags.stretchy);
         rubberSkin.getStatChanges().setStat(StatIDs.fallHeight, 99);
-        rubberSkin.setQuest(new Quest(Quest.DAMAGE_TAKEN, 100));
+        rubberSkin.setQuest(new Quest(Quest.BOUNCE, 100));
 
         BodyPartOption stretchySkin = new BodyPartOption(stretchySkinPart, bodyPosition, skinSubPosition,  "cultivationcraft.gui.bodypart.skin.stretchy");
         stretchySkin.addUniqueTag(BodyPartTags.stretchy);
@@ -495,6 +495,16 @@ public class BodyPartNames
     public static void addOption(BodyPartOption part)
     {
         options.add(part);
+    }
+
+    public static BodyPart getPartOrOption(String part)
+    {
+        BodyPart partFind = getPart(part);
+
+        if (partFind == null)
+            partFind = getOption(part);
+
+        return partFind;
     }
 
     public static BodyPart getPart(String part)

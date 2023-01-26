@@ -7,8 +7,10 @@ import DaoOfModding.Cultivationcraft.Common.Register;
 import DaoOfModding.Cultivationcraft.Network.Packets.*;
 import DaoOfModding.Cultivationcraft.Network.Packets.CultivatorStats.CultivatorTargetPacket;
 import DaoOfModding.Cultivationcraft.Network.Packets.CultivatorStats.RecallFlyingSwordPacket;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.network.PacketDistributor;
 
 import java.util.UUID;
 
@@ -53,6 +55,13 @@ public class ClientPacketHandler
     public static void sendTechniqueInfoToServer(UUID playerID, int info, int slot)
     {
         TechniqueInfoPacket packet = new TechniqueInfoPacket(slot, info, playerID);
+
+        PacketHandler.channel.sendToServer(packet);
+    }
+
+    public static void sendQuestProgressToServer(UUID player, double amount)
+    {
+        QuestPacket packet = new QuestPacket(player, amount);
 
         PacketHandler.channel.sendToServer(packet);
     }
