@@ -9,6 +9,7 @@ import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartNames;
 import DaoOfModding.Cultivationcraft.Common.Qi.CultivationTypes;
 import DaoOfModding.Cultivationcraft.Network.ClientPacketHandler;
 import DaoOfModding.Cultivationcraft.Network.PacketHandler;
+import DaoOfModding.Cultivationcraft.debug;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 
@@ -48,7 +49,7 @@ public class QuestHandler
         double progress = quest.progress(mode, amount);
 
         // Do nothing is quest doesn't progress
-        if (progress == 0)
+        if (progress == 0 && !debug.skipQuest)
             return;
 
         progressQuest(player, progress);
@@ -63,19 +64,22 @@ public class QuestHandler
         }
 
         IBodyModifications modifications = BodyModifications.getBodyModifications(player);
-        BodyPart part = BodyPartNames.getPartOrOption(modifications.getLastForged());
-        Quest quest = part.getQuest();
 
-        progress = modifications.getQuestProgress() + progress;
-
-        // If the quest isn't complete then update the progress for everyone
-        if (progress < quest.complete)
+        if (!debug.skipQuest)
         {
-            modifications.setQuestProgress(progress);
+            BodyPart part = BodyPartNames.getPartOrOption(modifications.getLastForged());
+            Quest quest = part.getQuest();
 
-            PacketHandler.sendBodyModificationsToClient(player);
+            progress = modifications.getQuestProgress() + progress;
 
-            return;
+            // If the quest isn't complete then update the progress for everyone
+            if (progress < quest.complete) {
+                modifications.setQuestProgress(progress);
+
+                PacketHandler.sendBodyModificationsToClient(player);
+
+                return;
+            }
         }
 
         // If the quest is complete then reset the last forged modification and quest progress

@@ -409,11 +409,12 @@ public class BodyforgeScreen extends GenericTabScreen
 
         String stabilizing = Component.translatable("cultivationcraft.gui.generic.stabilizing").getString();
 
-        font.draw(PoseStack, stabilizing + ": " + position + "->" + subPosition + "->" + partName, edgeSpacingX + bodyPartListXPos, edgeSpacingY + 30, Color.GRAY.getRGB());
+        font.draw(PoseStack, stabilizing, edgeSpacingX + bodyPartListXPos, edgeSpacingY + 30, Color.BLACK.getRGB());
+        font.draw(PoseStack,  position + "->" + subPosition + "->" + partName, edgeSpacingX + bodyPartListXPos, edgeSpacingY + 45, Color.GRAY.getRGB());
 
 
-        font.draw(PoseStack, quest.getDescription(), edgeSpacingX + bodyPartListXPos, edgeSpacingY + 100, Color.GRAY.getRGB());
-        font.draw(PoseStack, (int)progress + "/" + (int)quest.complete, edgeSpacingX + bodyPartListXPos, edgeSpacingY + 120, Color.GRAY.getRGB());
+        font.draw(PoseStack, quest.getDescription(), edgeSpacingX + 10, edgeSpacingY + 130, Color.GRAY.getRGB());
+        font.draw(PoseStack, (int)progress + "/" + (int)quest.complete, edgeSpacingX + bodyPartListXPos, edgeSpacingY + 145, Color.GRAY.getRGB());
 
         RenderSystem.setShaderTexture(0, TEXTURE);
 
@@ -515,7 +516,7 @@ public class BodyforgeScreen extends GenericTabScreen
         if (mode == 2)
             Selection = modifications.getLastForged();
 
-        BodyPart part = BodyPartNames.getPart(Selection);
+        BodyPart part = BodyPartNames.getPartOrOption(Selection);
         if (part != null)
             selected = part.getPosition();
 

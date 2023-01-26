@@ -8,6 +8,8 @@ import DaoOfModding.Cultivationcraft.Common.FlyingSwordController;
 import DaoOfModding.Cultivationcraft.Common.FlyingSwordEntity;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPart;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartOption;
+import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.Quest;
+import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.QuestHandler;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.event.TickEvent;
@@ -27,6 +29,7 @@ public class ServerListeners
     {
         if (event.phase == TickEvent.Phase.START)
         {
+            QuestHandler.progressQuest(event.player, Quest.TIME_ALIVE, 1.0 / (20.0 * 60.0));
             ICultivatorTechniques techs = CultivatorTechniques.getCultivatorTechniques(event.player);
 
             for (int i = 0; i < CultivatorTechniques.numberOfTechniques; i++)

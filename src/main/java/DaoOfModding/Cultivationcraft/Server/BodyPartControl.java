@@ -12,6 +12,7 @@ import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
 import DaoOfModding.Cultivationcraft.Common.Qi.CultivationTypes;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.StatIDs;
 import DaoOfModding.Cultivationcraft.Network.PacketHandler;
+import DaoOfModding.Cultivationcraft.debug;
 import net.minecraft.world.entity.player.Player;
 
 public class BodyPartControl
@@ -23,9 +24,7 @@ public class BodyPartControl
         if (stats.getCultivationType() == CultivationTypes.BODY_CULTIVATOR)
         {
             IBodyModifications modifications = BodyModifications.getBodyModifications(player);
-            BodyPart toComplete = BodyPartNames.getPart(modifications.getSelection());
-            if (toComplete == null)
-                toComplete = BodyPartNames.getOption(modifications.getSelection());
+            BodyPart toComplete = BodyPartNames.getPartOrOption(modifications.getSelection());
 
             if (toComplete == null)
                 return;
@@ -39,8 +38,12 @@ public class BodyPartControl
                 else
                     modifications.setModification(toComplete);
 
-                modifications.setLastForged(modifications.getSelection());
-                modifications.setQuestProgress(0);
+                if (!debug.skipQuest)
+                {
+                    modifications.setLastForged(modifications.getSelection());
+                    modifications.setQuestProgress(0);
+                }
+
                 modifications.setSelection("");
                 modifications.setProgress(0);
 

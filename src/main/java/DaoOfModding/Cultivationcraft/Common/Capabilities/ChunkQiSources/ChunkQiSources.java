@@ -77,7 +77,6 @@ public class ChunkQiSources implements IChunkQiSources
 
     public boolean tick(Level level)
     {
-        // Qi sources deleting when player gets too close to them!?
         boolean updated = false;
 
         for (QiSource source : getQiSources())
@@ -171,15 +170,13 @@ public class ChunkQiSources implements IChunkQiSources
         ResourceLocation foundElement = rules.get(0);
 
         // Set the element to be any element that has the specified density of blocks within it's sphere
-        // If two elements match the requirements then set as the dimensions default element
+        // If two elements match the requirements then randomly chose one of them
         for (ResourceLocation element : rules)
             if (element != rules.get(0))
                 if (elements.get(element) > Elements.getElement(element).density * count)
                 {
-                    if (foundElement == rules.get(0))
+                    if (foundElement == rules.get(0) || Math.random() > 0.5)
                         foundElement = element;
-                    else
-                        return rules.get(0);
                 }
 
         return foundElement;

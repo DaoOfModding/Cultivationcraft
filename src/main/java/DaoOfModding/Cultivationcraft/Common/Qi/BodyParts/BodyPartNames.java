@@ -204,11 +204,11 @@ public class BodyPartNames
         BodyPartOption stretchySkin = new BodyPartOption(stretchySkinPart, bodyPosition, skinSubPosition,  "cultivationcraft.gui.bodypart.skin.stretchy");
         stretchySkin.addUniqueTag(BodyPartTags.stretchy);
         stretchySkin.addNeededPart(BodyPartNames.startingEyesPart);
-        stretchySkin.setQuest(new Quest(Quest.DAMAGE_TAKEN, 100));
+        stretchySkin.setQuest(new Quest(Quest.TIME_ALIVE, 10));
 
         BodyPartOption reinforceSkin = new BodyPartOption(reinforceSkinPart, bodyPosition, skinSubPosition,  "cultivationcraft.gui.generic.reinforce");
         reinforceSkin.addNeededPart(BodyPartNames.startingEyesPart);
-        reinforceSkin.setQuest(new Quest(Quest.DAMAGE_TAKEN, 100));
+        reinforceSkin.setQuest(new Quest(Quest.TIME_ALIVE, 10));
 
         addOption(rubberSkin);
         addOption(stretchySkin);
