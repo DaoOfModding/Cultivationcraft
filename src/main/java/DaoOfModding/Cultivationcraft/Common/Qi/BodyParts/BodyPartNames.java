@@ -195,20 +195,20 @@ public class BodyPartNames
     protected static void setupSkinOptions()
     {
         BodyPartOption rubberSkin = new BodyPartOption(rubberSkinPart, bodyPosition, skinSubPosition,  "cultivationcraft.gui.bodypart.skin.rubber");
-        //rubberSkin.addTextureChange(TextureList.skin, new ResourceLocation(Cultivationcraft.MODID, "textures/models/bone/bone.png"));
         rubberSkin.getStatChanges().setStat(StatIDs.bounceHeight, 0.5f);
         rubberSkin.addNeededPart(BodyPartNames.startingEyesPart);
         rubberSkin.addUniqueTag(BodyPartTags.stretchy);
         rubberSkin.getStatChanges().setStat(StatIDs.fallHeight, 99);
+        rubberSkin.setQuest(new Quest(Quest.DAMAGE_TAKEN, 100));
 
         BodyPartOption stretchySkin = new BodyPartOption(stretchySkinPart, bodyPosition, skinSubPosition,  "cultivationcraft.gui.bodypart.skin.stretchy");
-        //stretchySkin.addTextureChange(TextureList.skin, new ResourceLocation(Cultivationcraft.MODID, "textures/models/bone/bone.png"));
         stretchySkin.addUniqueTag(BodyPartTags.stretchy);
         stretchySkin.addNeededPart(BodyPartNames.startingEyesPart);
+        stretchySkin.setQuest(new Quest(Quest.DAMAGE_TAKEN, 100));
 
         BodyPartOption reinforceSkin = new BodyPartOption(reinforceSkinPart, bodyPosition, skinSubPosition,  "cultivationcraft.gui.generic.reinforce");
-        //rubberSkin.addTextureChange(TextureList.skin, new ResourceLocation(Cultivationcraft.MODID, "textures/models/bone/bone.png"));
         reinforceSkin.addNeededPart(BodyPartNames.startingEyesPart);
+        reinforceSkin.setQuest(new Quest(Quest.DAMAGE_TAKEN, 100));
 
         addOption(rubberSkin);
         addOption(stretchySkin);

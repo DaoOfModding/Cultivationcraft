@@ -7,6 +7,7 @@ import net.minecraft.resources.ResourceLocation;
 public class Quest
 {
     public static final ResourceLocation QI_SOURCE_MEDITATION = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.quest.qisource");
+    public static final ResourceLocation DAMAGE_TAKEN = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.quest.damagetaken");
 
     public final ResourceLocation mode;
     public final double complete;
@@ -19,7 +20,7 @@ public class Quest
 
     public double progress(ResourceLocation progressMode, double amount)
     {
-        if (progressMode.compareTo(progressMode) == 0)
+        if (mode.compareTo(progressMode) == 0)
             return amount;
 
         return 0;

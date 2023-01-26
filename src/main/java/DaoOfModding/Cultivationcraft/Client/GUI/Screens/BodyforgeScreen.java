@@ -288,8 +288,7 @@ public class BodyforgeScreen extends GenericTabScreen
 
     protected void drawGuiForgroundLayer(PoseStack PoseStack, float partialTicks, int mouseX, int mouseY)
     {
-        if (mode == 1)
-            drawBody(PoseStack);
+        drawBody(PoseStack);
 
         // If a part has already been selected then draw information on that selection
         // Otherwise draw the part selection menu
@@ -410,11 +409,11 @@ public class BodyforgeScreen extends GenericTabScreen
 
         String stabilizing = Component.translatable("cultivationcraft.gui.generic.stabilizing").getString();
 
-        font.draw(PoseStack, stabilizing + ": " + position + "->" + subPosition + "->" + partName, edgeSpacingX + 10, edgeSpacingY + 30, Color.GRAY.getRGB());
+        font.draw(PoseStack, stabilizing + ": " + position + "->" + subPosition + "->" + partName, edgeSpacingX + bodyPartListXPos, edgeSpacingY + 30, Color.GRAY.getRGB());
 
 
-        font.draw(PoseStack, quest.getDescription(), edgeSpacingX + 10, edgeSpacingY + 100, Color.GRAY.getRGB());
-        font.draw(PoseStack, (int)progress + "/" + (int)quest.complete, edgeSpacingX + 10, edgeSpacingY + 120, Color.GRAY.getRGB());
+        font.draw(PoseStack, quest.getDescription(), edgeSpacingX + bodyPartListXPos, edgeSpacingY + 100, Color.GRAY.getRGB());
+        font.draw(PoseStack, (int)progress + "/" + (int)quest.complete, edgeSpacingX + bodyPartListXPos, edgeSpacingY + 120, Color.GRAY.getRGB());
 
         RenderSystem.setShaderTexture(0, TEXTURE);
 
@@ -505,11 +504,17 @@ public class BodyforgeScreen extends GenericTabScreen
 
     protected String getSelectedPosition()
     {
+        IBodyModifications modifications = BodyModifications.getBodyModifications(genericClientFunctions.getPlayer());
+
         // Check against the position selected in the drop down menu
         String selected = ((String)bodyParts.getSelected());
 
         // Change the position to check to the selected part's position if one exists
-        String Selection = BodyModifications.getBodyModifications(genericClientFunctions.getPlayer()).getSelection();
+        String Selection = modifications.getSelection();
+
+        if (mode == 2)
+            Selection = modifications.getLastForged();
+
         BodyPart part = BodyPartNames.getPart(Selection);
         if (part != null)
             selected = part.getPosition();

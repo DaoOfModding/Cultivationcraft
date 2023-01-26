@@ -8,6 +8,7 @@
   "cultivationcraft.elements.lightning": "Lightning",
 
   "cultivationcraft.quest.qisource": "Seconds spent cultivating from a QiSource",
+  "cultivationcraft.quest.damagetaken": "Damage taken",
 
   "cultivationcraft.gui.bind": "Bind Item",
   "cultivationcraft.gui.done": "Done",
