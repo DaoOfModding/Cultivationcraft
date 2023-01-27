@@ -6,6 +6,7 @@ import DaoOfModding.Cultivationcraft.Client.Textures.TextureList;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyForgeParts.*;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.FoodStats.CarnivoreFoodStats;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.FoodStats.HerbivoreFoodStats;
+import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.DefaultQuests;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.Quest;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.DefaultPlayerBodyPartWeights;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.StatIDs;
@@ -204,11 +205,11 @@ public class BodyPartNames
         BodyPartOption stretchySkin = new BodyPartOption(stretchySkinPart, bodyPosition, skinSubPosition,  "cultivationcraft.gui.bodypart.skin.stretchy");
         stretchySkin.addUniqueTag(BodyPartTags.stretchy);
         stretchySkin.addNeededPart(BodyPartNames.startingEyesPart);
-        stretchySkin.setQuest(new Quest(Quest.TIME_ALIVE, 10));
+        stretchySkin.setQuest(DefaultQuests.defaultSkinQuest);
 
         BodyPartOption reinforceSkin = new BodyPartOption(reinforceSkinPart, bodyPosition, skinSubPosition,  "cultivationcraft.gui.generic.reinforce");
         reinforceSkin.addNeededPart(BodyPartNames.startingEyesPart);
-        reinforceSkin.setQuest(new Quest(Quest.TIME_ALIVE, 10));
+        reinforceSkin.setQuest(DefaultQuests.defaultSkinQuest);
 
         addOption(rubberSkin);
         addOption(stretchySkin);
@@ -258,17 +259,20 @@ public class BodyPartNames
         reinforce.addModel(GenericLimbNames.body);
         reinforce.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.skinSubPosition);
         reinforce.getStatChanges().setStat(StatIDs.maxHP, StatIDs.defaultMaxHP);
+        reinforce.setQuest(DefaultQuests.defaultBodyQuest);
 
         BodyPart expanding = new BodyPart(expandingBodyPart, bodyPosition, "cultivationcraft.gui.bodypart.expanding");
         expanding.addModel(GenericLimbNames.body);
         expanding.addNeededTags(BodyPartTags.stretchy);
         expanding.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.skinSubPosition);
         expanding.getStatChanges().setStat(StatIDs.maxHP, StatIDs.defaultMaxHP);
+        expanding.setQuest(DefaultQuests.defaultBodyQuest);
 
         BodyPart shortBody = new BodyPart(shortBodyPart, bodyPosition, "cultivationcraft.gui.bodypart.short");
         shortBody.addModel(BodyPartModelNames.shortBody);
         shortBody.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.skinSubPosition);
         shortBody.getStatChanges().setStat(StatIDs.weight, DefaultPlayerBodyPartWeights.bodyWeight / -2);
+        shortBody.setQuest(DefaultQuests.defaultBodyQuest);
 
         addPart(reinforce);
         addPart(expanding);
