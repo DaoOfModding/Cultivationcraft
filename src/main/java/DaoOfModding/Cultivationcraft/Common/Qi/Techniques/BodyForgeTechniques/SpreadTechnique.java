@@ -115,6 +115,8 @@ public class SpreadTechnique extends Technique
             cooldownCount = 0;
             jumpPressed = false;
             groundCheck = false;
+
+            return;
         }
         else
             PoseHandler.addPose(event.player.getUUID(), inAir);
@@ -133,7 +135,7 @@ public class SpreadTechnique extends Technique
         super.tickServer(event);
         tickInactiveServer(event);
 
-        glide(event.player);
+        event.player.fallDistance = 0;
     }
 
     @Override
@@ -220,6 +222,6 @@ public class SpreadTechnique extends Technique
             player.setDeltaMovement(xMotion, upMotion, zMotion);
         }
 
-        QuestHandler.progressQuest(player, Quest.FLIGHT, player.getDeltaMovement().length());
+        QuestHandler.progressQuest(player, Quest.FLIGHT, new Vec3(player.getDeltaMovement().x, 0, player.getDeltaMovement().z).length());
     }
 }

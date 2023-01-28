@@ -82,6 +82,7 @@ public class DartTechnique extends Technique
             return;
 
         PlayerPose flapping = flap.clone();
+        event.player.fallDistance = 0;
 
         double yLook = 1 - event.player.getLookAngle().y;
 
@@ -108,7 +109,7 @@ public class DartTechnique extends Technique
         Vec3 slowedSpeed = Physics.getDelta(event.player).scale(1 - slowAmount);
         event.player.setDeltaMovement(slowedSpeed.x, slowedSpeed.y, slowedSpeed.z);
 
-        QuestHandler.progressQuest(event.player, event.player.getDeltaMovement().length());
+        QuestHandler.progressQuest(event.player, new Vec3(event.player.getDeltaMovement().x, 0, event.player.getDeltaMovement().z).length());
     }
 
     @Override
@@ -116,6 +117,8 @@ public class DartTechnique extends Technique
     {
         super.tickServer(event);
         tickInactiveServer(event);
+
+        event.player.fallDistance = 0;
     }
 
     @Override

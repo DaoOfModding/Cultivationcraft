@@ -11,6 +11,7 @@ import DaoOfModding.Cultivationcraft.Network.ClientPacketHandler;
 import DaoOfModding.Cultivationcraft.Network.PacketHandler;
 import DaoOfModding.Cultivationcraft.debug;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 
 public class QuestHandler
@@ -59,13 +60,14 @@ public class QuestHandler
 
     public static void progressQuest(Player player, double progress)
     {
+        IBodyModifications modifications = BodyModifications.getBodyModifications(player);
+
         if (player.isLocalPlayer())
         {
+            modifications.setQuestProgress(modifications.getQuestProgress() + progress);
             ClientPacketHandler.sendQuestProgressToServer(player.getUUID(), progress);
             return;
         }
-
-        IBodyModifications modifications = BodyModifications.getBodyModifications(player);
 
         if (!debug.skipQuest)
         {
@@ -74,12 +76,10 @@ public class QuestHandler
 
             progress = modifications.getQuestProgress() + progress;
 
-            // If the quest isn't complete then update the progress for everyone
-            if (progress < quest.complete) {
+            // If the quest isn't complete then update the progress
+            if (progress < quest.complete)
+            {
                 modifications.setQuestProgress(progress);
-
-                PacketHandler.sendBodyModificationsToClient(player);
-
                 return;
             }
         }

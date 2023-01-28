@@ -168,18 +168,29 @@ public class BodyforgeScreen extends GenericTabScreen
             return true;
 
         // Change the selected position if a position is clicked in the dropdown list
-        String changed = (String)bodyParts.mouseClick((int)mouseX - (edgeSpacingX + bodyPartListXPos), (int)mouseY - (edgeSpacingY + bodyPartListYPos), buttonPressed);
-
-        if (changed != null)
+        if (mode == 1)
         {
-            updateBodySubPartList();
-            return true;
-        }
+            String changed = (String) bodyParts.mouseClick((int) mouseX - (edgeSpacingX + bodyPartListXPos), (int) mouseY - (edgeSpacingY + bodyPartListYPos), buttonPressed);
 
-        if (bodySubParts.mouseClick((int)mouseX - (edgeSpacingX + bodySubPartListXPos), (int)mouseY - (edgeSpacingY + bodySubPartListYPos), buttonPressed) != null)
-        {
-            updateButtons();
-            return true;
+            if (changed != null) {
+                updateBodySubPartList();
+                return true;
+            }
+
+            if (bodySubParts.mouseClick((int) mouseX - (edgeSpacingX + bodySubPartListXPos), (int) mouseY - (edgeSpacingY + bodySubPartListYPos), buttonPressed) != null) {
+                updateButtons();
+                return true;
+            }
+
+            // Send the selected part to the server if a part is selected and the forge button is pressed
+            if (forge.mouseClick((int) mouseX - (edgeSpacingX + forgeXPos), (int) mouseY - (edgeSpacingY + forgeYPos), buttonPressed)) {
+                if (selectedPart != null)
+                    ClientPacketHandler.sendBodyForgeSelectionToServer(selectedPart);
+
+                forge.unselect();
+
+                return true;
+            }
         }
 
         // Cancel the selection if the cancel button is pressed
@@ -187,17 +198,6 @@ public class BodyforgeScreen extends GenericTabScreen
         {
             ClientPacketHandler.sendBodyForgeSelectionToServer("");
             cancel.unselect();
-
-            return true;
-        }
-
-        // Send the selected part to the server if a part is selected and the forge button is pressed
-        if (forge.mouseClick((int)mouseX - (edgeSpacingX + forgeXPos), (int)mouseY - (edgeSpacingY + forgeYPos), buttonPressed))
-        {
-            if (selectedPart != null)
-                ClientPacketHandler.sendBodyForgeSelectionToServer(selectedPart);
-
-            forge.unselect();
 
             return true;
         }

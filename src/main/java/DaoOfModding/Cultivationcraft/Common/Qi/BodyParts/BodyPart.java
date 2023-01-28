@@ -63,6 +63,8 @@ public class BodyPart
         displayNamePosition = displayNamePos;
 
         stats = new PlayerStatModifications();
+
+        quest = new Quest(Quest.TIME_ALIVE, 0);
     }
 
     public void setQuest(Quest newQuest)

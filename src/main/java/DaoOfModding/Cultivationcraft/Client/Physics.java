@@ -7,6 +7,7 @@ import DaoOfModding.Cultivationcraft.Common.Qi.Stats.PlayerStatControl;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.PlayerStatModifications;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.StatIDs;
 import DaoOfModding.mlmanimator.Client.Poses.PoseHandler;
+import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 
