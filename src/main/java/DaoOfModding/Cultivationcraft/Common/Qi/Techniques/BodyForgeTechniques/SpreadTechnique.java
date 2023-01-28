@@ -6,6 +6,8 @@ import DaoOfModding.Cultivationcraft.Client.genericClientFunctions;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.BodyModifications;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStats;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartNames;
+import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.Quest;
+import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.QuestHandler;
 import DaoOfModding.Cultivationcraft.Common.Qi.CultivationTypes;
 import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
@@ -22,8 +24,6 @@ import net.minecraftforge.event.TickEvent;
 
 public class SpreadTechnique extends Technique
 {
-    // TODO: Fails to load on server as it's loading ClientPlayer?
-
     protected boolean jumpPressed = false;
     protected boolean groundCheck = false;
 
@@ -219,5 +219,7 @@ public class SpreadTechnique extends Technique
 
             player.setDeltaMovement(xMotion, upMotion, zMotion);
         }
+
+        QuestHandler.progressQuest(player, Quest.FLIGHT, player.getDeltaMovement().length());
     }
 }

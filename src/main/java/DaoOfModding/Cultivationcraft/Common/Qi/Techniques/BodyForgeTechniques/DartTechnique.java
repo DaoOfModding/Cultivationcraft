@@ -6,6 +6,7 @@ import DaoOfModding.Cultivationcraft.Client.Physics;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.BodyModifications;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStats;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartNames;
+import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.QuestHandler;
 import DaoOfModding.Cultivationcraft.Common.Qi.CultivationTypes;
 import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
@@ -106,6 +107,8 @@ public class DartTechnique extends Technique
         // Slow the player speed based on the amount of cooldown remaining
         Vec3 slowedSpeed = Physics.getDelta(event.player).scale(1 - slowAmount);
         event.player.setDeltaMovement(slowedSpeed.x, slowedSpeed.y, slowedSpeed.z);
+
+        QuestHandler.progressQuest(event.player, event.player.getDeltaMovement().length());
     }
 
     @Override
@@ -150,6 +153,8 @@ public class DartTechnique extends Technique
 
         Vec3 dash = player.getLookAngle().normalize().scale(speed);
         player.setDeltaMovement(dash.x, dash.y, dash.z);
+
+        QuestHandler.progressQuest(player, dash.length());
 
         cooldownCount = cooldown;
         doubledCooldown = cooldown*2;

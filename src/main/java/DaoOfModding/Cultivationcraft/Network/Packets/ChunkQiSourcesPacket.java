@@ -3,10 +3,12 @@ package DaoOfModding.Cultivationcraft.Network.Packets;
 import DaoOfModding.Cultivationcraft.Client.AddChunkQiSourceToClient;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.ChunkQiSources.ChunkQiSources;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.ChunkQiSources.IChunkQiSources;
+import DaoOfModding.Cultivationcraft.Common.CommonListeners;
 import DaoOfModding.Cultivationcraft.Common.Qi.QiSource;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraftforge.fml.LogicalSide;
@@ -18,50 +20,29 @@ import java.util.function.Supplier;
 
 public class ChunkQiSourcesPacket extends Packet
 {
-    ChunkPos ChunkPos;
-    List<QiSource> QiSources;
+    IChunkQiSources chunkQiSources;
 
-    public ChunkQiSourcesPacket(ChunkPos LevelChunk,  List<QiSource> Qi)
+    public ChunkQiSourcesPacket(IChunkQiSources sources)
     {
-        ChunkPos = LevelChunk;
-        QiSources = Qi;
+        chunkQiSources = sources;
     }
 
     @Override
     public void encode(FriendlyByteBuf buffer)
     {
-        if (ChunkPos != null)
-        {
-            buffer.writeLong(ChunkPos.toLong());
-
-            // Write the number of QiSources to loop through
-            buffer.writeInt(QiSources.size());
-
-            // Add data for each QiSource
-            for (QiSource source : QiSources)
-            {
-                source.WriteBuffer(buffer);
-            }
-        }
+        buffer.writeNbt(chunkQiSources.writeNBT());
     }
 
     public static ChunkQiSourcesPacket decode(FriendlyByteBuf buffer)
     {
-        ChunkQiSourcesPacket returnValue = new ChunkQiSourcesPacket(null, null);
+        ChunkQiSourcesPacket returnValue = new ChunkQiSourcesPacket(null);
 
         try
         {
-            // Read in the send values
-            ChunkPos LevelChunk = new ChunkPos(buffer.readLong());
+            IChunkQiSources testSource = new ChunkQiSources();
+            testSource.readNBT(buffer.readNbt());
 
-            int numberOfSources = buffer.readInt();
-
-            List<QiSource> NewQiSources = new ArrayList<>();
-
-            for (int i = 0; i < numberOfSources; i++)
-                NewQiSources.add(QiSource.ReadBuffer(buffer));
-
-            return new ChunkQiSourcesPacket(LevelChunk, NewQiSources);
+            return new ChunkQiSourcesPacket(testSource);
 
         }
         catch (IllegalArgumentException | IndexOutOfBoundsException e)
@@ -100,19 +81,24 @@ public class ChunkQiSourcesPacket extends Packet
         if (Minecraft.getInstance().level == null)
             return true;
 
+        // Disregard this packet if the current LevelChunk isn't from the right dimension
+        if (Minecraft.getInstance().level.dimension().location().compareTo(chunkQiSources.getDimension()) != 0)
+            return true;
+
         // If the current LevelChunk isn't loaded return false
-        if (!Minecraft.getInstance().level.getChunkSource().hasChunk(ChunkPos.x, ChunkPos.z))
+        if (!Minecraft.getInstance().level.getChunkSource().hasChunk(chunkQiSources.getChunkPos().x, chunkQiSources.getChunkPos().z))
             return false;
 
         // Get the specified LevelChunk from the world
-        LevelChunk LevelChunk = Minecraft.getInstance().level.getChunk(ChunkPos.x, ChunkPos.z);
+        LevelChunk LevelChunk = Minecraft.getInstance().level.getChunk(chunkQiSources.getChunkPos().x, chunkQiSources.getChunkPos().z);
 
         // Get the ChunkQiSources instance from the LevelChunk
         IChunkQiSources sources = ChunkQiSources.getChunkQiSources(LevelChunk);
 
         // Set the new values
-        sources.setChunkPos(new ChunkPos(ChunkPos.x, ChunkPos.z));
-        sources.setQiSources(new ArrayList(QiSources));
+        sources.readNBT(chunkQiSources.writeNBT());
+
+        CommonListeners.checkQiSourceIsTicking(sources);
 
         return true;
     }

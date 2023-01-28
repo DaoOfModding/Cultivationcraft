@@ -229,6 +229,7 @@ public class BodyPartNames
         addWings.addUniqueTag(BodyPartTags.flight);
         addWings.getStatChanges().setStat(StatIDs.weight, 0.2f);
         addWings.getStatChanges().setStat(StatIDs.wingSupport, 2f);
+        addWings.setQuest(DefaultQuests.defaultFlightQuest);
 
         BodyPartOption addIWings = new BodyPartOption(insectwingPart, bodyPosition, backSubPosition,  "cultivationcraft.gui.bodypart.back.iwings");
         addIWings.addModel(BodyPartModelNames.rinsectWing);
@@ -240,6 +241,7 @@ public class BodyPartNames
         addIWings.addUniqueTag(BodyPartTags.flight);
         addIWings.getStatChanges().setStat(StatIDs.weight, 0.01f);
         addIWings.getStatChanges().setStat(StatIDs.wingSupport, 0.75f);
+        addIWings.setQuest(DefaultQuests.defaultFlightQuest);
 
 
         JetPart jets = new JetPart(jetPart, bodyPosition, backSubPosition,  "cultivationcraft.gui.bodypart.back.jet");
@@ -338,6 +340,7 @@ public class BodyPartNames
         glide.getStatChanges().setStat(StatIDs.weight, 0.01f);
         glide.getStatChanges().setStat(StatIDs.wingSupport, 2f);
         glide.getStatChanges().setStat(StatIDs.fallHeight, 99);
+        glide.setQuest(DefaultQuests.defaultFlightQuest);
 
         addPart(glide);
 
@@ -403,6 +406,7 @@ public class BodyPartNames
         feetpart.getStatChanges().setStat(StatIDs.movementSpeed, StatIDs.defaultMovementSpeed * -0.25f);
         feetpart.getStatChanges().setStat(StatIDs.weight, DefaultPlayerBodyPartWeights.legWeight * -1.6f);
         feetpart.getStatChanges().setStat(StatIDs.legSupport, 2.5f);
+        feetpart.setQuest(DefaultQuests.defaultLegQuest);
 
         addPart(feetpart);
 
@@ -410,8 +414,9 @@ public class BodyPartNames
         largelegpart.addModel(BodyPartModelNames.largeLegLeftModel);
         largelegpart.addModel(BodyPartModelNames.largeLegRightModel);
         largelegpart.addNeededPosition(BodyPartNames.armPosition, BodyPartNames.locationSubPosition);
-        feetpart.getStatChanges().setStat(StatIDs.weight, DefaultPlayerBodyPartWeights.legWeight * 2f);
-        feetpart.getStatChanges().setStat(StatIDs.legSupport, 10);
+        largelegpart.getStatChanges().setStat(StatIDs.weight, DefaultPlayerBodyPartWeights.legWeight * 2f);
+        largelegpart.getStatChanges().setStat(StatIDs.legSupport, 10);
+        largelegpart.setQuest(DefaultQuests.defaultLegQuest);
 
         addPart(largelegpart);
 
@@ -421,6 +426,7 @@ public class BodyPartNames
         rjLegPart.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.skinSubPosition);
         rjLegPart.getStatChanges().setStat(StatIDs.jumpHeight, 4);
         rjLegPart.getStatChanges().setStat(StatIDs.fallHeight, 4);
+        rjLegPart.setQuest(new Quest(Quest.JUMP, 10000));
 
         addPart(rjLegPart);
 
@@ -447,6 +453,7 @@ public class BodyPartNames
         sixLegPart.getStatChanges().setStat(StatIDs.movementSpeed, 0.1f);
         sixLegPart.getStatChanges().setStat(StatIDs.weight, DefaultPlayerBodyPartWeights.legWeight * -1.5f);
         sixLegPart.getStatChanges().setStat(StatIDs.legSupport, StatIDs.defaultLegSupport * -0.5f);
+        sixLegPart.setQuest(DefaultQuests.defaultLegQuest);
 
         addPart(sixLegPart);
 
@@ -458,6 +465,7 @@ public class BodyPartNames
         jetLeg.getStatChanges().setStat(StatIDs.flightSpeed, 0.4f);
         jetLeg.getStatChanges().setStat(StatIDs.fallHeight, 4f);
         jetLeg.addUniqueTag(BodyPartTags.flight);
+        jetLeg.setQuest(DefaultQuests.defaultFlightQuest);
 
         // TODO: Add flame generating body part
         //jetLeg.addNeededTags(BodyPartTags.flame);

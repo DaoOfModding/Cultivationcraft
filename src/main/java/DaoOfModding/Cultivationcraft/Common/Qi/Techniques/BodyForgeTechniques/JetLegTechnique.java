@@ -6,6 +6,8 @@ import DaoOfModding.Cultivationcraft.Client.Physics;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.BodyModifications;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStats;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartNames;
+import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.Quest;
+import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.QuestHandler;
 import DaoOfModding.Cultivationcraft.Common.Qi.CultivationTypes;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.PlayerStatControl;
@@ -55,7 +57,7 @@ public class JetLegTechnique extends MovementOverrideTechnique
 
         MultiLimbedModel model = PoseHandler.getPlayerPoseHandler(event.player.getUUID()).getPlayerModel();
 
-        // Active the leg jets if player is moving upwards
+        // Activate the leg jets if player is moving upwards
         if (Physics.getDelta(event.player).y > 0)
         {
             model.getLimb(BodyPartModelNames.jetLegLeftEmitter).getModelPart().visible = true;
@@ -73,19 +75,22 @@ public class JetLegTechnique extends MovementOverrideTechnique
     @Override
     public boolean overwriteJump()
     {
+        Player player = genericClientFunctions.getPlayer();
         // Do nothing if the player is in water
-        if (genericClientFunctions.getPlayer().isInWater())
+        if (player.isInWater())
             return false;
 
-        PlayerStatControl stats = BodyPartStatControl.getPlayerStatControl(genericClientFunctions.getPlayer().getUUID());
+        PlayerStatControl stats = BodyPartStatControl.getPlayerStatControl(player.getUUID());
 
         float weightModifier = stats.getFlightWeightModifier();
-        Vec3 delta = genericClientFunctions.getPlayer().getDeltaMovement();
+        Vec3 delta = player.getDeltaMovement();
 
         float upwardsPower = stats.getStats().getStat(StatIDs.flightSpeed);
         double y = ((1 - weightModifier) * delta.y) + (upwardsPower * weightModifier);
 
-        genericClientFunctions.getPlayer().setDeltaMovement(new Vec3(delta.x, y, delta.z));
+        player.setDeltaMovement(new Vec3(delta.x, y, delta.z));
+
+        QuestHandler.progressQuest(player, Quest.FLIGHT, player.getDeltaMovement().length());
 
         return true;
     }

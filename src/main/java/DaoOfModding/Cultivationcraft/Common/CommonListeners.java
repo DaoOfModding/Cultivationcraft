@@ -69,9 +69,9 @@ public class CommonListeners
         if (event.phase == TickEvent.Phase.START && event.side == LogicalSide.SERVER)
         {
             // Clone the array list so it doesn't bork out if modified during ticking
-            //ArrayList<IChunkQiSources> ticking = (ArrayList<IChunkQiSources>)tickingQiSources.clone();
+            ArrayList<IChunkQiSources> ticking = (ArrayList<IChunkQiSources>)tickingQiSources.clone();
 
-            for (IChunkQiSources sources : tickingQiSources)
+            for (IChunkQiSources sources : ticking)
             {
                 if (sources.getDimension().compareTo(event.level.dimension().location()) == 0)
                 {
@@ -153,9 +153,14 @@ public class CommonListeners
             }
         }
 
-        if (sources.countQiSources() > 0)
-            tickingQiSources.add(sources);
+        checkQiSourceIsTicking(sources);
+    }
 
+    public static void checkQiSourceIsTicking(IChunkQiSources source)
+    {
+        if (source.countQiSources() > 0)
+            if (!tickingQiSources.contains(source))
+                tickingQiSources.add(source);
     }
 
     @SubscribeEvent

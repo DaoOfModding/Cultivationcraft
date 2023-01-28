@@ -2,6 +2,8 @@ package DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyForgeParts;
 
 import DaoOfModding.Cultivationcraft.Client.Physics;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPart;
+import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.Quest;
+import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.QuestHandler;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
 import DaoOfModding.mlmanimator.Client.Models.GenericLimbNames;
 import DaoOfModding.mlmanimator.Client.Poses.GenericPoses;
@@ -64,6 +66,8 @@ public class GlidePart extends BodyPart
             yMotion = minFallSpeed + ((currentMotion.y - minFallSpeed) * horizontalSpeedPercentage);
 
         player.setDeltaMovement(xMotion, yMotion, zMotion);
+
+        QuestHandler.progressQuest(player, Quest.FLIGHT, new Vec3(xMotion, 0, zMotion).length());
 
         // Add gliding pose
         PlayerPose newPose = jump.clone();

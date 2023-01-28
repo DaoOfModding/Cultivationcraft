@@ -38,6 +38,8 @@ public class Physics
 
         // Increase not only the height jump but also multiply X and Z momentum
         player.setDeltaMovement(currentMotion.x + (currentMotion.x * jumpHeight * 0.2f) * stats.getLegWeightModifier(), (0.42f + jumpHeight * 0.1f) * stats.getLegWeightModifier(), currentMotion.z + (currentMotion.z * jumpHeight * 0.2f) * stats.getLegWeightModifier());
+
+        QuestHandler.progressQuest(player, Quest.JUMP, player.getDeltaMovement().y);
     }
 
     public static void Bounce(Player player)

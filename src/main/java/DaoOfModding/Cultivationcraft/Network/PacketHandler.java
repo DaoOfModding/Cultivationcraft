@@ -89,7 +89,7 @@ public class PacketHandler
     public static void sendChunkQiSourcesToClient(LevelChunk LevelChunk)
     {
         IChunkQiSources sources = ChunkQiSources.getChunkQiSources(LevelChunk);
-        ChunkQiSourcesPacket pack = new ChunkQiSourcesPacket(sources.getChunkPos(), sources.getQiSources());
+        ChunkQiSourcesPacket pack = new ChunkQiSourcesPacket(sources);
 
         channel.send(PacketDistributor.TRACKING_CHUNK.with(() -> LevelChunk), pack);
     }
@@ -97,7 +97,7 @@ public class PacketHandler
     public static void sendChunkQiSourcesToClient(LevelChunk LevelChunk, ServerPlayer player)
     {
         IChunkQiSources sources = ChunkQiSources.getChunkQiSources(LevelChunk);
-        ChunkQiSourcesPacket pack = new ChunkQiSourcesPacket(sources.getChunkPos(), sources.getQiSources());
+        ChunkQiSourcesPacket pack = new ChunkQiSourcesPacket(sources);
 
         channel.send(PacketDistributor.PLAYER.with(() -> player), pack);
     }

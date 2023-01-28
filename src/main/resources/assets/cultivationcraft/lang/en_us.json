@@ -11,6 +11,11 @@
   "cultivationcraft.quest.damagetaken": "Damage taken",
   "cultivationcraft.quest.bounce": "Height bounced",
   "cultivationcraft.quest.live": "Minutes spent alive",
+  "cultivationcraft.quest.fly": "Blocks flown",
+  "cultivationcraft.quest.walk": "Blocks walked",
+  "cultivationcraft.quest.jump": "Height jumped",
+  "cultivationcraft.quest.jet": "Blocks boosted",
+  "cultivationcraft.quest.hop": "Times hopped",
 
   "cultivationcraft.gui.bind": "Bind Item",
   "cultivationcraft.gui.done": "Done",

@@ -23,6 +23,8 @@ public class QuestHandler
 
     public static void progressQuest(Player player, ResourceLocation mode, double amount)
     {
+        amount *= debug.questProgressSpeed;
+
         ICultivatorStats stats = CultivatorStats.getCultivatorStats(player);
 
         // Do nothing if not a body cultivator
