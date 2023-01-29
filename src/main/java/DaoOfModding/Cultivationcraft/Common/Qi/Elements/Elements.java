@@ -4,6 +4,7 @@ package DaoOfModding.Cultivationcraft.Common.Qi.Elements;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Set;
 
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import net.minecraft.resources.ResourceKey;
@@ -181,10 +182,10 @@ public class Elements
         getElement(elementLocation).addVariant(variant);
     }
 
-    /*public static ArrayList<Element> getElements()
+    public static Set<ResourceLocation> getElements()
     {
-        return Elements;
-    }*/
+        return Elements.keySet();
+    }
 
     // Returns the element of the supplied id
     public static Element getElement(ResourceLocation element)

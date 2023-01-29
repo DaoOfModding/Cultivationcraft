@@ -6,7 +6,9 @@ import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.IC
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPart;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartOption;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.PlayerHealthManager;
+import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.Technique;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
@@ -41,6 +43,9 @@ public class PlayerStatControl
         stats.setStat(StatIDs.jumpHeight, StatIDs.defaultJumpHeight);
         stats.setStat(StatIDs.fallHeight, StatIDs.defaultFallHeight);
         stats.setStat(StatIDs.legSupport, StatIDs.defaultLegSupport);
+
+        for (ResourceLocation element : Elements.getElements())
+            stats.setElementalStat(StatIDs.resistanceModifier, element, StatIDs.defaultElementalResistance);
     }
 
     public PlayerStatModifications getStats()

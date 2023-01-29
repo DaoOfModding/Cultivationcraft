@@ -218,6 +218,17 @@ public class CultivatorStats implements ICultivatorStats
         setFlyingControlRange(nbt.getDouble("FICR"));
     }
 
+    public static boolean isCultivator(Player player)
+    {
+        ICultivatorStats stats = CultivatorStats.getCultivatorStats(player);
+
+        // Do nothing if not a cultivator
+        if (stats.getCultivationType() == CultivationTypes.NO_CULTIVATION)
+            return false;
+
+        return true;
+    }
+
     // Return a specified players CultivatorStats
     public static ICultivatorStats getCultivatorStats(Player player) {
         return player.getCapability(CultivatorStatsCapability.INSTANCE).orElseThrow(() -> new IllegalArgumentException("getting cultivator stats"));

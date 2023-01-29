@@ -37,6 +37,8 @@ public class StatIDs
     public static final String boneAttackModifier = "boneAttackModifier";
     public static final String biteAttackModifier = "biteAttackModifier";
 
+    public static final String resistanceModifier = "resistanceModifier";
+
     public static final int defaultMaxHP = 20;
     public static final int defaultMaxStamina = 20;
     public static final float defaultMovementSpeed = 0.10000000149011612f;
@@ -52,4 +54,6 @@ public class StatIDs
     public static final float defaultAttackRange = 5;
 
     public static final float defaultQiAbsorbRange = 1;
+
+    public static final float defaultElementalResistance = 1;
 }

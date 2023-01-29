@@ -8,30 +8,21 @@ import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.BodyM
 import DaoOfModding.Cultivationcraft.Common.Capabilities.ChunkQiSources.ChunkQiSources;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.ChunkQiSources.IChunkQiSources;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStats;
-import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStatsCapability;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.ICultivatorStats;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.CultivatorTechniques;
-import DaoOfModding.Cultivationcraft.Common.Capabilities.FlyingSwordBind.FlyingSwordBind;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPart;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartOption;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.FoodStats.QiFoodStats;
-import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.Quest;
-import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.QuestHandler;
-import DaoOfModding.Cultivationcraft.Common.Qi.QiSource;
+import DaoOfModding.Cultivationcraft.Common.Qi.Damage.Damage;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
 import DaoOfModding.Cultivationcraft.Network.PacketHandler;
 import DaoOfModding.Cultivationcraft.Server.ServerItemControl;
 import DaoOfModding.Cultivationcraft.Server.ServerListeners;
 import DaoOfModding.Cultivationcraft.Server.SkillHotbarServer;
-import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.event.entity.living.LivingEvent;
-import net.minecraftforge.event.entity.living.LivingFallEvent;
-import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.minecraftforge.event.entity.living.*;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.level.ChunkEvent;
@@ -42,9 +33,7 @@ import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.common.Mod;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 
 @Mod.EventBusSubscriber()
 public class CommonListeners
@@ -292,12 +281,45 @@ public class CommonListeners
     }
 
     @SubscribeEvent
-    public static void onPlayerDamage(LivingHurtEvent event)
+    public static void onPlayerHurt(LivingAttackEvent event)
     {
         if (event.getEntity() instanceof Player)
         {
-            if (!(((Player) event.getEntity()).isLocalPlayer()))
-                QuestHandler.progressQuest((Player)event.getEntity(), Quest.DAMAGE_TAKEN, event.getAmount());
+            // Don't modify damage if it bypasses invulnerability
+            if (event.getSource().isBypassInvul())
+                return;
+
+            // Don't modify damage unless player is a cultivator
+            if (!CultivatorStats.isCultivator((Player)event.getEntity()))
+                return;
+
+            // This has to be done twice because LivingHurtEvent cancels too late, but Living attack event can't set the amount of damage done -.-
+            event.setCanceled(Damage.shouldCancel(event));
         }
+    }
+
+    @SubscribeEvent
+    public static void onPlayerHurt(LivingHurtEvent event)
+    {
+        if (event.getEntity() instanceof Player)
+        {
+            // Don't modify damage if it bypasses invulnerability
+            if (event.getSource().isBypassInvul())
+                return;
+
+            // Don't modify damage unless player is a cultivator
+            if (!CultivatorStats.isCultivator((Player)event.getEntity()))
+                return;
+
+            event.setAmount(Damage.damage(event));
+        }
+    }
+
+    @SubscribeEvent
+    public static void onPlayerDamage(LivingDamageEvent event)
+    {
+        if (event.getEntity() instanceof Player)
+            if (!event.getEntity().level.isClientSide())
+                Damage.progressDamageQuest(event);
     }
 }
