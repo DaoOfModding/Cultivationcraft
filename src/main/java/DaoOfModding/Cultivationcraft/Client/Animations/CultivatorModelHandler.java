@@ -1,5 +1,6 @@
 package DaoOfModding.Cultivationcraft.Client.Animations;
 
+import DaoOfModding.Cultivationcraft.Client.Textures.TextureList;
 import DaoOfModding.mlmanimator.Client.Models.Quads.Quad;
 import DaoOfModding.mlmanimator.Client.Poses.Arm;
 import DaoOfModding.mlmanimator.Client.Poses.PlayerPoseHandler;
@@ -11,8 +12,10 @@ import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPart;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartNames;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartOption;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.model.geom.builders.UVPair;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
+import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
 
 import java.util.*;
@@ -163,9 +166,44 @@ public class CultivatorModelHandler
         return null;
     }
 
+    protected static void addCultivatorLayers(MultiLimbedModel model)
+    {
+        // Add cultivator layers to generic body parts
+        GenericCultivatorTextureValues.addCultivatorHeadLayers(model.getLimb(GenericLimbNames.head), 0, 0);
+        model.getLimb(GenericLimbNames.head).generateCube();
+        GenericCultivatorTextureValues.addCultivatorBodyLayers(model.getLimb(GenericLimbNames.body), 0, 0);
+        model.getLimb(GenericLimbNames.body).generateCube();
+
+        GenericCultivatorTextureValues.addCultivatorRightArmLayers(model.getLimb(GenericLimbNames.rightArm), 0, 0);
+        GenericCultivatorTextureValues.addCultivatorLeftArmLayers(model.getLimb(GenericLimbNames.leftArm), 0, 0);
+        model.getLimb(GenericLimbNames.rightArm).generateCube();
+        model.getLimb(GenericLimbNames.leftArm).generateCube();
+
+        model.getLimb(GenericLimbNames.lowerLeftArm).addLayer(new UVPair(GenericTextureValues.leftArm.u(), GenericTextureValues.leftArm.v() + 6), GenericTextureValues.skin_Size, 0.0F, TextureList.skin, false, 4, Direction.UP);
+        model.getLimb(GenericLimbNames.lowerLeftArm).addLayer(new UVPair(GenericTextureValues.leftSleeve.u(), GenericTextureValues.leftSleeve.v() + 6), GenericTextureValues.skin_Size, 0.5F, TextureList.skin, false, 4, Direction.UP);
+        model.getLimb(GenericLimbNames.lowerRightArm).addLayer(new UVPair(GenericTextureValues.rightArm.u(), GenericTextureValues.rightArm.v() + 6), GenericTextureValues.skin_Size, 0.0F, TextureList.skin, false, 4, Direction.UP);
+        model.getLimb(GenericLimbNames.lowerRightArm).addLayer(new UVPair(GenericTextureValues.rightSleeve.u(), GenericTextureValues.rightSleeve.v() + 6), GenericTextureValues.skin_Size, 0.5F, TextureList.skin, false, 4, Direction.UP);
+        model.getLimb(GenericLimbNames.lowerRightArm).generateCube();
+        model.getLimb(GenericLimbNames.lowerLeftArm).generateCube();
+
+        GenericCultivatorTextureValues.addCultivatorRightLegLayers(model.getLimb(GenericLimbNames.rightLeg), 0, 0);
+        GenericCultivatorTextureValues.addCultivatorLeftLegLayers(model.getLimb(GenericLimbNames.leftLeg), 0, 0);
+        model.getLimb(GenericLimbNames.rightLeg).generateCube();
+        model.getLimb(GenericLimbNames.leftLeg).generateCube();
+
+        model.getLimb(GenericLimbNames.lowerRightLeg).addLayer(new UVPair(GenericTextureValues.rightLeg.u(), GenericTextureValues.rightLeg.v() + 6), GenericTextureValues.skin_Size, 0.0F, TextureList.skin, false, 4);
+        model.getLimb(GenericLimbNames.lowerRightLeg).addLayer(new UVPair(GenericTextureValues.rightPants.u(), GenericTextureValues.rightPants.v() + 6), GenericTextureValues.skin_Size, 0.5F, TextureList.skin, false, 4);
+        model.getLimb(GenericLimbNames.lowerLeftLeg).addLayer(new UVPair(GenericTextureValues.leftLeg.u(), GenericTextureValues.leftLeg.v() + 6), GenericTextureValues.skin_Size, 0.0F, TextureList.skin, false, 4);
+        model.getLimb(GenericLimbNames.lowerLeftLeg).addLayer(new UVPair(GenericTextureValues.leftPants.u(), GenericTextureValues.leftPants.v() + 6), GenericTextureValues.skin_Size, 0.5F, TextureList.skin, false, 4);
+        model.getLimb(GenericLimbNames.lowerRightLeg).generateCube();
+        model.getLimb(GenericLimbNames.lowerLeftLeg).generateCube();
+    }
+
     protected static void processParts (MultiLimbedModel model, Collection<BodyPart> parts, BodyPartModels models, IBodyModifications modifications, HashMap<String, BodyPartLocation> partLocations, PlayerPoseHandler handler)
     {
         ArrayList<BodyPart> unprocessedParts = new ArrayList<BodyPart>();
+
+        addCultivatorLayers(model);
 
         // Try to add all parts in the provided collection to the model
         for (BodyPart part : parts)

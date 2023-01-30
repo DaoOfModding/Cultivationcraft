@@ -43,9 +43,6 @@ public class PlayerStatControl
         stats.setStat(StatIDs.jumpHeight, StatIDs.defaultJumpHeight);
         stats.setStat(StatIDs.fallHeight, StatIDs.defaultFallHeight);
         stats.setStat(StatIDs.legSupport, StatIDs.defaultLegSupport);
-
-        for (ResourceLocation element : Elements.getElements())
-            stats.setElementalStat(StatIDs.resistanceModifier, element, StatIDs.defaultElementalResistance);
     }
 
     public PlayerStatModifications getStats()

@@ -168,7 +168,7 @@ public class BodyforgeScreen extends GenericTabScreen
             return true;
 
         // Change the selected position if a position is clicked in the dropdown list
-        if (mode == 1)
+        if (mode == 0)
         {
             String changed = (String) bodyParts.mouseClick((int) mouseX - (edgeSpacingX + bodyPartListXPos), (int) mouseY - (edgeSpacingY + bodyPartListYPos), buttonPressed);
 

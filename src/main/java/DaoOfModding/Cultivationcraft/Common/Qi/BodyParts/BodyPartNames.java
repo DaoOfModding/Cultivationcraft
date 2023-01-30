@@ -208,6 +208,7 @@ public class BodyPartNames
         stretchySkin.setQuest(DefaultQuests.defaultSkinQuest);
 
         BodyPartOption reinforceSkin = new BodyPartOption(reinforceSkinPart, bodyPosition, skinSubPosition,  "cultivationcraft.gui.generic.reinforce");
+        //reinforceSkin.addTextureChange(TextureList.skin, new ResourceLocation(Cultivationcraft.MODID, "textures/models/skin/scales.png"));
         reinforceSkin.addNeededPart(BodyPartNames.startingEyesPart);
         reinforceSkin.setQuest(DefaultQuests.defaultSkinQuest);
 

@@ -2,7 +2,6 @@ package DaoOfModding.Cultivationcraft.Common.Qi.Damage;
 
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.Quest;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.QuestHandler;
-import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.PlayerStatModifications;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.StatIDs;
@@ -21,10 +20,7 @@ public class Damage
         float damage = event.getAmount();
 
         PlayerStatModifications stats = BodyPartStatControl.getStats(event.getEntity().getUUID());
-        float resistedDamage = damage * stats.getElementalStat(StatIDs.resistanceModifier, source.damageElement);
-
-        // TODO: Resist damage quest
-
+        float resistedDamage = damage * (1 - (stats.getElementalStat(StatIDs.resistanceModifier, source.damageElement)  / 100.0f));
         return resistedDamage;
     }
 
@@ -34,7 +30,9 @@ public class Damage
         float damage = event.getAmount();
 
         PlayerStatModifications stats = BodyPartStatControl.getStats(event.getEntity().getUUID());
-        float resistedDamage = damage * stats.getElementalStat(StatIDs.resistanceModifier, source.damageElement);
+        float resistedDamage = damage * (1 - (stats.getElementalStat(StatIDs.resistanceModifier, source.damageElement)  / 100.0f));
+
+        // TODO: Resist damage quest
 
         if (resistedDamage <= 0)
             return true;
