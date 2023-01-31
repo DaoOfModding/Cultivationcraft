@@ -86,6 +86,13 @@ public class PacketHandler
         channel.send(PacketDistributor.TRACKING_ENTITY.with(() -> ServerLifecycleHooks.getCurrentServer().getPlayerList().getPlayer(playerID)), pack);
     }
 
+    public static void sendQuestProgressToClient(UUID player, double amount)
+    {
+        QuestPacket packet = new QuestPacket(player, amount);
+
+        channel.send(PacketDistributor.PLAYER.with(() -> ServerLifecycleHooks.getCurrentServer().getPlayerList().getPlayer(player)), packet);
+    }
+
     public static void sendChunkQiSourcesToClient(LevelChunk LevelChunk)
     {
         IChunkQiSources sources = ChunkQiSources.getChunkQiSources(LevelChunk);

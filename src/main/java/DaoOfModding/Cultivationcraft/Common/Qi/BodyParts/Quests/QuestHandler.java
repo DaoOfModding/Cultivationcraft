@@ -55,6 +55,12 @@ public class QuestHandler
         if (progress == 0 && !debug.skipQuest)
             return;
 
+        if (player.isLocalPlayer())
+            ClientPacketHandler.sendQuestProgressToServer(player.getUUID(), progress);
+        else
+            PacketHandler.sendQuestProgressToClient(player.getUUID(), progress);
+
+
         progressQuest(player, progress);
     }
 
@@ -65,7 +71,6 @@ public class QuestHandler
         if (player.isLocalPlayer())
         {
             modifications.setQuestProgress(modifications.getQuestProgress() + progress);
-            ClientPacketHandler.sendQuestProgressToServer(player.getUUID(), progress);
             return;
         }
 

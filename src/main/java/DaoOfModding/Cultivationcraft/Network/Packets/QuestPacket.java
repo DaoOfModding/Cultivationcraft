@@ -68,7 +68,12 @@ public class QuestPacket extends Packet
                 ctx.enqueueWork(() -> processPacket());
         }
         else
-            Cultivationcraft.LOGGER.warn("Server sent quest message...?");
+        {
+            if (Minecraft.getInstance().player.getUUID().compareTo(player) != 0)
+                Cultivationcraft.LOGGER.warn("Server sent quest message for other player");
+            else
+                ctx.enqueueWork(() -> processPacketClient());
+        }
     }
 
     // Process received packet on the Server
@@ -78,5 +83,11 @@ public class QuestPacket extends Packet
         Player ownerEntity = ServerLifecycleHooks.getCurrentServer().getPlayerList().getPlayer(player);
 
         QuestHandler.progressQuest(ownerEntity, amount);
+    }
+
+    // Process received packet on the client
+    protected void processPacketClient()
+    {
+        QuestHandler.progressQuest(Minecraft.getInstance().player, amount);
     }
 }
