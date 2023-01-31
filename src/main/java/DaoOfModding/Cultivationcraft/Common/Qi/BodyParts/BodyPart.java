@@ -5,11 +5,15 @@ import DaoOfModding.Cultivationcraft.Client.Animations.BodyPartLocation;
 import DaoOfModding.Cultivationcraft.Client.Textures.TextureList;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.BodyModifications;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.IBodyModifications;
+import DaoOfModding.Cultivationcraft.Common.Capabilities.ChunkQiSources.ChunkQiSources;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStats;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.ICultivatorStats;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.Quest;
 import DaoOfModding.Cultivationcraft.Common.Qi.CultivationTypes;
+import DaoOfModding.Cultivationcraft.Common.Qi.QiSource;
+import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.PlayerStatModifications;
+import DaoOfModding.Cultivationcraft.Common.Qi.Stats.StatIDs;
 import DaoOfModding.Cultivationcraft.Network.ClientPacketHandler;
 import DaoOfModding.mlmanimator.Client.Poses.Arm;
 import DaoOfModding.mlmanimator.Client.Poses.PlayerPoseHandler;
@@ -18,11 +22,11 @@ import com.mojang.datafixers.util.Pair;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.phys.Vec3;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.awt.*;
+import java.util.*;
+import java.util.List;
 
 public class BodyPart
 {
@@ -54,6 +58,9 @@ public class BodyPart
     protected ArrayList<Arm> arms = new ArrayList<Arm>();
 
     protected HashMap<String, ResourceLocation> textureChanges = new HashMap<String, ResourceLocation>();
+    protected HashMap<String, Vec3> textureColorChanges = new HashMap<String, Vec3>();
+
+    protected ResourceLocation element = null;
 
     public BodyPart(String partID, String position, String displayNamePos)
     {
@@ -70,6 +77,16 @@ public class BodyPart
     public void setQuest(Quest newQuest)
     {
         quest = newQuest;
+    }
+
+    public void setElement(ResourceLocation newElement)
+    {
+        element = newElement;
+    }
+
+    public ResourceLocation getElement()
+    {
+        return element;
     }
 
     public Quest getQuest()
@@ -143,6 +160,15 @@ public class BodyPart
     public void addTextureChange(String textureID, ResourceLocation textureLocation)
     {
         textureChanges.put(textureID, textureLocation);
+    }
+
+    public void addTextureColorChange(String textureID, Vec3 textureColor)
+    {
+        textureColorChanges.put(textureID, textureColor);
+    }
+    public void addTextureColorChange(String textureID, Color color)
+    {
+        textureColorChanges.put(textureID, new Vec3(color.getRed() * 255, color.getGreen() * 255, color.getBlue() * 255));
     }
 
     public PlayerStatModifications getStatChanges()
@@ -240,6 +266,9 @@ public class BodyPart
         for (Map.Entry<String, ResourceLocation> entry : textureChanges.entrySet())
             handler.getPlayerModel().getTextureHandler().addTexture(entry.getKey(), entry.getValue());
 
+        for (Map.Entry<String, Vec3> entry : textureColorChanges.entrySet())
+            handler.getPlayerModel().getTextureHandler().addColor(entry.getKey(), entry.getValue());
+
         texturesUpdated = true;
     }
 
@@ -292,7 +321,24 @@ public class BodyPart
             if (part.getPosition().compareTo(limbPosition) == 0)
                 return false;
 
+        if (!isInCorrectElement(player))
+            return false;
+
         return true;
+    }
+
+    protected boolean isInCorrectElement(Player player)
+    {
+        if (element == null)
+            return true;
+
+        List<QiSource> sources = ChunkQiSources.getQiSourcesInRange(player.level, player.position(), (int) BodyPartStatControl.getPlayerStatControl(player.getUUID()).getStats().getStat(StatIDs.qiAbsorbRange));
+
+        for (QiSource source : sources)
+            if (source.getElement().compareTo(element) == 0)
+                return true;
+
+        return false;
     }
 
     protected boolean hasDuplicateTags(IBodyModifications modifications)

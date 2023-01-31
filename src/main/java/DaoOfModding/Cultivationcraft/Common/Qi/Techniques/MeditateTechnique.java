@@ -6,6 +6,7 @@ import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.IBody
 import DaoOfModding.Cultivationcraft.Common.Capabilities.ChunkQiSources.ChunkQiSources;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStats;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.ICultivatorStats;
+import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartNames;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.Quest;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.QuestHandler;
 import DaoOfModding.Cultivationcraft.Common.Qi.CultivationTypes;
@@ -76,20 +77,27 @@ public class MeditateTechnique extends MovementOverrideTechnique
             {
                 float absorbSpeed = BodyPartStatControl.getPlayerStatControl(event.player.getUUID()).getStats().getStat(StatIDs.qiAbsorb);
 
-                int toAdd = QiSource.getDefaultQi();
+                ResourceLocation element = BodyPartNames.getPartOrOption(modifications.getSelection()).getElement();
+
+                int toAdd = 0;
                 int remaining = (int)absorbSpeed;
 
+                // Only absorb passively if no element is set
+                if (element == null)
+                    toAdd = QiSource.getDefaultQi();
+
                 // Draw Qi from each Qi source available
-                // TODO: Elemental stuff
                 for (QiSource source : sources)
                 {
-                    // Do not absorb more qi than the players max absorb speed
-                    if (remaining > 0)
-                    {
-                        int absorbed = source.absorbQi(remaining, event.player);
-                        remaining -= absorbed;
-                        toAdd += absorbed;
-                    }
+                    // Only absorb from QiSources of the correct element if an element is set to the body part
+                    if (element == null || element.compareTo(source.getElement()) == 0)
+                        // Do not absorb more qi than the players max absorb speed
+                        if (remaining > 0)
+                        {
+                            int absorbed = source.absorbQi(remaining, event.player);
+                            remaining -= absorbed;
+                            toAdd += absorbed;
+                        }
                 }
 
                 // DEBUG - increase qiAbsorption speed by the debug amount

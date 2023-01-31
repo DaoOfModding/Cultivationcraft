@@ -8,6 +8,7 @@ import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.FoodStats.CarnivoreFood
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.FoodStats.HerbivoreFoodStats;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.DefaultQuests;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.Quest;
+import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.DefaultPlayerBodyPartWeights;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.StatIDs;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
@@ -18,6 +19,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.phys.Vec3;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -66,6 +68,7 @@ public class BodyPartNames
 
     public static final String rubberSkinPart = "rubber";
     public static final String stretchySkinPart = "stretchy";
+    public static final String scaleSkinPart = "scale";
 
     public static final String expandingStomachPart = "expandingStomach";
     public static final String carnivorousStomachPart = "carnivorousStomach";
@@ -208,13 +211,62 @@ public class BodyPartNames
         stretchySkin.setQuest(DefaultQuests.defaultSkinQuest);
 
         BodyPartOption reinforceSkin = new BodyPartOption(reinforceSkinPart, bodyPosition, skinSubPosition,  "cultivationcraft.gui.generic.reinforce");
-        //reinforceSkin.addTextureChange(TextureList.skin, new ResourceLocation(Cultivationcraft.MODID, "textures/models/skin/scales.png"));
         reinforceSkin.addNeededPart(BodyPartNames.startingEyesPart);
         reinforceSkin.setQuest(DefaultQuests.defaultSkinQuest);
+
+        BodyPartOption fireScaleSkin = new BodyPartOption(scaleSkinPart, bodyPosition, skinSubPosition,  "cultivationcraft.gui.bodypart.skin.scale.fire");
+        fireScaleSkin.addTextureChange(TextureList.skin, new ResourceLocation(Cultivationcraft.MODID, "textures/models/skin/scales.png"));
+        fireScaleSkin.addTextureColorChange(TextureList.skin, Elements.getElement(Elements.fireElement).color.darker().darker());
+        fireScaleSkin.addNeededPart(BodyPartNames.startingEyesPart);
+        fireScaleSkin.setQuest(DefaultQuests.defaultSkinQuest);
+        fireScaleSkin.setElement(Elements.fireElement);
+        fireScaleSkin.getStatChanges().setElementalStat(StatIDs.resistanceModifier, Elements.fireElement, 50);
+        fireScaleSkin.getStatChanges().setElementalStat(StatIDs.resistanceModifier, Elements.waterElement, -50);
+
+        BodyPartOption earthScaleSkin = new BodyPartOption(scaleSkinPart, bodyPosition, skinSubPosition,  "cultivationcraft.gui.bodypart.skin.scale.earth");
+        fireScaleSkin.addTextureChange(TextureList.skin, new ResourceLocation(Cultivationcraft.MODID, "textures/models/skin/scales.png"));
+        fireScaleSkin.addTextureColorChange(TextureList.skin, Elements.getElement(Elements.earthElement).color.darker().darker());
+        fireScaleSkin.addNeededPart(BodyPartNames.startingEyesPart);
+        fireScaleSkin.setQuest(DefaultQuests.defaultSkinQuest);
+        fireScaleSkin.setElement(Elements.earthElement);
+        fireScaleSkin.getStatChanges().setElementalStat(StatIDs.resistanceModifier, Elements.earthElement, 50);
+        fireScaleSkin.getStatChanges().setElementalStat(StatIDs.resistanceModifier, Elements.woodElement, -50);
+
+        BodyPartOption waterScaleSkin = new BodyPartOption(scaleSkinPart, bodyPosition, skinSubPosition,  "cultivationcraft.gui.bodypart.skin.scale.water");
+        fireScaleSkin.addTextureChange(TextureList.skin, new ResourceLocation(Cultivationcraft.MODID, "textures/models/skin/scales.png"));
+        fireScaleSkin.addTextureColorChange(TextureList.skin, Elements.getElement(Elements.waterElement).color.darker().darker());
+        fireScaleSkin.addNeededPart(BodyPartNames.startingEyesPart);
+        fireScaleSkin.setQuest(DefaultQuests.defaultSkinQuest);
+        fireScaleSkin.setElement(Elements.waterElement);
+        fireScaleSkin.getStatChanges().setElementalStat(StatIDs.resistanceModifier, Elements.waterElement, 50);
+        fireScaleSkin.getStatChanges().setElementalStat(StatIDs.resistanceModifier, Elements.windElement, -50);
+
+        BodyPartOption windScaleSkin = new BodyPartOption(scaleSkinPart, bodyPosition, skinSubPosition,  "cultivationcraft.gui.bodypart.skin.scale.wind");
+        fireScaleSkin.addTextureChange(TextureList.skin, new ResourceLocation(Cultivationcraft.MODID, "textures/models/skin/scales.png"));
+        fireScaleSkin.addTextureColorChange(TextureList.skin, Elements.getElement(Elements.windElement).color.darker().darker());
+        fireScaleSkin.addNeededPart(BodyPartNames.startingEyesPart);
+        fireScaleSkin.setQuest(DefaultQuests.defaultSkinQuest);
+        fireScaleSkin.setElement(Elements.windElement);
+        fireScaleSkin.getStatChanges().setElementalStat(StatIDs.resistanceModifier, Elements.windElement, 50);
+        fireScaleSkin.getStatChanges().setElementalStat(StatIDs.resistanceModifier, Elements.earthElement, -50);
+
+        BodyPartOption woodScaleSkin = new BodyPartOption(scaleSkinPart, bodyPosition, skinSubPosition,  "cultivationcraft.gui.bodypart.skin.scale.wood");
+        fireScaleSkin.addTextureChange(TextureList.skin, new ResourceLocation(Cultivationcraft.MODID, "textures/models/skin/scales.png"));
+        fireScaleSkin.addTextureColorChange(TextureList.skin, Elements.getElement(Elements.woodElement).color.darker().darker());
+        fireScaleSkin.addNeededPart(BodyPartNames.startingEyesPart);
+        fireScaleSkin.setQuest(DefaultQuests.defaultSkinQuest);
+        fireScaleSkin.setElement(Elements.woodElement);
+        fireScaleSkin.getStatChanges().setElementalStat(StatIDs.resistanceModifier, Elements.woodElement, 50);
+        fireScaleSkin.getStatChanges().setElementalStat(StatIDs.resistanceModifier, Elements.fireElement, -50);
 
         addOption(rubberSkin);
         addOption(stretchySkin);
         addOption(reinforceSkin);
+        addOption(fireScaleSkin);
+        addOption(earthScaleSkin);
+        addOption(waterScaleSkin);
+        addOption(windScaleSkin);
+        addOption(woodScaleSkin);
     }
 
 
