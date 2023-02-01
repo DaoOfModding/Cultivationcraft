@@ -16,6 +16,7 @@
   "cultivationcraft.quest.jump": "Height jumped",
   "cultivationcraft.quest.jet": "Blocks boosted",
   "cultivationcraft.quest.hop": "Times hopped",
+  "cultivationcraft.quest.heal": "Health healed",
 
   "cultivationcraft.gui.bind": "Bind Item",
   "cultivationcraft.gui.done": "Done",
@@ -61,14 +62,20 @@
   "cultivationcraft.gui.bodypart.skin.scale.fire": "Fire Scales",
   "cultivationcraft.gui.bodypart.skin.scale.fire.description": "~~~~TODO~~~~~",
   "cultivationcraft.gui.bodypart.skin.scale.water": "Water Scales",
-  "cultivationcraft.gui.bodypart.skin.scale.fire.description": "~~~~TODO~~~~~",
+  "cultivationcraft.gui.bodypart.skin.scale.water.description": "~~~~TODO~~~~~",
   "cultivationcraft.gui.bodypart.skin.scale.wind": "Wind Scales",
-  "cultivationcraft.gui.bodypart.skin.scale.fire.description": "~~~~TODO~~~~~",
+  "cultivationcraft.gui.bodypart.skin.scale.wind.description": "~~~~TODO~~~~~",
   "cultivationcraft.gui.bodypart.skin.scale.earth": "Earth Scales",
-  "cultivationcraft.gui.bodypart.skin.scale.fire.description": "~~~~TODO~~~~~",
+  "cultivationcraft.gui.bodypart.skin.scale.earth.description": "~~~~TODO~~~~~",
   "cultivationcraft.gui.bodypart.skin.scale.wood": "Wood Scales",
-  "cultivationcraft.gui.bodypart.skin.scale.fire.description": "~~~~TODO~~~~~",
+  "cultivationcraft.gui.bodypart.skin.scale.wood.description": "~~~~TODO~~~~~",
 
+
+  "cultivationcraft.gui.bodypart.blood.hunger": "Default Blood",
+  "cultivationcraft.gui.bodypart.blood.hunger.description": "Basic cultivator blood, heals you by draining hunger",
+
+  "cultivationcraft.gui.bodypart.blood.qi": "Qi Blood",
+  "cultivationcraft.gui.bodypart.blood.qi.description": "Removes passive healing, but allows you to heal quickly by absorbing from Qi sources",
 
   "cultivationcraft.gui.bodypart.skin.stretchy": "Stretchy",
   "cultivationcraft.gui.bodypart.skin.stretchy.description": "Forge your skin to be able to freely stretch into much larger sizes",

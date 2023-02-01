@@ -1,11 +1,16 @@
 package DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Blood;
 
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.FoodStats.QiFoodStats;
+import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.Quest;
+import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.QuestHandler;
+import DaoOfModding.Cultivationcraft.Common.Qi.QiSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.player.Player;
 import com.mojang.math.Vector3f;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.level.GameRules;
+
+import java.util.List;
 
 public class Blood
 {
@@ -30,6 +35,10 @@ public class Blood
             ++food.tickTimer;
             if (food.tickTimer >= 10) {
                 float f = Math.min(food.getSaturationLevel(), 6.0F);
+
+                if (!player.level.isClientSide)
+                    QuestHandler.progressQuest(player, Quest.HEAL, f / 6.0F);
+
                 player.heal(f / 6.0F);
                 food.addExhaustion(f);
                 food.tickTimer = 0;
@@ -38,7 +47,11 @@ public class Blood
         else if (flag && food.getFoodLevel() >= food.getMaxFood() * 0.9 && player.isHurt())
         {
             ++food.tickTimer;
-            if (food.tickTimer >= 80) {
+            if (food.tickTimer >= 80)
+            {
+                if (!player.level.isClientSide)
+                    QuestHandler.progressQuest(player, Quest.HEAL, 1.0F);
+
                 player.heal(1.0F);
                 food.addExhaustion(6.0F);
                 food.tickTimer = 0;
@@ -58,5 +71,12 @@ public class Blood
         } else {
             food.tickTimer = 0;
         }
+    }
+
+    // Is called when meditating
+    // Is supplied the amount of Qi the player can absorb during this turn, and returns any modifications to that amount
+    public int meditation(int QiRemaining, List<QiSource> sources, Player player)
+    {
+        return QiRemaining;
     }
 }

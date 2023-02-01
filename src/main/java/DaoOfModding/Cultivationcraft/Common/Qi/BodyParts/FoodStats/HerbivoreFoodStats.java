@@ -40,4 +40,16 @@ public class HerbivoreFoodStats extends QiFoodStats
         return false;
     }
 
+
+    @Override
+    public HerbivoreFoodStats clone()
+    {
+        HerbivoreFoodStats clone = new HerbivoreFoodStats();
+        clone.maxFood = maxFood;
+        clone.exhaustionLevel = exhaustionLevel;
+        clone.foodLevel = foodLevel;
+        clone.tickTimer = tickTimer;
+
+        return clone;
+    }
 }

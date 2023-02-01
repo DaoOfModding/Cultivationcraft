@@ -7,6 +7,7 @@ import DaoOfModding.Cultivationcraft.Common.Capabilities.ChunkQiSources.ChunkQiS
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStats;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.ICultivatorStats;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartNames;
+import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.PlayerHealthManager;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.Quest;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.QuestHandler;
 import DaoOfModding.Cultivationcraft.Common.Qi.CultivationTypes;
@@ -72,15 +73,16 @@ public class MeditateTechnique extends MovementOverrideTechnique
             if (sources.size() > 0 && !event.player.isLocalPlayer())
                 QuestHandler.progressQuest(event.player, Quest.QI_SOURCE_MEDITATION, 1.0/20.0);
 
+            int remaining = (int)BodyPartStatControl.getPlayerStatControl(event.player.getUUID()).getStats().getStat(StatIDs.qiAbsorb);
+
+            remaining = PlayerHealthManager.getBlood(event.player).meditation(remaining, sources, event.player);
+
             // Only absorb Qi if a part has been selected
             if (modifications.getSelection().compareTo("") != 0)
             {
-                float absorbSpeed = BodyPartStatControl.getPlayerStatControl(event.player.getUUID()).getStats().getStat(StatIDs.qiAbsorb);
-
                 ResourceLocation element = BodyPartNames.getPartOrOption(modifications.getSelection()).getElement();
 
                 int toAdd = 0;
-                int remaining = (int)absorbSpeed;
 
                 // Only absorb passively if no element is set
                 if (element == null)

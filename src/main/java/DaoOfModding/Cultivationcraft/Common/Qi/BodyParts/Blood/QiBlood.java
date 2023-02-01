@@ -1,45 +1,63 @@
 package DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Blood;
 
-import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.FoodStats.QiFoodStats;
-import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
-import DaoOfModding.Cultivationcraft.Common.Qi.Stats.StatIDs;
-import net.minecraft.world.damagesource.DamageSource;
+import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.Quest;
+import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.QuestHandler;
+import DaoOfModding.Cultivationcraft.Common.Qi.QiSource;
+import DaoOfModding.Cultivationcraft.Common.Qi.QiSourceConfig;
+import com.mojang.math.Vector3f;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.Difficulty;
-import net.minecraft.world.level.GameRules;
+
+import java.util.List;
 
 public class QiBlood extends Blood
 {
+    ResourceLocation element = null;
+
+    public QiBlood()
+    {
+        colour = new Vector3f(1, 1 ,1);
+    }
+
     @Override
     public void regen(Player player)
     {
-        boolean flag = player.level.getGameRules().getBoolean(GameRules.RULE_NATURAL_REGENERATION);
-        Difficulty difficulty = player.level.getDifficulty();
 
-        QiFoodStats food = (QiFoodStats)player.getFoodData();
+    }
 
-        // If the player has stamina and is hurt, then heal
-        if (flag && food.getFoodLevel() > 0 && player.isHurt())
+    @Override
+    public int meditation(int QiRemaining, List<QiSource> sources, Player player)
+    {
+        float toHeal = player.getMaxHealth() - player.getHealth();
+
+        if (toHeal == 0)
+            return QiRemaining;
+
+        float heal = 0;
+
+        // Draw Qi from each Qi source available
+        for (QiSource source : sources)
         {
-            // Get player regen, divided by 20 to convert seconds into ticks
-            float regen = BodyPartStatControl.getStats(player.getUUID()).getStat(StatIDs.healthRegen) / 20;
+            // Only absorb from QiSources of the correct element if an element is set to the body part
+            if (element == null || element.compareTo(source.getElement()) == 0)
+                // Do not absorb more qi than the players max absorb speed
+                if (QiRemaining > 0 && heal < toHeal)
+                {
+                    int absorbed = source.absorbQi(QiRemaining, player);
+                    QiRemaining -= absorbed;
 
-            player.heal(regen);
-
-            // Exhaust the player by the amount regenerated multiplied by their healthStaminaConversion modifier
-            food.addExhaustion(regen * BodyPartStatControl.getStats(player.getUUID()).getStat(StatIDs.healthStaminaConversion) * 4);
+                    heal += (float)absorbed / (QiSourceConfig.MaxStorage / 100000.0f);
+                }
         }
-        else if (food.getFoodLevel() <= 0)
-        {
-            ++food.tickTimer;
-            if (food.tickTimer >= 80)
-            {
-                if (player.getHealth() > 10.0F || difficulty == Difficulty.HARD || player.getHealth() > 1.0F && difficulty == Difficulty.NORMAL)
-                    player.hurt(DamageSource.STARVE, 1.0F);
 
-                food.tickTimer = 0;
-            }
-        } else
-            food.tickTimer = 0;
+        if (heal > toHeal)
+            heal = toHeal;
+
+        if (!player.level.isClientSide)
+            QuestHandler.progressQuest(player, Quest.HEAL, heal);
+
+        player.heal(heal);
+
+        return QiRemaining;
     }
 }

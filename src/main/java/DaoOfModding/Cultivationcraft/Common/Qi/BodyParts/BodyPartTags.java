@@ -6,5 +6,6 @@ public class BodyPartTags
     public static final String stretchy = "stretchy";
     public static final String expanding = "expanding";
     public static final String hunger = "hunger";
+    public static final String blood = "blood";
     public static final String flame = "flame";
 }

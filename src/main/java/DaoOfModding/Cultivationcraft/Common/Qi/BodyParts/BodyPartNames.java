@@ -3,6 +3,8 @@ package DaoOfModding.Cultivationcraft.Common.Qi.BodyParts;
 import DaoOfModding.Cultivationcraft.Client.Animations.BodyPartLocation;
 import DaoOfModding.Cultivationcraft.Client.Animations.BodyPartModelNames;
 import DaoOfModding.Cultivationcraft.Client.Textures.TextureList;
+import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Blood.CultivatorBlood;
+import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Blood.QiBlood;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyForgeParts.*;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.FoodStats.CarnivoreFoodStats;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.FoodStats.HerbivoreFoodStats;
@@ -74,6 +76,8 @@ public class BodyPartNames
     public static final String carnivorousStomachPart = "carnivorousStomach";
     public static final String herbivorousStomachPart = "herbivorousStomachPart";
 
+    public static final String hungerBloodPart = "hungerBlood";
+    public static final String qiBloodPart = "qiBlood";
 
     // LOCATIONS
     public static final String headFrontPart = "headfront";
@@ -155,6 +159,7 @@ public class BodyPartNames
         setupSkinOptions();
         setupStomachOptions();
         setupBackOptions();
+        setupBloodOptions();
 
 
         // TODO - Disabled longneck for the moment as it's buggy and has no point
@@ -169,6 +174,24 @@ public class BodyPartNames
         longneck.getStatChanges().setStat(StatIDs.weight, DefaultPlayerBodyPartWeights.headWeight * 0.5f);
 
         addOption(longneck);*/
+    }
+
+    protected static void setupBloodOptions()
+    {
+        BloodPart hungerBlood = new BloodPart(hungerBloodPart, bodyPosition, bloodSubPosition, "cultivationcraft.gui.bodypart.blood.hunger");
+        hungerBlood.addUniqueTag(BodyPartTags.blood);
+        hungerBlood.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.skinSubPosition);
+        hungerBlood.setBloodType(new CultivatorBlood());
+        hungerBlood.setQuest(DefaultQuests.defaultHealQuest);
+
+        BloodPart qiBlood = new BloodPart(qiBloodPart, bodyPosition, bloodSubPosition, "cultivationcraft.gui.bodypart.blood.qi");
+        qiBlood.addUniqueTag(BodyPartTags.blood);
+        qiBlood.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.skinSubPosition);
+        qiBlood.setBloodType(new QiBlood());
+        qiBlood.setQuest(DefaultQuests.defaultHealQuest);
+
+        addOption(hungerBlood);
+        addOption(qiBlood);
     }
 
     protected static void setupStomachOptions()

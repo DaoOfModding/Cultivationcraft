@@ -4,7 +4,7 @@ import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.BodyM
 import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.IBodyModifications;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStats;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Blood.Blood;
-import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Blood.QiBlood;
+import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Blood.CultivatorBlood;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyForgeParts.BloodPart;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyForgeParts.StomachPart;
 import DaoOfModding.Cultivationcraft.Common.Qi.CultivationTypes;
@@ -21,7 +21,7 @@ import java.lang.reflect.Field;
 public class PlayerHealthManager
 {
     static Blood defaultBlood = new Blood();
-    static Blood defaultQiBlood = new QiBlood();
+    static Blood defaultQiBlood = new CultivatorBlood();
 
     static Field foodStatField;
 
@@ -40,14 +40,14 @@ public class PlayerHealthManager
 
     public static Blood getBlood(Player player)
     {
-        // If the player is not a body cultivator or has not forged their blood, then return the default bloody type
+        // If the player is not a body cultivator or has not forged their blood, then return the default blood type
         if (CultivatorStats.getCultivatorStats(player).getCultivationType() != CultivationTypes.BODY_CULTIVATOR)
             return defaultBlood;
 
         IBodyModifications modifications = BodyModifications.getBodyModifications(player);
 
         if (!modifications.hasOption(BodyPartNames.bodyPosition, BodyPartNames.bloodSubPosition))
-            return defaultQiBlood;
+            return defaultBlood;
 
         // Return the blood type of the players forged blood
         return ((BloodPart)modifications.getOption(BodyPartNames.bodyPosition, BodyPartNames.bloodSubPosition)).getBloodType();
@@ -67,7 +67,7 @@ public class PlayerHealthManager
         IBodyModifications modifications = BodyModifications.getBodyModifications(player);
 
         if (modifications.hasOption(BodyPartNames.bodyPosition, BodyPartNames.stomachSubPosition))
-            food = ((StomachPart)modifications.getOption(BodyPartNames.bodyPosition, BodyPartNames.stomachSubPosition)).getFoodStats();
+            food = ((StomachPart)modifications.getOption(BodyPartNames.bodyPosition, BodyPartNames.stomachSubPosition)).getFoodStats().clone();
 
         // Set the players max stamina
         food.setMaxFood((int)BodyPartStatControl.getStats(player.getUUID()).getStat(StatIDs.maxStamina));

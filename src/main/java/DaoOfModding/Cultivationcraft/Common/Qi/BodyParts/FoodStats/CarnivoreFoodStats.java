@@ -23,4 +23,16 @@ public class CarnivoreFoodStats extends QiFoodStats
 
         return super.isEdible(item);
     }
+
+    @Override
+    public CarnivoreFoodStats clone()
+    {
+        CarnivoreFoodStats clone = new CarnivoreFoodStats();
+        clone.maxFood = maxFood;
+        clone.exhaustionLevel = exhaustionLevel;
+        clone.foodLevel = foodLevel;
+        clone.tickTimer = tickTimer;
+
+        return clone;
+    }
 }

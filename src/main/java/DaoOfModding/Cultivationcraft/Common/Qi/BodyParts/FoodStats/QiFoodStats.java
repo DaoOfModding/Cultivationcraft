@@ -37,21 +37,21 @@ public class QiFoodStats extends FoodData
     }
 
     @Override
-    public void tick(Player p_75118_1_)
+    public void tick(Player player)
     {
         // Do nothing is player is dead
-        if (!p_75118_1_.isAlive())
+        if (!player.isAlive())
             return;
 
         // Handle stomach food drain here
-        drainFood(p_75118_1_);
+        drainFood(player);
 
         // Handle passive stamina drain
         // Divided by 20 to convert seconds into ticks
-        setFoodLevel(Math.min(Math.max(getTrueFoodLevel() + BodyPartStatControl.getStats(p_75118_1_.getUUID()).getStat(StatIDs.staminaDrain) / 20, 0), getMaxFood()));
+        setFoodLevel(Math.min(Math.max(getTrueFoodLevel() + BodyPartStatControl.getStats(player.getUUID()).getStat(StatIDs.staminaDrain) / 20, 0), getMaxFood()));
 
         // Get the player's blood and let it handle passive regen
-        PlayerHealthManager.getBlood(p_75118_1_).regen(p_75118_1_);
+        PlayerHealthManager.getBlood(player).regen(player);
     }
 
     protected void drainFood(Player player)
@@ -174,5 +174,16 @@ public class QiFoodStats extends FoodData
     public int getNutrition(BlockState block)
     {
         return 0;
+    }
+
+    public QiFoodStats clone()
+    {
+        QiFoodStats clone = new QiFoodStats();
+        clone.maxFood = maxFood;
+        clone.exhaustionLevel = exhaustionLevel;
+        clone.foodLevel = foodLevel;
+        clone.tickTimer = tickTimer;
+
+        return clone;
     }
 }
