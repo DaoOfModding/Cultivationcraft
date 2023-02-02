@@ -281,9 +281,9 @@ public class CommonListeners
     }
 
     @SubscribeEvent
-    public static void onPlayerHurt(LivingAttackEvent event)
+    public static void onPlayerHurtInitial(LivingAttackEvent event)
     {
-        if (event.getEntity() instanceof Player)
+        if (event.getEntity() instanceof Player && !event.getEntity().level.isClientSide)
         {
             // Don't modify damage if it bypasses invulnerability
             if (event.getSource().isBypassInvul())
@@ -301,7 +301,7 @@ public class CommonListeners
     @SubscribeEvent
     public static void onPlayerHurt(LivingHurtEvent event)
     {
-        if (event.getEntity() instanceof Player)
+        if (event.getEntity() instanceof Player && !event.getEntity().level.isClientSide)
         {
             // Don't modify damage if it bypasses invulnerability
             if (event.getSource().isBypassInvul())
@@ -313,13 +313,5 @@ public class CommonListeners
 
             event.setAmount(Damage.damage(event));
         }
-    }
-
-    @SubscribeEvent
-    public static void onPlayerDamage(LivingDamageEvent event)
-    {
-        if (event.getEntity() instanceof Player)
-            if (!event.getEntity().level.isClientSide())
-                Damage.progressDamageQuest(event);
     }
 }

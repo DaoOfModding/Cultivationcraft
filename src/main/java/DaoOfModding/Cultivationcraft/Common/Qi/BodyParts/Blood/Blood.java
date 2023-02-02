@@ -15,6 +15,7 @@ import java.util.List;
 public class Blood
 {
     protected Vector3f colour = new Vector3f(1, 0 ,0);
+    public int life = 20*60;
 
     public Vector3f getColour()
     {
@@ -29,6 +30,8 @@ public class Blood
         Difficulty difficulty = player.level.getDifficulty();
 
         QiFoodStats food = (QiFoodStats)player.getFoodData();
+
+        //TODO - Crazy regen here for vanilla?
 
         if (flag && food.getSaturationLevel() > 0.0F && player.isHurt() && food.getFoodLevel() >= food.getMaxFood())
         {

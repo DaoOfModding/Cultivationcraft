@@ -36,6 +36,7 @@ public class PacketHandler
     protected static final byte QUEST_PROGRESS = 30;
     protected static final byte FLYING_SWORD_NBT_ID = 35;
     protected static final byte FLYING_SWORD_RECALL = 36;
+    protected static final byte BLOOD_SPAWN_ID = 55;
     protected static final byte CULTIVATOR_TARGET_ID = 76;
     protected static final byte BODY_FORGE_SELECTION = 96;
     protected static final byte BODY_MODIFICATIONS = 97;
@@ -61,6 +62,7 @@ public class PacketHandler
         channel.registerMessage(QUEST_PROGRESS, QuestPacket.class, QuestPacket::encode, QuestPacket::decode, QuestPacket::handle);
         channel.registerMessage(FLYING_SWORD_NBT_ID, ConvertToFlyingPacket.class, ConvertToFlyingPacket::encode, ConvertToFlyingPacket::decode, ConvertToFlyingPacket::handle);
         channel.registerMessage(FLYING_SWORD_RECALL, RecallFlyingSwordPacket.class, RecallFlyingSwordPacket::encode, RecallFlyingSwordPacket::decode, RecallFlyingSwordPacket::handle);
+        channel.registerMessage(BLOOD_SPAWN_ID, BloodPacket.class, BloodPacket::encode, BloodPacket::decode, BloodPacket::handle);
         channel.registerMessage(CULTIVATOR_TARGET_ID, CultivatorTargetPacket.class, CultivatorTargetPacket::encode, CultivatorTargetPacket::decode, CultivatorTargetPacket::handle);
         channel.registerMessage(CULTIVATOR_TECHNIQUES, CultivatorTechniquesPacket.class, CultivatorTechniquesPacket::encode, CultivatorTechniquesPacket::decode, CultivatorTechniquesPacket::handle);
         channel.registerMessage(CULTIVATOR_STATS, CultivatorStatsPacket.class, CultivatorStatsPacket::encode, CultivatorStatsPacket::decode, CultivatorStatsPacket::handle);
@@ -84,6 +86,12 @@ public class PacketHandler
     {
         AttackPacket pack = new AttackPacket(playerID, type, pos, targetID, slot);
         channel.send(PacketDistributor.TRACKING_ENTITY.with(() -> ServerLifecycleHooks.getCurrentServer().getPlayerList().getPlayer(playerID)), pack);
+    }
+
+    public static void sendBloodSpawnToClient(UUID playerID, Vec3 source, double amount)
+    {
+        BloodPacket pack = new BloodPacket(playerID, amount, source);
+        channel.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> ServerLifecycleHooks.getCurrentServer().getPlayerList().getPlayer(playerID)), pack);
     }
 
     public static void sendQuestProgressToClient(UUID player, double amount)

@@ -21,7 +21,6 @@ import java.lang.reflect.Field;
 public class PlayerHealthManager
 {
     static Blood defaultBlood = new Blood();
-    static Blood defaultQiBlood = new CultivatorBlood();
 
     static Field foodStatField;
 

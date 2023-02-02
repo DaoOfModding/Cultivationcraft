@@ -3,13 +3,17 @@ package DaoOfModding.Cultivationcraft.Common.Qi.Damage;
 import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.phys.Vec3;
 
 public class QiDamageSource extends DamageSource
 {
     public final ResourceLocation damageElement;
     // Internal damage bypasses armor, external does not
-    protected boolean internal;
-    protected boolean qi = false;
+    protected boolean internal = false;
+
+    protected Entity entity;
+    protected Vec3 sourcePos;
 
     public QiDamageSource(String msgId, ResourceLocation element)
     {
@@ -21,13 +25,14 @@ public class QiDamageSource extends DamageSource
         if (damageElement.compareTo(Elements.noElement) != 0)
             bypassArmor();
     }
+
     public QiDamageSource(DamageSource source)
     {
         super(source.msgId);
 
         ResourceLocation element = Elements.noElement;
 
-        DamageSourceToDamageSource(source, this);
+        DamageSourceToDamageSource(this, source);
 
         if (source.isExplosion() || source.isFire())
             element = Elements.fireElement;
@@ -46,23 +51,18 @@ public class QiDamageSource extends DamageSource
             element = Elements.earthElement;
         else if (getMsgId().compareTo(DamageSource.STALAGMITE.getMsgId()) == 0)
             element = Elements.earthElement;
+        else if (getMsgId().compareTo(DamageSource.STARVE.getMsgId()) == 0)
+            setInternal();
+        else if (getMsgId().compareTo(DamageSource.DROWN.getMsgId()) == 0)
+            setInternal();
+        else if (getMsgId().compareTo(DamageSource.IN_WALL.getMsgId()) == 0)
+            setInternal();
 
         damageElement = element;
 
         // Bypass armor if this damage source has an element
         if (damageElement.compareTo(Elements.noElement) != 0)
             bypassArmor();
-    }
-
-    public QiDamageSource setQiDamage()
-    {
-        qi = true;
-        return this;
-    }
-
-    public boolean isQiDamage()
-    {
-        return qi;
     }
 
     public ResourceLocation getElement()
@@ -86,7 +86,7 @@ public class QiDamageSource extends DamageSource
         return internal;
     }
 
-    public static void DamageSourceToDamageSource(DamageSource to, DamageSource from)
+    public static void DamageSourceToDamageSource(QiDamageSource to, DamageSource from)
     {
         if (from.isBypassArmor())
             to.bypassArmor();
@@ -120,5 +120,19 @@ public class QiDamageSource extends DamageSource
 
         if (from.isProjectile())
             to.setProjectile();
+
+        to.entity = from.getEntity();
+        to.sourcePos = from.getSourcePosition();
+    }
+
+    @Override
+    public Vec3 getSourcePosition()
+    {
+        return sourcePos;
+    }
+
+    public Entity getEntity()
+    {
+        return entity;
     }
 }

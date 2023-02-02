@@ -68,19 +68,6 @@ public class QiParticle extends TextureSheetParticle
 
         move(this.xd, this.yd, this.zd);
 
-        if (!Renderer.QiSourcesVisible)
-            this.remove();
-
-        if (onGround)
-        {  // onGround is only true if the particle collides while it is moving downwards...
-            this.remove();
-        }
-
-        if (this.yo == this.y && this.yd > 0)
-        {  // detect a collision while moving upwards (can't move up at all)
-            this.remove();
-        }
-
         if (this.age++ >= this.lifetime)
         {
             this.remove();
@@ -96,8 +83,13 @@ public class QiParticle extends TextureSheetParticle
     @Override
     public void render(VertexConsumer buffer, Camera renderInfo, float partialTicks)
     {
+        // Don't render particles if they are not visible
+        if (!Renderer.QiSourcesVisible)
+            return;
+
         GlStateManager._disableDepthTest();
         super.render(buffer, renderInfo, partialTicks);
+        GlStateManager._enableDepthTest();
     }
 
 
