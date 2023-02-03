@@ -7,6 +7,8 @@ import java.util.ArrayList;
 
 public class BetterFontRenderer
 {
+    final static int heightSpacing = 1;
+
     // Makes "\n" work, cuz apparently that's too complicated for base Minecraft!?
     public static void draw(Font font, PoseStack stack, String string, float x, float y, int color)
     {
@@ -15,7 +17,7 @@ public class BetterFontRenderer
         for (String newString : getNewLines(string))
         {
             font.draw(stack, newString, x, y + line, color);
-            line += font.lineHeight;
+            line += font.lineHeight + heightSpacing;
         }
     }
 
@@ -37,7 +39,24 @@ public class BetterFontRenderer
     public static void wordwrap(Font font, PoseStack stack, String string, float x, float y, int color, int width)
     {
         for (String newString : getNewLines(string))
-            y += wordwrapSingleLine(font, stack, newString, x, y, color, width);
+            y += wordwrapSingleLine(font, stack, newString, x, y, color, width) + heightSpacing;
+    }
+
+    // Wrap the text to fit the specified width and height
+    // Ensures whole words per line
+    public static boolean wordwrap(Font font, PoseStack stack, String string, float x, float y, int color, int width, int height)
+    {
+        float currentHeight = 0;
+
+        for (String newString : getNewLines(string))
+        {
+            if (currentHeight + font.lineHeight + heightSpacing > height)
+                return false;
+
+            currentHeight += wordwrapSingleLine(font, stack, newString, x, y + currentHeight, color, width) + heightSpacing;
+        }
+
+        return true;
     }
 
     protected static float wordwrapSingleLine(Font font, PoseStack stack, String string, float x, float y, int color, int width)

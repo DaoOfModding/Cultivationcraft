@@ -1,43 +1,46 @@
 package DaoOfModding.Cultivationcraft.Common.Qi.Stats;
 
+import DaoOfModding.Cultivationcraft.Cultivationcraft;
+import net.minecraft.resources.ResourceLocation;
+
 public class StatIDs
 {
-    public static final String weight = "weight";
-    public static final String movementSpeed = "movementSpeed";
-    public static final String maxHP = "maxHP";
-    public static final String maxStamina = "maxStamina";
-    public static final String jumpHeight = "jumpHeight";
-    public static final String fallHeight = "fallHeight";
-    public static final String bounceHeight = "bounceHeight";
+    public static final ResourceLocation weight = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.stat.weight");
+    public static final ResourceLocation movementSpeed = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.stat.movementspeed");
+    public static final ResourceLocation maxHP = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.stat.maxhp");
+    public static final ResourceLocation maxStamina = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.stat.maxstamina");
+    public static final ResourceLocation jumpHeight = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.stat.jumpheight");
+    public static final ResourceLocation fallHeight = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.stat.fallheight");
+    public static final ResourceLocation bounceHeight = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.stat.bounceheight");
 
-    public static final String staminaDrain = "staminaDrain";
-    public static final String staminaUse = "staminaUse";
+    public static final ResourceLocation staminaDrain = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.stat.staminadrain");
+    public static final ResourceLocation staminaUse = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.stat.staminause");
 
-    public static final String healthRegen = "healthRegen";
-    public static final String healthStaminaConversion = "healthStaminaConversion";
+    public static final ResourceLocation healthRegen = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.stat.healthregen");
+    public static final ResourceLocation healthStaminaConversion = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.stat.healthstaminaconversion");
 
-    public static final String qiAbsorb = "qiAbsorb";
-    public static final String qiAbsorbRange = "qiAbsorbRange";
-    public static final String qiCost = "qiCost";
-
-    // TODO: Make this do something
-    public static final String attackRange = "attackRange";
+    public static final ResourceLocation qiAbsorb = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.stat.qiabsorb");
+    public static final ResourceLocation qiAbsorbRange = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.stat.qiabsorbrange");
+    public static final ResourceLocation qiCost = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.stat.qicost");
 
     // TODO: Make this do something
-    public static final String armAttackModifier = "armAttackModifier";
+    public static final ResourceLocation attackRange = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.stat.attackrange");
 
     // TODO: Make this do something
-    public static final String swimSpeed = "swimSpeed";
+    public static final ResourceLocation armAttackModifier = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.stat.armattackmodifier");
 
-    public static final String legSupport = "legWeight";
-    public static final String wingSupport = "wingWeight";
+    // TODO: Make this do something
+    public static final ResourceLocation swimSpeed = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.stat.swimspeed");
 
-    public static final String flightSpeed = "flightSpeed";
+    public static final ResourceLocation legSupport = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.stat.legweight");
+    public static final ResourceLocation wingSupport = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.stat.wingweight");
 
-    public static final String boneAttackModifier = "boneAttackModifier";
-    public static final String biteAttackModifier = "biteAttackModifier";
+    public static final ResourceLocation flightSpeed = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.stat.flightspeed");
 
-    public static final String resistanceModifier = "resistanceModifier";
+    public static final ResourceLocation boneAttackModifier = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.stat.boneattackmodifier");
+    public static final ResourceLocation biteAttackModifier = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.stat.biteattackmodifier");
+
+    public static final ResourceLocation resistanceModifier = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.stat.resistancemodifier");
 
     public static final int defaultMaxHP = 20;
     public static final int defaultMaxStamina = 20;

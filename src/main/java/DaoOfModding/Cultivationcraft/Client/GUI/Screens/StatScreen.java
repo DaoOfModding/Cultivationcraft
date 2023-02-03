@@ -1,6 +1,7 @@
 package DaoOfModding.Cultivationcraft.Client.GUI.Screens;
 
 import DaoOfModding.Cultivationcraft.Client.GUI.BetterFontRenderer;
+import DaoOfModding.Cultivationcraft.Client.GUI.TextField;
 import DaoOfModding.Cultivationcraft.Client.genericClientFunctions;
 import DaoOfModding.Cultivationcraft.Client.GUI.BodyPartGUI;
 import DaoOfModding.Cultivationcraft.Client.GUI.BodyPartGUIs;
@@ -22,9 +23,12 @@ public class StatScreen extends GenericTabScreen
 {
     protected String statString;
 
-    protected int statTextX = 100;
-    protected int statTextY = 45;
-    protected int statTextWidth = 138;
+    protected int statTextX = 80;
+    protected int statTextY = 35;
+    protected int statTextWidth = 150;
+    protected int statTextHeight = 120;
+
+    protected TextField stats = new TextField();
 
     public StatScreen()
     {
@@ -43,7 +47,10 @@ public class StatScreen extends GenericTabScreen
         int edgeSpacingX = (this.width - this.xSize) / 2;
         int edgeSpacingY = (this.height - this.ySize) / 2;
 
-        BetterFontRenderer.wordwrap(font, PoseStack, statString, edgeSpacingX + statTextX, edgeSpacingY + statTextY, Color.WHITE.getRGB(), statTextWidth);
+        stats.setPos(edgeSpacingX + statTextX, edgeSpacingY + statTextY);
+        stats.setSize(statTextWidth, statTextHeight);
+        stats.setText(statString);
+        stats.render(this, font, PoseStack);
     }
 
     protected void drawBody(PoseStack PoseStack)

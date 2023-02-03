@@ -1,6 +1,7 @@
 package DaoOfModding.Cultivationcraft.Common.Qi.Stats;
 
 import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 
 import java.util.HashMap;
@@ -8,10 +9,10 @@ import java.util.Map;
 
 public class PlayerStatModifications
 {
-    protected HashMap<String, Float> stats = new HashMap<String, Float>();
-    protected HashMap<String, HashMap<ResourceLocation, Float>> elementalStats = new HashMap<>();
+    protected HashMap<ResourceLocation, Float> stats = new HashMap<>();
+    protected HashMap<ResourceLocation, HashMap<ResourceLocation, Float>> elementalStats = new HashMap<>();
 
-    public float getStat(String ID)
+    public float getStat(ResourceLocation ID)
     {
         if (stats.containsKey(ID))
             return stats.get(ID);
@@ -19,7 +20,7 @@ public class PlayerStatModifications
         return 0;
     }
 
-    public float getElementalStat(String ID, ResourceLocation element)
+    public float getElementalStat(ResourceLocation ID, ResourceLocation element)
     {
         if (elementalStats.containsKey(ID))
             if (elementalStats.get(ID).containsKey(element))
@@ -28,12 +29,12 @@ public class PlayerStatModifications
         return 0;
     }
 
-    public void setStat(String ID, float value)
+    public void setStat(ResourceLocation ID, float value)
     {
         stats.put(ID, value);
     }
 
-    public void setElementalStat(String ID, ResourceLocation element, float value)
+    public void setElementalStat(ResourceLocation ID, ResourceLocation element, float value)
     {
         if (!elementalStats.containsKey(ID))
             elementalStats.put(ID, new HashMap<>());
@@ -41,13 +42,13 @@ public class PlayerStatModifications
         elementalStats.get(ID).put(element, value);
     }
 
-    public HashMap<String, Float> getStats()
+    public HashMap<ResourceLocation, Float> getStats()
     {
         return stats;
     }
 
 
-    public HashMap<String, HashMap<ResourceLocation, Float>> getElementalStats()
+    public HashMap<ResourceLocation, HashMap<ResourceLocation, Float>> getElementalStats()
     {
         return elementalStats;
     }
@@ -55,10 +56,10 @@ public class PlayerStatModifications
     // Combine the stats of the specified stat modifier with this stat modifier
     public void combine(PlayerStatModifications newStats)
     {
-        for (Map.Entry<String, Float> stat : newStats.getStats().entrySet())
+        for (Map.Entry<ResourceLocation, Float> stat : newStats.getStats().entrySet())
             setStat(stat.getKey(), stat.getValue() + getStat(stat.getKey()));
 
-        for (String eStats : newStats.getElementalStats().keySet())
+        for (ResourceLocation eStats : newStats.getElementalStats().keySet())
             for (Map.Entry<ResourceLocation, Float> eStat : newStats.getElementalStats().get(eStats).entrySet())
                 setElementalStat(eStats, eStat.getKey(), eStat.getValue());
     }
@@ -67,13 +68,13 @@ public class PlayerStatModifications
     {
         String statString = "";
 
-        for (Map.Entry<String, Float> stat : stats.entrySet())
-            statString += "\n" + stat.getKey() + ": " + stat.getValue();
+        for (Map.Entry<ResourceLocation, Float> stat : stats.entrySet())
+            statString += "\n" + Component.translatable(stat.getKey().getPath()).getString() + ": " + stat.getValue();
 
 
-        for (String eStats : getElementalStats().keySet())
+        for (ResourceLocation eStats : getElementalStats().keySet())
             for (Map.Entry<ResourceLocation, Float> eStat : getElementalStats().get(eStats).entrySet())
-                statString += "\n" + eStats + " " + Elements.getElement(eStat.getKey()).getName() + ": " + eStat.getValue();
+                statString += "\n" + Elements.getElement(eStat.getKey()).getName() + " " + Component.translatable(eStats.getPath()).getString() + ": " + eStat.getValue();
 
         return statString;
     }

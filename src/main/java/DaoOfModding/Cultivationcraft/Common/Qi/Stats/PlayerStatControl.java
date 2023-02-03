@@ -14,6 +14,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 
 import java.util.HashMap;
+import java.util.UUID;
 
 public class PlayerStatControl
 {
