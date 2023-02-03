@@ -6,12 +6,15 @@ import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
 import DaoOfModding.Cultivationcraft.Common.Qi.QiSource;
 import DaoOfModding.Cultivationcraft.Common.Qi.QiSourceConfig;
 import com.mojang.blaze3d.platform.GlStateManager;
-import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.*;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
 import net.minecraft.client.Camera;
 import net.minecraft.client.renderer.LightTexture;
+import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.levelgen.structure.structures.NetherFortressPieces;
@@ -24,6 +27,26 @@ import java.awt.*;
 public class QiParticle extends TextureSheetParticle
 {
     Player target;
+
+    ParticleRenderType QI_PARTICLE_RENDER_TYPE = new ParticleRenderType()
+    {
+        public void begin(BufferBuilder p_107455_, TextureManager p_107456_) {
+            RenderSystem.depthMask(true);
+            RenderSystem.setShaderTexture(0, TextureAtlas.LOCATION_PARTICLES);
+            RenderSystem.disableDepthTest();
+            RenderSystem.enableBlend();
+            RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
+            p_107455_.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.PARTICLE);
+        }
+
+        public void end(Tesselator p_107458_) {
+            p_107458_.end();
+        }
+
+        public String toString() {
+            return "QI_PARTICLE_RENDER_TYPE";
+        }
+    };
 
     // How fast the Qi Particles should move a tick
 
@@ -56,7 +79,7 @@ public class QiParticle extends TextureSheetParticle
 
     public ParticleRenderType getRenderType()
     {
-        return ParticleRenderType.PARTICLE_SHEET_TRANSLUCENT;
+        return QI_PARTICLE_RENDER_TYPE;
     }
 
     @Override
@@ -87,11 +110,8 @@ public class QiParticle extends TextureSheetParticle
         if (!Renderer.QiSourcesVisible)
             return;
 
-        GlStateManager._disableDepthTest();
         super.render(buffer, renderInfo, partialTicks);
-        GlStateManager._enableDepthTest();
     }
-
 
     @OnlyIn(Dist.CLIENT)
     public static class Factory implements ParticleProvider<QiParticleData>

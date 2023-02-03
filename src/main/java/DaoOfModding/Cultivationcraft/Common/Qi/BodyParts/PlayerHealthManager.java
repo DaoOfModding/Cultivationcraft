@@ -92,17 +92,13 @@ public class PlayerHealthManager
     protected static void updateQiFoodStats(QiFoodStats oldFoodStats, QiFoodStats newFoodStats)
     {
         newFoodStats.setFoodLevel(oldFoodStats.getTrueFoodLevel());
-        newFoodStats.setExhaustion(oldFoodStats.getExhaustion());
-
-        // TODO saturation doesn't exist on servers, so... check if this is a server before trying to update it?
-        //newFoodStats.setSaturation(oldFoodStats.getSaturationLevel());
+        newFoodStats.setExhaustion(oldFoodStats.getExhaustionLevel());
+        newFoodStats.setSaturation(oldFoodStats.getSaturationLevel());
     }
 
     protected static void updateOldFoodStats(FoodData oldFoodStats, QiFoodStats newFoodStats)
     {
         newFoodStats.setFoodLevel(oldFoodStats.getFoodLevel());
-
-
-        //newFoodStats.setSaturation(oldFoodStats.getSaturationLevel());
+        newFoodStats.setSaturation(oldFoodStats.getSaturationLevel());
     }
 }
