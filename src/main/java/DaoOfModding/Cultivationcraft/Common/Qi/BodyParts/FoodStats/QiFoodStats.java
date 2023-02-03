@@ -74,16 +74,29 @@ public class QiFoodStats extends FoodData
 
         float staminaUse = PlayerHealthManager.getStaminaUse(player);
 
+/*
         // Vanilla minecraft stamina handling
-        Difficulty difficulty = player.level.getDifficulty();
         if (this.exhaustionLevel > 4.0F)
         {
             this.exhaustionLevel -= 4.0F;
 
             if (getSaturationLevel() > 0.0F)
                 setSaturation(Math.max(getSaturationLevel() - staminaUse, 0.0F));
+            else if (player.level.getDifficulty() != Difficulty.PEACEFUL)
+                setFoodLevel(Math.max(getTrueFoodLevel() - staminaUse, 0));
+        }*/
+
+        // Reduce stamina immediately rather than in units of 1
+        Difficulty difficulty = player.level.getDifficulty();
+        if (exhaustionLevel > 0F)
+        {
+            float change = (exhaustionLevel / 4F) * staminaUse;
+            exhaustionLevel = 0F;
+
+            if (getSaturationLevel() > 0.0F)
+                setSaturation(Math.max(getSaturationLevel() - change, 0.0F));
             else if (difficulty != Difficulty.PEACEFUL)
-                setFoodLevel((float)Math.max(getTrueFoodLevel() - staminaUse, 0));
+                setFoodLevel(Math.max(getTrueFoodLevel() - change, 0));
         }
     }
 

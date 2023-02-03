@@ -28,8 +28,9 @@ public class BodyforgeScreen extends GenericTabScreen
 {
     protected DropdownList bodyParts;
     protected DropdownList bodySubParts;
+    protected DropdownList forgePart;
 
-    protected ArrayList<GUIButton> buttons = new ArrayList<GUIButton>();
+    //protected ArrayList<GUIButton> buttons = new ArrayList<GUIButton>();
     protected GUIButton forge;
     protected GUIButton cancel;
 
@@ -39,6 +40,8 @@ public class BodyforgeScreen extends GenericTabScreen
     protected final int bodySubPartListXPos = 75;
     protected final int bodySubPartListYPos = 75;
 
+    protected final int forgeListYPos = 100;
+
     protected final int detailsMinXPos = 165;
     protected final int detailsMaxXPos = 250;
     protected final int detailsYPos = 50;
@@ -46,18 +49,11 @@ public class BodyforgeScreen extends GenericTabScreen
     protected int cancelXPos = 118;
     protected final int cancelYPos = 110;
 
-    protected final int buttonMinXPos = 75;
-    protected final int buttonMaxXPos = 160;
-
-    protected final int buttonMinYPos = 100;
-
     protected int forgeXPos = xSize / 2;
     protected final int forgeYPos = 150;
 
     protected final int selectedTextXPos = xSize / 2;
     protected final int selectedTextYPos = 70;
-
-    protected String selectedPart = null;
 
     protected int mode = 0;
 
@@ -134,8 +130,7 @@ public class BodyforgeScreen extends GenericTabScreen
 
     protected void updateButtons()
     {
-        selectedPart = null;
-        buttons.clear();
+        forgePart = new DropdownList();
 
         Player player = genericClientFunctions.getPlayer();
 
@@ -145,16 +140,14 @@ public class BodyforgeScreen extends GenericTabScreen
             {
                 if (equalsSelectedPosition(part.getPosition()) && part.canBeForged(player))
                 {
-                    GUIButton button = new GUIButton(part.getID(), part.getDisplayName());
-                    buttons.add(button);
+                    forgePart.addItem(part.getDisplayName(), part.getID());
                 }
             }
         else
             for (BodyPartOption part : BodyPartNames.getOptions())
                 if (equalsSelectedPosition(part.getPosition()) && equalsSelectedSubPosition(part.getSubPosition()) && part.canBeForged(player))
                 {
-                    GUIButton button = new GUIButton(part.getID(), part.getDisplayName());
-                    buttons.add(button);
+                    forgePart.addItem(part.getDisplayName(), part.getID());
                 }
     }
 
@@ -182,10 +175,13 @@ public class BodyforgeScreen extends GenericTabScreen
                 return true;
             }
 
+            if (forgePart.mouseClick((int) mouseX - (edgeSpacingX + bodySubPartListXPos), (int) mouseY - (edgeSpacingY + forgeListYPos), buttonPressed) != null)
+                return true;
+
             // Send the selected part to the server if a part is selected and the forge button is pressed
             if (forge.mouseClick((int) mouseX - (edgeSpacingX + forgeXPos), (int) mouseY - (edgeSpacingY + forgeYPos), buttonPressed)) {
-                if (selectedPart != null)
-                    ClientPacketHandler.sendBodyForgeSelectionToServer(selectedPart);
+                if (forgePart.getSelected() != null)
+                    ClientPacketHandler.sendBodyForgeSelectionToServer(forgePart.getSelected().toString());
 
                 forge.unselect();
 
@@ -202,47 +198,7 @@ public class BodyforgeScreen extends GenericTabScreen
             return true;
         }
 
-        int xpos = buttonMinXPos;
-        int ypos = 0;
-        for (GUIButton button : buttons)
-        {
-            // If there is not enough space for this button, move onto the next line
-            if (xpos + button.width > buttonMaxXPos)
-            {
-                ypos++;
-                xpos = buttonMinXPos;
-            }
-
-            int currentY = buttonMinYPos + ypos * (4 + GUIButton.height);
-
-            if (button.mouseClick((int)mouseX - (edgeSpacingX + xpos), (int)mouseY - (edgeSpacingY + currentY), buttonPressed))
-            {
-                changeSelection(button);
-                return true;
-            }
-
-            // Move the xpos next to this button
-            xpos += button.width + 3;
-        }
-
         return false;
-    }
-
-    public void changeSelection(GUIButton selected)
-    {
-        // If the button has been turned off
-        // Turn it back on and do nothing else
-        if (!selected.isSelected())
-        {
-            selected.select();
-            return;
-        }
-
-        selectedPart = selected.getID();
-
-        for (GUIButton button : buttons)
-            if (button != selected)
-                button.unselect();
     }
 
     @Override
@@ -271,12 +227,12 @@ public class BodyforgeScreen extends GenericTabScreen
 
     protected void drawGuiDetailsForgroundLayer(PoseStack PoseStack)
     {
-        if (selectedPart == null)
+        if (forgePart.getSelected() == null)
             return;
 
-        BodyPart part = BodyPartNames.getPart(selectedPart);
+        BodyPart part = BodyPartNames.getPart(forgePart.getSelected().toString());
         if (part == null)
-            part = BodyPartNames.getOption(selectedPart);
+            part = BodyPartNames.getOption(forgePart.getSelected().toString());
 
         int edgeSpacingX = (this.width - this.xSize) / 2;
         int edgeSpacingY = (this.height - this.ySize) / 2;
@@ -329,29 +285,10 @@ public class BodyforgeScreen extends GenericTabScreen
         int edgeSpacingX = (this.width - this.xSize) / 2;
         int edgeSpacingY = (this.height - this.ySize) / 2;
 
-        // Render part buttons
-        int xpos = buttonMinXPos;
-        int ypos = 0;
-        for (GUIButton button : buttons)
-        {
-            // If there is not enough space for this button, move onto the next line
-            if (xpos + button.width > buttonMaxXPos)
-            {
-                ypos++;
-                xpos = buttonMinXPos;
-            }
-
-            int currentY = buttonMinYPos + ypos * (4 + GUIButton.height);
-
-            button.render(PoseStack, edgeSpacingX + xpos, edgeSpacingY + currentY, mouseX, mouseY, this);
-
-            // Move the xpos next to this button
-            xpos += button.width + 3;
-        }
-
         forge.render(PoseStack, edgeSpacingX + forgeXPos, edgeSpacingY + forgeYPos, mouseX, mouseY, this);
 
-        // Render the BodyPart dropdown list
+        // Render the BodyPart dropdown lists
+        forgePart.render(PoseStack, edgeSpacingX + bodyPartListXPos, edgeSpacingY + forgeListYPos, mouseX, mouseY, this);
         bodySubParts.render(PoseStack, edgeSpacingX + bodySubPartListXPos, edgeSpacingY + bodySubPartListYPos, mouseX, mouseY, this);
         bodyParts.render(PoseStack, edgeSpacingX + bodyPartListXPos, edgeSpacingY + bodyPartListYPos, mouseX, mouseY, this);
 
