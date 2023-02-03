@@ -7,4 +7,5 @@ public class DefaultQuests
     public static Quest defaultLegQuest = new Quest(Quest.WALK, 10000);
     public static Quest defaultFlightQuest = new Quest(Quest.FLIGHT, 10000);
     public static Quest defaultHealQuest = new Quest(Quest.HEAL, 500);
+    public static Quest defaultStaminaQuest = new Quest(Quest.DRAIN_STAMINA, 1000);
 }

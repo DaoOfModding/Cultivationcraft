@@ -1,6 +1,8 @@
 package DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.FoodStats;
 
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.PlayerHealthManager;
+import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.Quest;
+import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.QuestHandler;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.StatIDs;
 import net.minecraft.world.damagesource.DamageSource;
@@ -96,7 +98,13 @@ public class QiFoodStats extends FoodData
             if (getSaturationLevel() > 0.0F)
                 setSaturation(Math.max(getSaturationLevel() - change, 0.0F));
             else if (difficulty != Difficulty.PEACEFUL)
+            {
+                // TODO: Should this be client side?
+                if (!player.level.isClientSide)
+                    QuestHandler.progressQuest(player, Quest.DRAIN_STAMINA, change);
+
                 setFoodLevel(Math.max(getTrueFoodLevel() - change, 0));
+            }
         }
     }
 

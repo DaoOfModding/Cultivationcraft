@@ -69,12 +69,26 @@ public class PlayerStatModifications
         String statString = "";
 
         for (Map.Entry<ResourceLocation, Float> stat : stats.entrySet())
-            statString += "\n" + Component.translatable(stat.getKey().getPath()).getString() + ": " + stat.getValue();
+        {
+            statString += "\n" + Component.translatable(stat.getKey().getPath()).getString() + ": ";
+
+            if (stat.getValue() % 1f == 0)
+                statString += stat.getValue().intValue();
+            else
+                statString += stat.getValue();
+        }
 
 
         for (ResourceLocation eStats : getElementalStats().keySet())
             for (Map.Entry<ResourceLocation, Float> eStat : getElementalStats().get(eStats).entrySet())
-                statString += "\n" + Elements.getElement(eStat.getKey()).getName() + " " + Component.translatable(eStats.getPath()).getString() + ": " + eStat.getValue();
+            {
+                statString += "\n" + Elements.getElement(eStat.getKey()).getName() + " " + Component.translatable(eStats.getPath()).getString() + ": ";
+
+                if (eStat.getValue() % 1f == 0)
+                    statString += eStat.getValue().intValue();
+                else
+                    statString += eStat.getValue();
+            }
 
         return statString;
     }

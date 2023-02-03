@@ -41,6 +41,7 @@
   "cultivationcraft.quest.jet": "Blocks boosted",
   "cultivationcraft.quest.hop": "Times hopped",
   "cultivationcraft.quest.heal": "Health healed",
+  "cultivationcraft.quest.drainstamina": "Stamina used",
 
   "cultivationcraft.gui.bind": "Bind Item",
   "cultivationcraft.gui.done": "Done",

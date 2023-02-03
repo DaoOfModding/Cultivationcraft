@@ -201,18 +201,21 @@ public class BodyPartNames
         expandingStomach.addUniqueTag(BodyPartTags.expanding);
         expandingStomach.addNeededPart(expandingBodyPart);
         expandingStomach.getStatChanges().setStat(StatIDs.maxStamina, 80);
+        expandingStomach.setQuest(DefaultQuests.defaultStaminaQuest);
 
         StomachPart carnivorousStomach = new StomachPart(carnivorousStomachPart, bodyPosition, stomachSubPosition,  "cultivationcraft.gui.bodypart.stomach.carnivorous");
         carnivorousStomach.addUniqueTag(BodyPartTags.hunger);
         carnivorousStomach.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.skinSubPosition);
         carnivorousStomach.getStatChanges().setStat(StatIDs.maxStamina, 20);
         carnivorousStomach.setFoodStats(new CarnivoreFoodStats());
+        expandingStomach.setQuest(DefaultQuests.defaultStaminaQuest);
 
         StomachPart herbivoreStomach = new StomachPart(herbivorousStomachPart, bodyPosition, stomachSubPosition,  "cultivationcraft.gui.bodypart.stomach.herbivorous");
         herbivoreStomach.addUniqueTag(BodyPartTags.hunger);
         herbivoreStomach.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.skinSubPosition);
         herbivoreStomach.getStatChanges().setStat(StatIDs.maxStamina, 20);
         herbivoreStomach.setFoodStats(new HerbivoreFoodStats());
+        expandingStomach.setQuest(DefaultQuests.defaultStaminaQuest);
 
         addOption(expandingStomach);
         addOption(carnivorousStomach);
