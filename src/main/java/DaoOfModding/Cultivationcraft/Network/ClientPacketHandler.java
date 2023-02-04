@@ -66,6 +66,12 @@ public class ClientPacketHandler
         PacketHandler.channel.sendToServer(packet);
     }
 
+    public static void sendQuestCancelToServer()
+    {
+        QuestCancelPacket packet = new QuestCancelPacket();
+        PacketHandler.channel.sendToServer(packet);
+    }
+
     public static void sendPartInfoToServer(UUID playerID, int info, String partID, String limbID)
     {
         PartInfoPacket packet = new PartInfoPacket(partID, limbID, info, playerID);

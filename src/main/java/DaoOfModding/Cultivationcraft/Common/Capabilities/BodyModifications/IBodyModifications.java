@@ -35,6 +35,8 @@ public interface IBodyModifications
     public HashMap<String, BodyPartOption> getModificationOptions(String limb);
     public HashMap<String, HashMap<String, BodyPartOption>> getModificationOptions();
     public ArrayList<String> getTags();
+    public void removeModification(BodyPart part);
+    public void removeOption(BodyPartOption option);
 
     public void read(CompoundTag NBT);
     public CompoundTag write();

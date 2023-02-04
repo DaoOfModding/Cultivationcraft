@@ -131,10 +131,39 @@ public class BodyModifications implements IBodyModifications
         setUpdated(false);
     }
 
+    public void removeModification(BodyPart part)
+    {
+        if (!hasModification(part.getPosition(), part.getID()))
+            return;
+
+        modifications.remove(part.getPosition(), part);
+        removeTags(part);
+        setUpdated(false);
+    }
+
+    public void removeOption(BodyPartOption option)
+    {
+        if (!options.containsKey(option.getPosition()))
+            return;
+
+        if (!hasOption(option.getPosition(), option.getSubPosition(), option.getID()))
+            return;
+
+        options.get(option.getPosition()).remove(option.getSubPosition(), option);
+        removeTags(option);
+        setUpdated(false);
+    }
+
     protected void addTags(BodyPart part)
     {
         for (String tag : part.getUniqueTags())
             tags.add(tag);
+    }
+
+    protected void removeTags(BodyPart part)
+    {
+        for (String tag : part.getUniqueTags())
+            tags.remove(tag);
     }
 
     public ArrayList<String> getTags()

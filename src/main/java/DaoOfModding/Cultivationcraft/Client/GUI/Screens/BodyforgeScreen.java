@@ -192,7 +192,11 @@ public class BodyforgeScreen extends GenericTabScreen
         // Cancel the selection if the cancel button is pressed
         if (cancel.mouseClick((int)mouseX - (edgeSpacingX + cancelXPos), (int)mouseY - (edgeSpacingY + cancelYPos), buttonPressed))
         {
-            ClientPacketHandler.sendBodyForgeSelectionToServer("");
+            if (mode != 2)
+                ClientPacketHandler.sendBodyForgeSelectionToServer("");
+            else
+                ClientPacketHandler.sendQuestCancelToServer();
+
             cancel.unselect();
 
             return true;
@@ -359,6 +363,8 @@ public class BodyforgeScreen extends GenericTabScreen
 
         this.blit(PoseStack, edgeSpacingX + 9, edgeSpacingY + 160, 0, 233, length, 6);
         this.blit(PoseStack, edgeSpacingX + 10, edgeSpacingY + 161, 1, 239, (int)((length - 2) * (progress / quest.complete)), 4);
+
+        cancel.render(PoseStack, edgeSpacingX + cancelXPos, edgeSpacingY + cancelYPos, mouseX, mouseY, this);
     }
 
     protected void drawBody(PoseStack PoseStack)

@@ -13,6 +13,8 @@ import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.Cu
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPart;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartOption;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.FoodStats.QiFoodStats;
+import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.Quest;
+import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.QuestHandler;
 import DaoOfModding.Cultivationcraft.Common.Qi.Damage.Damage;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
 import DaoOfModding.Cultivationcraft.Network.PacketHandler;
@@ -21,6 +23,7 @@ import DaoOfModding.Cultivationcraft.Server.ServerListeners;
 import DaoOfModding.Cultivationcraft.Server.SkillHotbarServer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.chunk.LevelChunk;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.*;
 import net.minecraftforge.event.entity.player.PlayerEvent;
@@ -47,7 +50,15 @@ public class CommonListeners
             return;
 
         if (event.player.getCommandSenderWorld().isClientSide())
+        {
             ClientListeners.playerTick(event);
+
+            if (event.player.isOnGround())
+            {
+                Vec3 movement = new Vec3(event.player.getDeltaMovement().x, 0, event.player.getDeltaMovement().z);
+                QuestHandler.progressQuest(event.player, Quest.WALK, movement.length());
+            }
+        }
         else
             ServerListeners.playerTick(event);
     }
