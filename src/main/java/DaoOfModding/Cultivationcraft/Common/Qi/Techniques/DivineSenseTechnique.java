@@ -42,7 +42,7 @@ public class DivineSenseTechnique extends Technique
     {
         super.deactivate(player);
 
-        if (ClientItemControl.thisWorld != null)
+        if (player.level.isClientSide)
             Renderer.QiSourcesVisible = false;
     }
 

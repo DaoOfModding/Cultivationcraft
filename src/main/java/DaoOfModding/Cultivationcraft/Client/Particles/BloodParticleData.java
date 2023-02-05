@@ -1,6 +1,7 @@
 package DaoOfModding.Cultivationcraft.Client.Particles;
 
 import DaoOfModding.Cultivationcraft.Client.clientRegister;
+import DaoOfModding.Cultivationcraft.Common.Register;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.network.FriendlyByteBuf;
@@ -19,7 +20,7 @@ public class BloodParticleData implements ParticleOptions
     @Override
     public ParticleType<BloodParticleData> getType()
     {
-        return clientRegister.bloodParticleType;
+        return Register.bloodParticleType.get();
     }
 
     @Override

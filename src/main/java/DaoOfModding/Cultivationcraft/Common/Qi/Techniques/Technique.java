@@ -67,6 +67,8 @@ public class Technique
 
     protected ResourceLocation progress = new ResourceLocation(Cultivationcraft.MODID, "textures/gui/progressbar.png");
 
+    public boolean toDeactivate = false;
+
 
     public Technique()
     {
@@ -182,6 +184,11 @@ public class Technique
         cooldownCount = cooldown;
         currentChannel = 0;
 
+        if (player.level.isClientSide)
+            toDeactivate = false;
+        else
+            toDeactivate = true;
+
         removeModifiers(player);
     }
 
@@ -257,6 +264,9 @@ public class Technique
 
         nbt.putBoolean("active", active);
         nbt.putInt("cooldown", cooldownCount);
+        nbt.putBoolean("toDeactivate", toDeactivate);
+
+        toDeactivate = false;
 
         return nbt;
     }
@@ -287,6 +297,7 @@ public class Technique
     {
         setActive(nbt.getBoolean("active"));
         setCooldown(nbt.getInt("cooldown"));
+        toDeactivate = nbt.getBoolean("toDeactivate");
     }
 
     public void readBufferData(FriendlyByteBuf buffer)
@@ -326,6 +337,9 @@ public class Technique
 
     public void tickInactiveClient(TickEvent.PlayerTickEvent event)
     {
+        if (toDeactivate)
+            deactivate(event.player);
+
         if (cooldownCount > 0)
             cooldownCount = cooldownCount - 1;
     }

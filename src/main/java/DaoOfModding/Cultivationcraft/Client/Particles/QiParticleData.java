@@ -2,6 +2,7 @@ package DaoOfModding.Cultivationcraft.Client.Particles;
 
 import DaoOfModding.Cultivationcraft.Common.Qi.QiSource;
 import DaoOfModding.Cultivationcraft.Client.clientRegister;
+import DaoOfModding.Cultivationcraft.Common.Register;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.core.particles.ParticleOptions;
@@ -20,7 +21,7 @@ public class QiParticleData implements ParticleOptions
     @Override
     public ParticleType<QiParticleData> getType()
     {
-        return clientRegister.qiParticleType;
+        return Register.qiParticleType.get();
     }
 
     @Override

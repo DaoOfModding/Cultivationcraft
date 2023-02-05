@@ -46,7 +46,6 @@ public class Cultivationcraft {
         QiSourceConfig.init();
         Elements.init();
         TechniqueControl.init();
-        GenericQiPoses.init();
         BodyPartNames.init();
         PlayerHealthManager.setup();
     }
@@ -54,5 +53,6 @@ public class Cultivationcraft {
     protected void clientInit(final FMLClientSetupEvent event)
     {
         ClientItemControl.init(event);
+        GenericQiPoses.init();
     }
 }

@@ -1,7 +1,12 @@
 package DaoOfModding.Cultivationcraft.Common;
 
+import DaoOfModding.Cultivationcraft.Client.Particles.BloodParticle;
+import DaoOfModding.Cultivationcraft.Client.Particles.BloodParticleType;
+import DaoOfModding.Cultivationcraft.Client.Particles.QiParticle;
+import DaoOfModding.Cultivationcraft.Client.Particles.QiParticleType;
 import DaoOfModding.Cultivationcraft.Common.Containers.FlyingSwordContainer;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
+import net.minecraft.core.particles.ParticleType;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.inventory.MenuType;
@@ -21,6 +26,7 @@ public class Register
 
     public static DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, Cultivationcraft.MODID);
     public static DeferredRegister<MenuType<?>> CONTAINERS = DeferredRegister.create(ForgeRegistries.MENU_TYPES, Cultivationcraft.MODID);
+    public static DeferredRegister<ParticleType<?>> PARTICLES = DeferredRegister.create(ForgeRegistries.PARTICLE_TYPES, Cultivationcraft.MODID);
 
     public static RegistryObject<EntityType<FlyingSwordEntity>> FLYINGSWORD = ENTITY_TYPES.register("flyingsword", () ->
                                                                                 EntityType.Builder.<FlyingSwordEntity>of(FlyingSwordEntity::new, MobCategory.MISC)
@@ -30,11 +36,14 @@ public class Register
 
     public static RegistryObject<MenuType<FlyingSwordContainer>> ContainerTypeFlyingSword = CONTAINERS.register("flyingsword", () -> IForgeMenuType.create(FlyingSwordContainer::createContainerClientSide));
 
+    public static RegistryObject<QiParticleType> qiParticleType = PARTICLES.register("qiparticle", () -> new QiParticleType());
+    public static RegistryObject<BloodParticleType> bloodParticleType = PARTICLES.register("bloodparticle", () -> new BloodParticleType());
 
     public static void init(IEventBus bus)
     {
         ENTITY_TYPES.register(bus);
         CONTAINERS.register(bus);
+        PARTICLES.register(bus);
     }
 
     @Mod.EventBusSubscriber(bus=Mod.EventBusSubscriber.Bus.MOD)
@@ -47,19 +56,6 @@ public class Register
 
             // ClientBlockRegister.registerBlockRenderers();
         }
-
-        // TODO : Look at this, is it needed?
-/*
-        @SubscribeEvent
-        public static void registerCapabilities(RegisterCapabilitiesEvent event)
-        {
-            CultivatorStatsCapability.register(event);
-            BodyModificationsCapability.register(event);
-            FlyingSwordContainerItemStackCapability.register(event);
-            FlyingSwordBindCapability.register(event);
-            ChunkQiSourcesCapability.register(event);
-            CultivatorTechniquesCapability.register(event);
-        }*/
 
         @SubscribeEvent
         public static void register(RegisterEvent event)

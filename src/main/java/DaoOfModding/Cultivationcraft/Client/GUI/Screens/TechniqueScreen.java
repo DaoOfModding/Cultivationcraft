@@ -11,6 +11,7 @@ import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.Technique;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import DaoOfModding.Cultivationcraft.Network.ClientPacketHandler;
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.network.chat.Component;
 
@@ -113,6 +114,9 @@ public class TechniqueScreen extends GenericTabScreen
                 Cultivationcraft.LOGGER.warn("Tried to assign technique that already exists");
                 return;
             }
+
+        if (techs.getTechnique(selected) != null && techs.getTechnique(selected).isActive())
+            techs.getTechnique(selected).deactivate(Minecraft.getInstance().player);
 
         techs.setTechnique(selected, newTechnique);
         updateTechniqueList();

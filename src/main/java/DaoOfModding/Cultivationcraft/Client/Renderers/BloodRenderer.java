@@ -3,9 +3,11 @@ package DaoOfModding.Cultivationcraft.Client.Renderers;
 import DaoOfModding.Cultivationcraft.Client.Particles.BloodParticleData;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Blood.Blood;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.PlayerHealthManager;
+import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import DaoOfModding.mlmanimator.Client.Poses.PoseHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 
@@ -35,7 +37,7 @@ public class BloodRenderer
 
             float height = PoseHandler.getPlayerPoseHandler(player.getUUID()).getPlayerModel().getHeightAdjustment();
 
-            Minecraft.getInstance().level.addParticle(particle, player.getX(), player.getY() + height, player.getZ(), direction.x, direction.y, direction.z);
+            player.level.addParticle(particle, player.getX(), player.getY() + height, player.getZ(), direction.x, direction.y, direction.z);
         }
     }
 

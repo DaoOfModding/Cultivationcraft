@@ -121,9 +121,14 @@ public class CultivatorTechniquesPacket extends Packet
         for (int i = 0; i < CultivatorTechniques.numberOfTechniques; i++)
         {
             // Ensure the technique is valid
-            // Only add mutliple copies of a technique if the technique allows it
+            // Only add multiple copies of a technique if the technique allows it
             if (techniques[i] == null || (techniques[i].isValid(player) && (techniques[i].allowMultiple() || !techs.techniqueExists(techniques[i]))))
+            {
+                if (techs.getTechnique(i) != null && techs.getTechnique(i).isActive() && techs.getTechnique(i).getClass() != techniques[i].getClass())
+                    techs.getTechnique(i).deactivate(player);
+
                 techs.setTechnique(i, techniques[i]);
+            }
             else
                 Cultivationcraft.LOGGER.warn("Client tried to set invalid technique: " + techniques[i].toString());
         }

@@ -1,13 +1,11 @@
 package DaoOfModding.Cultivationcraft.Network.Packets;
 
 
+import DaoOfModding.Cultivationcraft.Client.genericClientFunctions;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.QuestHandler;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
-import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.phys.HitResult;
-import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.network.NetworkEvent;
 import net.minecraftforge.server.ServerLifecycleHooks;
@@ -69,7 +67,7 @@ public class QuestPacket extends Packet
         }
         else
         {
-            if (Minecraft.getInstance().player.getUUID().compareTo(player) != 0)
+            if (genericClientFunctions.getPlayer().getUUID().compareTo(player) != 0)
                 Cultivationcraft.LOGGER.warn("Server sent quest message for other player");
             else
                 ctx.enqueueWork(() -> processPacketClient());
@@ -88,6 +86,6 @@ public class QuestPacket extends Packet
     // Process received packet on the client
     protected void processPacketClient()
     {
-        QuestHandler.progressQuest(Minecraft.getInstance().player, amount);
+        QuestHandler.progressQuest(genericClientFunctions.getPlayer(), amount);
     }
 }
