@@ -22,6 +22,17 @@ public class BodyModifications implements IBodyModifications
 
     String lastForged = "";
     double questProgress = 0;
+    float health = 0;
+
+    public void setHealth(float hp)
+    {
+        health = hp;
+    }
+
+    public float getHealth()
+    {
+        return health;
+    }
 
     public String getSelection()
     {
@@ -210,6 +221,7 @@ public class BodyModifications implements IBodyModifications
     {
         clearModifications();
 
+        setHealth(NBT.getFloat("health"));
         setSelection(NBT.getString("selection"));
         setLastForged(NBT.getString("last"));
         setProgress(NBT.getInt("progress"));
@@ -245,6 +257,7 @@ public class BodyModifications implements IBodyModifications
     {
         CompoundTag nbt = new CompoundTag();
 
+        nbt.putFloat("health", health);
         nbt.putString("selection", getSelection());
         nbt.putString("last", getLastForged());
         nbt.putInt("progress", getProgress());

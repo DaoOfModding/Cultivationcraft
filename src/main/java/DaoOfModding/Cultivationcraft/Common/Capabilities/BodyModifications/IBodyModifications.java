@@ -11,6 +11,9 @@ import java.util.HashMap;
 @AutoRegisterCapability
 public interface IBodyModifications
 {
+    public void setHealth(float hp);
+    public float getHealth();
+
     public String getSelection();
     public void setSelection(String selection);
 

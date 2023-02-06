@@ -22,6 +22,7 @@ public class PlayerStatControl
 
     AttributeModifier healthModifier;
     AttributeModifier movementModifier;
+    AttributeModifier armorModifier;
 
     // Setup players with the default player stats
     public PlayerStatControl()
@@ -103,11 +104,16 @@ public class PlayerStatControl
         if (movementModifier != null)
             player.getAttribute(Attributes.MOVEMENT_SPEED).removeModifier(movementModifier);
 
+        if (armorModifier != null)
+            player.getAttribute(Attributes.ARMOR).removeModifier(armorModifier);
+
         healthModifier = new AttributeModifier("BodyForgeHealth", stats.getStat(StatIDs.maxHP) - StatIDs.defaultMaxHP, AttributeModifier.Operation.ADDITION);
         movementModifier = new AttributeModifier("BodyForgeMove", stats.getStat(StatIDs.movementSpeed) * getLegWeightModifier() - StatIDs.defaultMovementSpeed, AttributeModifier.Operation.ADDITION);
+        armorModifier = new AttributeModifier("BodyForgeArmor", stats.getStat(StatIDs.armor), AttributeModifier.Operation.ADDITION);
 
         player.getAttribute(Attributes.MAX_HEALTH).addTransientModifier(healthModifier);
         player.getAttribute(Attributes.MOVEMENT_SPEED).addTransientModifier(movementModifier);
+        player.getAttribute(Attributes.ARMOR).addTransientModifier(armorModifier);
     }
 
     // Returns a modifier based on how overweight the player is

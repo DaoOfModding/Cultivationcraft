@@ -10,6 +10,9 @@ import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPart;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartOption;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.Quest;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.QuestHandler;
+import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
+import DaoOfModding.Cultivationcraft.Common.Qi.Stats.PlayerStatControl;
+import DaoOfModding.Cultivationcraft.Common.Qi.Stats.PlayerStatModifications;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.event.TickEvent;
@@ -42,6 +45,10 @@ public class ServerListeners
                 }
 
             IBodyModifications modifications = BodyModifications.getBodyModifications(event.player);
+
+            PlayerStatModifications stats = BodyPartStatControl.getStats(event.player.getUUID());
+
+                modifications.setHealth(event.player.getHealth());
 
             for (BodyPart part : modifications.getModifications().values())
                 part.onServerTick(event.player);

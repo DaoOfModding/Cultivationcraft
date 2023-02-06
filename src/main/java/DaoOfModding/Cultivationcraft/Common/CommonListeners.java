@@ -196,6 +196,11 @@ public class CommonListeners
             SkillHotbarServer.addPlayer(event.getEntity().getUUID());
 
             BodyPartStatControl.updateStats(event.getEntity());
+
+            float hp = BodyModifications.getBodyModifications(event.getEntity()).getHealth();
+
+            if (hp > 0)
+                event.getEntity().setHealth(hp);
         }
     }
 

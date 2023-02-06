@@ -8,6 +8,7 @@
   "cultivationcraft.elements.lightning": "Lightning",
 
   "cultivationcraft.stat.weight": "Weight",
+  "cultivationcraft.stat.armor": "Armor",
   "cultivationcraft.stat.movementspeed": "Movement Speed",
   "cultivationcraft.stat.maxhp": "Max HP",
   "cultivationcraft.stat.maxstamina": "Max Stamina",
@@ -94,6 +95,17 @@
   "cultivationcraft.gui.bodypart.skin.scale.earth.description": "~~~~TODO~~~~~",
   "cultivationcraft.gui.bodypart.skin.scale.wood": "Wood Scales",
   "cultivationcraft.gui.bodypart.skin.scale.wood.description": "~~~~TODO~~~~~",
+
+  "cultivationcraft.gui.bodypart.bone.fire": "Fire infused",
+  "cultivationcraft.gui.bodypart.bone.fire.description": "Infused bones with fire element.\nSlightly less armor, but gives resistance to fire",
+  "cultivationcraft.gui.bodypart.bone.water": "Water infused",
+  "cultivationcraft.gui.bodypart.bone.water.description": "Infused bones with water element.\nSlightly less armor, but gives resistance to water",
+  "cultivationcraft.gui.bodypart.bone.wind": "Wind infused",
+  "cultivationcraft.gui.bodypart.bone.wind.description": "Infused bones with wind element.\nSlightly less armor, but gives resistance to wind",
+  "cultivationcraft.gui.bodypart.bone.earth": "Earth infused",
+  "cultivationcraft.gui.bodypart.bone.earth.description": "Infused bones with earth element.\nSlightly less armor, but gives resistance to earth",
+  "cultivationcraft.gui.bodypart.bone.wood": "Wood infused",
+  "cultivationcraft.gui.bodypart.bone.wood.description": "Infused bones with wood element.\nSlightly less armor, but gives resistance to wood",
 
 
   "cultivationcraft.gui.bodypart.blood.hunger": "Default Blood",

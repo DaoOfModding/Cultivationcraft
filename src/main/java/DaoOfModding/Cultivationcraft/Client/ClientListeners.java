@@ -90,22 +90,23 @@ public class ClientListeners
         else if (event.getOverlay().id() == VanillaGuiOverlay.FOOD_LEVEL.id())
         {
             // Render stamina and health the other way around, so health renders ontop of stamina
-            Renderer.renderStamina();
+            if (!Minecraft.getInstance().player.isCreative())
+                Renderer.renderStamina();
+
             event.setCanceled(true);
         }
         else if (event.getOverlay().id() == VanillaGuiOverlay.PLAYER_HEALTH.id())
         {
-            Renderer.renderHP();
+            if (!Minecraft.getInstance().player.isCreative())
+                Renderer.renderHP();
+
             event.setCanceled(true);
         }
-        else if (event.getOverlay().id() == VanillaGuiOverlay.EXPERIENCE_BAR.id())
+        else if(event.getOverlay().id() == VanillaGuiOverlay.ARMOR_LEVEL.id())
         {
-            // Move the experience bar up slightly
+            // Move the armor/XP/air bar up slightly
             event.getPoseStack().pushPose();
             event.getPoseStack().translate(0, -10, 0);
-        }
-        else if(event.getOverlay().id() == VanillaGuiOverlay.VIGNETTE.id())
-        {
         }
     }
 
