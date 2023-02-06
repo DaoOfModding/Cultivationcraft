@@ -157,6 +157,7 @@ public class BodyPartNames
         reinforceBones.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.skinSubPosition);
         reinforceBones.getStatChanges().setStat(StatIDs.boneAttackModifier, 1);
         reinforceBones.getStatChanges().setStat(StatIDs.armor, 6);
+        reinforceBones.setQuest(DefaultQuests.defaultBoneQuest);
 
         BodyPartOption fireBones = new BodyPartOption(elementalBonePart + Elements.fireElement, bodyPosition, boneSubPosition,  "cultivationcraft.gui.bodypart.bone.fire");
         fireBones.setElement(Elements.fireElement);
@@ -167,6 +168,7 @@ public class BodyPartNames
         fireBones.getStatChanges().setElementalStat(StatIDs.resistanceModifier, Elements.fireElement, 50);
         fireBones.getStatChanges().setElementalStat(StatIDs.resistanceModifier, Elements.waterElement, -50);
         fireBones.getStatChanges().setStat(StatIDs.armor, 4);
+        fireBones.setQuest(DefaultQuests.defaultBoneQuest);
 
         BodyPartOption waterBones = new BodyPartOption(elementalBonePart + Elements.waterElement, bodyPosition, boneSubPosition,  "cultivationcraft.gui.bodypart.bone.water");
         waterBones.setElement(Elements.waterElement);
@@ -177,6 +179,7 @@ public class BodyPartNames
         waterBones.getStatChanges().setElementalStat(StatIDs.resistanceModifier, Elements.waterElement, 50);
         waterBones.getStatChanges().setElementalStat(StatIDs.resistanceModifier, Elements.windElement, -50);
         waterBones.getStatChanges().setStat(StatIDs.armor, 4);
+        waterBones.setQuest(DefaultQuests.defaultBoneQuest);
 
         BodyPartOption windBones = new BodyPartOption(elementalBonePart + Elements.windElement, bodyPosition, boneSubPosition,  "cultivationcraft.gui.bodypart.bone.wind");
         windBones.setElement(Elements.windElement);
@@ -187,6 +190,7 @@ public class BodyPartNames
         windBones.getStatChanges().setElementalStat(StatIDs.resistanceModifier, Elements.windElement, 50);
         windBones.getStatChanges().setElementalStat(StatIDs.resistanceModifier, Elements.earthElement, -50);
         windBones.getStatChanges().setStat(StatIDs.armor, 4);
+        windBones.setQuest(DefaultQuests.defaultBoneQuest);
 
         BodyPartOption earthBones = new BodyPartOption(elementalBonePart + Elements.earthElement, bodyPosition, boneSubPosition,  "cultivationcraft.gui.bodypart.bone.earth");
         earthBones.setElement(Elements.earthElement);
@@ -197,6 +201,7 @@ public class BodyPartNames
         earthBones.getStatChanges().setElementalStat(StatIDs.resistanceModifier, Elements.earthElement, 50);
         earthBones.getStatChanges().setElementalStat(StatIDs.resistanceModifier, Elements.woodElement, -50);
         earthBones.getStatChanges().setStat(StatIDs.armor, 4);
+        earthBones.setQuest(DefaultQuests.defaultBoneQuest);
 
         BodyPartOption woodBones = new BodyPartOption(elementalBonePart + Elements.woodElement, bodyPosition, boneSubPosition,  "cultivationcraft.gui.bodypart.bone.wood");
         woodBones.setElement(Elements.woodElement);
@@ -207,6 +212,7 @@ public class BodyPartNames
         woodBones.getStatChanges().setElementalStat(StatIDs.resistanceModifier, Elements.woodElement, 50);
         woodBones.getStatChanges().setElementalStat(StatIDs.resistanceModifier, Elements.fireElement, -50);
         woodBones.getStatChanges().setStat(StatIDs.armor, 4);
+        woodBones.setQuest(DefaultQuests.defaultBoneQuest);
 
         addOption(reinforceBones);
         addOption(fireBones);

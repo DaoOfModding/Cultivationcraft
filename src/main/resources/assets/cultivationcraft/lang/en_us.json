@@ -34,6 +34,7 @@
 
   "cultivationcraft.quest.qisource": "Seconds spent cultivating from a QiSource",
   "cultivationcraft.quest.damagetaken": "Damage taken",
+  "cultivationcraft.quest.damageresisted": "Damage resisted",
   "cultivationcraft.quest.bounce": "Height bounced",
   "cultivationcraft.quest.live": "Minutes spent alive",
   "cultivationcraft.quest.fly": "Blocks flown",

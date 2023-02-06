@@ -7,8 +7,14 @@ import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.PlayerStatModifications;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.StatIDs;
 import DaoOfModding.Cultivationcraft.Network.PacketHandler;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.stats.Stats;
+import net.minecraft.world.damagesource.CombatRules;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
@@ -24,20 +30,27 @@ public class Damage
         PlayerStatModifications stats = BodyPartStatControl.getStats(event.getEntity().getUUID());
         float resistedDamage = damage * (1 - (stats.getElementalStat(StatIDs.resistanceModifier, source.damageElement)  / 100.0f));
 
-        progressDamageQuest((Player)event.getEntity(), event.getAmount());
-
         return resistedDamage;
     }
 
     public static boolean shouldCancel(LivingAttackEvent event)
     {
         QiDamageSource source = damageSourceToQiDamageSource(event.getSource());
-        float damage = event.getAmount();
+        float damage = armorAbsorption((Player)event.getEntity(), source, event.getAmount());
 
         PlayerStatModifications stats = BodyPartStatControl.getStats(event.getEntity().getUUID());
         float resistedDamage = damage * (1 - (stats.getElementalStat(StatIDs.resistanceModifier, source.damageElement)  / 100.0f));
 
-        // TODO: Resist damage quest
+        QuestHandler.progressQuest((Player)event.getEntity(), Quest.DAMAGE_TAKEN, event.getAmount());
+
+        if (resistedDamage > 0)
+        {
+            QuestHandler.progressQuest((Player) event.getEntity(), Quest.DAMAGE_RESISTED, event.getAmount() - resistedDamage);
+        }
+        else
+        {
+            //TODO: Damage absorb quest
+        }
 
         if (resistedDamage <= 0)
             return true;
@@ -52,9 +65,35 @@ public class Damage
         return false;
     }
 
-    public static void progressDamageQuest(Player player, double amount)
+    protected static float armorAbsorption(Player player, QiDamageSource source, float amount)
     {
-        QuestHandler.progressQuest(player, Quest.DAMAGE_TAKEN, amount);
+        if (!source.isBypassArmor())
+            amount = CombatRules.getDamageAfterAbsorb(amount, (float)player.getArmorValue(), (float)player.getAttributeValue(Attributes.ARMOR_TOUGHNESS));
+
+        if (!source.isBypassMagic())
+        {
+            if (player.hasEffect(MobEffects.DAMAGE_RESISTANCE) && source != DamageSource.OUT_OF_WORLD)
+            {
+                int i = (player.getEffect(MobEffects.DAMAGE_RESISTANCE).getAmplifier() + 1) * 5;
+                int j = 25 - i;
+                float f = amount * (float)j;
+                float f1 = amount;
+                amount = Math.max(f / 25.0F, 0.0F);
+                float f2 = f1 - amount;
+            }
+
+            if (!source.isBypassEnchantments())
+            {
+                int k = EnchantmentHelper.getDamageProtection(player.getArmorSlots(), source);
+                if (k > 0)
+                    amount = CombatRules.getDamageAfterMagicAbsorb(amount, (float)k);
+            }
+        }
+
+        if (amount < 0)
+            amount = 0;
+
+        return Math.max(amount - player.getAbsorptionAmount(), 0.0F);
     }
 
     protected static QiDamageSource damageSourceToQiDamageSource(DamageSource damage)

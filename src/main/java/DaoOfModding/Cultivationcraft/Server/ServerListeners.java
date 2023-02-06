@@ -46,9 +46,7 @@ public class ServerListeners
 
             IBodyModifications modifications = BodyModifications.getBodyModifications(event.player);
 
-            PlayerStatModifications stats = BodyPartStatControl.getStats(event.player.getUUID());
-
-                modifications.setHealth(event.player.getHealth());
+            modifications.setHealth(event.player.getHealth());
 
             for (BodyPart part : modifications.getModifications().values())
                 part.onServerTick(event.player);
@@ -81,7 +79,7 @@ public class ServerListeners
         // Check if the entity is an item
         if (event.getEntity() instanceof ItemEntity)
         {
-            ItemEntity item = (ItemEntity) event.getEntity();
+            ItemEntity item = event.getEntity();
 
             // If the item is a flying sword, spawn a flying sword item and cancel the current spawn
             if (FlyingSwordController.isFlying(item.getItem()))

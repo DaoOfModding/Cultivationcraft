@@ -212,6 +212,8 @@ public class CommonListeners
 
         if (!event.getEntity().getCommandSenderWorld().isClientSide())
             ServerItemControl.sendPlayerStats(event.getEntity(), (Player)event.getEntity());
+
+        BodyPartStatControl.updateStats(event.getEntity());
     }
 
     // Fired off when an player changes dimension
