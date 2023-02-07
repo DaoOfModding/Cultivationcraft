@@ -75,6 +75,7 @@ public class BodyPartNames
 
     public static final String elementalBonePart = "elementBone";
     public static final String bigBonePart = "bigBone";
+    public static final String sharpBonePart = "sharpBone";
 
     public static final String expandingStomachPart = "expandingStomach";
     public static final String carnivorousStomachPart = "carnivorousStomach";
@@ -160,6 +161,13 @@ public class BodyPartNames
         reinforceBones.getStatChanges().setStat(StatIDs.armor, 6);
         reinforceBones.setQuest(DefaultQuests.defaultBoneQuest);
 
+        BodyPartOption sharpBones = new BodyPartOption(sharpBonePart, bodyPosition, boneSubPosition,  "cultivationcraft.gui.bodypart.bone.sharp");
+        sharpBones.addTextureChange(TextureList.bone, new ResourceLocation(Cultivationcraft.MODID, "textures/models/bone/bone.png"));
+        sharpBones.addNeededPart(BodyPartNames.startingEyesPart);
+        sharpBones.getStatChanges().setStat(StatIDs.boneAttackModifier, 8);
+        sharpBones.addTextureColorChange(TextureList.bone, new Color(0.8f, 0.8f, 0.8f));
+        sharpBones.setQuest(DefaultQuests.defaultBoneQuest);
+
         BodyPartOption bigBones = new BodyPartOption(bigBonePart, bodyPosition, boneSubPosition,  "cultivationcraft.gui.bodypart.bone.big");
         bigBones.addTextureChange(TextureList.bone, new ResourceLocation(Cultivationcraft.MODID, "textures/models/bone/bone.png"));
         bigBones.addNeededPart(BodyPartNames.startingEyesPart);
@@ -225,6 +233,7 @@ public class BodyPartNames
         woodBones.setQuest(DefaultQuests.defaultBoneQuest);
 
         addOption(reinforceBones);
+        addOption(sharpBones);
         addOption(bigBones);
         addOption(fireBones);
         addOption(waterBones);

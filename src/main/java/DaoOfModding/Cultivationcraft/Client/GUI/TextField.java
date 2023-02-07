@@ -28,6 +28,10 @@ public class TextField
     Color textColor = Color.WHITE;
     Color backgroundColor = new Color(140, 140, 140);
 
+    Scrollbar scroll = new Scrollbar();
+
+    protected int scrolled = 0;
+
     public TextField()
     {
 
@@ -37,12 +41,17 @@ public class TextField
     {
         x = newX;
         y = newY;
+
+        scroll.setPos(x + width - 1 - scroll.buttonSize, y+1);
     }
 
     public void setSize(int newWidth, int newHeight)
     {
         width = newWidth;
         height = newHeight;
+
+        scroll.setYHeight(newHeight-2);
+        scroll.setPos(x + width - 1 - scroll.buttonSize, y+1);
     }
 
     public void setText(String newText)
@@ -55,7 +64,23 @@ public class TextField
         textColor = newColor;
     }
 
-    public void render(Screen screen, Font font, PoseStack poseStack)
+    public boolean mouseClicked(double mouseX, double mouseY, int buttonPressed)
+    {
+        if (mouseX > width - 1 - scroll.buttonSize && mouseX < width - 1)
+            if (mouseY > 0 && mouseY < height)
+                return scroll.mouseClicked(mouseX - width - 1 - scroll.buttonSize, mouseY - 1, buttonPressed);
+
+        return false;
+    }
+
+    public boolean mouseScrolled(double direction)
+    {
+        scroll.scroll((int)-direction);
+
+        return true;
+    }
+
+    public void render(Screen screen, Font font, PoseStack poseStack, int mouseX, int mouseY)
     {
         RenderSystem.setShaderTexture(0, texture);
         RenderSystem.setShaderColor(backgroundColor.getRed()/255f, backgroundColor.getGreen()/255f, backgroundColor.getBlue()/255f, 1);
@@ -70,6 +95,11 @@ public class TextField
         screen.blit(poseStack, x + 1, y + height - 1, screen.getBlitOffset(), 0, 0, width - 1, 1, width - 1, 1);
 
         // TODO scrolling
-        BetterFontRenderer.wordwrap(font, poseStack, text, x + xPadding, y + yPadding, textColor.getRGB(), width - xPadding * 2, height - yPadding * 2);
+        int lines = Math.max(BetterFontRenderer.countLines(font, text, width - xPadding * 2 - scroll.buttonSize) - height, 0);
+        BetterFontRenderer.wordwrap(font, poseStack, text, x + xPadding, y + yPadding, textColor.getRGB(), width - xPadding * 2 - scroll.buttonSize, height - yPadding * 2, scroll.scrollPosition);
+
+        scroll.scrollInterval = font.lineHeight;
+        scroll.setSize(lines);
+        scroll.render(screen, poseStack, mouseX, mouseY);
     }
 }

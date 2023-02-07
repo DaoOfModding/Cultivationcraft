@@ -8,6 +8,7 @@ import java.util.ArrayList;
 public class BetterFontRenderer
 {
     final static int heightSpacing = 1;
+    protected static int currentHeight = 0;
 
     // Makes "\n" work, cuz apparently that's too complicated for base Minecraft!?
     public static void draw(Font font, PoseStack stack, String string, float x, float y, int color)
@@ -39,27 +40,85 @@ public class BetterFontRenderer
     public static void wordwrap(Font font, PoseStack stack, String string, float x, float y, int color, int width)
     {
         for (String newString : getNewLines(string))
-            y += wordwrapSingleLine(font, stack, newString, x, y, color, width) + heightSpacing;
+            wordwrapSingleLine(font, stack, newString, x, y + currentHeight, color, width);
     }
 
+    public static int countLines(Font font, String string, int width)
+    {
+        int remaining = 0;
+
+        for (String newString : getNewLines(string))
+                remaining += wordwrapSkipOverLines(font, newString,  width);
+
+        return remaining;
+    }
     // Wrap the text to fit the specified width and height
     // Ensures whole words per line
-    public static boolean wordwrap(Font font, PoseStack stack, String string, float x, float y, int color, int width, int height)
+    public static void wordwrap(Font font, PoseStack stack, String string, float x, float y, int color, int width, int height, int skipheight)
     {
-        float currentHeight = 0;
+        currentHeight = 0;
 
         for (String newString : getNewLines(string))
         {
             if (currentHeight + font.lineHeight + heightSpacing > height)
-                return false;
+                return;
 
-            currentHeight += wordwrapSingleLine(font, stack, newString, x, y + currentHeight, color, width) + heightSpacing;
+            if (skipheight > 0)
+            {
+                skipheight -= wordwrapSkipOverLines(font, stack, newString, x, y + currentHeight, color, width, skipheight);
+            }
+            else
+                wordwrapSingleLine(font, stack, newString, x, y + currentHeight, color, width);
         }
-
-        return true;
     }
 
-    protected static float wordwrapSingleLine(Font font, PoseStack stack, String string, float x, float y, int color, int width)
+    protected static int wordwrapSkipOverLines(Font font, String string, int width)
+    {
+        int skipped = 0;
+
+            while(string.length() > 0)
+            {
+                String lineString = font.plainSubstrByWidth(string, width);
+
+                if (lineString.length() < string.length() && !string.substring(lineString.length()).startsWith(" ") && lineString.lastIndexOf(" ") > -1)
+                    lineString = lineString.substring(0, lineString.lastIndexOf(" "));
+
+                string = string.substring(lineString.length());
+                string = string.trim();
+
+                skipped += font.lineHeight + heightSpacing;
+            }
+
+        return skipped;
+    }
+
+    protected static int wordwrapSkipOverLines(Font font, PoseStack stack, String string, float x, float y, int color, int width, int heightToSkip)
+    {
+        int skipped = 0;
+
+        while (skipped < heightToSkip && string.length() > 0)
+        {
+                String lineString = font.plainSubstrByWidth(string, width);
+
+                if (lineString.length() < string.length() && !string.substring(lineString.length()).startsWith(" ") && lineString.lastIndexOf(" ") > -1)
+                    lineString = lineString.substring(0, lineString.lastIndexOf(" "));
+
+                string = string.substring(lineString.length());
+                string = string.trim();
+
+                skipped += font.lineHeight + heightSpacing;
+
+                if (skipped >= heightToSkip)
+                {
+                    wordwrapSingleLine(font, stack, string, x, y, color, width);
+                    return skipped;
+                }
+        }
+
+        return skipped;
+    }
+
+    protected static void wordwrapSingleLine(Font font, PoseStack stack, String string, float x, float y, int color, int width)
     {
         int line = 0;
 
@@ -79,10 +138,11 @@ public class BetterFontRenderer
             string = string.substring(lineString.length());
             string = string.trim();
 
+            currentHeight += font.lineHeight;
             line += font.lineHeight;
         }
 
-        return line;
+        currentHeight += heightSpacing;
     }
 
     // Wrap the text to fit the specified width

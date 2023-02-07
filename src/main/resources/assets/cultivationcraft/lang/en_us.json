@@ -102,6 +102,8 @@
 
   "cultivationcraft.gui.bodypart.bone.big": "Big Boned",
   "cultivationcraft.gui.bodypart.bone.big.description": "Increases bone thickness, letting them absorb a lot more damage but increasing your size and weight",
+  "cultivationcraft.gui.bodypart.bone.sharp": "Sharp Bones",
+  "cultivationcraft.gui.bodypart.bone.sharp.description": "Sharpen bones, provides no extra protection but deals much more damage",
 
   "cultivationcraft.gui.bodypart.bone.fire": "Fire infused",
   "cultivationcraft.gui.bodypart.bone.fire.description": "Infused bones with fire element.\nSlightly less armor, but gives resistance to fire",

@@ -38,6 +38,35 @@ public class StatScreen extends GenericTabScreen
     }
 
     @Override
+    public boolean mouseClicked(double mouseX, double mouseY, int buttonPressed)
+    {
+        if (super.mouseClicked(mouseX, mouseY, buttonPressed))
+            return true;
+
+        int edgeSpacingX = (this.width - this.xSize) / 2;
+        int edgeSpacingY = (this.height - this.ySize) / 2;
+
+        if (mouseX > statTextX +edgeSpacingX && mouseX < statTextX + edgeSpacingX + statTextWidth)
+            if (mouseY > statTextY +edgeSpacingY && mouseY < statTextY + edgeSpacingY + statTextHeight)
+                return stats.mouseClicked(mouseX - (statTextX +edgeSpacingX), mouseY - (statTextY +edgeSpacingY), buttonPressed);
+
+        return false;
+    }
+
+    @Override
+    public boolean mouseScrolled(double mouseX, double mouseY, double direction)
+    {
+        int edgeSpacingX = (this.width - this.xSize) / 2;
+        int edgeSpacingY = (this.height - this.ySize) / 2;
+
+        if (mouseX > statTextX +edgeSpacingX && mouseX < statTextX + edgeSpacingX + statTextWidth)
+            if (mouseY > statTextY +edgeSpacingY && mouseY < statTextY + edgeSpacingY + statTextHeight)
+                return stats.mouseScrolled(direction);
+
+        return false;
+    }
+
+    @Override
     public void render(PoseStack PoseStack, int mouseX, int mouseY, float partialTicks)
     {
         super.render(PoseStack, mouseX, mouseY, partialTicks);
@@ -50,7 +79,7 @@ public class StatScreen extends GenericTabScreen
         stats.setPos(edgeSpacingX + statTextX, edgeSpacingY + statTextY);
         stats.setSize(statTextWidth, statTextHeight);
         stats.setText(statString);
-        stats.render(this, font, PoseStack);
+        stats.render(this, font, PoseStack, mouseX, mouseY);
     }
 
     protected void drawBody(PoseStack PoseStack)
