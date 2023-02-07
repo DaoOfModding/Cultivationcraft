@@ -95,10 +95,10 @@ public class TextField
         screen.blit(poseStack, x + 1, y + height - 1, screen.getBlitOffset(), 0, 0, width - 1, 1, width - 1, 1);
 
         // TODO scrolling
-        int lines = Math.max(BetterFontRenderer.countLines(font, text, width - xPadding * 2 - scroll.buttonSize) - height, 0);
+        int lines = Math.max(BetterFontRenderer.countLines(font, text, width - xPadding * 2 - scroll.buttonSize) - (height  - yPadding * 2), 0) + font.lineHeight/2;
         BetterFontRenderer.wordwrap(font, poseStack, text, x + xPadding, y + yPadding, textColor.getRGB(), width - xPadding * 2 - scroll.buttonSize, height - yPadding * 2, scroll.scrollPosition);
 
-        scroll.scrollInterval = font.lineHeight;
+        scroll.scrollInterval = font.lineHeight + 1;
         scroll.setSize(lines);
         scroll.render(screen, poseStack, mouseX, mouseY);
     }
