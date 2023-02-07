@@ -9,8 +9,11 @@
 
   "cultivationcraft.stat.weight": "Weight",
   "cultivationcraft.stat.armor": "Armor",
+  "cultivationcraft.stat.armortoughness": "Armor Toughness",
   "cultivationcraft.stat.movementspeed": "Movement Speed",
   "cultivationcraft.stat.maxhp": "Max HP",
+  "cultivationcraft.stat.width": "Width",
+  "cultivationcraft.stat.size": "Size",
   "cultivationcraft.stat.maxstamina": "Max Stamina",
   "cultivationcraft.stat.jumpheight": "Jump Height",
   "cultivationcraft.stat.fallheight": "Fall Height",
@@ -96,6 +99,9 @@
   "cultivationcraft.gui.bodypart.skin.scale.earth.description": "~~~~TODO~~~~~",
   "cultivationcraft.gui.bodypart.skin.scale.wood": "Wood Scales",
   "cultivationcraft.gui.bodypart.skin.scale.wood.description": "~~~~TODO~~~~~",
+
+  "cultivationcraft.gui.bodypart.bone.big": "Big Boned",
+  "cultivationcraft.gui.bodypart.bone.big.description": "Increases bone thickness, letting them absorb a lot more damage but increasing your size and weight",
 
   "cultivationcraft.gui.bodypart.bone.fire": "Fire infused",
   "cultivationcraft.gui.bodypart.bone.fire.description": "Infused bones with fire element.\nSlightly less armor, but gives resistance to fire",

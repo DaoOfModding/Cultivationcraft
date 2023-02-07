@@ -24,6 +24,10 @@ public class StatIDs
     public static final ResourceLocation qiCost = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.stat.qicost");
 
     public static final ResourceLocation armor = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.stat.armor");
+    public static final ResourceLocation armorToughness = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.stat.armortoughness");
+
+    public static final ResourceLocation width = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.stat.width");
+    public static final ResourceLocation size = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.stat.size");
 
     // TODO: Make this do something
     public static final ResourceLocation attackRange = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.stat.attackrange");

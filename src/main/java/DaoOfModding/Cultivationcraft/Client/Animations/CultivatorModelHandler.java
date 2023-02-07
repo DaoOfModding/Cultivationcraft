@@ -1,6 +1,9 @@
 package DaoOfModding.Cultivationcraft.Client.Animations;
 
 import DaoOfModding.Cultivationcraft.Client.Textures.TextureList;
+import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
+import DaoOfModding.Cultivationcraft.Common.Qi.Stats.PlayerStatModifications;
+import DaoOfModding.Cultivationcraft.Common.Qi.Stats.StatIDs;
 import DaoOfModding.mlmanimator.Client.Models.Quads.Quad;
 import DaoOfModding.mlmanimator.Client.Poses.Arm;
 import DaoOfModding.mlmanimator.Client.Poses.PlayerPoseHandler;
@@ -17,6 +20,7 @@ import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.phys.Vec3;
 
 import java.util.*;
 
@@ -58,6 +62,10 @@ public class CultivatorModelHandler
             HashMap<String, BodyPartLocation> partLocations = getPartLocations(parts, modifications);
 
             processParts(newModel, parts, models, modifications, partLocations, handler);
+
+            PlayerStatModifications stats = BodyPartStatControl.getStats(player.getUUID());
+            newModel.getBody().addToResizeForThisAndChildren(new Vec3(stats.getStat(StatIDs.width), 0 , stats.getStat(StatIDs.width)));
+            newModel.getBody().addToResizeForThisAndChildren(new Vec3(stats.getStat(StatIDs.size), stats.getStat(StatIDs.size) , stats.getStat(StatIDs.size)));
 
             // Lock the handler so it can be modified without other threads messing with it
             handler.lock();

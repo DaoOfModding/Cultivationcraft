@@ -74,6 +74,7 @@ public class BodyPartNames
     public static final String scaleSkinPart = "scale";
 
     public static final String elementalBonePart = "elementBone";
+    public static final String bigBonePart = "bigBone";
 
     public static final String expandingStomachPart = "expandingStomach";
     public static final String carnivorousStomachPart = "carnivorousStomach";
@@ -154,17 +155,26 @@ public class BodyPartNames
     {
         BodyPartOption reinforceBones = new BodyPartOption(reinforceBonePart, bodyPosition, boneSubPosition,  "cultivationcraft.gui.generic.reinforce");
         reinforceBones.addTextureChange(TextureList.bone, new ResourceLocation(Cultivationcraft.MODID, "textures/models/bone/bone.png"));
-        reinforceBones.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.skinSubPosition);
-        reinforceBones.getStatChanges().setStat(StatIDs.boneAttackModifier, 1);
+        reinforceBones.addNeededPart(BodyPartNames.startingEyesPart);
+        reinforceBones.getStatChanges().setStat(StatIDs.boneAttackModifier, 2);
         reinforceBones.getStatChanges().setStat(StatIDs.armor, 6);
         reinforceBones.setQuest(DefaultQuests.defaultBoneQuest);
+
+        BodyPartOption bigBones = new BodyPartOption(bigBonePart, bodyPosition, boneSubPosition,  "cultivationcraft.gui.bodypart.bone.big");
+        bigBones.addTextureChange(TextureList.bone, new ResourceLocation(Cultivationcraft.MODID, "textures/models/bone/bone.png"));
+        bigBones.addNeededPart(BodyPartNames.startingEyesPart);
+        bigBones.getStatChanges().setStat(StatIDs.weight, 0.05f);
+        bigBones.getStatChanges().setStat(StatIDs.armor, 12);
+        bigBones.getStatChanges().setStat(StatIDs.armorToughness, 2);
+        bigBones.getStatChanges().setStat(StatIDs.width, 0.2f);
+        bigBones.setQuest(DefaultQuests.defaultBoneQuest);
 
         BodyPartOption fireBones = new BodyPartOption(elementalBonePart + Elements.fireElement, bodyPosition, boneSubPosition,  "cultivationcraft.gui.bodypart.bone.fire");
         fireBones.setElement(Elements.fireElement);
         fireBones.addTextureChange(TextureList.bone, new ResourceLocation(Cultivationcraft.MODID, "textures/models/bone/bone.png"));
         fireBones.addTextureColorChange(TextureList.bone, genericClientFunctions.saturate(Elements.getElement(Elements.fireElement).color, 0.75f));
-        fireBones.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.skinSubPosition);
-        fireBones.getStatChanges().setStat(StatIDs.boneAttackModifier, 1);
+        fireBones.addNeededPart(BodyPartNames.startingEyesPart);
+        fireBones.getStatChanges().setStat(StatIDs.boneAttackModifier, 2);
         fireBones.getStatChanges().setElementalStat(StatIDs.resistanceModifier, Elements.fireElement, 50);
         fireBones.getStatChanges().setElementalStat(StatIDs.resistanceModifier, Elements.waterElement, -50);
         fireBones.getStatChanges().setStat(StatIDs.armor, 4);
@@ -174,8 +184,8 @@ public class BodyPartNames
         waterBones.setElement(Elements.waterElement);
         waterBones.addTextureChange(TextureList.bone, new ResourceLocation(Cultivationcraft.MODID, "textures/models/bone/bone.png"));
         waterBones.addTextureColorChange(TextureList.bone, genericClientFunctions.saturate(Elements.getElement(Elements.waterElement).color, 0.75f));
-        waterBones.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.skinSubPosition);
-        waterBones.getStatChanges().setStat(StatIDs.boneAttackModifier, 1);
+        waterBones.addNeededPart(BodyPartNames.startingEyesPart);
+        waterBones.getStatChanges().setStat(StatIDs.boneAttackModifier, 2);
         waterBones.getStatChanges().setElementalStat(StatIDs.resistanceModifier, Elements.waterElement, 50);
         waterBones.getStatChanges().setElementalStat(StatIDs.resistanceModifier, Elements.windElement, -50);
         waterBones.getStatChanges().setStat(StatIDs.armor, 4);
@@ -185,8 +195,8 @@ public class BodyPartNames
         windBones.setElement(Elements.windElement);
         windBones.addTextureChange(TextureList.bone, new ResourceLocation(Cultivationcraft.MODID, "textures/models/bone/bone.png"));
         windBones.addTextureColorChange(TextureList.bone, genericClientFunctions.saturate(Elements.getElement(Elements.windElement).color, 0.75f));
-        windBones.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.skinSubPosition);
-        windBones.getStatChanges().setStat(StatIDs.boneAttackModifier, 1);
+        windBones.addNeededPart(BodyPartNames.startingEyesPart);
+        windBones.getStatChanges().setStat(StatIDs.boneAttackModifier, 2);
         windBones.getStatChanges().setElementalStat(StatIDs.resistanceModifier, Elements.windElement, 50);
         windBones.getStatChanges().setElementalStat(StatIDs.resistanceModifier, Elements.earthElement, -50);
         windBones.getStatChanges().setStat(StatIDs.armor, 4);
@@ -196,8 +206,8 @@ public class BodyPartNames
         earthBones.setElement(Elements.earthElement);
         earthBones.addTextureChange(TextureList.bone, new ResourceLocation(Cultivationcraft.MODID, "textures/models/bone/bone.png"));
         earthBones.addTextureColorChange(TextureList.bone, genericClientFunctions.saturate(Elements.getElement(Elements.earthElement).color, 0.75f));
-        earthBones.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.skinSubPosition);
-        earthBones.getStatChanges().setStat(StatIDs.boneAttackModifier, 1);
+        earthBones.addNeededPart(BodyPartNames.startingEyesPart);
+        earthBones.getStatChanges().setStat(StatIDs.boneAttackModifier, 2);
         earthBones.getStatChanges().setElementalStat(StatIDs.resistanceModifier, Elements.earthElement, 50);
         earthBones.getStatChanges().setElementalStat(StatIDs.resistanceModifier, Elements.woodElement, -50);
         earthBones.getStatChanges().setStat(StatIDs.armor, 4);
@@ -207,14 +217,15 @@ public class BodyPartNames
         woodBones.setElement(Elements.woodElement);
         woodBones.addTextureChange(TextureList.bone, new ResourceLocation(Cultivationcraft.MODID, "textures/models/bone/bone.png"));
         woodBones.addTextureColorChange(TextureList.bone, genericClientFunctions.saturate(Elements.getElement(Elements.woodElement).color, 0.75f));
-        woodBones.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.skinSubPosition);
-        woodBones.getStatChanges().setStat(StatIDs.boneAttackModifier, 1);
+        woodBones.addNeededPart(BodyPartNames.startingEyesPart);
+        woodBones.getStatChanges().setStat(StatIDs.boneAttackModifier, 2);
         woodBones.getStatChanges().setElementalStat(StatIDs.resistanceModifier, Elements.woodElement, 50);
         woodBones.getStatChanges().setElementalStat(StatIDs.resistanceModifier, Elements.fireElement, -50);
         woodBones.getStatChanges().setStat(StatIDs.armor, 4);
         woodBones.setQuest(DefaultQuests.defaultBoneQuest);
 
         addOption(reinforceBones);
+        addOption(bigBones);
         addOption(fireBones);
         addOption(waterBones);
         addOption(windBones);
@@ -245,13 +256,13 @@ public class BodyPartNames
     {
         BloodPart hungerBlood = new BloodPart(hungerBloodPart, bodyPosition, bloodSubPosition, "cultivationcraft.gui.bodypart.blood.hunger");
         hungerBlood.addUniqueTag(BodyPartTags.blood);
-        hungerBlood.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.skinSubPosition);
+        hungerBlood.addNeededPart(BodyPartNames.startingEyesPart);
         hungerBlood.setBloodType(new CultivatorBlood());
         hungerBlood.setQuest(DefaultQuests.defaultHealQuest);
 
         BloodPart qiBlood = new BloodPart(qiBloodPart, bodyPosition, bloodSubPosition, "cultivationcraft.gui.bodypart.blood.qi");
         qiBlood.addUniqueTag(BodyPartTags.blood);
-        qiBlood.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.skinSubPosition);
+        qiBlood.addNeededPart(BodyPartNames.startingEyesPart);
         qiBlood.setBloodType(new QiBlood());
         qiBlood.setQuest(DefaultQuests.defaultHealQuest);
 
@@ -270,14 +281,14 @@ public class BodyPartNames
 
         StomachPart carnivorousStomach = new StomachPart(carnivorousStomachPart, bodyPosition, stomachSubPosition,  "cultivationcraft.gui.bodypart.stomach.carnivorous");
         carnivorousStomach.addUniqueTag(BodyPartTags.hunger);
-        carnivorousStomach.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.skinSubPosition);
+        carnivorousStomach.addNeededPart(BodyPartNames.startingEyesPart);
         carnivorousStomach.getStatChanges().setStat(StatIDs.maxStamina, 20);
         carnivorousStomach.setFoodStats(new CarnivoreFoodStats());
         expandingStomach.setQuest(DefaultQuests.defaultStaminaQuest);
 
         StomachPart herbivoreStomach = new StomachPart(herbivorousStomachPart, bodyPosition, stomachSubPosition,  "cultivationcraft.gui.bodypart.stomach.herbivorous");
         herbivoreStomach.addUniqueTag(BodyPartTags.hunger);
-        herbivoreStomach.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.skinSubPosition);
+        herbivoreStomach.addNeededPart(BodyPartNames.startingEyesPart);
         herbivoreStomach.getStatChanges().setStat(StatIDs.maxStamina, 20);
         herbivoreStomach.setFoodStats(new HerbivoreFoodStats());
         expandingStomach.setQuest(DefaultQuests.defaultStaminaQuest);
@@ -403,20 +414,20 @@ public class BodyPartNames
     {
         BodyPart reinforce = new BodyPart(reinforcedBodyPart, bodyPosition, "cultivationcraft.gui.generic.reinforce");
         reinforce.addModel(GenericLimbNames.body);
-        reinforce.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.skinSubPosition);
+        reinforce.addNeededPart(BodyPartNames.startingEyesPart);
         reinforce.getStatChanges().setStat(StatIDs.maxHP, StatIDs.defaultMaxHP);
         reinforce.setQuest(DefaultQuests.defaultBodyQuest);
 
         BodyPart expanding = new BodyPart(expandingBodyPart, bodyPosition, "cultivationcraft.gui.bodypart.expanding");
         expanding.addModel(GenericLimbNames.body);
         expanding.addNeededTags(BodyPartTags.stretchy);
-        expanding.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.skinSubPosition);
+        expanding.addNeededPart(BodyPartNames.startingEyesPart);
         expanding.getStatChanges().setStat(StatIDs.maxHP, StatIDs.defaultMaxHP);
         expanding.setQuest(DefaultQuests.defaultBodyQuest);
 
         BodyPart shortBody = new BodyPart(shortBodyPart, bodyPosition, "cultivationcraft.gui.bodypart.short");
         shortBody.addModel(BodyPartModelNames.shortBody);
-        shortBody.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.skinSubPosition);
+        shortBody.addNeededPart(BodyPartNames.startingEyesPart);
         shortBody.getStatChanges().setStat(StatIDs.weight, DefaultPlayerBodyPartWeights.bodyWeight / -2);
         shortBody.setQuest(DefaultQuests.defaultBodyQuest);
 
@@ -546,7 +557,7 @@ public class BodyPartNames
         BodyPart feetpart = new BodyPart(feetPart, legPosition, "cultivationcraft.gui.legpart.feet");
         feetpart.addModel(BodyPartModelNames.footLeftModel);
         feetpart.addModel(BodyPartModelNames.footRightModel);
-        feetpart.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.skinSubPosition);
+        feetpart.addNeededPart(BodyPartNames.startingEyesPart);
         feetpart.getStatChanges().setStat(StatIDs.movementSpeed, StatIDs.defaultMovementSpeed * -0.25f);
         feetpart.getStatChanges().setStat(StatIDs.weight, DefaultPlayerBodyPartWeights.legWeight * -1.6f);
         feetpart.getStatChanges().setStat(StatIDs.legSupport, 2.5f);
@@ -567,7 +578,7 @@ public class BodyPartNames
         BodyPart rjLegPart = new BodyPart(reverseJointLegPart, legPosition, "cultivationcraft.gui.legpart.reversejoint");
         rjLegPart.addModel(BodyPartModelNames.reverseJointRightLegModel);
         rjLegPart.addModel(BodyPartModelNames.reverseJointLeftLegModel);
-        rjLegPart.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.skinSubPosition);
+        rjLegPart.addNeededPart(BodyPartNames.startingEyesPart);
         rjLegPart.getStatChanges().setStat(StatIDs.jumpHeight, 4);
         rjLegPart.getStatChanges().setStat(StatIDs.fallHeight, 4);
         rjLegPart.setQuest(new Quest(Quest.JUMP, 10000));
@@ -578,7 +589,7 @@ public class BodyPartNames
         oneLegPart.getStatChanges().setStat(StatIDs.jumpHeight, 7);
         oneLegPart.getStatChanges().setStat(StatIDs.fallHeight, 7);
         oneLegPart.addModel(BodyPartModelNames.singleLegModel);
-        oneLegPart.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.skinSubPosition);
+        oneLegPart.addNeededPart(BodyPartNames.startingEyesPart);
         oneLegPart.getStatChanges().setStat(StatIDs.weight, DefaultPlayerBodyPartWeights.legWeight * -1);
         oneLegPart.getStatChanges().setStat(StatIDs.legSupport, StatIDs.defaultLegSupport * -0.25f);
 
@@ -591,7 +602,7 @@ public class BodyPartNames
         sixLegPart.addModel(BodyPartModelNames.hexaRightLegModel);
         sixLegPart.addModel(BodyPartModelNames.hexaRightLegModelTwo);
         sixLegPart.addModel(BodyPartModelNames.hexaRightLegModelThree);
-        sixLegPart.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.skinSubPosition);
+        sixLegPart.addNeededPart(BodyPartNames.startingEyesPart);
         sixLegPart.getStatChanges().setStat(StatIDs.jumpHeight, 4);
         sixLegPart.getStatChanges().setStat(StatIDs.fallHeight, 4);
         sixLegPart.getStatChanges().setStat(StatIDs.movementSpeed, 0.1f);
@@ -604,7 +615,7 @@ public class BodyPartNames
         BodyPart jetLeg = new BodyPart(jetLegPart, legPosition, "cultivationcraft.gui.legpart.jet");
         jetLeg.addModel(BodyPartModelNames.jetLegLeftModel);
         jetLeg.addModel(BodyPartModelNames.jetLegRightModel);
-        jetLeg.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.skinSubPosition);
+        jetLeg.addNeededPart(BodyPartNames.startingEyesPart);
         jetLeg.getStatChanges().setStat(StatIDs.wingSupport, 10);
         jetLeg.getStatChanges().setStat(StatIDs.flightSpeed, 0.4f);
         jetLeg.getStatChanges().setStat(StatIDs.fallHeight, 4f);
