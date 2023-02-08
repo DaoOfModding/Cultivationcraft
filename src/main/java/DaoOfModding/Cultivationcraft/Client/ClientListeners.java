@@ -9,6 +9,7 @@ import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.Cu
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.ICultivatorTechniques;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPart;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartOption;
+import DaoOfModding.mlmanimator.Client.Poses.PlayerPoseHandler;
 import DaoOfModding.mlmanimator.Client.Poses.PoseHandler;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
@@ -41,8 +42,10 @@ public class ClientListeners
             if (event.player == genericClientFunctions.getPlayer())
                 KeybindingControl.handleMovementOverrides();
 
+            PlayerPoseHandler pose = PoseHandler.getPlayerPoseHandler(event.player.getUUID());
+
             // Do nothing if the pose handler hasn't yet loaded
-            if (PoseHandler.getPlayerPoseHandler(event.player.getUUID()) == null)
+            if (pose == null)
                 return;
 
             // Update the cultivator model if needed

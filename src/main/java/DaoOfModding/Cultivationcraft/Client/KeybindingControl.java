@@ -135,7 +135,6 @@ public class KeybindingControl
         AttackOverrideTechnique attackTech = (AttackOverrideTechnique)CultivatorTechniques.getCultivatorTechniques(genericClientFunctions.getPlayer()).getTechnique(slot);
 
         Minecraft.getInstance().options.keyAttack.setDown(false);
-
         // Attack with the attack override
         attackTech.attack(genericClientFunctions.getPlayer(), slot);
 

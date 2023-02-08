@@ -1,5 +1,6 @@
 package DaoOfModding.Cultivationcraft.Common.Qi.Techniques;
 
+import DaoOfModding.mlmanimator.Client.Poses.PlayerPoseHandler;
 import DaoOfModding.mlmanimator.Client.Poses.PoseHandler;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
@@ -23,6 +24,9 @@ public class AttackOverrideTechnique extends AttackTechnique
         if (cooldownCount > 0)
             return;
 
+        if (player.level.isClientSide)
+            PoseHandler.getPlayerPoseHandler(player.getUUID()).cancelNextAttackAnimation();
+
         super.attack(player, slot);
 
         // Set the cooldown
@@ -35,6 +39,9 @@ public class AttackOverrideTechnique extends AttackTechnique
         // Do nothing if on cooldown
         if (cooldownCount > 0)
             return;
+
+        if (player.level.isClientSide)
+            PoseHandler.getPlayerPoseHandler(player.getUUID()).cancelNextAttackAnimation();
 
         super.attackEntity(player, toAttack);
 

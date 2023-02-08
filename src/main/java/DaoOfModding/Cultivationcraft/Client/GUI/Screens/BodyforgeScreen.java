@@ -119,7 +119,7 @@ public class BodyforgeScreen extends GenericTabScreen
                 positions.add(part.getSubPosition());
 
         for (String pos : positions)
-            bodySubParts.addItem(BodyPartNames.getDisplayName((String)bodyParts.getSelected(), pos), pos);
+            bodySubParts.addItem(BodyPartNames.getDisplayName(getSelectedPosition(), pos), pos);
 
         // If no sub-positions are found make dropdown list blank
         if (positions.size() == 0)

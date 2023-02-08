@@ -138,11 +138,9 @@ public class BetterFontRenderer
             string = string.substring(lineString.length());
             string = string.trim();
 
-            currentHeight += font.lineHeight;
-            line += font.lineHeight;
+            currentHeight += font.lineHeight + heightSpacing;
+            line += font.lineHeight + heightSpacing;
         }
-
-        currentHeight += heightSpacing;
     }
 
     // Wrap the text to fit the specified width

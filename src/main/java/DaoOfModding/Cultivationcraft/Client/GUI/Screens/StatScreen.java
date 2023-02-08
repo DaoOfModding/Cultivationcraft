@@ -26,7 +26,7 @@ public class StatScreen extends GenericTabScreen
     protected int statTextX = 70;
     protected int statTextY = 35;
     protected int statTextWidth = 170;
-    protected int statTextHeight = 120;
+    protected int statTextHeight = 121;
 
     protected TextField stats = new TextField();
 
