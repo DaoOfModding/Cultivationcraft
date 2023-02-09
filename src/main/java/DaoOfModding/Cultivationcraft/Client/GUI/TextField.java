@@ -94,12 +94,24 @@ public class TextField
         screen.blit(poseStack, x + width - 1, y + 1, screen.getBlitOffset(), 0, 0, 1, height-1, 1, height-1);
         screen.blit(poseStack, x + 1, y + height - 1, screen.getBlitOffset(), 0, 0, width - 1, 1, width - 1, 1);
 
-        // TODO scrolling
-        int lines = Math.max(BetterFontRenderer.countLines(font, text, width - xPadding * 2 - scroll.buttonSize) - (height  - yPadding * 2), 0) + font.lineHeight/2;
-        BetterFontRenderer.wordwrap(font, poseStack, text, x + xPadding, y + yPadding, textColor.getRGB(), width - xPadding * 2 - scroll.buttonSize, height - yPadding * 2, scroll.scrollPosition);
 
+        int textWidth = width - xPadding * 2;
+        int lines = BetterFontRenderer.countLines(font, text, textWidth);
+
+        // If there are more lines to draw than can be displayed then adjusted the textWidth to not include the space taken by the scroll bar and recalculate the lines
+        if (lines > height)
+        {
+            textWidth -= scroll.buttonSize;
+            lines = BetterFontRenderer.countLines(font, text, textWidth);
+        }
+
+        BetterFontRenderer.wordwrap(font, poseStack, text, x + xPadding, y + yPadding, textColor.getRGB(), textWidth, height - yPadding * 2, scroll.scrollPosition);
+
+        int scrollSize = Math.max(BetterFontRenderer.countLines(font, text, width - xPadding * 2 - scroll.buttonSize) - (height  - yPadding * 2), 0);
         scroll.scrollInterval = font.lineHeight + 1;
-        scroll.setSize(lines);
-        scroll.render(screen, poseStack, mouseX, mouseY);
+        scroll.setSize(scrollSize);
+
+        if (lines > height)
+            scroll.render(screen, poseStack, mouseX, mouseY);
     }
 }

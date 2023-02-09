@@ -40,7 +40,7 @@ public class BetterFontRenderer
     public static void wordwrap(Font font, PoseStack stack, String string, float x, float y, int color, int width)
     {
         for (String newString : getNewLines(string))
-            wordwrapSingleLine(font, stack, newString, x, y + currentHeight, color, width);
+            wordwrapSingleLine(font, stack, newString, x, y + currentHeight, color, width, Integer.MAX_VALUE);
     }
 
     public static int countLines(Font font, String string, int width)
@@ -48,7 +48,7 @@ public class BetterFontRenderer
         int remaining = 0;
 
         for (String newString : getNewLines(string))
-                remaining += wordwrapSkipOverLines(font, newString,  width);
+            remaining += wordwrapSkipOverLines(font, newString,  width);
 
         return remaining;
     }
@@ -65,10 +65,10 @@ public class BetterFontRenderer
 
             if (skipheight > 0)
             {
-                skipheight -= wordwrapSkipOverLines(font, stack, newString, x, y + currentHeight, color, width, skipheight);
+                skipheight -= wordwrapSkipOverLines(font, stack, newString, x, y + currentHeight, color, width, height, skipheight);
             }
             else
-                wordwrapSingleLine(font, stack, newString, x, y + currentHeight, color, width);
+                wordwrapSingleLine(font, stack, newString, x, y + currentHeight, color, width, height);
         }
     }
 
@@ -92,7 +92,7 @@ public class BetterFontRenderer
         return skipped;
     }
 
-    protected static int wordwrapSkipOverLines(Font font, PoseStack stack, String string, float x, float y, int color, int width, int heightToSkip)
+    protected static int wordwrapSkipOverLines(Font font, PoseStack stack, String string, float x, float y, int color, int width, int maxHeight, int heightToSkip)
     {
         int skipped = 0;
 
@@ -110,7 +110,7 @@ public class BetterFontRenderer
 
                 if (skipped >= heightToSkip)
                 {
-                    wordwrapSingleLine(font, stack, string, x, y, color, width);
+                    wordwrapSingleLine(font, stack, string, x, y, color, width, maxHeight);
                     return skipped;
                 }
         }
@@ -118,12 +118,16 @@ public class BetterFontRenderer
         return skipped;
     }
 
-    protected static void wordwrapSingleLine(Font font, PoseStack stack, String string, float x, float y, int color, int width)
+    protected static void wordwrapSingleLine(Font font, PoseStack stack, String string, float x, float y, int color, int width, int maxHeight)
     {
         int line = 0;
 
         while(string.length() > 0)
         {
+            // Don't draw extra lines if it will overflow the textfield
+            if (currentHeight + font.lineHeight > maxHeight)
+                return;
+
             String lineString = font.plainSubstrByWidth(string, width);
 
             // Ensure the line string ends with a whole word

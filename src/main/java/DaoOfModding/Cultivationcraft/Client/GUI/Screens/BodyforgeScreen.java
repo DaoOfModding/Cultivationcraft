@@ -1,5 +1,6 @@
 package DaoOfModding.Cultivationcraft.Client.GUI.Screens;
 
+import DaoOfModding.Cultivationcraft.Client.GUI.TextField;
 import DaoOfModding.Cultivationcraft.Client.genericClientFunctions;
 import DaoOfModding.Cultivationcraft.Client.GUI.*;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartNames;
@@ -17,6 +18,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.protocol.game.ClientboundMoveEntityPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 
@@ -43,8 +45,9 @@ public class BodyforgeScreen extends GenericTabScreen
     protected final int forgeListYPos = 100;
 
     protected final int detailsMinXPos = 165;
-    protected final int detailsMaxXPos = 250;
+    protected final int detailsMaxXPos = 245;
     protected final int detailsYPos = 50;
+    protected final int detailsYHeight = 100;
 
     protected int cancelXPos = 118;
     protected final int cancelYPos = 110;
@@ -56,6 +59,9 @@ public class BodyforgeScreen extends GenericTabScreen
     protected final int selectedTextYPos = 70;
 
     protected int mode = 0;
+    protected boolean descriptionMode = true;
+
+    protected TextField partDescription = new TextField();
 
     public BodyforgeScreen()
     {
@@ -187,6 +193,10 @@ public class BodyforgeScreen extends GenericTabScreen
 
                 return true;
             }
+
+            if (mouseX > edgeSpacingX + detailsMinXPos && mouseX < edgeSpacingX + detailsMinXPos + (detailsMaxXPos - detailsMinXPos))
+                if (mouseY > edgeSpacingY + detailsYPos && mouseY < edgeSpacingY + detailsYPos + detailsYHeight)
+                    return partDescription.mouseClicked(mouseX - (edgeSpacingX + detailsMinXPos), mouseY - (edgeSpacingY + detailsYPos), buttonPressed);
         }
 
         // Cancel the selection if the cancel button is pressed
@@ -218,6 +228,11 @@ public class BodyforgeScreen extends GenericTabScreen
         if (bodySubParts.mouseScroll((int)mouseX - (edgeSpacingX + bodySubPartListXPos), (int)mouseY - (edgeSpacingY + bodySubPartListYPos), direction))
             return true;
 
+        if (mode == 0)
+            if (mouseX > edgeSpacingX + detailsMinXPos && mouseX < edgeSpacingX + detailsMinXPos + (detailsMaxXPos - detailsMinXPos))
+                if (mouseY > edgeSpacingY + detailsYPos && mouseY < edgeSpacingY + detailsYPos + detailsYHeight)
+                    return partDescription.mouseScrolled(direction);
+
         return false;
     }
 
@@ -229,7 +244,7 @@ public class BodyforgeScreen extends GenericTabScreen
         drawGuiForgroundLayer(PoseStack, partialTicks, mouseX, mouseY);
     }
 
-    protected void drawGuiDetailsForgroundLayer(PoseStack PoseStack)
+    protected void drawGuiDetailsForgroundLayer(PoseStack PoseStack, int mouseX, int mouseY)
     {
         if (forgePart.getSelected() == null)
             return;
@@ -241,9 +256,14 @@ public class BodyforgeScreen extends GenericTabScreen
         int edgeSpacingX = (this.width - this.xSize) / 2;
         int edgeSpacingY = (this.height - this.ySize) / 2;
 
-        String details = part.getDescription();
+        partDescription.setPos(edgeSpacingX + detailsMinXPos, edgeSpacingY + detailsYPos);
+        partDescription.setSize(detailsMaxXPos - detailsMinXPos, detailsYHeight);
 
-        BetterFontRenderer.wordwrap(font, PoseStack, details ,edgeSpacingX + detailsMinXPos, edgeSpacingY + detailsYPos, Color.GRAY.getRGB(), detailsMaxXPos - detailsMinXPos);
+        if (descriptionMode)
+            partDescription.setText(part.getDescription());
+        else
+            partDescription.setText(part.getStatChanges().toString());
+        partDescription.render(this, font, PoseStack, mouseX, mouseY);
     }
 
     protected void drawGuiForgroundLayer(PoseStack PoseStack, float partialTicks, int mouseX, int mouseY)
@@ -296,7 +316,7 @@ public class BodyforgeScreen extends GenericTabScreen
         bodySubParts.render(PoseStack, edgeSpacingX + bodySubPartListXPos, edgeSpacingY + bodySubPartListYPos, mouseX, mouseY, this);
         bodyParts.render(PoseStack, edgeSpacingX + bodyPartListXPos, edgeSpacingY + bodyPartListYPos, mouseX, mouseY, this);
 
-        drawGuiDetailsForgroundLayer(PoseStack);
+        drawGuiDetailsForgroundLayer(PoseStack, mouseX, mouseY);
     }
 
     protected void drawSelected(PoseStack PoseStack, BodyPart part, int mouseX, int mouseY)
