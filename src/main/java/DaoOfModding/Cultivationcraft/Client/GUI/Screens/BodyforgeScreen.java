@@ -32,9 +32,11 @@ public class BodyforgeScreen extends GenericTabScreen
     protected DropdownList bodySubParts;
     protected DropdownList forgePart;
 
-    //protected ArrayList<GUIButton> buttons = new ArrayList<GUIButton>();
     protected GUIButton forge;
     protected GUIButton cancel;
+
+    protected GUIButton description;
+    protected GUIButton stats;
 
     protected final int bodyPartListXPos = 75;
     protected final int bodyPartListYPos = 50;
@@ -79,6 +81,10 @@ public class BodyforgeScreen extends GenericTabScreen
         // Centre the buttons
         forgeXPos -= Minecraft.getInstance().font.width(forgeString) / 2;
         cancelXPos -= Minecraft.getInstance().font.width(cancelString) / 2;
+
+        description = new GUIButton("DESCRIPTION", Component.translatable("cultivationcraft.gui.description").getString());
+        description.select();
+        stats = new GUIButton("STATS", Component.translatable("cultivationcraft.gui.stats").getString());
     }
 
     protected void updateBodyPartList()
@@ -194,6 +200,21 @@ public class BodyforgeScreen extends GenericTabScreen
                 return true;
             }
 
+            if (description.mouseClick((int) mouseX - (edgeSpacingX + detailsMinXPos), (int) mouseY - (edgeSpacingY + detailsYPos - 20), buttonPressed))
+            {
+                description.select();
+                stats.unselect();
+
+                descriptionMode = true;
+            }
+            else if (stats.mouseClick((int) mouseX - (edgeSpacingX + detailsMaxXPos - stats.width), (int) mouseY - (edgeSpacingY + detailsYPos - 20), buttonPressed))
+            {
+                stats.select();
+                description.unselect();
+
+                descriptionMode = false;
+            }
+
             if (mouseX > edgeSpacingX + detailsMinXPos && mouseX < edgeSpacingX + detailsMinXPos + (detailsMaxXPos - detailsMinXPos))
                 if (mouseY > edgeSpacingY + detailsYPos && mouseY < edgeSpacingY + detailsYPos + detailsYHeight)
                     return partDescription.mouseClicked(mouseX - (edgeSpacingX + detailsMinXPos), mouseY - (edgeSpacingY + detailsYPos), buttonPressed);
@@ -263,7 +284,11 @@ public class BodyforgeScreen extends GenericTabScreen
             partDescription.setText(part.getDescription());
         else
             partDescription.setText(part.getStatChanges().toString());
+
         partDescription.render(this, font, PoseStack, mouseX, mouseY);
+
+        description.render(PoseStack, edgeSpacingX + detailsMinXPos, edgeSpacingY + detailsYPos - 20, mouseX, mouseY, this);
+        stats.render(PoseStack, edgeSpacingX + detailsMaxXPos - stats.width, edgeSpacingY + detailsYPos - 20, mouseX, mouseY, this);
     }
 
     protected void drawGuiForgroundLayer(PoseStack PoseStack, float partialTicks, int mouseX, int mouseY)
