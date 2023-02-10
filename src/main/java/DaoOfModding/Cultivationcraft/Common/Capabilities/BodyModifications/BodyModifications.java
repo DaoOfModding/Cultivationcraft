@@ -211,10 +211,17 @@ public class BodyModifications implements IBodyModifications
         hasUpdated = updated;
     }
 
-    protected void clearModifications()
+    public void clearModifications()
     {
         modifications.clear();
         options.clear();
+        tags.clear();
+
+        progress = 0;
+        lastForged = "";
+        selected = "";
+
+        setUpdated(false);
     }
 
     public void read(CompoundTag NBT)

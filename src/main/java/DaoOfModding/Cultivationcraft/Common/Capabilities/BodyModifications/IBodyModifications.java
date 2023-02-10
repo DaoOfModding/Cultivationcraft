@@ -41,6 +41,8 @@ public interface IBodyModifications
     public void removeModification(BodyPart part);
     public void removeOption(BodyPartOption option);
 
+    public void clearModifications();
+
     public void read(CompoundTag NBT);
     public CompoundTag write();
 

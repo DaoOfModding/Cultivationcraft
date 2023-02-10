@@ -10,6 +10,7 @@ import DaoOfModding.Cultivationcraft.Common.Capabilities.ChunkQiSources.IChunkQi
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStats;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.ICultivatorStats;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.CultivatorTechniques;
+import DaoOfModding.Cultivationcraft.Common.Commands.BodyforgeCommand;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPart;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartOption;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.FoodStats.QiFoodStats;
@@ -21,9 +22,12 @@ import DaoOfModding.Cultivationcraft.Network.PacketHandler;
 import DaoOfModding.Cultivationcraft.Server.ServerItemControl;
 import DaoOfModding.Cultivationcraft.Server.ServerListeners;
 import DaoOfModding.Cultivationcraft.Server.SkillHotbarServer;
+import com.mojang.brigadier.CommandDispatcher;
+import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.*;
 import net.minecraftforge.event.entity.player.PlayerEvent;
@@ -61,6 +65,13 @@ public class CommonListeners
         }
         else
             ServerListeners.playerTick(event);
+    }
+
+    @SubscribeEvent
+    public static void onRegisterCommandEvent(RegisterCommandsEvent event)
+    {
+        CommandDispatcher<CommandSourceStack> commandDispatcher = event.getDispatcher();
+        BodyforgeCommand.register(commandDispatcher);
     }
 
     @SubscribeEvent

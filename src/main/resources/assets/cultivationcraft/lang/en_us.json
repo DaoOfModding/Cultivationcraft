@@ -230,5 +230,14 @@
   "cultivationcraft.technique.dart.description": "Toggle on to spread your wings. Press jump to quickly dart in the direction you are looking",
 
   "cultivationcraft.technique.bounce": "Bounce Harder",
-  "cultivationcraft.technique.bounce.description": "Toggle on to curl yourself into a ball when in the air, increasing the amount you bounce when you land"
+  "cultivationcraft.technique.bounce.description": "Toggle on to curl yourself into a ball when in the air, increasing the amount you bounce when you land",
+
+  "cultivationcraft.commands.reset.single": "%s had their bodyforge status reset",
+  "cultivationcraft.commands.reset.multiple": "%s players had their bodyforge status reset",
+
+  "cultivationcraft.commands.completequest.single": "Completed quest for %s",
+  "cultivationcraft.commands.completequest.multiple": "Completed quests for %s players",
+
+  "cultivationcraft.commands.completeprogress.single": "Completed bodyforge progress for %s",
+  "cultivationcraft.commands.completeprogress.multiple": "Completed bodyforge progress for %s players"
 }
