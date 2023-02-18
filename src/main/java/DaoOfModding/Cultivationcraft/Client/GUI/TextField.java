@@ -30,11 +30,14 @@ public class TextField
 
     Scrollbar scroll = new Scrollbar();
 
-    protected int scrolled = 0;
-
     public TextField()
     {
 
+    }
+
+    public void resetScroll()
+    {
+        scroll.setScrollPosition(0);
     }
 
     public void setPos(int newX, int newY)
@@ -104,6 +107,9 @@ public class TextField
             textWidth -= scroll.buttonSize;
             lines = BetterFontRenderer.countLines(font, text, textWidth);
         }
+
+        if (lines <= height)
+            scroll.setScrollPosition(0);
 
         BetterFontRenderer.wordwrap(font, poseStack, text, x + xPadding, y + yPadding, textColor.getRGB(), textWidth, height - yPadding * 2, scroll.scrollPosition);
 

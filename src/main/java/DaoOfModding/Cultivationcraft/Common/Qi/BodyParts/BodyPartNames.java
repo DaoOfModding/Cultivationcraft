@@ -4,6 +4,7 @@ import DaoOfModding.Cultivationcraft.Client.Animations.BodyPartLocation;
 import DaoOfModding.Cultivationcraft.Client.Animations.BodyPartModelNames;
 import DaoOfModding.Cultivationcraft.Client.Textures.TextureList;
 import DaoOfModding.Cultivationcraft.Client.genericClientFunctions;
+import DaoOfModding.Cultivationcraft.Common.Misc;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Blood.CultivatorBlood;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Blood.QiBlood;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyForgeParts.*;
@@ -180,7 +181,7 @@ public class BodyPartNames
         BodyPartOption fireBones = new BodyPartOption(elementalBonePart + Elements.fireElement, bodyPosition, boneSubPosition,  "cultivationcraft.gui.bodypart.bone.fire");
         fireBones.setElement(Elements.fireElement);
         fireBones.addTextureChange(TextureList.bone, new ResourceLocation(Cultivationcraft.MODID, "textures/models/bone/bone.png"));
-        fireBones.addTextureColorChange(TextureList.bone, genericClientFunctions.saturate(Elements.getElement(Elements.fireElement).color, 0.75f));
+        fireBones.addTextureColorChange(TextureList.bone, Misc.saturate(Elements.getElement(Elements.fireElement).color, 0.75f));
         fireBones.addNeededPart(BodyPartNames.startingEyesPart);
         fireBones.getStatChanges().setStat(StatIDs.boneAttackModifier, 2);
         fireBones.getStatChanges().setElementalStat(StatIDs.resistanceModifier, Elements.fireElement, 50);
@@ -191,7 +192,7 @@ public class BodyPartNames
         BodyPartOption waterBones = new BodyPartOption(elementalBonePart + Elements.waterElement, bodyPosition, boneSubPosition,  "cultivationcraft.gui.bodypart.bone.water");
         waterBones.setElement(Elements.waterElement);
         waterBones.addTextureChange(TextureList.bone, new ResourceLocation(Cultivationcraft.MODID, "textures/models/bone/bone.png"));
-        waterBones.addTextureColorChange(TextureList.bone, genericClientFunctions.saturate(Elements.getElement(Elements.waterElement).color, 0.75f));
+        waterBones.addTextureColorChange(TextureList.bone, Misc.saturate(Elements.getElement(Elements.waterElement).color, 0.75f));
         waterBones.addNeededPart(BodyPartNames.startingEyesPart);
         waterBones.getStatChanges().setStat(StatIDs.boneAttackModifier, 2);
         waterBones.getStatChanges().setElementalStat(StatIDs.resistanceModifier, Elements.waterElement, 50);
@@ -202,7 +203,7 @@ public class BodyPartNames
         BodyPartOption windBones = new BodyPartOption(elementalBonePart + Elements.windElement, bodyPosition, boneSubPosition,  "cultivationcraft.gui.bodypart.bone.wind");
         windBones.setElement(Elements.windElement);
         windBones.addTextureChange(TextureList.bone, new ResourceLocation(Cultivationcraft.MODID, "textures/models/bone/bone.png"));
-        windBones.addTextureColorChange(TextureList.bone, genericClientFunctions.saturate(Elements.getElement(Elements.windElement).color, 0.75f));
+        windBones.addTextureColorChange(TextureList.bone, Misc.saturate(Elements.getElement(Elements.windElement).color, 0.75f));
         windBones.addNeededPart(BodyPartNames.startingEyesPart);
         windBones.getStatChanges().setStat(StatIDs.boneAttackModifier, 2);
         windBones.getStatChanges().setElementalStat(StatIDs.resistanceModifier, Elements.windElement, 50);
@@ -213,7 +214,7 @@ public class BodyPartNames
         BodyPartOption earthBones = new BodyPartOption(elementalBonePart + Elements.earthElement, bodyPosition, boneSubPosition,  "cultivationcraft.gui.bodypart.bone.earth");
         earthBones.setElement(Elements.earthElement);
         earthBones.addTextureChange(TextureList.bone, new ResourceLocation(Cultivationcraft.MODID, "textures/models/bone/bone.png"));
-        earthBones.addTextureColorChange(TextureList.bone, genericClientFunctions.saturate(Elements.getElement(Elements.earthElement).color, 0.75f));
+        earthBones.addTextureColorChange(TextureList.bone, Misc.saturate(Elements.getElement(Elements.earthElement).color, 0.75f));
         earthBones.addNeededPart(BodyPartNames.startingEyesPart);
         earthBones.getStatChanges().setStat(StatIDs.boneAttackModifier, 2);
         earthBones.getStatChanges().setElementalStat(StatIDs.resistanceModifier, Elements.earthElement, 50);
@@ -224,7 +225,7 @@ public class BodyPartNames
         BodyPartOption woodBones = new BodyPartOption(elementalBonePart + Elements.woodElement, bodyPosition, boneSubPosition,  "cultivationcraft.gui.bodypart.bone.wood");
         woodBones.setElement(Elements.woodElement);
         woodBones.addTextureChange(TextureList.bone, new ResourceLocation(Cultivationcraft.MODID, "textures/models/bone/bone.png"));
-        woodBones.addTextureColorChange(TextureList.bone, genericClientFunctions.saturate(Elements.getElement(Elements.woodElement).color, 0.75f));
+        woodBones.addTextureColorChange(TextureList.bone, Misc.saturate(Elements.getElement(Elements.woodElement).color, 0.75f));
         woodBones.addNeededPart(BodyPartNames.startingEyesPart);
         woodBones.getStatChanges().setStat(StatIDs.boneAttackModifier, 2);
         woodBones.getStatChanges().setElementalStat(StatIDs.resistanceModifier, Elements.woodElement, 50);

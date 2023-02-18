@@ -70,7 +70,7 @@ public class MeditateTechnique extends MovementOverrideTechnique
             List<QiSource> sources = ChunkQiSources.getQiSourcesInRange(event.player.level, event.player.position(), (int)BodyPartStatControl.getPlayerStatControl(event.player.getUUID()).getStats().getStat(StatIDs.qiAbsorbRange));
 
             // If meditating in a Qi Source, increase the quest by 1 second
-            if (sources.size() > 0 && !event.player.isLocalPlayer())
+            if (sources.size() > 0 && !event.player.level.isClientSide)
                 QuestHandler.progressQuest(event.player, Quest.QI_SOURCE_MEDITATION, 1.0/20.0);
 
             int remaining = (int)BodyPartStatControl.getPlayerStatControl(event.player.getUUID()).getStats().getStat(StatIDs.qiAbsorb);

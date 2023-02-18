@@ -10,6 +10,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
+import java.awt.*;
 import java.util.List;
 
 public class Misc
@@ -49,5 +50,18 @@ public class Misc
     public static boolean blockExists(Block block)
     {
         return (block != Blocks.CAVE_AIR && block != Blocks.VOID_AIR && block != Blocks.AIR);
+    }
+
+    // Move supplied color towards white
+    // 0 = no change, 1 = fully white
+    public static Color saturate(Color toSaturate, float amount)
+    {
+        float f = 1.0F - amount;
+
+        float r = toSaturate.getRed() * f + 255f * amount;
+        float g = toSaturate.getGreen() * f + 255f * amount;
+        float b = toSaturate.getBlue() * f + 255f * amount;
+
+        return new Color(r/255f, g/255f, b/255f);
     }
 }

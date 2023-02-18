@@ -11,6 +11,7 @@ import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartOption;
 import DaoOfModding.Cultivationcraft.Common.Qi.CultivationTypes;
 import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
+import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.event.TickEvent;
@@ -34,7 +35,8 @@ public class DivineSenseTechnique extends Technique
     @Override
     public void tickClient(TickEvent.PlayerTickEvent event)
     {
-        Renderer.QiSourcesVisible = true;
+        if (event.player.isLocalPlayer())
+            Renderer.QiSourcesVisible = true;
     }
 
     @Override
@@ -42,7 +44,7 @@ public class DivineSenseTechnique extends Technique
     {
         super.deactivate(player);
 
-        if (player.level.isClientSide)
+        if (player.isLocalPlayer())
             Renderer.QiSourcesVisible = false;
     }
 

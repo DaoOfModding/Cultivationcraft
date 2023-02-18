@@ -35,6 +35,7 @@ public class StatScreen extends GenericTabScreen
         super(0, Component.translatable("cultivationcraft.gui.stats"), new ResourceLocation(Cultivationcraft.MODID, "textures/gui/stats.png"));
 
         statString = BodyPartStatControl.getStats(genericClientFunctions.getPlayer().getUUID()).toString();
+        stats.resetScroll();
     }
 
     @Override

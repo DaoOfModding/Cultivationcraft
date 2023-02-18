@@ -13,7 +13,7 @@ public class QiSourceConfig
     public final static int MaxStorage = 1000000000;
     public final static int MinStorage = 1000000;
 
-    protected final static int defaultRarity = 400;
+    protected final static int defaultRarity = 40;
     protected static HashMap<ResourceKey<Level>, Integer> dimensionRarity = new HashMap<>();
 
     // Ticks to fully regen

@@ -64,8 +64,8 @@ public class CultivatorModelHandler
             processParts(newModel, parts, models, modifications, partLocations, handler);
 
             PlayerStatModifications stats = BodyPartStatControl.getStats(player.getUUID());
-            newModel.getBody().addToResizeForThisAndChildren(new Vec3(stats.getStat(StatIDs.width), 0 , stats.getStat(StatIDs.width)));
-            newModel.getBody().addToResizeForThisAndChildren(new Vec3(stats.getStat(StatIDs.size), stats.getStat(StatIDs.size) , stats.getStat(StatIDs.size)));
+
+            handler.resize(new Vec3(stats.getStat(StatIDs.size) + stats.getStat(StatIDs.width), stats.getStat(StatIDs.size) , stats.getStat(StatIDs.size) + stats.getStat(StatIDs.width)));
 
             // Lock the handler so it can be modified without other threads messing with it
             handler.lock();

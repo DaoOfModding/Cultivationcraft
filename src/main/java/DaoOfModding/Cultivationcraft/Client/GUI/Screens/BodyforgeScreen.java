@@ -177,7 +177,9 @@ public class BodyforgeScreen extends GenericTabScreen
         {
             String changed = (String) bodyParts.mouseClick((int) mouseX - (edgeSpacingX + bodyPartListXPos), (int) mouseY - (edgeSpacingY + bodyPartListYPos), buttonPressed);
 
-            if (changed != null) {
+            if (changed != null)
+            {
+                partDescription.resetScroll();
                 updateBodySubPartList();
                 return true;
             }
@@ -188,7 +190,10 @@ public class BodyforgeScreen extends GenericTabScreen
             }
 
             if (forgePart.mouseClick((int) mouseX - (edgeSpacingX + bodySubPartListXPos), (int) mouseY - (edgeSpacingY + forgeListYPos), buttonPressed) != null)
+            {
+                partDescription.resetScroll();
                 return true;
+            }
 
             // Send the selected part to the server if a part is selected and the forge button is pressed
             if (forge.mouseClick((int) mouseX - (edgeSpacingX + forgeXPos), (int) mouseY - (edgeSpacingY + forgeYPos), buttonPressed)) {
@@ -205,6 +210,7 @@ public class BodyforgeScreen extends GenericTabScreen
                 description.select();
                 stats.unselect();
 
+                partDescription.resetScroll();
                 descriptionMode = true;
             }
             else if (stats.mouseClick((int) mouseX - (edgeSpacingX + detailsMaxXPos - stats.width), (int) mouseY - (edgeSpacingY + detailsYPos - 20), buttonPressed))
@@ -212,6 +218,7 @@ public class BodyforgeScreen extends GenericTabScreen
                 stats.select();
                 description.unselect();
 
+                partDescription.resetScroll();
                 descriptionMode = false;
             }
 

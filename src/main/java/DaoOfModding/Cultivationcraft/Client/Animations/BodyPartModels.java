@@ -240,6 +240,7 @@ public class BodyPartModels
         semiHeadPart.extend(semiHeadResizer);
         semiHeadPart.setLooking(true);
         semiHeadPart.setFirstPersonRender(false);
+        semiHeadPart.setHitbox(false);
 
         // Create the jaw
         ExtendableModelRenderer jawPart = new ExtendableModelRenderer( BodyPartModelNames.jawModel + "2");
@@ -253,6 +254,7 @@ public class BodyPartModels
         jawPart.extend(jawResizer);
         jawPart.setFirstPersonRender(false);
         jawPart.setUsedSize(new Vec3(0, 5, 0));
+        jawPart.setHitbox(false);
 
         // Attach the jaw to the head
         semiHeadPart.addChild(jawPart);
@@ -276,6 +278,8 @@ public class BodyPartModels
         FPsemiHeadPart.setFixedPosAdjustment(0, -0.5f, -1.25f);
         FPsemiHeadPart.extend(semiHeadResizer);
         FPsemiHeadPart.setLooking(true);
+        FPsemiHeadPart.setHitbox(false);
+        FPsemiHeadPart.setNoResize(true);
 
         // Create the jaw
         ExtendableModelRenderer FPjawPart = new ExtendableModelRenderer(BodyPartModelNames.FPjawModel + "2");
@@ -286,6 +290,8 @@ public class BodyPartModels
         FPjawPart.setFixedPosAdjustment(0, -2, 2f);
         FPjawPart.extend(jawResizer);
         FPjawPart.setUsedSize(new Vec3(0, 5, 0));
+        FPjawPart.setHitbox(false);
+        FPjawPart.setNoResize(true);
 
         // Attach the jaw to the head
         FPsemiHeadPart.addChild(FPjawPart);
@@ -630,7 +636,8 @@ public class BodyPartModels
         flatToothPart.setHitbox(false);
         addModel(BodyPartModelNames.flatToothModel, flatToothPart);
 
-        ExtendableModelRenderer FPflatToothPart = flatToothPart.clone();
+        ExtendableModelRenderer FPflatToothPart = flatToothPart.clone("FP");
+        FPflatToothPart.setNoResizeForSelfAndChildren(true);
         FPflatToothPart.setName(BodyPartModelNames.FPflatToothModel);
         addModel(BodyPartModelNames.FPflatToothModel, FPflatToothPart);
 
@@ -678,7 +685,9 @@ public class BodyPartModels
         flatToothPart.setHitbox(false);
         addModel(BodyPartModelNames.flatToothLowerModel, flatToothPart);
 
-        FPflatToothPart = flatToothPart.clone();
+        FPflatToothPart = flatToothPart.clone("FP");
+        FPflatToothPart.setFirstPersonRenderForSelfAndChildren(true);
+        FPflatToothPart.setNoResizeForSelfAndChildren(true);
         FPflatToothPart.setName(BodyPartModelNames.FPflatToothLowerModel);
         addModel(BodyPartModelNames.FPflatToothLowerModel, FPflatToothPart);
     }

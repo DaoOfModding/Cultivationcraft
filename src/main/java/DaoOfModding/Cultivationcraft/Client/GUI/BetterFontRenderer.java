@@ -39,6 +39,8 @@ public class BetterFontRenderer
     // Ensures whole words per line
     public static void wordwrap(Font font, PoseStack stack, String string, float x, float y, int color, int width)
     {
+        currentHeight = 0;
+
         for (String newString : getNewLines(string))
             wordwrapSingleLine(font, stack, newString, x, y + currentHeight, color, width, Integer.MAX_VALUE);
     }

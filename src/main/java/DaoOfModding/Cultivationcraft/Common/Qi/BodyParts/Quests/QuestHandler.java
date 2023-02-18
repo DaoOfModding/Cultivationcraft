@@ -24,6 +24,10 @@ public class QuestHandler
 
     public static void progressQuest(Player player, ResourceLocation mode, double amount)
     {
+        // Don't do anything if this is client side and the player is not the player character
+        if (player.level.isClientSide && !player.isLocalPlayer())
+            return;
+
         amount *= debug.questProgressSpeed;
 
         ICultivatorStats stats = CultivatorStats.getCultivatorStats(player);
@@ -57,7 +61,7 @@ public class QuestHandler
 
         if (player.isLocalPlayer())
             ClientPacketHandler.sendQuestProgressToServer(player.getUUID(), progress);
-        else
+        else if (!player.level.isClientSide)
             PacketHandler.sendQuestProgressToClient(player.getUUID(), progress);
 
 
