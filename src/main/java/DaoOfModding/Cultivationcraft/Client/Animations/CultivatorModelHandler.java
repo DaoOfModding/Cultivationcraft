@@ -36,6 +36,11 @@ public class CultivatorModelHandler
         return models.get(playerID);
     }
 
+    public static void resetPlayerModels(UUID playerID)
+    {
+        models.put(playerID, new BodyPartModels(playerID));
+    }
+
     public static void updateModifications(AbstractClientPlayer player)
     {
         IBodyModifications modifications = BodyModifications.getBodyModifications(player);
@@ -52,6 +57,8 @@ public class CultivatorModelHandler
 
         if (handler != null)
         {
+            // Reset the player models to fix weird bugs from previous itterations
+            resetPlayerModels(player.getUUID());
             BodyPartModels models = getPlayerModels(player.getUUID());
 
             // Create a new player model with the specified modifications
@@ -65,10 +72,10 @@ public class CultivatorModelHandler
 
             PlayerStatModifications stats = BodyPartStatControl.getStats(player.getUUID());
 
-            handler.resize(new Vec3(stats.getStat(StatIDs.size) + stats.getStat(StatIDs.width), stats.getStat(StatIDs.size) , stats.getStat(StatIDs.size) + stats.getStat(StatIDs.width)));
-
             // Lock the handler so it can be modified without other threads messing with it
             handler.lock();
+
+            handler.resize(new Vec3(stats.getStat(StatIDs.size) + stats.getStat(StatIDs.width), stats.getStat(StatIDs.size) , stats.getStat(StatIDs.size) + stats.getStat(StatIDs.width)));
 
             // Update the player model with the new one
             handler.setPlayerModel(newModel);

@@ -301,6 +301,7 @@ public class BodyModifications implements IBodyModifications
         lastForged = mod.getLastForged();
         progress = mod.getProgress();
         questProgress = mod.getQuestProgress();
+        health = mod.getHealth();
 
         setUpdated(false);
     }

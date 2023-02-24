@@ -612,7 +612,7 @@ public class BodyPartModels
         //Setup side teeth
         flatToothResizer = QiResizers.getSideTeethResizer(6, 5.8f, 1, 0.1f);
 
-        ExtendableModelRenderer flatToothSidePart = new ExtendableModelRenderer(BodyPartModelNames.flatToothModel + "1");
+        ExtendableModelRenderer flatToothSidePart = new ExtendableModelRenderer(BodyPartModelNames.flatToothModel + "_SIDE");
         flatToothSidePart.addLayer(new UVPair(0, 0), TextureList.boneSize, 0, TextureList.bone);
         flatToothSidePart.setPos(1f, 0.5f, 1f);
         flatToothSidePart.setFixedPosAdjustment(0f, 0, 0.1f);
@@ -623,7 +623,7 @@ public class BodyPartModels
 
         flatToothResizer = QiResizers.getSideTeethResizer(6, 5.8f, 1, 0.1f);
 
-        flatToothSidePart = new ExtendableModelRenderer(BodyPartModelNames.flatToothModel + "2");
+        flatToothSidePart = new ExtendableModelRenderer(BodyPartModelNames.flatToothModel + "_OTHER_SIDE");
         flatToothSidePart.addLayer(new UVPair(0, 0), TextureList.boneSize, 0, TextureList.bone);
         flatToothSidePart.setPos(1f, 0.5f, 1f);
         flatToothSidePart.setFixedPosAdjustment(0f, 0, 0.1f);
@@ -661,7 +661,7 @@ public class BodyPartModels
         // Create row of bottom teeth
         flatToothResizer = QiResizers.getSideTeethResizer(6, 5.8f, 1, 0.1f);
 
-        flatToothSidePart = new ExtendableModelRenderer(BodyPartModelNames.flatToothLowerModel + "1");
+        flatToothSidePart = new ExtendableModelRenderer(BodyPartModelNames.flatToothLowerModel + "_SIDE");
         flatToothSidePart.addLayer(new UVPair(0, 0), TextureList.boneSize, 0, TextureList.bone);
         flatToothSidePart.setPos(1f, 0.5f, 1f);
         flatToothSidePart.setFixedPosAdjustment(0f, 0, 0.1f);
@@ -672,7 +672,7 @@ public class BodyPartModels
 
         flatToothResizer = QiResizers.getSideTeethResizer(6, 5.8f, 1, 0.1f);
 
-        flatToothSidePart = new ExtendableModelRenderer(BodyPartModelNames.flatToothLowerModel + "2");
+        flatToothSidePart = new ExtendableModelRenderer(BodyPartModelNames.flatToothLowerModel + "_OTHER_SIDE");
         flatToothSidePart.addLayer(new UVPair(0, 0), TextureList.boneSize, 0, TextureList.bone);
         flatToothSidePart.setPos(1f, 0.5f, 1f);
         flatToothSidePart.setFixedPosAdjustment(0f, 0, 0.1f);
