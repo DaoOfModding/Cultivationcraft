@@ -38,7 +38,6 @@ public class BodyPart
     protected String displayNamePosition;
     protected PlayerStatModifications stats;
     protected String textureID = TextureList.skin;
-    protected boolean texturesUpdated = false;
     protected Quest quest;
 
     protected BodyPartLocation connection = null;
@@ -268,14 +267,11 @@ public class BodyPart
 
         for (Map.Entry<String, Vec3> entry : textureColorChanges.entrySet())
             handler.getPlayerModel().getTextureHandler().addColor(entry.getKey(), entry.getValue());
-
-        texturesUpdated = true;
     }
 
     public void onClientTick(Player player)
     {
-        if (!texturesUpdated)
-            updateTextures(player.getUUID());
+        updateTextures(player.getUUID());
     }
 
     public void onServerTick(Player player)
