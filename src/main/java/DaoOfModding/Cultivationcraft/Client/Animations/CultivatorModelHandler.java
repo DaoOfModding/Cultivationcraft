@@ -70,6 +70,14 @@ public class CultivatorModelHandler
 
             processParts(newModel, parts, models, modifications, partLocations, handler);
 
+            // Update textures from body parts
+            for (BodyPart part : parts)
+                part.updateTextures(newModel.getTextureHandler());
+
+            for (HashMap<String, BodyPartOption> options : modifications.getModificationOptions().values())
+                for (BodyPartOption option : options.values())
+                    option.updateTextures(newModel.getTextureHandler());
+
             PlayerStatModifications stats = BodyPartStatControl.getStats(player.getUUID());
 
             // Lock the handler so it can be modified without other threads messing with it

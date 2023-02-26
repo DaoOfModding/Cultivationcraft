@@ -15,6 +15,7 @@ import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.PlayerStatModifications;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.StatIDs;
 import DaoOfModding.Cultivationcraft.Network.ClientPacketHandler;
+import DaoOfModding.mlmanimator.Client.Models.TextureHandler;
 import DaoOfModding.mlmanimator.Client.Poses.Arm;
 import DaoOfModding.mlmanimator.Client.Poses.PlayerPoseHandler;
 import DaoOfModding.mlmanimator.Client.Poses.PoseHandler;
@@ -255,23 +256,18 @@ public class BodyPart
 
     }
 
-    public void updateTextures(UUID playerID)
+    public void updateTextures(TextureHandler handler)
     {
-        PlayerPoseHandler handler = PoseHandler.getPlayerPoseHandler(playerID);
-
-        if (handler == null)
-            return;
-
         for (Map.Entry<String, ResourceLocation> entry : textureChanges.entrySet())
-            handler.getPlayerModel().getTextureHandler().addTexture(entry.getKey(), entry.getValue());
+            handler.addTexture(entry.getKey(), entry.getValue());
 
         for (Map.Entry<String, Vec3> entry : textureColorChanges.entrySet())
-            handler.getPlayerModel().getTextureHandler().addColor(entry.getKey(), entry.getValue());
+            handler.addColor(entry.getKey(), entry.getValue());
     }
 
     public void onClientTick(Player player)
     {
-        updateTextures(player.getUUID());
+
     }
 
     public void onServerTick(Player player)
