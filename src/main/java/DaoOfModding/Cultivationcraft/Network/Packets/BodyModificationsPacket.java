@@ -3,6 +3,7 @@ package DaoOfModding.Cultivationcraft.Network.Packets;
 import DaoOfModding.Cultivationcraft.Client.ClientItemControl;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.BodyModifications;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.IBodyModifications;
+import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.CultivatorTechniques;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import net.minecraft.world.entity.player.Player;
@@ -83,6 +84,7 @@ public class BodyModificationsPacket extends Packet
 
         modifications.copy(mods);
 
+        CultivatorTechniques.getCultivatorTechniques(player).determinePassives(player);
         BodyPartStatControl.updateStats(player);
     }
 }

@@ -4,21 +4,17 @@ import DaoOfModding.Cultivationcraft.Client.Animations.CultivatorModelHandler;
 import DaoOfModding.Cultivationcraft.Client.GUI.SkillHotbarOverlay;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.BodyModifications;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.IBodyModifications;
-import DaoOfModding.Cultivationcraft.Common.Capabilities.ChunkQiSources.ChunkQiSources;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.CultivatorTechniques;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.ICultivatorTechniques;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPart;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartOption;
+import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.PassiveTechniques.PassiveTechnique;
+import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.Technique;
 import DaoOfModding.mlmanimator.Client.Poses.PlayerPoseHandler;
 import DaoOfModding.mlmanimator.Client.Poses.PoseHandler;
-import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.AbstractClientPlayer;
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.client.event.*;
 import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.event.TickEvent;
@@ -57,13 +53,25 @@ public class ClientListeners
             ICultivatorTechniques techs = CultivatorTechniques.getCultivatorTechniques(event.player);
 
             for (int i = 0; i < CultivatorTechniques.numberOfTechniques; i++)
-                if (techs.getTechnique(i) != null)
+            {
+                Technique tech = techs.getTechnique(i);
+
+                if (tech != null)
                 {
-                    if (techs.getTechnique(i).isActive())
-                        techs.getTechnique(i).tickClient(event);
+                    if (tech.isActive())
+                        tech.tickClient(event);
                     else
-                        techs.getTechnique(i).tickInactiveClient(event);
+                        tech.tickInactiveClient(event);
                 }
+            }
+
+            for (PassiveTechnique passive : techs.getPassives())
+            {
+                if (passive.isActive())
+                    passive.tickClient(event);
+                else
+                    passive.tickInactiveClient(event);
+            }
 
             // Tick through all body modifications on the player
             IBodyModifications modifications = BodyModifications.getBodyModifications(event.player);

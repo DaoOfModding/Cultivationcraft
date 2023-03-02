@@ -15,6 +15,7 @@ import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.Quest;
 import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.DefaultPlayerBodyPartWeights;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.StatIDs;
+import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.PassiveTechniques.JetTechnique;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import DaoOfModding.mlmanimator.Client.Models.GenericLimbNames;
 import DaoOfModding.mlmanimator.Client.Poses.Arm;
@@ -282,7 +283,7 @@ public class BodyPartNames
 
     protected static void setupStomachOptions()
     {
-        ExpandingStomachPart expandingStomach = new ExpandingStomachPart(expandingStomachPart, bodyPosition, stomachSubPosition,  "cultivationcraft.gui.bodypart.stomach.expanding");
+        StomachPart expandingStomach = new StomachPart(expandingStomachPart, bodyPosition, stomachSubPosition,  "cultivationcraft.gui.bodypart.stomach.expanding");
         expandingStomach.addUniqueTag(BodyPartTags.hunger);
         expandingStomach.addUniqueTag(BodyPartTags.expanding);
         expandingStomach.addNeededPart(expandingBodyPart);
@@ -409,11 +410,12 @@ public class BodyPartNames
         addIWings.setQuest(DefaultQuests.defaultFlightQuest);
 
 
-        JetPart jets = new JetPart(jetPart, bodyPosition, backSubPosition,  "cultivationcraft.gui.bodypart.back.jet");
+        BodyPartOption jets = new BodyPartOption(jetPart, bodyPosition, backSubPosition,  "cultivationcraft.gui.bodypart.back.jet");
         jets.addModel(BodyPartModelNames.jetLeft);
         jets.addModel(BodyPartModelNames.jetRight);
         jets.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.basePosition);
         jets.getStatChanges().setStat(StatIDs.weight, 0.04f);
+        jets.setQuest(new Quest(JetTechnique.jetQuest, 10000));
 
         addOption(addWings);
         addOption(addIWings);
@@ -494,7 +496,7 @@ public class BodyPartNames
         addPart(fArm);
 
 
-        BodyPart glide = new GlidePart(glideArmPart, armPosition, "cultivationcraft.gui.armpart.glide");
+        BodyPart glide = new BodyPart(glideArmPart, armPosition, "cultivationcraft.gui.armpart.glide");
         glide.addModel(GenericLimbNames.leftArm);
         glide.addModel(GenericLimbNames.rightArm);
         glide.addArm(new Arm(InteractionHand.OFF_HAND, GenericLimbNames.leftArm, GenericLimbNames.lowerLeftArm, true));

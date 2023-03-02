@@ -61,9 +61,7 @@ public class Technique
     protected ArrayList<AttributeModifier> modifiers = new ArrayList<AttributeModifier>();
     protected ArrayList<MobEffect> effects = new ArrayList<MobEffect>();
 
-    protected int slot;
-
-    protected PlayerStatModifications stats;
+    protected PlayerStatModifications stats = new PlayerStatModifications();
 
     protected ResourceLocation progress = new ResourceLocation(Cultivationcraft.MODID, "textures/gui/progressbar.png");
 
@@ -88,11 +86,6 @@ public class Technique
     public PlayerStatModifications getStats()
     {
         return stats;
-    }
-
-    public void setSlot(int newSlot)
-    {
-        slot = newSlot;
     }
 
     // Returns whether this technique can be used by the specified player
@@ -127,6 +120,14 @@ public class Technique
     public String getName()
     {
         return Component.translatable(langLocation).getString();
+    }
+
+    public boolean isCalled(String name)
+    {
+        if (langLocation.compareTo(name) == 0)
+            return true;
+
+        return false;
     }
 
     // Allow multiple copies of this technique to be equipped at once
@@ -424,7 +425,7 @@ public class Technique
     // Client only, only if owner of technique
     public void sendInfo(int info)
     {
-        ClientPacketHandler.sendTechniqueInfoToServer(genericClientFunctions.getPlayer().getUUID(), info, slot);
+        ClientPacketHandler.sendTechniqueInfoToServer(genericClientFunctions.getPlayer().getUUID(), info, langLocation);
     }
 
     // Process a received int info packet

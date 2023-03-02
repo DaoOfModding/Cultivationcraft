@@ -10,17 +10,13 @@ import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPart;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartOption;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.Quest;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.QuestHandler;
-import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
-import DaoOfModding.Cultivationcraft.Common.Qi.Stats.PlayerStatControl;
-import DaoOfModding.Cultivationcraft.Common.Qi.Stats.PlayerStatModifications;
+import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.PassiveTechniques.PassiveTechnique;
 import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.item.ItemTossEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 @Mod.EventBusSubscriber()
@@ -43,6 +39,14 @@ public class ServerListeners
                     else
                         techs.getTechnique(i).tickInactiveServer(event);
                 }
+
+            for (PassiveTechnique passive : techs.getPassives())
+            {
+                if (passive.isActive())
+                    passive.tickServer(event);
+                else
+                    passive.tickInactiveServer(event);
+            }
 
             IBodyModifications modifications = BodyModifications.getBodyModifications(event.player);
 

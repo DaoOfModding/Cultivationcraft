@@ -6,15 +6,13 @@ import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.IC
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPart;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartOption;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.PlayerHealthManager;
-import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
+import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.PassiveTechniques.PassiveTechnique;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.Technique;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 
 import java.util.HashMap;
-import java.util.UUID;
 
 public class PlayerStatControl
 {
@@ -89,6 +87,9 @@ public class PlayerStatControl
             if (tech != null && tech.isActive() && tech.getStats() != null)
                 BodyPartStatControl.addStats(player.getUUID(), tech.getStats());
         }
+
+        for (PassiveTechnique passive : techs.getPassives())
+            BodyPartStatControl.addStats(player.getUUID(), passive.getStats());
 
         // Only apply player attribute modifiers on the server
         if (!player.level.isClientSide)

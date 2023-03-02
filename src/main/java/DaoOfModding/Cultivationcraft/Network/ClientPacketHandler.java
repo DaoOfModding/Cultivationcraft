@@ -52,9 +52,9 @@ public class ClientPacketHandler
         PacketHandler.channel.sendToServer(pack);
     }
 
-    public static void sendTechniqueInfoToServer(UUID playerID, int info, int slot)
+    public static void sendTechniqueInfoToServer(UUID playerID, int info, String langLocation)
     {
-        TechniqueInfoPacket packet = new TechniqueInfoPacket(slot, info, playerID);
+        TechniqueInfoPacket packet = new TechniqueInfoPacket(langLocation, info, playerID);
 
         PacketHandler.channel.sendToServer(packet);
     }

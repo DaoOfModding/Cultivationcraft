@@ -1,9 +1,12 @@
-package DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyForgeParts;
+package DaoOfModding.Cultivationcraft.Common.Qi.Techniques.PassiveTechniques;
 
 import DaoOfModding.Cultivationcraft.Client.Physics;
-import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPart;
+import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.BodyModifications;
+import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStats;
+import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartNames;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.Quest;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.QuestHandler;
+import DaoOfModding.Cultivationcraft.Common.Qi.CultivationTypes;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
 import DaoOfModding.mlmanimator.Client.Models.GenericLimbNames;
 import DaoOfModding.mlmanimator.Client.Poses.GenericPoses;
@@ -11,24 +14,39 @@ import DaoOfModding.mlmanimator.Client.Poses.PlayerPose;
 import DaoOfModding.mlmanimator.Client.Poses.PoseHandler;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.event.TickEvent;
 
-public class GlidePart extends BodyPart
+public class GlideTechnique extends PassiveTechnique
 {
     PlayerPose jump = new PlayerPose();
-
     Vec3 prevMotion = new Vec3(0, 0, 0);
 
-    public GlidePart(String partID, String position, String displayNamePos)
+    public GlideTechnique()
     {
-        super(partID, position, displayNamePos);
+        super();
+
+        langLocation = "cultivationcraft.technique.glide";
 
         jump.addAngle(GenericLimbNames.leftArm, new Vec3(Math.toRadians(0), 0, Math.toRadians(-90)), GenericPoses.jumpArmPriority + 5);
         jump.addAngle(GenericLimbNames.rightArm, new Vec3(Math.toRadians(0), 0, Math.toRadians(90)), GenericPoses.jumpArmPriority + 5);
     }
 
     @Override
-    public void onClientTick(Player player)
+    public boolean isValid(Player player)
     {
+        // Technique is valid if the player is a body cultivator with appropriate teeth
+        if (CultivatorStats.getCultivatorStats(player).getCultivationType() == CultivationTypes.BODY_CULTIVATOR &&
+                (BodyModifications.getBodyModifications(player).hasModification(BodyPartNames.armPosition, BodyPartNames.glideArmPart)))
+            return true;
+
+        return false;
+    }
+
+    @Override
+    public void tickClient(TickEvent.PlayerTickEvent event)
+    {
+        Player player = event.player;
+
         // Do nothing if the player is not in the air
         if (player.isOnGround() || player.isInWater())
             return;

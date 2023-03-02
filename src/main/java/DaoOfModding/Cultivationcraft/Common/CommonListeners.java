@@ -10,6 +10,7 @@ import DaoOfModding.Cultivationcraft.Common.Capabilities.ChunkQiSources.IChunkQi
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStats;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.ICultivatorStats;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.CultivatorTechniques;
+import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.ICultivatorTechniques;
 import DaoOfModding.Cultivationcraft.Common.Commands.BodyforgeCommand;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPart;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartOption;
@@ -187,6 +188,8 @@ public class CommonListeners
     {
         CultivatorStats.getCultivatorStats(event.getEntity()).setDisconnected(false);
 
+        CultivatorTechniques.getCultivatorTechniques(event.getEntity()).determinePassives(event.getEntity());
+
         // On server
         if (!event.getEntity().getCommandSenderWorld().isClientSide())
         {
@@ -220,6 +223,8 @@ public class CommonListeners
     public static void playerRespawns(PlayerEvent.PlayerRespawnEvent event)
     {
         CultivatorStats.getCultivatorStats(event.getEntity()).setDisconnected(false);
+
+        CultivatorTechniques.getCultivatorTechniques(event.getEntity()).determinePassives(event.getEntity());
 
         if (!event.getEntity().getCommandSenderWorld().isClientSide())
             ServerItemControl.sendPlayerStats(event.getEntity(), (Player)event.getEntity());

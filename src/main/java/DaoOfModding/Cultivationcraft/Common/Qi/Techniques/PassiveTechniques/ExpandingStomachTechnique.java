@@ -1,18 +1,21 @@
-package DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyForgeParts;
+package DaoOfModding.Cultivationcraft.Common.Qi.Techniques.PassiveTechniques;
 
+import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.BodyModifications;
+import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStats;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartNames;
+import DaoOfModding.Cultivationcraft.Common.Qi.CultivationTypes;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.DefaultPlayerBodyPartWeights;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.StatIDs;
 import DaoOfModding.Cultivationcraft.StaminaHandler;
 import DaoOfModding.mlmanimator.Client.Models.GenericLimbNames;
 import DaoOfModding.mlmanimator.Client.Poses.PlayerPose;
-import DaoOfModding.mlmanimator.Client.Poses.PoseHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.event.TickEvent;
 
-public class ExpandingStomachPart extends StomachPart
+public class ExpandingStomachTechnique extends PassiveTechnique
 {
     protected final float maxXSize = 3;
     protected final float maxYSize = 2;
@@ -25,31 +28,43 @@ public class ExpandingStomachPart extends StomachPart
 
     protected boolean update = false;
 
-    PlayerPose expandingPose = new PlayerPose();
-
-    public ExpandingStomachPart(String partID, String position, String subPosition, String displayNamePos)
+    public ExpandingStomachTechnique()
     {
-        super(partID, position, subPosition, displayNamePos);
+        super();
+
+        langLocation = "cultivationcraft.technique.expandingstomach";
     }
 
     @Override
-    public void onClientTick(Player player)
+    public boolean isValid(Player player)
     {
-        currentStamina = StaminaHandler.getStamina(player);
+        // Technique is valid if the player is a body cultivator with appropriate teeth
+        if (CultivatorStats.getCultivatorStats(player).getCultivationType() == CultivationTypes.BODY_CULTIVATOR &&
+                (BodyModifications.getBodyModifications(player).hasModification(BodyPartNames.bodyPosition, BodyPartNames.expandingBodyPart)))
+            return true;
 
-        updateSizeStats(player);
+        return false;
+    }
+
+    // Ticks on client side
+    public void tickClient(TickEvent.PlayerTickEvent event)
+    {
+        currentStamina = StaminaHandler.getStamina(event.player);
+
+        updateSizeStats(event.player);
 
         if (update)
             updateExpandingPose();
 
-        PoseHandler.addPose(player.getUUID(), expandingPose);
+        super.tickClient(event);
     }
 
-    @Override
-    public void onServerTick(Player player)
+    // Ticks on Server side
+    public void tickServer(TickEvent.PlayerTickEvent event)
     {
-        // TODO: ...should this happen on server?
-        updateSizeStats(player);
+        updateSizeStats(event.player);
+
+        super.tickServer(event);
     }
 
     protected void updateSizeStats(Player player)
@@ -64,7 +79,7 @@ public class ExpandingStomachPart extends StomachPart
             // Maybe multiply other than add here
             float weight = DefaultPlayerBodyPartWeights.bodyWeight * (((maxXSize-1) * currentPercent) + ((maxYSize-1) * currentPercent) + ((maxZSize-1) * currentPercent));
 
-            getStatChanges().setStat(StatIDs.weight, weight);
+            stats.setStat(StatIDs.weight, weight);
             BodyPartStatControl.updateStats(player);
 
             update = true;
@@ -72,30 +87,24 @@ public class ExpandingStomachPart extends StomachPart
             if (oldStamina != (int)currentStamina)
             {
                 if (player.level.isClientSide && Minecraft.getInstance().player == player)
-                    sendInfo((int)currentStamina, BodyPartNames.stomachSubPosition, BodyPartNames.bodyPosition);
+                    sendInfo((int)currentStamina);
 
                 oldStamina = (int) currentStamina;
             }
         }
     }
 
-    protected void updateExpandingPose()
-    {
-        expandingPose = new PlayerPose();
-        expandingPose.addSize(GenericLimbNames.body, new Vec3(1 + (maxXSize - 1) * currentPercent, 1 + (maxYSize - 1) * currentPercent, 1 + (maxZSize- 1) * currentPercent), 99, 5);
-    }
-
     @Override
+    // Process a received int info packet
     public void processInfo(Player player, int info)
     {
         currentStamina = info;
         oldStamina = info;
     }
 
-    @Override
-    public void onJoin(Player player)
+    protected void updateExpandingPose()
     {
-        if (player.level.isClientSide)
-            sendInfo((int)currentStamina, BodyPartNames.stomachSubPosition, BodyPartNames.bodyPosition);
+        pose = new PlayerPose();
+        pose.addSize(GenericLimbNames.body, new Vec3(1 + (maxXSize - 1) * currentPercent, 1 + (maxYSize - 1) * currentPercent, 1 + (maxZSize- 1) * currentPercent), 99, 5);
     }
 }

@@ -1,11 +1,12 @@
-package DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyForgeParts;
+package DaoOfModding.Cultivationcraft.Common.Qi.Techniques.PassiveTechniques;
 
 import DaoOfModding.Cultivationcraft.Client.Animations.BodyPartModelNames;
 import DaoOfModding.Cultivationcraft.Client.Physics;
+import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.BodyModifications;
+import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStats;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartNames;
-import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartOption;
-import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.Quest;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.QuestHandler;
+import DaoOfModding.Cultivationcraft.Common.Qi.CultivationTypes;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.PlayerStatModifications;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.StatIDs;
@@ -16,67 +17,70 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.event.TickEvent;
 
-public class JetPart extends BodyPartOption
+public class JetTechnique extends PassiveTechnique
 {
-    ResourceLocation jetQuest = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.quest.jet");
+    public static final ResourceLocation jetQuest = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.quest.jet");
 
     boolean enabled = false;
 
     PlayerStatModifications enabledStats = new PlayerStatModifications();
 
-    public JetPart(String partID, String position, String subPosition, String displayNamePos)
+    public JetTechnique()
     {
-        super(partID, position, subPosition, displayNamePos);
+        super();
 
+        langLocation = "cultivationcraft.technique.jet";
         enabledStats.setStat(StatIDs.movementSpeed, 0.1f);
-
-        setQuest(new Quest(jetQuest, 10000));
     }
 
-    // Only add enabledStats when the jets are enabled
     @Override
-    public PlayerStatModifications getStatChanges()
+    public PlayerStatModifications getStats()
     {
         if (enabled)
-        {
-            PlayerStatModifications newModifications = new PlayerStatModifications();
-            newModifications.combine(enabledStats);
-            newModifications.combine(super.getStatChanges());
-
-            return newModifications;
-        }
+            return enabledStats;
         else
-            return super.getStatChanges();
+            return stats;
     }
 
     @Override
-    public void onClientTick(Player player)
+    public boolean isValid(Player player)
+    {
+        // Technique is valid if the player is a body cultivator with appropriate teeth
+        if (CultivatorStats.getCultivatorStats(player).getCultivationType() == CultivationTypes.BODY_CULTIVATOR &&
+                (BodyModifications.getBodyModifications(player).hasOption(BodyPartNames.bodyPosition, BodyPartNames.backSubPosition, BodyPartNames.jetPart)))
+            return true;
+
+        return false;
+    }
+
+    @Override
+    public void tickClient(TickEvent.PlayerTickEvent event)
     {
         // Disable jets if in water
-        if (player.isInWater())
+        if (event.player.isInWater())
         {
-            enableJets(false, player);
+            enableJets(false, event.player);
             return;
         }
 
-        Vec3 delta = Physics.getDelta(player);
+        Vec3 delta = Physics.getDelta(event.player);
         Vec3 move = new Vec3(delta.x, 0, delta.z);
-        Vec3 direction = player.getForward().normalize();
+        Vec3 direction = event.player.getForward().normalize();
 
-        QuestHandler.progressQuest(player, jetQuest, delta.length());
+        QuestHandler.progressQuest(event.player, jetQuest, delta.length());
 
         double dot = move.normalize().dot(direction);
 
         if (dot > 0 && move.length() > 0)
-            enableJets(true, player);
+            enableJets(true, event.player);
         else
-            enableJets(false, player);
+            enableJets(false, event.player);
     }
 
     protected void enableJets(Boolean on, Player player)
     {
-
         // Do nothing if not trying to change jet state
         if (enabled == on)
             return;
@@ -93,9 +97,9 @@ public class JetPart extends BodyPartOption
         if (Minecraft.getInstance().player == player)
         {
             if (enabled)
-                sendInfo(1, BodyPartNames.backSubPosition, BodyPartNames.bodyPosition);
+                sendInfo(1);
             else
-                sendInfo(0, BodyPartNames.backSubPosition, BodyPartNames.bodyPosition);
+                sendInfo(0);
         }
 
         if (on)
@@ -120,11 +124,14 @@ public class JetPart extends BodyPartOption
     // Process a received int info packet
     public void processInfo(Player player, int info)
     {
-        if (info == 1)
-            enabled = true;
-        else
-            enabled = false;
+        boolean on = false;
 
-        BodyPartStatControl.updateStats(player);
+        if (info == 1)
+            on = true;
+
+        if (!player.level.isClientSide())
+            enabled = on;
+        else
+            enableJets(on, player);
     }
 }

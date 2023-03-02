@@ -1,6 +1,8 @@
 package DaoOfModding.Cultivationcraft.Server;
 
 import DaoOfModding.Cultivationcraft.Client.genericClientFunctions;
+import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.CultivatorTechniques;
+import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.ICultivatorTechniques;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartNames;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.BodyModifications;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.IBodyModifications;
@@ -48,6 +50,8 @@ public class BodyPartControl
                 modifications.setProgress(0);
 
                 PacketHandler.sendBodyModificationsToClient(player);
+
+                CultivatorTechniques.getCultivatorTechniques(player).determinePassives(player);
 
                 BodyPartStatControl.addStats(player.getUUID(), toComplete.getStatChanges());
                 BodyPartStatControl.updateStats(player);

@@ -2,6 +2,9 @@ package DaoOfModding.Cultivationcraft.Common.Qi;
 
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.*;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.BodyForgeTechniques.*;
+import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.PassiveTechniques.ExpandingStomachTechnique;
+import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.PassiveTechniques.GlideTechnique;
+import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.PassiveTechniques.JetTechnique;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import net.minecraft.world.entity.player.Player;
 
@@ -24,14 +27,36 @@ public class TechniqueControl
         TechniqueControl.addTechnique(DartTechnique.class);
         TechniqueControl.addTechnique(BounceTechnique.class);
         TechniqueControl.addTechnique(JetLegTechnique.class);
+        TechniqueControl.addPassiveTechnique(ExpandingStomachTechnique.class);
+        TechniqueControl.addPassiveTechnique(JetTechnique.class);
+        TechniqueControl.addPassiveTechnique(GlideTechnique.class);
     }
 
     // List of all techniques available in the game
     protected static ArrayList<Class> techniques = new ArrayList<Class>();
 
+    // List of all passiveTechniques available in the game
+    protected static ArrayList<Class> passiveTechniques = new ArrayList<Class>();
+
     public static void addTechnique(Class technique)
     {
         techniques.add(technique);
+    }
+
+    public static void addPassiveTechnique(Class technique)
+    {
+        passiveTechniques.add(technique);
+    }
+
+    public static ArrayList<Class> getPassiveTechniques(Player player)
+    {
+        ArrayList<Class> available = new ArrayList<Class>();
+
+        for (Class technique : passiveTechniques)
+            if (isAvailable(technique, player))
+                available.add(technique);
+
+        return available;
     }
 
     // Returns a list of all the techniques that can be used by the specified player

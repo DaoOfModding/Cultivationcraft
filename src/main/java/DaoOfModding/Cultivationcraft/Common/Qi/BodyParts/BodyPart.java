@@ -14,6 +14,7 @@ import DaoOfModding.Cultivationcraft.Common.Qi.QiSource;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.PlayerStatModifications;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.StatIDs;
+import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.Technique;
 import DaoOfModding.Cultivationcraft.Network.ClientPacketHandler;
 import DaoOfModding.mlmanimator.Client.Models.TextureHandler;
 import DaoOfModding.mlmanimator.Client.Poses.Arm;
