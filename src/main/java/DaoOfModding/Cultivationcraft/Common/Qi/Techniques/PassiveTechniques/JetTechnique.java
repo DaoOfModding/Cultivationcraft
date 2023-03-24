@@ -69,7 +69,7 @@ public class JetTechnique extends PassiveTechnique
         Vec3 move = new Vec3(delta.x, 0, delta.z);
         Vec3 direction = event.player.getForward().normalize();
 
-        QuestHandler.progressQuest(event.player, jetQuest, delta.length());
+        QuestHandler.progressQuest(event.player, jetQuest, move.length());
 
         double dot = move.normalize().dot(direction);
 

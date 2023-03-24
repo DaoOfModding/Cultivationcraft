@@ -407,7 +407,7 @@ public class BodyPartNames
         addIWings.addUniqueTag(BodyPartTags.flight);
         addIWings.getStatChanges().setStat(StatIDs.weight, 0.01f);
         addIWings.getStatChanges().setStat(StatIDs.wingSupport, 0.75f);
-        addIWings.setQuest(DefaultQuests.defaultFlightQuest);
+        addIWings.setQuest(new Quest(Quest.FLIGHT, 1000));
 
 
         BodyPartOption jets = new BodyPartOption(jetPart, bodyPosition, backSubPosition,  "cultivationcraft.gui.bodypart.back.jet");

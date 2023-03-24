@@ -22,23 +22,5 @@ public class Packet {
 
     public void handle(Supplier<NetworkEvent.Context> context)
     {
-        /*
-        Player player
-
-        if (player.world.isRemote)
-            handleClient(player);
-        else
-            handleServer(player);*/
     }
-
-    public void handleClient(Player player)
-    {
-
-    }
-
-    public void handleServer(Player player)
-    {
-
-    }
-
 }
