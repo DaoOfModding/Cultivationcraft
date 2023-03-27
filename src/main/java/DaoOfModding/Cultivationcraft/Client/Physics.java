@@ -8,6 +8,9 @@ import DaoOfModding.Cultivationcraft.Common.Qi.Stats.PlayerStatModifications;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.StatIDs;
 import DaoOfModding.mlmanimator.Client.Poses.PoseHandler;
 import net.minecraft.client.Minecraft;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 
@@ -33,14 +36,23 @@ public class Physics
     public static void applyJump(Player player)
     {
         PlayerStatControl stats = BodyPartStatControl.getPlayerStatControl(player.getUUID());
-        float jumpHeight = stats.getStats().getStat(StatIDs.jumpHeight);
+        float jumpHeight = stats.getStats().getStat(StatIDs.jumpHeight) - 1;
+        double jumpBoost = player.hasEffect(MobEffects.JUMP) ? (double)(0.1F * (float)(player.getEffect(MobEffects.JUMP).getAmplifier() + 1)) : 0.0D;
 
         Vec3 currentMotion = getDelta(player);
 
         // Increase not only the height jump but also multiply X and Z momentum
-        player.setDeltaMovement(currentMotion.x + (currentMotion.x * jumpHeight * 0.2f) * stats.getLegWeightModifier(), (0.42f + jumpHeight * 0.1f) * stats.getLegWeightModifier(), currentMotion.z + (currentMotion.z * jumpHeight * 0.2f) * stats.getLegWeightModifier());
+        player.setDeltaMovement(currentMotion.x + (currentMotion.x * jumpHeight * 0.2f) * stats.getLegWeightModifier(), (0.42f + jumpHeight * 0.1f) * stats.getLegWeightModifier() * getBlockJumpFactor(player) + jumpBoost, currentMotion.z + (currentMotion.z * jumpHeight * 0.2f) * stats.getLegWeightModifier());
 
         QuestHandler.progressQuest(player, Quest.JUMP, player.getDeltaMovement().y);
+    }
+
+    // Copied from LivingEntity, cuz it's protected for no reason
+    public static float getBlockJumpFactor(Player player)
+    {
+        float f = player.level.getBlockState(player.blockPosition()).getBlock().getJumpFactor();
+        float f1 = player.level.getBlockState(new BlockPos(player.getX(), player.getBoundingBox().minY - 0.5000001D, player.getZ())).getBlock().getJumpFactor();
+        return (double)f == 1.0D ? f1 : f;
     }
 
     public static void Bounce(Player player)

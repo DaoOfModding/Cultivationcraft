@@ -55,6 +55,22 @@ public class GenericQiPoses
         Idle.addAngle(BodyPartModelNames.singleLegModel, new Vec3(Math.toRadians(-30), 0, 0), 0, 5f, -1);
         Idle.addAngle(BodyPartModelNames.singleLegLowerModel, new Vec3(Math.toRadians(60), 0, 0), 0, 5f, -1);
 
+        Idle.addAngle(BodyPartModelNames.jetLegLeftModel, new Vec3(0, 0, 0), 0);
+        Idle.addAngle(BodyPartModelNames.jetLegLeftLowerModel, new Vec3(0, 0, 0), 0);
+        Idle.addAngle(BodyPartModelNames.jetLegRightModel, new Vec3(0, 0, 0), 0);
+        Idle.addAngle(BodyPartModelNames.jetLegRightLowerModel, new Vec3(0, 0, 0), 0);
+
+        Idle.addAngle(BodyPartModelNames.footRightModel, new Vec3(0, 0, 0), 0);
+        Idle.addAngle(BodyPartModelNames.footLeftModel, new Vec3(0, 0, 0), 0);
+
+        Idle.addAngle(BodyPartModelNames.shortArmLeftModel, new Vec3(0, 0, 0), 0);
+        Idle.addAngle(BodyPartModelNames.shortArmRightModel, new Vec3(0, 0, 0), 0);
+
+        Idle.addAngle(BodyPartModelNames.flipperLeftModel, new Vec3(0, 0, 0), 0);
+        Idle.addAngle(BodyPartModelNames.flipperRightModel, new Vec3(0, 0, 0), 0);
+        Idle.addAngle(BodyPartModelNames.flipperLowerLeftModel, new Vec3(0, 0, 0), 0);
+        Idle.addAngle(BodyPartModelNames.flipperLowerRightModel, new Vec3(0, 0, 0), 0);
+
         // Mouth closed
         Idle.addAngle(BodyPartModelNames.FPjawModel, new Vec3(Math.toRadians(-80), 0, 0), 1);
         Idle.addAngle(BodyPartModelNames.FPjawModelLower, new Vec3(Math.toRadians(160), 0, 0), 1);
