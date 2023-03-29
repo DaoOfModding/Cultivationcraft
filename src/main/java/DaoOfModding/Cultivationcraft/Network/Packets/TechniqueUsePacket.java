@@ -75,19 +75,13 @@ public class TechniqueUsePacket extends Packet
     // Process received packet on the Server
     protected void processPacket(ServerPlayer sender)
     {
-        System.out.println("Processing...");
-
         // Send the key press to the technique used
         Technique tech = CultivatorTechniques.getCultivatorTechniques(sender).getTechnique(slotNumber);
 
         if (tech != null)
             tech.useKeyPressed(isKeyDown, sender);
 
-        System.out.println("Pressed...");
-
         PacketHandler.sendCultivatorTechniquesToClient(sender);
-
-        System.out.println("Sent...");
     }
 }
 
