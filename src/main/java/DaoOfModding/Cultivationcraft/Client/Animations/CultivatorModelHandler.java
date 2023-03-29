@@ -57,13 +57,14 @@ public class CultivatorModelHandler
 
         if (handler != null)
         {
-            // Reset the player models to fix weird bugs from previous itterations
+            // Reset the player models to fix weird bugs from previous iterations
             resetPlayerModels(player.getUUID());
             BodyPartModels models = getPlayerModels(player.getUUID());
 
             // Create a new player model with the specified modifications
             MultiLimbedModel newModel = new MultiLimbedModel(renderer.getModel());
             newModel.setTextureHandler(handler.getPlayerModel().getTextureHandler());
+            newModel.getTextureHandler().clearTextures();
 
             Collection<BodyPart> parts = modifications.getModifications().values();
             HashMap<String, BodyPartLocation> partLocations = getPartLocations(parts, modifications);

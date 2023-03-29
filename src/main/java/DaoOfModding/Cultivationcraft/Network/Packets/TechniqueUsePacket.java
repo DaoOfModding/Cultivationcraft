@@ -5,7 +5,6 @@ import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.Technique;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import DaoOfModding.Cultivationcraft.Network.PacketHandler;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.network.NetworkEvent;
@@ -16,7 +15,6 @@ public class TechniqueUsePacket extends Packet
 {
     protected int slotNumber;
     protected boolean isKeyDown;
-    protected Player player;
 
     public TechniqueUsePacket(int slot, boolean keyDown)
     {
@@ -71,21 +69,25 @@ public class TechniqueUsePacket extends Packet
             return;
         }
 
-        player = ctx.getSender();
-
         ctx.enqueueWork(() -> processPacket(ctx.getSender()));
     }
 
     // Process received packet on the Server
     protected void processPacket(ServerPlayer sender)
     {
+        System.out.println("Processing...");
+
         // Send the key press to the technique used
-        Technique tech = CultivatorTechniques.getCultivatorTechniques(player).getTechnique(slotNumber);
+        Technique tech = CultivatorTechniques.getCultivatorTechniques(sender).getTechnique(slotNumber);
 
         if (tech != null)
-            tech.useKeyPressed(isKeyDown, player);
+            tech.useKeyPressed(isKeyDown, sender);
 
-        PacketHandler.sendCultivatorTechniquesToClient(player);
+        System.out.println("Pressed...");
+
+        PacketHandler.sendCultivatorTechniquesToClient(sender);
+
+        System.out.println("Sent...");
     }
 }
 

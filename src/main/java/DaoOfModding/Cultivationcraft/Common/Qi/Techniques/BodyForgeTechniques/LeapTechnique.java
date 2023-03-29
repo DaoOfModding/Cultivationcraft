@@ -124,6 +124,8 @@ public class LeapTechnique extends Technique
     {
         PlayerPoseHandler handler = PoseHandler.getPlayerPoseHandler(player.getUUID());
 
+        // TODO: Jumping here borking the leap?
+
         // If the player is no longer jumping or the handler can't be loaded turn the technique off
         if (player.isInWater() || handler == null || !handler.isJumping())
         {

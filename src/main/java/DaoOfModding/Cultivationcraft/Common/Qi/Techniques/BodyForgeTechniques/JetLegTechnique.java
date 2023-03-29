@@ -16,7 +16,6 @@ import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.MovementOverrideTechni
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import DaoOfModding.mlmanimator.Client.Models.MultiLimbedModel;
 import DaoOfModding.mlmanimator.Client.Poses.PoseHandler;
-import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.Vec3;
@@ -98,10 +97,13 @@ public class JetLegTechnique extends MovementOverrideTechnique
     @Override
     public void deactivate(Player player)
     {
-        MultiLimbedModel model = PoseHandler.getPlayerPoseHandler(player.getUUID()).getPlayerModel();
+        if (player.level.isClientSide)
+        {
+            MultiLimbedModel model = PoseHandler.getPlayerPoseHandler(player.getUUID()).getPlayerModel();
 
-        model.getLimb(BodyPartModelNames.jetLegLeftEmitter).getModelPart().visible = false;
-        model.getLimb(BodyPartModelNames.jetLegRightEmitter).getModelPart().visible = false;
+            model.getLimb(BodyPartModelNames.jetLegLeftEmitter).getModelPart().visible = false;
+            model.getLimb(BodyPartModelNames.jetLegRightEmitter).getModelPart().visible = false;
+        }
 
         super.deactivate(player);
     }
