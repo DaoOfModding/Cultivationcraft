@@ -57,7 +57,7 @@ public class Physics
 
     public static void Bounce(Player player)
     {
-        float bounceHeight = BodyPartStatControl.getStats(player.getUUID()).getStat(StatIDs.bounceHeight);
+        float bounceHeight = BodyPartStatControl.getStats(player.getUUID()).getStat(StatIDs.bounceHeight) * getBlockJumpFactor(player);
 
         // Do nothing if the player has no bounce stat
         if (bounceHeight == 0)

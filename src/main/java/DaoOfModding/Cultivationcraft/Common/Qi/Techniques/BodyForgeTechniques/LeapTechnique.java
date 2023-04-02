@@ -124,7 +124,7 @@ public class LeapTechnique extends Technique
     {
         PlayerPoseHandler handler = PoseHandler.getPlayerPoseHandler(player.getUUID());
 
-        // TODO: Jumping here borking the leap?
+        // TODO: Jumping here borking the leap? - Maybe server side is adjusting the jump variable?
 
         // If the player is no longer jumping or the handler can't be loaded turn the technique off
         if (player.isInWater() || handler == null || !handler.isJumping())
@@ -134,6 +134,7 @@ public class LeapTechnique extends Technique
         }
         else
         {
+            System.out.println("Leaping...");
             Vec3 currentMotion = Physics.getDelta(player).normalize();
 
             PlayerPose newPose = defaultLeapLegs.clone();

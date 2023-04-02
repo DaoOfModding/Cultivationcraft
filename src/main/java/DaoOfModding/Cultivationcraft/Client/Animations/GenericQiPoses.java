@@ -236,6 +236,10 @@ public class GenericQiPoses
         GenericPoses.SwimmingMoving.addAngle(BodyPartModelNames.largeLegLeftModel, new Vec3(Math.toRadians(30), 0, 0), GenericPoses.swimLegPriority, 15f, 1);
         GenericPoses.SwimmingMoving.addAngle(BodyPartModelNames.largeLegRightModel, new Vec3(Math.toRadians(-30), 0, 0), GenericPoses.swimLegPriority, 15f, 1);
 
+        GenericPoses.SwimmingMoving.addAngle(BodyPartModelNames.reverseJointLeftLegModel, new Vec3(Math.toRadians(-30), 0, 0), GenericPoses.swimLegPriority, 15f, 1);
+        GenericPoses.SwimmingMoving.addAngle(BodyPartModelNames.reverseJointLeftLegModel, new Vec3(Math.toRadians(30), 0, 0), GenericPoses.swimLegPriority, 15f, 1);
+        GenericPoses.SwimmingMoving.addAngle(BodyPartModelNames.reverseJointRightLegModel, new Vec3(Math.toRadians(30), 0, 0), GenericPoses.swimLegPriority, 15f, 1);
+        GenericPoses.SwimmingMoving.addAngle(BodyPartModelNames.reverseJointRightLegModel, new Vec3(Math.toRadians(-30), 0, 0), GenericPoses.swimLegPriority, 15f, 1);
 
         GenericPoses.SwimmingMoving.addAngle(BodyPartModelNames.footLeftModel, new Vec3(Math.toRadians(-60), 0, 0), GenericPoses.walkLegPriority, 10f, 1);
         GenericPoses.SwimmingMoving.addAngle(BodyPartModelNames.footLeftModel, new Vec3(Math.toRadians(60), 0, 0), GenericPoses.walkLegPriority, 10f, 1);

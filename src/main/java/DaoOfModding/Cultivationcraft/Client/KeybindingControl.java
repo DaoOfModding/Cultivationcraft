@@ -219,69 +219,69 @@ public class KeybindingControl
 
     protected static void handleTechMovementOverride(MovementOverrideTechnique movementTech)
     {
-        if (isDown(Minecraft.getInstance().options.keyUp))
+        if (isDown(Minecraft.getInstance().options.keyUp) && !overwriteUp)
             if (movementTech.overwriteForward())
                 overwriteUp = true;
 
-        if (isDown(Minecraft.getInstance().options.keyDown))
+        if (isDown(Minecraft.getInstance().options.keyDown) && !overwriteDown)
             if (movementTech.overwriteBackward())
                 overwriteDown = true;
 
-        if (isDown(Minecraft.getInstance().options.keyLeft))
+        if (isDown(Minecraft.getInstance().options.keyLeft) && !overwriteLeft)
             if (movementTech.overwriteLeft())
                 overwriteLeft = true;
 
-        if (isDown(Minecraft.getInstance().options.keyRight))
+        if (isDown(Minecraft.getInstance().options.keyRight) && !overwriteRight)
             if (movementTech.overwriteRight())
                 overwriteRight = true;
 
-        if (isDown(Minecraft.getInstance().options.keyJump))
+        if (isDown(Minecraft.getInstance().options.keyJump) && !overwriteJump)
             if (movementTech.overwriteJump())
                 overwriteJump = true;
     }
 
     protected static void handlePartMovementOverride(MovementOverridePart movementPart)
     {
-        if (isDown(Minecraft.getInstance().options.keyUp))
+        if (isDown(Minecraft.getInstance().options.keyUp) && !overwriteUp)
             if (movementPart.overwriteForward())
                 overwriteUp = true;
 
-        if (isDown(Minecraft.getInstance().options.keyDown))
+        if (isDown(Minecraft.getInstance().options.keyDown) && !overwriteDown)
             if (movementPart.overwriteBackward())
                 overwriteDown = true;
 
-        if (isDown(Minecraft.getInstance().options.keyLeft))
+        if (isDown(Minecraft.getInstance().options.keyLeft) && !overwriteLeft)
             if (movementPart.overwriteLeft())
                 overwriteLeft = true;
 
-        if (isDown(Minecraft.getInstance().options.keyRight))
+        if (isDown(Minecraft.getInstance().options.keyRight) && !overwriteRight)
             if (movementPart.overwriteRight())
                 overwriteRight = true;
 
-        if (isDown(Minecraft.getInstance().options.keyJump))
+        if (isDown(Minecraft.getInstance().options.keyJump) && !overwriteJump)
             if (movementPart.overwriteJump())
                 overwriteJump = true;
     }
 
     protected static void handlePartMovementOverride(MovementOverridePartOption movementPart)
     {
-        if (isDown(Minecraft.getInstance().options.keyUp))
+        if (isDown(Minecraft.getInstance().options.keyUp) && !overwriteUp)
             if (movementPart.overwriteForward())
                 overwriteUp = true;
 
-        if (isDown(Minecraft.getInstance().options.keyDown))
+        if (isDown(Minecraft.getInstance().options.keyDown) && !overwriteDown)
             if (movementPart.overwriteBackward())
                 overwriteDown = true;
 
-        if (isDown(Minecraft.getInstance().options.keyLeft))
+        if (isDown(Minecraft.getInstance().options.keyLeft) && !overwriteLeft)
             if (movementPart.overwriteLeft())
                 overwriteLeft = true;
 
-        if (isDown(Minecraft.getInstance().options.keyRight))
+        if (isDown(Minecraft.getInstance().options.keyRight) && !overwriteRight)
             if (movementPart.overwriteRight())
                 overwriteRight = true;
 
-        if (isDown(Minecraft.getInstance().options.keyJump))
+        if (isDown(Minecraft.getInstance().options.keyJump) && !overwriteJump)
             if (movementPart.overwriteJump())
                 overwriteJump = true;
     }

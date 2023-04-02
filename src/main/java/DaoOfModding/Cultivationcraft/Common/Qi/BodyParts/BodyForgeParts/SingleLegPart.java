@@ -1,5 +1,6 @@
 package DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyForgeParts;
 
+import DaoOfModding.Cultivationcraft.Client.KeybindingControl;
 import DaoOfModding.Cultivationcraft.Client.genericClientFunctions;
 import DaoOfModding.Cultivationcraft.Client.Animations.BodyPartModelNames;
 import DaoOfModding.Cultivationcraft.Client.Physics;
@@ -50,7 +51,7 @@ public class SingleLegPart extends MovementOverridePart
             float speed = player.getSpeed();
 
             // Move player forward based on their movement speed whilst jumping 1 block high
-            Vec3 movement = new Vec3(direction.x * 0.4f * speed * 10, 0.52f, direction.z * 0.4f * speed * 10);
+            Vec3 movement = new Vec3(direction.x * 0.4f * speed * 10, 0.52f * Physics.getBlockJumpFactor(player), direction.z * 0.4f * speed * 10);
 
             player.setDeltaMovement(movement);
 
