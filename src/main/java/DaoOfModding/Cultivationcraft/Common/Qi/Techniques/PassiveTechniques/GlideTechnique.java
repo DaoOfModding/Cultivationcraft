@@ -8,10 +8,12 @@ import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.Quest;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.QuestHandler;
 import DaoOfModding.Cultivationcraft.Common.Qi.CultivationTypes;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
+import DaoOfModding.Cultivationcraft.Common.Reflection;
 import DaoOfModding.mlmanimator.Client.Models.GenericLimbNames;
 import DaoOfModding.mlmanimator.Client.Poses.GenericPoses;
 import DaoOfModding.mlmanimator.Client.Poses.PlayerPose;
 import DaoOfModding.mlmanimator.Client.Poses.PoseHandler;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.TickEvent;
@@ -117,5 +119,16 @@ public class GlideTechnique extends PassiveTechnique
         PoseHandler.addPose(player.getUUID(), newPose);
 
         prevMotion = direction;
+    }
+
+    @Override
+    public void tickServer(TickEvent.PlayerTickEvent event)
+    {
+        Reflection.allowFlight((ServerPlayer) event.player);
+
+        super.tickServer(event);
+        tickInactiveServer(event);
+
+        event.player.fallDistance = 0;
     }
 }

@@ -7,6 +7,7 @@ import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.PlayerHealthManager;
 import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
 import DaoOfModding.Cultivationcraft.Common.Qi.QiSourceConfig;
 import DaoOfModding.Cultivationcraft.Common.Qi.TechniqueControl;
+import DaoOfModding.Cultivationcraft.Common.Reflection;
 import DaoOfModding.Cultivationcraft.Common.Register;
 import DaoOfModding.Cultivationcraft.Network.PacketHandler;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -48,6 +49,7 @@ public class Cultivationcraft {
         TechniqueControl.init();
         BodyPartNames.init();
         PlayerHealthManager.setup();
+        Reflection.setup();
     }
 
     protected void clientInit(final FMLClientSetupEvent event)

@@ -13,9 +13,11 @@ import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.PlayerStatControl;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.StatIDs;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.MovementOverrideTechnique;
+import DaoOfModding.Cultivationcraft.Common.Reflection;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import DaoOfModding.mlmanimator.Client.Models.MultiLimbedModel;
 import DaoOfModding.mlmanimator.Client.Poses.PoseHandler;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.Vec3;
@@ -69,6 +71,15 @@ public class JetLegTechnique extends MovementOverrideTechnique
             model.getLimb(BodyPartModelNames.jetLegLeftEmitter).getModelPart().visible = false;
             model.getLimb(BodyPartModelNames.jetLegRightEmitter).getModelPart().visible = false;
         }
+    }
+
+    @Override
+    public void tickServer(TickEvent.PlayerTickEvent event)
+    {
+        Reflection.allowFlight((ServerPlayer) event.player);
+
+        super.tickServer(event);
+        tickInactiveServer(event);
     }
 
     @Override
