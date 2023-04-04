@@ -491,7 +491,6 @@ public class BodyPartModels
         lwingTopModel.addQuadLinkage(new QuadLinkage(lwing45Connector, Quad.QuadVertex.BottomLeft, new Vec3(1, 0, 0.5)));
         lwingTopModel.addQuadLinkage(new QuadLinkage(lwing45Connector, Quad.QuadVertex.BottomRight, new Vec3(0, 0, 0.5)));
 
-
         QuadCollection wingQuads = new QuadCollection();
         wingQuads.addQuad(wing12Connector);
         wingQuads.addQuad(wing23Connector);
@@ -502,6 +501,24 @@ public class BodyPartModels
         wingQuads.addQuad(lwing34Connector);
         wingQuads.addQuad(lwing45Connector);
 
+        wing12Connector.addLayer(new UVPair(0, 0), GenericTextureValues.skin_Size, 0, TextureHandler.BLANK);
+        wing23Connector.addLayer(new UVPair(0, 0), GenericTextureValues.skin_Size, 0, TextureHandler.BLANK);
+        wing34Connector.addLayer(new UVPair(0, 0), GenericTextureValues.skin_Size, 0, TextureHandler.BLANK);
+        wing45Connector.addLayer(new UVPair(0, 0), GenericTextureValues.skin_Size, 0, TextureHandler.BLANK);
+        wing12Connector.addLayer(new UVPair(0, 0), GenericTextureValues.skin_Size, 0, TextureHandler.BLANK);
+        lwing12Connector.addLayer(new UVPair(0, 0), GenericTextureValues.skin_Size, 0, TextureHandler.BLANK);
+        lwing23Connector.addLayer(new UVPair(0, 0), GenericTextureValues.skin_Size, 0, TextureHandler.BLANK);
+        lwing34Connector.addLayer(new UVPair(0, 0), GenericTextureValues.skin_Size, 0, TextureHandler.BLANK);
+        lwing45Connector.addLayer(new UVPair(0, 0), GenericTextureValues.skin_Size, 0, TextureHandler.BLANK);
+
+        wing12Connector.addLayer(new UVPair(0, 0), GenericTextureValues.skin_Size, 0, TextureList.skin);
+        wing23Connector.addLayer(new UVPair(0, 0), GenericTextureValues.skin_Size, 0, TextureList.skin);
+        wing34Connector.addLayer(new UVPair(0, 0), GenericTextureValues.skin_Size, 0, TextureList.skin);
+        wing45Connector.addLayer(new UVPair(0, 0), GenericTextureValues.skin_Size, 0, TextureList.skin);
+        lwing12Connector.addLayer(new UVPair(0, 0), GenericTextureValues.skin_Size, 0, TextureList.skin);
+        lwing23Connector.addLayer(new UVPair(0, 0), GenericTextureValues.skin_Size, 0, TextureList.skin);
+        lwing34Connector.addLayer(new UVPair(0, 0), GenericTextureValues.skin_Size, 0, TextureList.skin);
+        lwing45Connector.addLayer(new UVPair(0, 0), GenericTextureValues.skin_Size, 0, TextureList.skin);
 
         addModel(BodyPartModelNames.rwingUpperArmModel, wingTopModel);
         addReference(BodyPartModelNames.rwingUpperArmModel, BodyPartModelNames.rwingStrand1Model, wingStrandModel);
@@ -562,14 +579,16 @@ public class BodyPartModels
         lwingTopModel.addQuadLinkage(new QuadLinkage(lwingConnector, Quad.QuadVertex.BottomLeft, new Vec3(1, 0, 0.5)));
         linnerWingModel.addQuadLinkage(new QuadLinkage(lwingConnector, Quad.QuadVertex.TopRight, new Vec3(1, 0, 0.5)));
         linnerWingModel.addQuadLinkage(new QuadLinkage(lwingConnector, Quad.QuadVertex.BottomRight, new Vec3(0, 0, 0.5)));
-        lwingConnector.setColor(new Vector4f(1, 1, 1, 0.33f));
+        lwingConnector.setAlpha(0.33f);
+        lwingConnector.addLayer(new UVPair(0, 0), GenericTextureValues.skin_Size, 0, TextureList.elementalColored);
 
         Quad rwingConnector = new Quad(new Vec3(0, 0, 0), new Vec3(0, 0, 0),new Vec3(0, 0, 0),new Vec3(0, 0, 0));
         wingTopModel.addQuadLinkage(new QuadLinkage(rwingConnector, Quad.QuadVertex.TopLeft, new Vec3(0, 0, 0.5)));
         wingTopModel.addQuadLinkage(new QuadLinkage(rwingConnector, Quad.QuadVertex.BottomLeft, new Vec3(1, 0, 0.5)));
         innerWingModel.addQuadLinkage(new QuadLinkage(rwingConnector, Quad.QuadVertex.TopRight, new Vec3(1, 0, 0.5)));
         innerWingModel.addQuadLinkage(new QuadLinkage(rwingConnector, Quad.QuadVertex.BottomRight, new Vec3(0, 0, 0.5)));
-        rwingConnector.setColor(new Vector4f(1, 1, 1, 0.33f));
+        rwingConnector.setAlpha(0.33f);
+        rwingConnector.addLayer(new UVPair(0, 0), GenericTextureValues.skin_Size, 0, TextureList.elementalColored);
 
         QuadCollection wingQuads = new QuadCollection();
         wingQuads.addQuad(lwingConnector);

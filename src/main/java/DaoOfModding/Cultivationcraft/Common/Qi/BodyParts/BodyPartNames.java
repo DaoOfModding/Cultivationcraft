@@ -330,6 +330,7 @@ public class BodyPartNames
         BodyPartOption fireScaleSkin = new BodyPartOption(scaleSkinPart+Elements.fireElement, bodyPosition, skinSubPosition,  "cultivationcraft.gui.bodypart.skin.scale.fire");
         fireScaleSkin.addTextureChange(TextureList.skin, new ResourceLocation(Cultivationcraft.MODID, "textures/models/skin/scales.png"));
         fireScaleSkin.addTextureColorChange(TextureList.skin, Elements.getElement(Elements.fireElement).color.darker().darker());
+        fireScaleSkin.addTextureColorChange(TextureList.elementalColored, Elements.getElement(Elements.fireElement).color.darker().darker());
         fireScaleSkin.addNeededPart(BodyPartNames.startingEyesPart);
         fireScaleSkin.setQuest(DefaultQuests.defaultSkinQuest);
         fireScaleSkin.setElement(Elements.fireElement);
@@ -339,6 +340,7 @@ public class BodyPartNames
         BodyPartOption earthScaleSkin = new BodyPartOption(scaleSkinPart+Elements.earthElement, bodyPosition, skinSubPosition,  "cultivationcraft.gui.bodypart.skin.scale.earth");
         earthScaleSkin.addTextureChange(TextureList.skin, new ResourceLocation(Cultivationcraft.MODID, "textures/models/skin/scales.png"));
         earthScaleSkin.addTextureColorChange(TextureList.skin, Elements.getElement(Elements.earthElement).color.darker().darker());
+        earthScaleSkin.addTextureColorChange(TextureList.elementalColored, Elements.getElement(Elements.earthElement).color.darker().darker());
         earthScaleSkin.addNeededPart(BodyPartNames.startingEyesPart);
         earthScaleSkin.setQuest(DefaultQuests.defaultSkinQuest);
         earthScaleSkin.setElement(Elements.earthElement);
@@ -348,6 +350,7 @@ public class BodyPartNames
         BodyPartOption waterScaleSkin = new BodyPartOption(scaleSkinPart+Elements.waterElement, bodyPosition, skinSubPosition,  "cultivationcraft.gui.bodypart.skin.scale.water");
         waterScaleSkin.addTextureChange(TextureList.skin, new ResourceLocation(Cultivationcraft.MODID, "textures/models/skin/scales.png"));
         waterScaleSkin.addTextureColorChange(TextureList.skin, Elements.getElement(Elements.waterElement).color.darker().darker());
+        waterScaleSkin.addTextureColorChange(TextureList.elementalColored, Elements.getElement(Elements.waterElement).color.darker().darker());
         waterScaleSkin.addNeededPart(BodyPartNames.startingEyesPart);
         waterScaleSkin.setQuest(DefaultQuests.defaultSkinQuest);
         waterScaleSkin.setElement(Elements.waterElement);
@@ -357,6 +360,7 @@ public class BodyPartNames
         BodyPartOption windScaleSkin = new BodyPartOption(scaleSkinPart+Elements.windElement, bodyPosition, skinSubPosition,  "cultivationcraft.gui.bodypart.skin.scale.wind");
         windScaleSkin.addTextureChange(TextureList.skin, new ResourceLocation(Cultivationcraft.MODID, "textures/models/skin/scales.png"));
         windScaleSkin.addTextureColorChange(TextureList.skin, Elements.getElement(Elements.windElement).color.darker().darker());
+        windScaleSkin.addTextureColorChange(TextureList.elementalColored, Elements.getElement(Elements.windElement).color.darker().darker());
         windScaleSkin.addNeededPart(BodyPartNames.startingEyesPart);
         windScaleSkin.setQuest(DefaultQuests.defaultSkinQuest);
         windScaleSkin.setElement(Elements.windElement);
@@ -366,6 +370,7 @@ public class BodyPartNames
         BodyPartOption woodScaleSkin = new BodyPartOption(scaleSkinPart+"wood"+Elements.woodElement, bodyPosition, skinSubPosition,  "cultivationcraft.gui.bodypart.skin.scale.wood");
         woodScaleSkin.addTextureChange(TextureList.skin, new ResourceLocation(Cultivationcraft.MODID, "textures/models/skin/scales.png"));
         woodScaleSkin.addTextureColorChange(TextureList.skin, Elements.getElement(Elements.woodElement).color.darker().darker());
+        woodScaleSkin.addTextureColorChange(TextureList.elementalColored, Elements.getElement(Elements.woodElement).color.darker().darker());
         woodScaleSkin.addNeededPart(BodyPartNames.startingEyesPart);
         woodScaleSkin.setQuest(DefaultQuests.defaultSkinQuest);
         woodScaleSkin.setElement(Elements.woodElement);
