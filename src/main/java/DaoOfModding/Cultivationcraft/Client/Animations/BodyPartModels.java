@@ -814,6 +814,7 @@ public class BodyPartModels
 
         ExtendableModelRenderer FPToothPart = ToothPart.clone();
         FPToothPart.setName(BodyPartModelNames.FPsharpToothModel);
+        FPToothPart.setNoResizeForSelfAndChildren(true);
         addModel(BodyPartModelNames.FPsharpToothModel, FPToothPart);
 
         // Create row of bottom teeth
@@ -921,6 +922,7 @@ public class BodyPartModels
 
         FPToothPart = ToothPart.clone();
         FPToothPart.setName(BodyPartModelNames.FPsharpToothLowerModel);
+        FPToothPart.setNoResizeForSelfAndChildren(true);
         addModel(BodyPartModelNames.FPsharpToothLowerModel, FPToothPart);
     }
 

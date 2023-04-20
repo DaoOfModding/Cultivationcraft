@@ -48,7 +48,6 @@ public class Cultivationcraft {
         Elements.init();
         TechniqueControl.init();
         BodyPartNames.init();
-        PlayerHealthManager.setup();
         Reflection.setup();
     }
 

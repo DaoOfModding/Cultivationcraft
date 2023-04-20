@@ -74,6 +74,8 @@ public class GenericQiPoses
         // Mouth closed
         Idle.addAngle(BodyPartModelNames.FPjawModel, new Vec3(Math.toRadians(-80), 0, 0), 1);
         Idle.addAngle(BodyPartModelNames.FPjawModelLower, new Vec3(Math.toRadians(160), 0, 0), 1);
+        Idle.addAngle(BodyPartModelNames.jawModel, new Vec3(0, 0, 0), 0);
+        Idle.addAngle(BodyPartModelNames.jawModelLower, new Vec3(0, 0, 0), 0);
 
         // Wings folded
         Idle.addAngle(BodyPartModelNames.rwingUpperArmModel, new Vec3(Math.toRadians(35), Math.toRadians(-15), Math.toRadians(-70)), 0);

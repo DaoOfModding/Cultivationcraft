@@ -19,11 +19,13 @@ import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.Quest;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.QuestHandler;
 import DaoOfModding.Cultivationcraft.Common.Qi.Damage.Damage;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
+import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import DaoOfModding.Cultivationcraft.Network.PacketHandler;
 import DaoOfModding.Cultivationcraft.Server.ServerItemControl;
 import DaoOfModding.Cultivationcraft.Server.ServerListeners;
 import DaoOfModding.Cultivationcraft.Server.SkillHotbarServer;
 import com.mojang.brigadier.CommandDispatcher;
+import net.minecraft.client.Minecraft;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.chunk.LevelChunk;
@@ -92,7 +94,8 @@ public class CommonListeners
                     if (sources.tick(event.level))
                         update = true;
 
-                    if (update) {
+                    if (update)
+                    {
                         LevelChunk chunk = event.level.getChunk(sources.getChunkPos().x, sources.getChunkPos().z);
 
                         // Mark the LevelChunk as dirty so it will save the updated capability
@@ -131,7 +134,7 @@ public class CommonListeners
         // Cancel the eat event if the players stomach is incompatible with the food type
         if (event.getItemStack().isEdible())
             if (event.getEntity().getFoodData() instanceof QiFoodStats)
-                if (!((QiFoodStats)((QiFoodStats) event.getEntity().getFoodData())).isEdible(event.getItemStack()))
+                if (!((QiFoodStats)(event.getEntity().getFoodData())).isEdible(event.getItemStack()))
                     event.setCanceled(true);
     }
 

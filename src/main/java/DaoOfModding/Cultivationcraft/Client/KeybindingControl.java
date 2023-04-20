@@ -68,12 +68,19 @@ public class KeybindingControl
         event.register(keyBindings[3]);
     }
 
+    public static boolean chatOpen()
+    {
+        if (Minecraft.getInstance().gui.getChat().getFocusedChat() != null)
+            return true;
+
+        return false;
+    }
 
     // Handle hotbar keys being pressed
     public static void handleHotbarKeybinds()
     {
         // Don't do anything if the Skill Hotbar isn't active
-        if (!SkillHotbarOverlay.isActive())
+        if (!SkillHotbarOverlay.isActive() || chatOpen())
             return;
 
         // Cancel the hotbar key press and change the skill hotbar selection to the pressed button
@@ -85,7 +92,7 @@ public class KeybindingControl
     public static void handleHotbarInteracts()
     {
         // If the skill hotbar isn't active do nothing
-        if (!SkillHotbarOverlay.isActive())
+        if (!SkillHotbarOverlay.isActive() || chatOpen())
         {
             usePressed = false;
             return;
@@ -143,6 +150,10 @@ public class KeybindingControl
 
     public static void handleMovementOverrides()
     {
+        // Don't override anything if the chat it open
+        if (chatOpen())
+            return;
+
         handleMovementTechOverrides();
         handleMovementPartOverrides();
 
@@ -290,6 +301,10 @@ public class KeybindingControl
     @SubscribeEvent
     public static void mouseScroll(InputEvent.MouseScrollingEvent event)
     {
+        // Do nothing if the chat is open
+        if (chatOpen())
+            return;
+
         // If the skill hotbar is active
         if (SkillHotbarOverlay.isActive())
         {
@@ -304,6 +319,10 @@ public class KeybindingControl
     @SubscribeEvent
     public static void onInput(InputEvent.MouseButton event)
     {
+        // Do nothing if the chat is open
+        if (chatOpen())
+            return;
+
         // TODO: Make this not shit -.-
 
         if (Minecraft.getInstance().options.keyAttack.isDown())
@@ -318,6 +337,10 @@ public class KeybindingControl
         // Only perform if the world is loaded and player is alive
         if (Minecraft.getInstance().level != null && genericClientFunctions.getPlayer().isAlive())
         {
+            // Do nothing if the chat is open
+            if (chatOpen())
+                return;
+
             handleHotbarKeybinds();
             handleHotbarInteracts();
             //handleMovementOverrides();

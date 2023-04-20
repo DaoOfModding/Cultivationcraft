@@ -2,6 +2,7 @@ package DaoOfModding.Cultivationcraft.Server;
 
 import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.BodyModifications;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.IBodyModifications;
+import DaoOfModding.Cultivationcraft.Common.Capabilities.ChunkQiSources.IChunkQiSources;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.CultivatorTechniques;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.ICultivatorTechniques;
 import DaoOfModding.Cultivationcraft.Common.FlyingSwordController;
@@ -11,17 +12,21 @@ import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartOption;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.Quest;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.QuestHandler;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.PassiveTechniques.PassiveTechnique;
+import DaoOfModding.Cultivationcraft.Network.PacketHandler;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.item.ItemTossEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 @Mod.EventBusSubscriber()
 public class ServerListeners
 {
+    protected static ArrayList<IChunkQiSources> tickingQiSources = new ArrayList<IChunkQiSources>();
     public static long lastServerTickTime = System.nanoTime();
 
     public static void playerTick(TickEvent.PlayerTickEvent event)
@@ -73,6 +78,35 @@ public class ServerListeners
             }
 
             lastServerTickTime = System.nanoTime();
+        }
+    }
+
+    public static void LevelTick(TickEvent.LevelTickEvent event)
+    {
+        // Clone the array list so it doesn't bork out if modified during ticking
+        ArrayList<IChunkQiSources> ticking = (ArrayList<IChunkQiSources>)tickingQiSources.clone();
+
+        for (IChunkQiSources sources : ticking)
+        {
+            if (sources.getDimension().compareTo(event.level.dimension().location()) == 0)
+            {
+                boolean update = false;
+
+                if (sources.tick(event.level))
+                    update = true;
+
+                if (update)
+                {
+                    LevelChunk chunk = event.level.getChunk(sources.getChunkPos().x, sources.getChunkPos().z);
+
+                    // Mark the LevelChunk as dirty so it will save the updated capability
+                    chunk.setUnsaved(true);
+
+                    // Send the updated capability data to all tracking clients
+                    // TODO - Is this updating too much?
+                    PacketHandler.sendChunkQiSourcesToClient(chunk);
+                }
+            }
         }
     }
 

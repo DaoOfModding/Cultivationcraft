@@ -11,6 +11,7 @@ import DaoOfModding.Cultivationcraft.Common.Qi.CultivationTypes;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.FoodStats.QiFoodStats;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.StatIDs;
+import DaoOfModding.Cultivationcraft.Common.Reflection;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.food.FoodData;
@@ -21,13 +22,6 @@ import java.lang.reflect.Field;
 public class PlayerHealthManager
 {
     static Blood defaultBlood = new Blood();
-
-    static Field foodStatField;
-
-    public static void setup()
-    {
-        foodStatField = ObfuscationReflectionHelper.findField(Player.class,"f_36097_");
-    }
 
     public static float getStaminaUse(Player player)
     {
@@ -84,9 +78,7 @@ public class PlayerHealthManager
         else
             updateOldFoodStats(oldFood, newFood);
 
-
-        try { foodStatField.set(player, newFood); }
-        catch (Exception e) { Cultivationcraft.LOGGER.error("Error setting food stats: " + e); }
+        Reflection.setFoodStats(player, newFood);
     }
 
     protected static void updateQiFoodStats(QiFoodStats oldFoodStats, QiFoodStats newFoodStats)
