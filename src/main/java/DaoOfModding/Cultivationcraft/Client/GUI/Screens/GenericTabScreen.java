@@ -63,6 +63,9 @@ public class GenericTabScreen extends Screen
 
         int edgeSpacingX = (this.width - this.xSize) / 2;
         int edgeSpacingY = (this.height - this.ySize) / 2;
+
+        ScreenTabControl.drawTabs(PoseStack, edgeSpacingX, edgeSpacingY, this);
+
         this.blit(PoseStack, edgeSpacingX, edgeSpacingY, 0, 0, this.xSize, this.ySize);
 
         ScreenTabControl.highlightTabs(PoseStack, tab, mouseX, mouseY, edgeSpacingX, edgeSpacingY, this);
