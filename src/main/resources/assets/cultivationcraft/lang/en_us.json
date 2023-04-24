@@ -48,6 +48,11 @@
   "cultivationcraft.quest.heal": "Health healed",
   "cultivationcraft.quest.drainstamina": "Stamina used",
 
+  "cultivationcraft.gui.tab0": "Stats",
+  "cultivationcraft.gui.tab1": "Skills",
+  "cultivationcraft.gui.tab2": "Cultivate",
+  "cultivationcraft.gui.tab3": "Help",
+
   "cultivationcraft.gui.bind": "Bind Item",
   "cultivationcraft.gui.done": "Done",
   "cultivationcraft.gui.cancel": "Cancel",

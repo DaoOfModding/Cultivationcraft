@@ -10,7 +10,11 @@ import DaoOfModding.Cultivationcraft.Common.Register;
 import DaoOfModding.Cultivationcraft.Network.ClientPacketHandler;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.network.chat.Component;
+
+import java.awt.*;
 
 public class ScreenTabControl
 {
@@ -23,6 +27,14 @@ public class ScreenTabControl
     protected static final int TAB_BAR_U = 214;
     protected static final int TAB_BAR_V = 243;
 
+    protected static final int SELECTED_TAB_BAR_U = 0;
+    protected static final int SELECTED_TAB_BAR_V = 239;
+
+    protected static final int SELECTED_TAB_BAR_X_SIZE = 41;
+    protected static final int SELECTED_TAB_BAR_Y_SIZE = 17;
+
+    protected static final int fontColor = Color.BLACK.getRGB();
+
     public static void highlightTabs(PoseStack PoseStack, int tabSelected, int mouseX, int mouseY, int screenX, int screenY, Screen drawTo)
     {
         mouseX = mouseX - screenX;
@@ -31,8 +43,23 @@ public class ScreenTabControl
         // Loop through each tab, checking if the mouse is over it and highlighting it if so
         for (int i = 0; i < TAB_BAR_X_POS.length; i++)
             if (tabSelected != i)
+            {
                 if (mouseOver(mouseX, mouseY, i))
                     drawTo.blit(PoseStack, screenX + TAB_BAR_X_POS[i], screenY + TAB_BAR_Y_POS[i], TAB_BAR_U, TAB_BAR_V, TAB_BAR_X_SIZE, TAB_BAR_Y_SIZE);
+            }
+            else
+                drawTo.blit(PoseStack, screenX + TAB_BAR_X_POS[tabSelected], screenY + TAB_BAR_Y_POS[tabSelected], SELECTED_TAB_BAR_U, SELECTED_TAB_BAR_V, SELECTED_TAB_BAR_X_SIZE, SELECTED_TAB_BAR_Y_SIZE);
+    }
+
+    public static void tabText(PoseStack PoseStack, int screenX, int screenY, Font font)
+    {
+        for (int i = 0; i < TAB_BAR_X_POS.length; i++)
+        {
+            String text = Component.translatable("cultivationcraft.gui.tab" + i).getString();
+
+            // Draw the text centered on each tab
+            font.draw(PoseStack, text, screenX + TAB_BAR_X_POS[i] + TAB_BAR_X_SIZE / 2 - font.width(text) / 2, screenY + TAB_BAR_Y_POS[i] + font.lineHeight / 2, fontColor);
+        }
     }
 
     public static boolean mouseClick(int mouseX, int mouseY, int screenX, int screenY, int buttonPressed)

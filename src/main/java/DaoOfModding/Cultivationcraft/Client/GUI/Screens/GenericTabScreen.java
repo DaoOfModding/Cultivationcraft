@@ -1,6 +1,7 @@
 package DaoOfModding.Cultivationcraft.Client.GUI.Screens;
 
 import DaoOfModding.Cultivationcraft.Client.GUI.ScreenTabControl;
+import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.screens.Screen;
@@ -15,12 +16,13 @@ public class GenericTabScreen extends Screen
     public final int ySize = 178;
 
     protected int tab;
+    protected final ResourceLocation tabTexture = new ResourceLocation(Cultivationcraft.MODID, "textures/gui/tabscreen.png");
 
     GenericTabScreen(int activeTab, Component name, ResourceLocation tabLocation)
     {
         super(name);
 
-        activeTab = tab;
+        tab = activeTab;
         TEXTURE = tabLocation;
     }
 
@@ -55,7 +57,8 @@ public class GenericTabScreen extends Screen
 
     protected void drawGuiBackgroundLayer(PoseStack PoseStack, float partialTicks, int mouseX, int mouseY)
     {
-        RenderSystem.setShaderTexture(0, TEXTURE);
+        // Draw the generic tab screen
+        RenderSystem.setShaderTexture(0, tabTexture);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 
         int edgeSpacingX = (this.width - this.xSize) / 2;
@@ -63,5 +66,12 @@ public class GenericTabScreen extends Screen
         this.blit(PoseStack, edgeSpacingX, edgeSpacingY, 0, 0, this.xSize, this.ySize);
 
         ScreenTabControl.highlightTabs(PoseStack, tab, mouseX, mouseY, edgeSpacingX, edgeSpacingY, this);
+        ScreenTabControl.tabText(PoseStack, edgeSpacingX, edgeSpacingY, this.font);
+
+        // Draw anything specific to this tab
+        RenderSystem.setShaderTexture(0, TEXTURE);
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+
+        this.blit(PoseStack, edgeSpacingX, edgeSpacingY, 0, 0, this.xSize, this.ySize);
     }
 }
