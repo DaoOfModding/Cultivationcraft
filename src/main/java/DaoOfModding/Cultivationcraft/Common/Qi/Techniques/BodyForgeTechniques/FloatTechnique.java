@@ -28,6 +28,8 @@ public class FloatTechnique extends Technique
     {
         super();
 
+        elytraDisables = true;
+
         langLocation = "cultivationcraft.technique.float";
         Element = Elements.noElement;
 

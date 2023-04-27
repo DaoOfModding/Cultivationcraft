@@ -18,12 +18,14 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Items;
 import net.minecraftforge.event.TickEvent;
 
 import java.util.ArrayList;
@@ -64,6 +66,8 @@ public class Technique
     protected ResourceLocation progress = new ResourceLocation(Cultivationcraft.MODID, "textures/gui/progressbar.png");
 
     public boolean toDeactivate = false;
+
+    protected boolean elytraDisables = false;
 
 
     public Technique()
@@ -172,6 +176,9 @@ public class Technique
 
     public void activate(Player player)
     {
+        if (elytraDisables && player.getItemBySlot(EquipmentSlot.CHEST).getItem() == Items.ELYTRA)
+            return;
+
         active = true;
 
         addModifiers(player);
@@ -313,6 +320,12 @@ public class Technique
     // Ticks on server side, only called if Technique is active and owned by the player
     public void tickServer(TickEvent.PlayerTickEvent event)
     {
+        if (elytraDisables && event.player.getItemBySlot(EquipmentSlot.CHEST).getItem() == Items.ELYTRA)
+        {
+            deactivate(event.player);
+            return;
+        }
+
         addModifiers(event.player);
 
         // While the key is being held down increase the currentChannel duration
@@ -324,6 +337,12 @@ public class Technique
     // Ticks on client side, only called if Technique is active
     public void tickClient(TickEvent.PlayerTickEvent event)
     {
+        if (elytraDisables && event.player.getItemBySlot(EquipmentSlot.CHEST).getItem() == Items.ELYTRA)
+        {
+            deactivate(event.player);
+            return;
+        }
+
         addModifiers(event.player);
 
         // While the key is being held down increase the currentChannel duration

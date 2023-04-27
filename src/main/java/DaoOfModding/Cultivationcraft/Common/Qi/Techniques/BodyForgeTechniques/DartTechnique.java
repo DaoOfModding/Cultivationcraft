@@ -34,6 +34,8 @@ public class DartTechnique extends Technique
     {
         super();
 
+        elytraDisables = true;
+
         langLocation = "cultivationcraft.technique.dart";
         Element = Elements.noElement;
 

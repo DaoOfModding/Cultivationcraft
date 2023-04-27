@@ -38,6 +38,8 @@ public class SpreadTechnique extends Technique
     {
         super();
 
+        elytraDisables = true;
+
         langLocation = "cultivationcraft.technique.spread";
         Element = Elements.noElement;
 
