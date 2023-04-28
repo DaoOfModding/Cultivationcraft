@@ -7,6 +7,7 @@ public class StatIDs
 {
     public static final ResourceLocation weight = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.stat.weight");
     public static final ResourceLocation movementSpeed = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.stat.movementspeed");
+    public static final ResourceLocation swimSpeed = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.stat.swimspeed");
     public static final ResourceLocation maxHP = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.stat.maxhp");
     public static final ResourceLocation maxStamina = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.stat.maxstamina");
     public static final ResourceLocation jumpHeight = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.stat.jumpheight");
@@ -35,9 +36,6 @@ public class StatIDs
     // TODO: Make this do something
     public static final ResourceLocation armAttackModifier = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.stat.armattackmodifier");
 
-    // TODO: Make this do something
-    public static final ResourceLocation swimSpeed = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.stat.swimspeed");
-
     public static final ResourceLocation legSupport = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.stat.legweight");
     public static final ResourceLocation wingSupport = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.stat.wingweight");
 
@@ -51,6 +49,8 @@ public class StatIDs
     public static final int defaultMaxHP = 20;
     public static final int defaultMaxStamina = 20;
     public static final float defaultMovementSpeed = 0.10000000149011612f;
+
+    public static final float defaultSwimSpeed = 1;
 
     public static final int defaultStaminaUse = 1;
     public static final int defaultWeight = 1;

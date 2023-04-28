@@ -495,7 +495,7 @@ public class BodyPartNames
         fArm.addArm(new Arm(InteractionHand.MAIN_HAND, BodyPartModelNames.flipperRightModel, BodyPartModelNames.flipperLowerRightModel, false));
         fArm.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.basePosition);
         fArm.getStatChanges().setStat(StatIDs.weight, DefaultPlayerBodyPartWeights.armWeight * -1.8f);
-        fArm.getStatChanges().setStat(StatIDs.swimSpeed, 1);
+        fArm.getStatChanges().setStat(StatIDs.swimSpeed, 0.5f);
         fArm.getStatChanges().setStat(StatIDs.armAttackModifier, -0.5f);
 
         addPart(fArm);

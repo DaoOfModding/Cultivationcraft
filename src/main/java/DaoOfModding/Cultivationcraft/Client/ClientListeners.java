@@ -8,6 +8,8 @@ import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.Cu
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.ICultivatorTechniques;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPart;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartOption;
+import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
+import DaoOfModding.Cultivationcraft.Common.Qi.Stats.PlayerStatControl;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.PassiveTechniques.PassiveTechnique;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.Technique;
 import DaoOfModding.mlmanimator.Client.Poses.PlayerPoseHandler;
@@ -31,12 +33,13 @@ public class ClientListeners
 
     public static void playerTick(TickEvent.PlayerTickEvent event)
     {
-        // TODO: VERY rare freeze seems to happen somewhere here
-
         if (event.side == LogicalSide.CLIENT && event.phase == TickEvent.Phase.START)
         {
             if (event.player == genericClientFunctions.getPlayer())
                 KeybindingControl.handleMovementOverrides();
+
+            if (event.player.isSwimming() && !event.player.isPassenger())
+                Physics.swim(event.player);
 
             PlayerPoseHandler pose = PoseHandler.getPlayerPoseHandler(event.player.getUUID());
 

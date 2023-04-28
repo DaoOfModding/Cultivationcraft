@@ -116,4 +116,19 @@ public class Physics
 
         return distance;
     }
+
+    public static void swim(Player player)
+    {
+        // TODO: Maybe need to adjust vertical swim speed here?
+        /*
+        float swimSpeed = BodyPartStatControl.getStats(player.getUUID()).getStat(StatIDs.swimSpeed);
+
+            double d3 = player.getLookAngle().y;
+            double d4 = d3 < -0.2D ? 0.085D : 0.06D;
+            if (d3 <= 0.0D ||  !player.level.getBlockState(new BlockPos(player.getX(), player.getY() + 1.0D - 0.1D, player.getZ())).getFluidState().isEmpty())
+            {
+                Vec3 vec31 = player.getDeltaMovement();
+                player.setDeltaMovement(vec31.add(0.0D, (d3 - vec31.y) * d4, 0.0D));
+            }*/
+    }
 }
