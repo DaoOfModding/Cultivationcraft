@@ -21,6 +21,9 @@ public class TechniqueIcons
     // Remember to rebind texture aftwards
     public static void renderIcons(PoseStack stack, int xpos, int ypos, GuiComponent gui, int spacing)
     {
+        if (genericClientFunctions.getPlayer() == null)
+            return;
+
         ICultivatorTechniques techs = CultivatorTechniques.getCultivatorTechniques(genericClientFunctions.getPlayer());
 
         for (int i = 0; i < CultivatorTechniques.numberOfTechniques; i++)

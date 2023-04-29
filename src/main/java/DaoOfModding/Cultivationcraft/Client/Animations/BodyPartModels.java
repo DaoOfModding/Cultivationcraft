@@ -305,6 +305,25 @@ public class BodyPartModels
         setupWingModels();
         setupInsectWingModels();
         setupJetModels();
+        setupFinModels();
+    }
+
+    protected void setupFinModels()
+    {
+        Quad finQuad = new Quad(new Vec3(0, 0, 0), new Vec3(0, 0, 0),new Vec3(0, 0, 0),new Vec3(0, 0, 0));
+        addQuadLink(BodyPartNames.bodyPosition, new QuadLinkage(finQuad, Quad.QuadVertex.TopLeft, new Vec3(0.5, 0.2, 1)));
+        addQuadLink(BodyPartNames.bodyPosition, new QuadLinkage(finQuad, Quad.QuadVertex.BottomLeft, new Vec3(0.5, 0.8, 1)));
+        addQuadLink(BodyPartNames.bodyPosition, new QuadLinkage(finQuad, Quad.QuadVertex.BottomRight, new Vec3(0.5, 0.8, 1)));
+        addQuadLink(BodyPartNames.bodyPosition, new QuadLinkage(finQuad, Quad.QuadVertex.TopRight, new Vec3(0.5, 0.9, 3)));
+
+        // TODO: Change blank to copying the color from the skin
+        finQuad.addLayer(new UVPair(0, 0), GenericTextureValues.skin_Size, 0, TextureHandler.BLANK);
+        finQuad.addLayer(new UVPair(0, 0), GenericTextureValues.skin_Size, 0, TextureList.skin);
+
+        QuadCollection finQuads = new QuadCollection();
+        finQuads.addQuad(finQuad);
+
+        addQuadCollection(BodyPartModelNames.dorsalFinQuad, finQuads);
     }
 
     protected void setupJetModels()

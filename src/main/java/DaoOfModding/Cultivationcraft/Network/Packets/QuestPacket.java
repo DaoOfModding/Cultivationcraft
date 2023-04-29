@@ -67,7 +67,9 @@ public class QuestPacket extends Packet
         }
         else
         {
-            if (genericClientFunctions.getPlayer().getUUID().compareTo(player) != 0)
+            if (genericClientFunctions.getPlayer() == null)
+                return;
+            else if (genericClientFunctions.getPlayer().getUUID().compareTo(player) != 0)
                 Cultivationcraft.LOGGER.warn("Server sent quest message for other player");
             else
                 ctx.enqueueWork(() -> processPacketClient());

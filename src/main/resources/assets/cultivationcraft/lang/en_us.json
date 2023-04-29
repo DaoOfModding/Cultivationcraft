@@ -42,6 +42,7 @@
   "cultivationcraft.quest.live": "Minutes spent alive",
   "cultivationcraft.quest.fly": "Blocks flown",
   "cultivationcraft.quest.walk": "Blocks walked",
+  "cultivationcraft.quest.swim": "Blocks swam",
   "cultivationcraft.quest.jump": "Height jumped",
   "cultivationcraft.quest.jet": "Blocks boosted",
   "cultivationcraft.quest.hop": "Times hopped",
@@ -136,10 +137,10 @@
   "cultivationcraft.gui.bodypart.stomach.expanding.description": "Forge your stomach to expand as needed, vastly increasing your maximum stamina but also increasing your size and weight as you eat",
 
   "cultivationcraft.gui.bodypart.stomach.carnivorous": "Carnivorous",
-  "cultivationcraft.gui.bodypart.stomach.carnivorous.description": "Forge your stomach to gain extra nutrition from meat, but you can only eat meat.",
+  "cultivationcraft.gui.bodypart.stomach.carnivorous.description": "Forge your stomach to gain extra nutrition from meat, but you can only eat meat",
 
   "cultivationcraft.gui.bodypart.stomach.herbivorous": "Herbivorous",
-  "cultivationcraft.gui.bodypart.stomach.herbivorous.description": "Forge your stomach to be able to eat vegetation, but you can not eat meat.",
+  "cultivationcraft.gui.bodypart.stomach.herbivorous.description": "Forge your stomach to be able to eat vegetation, but you can not eat meat",
 
   "cultivationcraft.gui.bodypart.back.wings": "Wings",
   "cultivationcraft.gui.bodypart.back.wings.description": "Grow wings to carry you through the sky",
@@ -148,7 +149,10 @@
   "cultivationcraft.gui.bodypart.back.iwings.description": "Grow delicate insect wings allowing you to quickly dart through the sky",
 
   "cultivationcraft.gui.bodypart.back.jet": "Jet Boosters",
-  "cultivationcraft.gui.bodypart.back.jet.description": "Grow flame spewing jet boosters from your back to increase your movement speed, but only when moving forwards.",
+  "cultivationcraft.gui.bodypart.back.jet.description": "Grow flame spewing jet boosters from your back to increase your movement speed, but only when moving forwards",
+
+  "cultivationcraft.gui.bodypart.back.dfin": "Dorsal Fin",
+  "cultivationcraft.gui.bodypart.back.dfin.description": "Grow a dorsal fin that increases your swimming speed. For reasons.",
 
   "cultivationcraft.gui.armpart.headarms": "Arms on Head",
   "cultivationcraft.gui.armpart.headarms.description": "~~~~TODO~~~~~",

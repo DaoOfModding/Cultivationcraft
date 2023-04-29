@@ -103,4 +103,6 @@ public class BodyPartModelNames
     public static final String jetRightSmoke = "JET_RIGHT_SMOKE";
     public static final String jetLeftFlame = "JET_LEFT_FLAME";
     public static final String jetRightFlame = "JET_RIGHT_FLAME";
+
+    public static final String dorsalFinQuad = "DORSAL_QUAD";
 }

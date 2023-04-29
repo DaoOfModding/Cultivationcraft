@@ -65,6 +65,9 @@ public class CommonListeners
                 Vec3 movement = new Vec3(event.player.getDeltaMovement().x, 0, event.player.getDeltaMovement().z);
                 QuestHandler.progressQuest(event.player, Quest.WALK, movement.length());
             }
+
+            if (event.player.isSwimming())
+                QuestHandler.progressQuest(event.player, Quest.SWIM, event.player.getDeltaMovement().length());
         }
         else
             ServerListeners.playerTick(event);

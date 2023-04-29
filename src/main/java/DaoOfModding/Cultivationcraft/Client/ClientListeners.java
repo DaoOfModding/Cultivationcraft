@@ -93,7 +93,7 @@ public class ClientListeners
     public static void overlayRender(RenderGuiOverlayEvent.Pre event)
     {
         // Do nothing if the player is dead
-        if (!genericClientFunctions.getPlayer().isAlive())
+        if (genericClientFunctions.getPlayer() != null && !genericClientFunctions.getPlayer().isAlive())
             return;
 
         if (event.getOverlay().id() == VanillaGuiOverlay.HOTBAR.id())
@@ -128,7 +128,7 @@ public class ClientListeners
     public static void overlayRenderPost(RenderGuiOverlayEvent.Post event)
     {
         // Do nothing if the player is dead
-        if (!genericClientFunctions.getPlayer().isAlive())
+        if (genericClientFunctions.getPlayer() != null && !genericClientFunctions.getPlayer().isAlive())
             return;
 
         if (event.getOverlay().id() == VanillaGuiOverlay.EXPERIENCE_BAR.id())

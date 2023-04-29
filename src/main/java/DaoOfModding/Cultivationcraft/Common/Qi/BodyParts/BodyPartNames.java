@@ -70,6 +70,7 @@ public class BodyPartNames
     public static final String wingPart = "wing";
     public static final String insectwingPart = "iwing";
     public static final String jetPart = "jet";
+    public static final String dfinPart = "dfin";
 
     public static final String rubberSkinPart = "rubber";
     public static final String stretchySkinPart = "stretchy";
@@ -422,9 +423,17 @@ public class BodyPartNames
         jets.getStatChanges().setStat(StatIDs.weight, 0.04f);
         jets.setQuest(new Quest(JetTechnique.jetQuest, 10000));
 
+        BodyPartOption dfin = new BodyPartOption(dfinPart, bodyPosition, backSubPosition, "cultivationcraft.gui.bodypart.back.dfin");
+        dfin.addQuad(BodyPartModelNames.dorsalFinQuad);
+        dfin.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.basePosition);
+        dfin.getStatChanges().setStat(StatIDs.weight, 0.01f);
+        dfin.getStatChanges().setStat(StatIDs.swimSpeed, 0.5f);
+        dfin.setQuest(DefaultQuests.defaultSwimQuest);
+
         addOption(addWings);
         addOption(addIWings);
         addOption(jets);
+        addOption(dfin);
     }
 
     protected static void setupBodyParts()
@@ -497,6 +506,7 @@ public class BodyPartNames
         fArm.getStatChanges().setStat(StatIDs.weight, DefaultPlayerBodyPartWeights.armWeight * -1.8f);
         fArm.getStatChanges().setStat(StatIDs.swimSpeed, 0.5f);
         fArm.getStatChanges().setStat(StatIDs.armAttackModifier, -0.5f);
+        fArm.setQuest(DefaultQuests.defaultSwimQuest);
 
         addPart(fArm);
 
