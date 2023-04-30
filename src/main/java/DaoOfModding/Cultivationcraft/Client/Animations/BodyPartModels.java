@@ -10,6 +10,7 @@ import com.mojang.math.Vector4f;
 import net.minecraft.client.model.geom.builders.UVPair;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.ArrayList;
@@ -313,12 +314,12 @@ public class BodyPartModels
         Quad finQuad = new Quad(new Vec3(0, 0, 0), new Vec3(0, 0, 0),new Vec3(0, 0, 0),new Vec3(0, 0, 0));
         addQuadLink(BodyPartNames.bodyPosition, new QuadLinkage(finQuad, Quad.QuadVertex.TopLeft, new Vec3(0.5, 0.2, 1)));
         addQuadLink(BodyPartNames.bodyPosition, new QuadLinkage(finQuad, Quad.QuadVertex.BottomLeft, new Vec3(0.5, 0.8, 1)));
-        addQuadLink(BodyPartNames.bodyPosition, new QuadLinkage(finQuad, Quad.QuadVertex.BottomRight, new Vec3(0.5, 0.8, 1)));
-        addQuadLink(BodyPartNames.bodyPosition, new QuadLinkage(finQuad, Quad.QuadVertex.TopRight, new Vec3(0.5, 0.9, 3)));
+        addQuadLink(BodyPartNames.bodyPosition, new QuadLinkage(finQuad, Quad.QuadVertex.BottomRight, new Vec3(0.5, 0.8, 3)));
+        addQuadLink(BodyPartNames.bodyPosition, new QuadLinkage(finQuad, Quad.QuadVertex.TopRight, new Vec3(0.5, 0.8, 3)));
 
         // TODO: Change blank to copying the color from the skin
-        finQuad.addLayer(new UVPair(0, 0), GenericTextureValues.skin_Size, 0, TextureHandler.BLANK);
-        finQuad.addLayer(new UVPair(0, 0), GenericTextureValues.skin_Size, 0, TextureList.skin);
+        finQuad.addLayer(new UVPair(0, 0), GenericTextureValues.skin_Size, 0, TextureHandler.PLAYER_SKIN, new UVPair(32 / GenericTextureValues.skin_Size.u(), 24 / GenericTextureValues.skin_Size.v()));
+        finQuad.addSmallLayer(new UVPair(0, 0), GenericTextureValues.skin_Size, 0, TextureList.skin);
 
         QuadCollection finQuads = new QuadCollection();
         finQuads.addQuad(finQuad);
@@ -530,14 +531,14 @@ public class BodyPartModels
         lwing34Connector.addLayer(new UVPair(0, 0), GenericTextureValues.skin_Size, 0, TextureHandler.BLANK);
         lwing45Connector.addLayer(new UVPair(0, 0), GenericTextureValues.skin_Size, 0, TextureHandler.BLANK);
 
-        wing12Connector.addLayer(new UVPair(0, 0), GenericTextureValues.skin_Size, 0, TextureList.skin);
-        wing23Connector.addLayer(new UVPair(0, 0), GenericTextureValues.skin_Size, 0, TextureList.skin);
-        wing34Connector.addLayer(new UVPair(0, 0), GenericTextureValues.skin_Size, 0, TextureList.skin);
-        wing45Connector.addLayer(new UVPair(0, 0), GenericTextureValues.skin_Size, 0, TextureList.skin);
-        lwing12Connector.addLayer(new UVPair(0, 0), GenericTextureValues.skin_Size, 0, TextureList.skin);
-        lwing23Connector.addLayer(new UVPair(0, 0), GenericTextureValues.skin_Size, 0, TextureList.skin);
-        lwing34Connector.addLayer(new UVPair(0, 0), GenericTextureValues.skin_Size, 0, TextureList.skin);
-        lwing45Connector.addLayer(new UVPair(0, 0), GenericTextureValues.skin_Size, 0, TextureList.skin);
+        wing12Connector.addSmallLayer(new UVPair(0, 0), GenericTextureValues.skin_Size, 0, TextureList.skin);
+        wing23Connector.addSmallLayer(new UVPair(0, 0), GenericTextureValues.skin_Size, 0, TextureList.skin);
+        wing34Connector.addSmallLayer(new UVPair(0, 0), GenericTextureValues.skin_Size, 0, TextureList.skin);
+        wing45Connector.addSmallLayer(new UVPair(0, 0), GenericTextureValues.skin_Size, 0, TextureList.skin);
+        lwing12Connector.addSmallLayer(new UVPair(0, 0), GenericTextureValues.skin_Size, 0, TextureList.skin);
+        lwing23Connector.addSmallLayer(new UVPair(0, 0), GenericTextureValues.skin_Size, 0, TextureList.skin);
+        lwing34Connector.addSmallLayer(new UVPair(0, 0), GenericTextureValues.skin_Size, 0, TextureList.skin);
+        lwing45Connector.addSmallLayer(new UVPair(0, 0), GenericTextureValues.skin_Size, 0, TextureList.skin);
 
         addModel(BodyPartModelNames.rwingUpperArmModel, wingTopModel);
         addReference(BodyPartModelNames.rwingUpperArmModel, BodyPartModelNames.rwingStrand1Model, wingStrandModel);
