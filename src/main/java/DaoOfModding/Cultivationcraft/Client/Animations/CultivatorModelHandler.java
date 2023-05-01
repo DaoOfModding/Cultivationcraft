@@ -65,6 +65,7 @@ public class CultivatorModelHandler
             MultiLimbedModel newModel = new MultiLimbedModel(renderer.getModel());
             newModel.setTextureHandler(handler.getPlayerModel().getTextureHandler());
             newModel.getTextureHandler().clearTextures();
+            TextureList.updateTextures(newModel.getTextureHandler());
 
             Collection<BodyPart> parts = modifications.getModifications().values();
             HashMap<String, BodyPartLocation> partLocations = getPartLocations(parts, modifications);

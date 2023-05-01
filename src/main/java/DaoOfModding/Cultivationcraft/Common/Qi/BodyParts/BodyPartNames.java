@@ -174,7 +174,7 @@ public class BodyPartNames
         BodyPartOption bigBones = new BodyPartOption(bigBonePart, bodyPosition, boneSubPosition,  "cultivationcraft.gui.bodypart.bone.big");
         bigBones.addTextureChange(TextureList.bone, new ResourceLocation(Cultivationcraft.MODID, "textures/models/bone/bone.png"));
         bigBones.addNeededPart(BodyPartNames.startingEyesPart);
-        bigBones.getStatChanges().setStat(StatIDs.weight, 0.05f);
+        bigBones.getStatChanges().setStat(StatIDs.weight, 0.2f);
         bigBones.getStatChanges().setStat(StatIDs.armor, 12);
         bigBones.getStatChanges().setStat(StatIDs.armorToughness, 2);
         bigBones.getStatChanges().setStat(StatIDs.width, 0.2f);
@@ -235,6 +235,18 @@ public class BodyPartNames
         woodBones.getStatChanges().setStat(StatIDs.armor, 4);
         woodBones.setQuest(DefaultQuests.defaultBoneQuest);
 
+        BodyPartOption lightningBones = new BodyPartOption(elementalBonePart + Elements.lightningElement, bodyPosition, boneSubPosition,  "cultivationcraft.gui.bodypart.bone.lightning");
+        lightningBones.setElement(Elements.lightningElement);
+        lightningBones.addTextureChange(TextureList.bone, new ResourceLocation(Cultivationcraft.MODID, "textures/models/bone/bone.png"));
+        lightningBones.addTextureColorChange(TextureList.bone, Misc.saturate(Elements.getElement(Elements.lightningElement).color, 0.75f));
+        lightningBones.addNeededPart(BodyPartNames.startingEyesPart);
+        lightningBones.getStatChanges().setStat(StatIDs.boneAttackModifier, 6);
+        lightningBones.getStatChanges().setElementalStat(StatIDs.resistanceModifier, Elements.lightningElement, 50);
+        lightningBones.getStatChanges().setElementalStat(StatIDs.resistanceModifier, Elements.windElement, 25);
+        lightningBones.getStatChanges().setElementalStat(StatIDs.resistanceModifier, Elements.fireElement, 25);
+        lightningBones.getStatChanges().setElementalStat(StatIDs.resistanceModifier, Elements.earthElement, -100);
+        lightningBones.setQuest(DefaultQuests.defaultBoneQuest);
+
         addOption(reinforceBones);
         addOption(sharpBones);
         addOption(bigBones);
@@ -243,6 +255,7 @@ public class BodyPartNames
         addOption(windBones);
         addOption(earthBones);
         addOption(woodBones);
+        addOption(lightningBones);
 
         setupSkinOptions();
         setupStomachOptions();
@@ -368,7 +381,7 @@ public class BodyPartNames
         windScaleSkin.getStatChanges().setElementalStat(StatIDs.resistanceModifier, Elements.windElement, 50);
         windScaleSkin.getStatChanges().setElementalStat(StatIDs.resistanceModifier, Elements.woodElement, -50);
 
-        BodyPartOption woodScaleSkin = new BodyPartOption(scaleSkinPart+"wood"+Elements.woodElement, bodyPosition, skinSubPosition,  "cultivationcraft.gui.bodypart.skin.scale.wood");
+        BodyPartOption woodScaleSkin = new BodyPartOption(scaleSkinPart+Elements.woodElement, bodyPosition, skinSubPosition,  "cultivationcraft.gui.bodypart.skin.scale.wood");
         woodScaleSkin.addTextureChange(TextureList.skin, new ResourceLocation(Cultivationcraft.MODID, "textures/models/skin/scales.png"));
         woodScaleSkin.addTextureColorChange(TextureList.skin, Elements.getElement(Elements.woodElement).color.darker().darker());
         woodScaleSkin.addTextureColorChange(TextureList.elementalColored, Elements.getElement(Elements.woodElement).color.darker().darker());
@@ -378,6 +391,19 @@ public class BodyPartNames
         woodScaleSkin.getStatChanges().setElementalStat(StatIDs.resistanceModifier, Elements.woodElement, 50);
         woodScaleSkin.getStatChanges().setElementalStat(StatIDs.resistanceModifier, Elements.fireElement, -50);
 
+
+        BodyPartOption lightningScaleSkin = new BodyPartOption(scaleSkinPart+Elements.lightningElement, bodyPosition, skinSubPosition,  "cultivationcraft.gui.bodypart.skin.scale.lightning");
+        lightningScaleSkin.addTextureChange(TextureList.skin, new ResourceLocation(Cultivationcraft.MODID, "textures/models/skin/scales.png"));
+        lightningScaleSkin.addTextureColorChange(TextureList.skin, Elements.getElement(Elements.lightningElement).color.darker());
+        lightningScaleSkin.addTextureColorChange(TextureList.elementalColored, Elements.getElement(Elements.lightningElement).color);
+        lightningScaleSkin.addNeededPart(BodyPartNames.startingEyesPart);
+        lightningScaleSkin.setQuest(DefaultQuests.defaultSkinQuest);
+        lightningScaleSkin.setElement(Elements.lightningElement);
+        lightningScaleSkin.getStatChanges().setElementalStat(StatIDs.resistanceModifier, Elements.lightningElement, 50);
+        lightningScaleSkin.getStatChanges().setElementalStat(StatIDs.resistanceModifier, Elements.windElement, 25);
+        lightningScaleSkin.getStatChanges().setElementalStat(StatIDs.resistanceModifier, Elements.fireElement, 25);
+        lightningScaleSkin.getStatChanges().setElementalStat(StatIDs.resistanceModifier, Elements.earthElement, -100);
+
         addOption(rubberSkin);
         addOption(stretchySkin);
         addOption(reinforceSkin);
@@ -386,6 +412,7 @@ public class BodyPartNames
         addOption(waterScaleSkin);
         addOption(windScaleSkin);
         addOption(woodScaleSkin);
+        addOption(lightningScaleSkin);
     }
 
 

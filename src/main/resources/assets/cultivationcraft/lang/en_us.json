@@ -107,6 +107,8 @@
   "cultivationcraft.gui.bodypart.skin.scale.earth.description": "~~~~TODO~~~~~",
   "cultivationcraft.gui.bodypart.skin.scale.wood": "Wood Scales",
   "cultivationcraft.gui.bodypart.skin.scale.wood.description": "~~~~TODO~~~~~",
+  "cultivationcraft.gui.bodypart.skin.scale.lightning": "Lightning Scales",
+  "cultivationcraft.gui.bodypart.skin.scale.lightning.description": "~~~~TODO~~~~~",
 
   "cultivationcraft.gui.bodypart.bone.big": "Big Boned",
   "cultivationcraft.gui.bodypart.bone.big.description": "Increases bone thickness, letting them absorb a lot more damage but increasing your size and weight",
@@ -123,6 +125,8 @@
   "cultivationcraft.gui.bodypart.bone.earth.description": "Infused bones with earth element.\nSlightly less armor, but gives resistance to earth",
   "cultivationcraft.gui.bodypart.bone.wood": "Wood infused",
   "cultivationcraft.gui.bodypart.bone.wood.description": "Infused bones with wood element.\nSlightly less armor, but gives resistance to wood",
+  "cultivationcraft.gui.bodypart.bone.lightning": "Lightning infused",
+  "cultivationcraft.gui.bodypart.bone.lightning.description": "Infused bones with Lightning element.\nGives no armor, but gives resistance to Lightning",
 
 
   "cultivationcraft.gui.bodypart.blood.hunger": "Default Blood",
