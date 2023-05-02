@@ -49,7 +49,8 @@ public class ExpandingStomachTechnique extends PassiveTechnique
     // Ticks on client side
     public void tickClient(TickEvent.PlayerTickEvent event)
     {
-        currentStamina = StaminaHandler.getStamina(event.player);
+        if (event.player == Minecraft.getInstance().player)
+            currentStamina = StaminaHandler.getStamina(event.player);
 
         updateSizeStats(event.player);
 

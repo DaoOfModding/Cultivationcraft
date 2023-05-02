@@ -53,7 +53,7 @@ public class QiFoodStats extends FoodData
 
         // Handle passive stamina drain
         // Divided by 20 to convert seconds into ticks
-        setFoodLevel(Math.min(Math.max(getTrueFoodLevel() + BodyPartStatControl.getStats(player.getUUID()).getStat(StatIDs.staminaDrain) / 20, 0), getMaxFood()));
+        setFoodLevel(Math.min(Math.max(getTrueFoodLevel() - BodyPartStatControl.getStats(player.getUUID()).getStat(StatIDs.staminaDrain) / 20, 0), getMaxFood()));
 
         // Get the player's blood and let it handle passive regen
         PlayerHealthManager.getBlood(player).regen(player);

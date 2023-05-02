@@ -11,9 +11,11 @@ import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.QuestHandler;
 import DaoOfModding.Cultivationcraft.Common.Qi.CultivationTypes;
 import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
+import DaoOfModding.Cultivationcraft.Common.Qi.Stats.StatIDs;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.Technique;
 import DaoOfModding.Cultivationcraft.Common.Reflection;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
+import DaoOfModding.Cultivationcraft.StaminaHandler;
 import DaoOfModding.mlmanimator.Client.Models.GenericLimbNames;
 import DaoOfModding.mlmanimator.Client.Poses.PlayerPose;
 import DaoOfModding.mlmanimator.Client.Poses.PoseHandler;
@@ -33,6 +35,8 @@ public class SpreadTechnique extends Technique
     protected PlayerPose flapDown = new PlayerPose();
 
     protected PlayerPose inAir = new PlayerPose();
+
+    protected float staminaUse = 0.2f;
 
     public SpreadTechnique()
     {
@@ -179,7 +183,8 @@ public class SpreadTechnique extends Technique
         if (groundCheck == true)
             groundCheck = false;
         else if (!player.isOnGround() && cooldownCount == 0)
-            cooldownCount = cooldown;
+            if (StaminaHandler.consumeStamina(player, staminaUse))
+                cooldownCount = cooldown;
     }
 
     @Override

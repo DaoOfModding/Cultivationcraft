@@ -2,6 +2,7 @@ package DaoOfModding.Cultivationcraft.Common.Qi.Techniques.BodyForgeTechniques;
 
 import DaoOfModding.Cultivationcraft.Client.Physics;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.StatIDs;
+import DaoOfModding.Cultivationcraft.StaminaHandler;
 import DaoOfModding.mlmanimator.Client.Poses.*;
 import DaoOfModding.mlmanimator.Client.Models.GenericLimbNames;
 import DaoOfModding.Cultivationcraft.Client.Animations.BodyPartModelNames;
@@ -24,6 +25,7 @@ public class LeapTechnique extends Technique
     protected PlayerPose defaultLeapLegs = new PlayerPose();
 
     protected boolean leaping = false;
+    protected float staminaUse = 0.5f;
 
     public LeapTechnique()
     {
@@ -67,7 +69,8 @@ public class LeapTechnique extends Technique
         if (active || leaping || !keyDown || !player.isOnGround() || player.isInWater())
             return;
 
-        active = true;
+        if (StaminaHandler.consumeStamina(player, staminaUse))
+            active = true;
     }
 
     @Override

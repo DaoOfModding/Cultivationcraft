@@ -4,6 +4,7 @@ import DaoOfModding.Cultivationcraft.Client.genericClientFunctions;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.PlayerStatModifications;
 import DaoOfModding.Cultivationcraft.Network.ClientPacketHandler;
+import DaoOfModding.Cultivationcraft.StaminaHandler;
 import DaoOfModding.mlmanimator.Client.Poses.PoseHandler;
 import DaoOfModding.mlmanimator.Client.Poses.PlayerPose;
 import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
@@ -68,7 +69,6 @@ public class Technique
     public boolean toDeactivate = false;
 
     protected boolean elytraDisables = false;
-
 
     public Technique()
     {
@@ -208,7 +208,7 @@ public class Technique
 
         for (MobEffect effect : effects)
             if (!player.hasEffect(effect))
-                player.addEffect(new MobEffectInstance(effect, 9999999));
+                player.addEffect(new MobEffectInstance(effect, 9999999, 0, false, false));
 
         if (stats != null)
             BodyPartStatControl.updateStats(player);

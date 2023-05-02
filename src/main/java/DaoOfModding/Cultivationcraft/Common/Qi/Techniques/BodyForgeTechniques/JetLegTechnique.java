@@ -15,6 +15,7 @@ import DaoOfModding.Cultivationcraft.Common.Qi.Stats.StatIDs;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.MovementOverrideTechnique;
 import DaoOfModding.Cultivationcraft.Common.Reflection;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
+import DaoOfModding.Cultivationcraft.StaminaHandler;
 import DaoOfModding.mlmanimator.Client.Models.MultiLimbedModel;
 import DaoOfModding.mlmanimator.Client.Poses.PoseHandler;
 import net.minecraft.server.level.ServerPlayer;
@@ -25,6 +26,8 @@ import net.minecraftforge.event.TickEvent;
 
 public class JetLegTechnique extends MovementOverrideTechnique
 {
+    protected float staminaUse = 0.02f;
+
     public JetLegTechnique()
     {
         super();
@@ -88,6 +91,10 @@ public class JetLegTechnique extends MovementOverrideTechnique
         Player player = genericClientFunctions.getPlayer();
         // Do nothing if the player is in water
         if (player.isInWater())
+            return false;
+
+        // Do nothing if player is out of stamina
+        if (!StaminaHandler.consumeStamina(player, staminaUse))
             return false;
 
         PlayerStatControl stats = BodyPartStatControl.getPlayerStatControl(player.getUUID());

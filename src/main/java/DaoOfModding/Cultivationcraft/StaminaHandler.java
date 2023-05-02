@@ -12,6 +12,33 @@ public class StaminaHandler
         ((QiFoodStats) player.getFoodData()).setFoodLevel(stamina);
     }
 
+    public static boolean consumeStamina(Player player, float stamina)
+    {
+        // Multiply stamina use by weight
+        stamina = stamina * BodyPartStatControl.getStats(player.getUUID()).getStat(StatIDs.weight);
+
+        if (((QiFoodStats)player.getFoodData()).getTrueFoodLevel() < stamina)
+            return false;
+
+        float saturation = player.getFoodData().getSaturationLevel();
+
+        if (saturation > 0)
+            if (saturation > stamina)
+            {
+                player.getFoodData().setSaturation(saturation - stamina);
+                return true;
+            }
+            else
+            {
+                stamina = stamina - saturation;
+                player.getFoodData().setSaturation(0);
+            }
+
+
+        ((QiFoodStats) player.getFoodData()).setFoodLevel(((QiFoodStats) player.getFoodData()).getTrueFoodLevel() - stamina);
+        return true;
+    }
+
     public static float getStamina(Player player)
     {
         return ((QiFoodStats)player.getFoodData()).getTrueFoodLevel();

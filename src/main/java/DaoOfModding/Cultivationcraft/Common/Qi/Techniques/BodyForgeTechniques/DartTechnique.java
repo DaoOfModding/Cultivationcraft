@@ -13,6 +13,7 @@ import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.Technique;
 import DaoOfModding.Cultivationcraft.Common.Reflection;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
+import DaoOfModding.Cultivationcraft.StaminaHandler;
 import DaoOfModding.mlmanimator.Client.Models.GenericLimbNames;
 import DaoOfModding.mlmanimator.Client.Poses.GenericPoses;
 import DaoOfModding.mlmanimator.Client.Poses.PlayerPose;
@@ -29,6 +30,7 @@ public class DartTechnique extends Technique
     protected PlayerPose flap = new PlayerPose();
     protected float doubledCooldown;
     protected boolean firstDash = false;
+    protected float staminaUse = 0.2f;
 
     public DartTechnique()
     {
@@ -156,6 +158,10 @@ public class DartTechnique extends Technique
 
     public void dart(Player player)
     {
+        // Do nothing if player is out of stamina
+        if (!StaminaHandler.consumeStamina(player, staminaUse))
+            return;
+
         float weightModifier = BodyPartStatControl.getPlayerStatControl(player.getUUID()).getFlightWeightModifier();
 
         float speed = 20 * weightModifier;

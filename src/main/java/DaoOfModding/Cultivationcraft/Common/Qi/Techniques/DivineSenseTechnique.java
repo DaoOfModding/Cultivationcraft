@@ -10,8 +10,11 @@ import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.ICultiv
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartOption;
 import DaoOfModding.Cultivationcraft.Common.Qi.CultivationTypes;
 import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
+import DaoOfModding.Cultivationcraft.Common.Qi.Stats.StatIDs;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import net.minecraft.client.player.AbstractClientPlayer;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.event.TickEvent;
@@ -30,6 +33,10 @@ public class DivineSenseTechnique extends Technique
 
         icon = new ResourceLocation(Cultivationcraft.MODID, "textures/techniques/icons/divinesense.png");
         setOverlay(new ResourceLocation(Cultivationcraft.MODID, "textures/techniques/overlays/divinesense.png"));
+
+        stats.setStat(StatIDs.staminaDrain, 0.05f);
+
+        effects.add(MobEffects.NIGHT_VISION);
     }
 
     @Override

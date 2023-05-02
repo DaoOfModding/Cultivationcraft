@@ -43,6 +43,8 @@ public class BiteTechnique extends AttackOverrideTechnique
         damage = 2;
         range = 3.5;
 
+        staminaUse = 0.05f;
+
         pose.addAngle(BodyPartModelNames.jawModelLower, new Vec3(Math.toRadians(40), 0, 0), GenericQiPoses.attackPriority-1, 5f, -1);
         attack.addAngle(BodyPartModelNames.jawModelLower, new Vec3(Math.toRadians(20), 0, 0), GenericQiPoses.attackPriority, 0f, -1);
 
