@@ -6,6 +6,7 @@ import DaoOfModding.Cultivationcraft.Client.Animations.BodyPartModelNames;
 import DaoOfModding.Cultivationcraft.Client.Physics;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.Quest;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.QuestHandler;
+import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import DaoOfModding.mlmanimator.Client.Poses.GenericPoses;
 import DaoOfModding.mlmanimator.Client.Poses.PlayerPose;
@@ -48,10 +49,11 @@ public class SingleLegPart extends MovementOverridePart
         if (player.isOnGround() && !player.isInWater())
         {
             Vec3 direction = player.getForward().normalize();
-            float speed = player.getSpeed();
+            float weight = BodyPartStatControl.getPlayerStatControl(player.getUUID()).getLegWeightModifier();
+            float speed = player.getSpeed() * weight;
 
             // Move player forward based on their movement speed whilst jumping 1 block high
-            Vec3 movement = new Vec3(direction.x * 0.4f * speed * 10, 0.52f * Physics.getBlockJumpFactor(player), direction.z * 0.4f * speed * 10);
+            Vec3 movement = new Vec3(direction.x * 0.4f * speed * 10, 0.52f * Physics.getBlockJumpFactor(player) * weight, direction.z * 0.4f * speed * 10);
 
             player.setDeltaMovement(movement);
 
