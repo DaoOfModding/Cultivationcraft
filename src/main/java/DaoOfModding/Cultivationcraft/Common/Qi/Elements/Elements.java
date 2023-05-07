@@ -82,7 +82,7 @@ public class Elements
         addElement(new Element(earthElement, new Color(1f, 0.5f, 0), 0.75));
         addElement(new Element(woodElement, new Color(0, 0.5f, 0), 0.05));
         addElement(new Element(windElement, new Color(0, 1f, 0.25f), 0.8));
-        addElement(new Element(waterElement, new Color(0, 0, 1f), 0.3));
+        addElement(new Element(waterElement, new Color(0, 0, 1f), 0.2));
 
         addVariant(waterElement, new IceElement(iceElement, new Color(0, 1f, 1f), 0.5, 0.02));
         addVariant(windElement, new LightningElement(lightningElement, new Color(1f, 1f, 0), 0, 0.02));

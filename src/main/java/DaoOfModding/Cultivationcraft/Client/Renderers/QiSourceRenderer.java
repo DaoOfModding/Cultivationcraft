@@ -4,6 +4,7 @@ import DaoOfModding.Cultivationcraft.Client.Particles.QiParticleData;
 import DaoOfModding.Cultivationcraft.Client.genericClientFunctions;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.ChunkQiSources.ChunkQiSources;
 import DaoOfModding.Cultivationcraft.Common.Qi.QiSource;
+import DaoOfModding.Cultivationcraft.Common.Qi.QiSourceConfig;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import DaoOfModding.mlmanimator.Client.Poses.PoseHandler;
 import net.minecraft.client.Minecraft;
@@ -41,7 +42,7 @@ public class QiSourceRenderer
 
         tick += partialTick;
 
-        if (tick >= 30*30)
+        if (tick >= (QiSource.minSpawnTime+QiSource.maxSpawnTime)*(QiSource.minSpawnTime+QiSource.maxSpawnTime))
             tick = 0;
     }
 
@@ -85,7 +86,7 @@ public class QiSourceRenderer
         if (source.spawnedTick == (int)(tick + 1))
             return;
 
-        if ((int)(tick + 1) % (source.getSpawnTick() +1) > 0)
+        if ((int)(tick + 1) % (source.getSpawnTick() + 1 + QiSource.maxSpawnTime) > 0)
             return;
 
         source.spawnedTick = (int)(tick + 1);

@@ -30,7 +30,8 @@ public class QiSource
 
     protected boolean toUpdate = true;
 
-    protected static final int minSpawnTime = 30;
+    public static final int minSpawnTime = 30;
+    public static final int maxSpawnTime = 10;
 
     public int spawnedTick = 0;
 

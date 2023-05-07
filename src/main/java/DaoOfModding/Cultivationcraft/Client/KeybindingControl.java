@@ -64,14 +64,17 @@ public class KeybindingControl
         keyBindings[3] = new KeyMapping("Flying Sword Screen Test", GLFW_KEY_L, "Cultivation");
 
         event.register(keyBindings[0]);
-        event.register(keyBindings[1]);
-        event.register(keyBindings[2]);
+        /*event.register(keyBindings[1]);
+        event.register(keyBindings[2]);*/
         event.register(keyBindings[3]);
     }
 
     public static boolean chatOpen()
     {
         if (Minecraft.getInstance().gui.getChat().getFocusedChat() != null)
+            return true;
+
+        if (Minecraft.getInstance().screen != null)
             return true;
 
         return false;

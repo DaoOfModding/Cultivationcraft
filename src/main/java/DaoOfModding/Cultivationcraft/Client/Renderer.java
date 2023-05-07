@@ -30,7 +30,7 @@ public class Renderer
     public static void render(float partialTick)
     {
         if (!Minecraft.getInstance().isPaused())
-            if (QiSourcesVisible)
+            //if (QiSourcesVisible)
                 QiSourceRenderer.renderQiSources(partialTick);
 
         renderTechniques();
