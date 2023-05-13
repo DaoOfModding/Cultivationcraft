@@ -112,7 +112,7 @@ public class ServerListeners
 
     // Fired off when an item is thrown
     @SubscribeEvent
-    public static void entityJoinWorld(ItemTossEvent event)
+    public static void itemThrowEvent(ItemTossEvent event)
     {
         // Check if the entity is an item
         if (event.getEntity() instanceof ItemEntity)

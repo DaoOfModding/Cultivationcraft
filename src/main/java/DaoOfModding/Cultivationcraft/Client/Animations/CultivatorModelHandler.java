@@ -89,6 +89,7 @@ public class CultivatorModelHandler
 
             // Update the player model with the new one
             handler.setPlayerModel(newModel);
+            handler.setCrawling(false);
 
             // Unlock the handler
             handler.unlock();
@@ -418,5 +419,10 @@ public class CultivatorModelHandler
             model.setViewPoint(model.getLimb(part.getViewPoint()));
 
         return true;
+    }
+
+    public static void reset()
+    {
+        models = new HashMap<>();
     }
 }

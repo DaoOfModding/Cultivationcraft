@@ -109,4 +109,10 @@ public class SkillHotbarOverlay
     {
         return isActive;
     }
+
+    public static void reset()
+    {
+        isActive = false;
+        skillSelected = 0;
+    }
 }

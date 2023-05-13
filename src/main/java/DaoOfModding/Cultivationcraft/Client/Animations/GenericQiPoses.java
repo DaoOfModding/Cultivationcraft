@@ -26,6 +26,7 @@ public class GenericQiPoses
         setupWalking();
         setupJumping();
         setupSwimming();
+        setupCrawling();
     }
 
     protected static void setupIdle()
@@ -284,6 +285,37 @@ public class GenericQiPoses
         GenericPoses.SwimmingMoving.addAngle(BodyPartModelNames.hexaLowerRightLegModelTwo, new Vec3(0, 0, 0), GenericPoses.swimLegPriority, 5f, 2);
         GenericPoses.SwimmingMoving.addAngle(BodyPartModelNames.hexaRightLegModelThree, new Vec3(Math.toRadians(-30), Math.toRadians(30), 0), GenericPoses.swimLegPriority, 5f, 2);
         GenericPoses.SwimmingMoving.addAngle(BodyPartModelNames.hexaLowerRightLegModelThree, new Vec3(0, 0, 0), GenericPoses.swimLegPriority, 5f, 2);
+    }
+
+    protected static void setupCrawling()
+    {
+        GenericPoses.Crawling.addAngle(BodyPartModelNames.hexaLeftLegModel, new Vec3(0, 0, 0), GenericPoses.crawlPriority);
+        GenericPoses.Crawling.addAngle(BodyPartModelNames.hexaLowerLeftLegModel, new Vec3(0, 0, 0), GenericPoses.crawlPriority);
+        GenericPoses.Crawling.addAngle(BodyPartModelNames.hexaLeftLegModelTwo, new Vec3(0, 0, 0), GenericPoses.crawlPriority);
+        GenericPoses.Crawling.addAngle(BodyPartModelNames.hexaLowerLeftLegModelTwo, new Vec3(0, 0, 0), GenericPoses.crawlPriority);
+        GenericPoses.Crawling.addAngle(BodyPartModelNames.hexaLeftLegModelThree, new Vec3(0, 0, 0), GenericPoses.crawlPriority);
+        GenericPoses.Crawling.addAngle(BodyPartModelNames.hexaLowerLeftLegModelThree, new Vec3(0, 0, 0), GenericPoses.crawlPriority);
+
+        GenericPoses.Crawling.addAngle(BodyPartModelNames.hexaRightLegModel, new Vec3(0, 0, 0), GenericPoses.crawlPriority);
+        GenericPoses.Crawling.addAngle(BodyPartModelNames.hexaLowerRightLegModel, new Vec3(0, 0, 0), GenericPoses.crawlPriority);
+        GenericPoses.Crawling.addAngle(BodyPartModelNames.hexaRightLegModelTwo, new Vec3(0, 0, 0), GenericPoses.crawlPriority);
+        GenericPoses.Crawling.addAngle(BodyPartModelNames.hexaLowerRightLegModelTwo, new Vec3(0, 0, 0), GenericPoses.crawlPriority);
+        GenericPoses.Crawling.addAngle(BodyPartModelNames.hexaRightLegModelThree, new Vec3(0, 0, 0), GenericPoses.crawlPriority);
+        GenericPoses.Crawling.addAngle(BodyPartModelNames.hexaLowerRightLegModelThree, new Vec3(0, 0, 0), GenericPoses.crawlPriority);
+
+        GenericPoses.CrawlingWalk.addAngle(BodyPartModelNames.hexaLeftLegModel, new Vec3(0, 0, 0), GenericPoses.crawlPriority);
+        GenericPoses.CrawlingWalk.addAngle(BodyPartModelNames.hexaLowerLeftLegModel, new Vec3(0, 0, 0), GenericPoses.crawlPriority);
+        GenericPoses.CrawlingWalk.addAngle(BodyPartModelNames.hexaLeftLegModelTwo, new Vec3(0, 0, 0), GenericPoses.crawlPriority);
+        GenericPoses.CrawlingWalk.addAngle(BodyPartModelNames.hexaLowerLeftLegModelTwo, new Vec3(0, 0, 0), GenericPoses.crawlPriority);
+        GenericPoses.CrawlingWalk.addAngle(BodyPartModelNames.hexaLeftLegModelThree, new Vec3(0, 0, 0), GenericPoses.crawlPriority);
+        GenericPoses.CrawlingWalk.addAngle(BodyPartModelNames.hexaLowerLeftLegModelThree, new Vec3(0, 0, 0), GenericPoses.crawlPriority);
+
+        GenericPoses.CrawlingWalk.addAngle(BodyPartModelNames.hexaRightLegModel, new Vec3(0, 0, 0), GenericPoses.crawlPriority);
+        GenericPoses.CrawlingWalk.addAngle(BodyPartModelNames.hexaLowerRightLegModel, new Vec3(0, 0, 0), GenericPoses.crawlPriority);
+        GenericPoses.CrawlingWalk.addAngle(BodyPartModelNames.hexaRightLegModelTwo, new Vec3(0, 0, 0), GenericPoses.crawlPriority);
+        GenericPoses.CrawlingWalk.addAngle(BodyPartModelNames.hexaLowerRightLegModelTwo, new Vec3(0, 0, 0), GenericPoses.crawlPriority);
+        GenericPoses.CrawlingWalk.addAngle(BodyPartModelNames.hexaRightLegModelThree, new Vec3(0, 0, 0), GenericPoses.crawlPriority);
+        GenericPoses.CrawlingWalk.addAngle(BodyPartModelNames.hexaLowerRightLegModelThree, new Vec3(0, 0, 0), GenericPoses.crawlPriority);
     }
 
     protected static void setupHandsBehind()

@@ -20,6 +20,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.*;
 import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.common.Mod;
@@ -164,5 +165,15 @@ public class ClientListeners
         if (event.phase == TickEvent.Phase.END)
             if (Minecraft.getInstance().level != null)
                 Renderer.render(event.renderTickTime);
+    }
+
+    @SubscribeEvent
+    public static void playerDisconnects(PlayerEvent.PlayerLoggedOutEvent event)
+    {
+        if (event.getEntity().getUUID().compareTo(Minecraft.getInstance().player.getUUID()) == 0)
+        {
+            SkillHotbarOverlay.reset();
+            CultivatorModelHandler.reset();
+        }
     }
 }
