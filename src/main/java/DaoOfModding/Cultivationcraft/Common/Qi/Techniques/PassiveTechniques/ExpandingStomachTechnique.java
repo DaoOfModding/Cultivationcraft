@@ -40,7 +40,7 @@ public class ExpandingStomachTechnique extends PassiveTechnique
     {
         // Technique is valid if the player is a body cultivator with appropriate teeth
         if (CultivatorStats.getCultivatorStats(player).getCultivationType() == CultivationTypes.BODY_CULTIVATOR &&
-                (BodyModifications.getBodyModifications(player).hasModification(BodyPartNames.bodyPosition, BodyPartNames.expandingBodyPart)))
+                (BodyModifications.getBodyModifications(player).hasOption(BodyPartNames.bodyPosition, BodyPartNames.stomachSubPosition, BodyPartNames.expandingStomachPart)))
             return true;
 
         return false;

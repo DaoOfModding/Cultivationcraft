@@ -56,6 +56,11 @@ public class GenericQiPoses
         Idle.addAngle(BodyPartModelNames.singleLegModel, new Vec3(Math.toRadians(-30), 0, 0), 0, 5f, -1);
         Idle.addAngle(BodyPartModelNames.singleLegLowerModel, new Vec3(Math.toRadians(60), 0, 0), 0, 5f, -1);
 
+        Idle.addAngle(BodyPartModelNames.largeLegLeftModel, new Vec3(0, 0, 0), 0);
+        Idle.addAngle(BodyPartModelNames.largeLegLeftLowerModel, new Vec3(0, 0, 0), 0);
+        Idle.addAngle(BodyPartModelNames.largeLegRightModel, new Vec3(0, 0, 0), 0);
+        Idle.addAngle(BodyPartModelNames.largeLegRightLowerModel, new Vec3(0, 0, 0), 0);
+
         Idle.addAngle(BodyPartModelNames.jetLegLeftModel, new Vec3(0, 0, 0), 0);
         Idle.addAngle(BodyPartModelNames.jetLegLeftLowerModel, new Vec3(0, 0, 0), 0);
         Idle.addAngle(BodyPartModelNames.jetLegRightModel, new Vec3(0, 0, 0), 0);
