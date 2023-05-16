@@ -192,6 +192,10 @@ public class BodyPartModels
         getModel(GenericLimbNames.rightArm).addQuadLinkage(new QuadLinkage(rarmConnector, Quad.QuadVertex.TopRight, new Vec3(1, 1, 0.5)));
         getModel(GenericLimbNames.rightArm).getChildren().get(0).addQuadLinkage(new QuadLinkage(rarmConnector, Quad.QuadVertex.BottomRight, new Vec3(1, 0.5, 0.5)));
 
+        larmConnector.addLayer(new UVPair(0, 0), GenericTextureValues.skin_Size, 0, TextureHandler.BLANK);
+        larmConnector.addSmallLayer(new UVPair(0, 0), GenericTextureValues.skin_Size, 0, TextureList.skin);
+        rarmConnector.addLayer(new UVPair(0, 0), GenericTextureValues.skin_Size, 0, TextureHandler.BLANK);
+        rarmConnector.addSmallLayer(new UVPair(0, 0), GenericTextureValues.skin_Size, 0, TextureList.skin);
 
         QuadCollection glidingArms = new QuadCollection();
         glidingArms.addQuad(larmConnector);
@@ -317,7 +321,6 @@ public class BodyPartModels
         addQuadLink(BodyPartNames.bodyPosition, new QuadLinkage(finQuad, Quad.QuadVertex.BottomRight, new Vec3(0.5, 0.8, 3)));
         addQuadLink(BodyPartNames.bodyPosition, new QuadLinkage(finQuad, Quad.QuadVertex.TopRight, new Vec3(0.5, 0.8, 3)));
 
-        // TODO: Change blank to copying the color from the skin
         finQuad.addLayer(new UVPair(0, 0), GenericTextureValues.skin_Size, 0, TextureHandler.PLAYER_SKIN, new UVPair(32 / GenericTextureValues.skin_Size.u(), 24 / GenericTextureValues.skin_Size.v()));
         finQuad.addSmallLayer(new UVPair(0, 0), GenericTextureValues.skin_Size, 0, TextureList.skin);
 
