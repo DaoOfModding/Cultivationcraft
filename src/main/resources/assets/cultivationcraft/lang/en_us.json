@@ -33,7 +33,7 @@
   "cultivationcraft.stat.wingweight": "Wing Weight Limit",
   "cultivationcraft.stat.flightspeed": "Flight Speed",
   "cultivationcraft.stat.boneattackmodifier": "Bone Attack Modifier",
-  "cultivationcraft.stat.biteattackmodifier": "Bit Attack Modifier",
+  "cultivationcraft.stat.biteattackmodifier": "Bite Attack Modifier",
   "cultivationcraft.stat.resistancemodifier": "Resistance",
 
   "cultivationcraft.quest.qisource": "Seconds spent cultivating from a QiSource",
@@ -98,17 +98,17 @@
   "cultivationcraft.gui.bodypart.skin.rubber.description": "Forge your skin into a rubber-like consistency, making it stretchy, bouncy and providing an extremely high resistance to lightning",
 
   "cultivationcraft.gui.bodypart.skin.scale.fire": "Fire Scales",
-  "cultivationcraft.gui.bodypart.skin.scale.fire.description": "~~~~TODO~~~~~",
+  "cultivationcraft.gui.bodypart.skin.scale.fire.description": "Forge fire infused scales to protect you from flames",
   "cultivationcraft.gui.bodypart.skin.scale.water": "Water Scales",
-  "cultivationcraft.gui.bodypart.skin.scale.water.description": "~~~~TODO~~~~~",
+  "cultivationcraft.gui.bodypart.skin.scale.water.description": "Forge water infused scales to protect you from water",
   "cultivationcraft.gui.bodypart.skin.scale.wind": "Wind Scales",
-  "cultivationcraft.gui.bodypart.skin.scale.wind.description": "~~~~TODO~~~~~",
+  "cultivationcraft.gui.bodypart.skin.scale.wind.description": "Forge wind infused scales to protect you from wind",
   "cultivationcraft.gui.bodypart.skin.scale.earth": "Earth Scales",
-  "cultivationcraft.gui.bodypart.skin.scale.earth.description": "~~~~TODO~~~~~",
+  "cultivationcraft.gui.bodypart.skin.scale.earth.description": "Forge earth infused scales to protect you from earth",
   "cultivationcraft.gui.bodypart.skin.scale.wood": "Wood Scales",
-  "cultivationcraft.gui.bodypart.skin.scale.wood.description": "~~~~TODO~~~~~",
+  "cultivationcraft.gui.bodypart.skin.scale.wood.description": "Forge wood infused scales to protect you from wood",
   "cultivationcraft.gui.bodypart.skin.scale.lightning": "Lightning Scales",
-  "cultivationcraft.gui.bodypart.skin.scale.lightning.description": "~~~~TODO~~~~~",
+  "cultivationcraft.gui.bodypart.skin.scale.lightning.description": "Forge lightning infused scales to protect you from lightning",
 
   "cultivationcraft.gui.bodypart.bone.big": "Big Boned",
   "cultivationcraft.gui.bodypart.bone.big.description": "Increases bone thickness, letting them absorb a lot more damage but increasing your size and weight",
@@ -160,10 +160,10 @@
   "cultivationcraft.gui.bodypart.back.dfin.description": "Grow a dorsal fin that increases your swimming speed. For reasons.",
 
   "cultivationcraft.gui.armpart.headarms": "Arms on Head",
-  "cultivationcraft.gui.armpart.headarms.description": "~~~~TODO~~~~~",
+  "cultivationcraft.gui.armpart.headarms.description": "Attach your arms to your head rather than your body",
 
   "cultivationcraft.gui.headpart.location.front": "Front",
-  "cultivationcraft.gui.headpart.location.front.description": "~~~~~TODO~~~~~~",
+  "cultivationcraft.gui.headpart.location.front.description": "Move your head from the top of your body to the front",
 
   "cultivationcraft.gui.headpart.jaw": "Unhinged Jaw",
   "cultivationcraft.gui.headpart.jaw.description": "Unhinge your jaw to allow your mouth to open much wider than usually possible",
@@ -187,7 +187,7 @@
   "cultivationcraft.gui.armpart.short.description": "Some people need elbows, you are not one of those people",
 
   "cultivationcraft.gui.armpart.flipper": "Flipper Arms",
-  "cultivationcraft.gui.armpart.flipper.description": "~~~~~~~~TODO~~~~~~~",
+  "cultivationcraft.gui.armpart.flipper.description": "Flatten your arms into flippers\nGreat at swimming, not so great at anything else",
 
   "cultivationcraft.gui.armpart.glide": "Gliding Arms",
   "cultivationcraft.gui.armpart.glide.description": "Grow a thin membrane connecting your arms to your body, providing you with the ability to glide through the air that cannot be disabled",
@@ -205,10 +205,10 @@
   "cultivationcraft.gui.legpart.singleLeg.description": "Remove one of your superfluous legs, allowing superior movement through hopping and greatly increasing jump height",
 
   "cultivationcraft.gui.legpart.large": "Large Legs",
-  "cultivationcraft.gui.legpart.large.description": "~~~~TODO~~~~~",
+  "cultivationcraft.gui.legpart.large.description": "Bigger is better, and these are VERY big\nAllows you to support a LOT of weight, but very slow",
 
   "cultivationcraft.gui.legpart.jet": "Jet Leg",
-  "cultivationcraft.gui.legpart.jet.description": "~~~~TODO~~~~~",
+  "cultivationcraft.gui.legpart.jet.description": "Grow jet boosters from your legs, allowing you to fly through the sky by spouting fire from your feet",
 
   "cultivationcraft.technique.example": "Example Technique",
   "cultivationcraft.technique.example.description": "This is an example description",
