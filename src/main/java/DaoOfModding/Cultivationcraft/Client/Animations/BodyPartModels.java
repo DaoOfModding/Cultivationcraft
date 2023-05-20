@@ -1187,7 +1187,6 @@ public class BodyPartModels
         //largeRightLeg.setFixedPosAdjustment(0F, 2F, 0.0F);
         largeRightLeg.extend(GenericResizers.getLegResizer());
         largeRightLeg.getChildren().get(0).setDefaultResize(new Vec3(2, 2, 2));
-        largeRightLeg.setHitbox(false);
 
         ExtendableModelRenderer largeLeftLeg = new ExtendableModelRenderer(BodyPartModelNames.largeLegLeftModel);
         GenericCultivatorTextureValues.addGenericLeftLegLayers(largeLeftLeg);
@@ -1197,7 +1196,6 @@ public class BodyPartModels
         //largeLeftLeg.setFixedPosAdjustment(0F, 2F, 0.0F);
         largeLeftLeg.extend(GenericResizers.getLegResizer());
         largeLeftLeg.getChildren().get(0).setDefaultResize(new Vec3(2, 2, 2));
-        largeLeftLeg.setHitbox(false);
 
         addModel(BodyPartModelNames.largeLegLeftModel, largeLeftLeg);
         addModel(BodyPartModelNames.largeLegRightModel, largeRightLeg);

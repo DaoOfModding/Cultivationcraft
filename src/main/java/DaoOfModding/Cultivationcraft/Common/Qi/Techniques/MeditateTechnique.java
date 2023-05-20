@@ -19,6 +19,7 @@ import DaoOfModding.Cultivationcraft.Common.Qi.Stats.StatIDs;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import DaoOfModding.Cultivationcraft.Server.BodyPartControl;
 import DaoOfModding.Cultivationcraft.debug;
+import DaoOfModding.mlmanimator.Client.Poses.PoseHandler;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.event.TickEvent;
@@ -40,6 +41,8 @@ public class MeditateTechnique extends MovementOverrideTechnique
         icon = new ResourceLocation(Cultivationcraft.MODID, "textures/techniques/icons/meditate.png");
 
         pose = GenericQiPoses.CrossLegs.clone();
+
+        setLegAnimationLockOffWhileActive(20);
     }
 
     public void tickServer(TickEvent.PlayerTickEvent event)

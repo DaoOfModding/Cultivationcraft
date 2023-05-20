@@ -70,6 +70,10 @@ public class Technique
 
     protected boolean elytraDisables = false;
 
+    protected boolean legAnimationLockOff = false;
+    protected int animationRecoveryTime = 20;
+    protected int legAnimationCountdown = 0;
+
     public Technique()
     {
         langLocation = "cultivationcraft.technique.example";
@@ -78,6 +82,14 @@ public class Technique
         multiple = true;
 
         icon = new ResourceLocation(Cultivationcraft.MODID, "textures/techniques/icons/example.png");
+    }
+
+    // Deactivates the bounding box animation lock for legs whilst this tech is active
+    // And for the specified number of ticks after it is deactivated
+    protected void setLegAnimationLockOffWhileActive(int ticksWhileDeactivated)
+    {
+        legAnimationLockOff = true;
+        animationRecoveryTime = ticksWhileDeactivated;
     }
 
     public String getDescription()
@@ -271,6 +283,7 @@ public class Technique
         nbt.putBoolean("active", active);
         nbt.putInt("cooldown", cooldownCount);
         nbt.putBoolean("toDeactivate", toDeactivate);
+        nbt.putInt("legAnimationCountdown", legAnimationCountdown);
 
         toDeactivate = false;
 
@@ -303,6 +316,8 @@ public class Technique
     {
         setActive(nbt.getBoolean("active"));
         setCooldown(nbt.getInt("cooldown"));
+
+        legAnimationCountdown = nbt.getInt("legAnimationCountdown");
         toDeactivate = nbt.getBoolean("toDeactivate");
     }
 
@@ -326,6 +341,9 @@ public class Technique
             return;
         }
 
+        if (legAnimationLockOff)
+            legAnimationCountdown = animationRecoveryTime;
+
         addModifiers(event.player);
 
         // While the key is being held down increase the currentChannel duration
@@ -343,6 +361,9 @@ public class Technique
             return;
         }
 
+        if (legAnimationLockOff)
+            PoseHandler.getPlayerPoseHandler(event.player.getUUID()).lockLegPose(null);
+
         addModifiers(event.player);
 
         // While the key is being held down increase the currentChannel duration
@@ -355,6 +376,12 @@ public class Technique
 
     public void tickInactiveClient(TickEvent.PlayerTickEvent event)
     {
+        if (legAnimationLockOff && legAnimationCountdown > 0)
+        {
+            legAnimationCountdown = legAnimationCountdown - 1;
+            PoseHandler.getPlayerPoseHandler(event.player.getUUID()).lockLegPose(null);
+        }
+
         if (toDeactivate)
             deactivate(event.player);
 
