@@ -1,5 +1,6 @@
 package DaoOfModding.Cultivationcraft.Client;
 
+import DaoOfModding.Cultivationcraft.Client.GUI.ScreenTabControl;
 import DaoOfModding.Cultivationcraft.Client.GUI.Screens.StatScreen;
 import DaoOfModding.Cultivationcraft.Client.GUI.SkillHotbarOverlay;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.BodyModifications;
@@ -391,7 +392,8 @@ public class KeybindingControl
 
             if (keyBindings[3].isDown())
             {
-                Minecraft.getInstance().forceSetScreen(new StatScreen());
+                ScreenTabControl.openTab();
+                //Minecraft.getInstance().forceSetScreen(new StatScreen());
                 //ClientPacketHandler.sendKeypressToServer(Register.keyPresses.FLYINGSWORDSCREEN);
             }
         }

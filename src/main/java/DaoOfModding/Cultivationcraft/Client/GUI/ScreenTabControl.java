@@ -1,5 +1,6 @@
 package DaoOfModding.Cultivationcraft.Client.GUI;
 
+import DaoOfModding.Cultivationcraft.Client.GUI.Screens.HelpScreen;
 import DaoOfModding.Cultivationcraft.Client.genericClientFunctions;
 import DaoOfModding.Cultivationcraft.Client.GUI.Screens.BodyforgeScreen;
 import DaoOfModding.Cultivationcraft.Client.GUI.Screens.StatScreen;
@@ -42,6 +43,8 @@ public class ScreenTabControl
 
     protected static final int fontColor = Color.BLACK.getRGB();
 
+    protected static int selectedScreen = 0;
+
     public static void drawTabs(PoseStack PoseStack, int screenX, int screenY, Screen drawTo)
     {
         // Loop through each tab, checking if the mouse is over it and highlighting it if so
@@ -76,6 +79,25 @@ public class ScreenTabControl
         }
     }
 
+    public static void openTab()
+    {
+        if (selectedScreen == 0)
+            Minecraft.getInstance().forceSetScreen(new StatScreen());
+        else if (selectedScreen == 1)
+            Minecraft.getInstance().forceSetScreen(new TechniqueScreen());
+        else if (selectedScreen == 2)
+        {
+            int cultivationType = CultivatorStats.getCultivatorStats(genericClientFunctions.getPlayer()).getCultivationType();
+
+            if (cultivationType == CultivationTypes.QI_CONDENSER)
+                ClientPacketHandler.sendKeypressToServer(Register.keyPresses.FLYINGSWORDSCREEN);
+            else if (cultivationType == CultivationTypes.BODY_CULTIVATOR)
+                Minecraft.getInstance().forceSetScreen(new BodyforgeScreen());
+        }
+        else if (selectedScreen == 3)
+            Minecraft.getInstance().forceSetScreen(new HelpScreen());
+    }
+
     public static boolean mouseClick(int mouseX, int mouseY, int screenX, int screenY, int buttonPressed)
     {
         // If not a left click, ignore
@@ -89,19 +111,8 @@ public class ScreenTabControl
         for (int i = 0; i < TAB_BAR_NUMBER; i++)
             if (mouseOver(mouseX, mouseY, i))
             {
-                if (i == 0)
-                    Minecraft.getInstance().forceSetScreen(new StatScreen());
-                else if (i == 1)
-                    Minecraft.getInstance().forceSetScreen(new TechniqueScreen());
-                else if (i == 2)
-                {
-                    int cultivationType = CultivatorStats.getCultivatorStats(genericClientFunctions.getPlayer()).getCultivationType();
-
-                    if (cultivationType == CultivationTypes.QI_CONDENSER)
-                        ClientPacketHandler.sendKeypressToServer(Register.keyPresses.FLYINGSWORDSCREEN);
-                    else if (cultivationType == CultivationTypes.BODY_CULTIVATOR)
-                        Minecraft.getInstance().forceSetScreen(new BodyforgeScreen());
-                }
+                selectedScreen = i;
+                openTab();
 
                 return true;
             }
