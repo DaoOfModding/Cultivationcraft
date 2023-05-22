@@ -30,11 +30,14 @@ public class SelectableTextField
     Color textColor = Color.WHITE;
     Color backgroundColor = new Color(140, 140, 140);
 
+    int totalHeight = 0;
+
     // TODO: Scrollbar
     Scrollbar scroll = new Scrollbar();
 
     public SelectableTextField()
     {
+        scroll.setScrollPosition(0);
     }
 
     public String getText()
@@ -49,12 +52,17 @@ public class SelectableTextField
     {
         x = xPos;
         y = yPos;
+
+        scroll.setPos(x + width - 1 - scroll.buttonSize, y+1);
     }
 
     public void setSize(int xSize, int ySize)
     {
         width = xSize;
         height = ySize;
+
+        scroll.setYHeight(ySize-2);
+        scroll.setPos(x + width - 1 - scroll.buttonSize, y+1);
     }
 
     public void addSelectable(SelectableText selectable)
@@ -68,7 +76,14 @@ public class SelectableTextField
         if (buttonPressed != 0)
             return false;
 
+        // Only try to click on scrollbar if it is visible
+        if (totalHeight > height)
+            if (mouseX > width - 1 - scroll.buttonSize && mouseX < width - 1)
+                if (mouseY > 0 && mouseY < height)
+                    return scroll.mouseClicked(mouseX - width - 1 - scroll.buttonSize, mouseY - 1, buttonPressed);
+
         mouseY -= yPadding;
+        mouseY += scroll.scrollPosition;
 
         for (SelectableText selectable : selectables)
         {
@@ -96,7 +111,14 @@ public class SelectableTextField
         return false;
     }
 
-    public void render(Screen screen, Font font, PoseStack poseStack)
+    public boolean mouseScrolled(double direction)
+    {
+        scroll.scroll((int)-direction * scroll.scrollInterval);
+
+        return true;
+    }
+
+    public void render(Screen screen, Font font, PoseStack poseStack, int mouseX, int mouseY)
     {
         RenderSystem.setShaderTexture(0, texture);
         RenderSystem.setShaderColor(backgroundColor.getRed()/255f, backgroundColor.getGreen()/255f, backgroundColor.getBlue()/255f, 1);
@@ -110,13 +132,29 @@ public class SelectableTextField
         screen.blit(poseStack, x + width - 1, y + 1, screen.getBlitOffset(), 0, 0, 1, height-1, 1, height-1);
         screen.blit(poseStack, x + 1, y + height - 1, screen.getBlitOffset(), 0, 0, width - 1, 1, width - 1, 1);
 
-        int yPos = y + yPadding;
+        int yPos = y + yPadding - scroll.scrollPosition;
         int xPos = x + xPadding;
+
+        totalHeight = 0;
 
         for (SelectableText select : selectables)
         {
-            select.render(screen, font, poseStack, textColor.getRGB(), xPos, yPos, xPos + width - xPadding*2);
+            select.render(screen, font, poseStack, textColor.getRGB(), xPos, yPos, xPos + width - xPadding*2, y + yPadding, y + height - yPadding);
             yPos += select.height();
+
+            totalHeight += select.height();
+        }
+
+        if (totalHeight <= height)
+        {
+            scroll.setScrollPosition(0);
+        }
+        else
+        {
+            scroll.scrollInterval = font.lineHeight + SelectableText.yPadding;
+            scroll.setSize(totalHeight - height + scroll.scrollInterval);
+
+            scroll.render(screen, poseStack, mouseX, mouseY);
         }
     }
 }

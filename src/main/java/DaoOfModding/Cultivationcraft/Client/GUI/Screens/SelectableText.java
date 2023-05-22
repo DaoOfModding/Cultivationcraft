@@ -22,7 +22,7 @@ public class SelectableText
     protected boolean selected = false;
 
     protected static final int tabbing = 10;
-    protected static final int yPadding = 2;
+    public static final int yPadding = 2;
 
     protected static final Color highlightColor = new Color(140, 200, 140);
 
@@ -89,19 +89,22 @@ public class SelectableText
         return null;
     }
 
-    public void render(Screen screen, Font font, PoseStack poseStack, int color, int xPos, int yPos, int xEnd)
+    public void render(Screen screen, Font font, PoseStack poseStack, int color, int xPos, int yPos, int xEnd, int yStart, int yEnd)
     {
         lineHeight = font.lineHeight + yPadding;
 
-        // Highlight this line if it is selected
-        if (selected)
+        // Draw nothing if this line is off the screen
+        if (yPos <= yEnd - lineHeight && yPos >= yStart)
         {
-            RenderSystem.setShaderTexture(0, texture);
-            RenderSystem.setShaderColor(highlightColor.getRed() / 255f, highlightColor.getGreen() / 255f, highlightColor.getBlue() / 255f, 1);
-            screen.blit(poseStack, xPos - 2, yPos - yPadding, screen.getBlitOffset(), 0, 0, xEnd - xPos + 2, lineHeight, xEnd - xPos  + 1, lineHeight);
-        }
+            // Highlight this line if it is selected
+            if (selected) {
+                RenderSystem.setShaderTexture(0, texture);
+                RenderSystem.setShaderColor(highlightColor.getRed() / 255f, highlightColor.getGreen() / 255f, highlightColor.getBlue() / 255f, 1);
+                screen.blit(poseStack, xPos - 2, yPos - yPadding, screen.getBlitOffset(), 0, 0, xEnd - xPos + 4, lineHeight, xEnd - xPos + 4, lineHeight);
+            }
 
-        font.draw(poseStack, selectableName, xPos, yPos, color);
+            font.draw(poseStack, selectableName, xPos, yPos, color);
+        }
 
         if (expanded)
         {
@@ -110,7 +113,7 @@ public class SelectableText
             for (SelectableText select : selectables)
             {
                 yPos += lineHeight;
-                select.render(screen, font, poseStack, color, xPos, yPos, xEnd);
+                select.render(screen, font, poseStack, color, xPos, yPos, xEnd, yStart, yEnd);
             }
         }
     }

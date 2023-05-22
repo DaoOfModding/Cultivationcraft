@@ -78,7 +78,7 @@ public class TextField
 
     public boolean mouseScrolled(double direction)
     {
-        scroll.scroll((int)-direction);
+        scroll.scroll((int)-direction * scroll.scrollInterval);
 
         return true;
     }
