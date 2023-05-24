@@ -1,5 +1,6 @@
 package DaoOfModding.Cultivationcraft;
 
+import DaoOfModding.Cultivationcraft.Client.GUI.HelpItems;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartNames;
 import DaoOfModding.Cultivationcraft.Client.Animations.GenericQiPoses;
 import DaoOfModding.Cultivationcraft.Client.ClientItemControl;
@@ -55,5 +56,6 @@ public class Cultivationcraft {
     {
         ClientItemControl.init(event);
         GenericQiPoses.init();
+        HelpItems.setup();
     }
 }

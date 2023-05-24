@@ -5,6 +5,8 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 
 import java.awt.*;
@@ -28,15 +30,27 @@ public class SelectableText
 
     protected int lineHeight = 0;
 
+    protected MutableComponent name;
+    protected MutableComponent text;
+
     public SelectableText(String name, String text)
     {
         selectableName = name;
         selectableText = text;
     }
 
+    public SelectableText(String component)
+    {
+        name = Component.translatable(component);
+        text = Component.translatable(component.concat(".text"));
+    }
+
     public String getText()
     {
-        return selectableText;
+        if (text == null)
+            return selectableText;
+
+        return text.getString();
     }
 
     public void unselectAll()
@@ -59,10 +73,15 @@ public class SelectableText
 
     public int height()
     {
-        if (expanded)
-            return lineHeight * (selectables.size() + 1);
+        int height = lineHeight;
 
-        return lineHeight;
+        if (expanded)
+        {
+            for (SelectableText selectable : selectables)
+                height += selectable.height();
+        }
+
+        return height;
     }
 
     public SelectableText mouseClicked(double mouseX, double mouseY, int buttonPressed)
@@ -81,9 +100,20 @@ public class SelectableText
             return this;
         }
         // If this item is expanded then click on the item the mouse is over
-        else if (expanded && line <= selectables.size())
+        else if (expanded)
         {
-            return selectables.get(line - 1).mouseClicked(mouseX, mouseY - line * lineHeight, buttonPressed);
+            int entryLine = 0;
+            int lineCheck = 0;
+
+            for (SelectableText selectable : selectables)
+            {
+                lineCheck += selectable.height() / lineHeight;
+
+                if (line <= lineCheck)
+                    return selectable.mouseClicked(mouseX, mouseY - (entryLine+1) * lineHeight, buttonPressed);
+
+                entryLine += selectable.height() / lineHeight;
+            }
         }
 
         return null;
@@ -103,17 +133,22 @@ public class SelectableText
                 screen.blit(poseStack, xPos - 2, yPos - yPadding, screen.getBlitOffset(), 0, 0, xEnd - xPos + 4, lineHeight, xEnd - xPos + 4, lineHeight);
             }
 
-            font.draw(poseStack, selectableName, xPos, yPos, color);
+            if (name == null)
+                font.draw(poseStack, selectableName, xPos, yPos, color);
+            else
+                font.draw(poseStack, name.getString(), xPos, yPos, color);
         }
 
         if (expanded)
         {
             xPos += tabbing;
 
+            yPos += lineHeight;
+
             for (SelectableText select : selectables)
             {
-                yPos += lineHeight;
                 select.render(screen, font, poseStack, color, xPos, yPos, xEnd, yStart, yEnd);
+                yPos += select.height();
             }
         }
     }

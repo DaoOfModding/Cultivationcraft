@@ -1,5 +1,6 @@
 package DaoOfModding.Cultivationcraft.Client.GUI.Screens;
 
+import DaoOfModding.Cultivationcraft.Client.GUI.HelpItems;
 import DaoOfModding.Cultivationcraft.Client.GUI.SelectableTextField;
 import DaoOfModding.Cultivationcraft.Client.GUI.TextField;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
@@ -20,7 +21,7 @@ public class HelpScreen extends GenericTabScreen
     protected int selectTextHeight = 121;
 
     protected TextField helpText = new TextField();
-    protected SelectableTextField selectText = new SelectableTextField();
+    protected SelectableTextField selectText;
     
     public HelpScreen()
     {
@@ -28,15 +29,7 @@ public class HelpScreen extends GenericTabScreen
         
         helpText.resetScroll();
 
-        for (int i = 0; i < 5; i++)
-        {
-            SelectableText testField = new SelectableText("Test" + i, "Text" + i);
-
-            for (int j = 0; j < 5; j++)
-                testField.addItem(new SelectableText("Test" + i + "-" + j, "Text" + i + "-" + j));
-
-            selectText.addSelectable(testField);
-        }
+        selectText = HelpItems.getText();
     }
 
     @Override

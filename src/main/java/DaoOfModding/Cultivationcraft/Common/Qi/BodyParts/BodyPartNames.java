@@ -241,10 +241,12 @@ public class BodyPartNames
         lightningBones.addTextureColorChange(TextureList.bone, Misc.saturate(Elements.getElement(Elements.lightningElement).color, 0.75f));
         lightningBones.addNeededPart(BodyPartNames.startingEyesPart);
         lightningBones.getStatChanges().setStat(StatIDs.boneAttackModifier, 6);
-        lightningBones.getStatChanges().setElementalStat(StatIDs.resistanceModifier, Elements.lightningElement, 50);
-        lightningBones.getStatChanges().setElementalStat(StatIDs.resistanceModifier, Elements.windElement, 25);
-        lightningBones.getStatChanges().setElementalStat(StatIDs.resistanceModifier, Elements.fireElement, 25);
-        lightningBones.getStatChanges().setElementalStat(StatIDs.resistanceModifier, Elements.earthElement, -100);
+        lightningBones.getStatChanges().setElementalStat(StatIDs.resistanceModifier, Elements.lightningElement, 75);
+        lightningBones.getStatChanges().setElementalStat(StatIDs.resistanceModifier, Elements.windElement, -25);
+        lightningBones.getStatChanges().setElementalStat(StatIDs.resistanceModifier, Elements.fireElement, -25);
+        lightningBones.getStatChanges().setElementalStat(StatIDs.resistanceModifier, Elements.earthElement, -25);
+        lightningBones.getStatChanges().setElementalStat(StatIDs.resistanceModifier, Elements.waterElement, -25);
+        lightningBones.getStatChanges().setElementalStat(StatIDs.resistanceModifier, Elements.windElement, -25);
         lightningBones.setQuest(DefaultQuests.defaultBoneQuest);
 
         addOption(reinforceBones);
@@ -399,10 +401,12 @@ public class BodyPartNames
         lightningScaleSkin.addNeededPart(BodyPartNames.startingEyesPart);
         lightningScaleSkin.setQuest(DefaultQuests.defaultSkinQuest);
         lightningScaleSkin.setElement(Elements.lightningElement);
-        lightningScaleSkin.getStatChanges().setElementalStat(StatIDs.resistanceModifier, Elements.lightningElement, 50);
-        lightningScaleSkin.getStatChanges().setElementalStat(StatIDs.resistanceModifier, Elements.windElement, 25);
-        lightningScaleSkin.getStatChanges().setElementalStat(StatIDs.resistanceModifier, Elements.fireElement, 25);
-        lightningScaleSkin.getStatChanges().setElementalStat(StatIDs.resistanceModifier, Elements.earthElement, -100);
+        lightningScaleSkin.getStatChanges().setElementalStat(StatIDs.resistanceModifier, Elements.lightningElement, 75);
+        lightningScaleSkin.getStatChanges().setElementalStat(StatIDs.resistanceModifier, Elements.windElement, -25);
+        lightningScaleSkin.getStatChanges().setElementalStat(StatIDs.resistanceModifier, Elements.fireElement, -25);
+        lightningScaleSkin.getStatChanges().setElementalStat(StatIDs.resistanceModifier, Elements.waterElement, -25);
+        lightningScaleSkin.getStatChanges().setElementalStat(StatIDs.resistanceModifier, Elements.woodElement, -25);
+        lightningScaleSkin.getStatChanges().setElementalStat(StatIDs.resistanceModifier, Elements.earthElement, -25);
 
         addOption(rubberSkin);
         addOption(stretchySkin);

@@ -20,31 +20,12 @@ public class Element
 
     protected ArrayList<ElementVariant> variant = new ArrayList<>();
 
-    protected ArrayList<ElementRelationship> relationships = new ArrayList<ElementRelationship>();
-
     public Element (ResourceLocation resourcelocation, Color elementColor, double newDensity)
     {
         name = resourcelocation;
         color = elementColor;
         density = newDensity;
         effectTickChance = 0;
-    }
-
-    // Adds an attack modifier of the specified value for the specified element
-    public void setAttackModifier(ResourceLocation Element, double value)
-    {
-        relationships.add(new ElementRelationship(Element, value));
-    }
-
-    // Return the attack modifier against the specified element
-    public double getAttackModifier(ResourceLocation Element)
-    {
-        for (ElementRelationship relationship : relationships)
-            if (relationship.defendingElement == Element)
-                return relationship.modifier;
-
-        // If there is no modifier for the specified element in the relationship list return a modifier of 1
-        return 1;
     }
 
     public String getName()

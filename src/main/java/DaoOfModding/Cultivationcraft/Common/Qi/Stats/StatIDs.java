@@ -63,4 +63,6 @@ public class StatIDs
     public static final float defaultAttackRange = 5;
 
     public static final float defaultQiAbsorbRange = 1;
+
+    public static final float defaultLightningResist = -100;
 }

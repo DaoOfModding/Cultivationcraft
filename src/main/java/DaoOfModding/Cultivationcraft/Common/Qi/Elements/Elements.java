@@ -34,9 +34,6 @@ public class Elements
         createElements();
         createMaterialElements();
 
-        // TODO: Is this even necessary?
-        createElementRelationships();
-
         createDimensionRules();
     }
 
@@ -127,45 +124,6 @@ public class Elements
         BlockElements.addMaterial(Material.EXPLOSIVE, fireElement);
         BlockElements.addMaterial(Material.FIRE, fireElement);
         BlockElements.addMaterial(Material.LAVA, fireElement);
-    }
-
-    protected static void createElementRelationships()
-    {
-        // Temp modifiers for now, may look at later
-        getElement(fireElement).setAttackModifier(waterElement, 0.5);
-        getElement(fireElement).setAttackModifier(earthElement, 0.5);
-        getElement(fireElement).setAttackModifier(iceElement, 2);
-        getElement(fireElement).setAttackModifier(woodElement, 2);
-
-        getElement(earthElement).setAttackModifier(woodElement, 0.5);
-        getElement(earthElement).setAttackModifier(fireElement, 2);
-
-        getElement(woodElement).setAttackModifier(fireElement, 0.5);
-        getElement(woodElement).setAttackModifier(iceElement, 0.5);
-        getElement(woodElement).setAttackModifier(waterElement, 2);
-        getElement(woodElement).setAttackModifier(earthElement, 2);
-
-        getElement(waterElement).setAttackModifier(woodElement, 0.5);
-        getElement(waterElement).setAttackModifier(fireElement, 2);
-
-        getElement(iceElement).setAttackModifier(fireElement, 0.5);
-        getElement(iceElement).setAttackModifier(woodElement, 2);
-
-
-        // Lightning is strong against everything, but is a lot harder to cultivate and has much less QI available to it
-        getElement(noElement).setAttackModifier(lightningElement, 0.75);
-        getElement(fireElement).setAttackModifier(lightningElement, 0.75);
-        getElement(earthElement).setAttackModifier(lightningElement, 0.75);
-        getElement(woodElement).setAttackModifier(lightningElement, 0.75);
-        getElement(waterElement).setAttackModifier(lightningElement, 0.75);
-        getElement(iceElement).setAttackModifier(lightningElement, 0.75);
-
-        getElement(lightningElement).setAttackModifier(noElement, 1.5);
-        getElement(lightningElement).setAttackModifier(fireElement, 1.5);
-        getElement(lightningElement).setAttackModifier(earthElement, 1.5);
-        getElement(lightningElement).setAttackModifier(woodElement, 1.5);
-        getElement(lightningElement).setAttackModifier(waterElement, 1.5);
-        getElement(lightningElement).setAttackModifier(iceElement, 1.5);
     }
 
     // Adds a new element of the specified resourceLocation to the Elements list

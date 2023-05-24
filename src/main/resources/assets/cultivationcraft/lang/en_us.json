@@ -50,6 +50,54 @@
   "cultivationcraft.quest.heal": "Health healed",
   "cultivationcraft.quest.drainstamina": "Stamina used",
 
+
+  "cultivationcraft.technique.example": "Example Technique",
+  "cultivationcraft.technique.example.description": "This is an example description",
+
+  "cultivationcraft.technique.meditate": "Meditate",
+  "cultivationcraft.technique.meditate.description": "Activate to meditate, absorbing the Qi around you to enhance your cultivation",
+
+  "cultivationcraft.technique.divinesense": "Divine Sense",
+  "cultivationcraft.technique.divinesense.description": "Toggle on to sense the Qi around you, allowing you to \"see\" large concentrations of Qi",
+
+  "cultivationcraft.technique.icewalk": "Ice Walk",
+  "cultivationcraft.technique.icewalk.description": "Toggle on to freeze whatever is below your feet as you move, including air!",
+
+  "cultivationcraft.technique.leap": "Leap",
+  "cultivationcraft.technique.leap.description": "Activate to quickly leap forward a great distance",
+
+  "cultivationcraft.technique.bite": "Bite",
+  "cultivationcraft.technique.bite.description": "Toggle on to replace your attack with a bite attack when selected",
+
+  "cultivationcraft.technique.roll": "Roll",
+  "cultivationcraft.technique.roll.description": "Toggle on to roll around instead of walking.\n§cWARNING: §cDOING §cTHIS §cIN §cFIRST §cPERSON §cIS §cNOT §cADVISED",
+
+  "cultivationcraft.technique.float": "Float",
+  "cultivationcraft.technique.float.description": "Toggle on to replace your jump with the ability to blow yourself up into a balloon and slowly float upwards",
+
+  "cultivationcraft.technique.jetlegs": "Leg Jets",
+  "cultivationcraft.technique.jetlegs.description": "Toggle on activate your leg jets allowing you to propell yourself into the air by holding jump",
+
+  "cultivationcraft.technique.spread": "Spread Wings",
+  "cultivationcraft.technique.spread.description": "Toggle on to spread your wings. Hold jump whilst in the air to raise your wings and release jump to flap them downwards, raising your higher into the air",
+
+  "cultivationcraft.technique.dart": "Spread Wings",
+  "cultivationcraft.technique.dart.description": "Toggle on to spread your wings. Press jump to quickly dart in the direction you are looking",
+
+  "cultivationcraft.technique.bounce": "Bounce Harder",
+  "cultivationcraft.technique.bounce.description": "Toggle on to curl yourself into a ball when in the air, increasing the amount you bounce when you land",
+
+
+  "cultivationcraft.commands.reset.single": "%s had their bodyforge status reset",
+  "cultivationcraft.commands.reset.multiple": "%s players had their bodyforge status reset",
+
+  "cultivationcraft.commands.completequest.single": "Completed quest for %s",
+  "cultivationcraft.commands.completequest.multiple": "Completed quests for %s players",
+
+  "cultivationcraft.commands.completeprogress.single": "Completed bodyforge progress for %s",
+  "cultivationcraft.commands.completeprogress.multiple": "Completed bodyforge progress for %s players",
+
+
   "cultivationcraft.gui.tab0": "Stats",
   "cultivationcraft.gui.tab1": "Skills",
   "cultivationcraft.gui.tab2": "Cultivate",
@@ -68,8 +116,6 @@
 
   "cultivationcraft.gui.bodyforge": "Forge Body",
   "cultivationcraft.gui.forge": "Forge",
-
-  "cultivationcraft.gui.help": "Help",
 
   "cultivationcraft.gui.headpart": "Head",
   "cultivationcraft.gui.bodypart": "Body",
@@ -212,48 +258,30 @@
   "cultivationcraft.gui.legpart.jet": "Jet Leg",
   "cultivationcraft.gui.legpart.jet.description": "Grow jet boosters from your legs, allowing you to fly through the sky by spouting fire from your feet",
 
-  "cultivationcraft.technique.example": "Example Technique",
-  "cultivationcraft.technique.example.description": "This is an example description",
+  "cultivationcraft.gui.help": "Help",
 
-  "cultivationcraft.technique.meditate": "Meditate",
-  "cultivationcraft.technique.meditate.description": "Activate to meditate, absorbing the Qi around you to enhance your cultivation",
+  "cultivationcraft.gui.help.elements": "Elements",
+  "cultivationcraft.gui.help.elements.text": "There are 5 main elements of Qi in the world, which a Qi source can produce if surrounded by enough blocks of the corresponding element.\n \nThese elements suppress each other in the following order:\n§cFire§r > §2Wood§r > §aWind§r > §6Earth§r > §9Water§r > §cFire§r\n \nAdditionally, each element has various mutations that Qi Sources have a very rare chance to instead produce",
 
-  "cultivationcraft.technique.divinesense": "Divine Sense",
-  "cultivationcraft.technique.divinesense.description": "Toggle on to sense the Qi around you, allowing you to \"see\" large concentrations of Qi",
+  "cultivationcraft.gui.help.elements.fire": "Fire",
+  "cultivationcraft.gui.help.elements.fire.text": "Mostly found in the Nether, the §cFire§r element is an element related to heat and burning\n \nIt is suppressed by §9Water§r and suppresses §2Wood§r",
 
-  "cultivationcraft.technique.icewalk": "Ice Walk",
-  "cultivationcraft.technique.icewalk.description": "Toggle on to freeze whatever is below your feet as you move, including air!",
+  "cultivationcraft.gui.help.elements.wood": "Wood",
+  "cultivationcraft.gui.help.elements.wood.text": "Mostly found in forests, The §2Wood§r element is an element related to growth and plant life\n \nIt is suppressed by §cFire§r and suppresses §aWind§r",
 
-  "cultivationcraft.technique.leap": "Leap",
-  "cultivationcraft.technique.leap.description": "Activate to quickly leap forward a great distance",
+  "cultivationcraft.gui.help.elements.wind": "Wind",
+  "cultivationcraft.gui.help.elements.wind.text": "Mostly found in the sky, the §aWind§r element is an element related to movement and the sky\n \nIt is suppressed by §2Wood§r and suppresses §6Earth§r",
 
-  "cultivationcraft.technique.bite": "Bite",
-  "cultivationcraft.technique.bite.description": "Toggle on to replace your attack with a bite attack when selected",
+  "cultivationcraft.gui.help.elements.earth": "Earth",
+  "cultivationcraft.gui.help.elements.earth.text": "Mostly found underground, the §6Earth§r element is an element related to dirt and stone\n \nIt is suppressed by §aWind§r and suppresses §9Water§r",
 
-  "cultivationcraft.technique.roll": "Roll",
-  "cultivationcraft.technique.roll.description": "Toggle on to roll around instead of walking.\n§cWARNING: §cDOING §cTHIS §cIN §cFIRST §cPERSON §cIS §cNOT §cADVISED",
+  "cultivationcraft.gui.help.elements.water": "Water",
+  "cultivationcraft.gui.help.elements.water.text": "Mostly found in the sea, the §9Water§r element is an element related to liquids and sealife\n \nIt is suppressed by §6Earth§r and suppresses §cFire§r",
 
-  "cultivationcraft.technique.float": "Float",
-  "cultivationcraft.technique.float.description": "Toggle on to replace your jump with the ability to blow yourself up into a balloon and slowly float upwards",
 
-  "cultivationcraft.technique.jetlegs": "Leg Jets",
-  "cultivationcraft.technique.jetlegs.description": "Toggle on activate your leg jets allowing you to propell yourself into the air by holding jump",
+  "cultivationcraft.gui.help.elements.lightning": "Lightning",
+  "cultivationcraft.gui.help.elements.lightning.text": "The §eLightning§r element is a rare mutation of the §aWind§r element.\n \nAn element of the heavens, this element both suppresses and is suppressed by all base elements",
 
-  "cultivationcraft.technique.spread": "Spread Wings",
-  "cultivationcraft.technique.spread.description": "Toggle on to spread your wings. Hold jump whilst in the air to raise your wings and release jump to flap them downwards, raising your higher into the air",
-
-  "cultivationcraft.technique.dart": "Spread Wings",
-  "cultivationcraft.technique.dart.description": "Toggle on to spread your wings. Press jump to quickly dart in the direction you are looking",
-
-  "cultivationcraft.technique.bounce": "Bounce Harder",
-  "cultivationcraft.technique.bounce.description": "Toggle on to curl yourself into a ball when in the air, increasing the amount you bounce when you land",
-
-  "cultivationcraft.commands.reset.single": "%s had their bodyforge status reset",
-  "cultivationcraft.commands.reset.multiple": "%s players had their bodyforge status reset",
-
-  "cultivationcraft.commands.completequest.single": "Completed quest for %s",
-  "cultivationcraft.commands.completequest.multiple": "Completed quests for %s players",
-
-  "cultivationcraft.commands.completeprogress.single": "Completed bodyforge progress for %s",
-  "cultivationcraft.commands.completeprogress.multiple": "Completed bodyforge progress for %s players"
+  "cultivationcraft.gui.help.elements.ice": "Ice",
+  "cultivationcraft.gui.help.elements.ice.text": "Mostly found near frozen water, The §bIce§r element is a slightly rare mutation of the §9Water§r element.\n \nThis element is related to coldness and freezing"
 }
