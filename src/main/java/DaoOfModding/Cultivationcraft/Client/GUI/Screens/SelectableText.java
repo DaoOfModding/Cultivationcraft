@@ -6,6 +6,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.FormattedText;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 
@@ -127,16 +128,22 @@ public class SelectableText
         if (yPos <= yEnd - lineHeight && yPos >= yStart)
         {
             // Highlight this line if it is selected
-            if (selected) {
+            if (selected)
+            {
                 RenderSystem.setShaderTexture(0, texture);
                 RenderSystem.setShaderColor(highlightColor.getRed() / 255f, highlightColor.getGreen() / 255f, highlightColor.getBlue() / 255f, 1);
                 screen.blit(poseStack, xPos - 2, yPos - yPadding, screen.getBlitOffset(), 0, 0, xEnd - xPos + 4, lineHeight, xEnd - xPos + 4, lineHeight);
             }
 
+            FormattedText formatedName;
+
             if (name == null)
-                font.draw(poseStack, selectableName, xPos, yPos, color);
+                formatedName = font.substrByWidth(FormattedText.of(selectableName), xEnd - xPos);
             else
-                font.draw(poseStack, name.getString(), xPos, yPos, color);
+                formatedName = font.substrByWidth(FormattedText.of(name.getString()), xEnd - xPos);
+
+
+            font.draw(poseStack, formatedName.getString(), xPos, yPos, color);
         }
 
         if (expanded)

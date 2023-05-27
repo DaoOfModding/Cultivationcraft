@@ -30,6 +30,7 @@ public class HelpScreen extends GenericTabScreen
         helpText.resetScroll();
 
         selectText = HelpItems.getText();
+        selectText.setSize(selectTextWidth, selectTextHeight, (int)(selectTextWidth * 2));
     }
 
     @Override
@@ -41,13 +42,13 @@ public class HelpScreen extends GenericTabScreen
         int edgeSpacingX = (this.width - this.xSize) / 2;
         int edgeSpacingY = (this.height - this.ySize) / 2;
 
+        if (mouseX > selectTextX +edgeSpacingX && mouseX < selectTextX + edgeSpacingX + selectText.getWidth())
+            if (mouseY > selectTextY +edgeSpacingY && mouseY < selectTextY + edgeSpacingY + selectTextHeight)
+                selectText.mouseClicked(mouseX - (selectTextX +edgeSpacingX), mouseY - (selectTextY +edgeSpacingY), buttonPressed);
+
         if (mouseX > helpTextX +edgeSpacingX && mouseX < helpTextX + edgeSpacingX + helpTextWidth)
             if (mouseY > helpTextY +edgeSpacingY && mouseY < helpTextY + edgeSpacingY + helpTextHeight)
                 return helpText.mouseClicked(mouseX - (helpTextX +edgeSpacingX), mouseY - (helpTextY +edgeSpacingY), buttonPressed);
-
-        if (mouseX > selectTextX +edgeSpacingX && mouseX < selectTextX + edgeSpacingX + selectTextWidth)
-            if (mouseY > selectTextY +edgeSpacingY && mouseY < selectTextY + edgeSpacingY + selectTextHeight)
-                return selectText.mouseClicked(mouseX - (selectTextX +edgeSpacingX), mouseY - (selectTextY +edgeSpacingY), buttonPressed);
 
         return false;
     }
@@ -58,13 +59,13 @@ public class HelpScreen extends GenericTabScreen
         int edgeSpacingX = (this.width - this.xSize) / 2;
         int edgeSpacingY = (this.height - this.ySize) / 2;
 
+        if (mouseX > selectTextX +edgeSpacingX && mouseX < selectTextX + edgeSpacingX + selectText.getWidth())
+            if (mouseY > selectTextY +edgeSpacingY && mouseY < selectTextY + edgeSpacingY + selectTextHeight)
+                return selectText.mouseScrolled(direction);
+
         if (mouseX > helpTextX +edgeSpacingX && mouseX < helpTextX + edgeSpacingX + helpTextWidth)
             if (mouseY > helpTextY +edgeSpacingY && mouseY < helpTextY + edgeSpacingY + helpTextHeight)
                 return helpText.mouseScrolled(direction);
-
-        if (mouseX > selectTextX +edgeSpacingX && mouseX < selectTextX + edgeSpacingX + selectTextWidth)
-            if (mouseY > selectTextY +edgeSpacingY && mouseY < selectTextY + edgeSpacingY + selectTextHeight)
-                return selectText.mouseScrolled(direction);
 
         return false;
     }
@@ -83,7 +84,6 @@ public class HelpScreen extends GenericTabScreen
         helpText.render(this, font, PoseStack, mouseX, mouseY);
 
         selectText.setPos(edgeSpacingX +selectTextX, edgeSpacingY + selectTextY);
-        selectText.setSize(selectTextWidth, selectTextHeight);
         selectText.render(this, font, PoseStack, mouseX, mouseY);
     }
 }

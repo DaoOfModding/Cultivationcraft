@@ -21,6 +21,8 @@ public class SelectableTextField
     int x = 0;
     int y = 0;
 
+    int minWidth = 0;
+    int maxWidth = 0;
     int width = 0;
     int height = 0;
 
@@ -32,7 +34,6 @@ public class SelectableTextField
 
     int totalHeight = 0;
 
-    // TODO: Scrollbar
     Scrollbar scroll = new Scrollbar();
 
     public SelectableTextField()
@@ -52,17 +53,28 @@ public class SelectableTextField
     {
         x = xPos;
         y = yPos;
-
-        scroll.setPos(x + width - 1 - scroll.buttonSize, y+1);
     }
 
+    public int getWidth()
+    {
+        return width;
+    }
+
+    // Set size of the text field without any expansion when mousing over it
     public void setSize(int xSize, int ySize)
     {
-        width = xSize;
+        setSize(xSize, ySize, xSize);
+    }
+
+    public void setSize(int xSize, int ySize, int expandedXSize)
+    {
+        minWidth = xSize;
+        maxWidth = expandedXSize;
+        width = minWidth;
+
         height = ySize;
 
         scroll.setYHeight(ySize-2);
-        scroll.setPos(x + width - 1 - scroll.buttonSize, y+1);
     }
 
     public void addSelectable(SelectableText selectable)
@@ -118,8 +130,21 @@ public class SelectableTextField
         return true;
     }
 
+    // If the mouse is hovering over the box, expand it
+    protected void isMouseOver(int mouseX, int mouseY)
+    {
+        if (mouseX > x && mouseX < x + width && mouseY > y && mouseY < y + height)
+            width = maxWidth;
+        else
+            width = minWidth;
+
+        scroll.setPos(x + width - 1 - scroll.buttonSize, y+1);
+    }
+
     public void render(Screen screen, Font font, PoseStack poseStack, int mouseX, int mouseY)
     {
+        isMouseOver(mouseX, mouseY);
+
         RenderSystem.setShaderTexture(0, texture);
         RenderSystem.setShaderColor(backgroundColor.getRed()/255f, backgroundColor.getGreen()/255f, backgroundColor.getBlue()/255f, 1);
         screen.blit(poseStack, x, y, screen.getBlitOffset(), 0, 0, width, height, width, height);
@@ -156,7 +181,5 @@ public class SelectableTextField
 
             scroll.render(screen, poseStack, mouseX, mouseY);
         }
-
-        // TODO - Horizontal scrolling?
     }
 }
