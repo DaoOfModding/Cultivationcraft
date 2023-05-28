@@ -99,7 +99,7 @@ public class TextField
 
 
         int textWidth = width - xPadding * 2;
-        int lines = BetterFontRenderer.countLines(font, text, textWidth);
+        int lines = BetterFontRenderer.countLines(font, text, textWidth) + yPadding * 2;
 
         // If there are more lines to draw than can be displayed then adjusted the textWidth to not include the space taken by the scroll bar and recalculate the lines
         if (lines > height)

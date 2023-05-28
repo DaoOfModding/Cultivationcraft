@@ -287,6 +287,36 @@
 
   "cultivationcraft.gui.help": "Help",
 
+  "cultivationcraft.gui.help.cultivationmenu": "Cultivation Menu",
+  "cultivationcraft.gui.help.cultivationmenu.text": "The screen for viewing and controlling all cultivation related aspects of your character.\n \nContains multiple different tabs relating to the different aspects of your cultivation",
+
+  "cultivationcraft.gui.help.cultivationmenu.stats": "Stats",
+  "cultivationcraft.gui.help.cultivationmenu.stats.text": "View the stats of your character effected by your cultivation",
+
+  "cultivationcraft.gui.help.cultivationmenu.skills": "Skills",
+  "cultivationcraft.gui.help.cultivationmenu.skills.text": "View and assigned the different skills available to your character",
+  "cultivationcraft.gui.help.cultivationmenu.skills.assign": "Assigning Skills",
+  "cultivationcraft.gui.help.cultivationmenu.skills.assign.text": "On the skills tab there is a dropdown menu containing all of the skills your character can use and a selectable hotbar.\n \nYou can assign skills by clicking a slot on the hotbar and selecting the skill you wish to assign to that slot from the dropdown menu",
+  "cultivationcraft.gui.help.cultivationmenu.skills.hotbar": "Hotbar",
+  "cultivationcraft.gui.help.cultivationmenu.skills.hotbar.text": "The skill hotbar can be toggled between by pressing the hotbar-toggle key (default ~) and works the same as the vanilla hotbar, except with skills instead of items.",
+  "cultivationcraft.gui.help.cultivationmenu.skills.activation": "Activating Skills",
+  "cultivationcraft.gui.help.cultivationmenu.skills.activation.text": "Skills are generally activated by selecting them in the hotbar and right clicking.\n \nSome skills are toggled on and off by selecting them, whilst others are simply activated.\nMost skills drain Qi\\Stamina whilst active.",
+  "cultivationcraft.gui.help.cultivationmenu.skills.keyskills": "Important Skills",
+  "cultivationcraft.gui.help.cultivationmenu.skills.keyskills.text": "Whilst there are numerous different skills a character can learn, there are a few key skills that all characters will acquire",
+  "cultivationcraft.gui.help.cultivationmenu.skills.keyskills.meditate": "Meditate",
+  "cultivationcraft.gui.help.cultivationmenu.skills.keyskills.meditate.text": "All characters always have access to the meditate skill.\n \nWhen toggled on, the character cannot move but absorbs any nearby Qi, progressing their cultivation.",
+  "cultivationcraft.gui.help.cultivationmenu.skills.keyskills.qisight": "Qi Sight",
+  "cultivationcraft.gui.help.cultivationmenu.skills.keyskills.qisight.text": "One of the first skills learnt by all characters.\n \nWhen toggled on, gives the character night vision and allows them to see nearby Qi Sources.",
+
+  "cultivationcraft.gui.help.cultivationmenu.cultivate": "Cultivate",
+  "cultivationcraft.gui.help.cultivationmenu.cultivate.text": "Control the cultivation of your character",
+  "cultivationcraft.gui.help.cultivationmenu.cultivate.bodyforge.select": "Select Body Forge",
+  "cultivationcraft.gui.help.cultivationmenu.cultivate.bodyforge.select.text": "When no forge is in progress three dropdown menus will be displayed.\n \nThe top menu lets you select the body part to forge, the middle menu lets you select which aspect of that body part to forge and the last dropdown menu lets you select what to forge it to.\n \nAs you forge different body parts, more options become available.",
+  "cultivationcraft.gui.help.cultivationmenu.cultivate.bodyforge.progress": "Progress Body Forge",
+  "cultivationcraft.gui.help.cultivationmenu.cultivate.bodyforge.progress.text": "Whilst forging a body part a progress bar will display on the bottom of the tab, which fills up as you absorb Qi.\n \nYou can also chose to cancel the forge, losing all progress, by pressing the 'Cancel' button in the middle of the screen.",
+  "cultivationcraft.gui.help.cultivationmenu.cultivate.bodyforge.quest": "Stabilizing Body Forge",
+  "cultivationcraft.gui.help.cultivationmenu.cultivate.bodyforge.quest.text": "Once you have completed infusing your body with the needed Qi you will start stabilizing the body part.\n \nA progress bar and what is required to fill that bar will be displayed at the bottom of the screen, and once filled the body forge will be complete.\n \nAt any point during this process you can discard this body forge by pressing the 'Cancel' button.",
+
   "cultivationcraft.gui.help.elements": "Elements",
   "cultivationcraft.gui.help.elements.text": "There are 5 main elements of Qi in the world, which a Qi source can produce if surrounded by enough blocks of the corresponding element.\n \nThese elements suppress each other in the following order:\n§cFire§r > §2Wood§r > §aWind§r > §6Earth§r > §9Water§r > §cFire§r\n \nAdditionally, each element has various mutations that Qi Sources have a very rare chance to instead produce",
 
@@ -310,8 +340,5 @@
   "cultivationcraft.gui.help.elements.lightning.text": "The §eLightning§r element is a rare mutation of the §aWind§r element.\n \nAn element of the heavens, this element both suppresses and is suppressed by all base elements",
 
   "cultivationcraft.gui.help.elements.ice": "Ice",
-  "cultivationcraft.gui.help.elements.ice.text": "Mostly found near frozen water, The §bIce§r element is a slightly rare mutation of the §9Water§r element.\n \nThis element is related to coldness and freezing",
-
-  "cultivationcraft.gui.help.stats": "Stats",
-  "cultivationcraft.gui.help.stats.text": "Stats effect the abilities of a character in various different ways"
+  "cultivationcraft.gui.help.elements.ice.text": "Mostly found near frozen water, The §bIce§r element is a slightly rare mutation of the §9Water§r element.\n \nThis element is related to coldness and freezing"
 }

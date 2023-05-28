@@ -82,6 +82,11 @@ public class SelectableTextField
         selectables.add(selectable);
     }
 
+    public SelectableText getSelected()
+    {
+        return selected;
+    }
+
     public boolean mouseClicked(double mouseX, double mouseY, int buttonPressed)
     {
         // Do nothing if mouse button one isn't pressed
@@ -170,7 +175,7 @@ public class SelectableTextField
             totalHeight += select.height();
         }
 
-        if (totalHeight <= height)
+        if (totalHeight < height)
         {
             scroll.setScrollPosition(0);
         }

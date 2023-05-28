@@ -54,6 +54,14 @@ public class SelectableText
         return text.getString();
     }
 
+    public String getName()
+    {
+        if (name == null)
+            return selectableName;
+
+        return name.getString();
+    }
+
     public void unselectAll()
     {
         selected = false;
@@ -135,13 +143,7 @@ public class SelectableText
                 screen.blit(poseStack, xPos - 2, yPos - yPadding, screen.getBlitOffset(), 0, 0, xEnd - xPos + 4, lineHeight, xEnd - xPos + 4, lineHeight);
             }
 
-            FormattedText formatedName;
-
-            if (name == null)
-                formatedName = font.substrByWidth(FormattedText.of(selectableName), xEnd - xPos);
-            else
-                formatedName = font.substrByWidth(FormattedText.of(name.getString()), xEnd - xPos);
-
+            FormattedText formatedName = font.substrByWidth(FormattedText.of(getName()), xEnd - xPos);
 
             font.draw(poseStack, formatedName.getString(), xPos, yPos, color);
         }

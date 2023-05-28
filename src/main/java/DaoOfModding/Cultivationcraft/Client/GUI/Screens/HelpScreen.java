@@ -8,6 +8,8 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 
+import java.awt.*;
+
 public class HelpScreen extends GenericTabScreen
 {
     protected int helpTextX = 90;
@@ -19,6 +21,8 @@ public class HelpScreen extends GenericTabScreen
     protected int selectTextY = 35;
     protected int selectTextWidth = 70;
     protected int selectTextHeight = 121;
+
+    protected int nameTextY = 22;
 
     protected TextField helpText = new TextField();
     protected SelectableTextField selectText;
@@ -77,6 +81,9 @@ public class HelpScreen extends GenericTabScreen
 
         int edgeSpacingX = (this.width - this.xSize) / 2;
         int edgeSpacingY = (this.height - this.ySize) / 2;
+
+        if (selectText.getSelected() != null)
+            font.draw(PoseStack, selectText.getSelected().getName(), edgeSpacingX + (int)(this.xSize / 2) - (int)(font.width(selectText.getSelected().name) / 2),  edgeSpacingY + nameTextY, Color.darkGray.getRGB());
 
         helpText.setPos(edgeSpacingX + helpTextX, edgeSpacingY + helpTextY);
         helpText.setSize(helpTextWidth, helpTextHeight);

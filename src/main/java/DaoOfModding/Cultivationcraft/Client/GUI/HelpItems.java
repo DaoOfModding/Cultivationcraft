@@ -6,7 +6,8 @@ public class HelpItems
 {
     protected static SelectableTextField selectText = new SelectableTextField();
 
-    protected static SelectableText statsField = new SelectableText("cultivationcraft.gui.help.stats");
+    protected static SelectableText menuField = new SelectableText("cultivationcraft.gui.help.cultivationmenu");
+    protected static SelectableText statsField = new SelectableText("cultivationcraft.gui.help.cultivationmenu.stats");
     protected static SelectableText elementsField = new SelectableText("cultivationcraft.gui.help.elements");
 
     public static void setup()
@@ -56,8 +57,27 @@ public class HelpItems
         SelectableText iceField = new SelectableText("cultivationcraft.gui.help.elements.ice");
         waterField.addItem(iceField);
 
+        SelectableText skillsField = new SelectableText("cultivationcraft.gui.help.cultivationmenu.skills");
+        skillsField.addItem(new SelectableText("cultivationcraft.gui.help.cultivationmenu.skills.assign"));
+        skillsField.addItem(new SelectableText("cultivationcraft.gui.help.cultivationmenu.skills.hotbar"));
+        skillsField.addItem(new SelectableText("cultivationcraft.gui.help.cultivationmenu.skills.activation"));
+
+        SelectableText keyskillsField = new SelectableText("cultivationcraft.gui.help.cultivationmenu.skills.keyskills");
+        skillsField.addItem(keyskillsField);
+        keyskillsField.addItem(new SelectableText("cultivationcraft.gui.help.cultivationmenu.skills.keyskills.meditate"));
+        keyskillsField.addItem(new SelectableText("cultivationcraft.gui.help.cultivationmenu.skills.keyskills.qisight"));
+
+        SelectableText cultField = new SelectableText("cultivationcraft.gui.help.cultivationmenu.cultivate");
+        cultField.addItem(new SelectableText("cultivationcraft.gui.help.cultivationmenu.cultivate.bodyforge.select"));
+        cultField.addItem(new SelectableText("cultivationcraft.gui.help.cultivationmenu.cultivate.bodyforge.progress"));
+        cultField.addItem(new SelectableText("cultivationcraft.gui.help.cultivationmenu.cultivate.bodyforge.quest"));
+
+        menuField.addItem(statsField);
+        menuField.addItem(skillsField);
+        menuField.addItem(cultField);
+
+        addText(menuField);
         addText(elementsField);
-        addText(statsField);
     }
 
     public static void addStatsField(SelectableText newStats)
