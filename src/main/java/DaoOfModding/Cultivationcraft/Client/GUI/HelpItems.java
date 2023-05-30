@@ -40,6 +40,10 @@ public class HelpItems
         addStatsField(new SelectableText("cultivationcraft.stat.qiabsorbrange"));
         addStatsField(new SelectableText("cultivationcraft.stat.qicost"));
 
+        SelectableText qiField = new SelectableText("cultivationcraft.gui.help.qi");
+        qiField.addItem(new SelectableText("cultivationcraft.gui.help.qi.source"));
+        qiField.addItem(elementsField);
+
         SelectableText fireField = new SelectableText("cultivationcraft.gui.help.elements.fire");
         SelectableText woodField = new SelectableText("cultivationcraft.gui.help.elements.wood");
         SelectableText windField = new SelectableText("cultivationcraft.gui.help.elements.wind");
@@ -77,7 +81,7 @@ public class HelpItems
         menuField.addItem(cultField);
 
         addText(menuField);
-        addText(elementsField);
+        addText(qiField);
     }
 
     public static void addStatsField(SelectableText newStats)

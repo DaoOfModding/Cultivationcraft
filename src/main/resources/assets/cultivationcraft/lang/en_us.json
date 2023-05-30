@@ -317,8 +317,14 @@
   "cultivationcraft.gui.help.cultivationmenu.cultivate.bodyforge.quest": "Stabilizing Body Forge",
   "cultivationcraft.gui.help.cultivationmenu.cultivate.bodyforge.quest.text": "Once you have completed infusing your body with the needed Qi you will start stabilizing the body part.\n \nA progress bar and what is required to fill that bar will be displayed at the bottom of the screen, and once filled the body forge will be complete.\n \nAt any point during this process you can discard this body forge by pressing the 'Cancel' button.",
 
+  "cultivationcraft.gui.help.qi": "Qi",
+  "cultivationcraft.gui.help.qi.text": "The Vital Energy that flows through all living creatures",
+
+  "cultivationcraft.gui.help.qi.source": "Qi Source",
+  "cultivationcraft.gui.help.qi.source.text": "Naturally formed locations that produce Qi invisible to the naked eye, vital for cultivators to advance their cultivation.\n \nThe element of the Qi produced depends on the environment around the Qi Source.",
+
   "cultivationcraft.gui.help.elements": "Elements",
-  "cultivationcraft.gui.help.elements.text": "There are 5 main elements of Qi in the world, which a Qi source can produce if surrounded by enough blocks of the corresponding element.\n \nThese elements suppress each other in the following order:\n§cFire§r > §2Wood§r > §aWind§r > §6Earth§r > §9Water§r > §cFire§r\n \nAdditionally, each element has various mutations that Qi Sources have a very rare chance to instead produce",
+  "cultivationcraft.gui.help.elements.text": "There are 5 main elements of Qi in the world, which a Qi Source can produce if surrounded by enough blocks of the corresponding element.\n \nThese elements suppress each other in the following order:\n§cFire§r > §2Wood§r > §aWind§r > §6Earth§r > §9Water§r > §cFire§r\n \nAdditionally, each element has various mutations that Qi Sources have a very rare chance to instead produce",
 
   "cultivationcraft.gui.help.elements.fire": "Fire",
   "cultivationcraft.gui.help.elements.fire.text": "Mostly found in the Nether, the §cFire§r element is an element related to heat and burning\n \nIt is suppressed by §9Water§r and suppresses §2Wood§r",
