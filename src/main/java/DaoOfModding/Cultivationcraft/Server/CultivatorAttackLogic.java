@@ -1,7 +1,9 @@
 package DaoOfModding.Cultivationcraft.Server;
 
+import DaoOfModding.Cultivationcraft.Common.Qi.Damage.QiDamageSource;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.protocol.game.ClientboundSetEntityMotionPacket;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
@@ -32,7 +34,7 @@ public class CultivatorAttackLogic
     }
 
     // Attack specified entity with specified player, server only
-    public static boolean attackEntity(Player player, Entity toAttack, double range, float damage, SoundEvent attackSound)
+    public static boolean attackEntity(Player player, Entity toAttack, double range, float damage, SoundEvent attackSound, ResourceLocation element)
     {
         if (!canAttack(player, toAttack, range))
             return false;
@@ -49,7 +51,7 @@ public class CultivatorAttackLogic
             entityHealth = ((LivingEntity) toAttack).getHealth();
 
         // If player does no damage (?) then play a corresponding sound and do nothing
-        if (!toAttack.hurt(DamageSource.playerAttack(player), damage)) {
+        if (!toAttack.hurt(QiDamageSource.playerAttack(player, element), damage)) {
             player.level.playSound((Player) null, player.getX(), player.getY(), player.getZ(), SoundEvents.PLAYER_ATTACK_NODAMAGE, player.getSoundSource(), 1.0F, 1.0F);
             return false;
         }

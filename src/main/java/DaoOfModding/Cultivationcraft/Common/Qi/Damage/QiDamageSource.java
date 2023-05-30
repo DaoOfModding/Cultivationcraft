@@ -3,7 +3,9 @@ package DaoOfModding.Cultivationcraft.Common.Qi.Damage;
 import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.EntityDamageSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 
 public class QiDamageSource extends DamageSource
@@ -24,6 +26,18 @@ public class QiDamageSource extends DamageSource
         // Bypass armor if this damage source has an element
         if (damageElement.compareTo(Elements.noElement) != 0)
             bypassArmor();
+    }
+
+    public QiDamageSource(String msgId, Entity attacker, ResourceLocation element)
+    {
+        super(msgId);
+        entity = attacker;
+        damageElement = element;
+    }
+
+    public static QiDamageSource playerAttack(Player player, ResourceLocation element)
+    {
+        return new QiDamageSource("player", player, element);
     }
 
     public QiDamageSource(DamageSource source)

@@ -1,11 +1,13 @@
 package DaoOfModding.Cultivationcraft.Common.Qi.Techniques;
 
 import DaoOfModding.Cultivationcraft.Client.CultivatorAttackLogicClient;
+import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
 import DaoOfModding.Cultivationcraft.Server.CultivatorAttackLogic;
 import DaoOfModding.mlmanimator.Client.Poses.PoseHandler;
 import DaoOfModding.mlmanimator.Client.Poses.PlayerPose;
 import DaoOfModding.Cultivationcraft.Network.ClientPacketHandler;
 import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.Entity;
@@ -92,7 +94,7 @@ public class AttackTechnique extends Technique
     // Attack specified entity with specified player, server only
     public void attackEntity(Player player, Entity toAttack)
     {
-        if (!CultivatorAttackLogic.attackEntity(player, toAttack, getRange(player), getAttack(player), attackSound))
+        if (!CultivatorAttackLogic.attackEntity(player, toAttack, getRange(player), getAttack(player), attackSound, getElement()))
             return;
 
         // If the entity is dead then call onKill

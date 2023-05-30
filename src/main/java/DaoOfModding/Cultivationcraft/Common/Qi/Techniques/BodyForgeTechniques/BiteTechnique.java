@@ -61,7 +61,11 @@ public class BiteTechnique extends AttackOverrideTechnique
         if (CultivatorStats.getCultivatorStats(player).getCultivationType() == CultivationTypes.BODY_CULTIVATOR &&
             (BodyModifications.getBodyModifications(player).hasOption(BodyPartNames.headPosition, BodyPartNames.mouthSubPosition, BodyPartNames.flatTeethPart) ||
             BodyModifications.getBodyModifications(player).hasOption(BodyPartNames.headPosition, BodyPartNames.mouthSubPosition, BodyPartNames.sharpTeethPart)))
-            return true;
+            {
+                // Set the element of the bite attack to be the same as the bone's element
+                Element = BodyModifications.getBodyModifications(player).getOption(BodyPartNames.bodyPosition, BodyPartNames.boneSubPosition).getElement();
+                return true;
+            }
 
         return false;
     }
