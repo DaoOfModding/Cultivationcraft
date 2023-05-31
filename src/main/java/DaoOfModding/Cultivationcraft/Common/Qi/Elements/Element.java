@@ -4,6 +4,7 @@ import DaoOfModding.Cultivationcraft.Common.Qi.QiSource;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -44,6 +45,10 @@ public class Element
             return true;
 
         return false;
+    }
+
+    public void applyStatusEffect(Entity target, float damageAmount)
+    {
     }
 
     public void effectBlock(Level level, BlockPos pos)

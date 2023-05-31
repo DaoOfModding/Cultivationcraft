@@ -320,39 +320,4 @@ public class CommonListeners
         if (SkillHotbarServer.isActive(event.getEntity().getUUID()))
             event.setCanceled(true);
     }
-
-    @SubscribeEvent
-    public static void onPlayerHurtInitial(LivingAttackEvent event)
-    {
-        if (event.getEntity() instanceof Player && !event.getEntity().level.isClientSide)
-        {
-            // Don't modify damage if it bypasses invulnerability
-            if (event.getSource().isBypassInvul())
-                return;
-
-            // Don't modify damage unless player is a cultivator
-            if (!CultivatorStats.isCultivator((Player)event.getEntity()))
-                return;
-
-            // This has to be done twice because LivingHurtEvent cancels too late, but Living attack event can't set the amount of damage done -.-
-            event.setCanceled(Damage.shouldCancel(event));
-        }
-    }
-
-    @SubscribeEvent
-    public static void onPlayerHurt(LivingHurtEvent event)
-    {
-        if (event.getEntity() instanceof Player && !event.getEntity().level.isClientSide)
-        {
-            // Don't modify damage if it bypasses invulnerability
-            if (event.getSource().isBypassInvul())
-                return;
-
-            // Don't modify damage unless player is a cultivator
-            if (!CultivatorStats.isCultivator((Player)event.getEntity()))
-                return;
-
-            event.setAmount(Damage.damage(event));
-        }
-    }
 }

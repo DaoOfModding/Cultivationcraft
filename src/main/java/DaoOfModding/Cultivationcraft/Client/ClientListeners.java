@@ -62,10 +62,17 @@ public class ClientListeners
 
                 if (tech != null)
                 {
-                    if (tech.isActive())
-                        tech.tickClient(event);
+                    if (techs.getTechnique(i).isValid(event.player))
+                    {
+                        if (tech.isActive())
+                            tech.tickClient(event);
+                        else
+                            tech.tickInactiveClient(event);
+                    }
                     else
-                        tech.tickInactiveClient(event);
+                    {
+                        techs.setTechnique(i, null);
+                    }
                 }
             }
 

@@ -3,10 +3,12 @@ package DaoOfModding.Cultivationcraft.Common.Qi.Damage;
 import DaoOfModding.Cultivationcraft.Client.Renderers.BloodRenderer;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.Quest;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.QuestHandler;
+import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.PlayerStatModifications;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.StatIDs;
 import DaoOfModding.Cultivationcraft.Network.PacketHandler;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.damagesource.CombatRules;
@@ -30,7 +32,25 @@ public class Damage
         PlayerStatModifications stats = BodyPartStatControl.getStats(event.getEntity().getUUID());
         float resistedDamage = damage * (1 - (stats.getElementalStat(StatIDs.resistanceModifier, source.damageElement)  / 100.0f));
 
+        System.out.println(" deals " + resistedDamage + " (out of " + event.getAmount() + ") " + Component.translatable(source.damageElement.getPath()).getString() + " damage to " + event.getEntity().getName());
+
         return resistedDamage;
+    }
+
+    public static void applyStatusEffects(LivingHurtEvent event)
+    {
+        QiDamageSource source = damageSourceToQiDamageSource(event.getSource());
+
+        Elements.getElement(source.getElement()).applyStatusEffect(event.getEntity(), event.getAmount());
+    }
+
+    // TODO: Mob resistances
+    public static float damageEntity(LivingHurtEvent event)
+    {
+        QiDamageSource source = damageSourceToQiDamageSource(event.getSource());
+        float damage = event.getAmount();
+
+        return damage;
     }
 
     public static boolean shouldCancel(LivingAttackEvent event)
@@ -43,17 +63,13 @@ public class Damage
 
         QuestHandler.progressQuest((Player)event.getEntity(), Quest.DAMAGE_TAKEN, event.getAmount());
 
-        if (resistedDamage > 0)
-        {
-            QuestHandler.progressQuest((Player) event.getEntity(), Quest.DAMAGE_RESISTED, event.getAmount() - resistedDamage);
-        }
-        else
+        if (resistedDamage <= 0)
         {
             //TODO: Damage absorb quest
+            return true;
         }
 
-        if (resistedDamage <= 0)
-            return true;
+        QuestHandler.progressQuest((Player) event.getEntity(), Quest.DAMAGE_RESISTED, event.getAmount() - resistedDamage);
 
         Vec3 position = source.getSourcePosition();
 

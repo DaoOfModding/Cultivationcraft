@@ -1,9 +1,9 @@
 package DaoOfModding.Cultivationcraft.Common.Qi.Elements;
 
-import DaoOfModding.Cultivationcraft.Common.Qi.QiSourceConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseFireBlock;
 import net.minecraft.world.level.gameevent.GameEvent;
@@ -17,6 +17,11 @@ public class FireElement extends Element
         super(resourcelocation, elementColor, newDensity);
 
         effectTickChance = 1.0;
+    }
+
+    public void applyStatusEffect(Entity target, float damageAmount)
+    {
+        target.setSecondsOnFire((int)damageAmount);
     }
 
     @Override

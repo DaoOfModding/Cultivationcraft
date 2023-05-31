@@ -17,14 +17,17 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.event.TickEvent;
 
 public class BiteTechnique extends AttackOverrideTechnique
 {
@@ -33,7 +36,7 @@ public class BiteTechnique extends AttackOverrideTechnique
         super();
 
         langLocation = "cultivationcraft.technique.bite";
-        Element = Elements.noElement;
+        Element = null;
 
         icon = new ResourceLocation(Cultivationcraft.MODID, "textures/techniques/icons/bite.png");
 
@@ -61,13 +64,29 @@ public class BiteTechnique extends AttackOverrideTechnique
         if (CultivatorStats.getCultivatorStats(player).getCultivationType() == CultivationTypes.BODY_CULTIVATOR &&
             (BodyModifications.getBodyModifications(player).hasOption(BodyPartNames.headPosition, BodyPartNames.mouthSubPosition, BodyPartNames.flatTeethPart) ||
             BodyModifications.getBodyModifications(player).hasOption(BodyPartNames.headPosition, BodyPartNames.mouthSubPosition, BodyPartNames.sharpTeethPart)))
-            {
-                // Set the element of the bite attack to be the same as the bone's element
-                Element = BodyModifications.getBodyModifications(player).getOption(BodyPartNames.bodyPosition, BodyPartNames.boneSubPosition).getElement();
                 return true;
-            }
 
         return false;
+    }
+
+    // Ticks on server side, only called if Technique is active and owned by the player
+    public void tickServer(TickEvent.PlayerTickEvent event)
+    {
+        // Set the element of the bite attack to be the same as the bone's element
+        if (Element == null)
+            Element = BodyModifications.getBodyModifications(event.player).getOption(BodyPartNames.bodyPosition, BodyPartNames.boneSubPosition).getElement();
+
+        super.tickServer(event);
+    }
+
+    // Ticks on client side, only called if Technique is active
+    public void tickClient(TickEvent.PlayerTickEvent event)
+    {
+        // Set the element of the bite attack to be the same as the bone's element
+        if (Element == null)
+            Element = BodyModifications.getBodyModifications(event.player).getOption(BodyPartNames.bodyPosition, BodyPartNames.boneSubPosition).getElement();
+
+        super.tickClient(event);
     }
 
     @Override
