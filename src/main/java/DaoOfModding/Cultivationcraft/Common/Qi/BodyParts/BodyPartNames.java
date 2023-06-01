@@ -5,6 +5,7 @@ import DaoOfModding.Cultivationcraft.Client.Animations.BodyPartModelNames;
 import DaoOfModding.Cultivationcraft.Client.Textures.TextureList;
 import DaoOfModding.Cultivationcraft.Client.genericClientFunctions;
 import DaoOfModding.Cultivationcraft.Common.Misc;
+import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Blood.BurningBlood;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Blood.CultivatorBlood;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Blood.QiBlood;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyForgeParts.*;
@@ -86,6 +87,7 @@ public class BodyPartNames
 
     public static final String hungerBloodPart = "hungerBlood";
     public static final String qiBloodPart = "qiBlood";
+    public static final String burningBloodPart = "burningBlood";
 
     // LOCATIONS
     public static final String headFrontPart = "headfront";
@@ -293,8 +295,17 @@ public class BodyPartNames
         qiBlood.setBloodType(new QiBlood());
         qiBlood.setQuest(DefaultQuests.defaultHealQuest);
 
+        BloodPart burningBlood = new BloodPart(burningBloodPart, bodyPosition, bloodSubPosition, "cultivationcraft.gui.bodypart.blood.burning");
+        burningBlood.addUniqueTag(BodyPartTags.blood);
+        burningBlood.addNeededPart(BodyPartNames.startingEyesPart);
+        burningBlood.setBloodType(new BurningBlood());
+        burningBlood.setElement(Elements.fireElement);
+        burningBlood.getStatChanges().setElementalStat(StatIDs.resistanceModifier, Elements.fireElement, 25);
+        burningBlood.getStatChanges().setElementalStat(StatIDs.resistanceModifier, Elements.waterElement, -25);
+
         addOption(hungerBlood);
         addOption(qiBlood);
+        addOption(burningBlood);
     }
 
     protected static void setupStomachOptions()

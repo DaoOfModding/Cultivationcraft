@@ -1,10 +1,13 @@
 package DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Blood;
 
+import DaoOfModding.Cultivationcraft.Client.GUI.animatedTexture;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.FoodStats.QiFoodStats;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.Quest;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.QuestHandler;
 import DaoOfModding.Cultivationcraft.Common.Qi.QiSource;
+import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.player.Player;
 import com.mojang.math.Vector3f;
@@ -16,11 +19,24 @@ import java.util.List;
 public class Blood
 {
     protected Vector3f colour = new Vector3f(1, 0 ,0);
+    protected animatedTexture orbFilling = new animatedTexture(new ResourceLocation(Cultivationcraft.MODID, "textures/gui/orbfilling.png"));
+
+    // How many ticks blood particles remain for
     public int life = 20*60;
 
     public Vector3f getColour()
     {
         return colour;
+    }
+
+    public animatedTexture getOrbFilling()
+    {
+        return orbFilling;
+    }
+
+    public boolean canHeal(ResourceLocation element)
+    {
+        return false;
     }
 
     // Handle passive player regen here

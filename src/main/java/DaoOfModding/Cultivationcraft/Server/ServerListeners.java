@@ -33,6 +33,7 @@ public class ServerListeners
 {
     protected static ArrayList<IChunkQiSources> tickingQiSources = new ArrayList<IChunkQiSources>();
     public static long lastServerTickTime = System.nanoTime();
+    public static int tick = 0;
 
     public static void playerTick(TickEvent.PlayerTickEvent event)
     {
@@ -83,6 +84,8 @@ public class ServerListeners
     {
         if (event.phase == TickEvent.Phase.END)
         {
+            tick = (tick + 1) % 800;
+
             if(ServerItemControl.loaded)
             {
                 ServerItemControl.checkForRecalls();

@@ -31,6 +31,7 @@ import java.util.HashMap;
 public class ClientListeners
 {
     public static long lastTickTime = System.nanoTime();
+    public static int tick = 0;
 
     public static void playerTick(TickEvent.PlayerTickEvent event)
     {
@@ -156,6 +157,8 @@ public class ClientListeners
     {
         if (event.phase == TickEvent.Phase.END)
         {
+            tick = (tick + 1) % 800;
+
             if(ClientItemControl.thisWorld != null)
             {
                 // Attempt to process any ChunkQiSource packets pending

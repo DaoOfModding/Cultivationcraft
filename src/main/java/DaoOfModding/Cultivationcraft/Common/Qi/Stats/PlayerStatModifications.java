@@ -61,7 +61,7 @@ public class PlayerStatModifications
 
         for (ResourceLocation eStats : newStats.getElementalStats().keySet())
             for (Map.Entry<ResourceLocation, Float> eStat : newStats.getElementalStats().get(eStats).entrySet())
-                setElementalStat(eStats, eStat.getKey(), eStat.getValue());
+                setElementalStat(eStats, eStat.getKey(), eStat.getValue() + getElementalStat(eStats, eStat.getKey()));
     }
 
     public String toString()

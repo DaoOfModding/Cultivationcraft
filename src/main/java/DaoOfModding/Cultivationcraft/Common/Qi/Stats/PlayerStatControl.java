@@ -95,6 +95,9 @@ public class PlayerStatControl
         for (PassiveTechnique passive : techs.getPassives())
             BodyPartStatControl.addStats(player.getUUID(), passive.getStats());
 
+        // Apply resistance caps
+        BodyPartStatControl.applyCaps(player);
+
         // Only apply player attribute modifiers on the server
         if (!player.level.isClientSide)
             applyStats(player);

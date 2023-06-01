@@ -1,6 +1,7 @@
 package DaoOfModding.Cultivationcraft.Common.Qi.Damage;
 
 import DaoOfModding.Cultivationcraft.Client.Renderers.BloodRenderer;
+import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.PlayerHealthManager;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.Quest;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.QuestHandler;
 import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
@@ -9,6 +10,7 @@ import DaoOfModding.Cultivationcraft.Common.Qi.Stats.PlayerStatModifications;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.StatIDs;
 import DaoOfModding.Cultivationcraft.Network.PacketHandler;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.damagesource.CombatRules;
@@ -27,14 +29,21 @@ public class Damage
     {
         QiDamageSource source = damageSourceToQiDamageSource(event.getSource());
 
-        float damage = event.getAmount();
+        return resistDamage(event.getAmount(), source.damageElement, (Player)event.getEntity());
+    }
 
-        PlayerStatModifications stats = BodyPartStatControl.getStats(event.getEntity().getUUID());
-        float resistedDamage = damage * (1 - (stats.getElementalStat(StatIDs.resistanceModifier, source.damageElement)  / 100.0f));
+    public static float resistDamage(float damage, ResourceLocation element, Player player)
+    {
+        PlayerStatModifications stats = BodyPartStatControl.getStats(player.getUUID());
 
-        System.out.println(" deals " + resistedDamage + " (out of " + event.getAmount() + ") " + Component.translatable(source.damageElement.getPath()).getString() + " damage to " + event.getEntity().getName());
+        float multiplier = (1 - (stats.getElementalStat(StatIDs.resistanceModifier, element)  / 100.0f));
 
-        return resistedDamage;
+        if (multiplier < 0 && !PlayerHealthManager.getBlood(player).canHeal(element))
+            multiplier = 0;
+
+        System.out.println("Taking " + damage + " * " + multiplier + " - " + element);
+
+        return damage * multiplier;
     }
 
     public static void applyStatusEffects(LivingHurtEvent event)
@@ -47,7 +56,7 @@ public class Damage
     // TODO: Mob resistances
     public static float damageEntity(LivingHurtEvent event)
     {
-        QiDamageSource source = damageSourceToQiDamageSource(event.getSource());
+        //QiDamageSource source = damageSourceToQiDamageSource(event.getSource());
         float damage = event.getAmount();
 
         return damage;
@@ -57,15 +66,15 @@ public class Damage
     {
         QiDamageSource source = damageSourceToQiDamageSource(event.getSource());
         float damage = armorAbsorption((Player)event.getEntity(), source, event.getAmount());
-
-        PlayerStatModifications stats = BodyPartStatControl.getStats(event.getEntity().getUUID());
-        float resistedDamage = damage * (1 - (stats.getElementalStat(StatIDs.resistanceModifier, source.damageElement)  / 100.0f));
+        float resistedDamage = resistDamage(damage, source.damageElement, (Player)event.getEntity());
 
         QuestHandler.progressQuest((Player)event.getEntity(), Quest.DAMAGE_TAKEN, event.getAmount());
 
         if (resistedDamage <= 0)
         {
-            //TODO: Damage absorb quest
+            // If taking negative damage then heal that amount
+            event.getEntity().heal(resistedDamage * -1);
+
             return true;
         }
 

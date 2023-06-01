@@ -210,6 +210,9 @@
   "cultivationcraft.gui.bodypart.blood.qi": "Qi Blood",
   "cultivationcraft.gui.bodypart.blood.qi.description": "Removes passive healing, but allows you to heal quickly by absorbing from Qi sources",
 
+  "cultivationcraft.gui.bodypart.blood.burning": "Burning Blood",
+  "cultivationcraft.gui.bodypart.blood.burning.description": "Blood so hot it burns everything it touches. Including you.",
+
   "cultivationcraft.gui.bodypart.skin.stretchy": "Stretchy",
   "cultivationcraft.gui.bodypart.skin.stretchy.description": "Forge your skin to be able to freely stretch into much larger sizes",
 
