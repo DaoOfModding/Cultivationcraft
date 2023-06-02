@@ -30,6 +30,7 @@ public class PacketHandler
     protected static final byte KEYPRESS = 03;
     protected static final byte ATTACK = 07;
     protected static final byte LevelChunk_QI_SOURCES = 10;
+    protected static final byte ELEMENTAL_EFFECT = 12;
     protected static final byte TECHNIQUE_USE = 20;
     protected static final byte TECHNIQUE_INFO = 21;
     protected static final byte PART_INFO = 22;
@@ -57,6 +58,7 @@ public class PacketHandler
         channel.registerMessage(KEYPRESS, keypressPacket.class, keypressPacket::encode, keypressPacket::decode, keypressPacket::handle);
         channel.registerMessage(ATTACK, AttackPacket.class, AttackPacket::encode, AttackPacket::decode, AttackPacket::handle);
         channel.registerMessage(LevelChunk_QI_SOURCES, ChunkQiSourcesPacket.class, ChunkQiSourcesPacket::encode, ChunkQiSourcesPacket::decode, ChunkQiSourcesPacket::handle);
+        channel.registerMessage(ELEMENTAL_EFFECT, ElementalEffectPacket.class, ElementalEffectPacket::encode, ElementalEffectPacket::decode, ElementalEffectPacket::handle);
         channel.registerMessage(TECHNIQUE_USE, TechniqueUsePacket.class, TechniqueUsePacket::encode, TechniqueUsePacket::decode, TechniqueUsePacket::handle);
         channel.registerMessage(TECHNIQUE_INFO, TechniqueInfoPacket.class, TechniqueInfoPacket::encode, TechniqueInfoPacket::decode, TechniqueInfoPacket::handle);
         channel.registerMessage(PART_INFO, PartInfoPacket.class, PartInfoPacket::encode, PartInfoPacket::decode, PartInfoPacket::handle);

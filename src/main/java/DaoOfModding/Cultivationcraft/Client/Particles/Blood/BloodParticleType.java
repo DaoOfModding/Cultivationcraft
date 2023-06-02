@@ -1,4 +1,4 @@
-package DaoOfModding.Cultivationcraft.Client.Particles;
+package DaoOfModding.Cultivationcraft.Client.Particles.Blood;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.core.particles.ParticleType;

@@ -118,7 +118,7 @@ public class QiSource
     {
         Element element = Elements.getElement(getElement());
 
-        if (element.shouldDoBlockEffect())
+        if (!level.isClientSide && element.shouldDoBlockEffect())
             element.effectBlock(level, getRandomPos());
 
 

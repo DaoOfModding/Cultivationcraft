@@ -5,14 +5,20 @@ import DaoOfModding.Cultivationcraft.Common.Qi.Damage.QiDamageSource;
 import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import DaoOfModding.Cultivationcraft.Server.ServerListeners;
+import com.mojang.math.Vector3f;
+import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
 
-public class BurningBlood extends Blood
+public class BurningBlood extends CultivatorBlood
 {
     public BurningBlood()
     {
+        colour = new Vector3f(0.7f, 0 ,0);
         orbFilling = new animatedTexture(new ResourceLocation(Cultivationcraft.MODID, "textures/gui/orbfillingfire.png"), 32);
+        life = 20*10;
     }
 
     @Override
@@ -24,6 +30,14 @@ public class BurningBlood extends Blood
 
         QiDamageSource damage = new QiDamageSource("burningBlood", Elements.fireElement);
         player.hurt(damage, 1f);
+    }
+
+    @Override
+    public void externalTick(Level level, double x, double y, double z)
+    {
+        BlockPos pos = new BlockPos(Mth.floor(x), Mth.floor(y), Mth.floor(z));
+
+        Elements.getElement(Elements.fireElement).effectBlock(level, pos);
     }
 
     @Override

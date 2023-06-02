@@ -25,8 +25,6 @@ import java.util.Map;
 
 public class ChunkQiSources implements IChunkQiSources
 {
-    // TODO: Different dimension spawning
-
     ResourceLocation dimension;
     ChunkPos ChunkPos;
     List<QiSource> QiSources = new ArrayList<QiSource>();

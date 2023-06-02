@@ -1,16 +1,12 @@
 package DaoOfModding.Cultivationcraft.Client;
 
 import DaoOfModding.Cultivationcraft.Client.Particles.*;
+import DaoOfModding.Cultivationcraft.Client.Particles.Blood.BloodParticle;
 import DaoOfModding.Cultivationcraft.Common.Register;
-import DaoOfModding.Cultivationcraft.Cultivationcraft;
-import net.minecraft.core.particles.ParticleType;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegisterEvent;
 
 public class clientRegister
 {

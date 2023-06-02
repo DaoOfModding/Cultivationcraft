@@ -7,7 +7,11 @@ import DaoOfModding.Cultivationcraft.Common.Register;
 import DaoOfModding.Cultivationcraft.Network.Packets.*;
 import DaoOfModding.Cultivationcraft.Network.Packets.CultivatorStats.CultivatorTargetPacket;
 import DaoOfModding.Cultivationcraft.Network.Packets.CultivatorStats.RecallFlyingSwordPacket;
+import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.PacketDistributor;
@@ -37,6 +41,12 @@ public class ClientPacketHandler
     public static void sendAttackToServer(UUID playerID, HitResult.Type type, Vec3 pos, UUID targetID, int slot)
     {
         AttackPacket pack = new AttackPacket(playerID, type, pos, targetID, slot);
+        PacketHandler.channel.sendToServer(pack);
+    }
+
+    public static void sendElementalEffectToServer(ResourceLocation element, ResourceKey<Level> level, BlockPos pos)
+    {
+        ElementalEffectPacket pack = new ElementalEffectPacket(element, level, pos);
         PacketHandler.channel.sendToServer(pack);
     }
 

@@ -1,5 +1,7 @@
 package DaoOfModding.Cultivationcraft.Common.Qi.Elements;
 
+import DaoOfModding.Cultivationcraft.Network.ClientPacketHandler;
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
@@ -31,6 +33,9 @@ public class FireElement extends Element
         {
             level.setBlockAndUpdate(pos, BaseFireBlock.getState(level, pos));
             level.gameEvent(null, GameEvent.BLOCK_PLACE, pos);
+
+            if (level.isClientSide)
+                ClientPacketHandler.sendElementalEffectToServer(name, level.dimension(), pos);
         }
     }
 }

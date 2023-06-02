@@ -8,11 +8,10 @@ import DaoOfModding.Cultivationcraft.Common.Qi.QiSource;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.player.Player;
 import com.mojang.math.Vector3f;
-import net.minecraft.world.Difficulty;
 import net.minecraft.world.level.GameRules;
+import net.minecraft.world.level.Level;
 
 import java.util.List;
 
@@ -75,6 +74,11 @@ public class Blood
                 food.tickTimer = 0;
             }
         }
+    }
+
+    // Each droplet of blood will call this function every tick
+    public void externalTick(Level level, double x, double y, double z)
+    {
     }
 
     public ParticleOptions getParticle(Player player)

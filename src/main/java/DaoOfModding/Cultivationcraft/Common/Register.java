@@ -1,6 +1,6 @@
 package DaoOfModding.Cultivationcraft.Common;
 
-import DaoOfModding.Cultivationcraft.Client.Particles.BloodParticleType;
+import DaoOfModding.Cultivationcraft.Client.Particles.Blood.BloodParticleType;
 import DaoOfModding.Cultivationcraft.Client.Particles.QiParticleType;
 import DaoOfModding.Cultivationcraft.Common.Containers.FlyingSwordContainer;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;

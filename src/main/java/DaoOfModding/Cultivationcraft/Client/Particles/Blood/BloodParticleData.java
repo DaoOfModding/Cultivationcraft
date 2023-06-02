@@ -1,12 +1,10 @@
-package DaoOfModding.Cultivationcraft.Client.Particles;
+package DaoOfModding.Cultivationcraft.Client.Particles.Blood;
 
-import DaoOfModding.Cultivationcraft.Client.clientRegister;
 import DaoOfModding.Cultivationcraft.Common.Register;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.phys.Vec3;
 
 public class BloodParticleData implements ParticleOptions
 {

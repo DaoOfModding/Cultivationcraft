@@ -41,8 +41,6 @@ public class Damage
         if (multiplier < 0 && !PlayerHealthManager.getBlood(player).canHeal(element))
             multiplier = 0;
 
-        System.out.println("Taking " + damage + " * " + multiplier + " - " + element);
-
         return damage * multiplier;
     }
 

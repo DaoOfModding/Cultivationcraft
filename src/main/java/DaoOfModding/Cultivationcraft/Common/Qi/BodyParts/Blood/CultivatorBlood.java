@@ -1,15 +1,13 @@
 package DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Blood;
 
-import DaoOfModding.Cultivationcraft.Client.Particles.BloodParticleData;
+import DaoOfModding.Cultivationcraft.Client.Particles.Blood.BloodParticleData;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.FoodStats.QiFoodStats;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.Quest;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.QuestHandler;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.StatIDs;
 import net.minecraft.core.particles.ParticleOptions;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.Difficulty;
 import net.minecraft.world.level.GameRules;
 
 public class CultivatorBlood extends Blood

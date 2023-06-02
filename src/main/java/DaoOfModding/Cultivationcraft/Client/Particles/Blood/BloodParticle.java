@@ -1,12 +1,12 @@
-package DaoOfModding.Cultivationcraft.Client.Particles;
+package DaoOfModding.Cultivationcraft.Client.Particles.Blood;
 
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Blood.Blood;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.PlayerHealthManager;
-import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
+import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.Vec3;
@@ -18,8 +18,9 @@ import java.util.List;
 public class BloodParticle extends TextureSheetParticle
 {
     private static final double MAXIMUM_COLLISION_VELOCITY_SQUARED = Mth.square(100.0D);
+    protected Blood blood;
 
-    public BloodParticle(ClientLevel world, double x, double y, double z, double velocityX, double velocityY, double velocityZ, int lifespan)
+    public BloodParticle(ClientLevel world, double x, double y, double z, double velocityX, double velocityY, double velocityZ, int lifespan, Blood source)
     {
         super(world, x, y, z, velocityX, velocityY, velocityZ);
 
@@ -35,6 +36,8 @@ public class BloodParticle extends TextureSheetParticle
         this.gravity = 1;
         this.quadSize = 0.025f;
         this.setSize(0.025f, 0.025f);
+
+        blood = source;
     }
 
     public ParticleRenderType getRenderType()
@@ -68,6 +71,8 @@ public class BloodParticle extends TextureSheetParticle
         this.xd *= this.friction;
         this.yd *= this.friction;
         this.zd *= this.friction;
+
+        blood.externalTick(level, x, y, z);
     }
 
     @Override
@@ -124,7 +129,7 @@ public class BloodParticle extends TextureSheetParticle
         {
             Blood type = PlayerHealthManager.getBlood(particleData.sourcePlayer);
 
-            BloodParticle particle = new BloodParticle(world, xPos, yPos, zPos, xVelocity, yVelocity, zVelocity, type.life);
+            BloodParticle particle = new BloodParticle(world, xPos, yPos, zPos, xVelocity, yVelocity, zVelocity, type.life, type);
             particle.pickSprite(sprites);
 
             particle.setColor(type.getColour().x(), type.getColour().y(), type.getColour().z());
