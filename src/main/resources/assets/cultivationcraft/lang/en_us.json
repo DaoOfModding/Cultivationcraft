@@ -320,32 +320,38 @@
 
   "cultivationcraft.gui.help.qi": "Qi",
   "cultivationcraft.gui.help.qi.text": "The Vital Energy that flows through all living creatures",
-
   "cultivationcraft.gui.help.qi.source": "Qi Source",
   "cultivationcraft.gui.help.qi.source.text": "Naturally formed locations that produce Qi invisible to the naked eye, vital for cultivators to advance their cultivation.\n \nThe element of the Qi produced depends on the environment around the Qi Source.",
-
   "cultivationcraft.gui.help.elements": "Elements",
   "cultivationcraft.gui.help.elements.text": "There are 5 main elements of Qi in the world, which a Qi Source can produce if surrounded by enough blocks of the corresponding element.\n \nThese elements suppress each other in the following order:\n§cFire§r > §2Wood§r > §aWind§r > §6Earth§r > §9Water§r > §cFire§r\n \nAdditionally, each element has various mutations that Qi Sources have a very rare chance to instead produce",
 
   "cultivationcraft.gui.help.elements.fire": "Fire",
   "cultivationcraft.gui.help.elements.fire.text": "Mostly found in the Nether, the §cFire§r element is an element related to heat and burning\n \nIt is suppressed by §9Water§r and suppresses §2Wood§r",
-
   "cultivationcraft.gui.help.elements.wood": "Wood",
   "cultivationcraft.gui.help.elements.wood.text": "Mostly found in forests, The §2Wood§r element is an element related to growth and plant life\n \nIt is suppressed by §cFire§r and suppresses §aWind§r",
-
   "cultivationcraft.gui.help.elements.wind": "Wind",
   "cultivationcraft.gui.help.elements.wind.text": "Mostly found in the sky, the §aWind§r element is an element related to movement and the sky\n \nIt is suppressed by §2Wood§r and suppresses §6Earth§r",
-
   "cultivationcraft.gui.help.elements.earth": "Earth",
   "cultivationcraft.gui.help.elements.earth.text": "Mostly found underground, the §6Earth§r element is an element related to dirt and stone\n \nIt is suppressed by §aWind§r and suppresses §9Water§r",
-
   "cultivationcraft.gui.help.elements.water": "Water",
   "cultivationcraft.gui.help.elements.water.text": "Mostly found in the sea, the §9Water§r element is an element related to liquids and sealife\n \nIt is suppressed by §6Earth§r and suppresses §cFire§r",
 
-
   "cultivationcraft.gui.help.elements.lightning": "Lightning",
   "cultivationcraft.gui.help.elements.lightning.text": "The §eLightning§r element is a rare mutation of the §aWind§r element.\n \nAn element of the heavens, this element both suppresses and is suppressed by all base elements",
-
   "cultivationcraft.gui.help.elements.ice": "Ice",
-  "cultivationcraft.gui.help.elements.ice.text": "Mostly found near frozen water, The §bIce§r element is a slightly rare mutation of the §9Water§r element.\n \nThis element is related to coldness and freezing"
+  "cultivationcraft.gui.help.elements.ice.text": "Mostly found near frozen water, The §bIce§r element is a slightly rare mutation of the §9Water§r element.\n \nThis element is related to coldness and freezing",
+
+
+  "cultivationcraft.gui.help.debug": "Debug",
+  "cultivationcraft.gui.help.debug.text": "OP Commands for testing purposes",
+
+  "cultivationcraft.gui.help.debug.bodyforge": "bodyforge",
+  "cultivationcraft.gui.help.debug.bodyforge.text": "Commands relating to Body Forging",
+
+  "cultivationcraft.gui.help.debug.bodyforge.completeForge": "completeForge",
+  "cultivationcraft.gui.help.debug.bodyforge.completeForge.text": "§n/bodyforge §ncompleteForge §n§lplayerName\n \nThis command will give the supplied character all the Qi needed to complete their current forge.\nMeditating is still required to complete.",
+  "cultivationcraft.gui.help.debug.bodyforge.completeQuest": "completeQuest",
+  "cultivationcraft.gui.help.debug.bodyforge.completeQuest.text": "§n/bodyforge §ncompleteQuest §n§lplayerName\n \nThis command will complete the current quest for the supplied character.",
+  "cultivationcraft.gui.help.debug.bodyforge.reset": "reset",
+  "cultivationcraft.gui.help.debug.bodyforge.reset.text": "§n/bodyforge §nreset §n§lplayerName\n \nThis command will completely reset the supplied character's cultivation."
 }

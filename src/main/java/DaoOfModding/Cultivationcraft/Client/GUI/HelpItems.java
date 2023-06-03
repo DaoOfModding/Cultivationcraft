@@ -2,9 +2,12 @@ package DaoOfModding.Cultivationcraft.Client.GUI;
 
 import DaoOfModding.Cultivationcraft.Client.GUI.Screens.SelectableText;
 
+import java.util.ArrayList;
+
 public class HelpItems
 {
-    protected static SelectableTextField selectText = new SelectableTextField();
+    protected static ArrayList<SelectableText> selectText = new ArrayList<>();
+    protected static ArrayList<SelectableText> selectOPText = new ArrayList<>();
 
     protected static SelectableText menuField = new SelectableText("cultivationcraft.gui.help.cultivationmenu");
     protected static SelectableText statsField = new SelectableText("cultivationcraft.gui.help.cultivationmenu.stats");
@@ -82,6 +85,15 @@ public class HelpItems
 
         addText(menuField);
         addText(qiField);
+
+        SelectableText debugField = new SelectableText("cultivationcraft.gui.help.debug");
+        SelectableText bfdebugField = new SelectableText("cultivationcraft.gui.help.debug.bodyforge");
+        debugField.addItem(bfdebugField);
+        bfdebugField.addItem(new SelectableText("cultivationcraft.gui.help.debug.bodyforge.completeForge"));
+        bfdebugField.addItem(new SelectableText("cultivationcraft.gui.help.debug.bodyforge.completeQuest"));
+        bfdebugField.addItem(new SelectableText("cultivationcraft.gui.help.debug.bodyforge.reset"));
+
+        addOPText(debugField);
     }
 
     public static void addStatsField(SelectableText newStats)
@@ -96,11 +108,21 @@ public class HelpItems
 
     public static void addText(SelectableText field)
     {
-        selectText.addSelectable(field);
+        selectText.add(field);
     }
 
-    public static SelectableTextField getText()
+    public static void addOPText(SelectableText field)
+    {
+        selectOPText.add(field);
+    }
+
+    public static ArrayList<SelectableText> getText()
     {
         return selectText;
+    }
+
+    public static ArrayList<SelectableText> getOPText()
+    {
+        return selectOPText;
     }
 }

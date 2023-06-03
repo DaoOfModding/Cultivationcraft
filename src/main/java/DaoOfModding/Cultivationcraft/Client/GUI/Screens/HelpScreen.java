@@ -5,6 +5,7 @@ import DaoOfModding.Cultivationcraft.Client.GUI.SelectableTextField;
 import DaoOfModding.Cultivationcraft.Client.GUI.TextField;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 
@@ -25,7 +26,7 @@ public class HelpScreen extends GenericTabScreen
     protected int nameTextY = 22;
 
     protected TextField helpText = new TextField();
-    protected SelectableTextField selectText;
+    protected SelectableTextField selectText = new SelectableTextField();
     
     public HelpScreen()
     {
@@ -33,7 +34,13 @@ public class HelpScreen extends GenericTabScreen
         
         helpText.resetScroll();
 
-        selectText = HelpItems.getText();
+        for (SelectableText text : HelpItems.getText())
+            selectText.addSelectable(text);
+
+        if (Minecraft.getInstance().player.isCreative())
+            for (SelectableText text : HelpItems.getOPText())
+                selectText.addSelectable(text);
+
         selectText.setSize(selectTextWidth, selectTextHeight, (int)(selectTextWidth * 2));
     }
 
