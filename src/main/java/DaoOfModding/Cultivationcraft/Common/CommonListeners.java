@@ -91,6 +91,9 @@ public class CommonListeners
 
             for (IChunkQiSources sources : ticking)
             {
+                if (sources == null)
+                    return;
+
                 if (sources.getDimension().compareTo(event.level.dimension().location()) == 0)
                 {
                     boolean update = false;

@@ -16,9 +16,11 @@ import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureManager;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.levelgen.structure.structures.NetherFortressPieces;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -29,9 +31,10 @@ public class QiParticle extends TextureSheetParticle
 {
     Player target;
 
-    ParticleRenderType QI_PARTICLE_RENDER_TYPE = new ParticleRenderType()
+    static final ParticleRenderType QI_PARTICLE_RENDER_TYPE = new ParticleRenderType()
     {
-        public void begin(BufferBuilder p_107455_, TextureManager p_107456_) {
+        public void begin(BufferBuilder p_107455_, TextureManager p_107456_)
+        {
             RenderSystem.depthMask(true);
             RenderSystem.setShaderTexture(0, TextureAtlas.LOCATION_PARTICLES);
             RenderSystem.disableDepthTest();
@@ -40,7 +43,8 @@ public class QiParticle extends TextureSheetParticle
             p_107455_.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.PARTICLE);
         }
 
-        public void end(Tesselator p_107458_) {
+        public void end(Tesselator p_107458_)
+        {
             p_107458_.end();
         }
 
@@ -49,7 +53,10 @@ public class QiParticle extends TextureSheetParticle
         }
     };
 
-    // How fast the Qi Particles should move a tick
+    public ParticleRenderType getRenderType()
+    {
+        return QI_PARTICLE_RENDER_TYPE;
+    }
 
     public QiParticle(ClientLevel world, double x, double y, double z, double velocityX, double velocityY, double velocityZ, int lifespan, SpriteSet sprite)
     {
@@ -78,11 +85,6 @@ public class QiParticle extends TextureSheetParticle
         return FULL_BRIGHTNESS_VALUE;
     }
 
-    public ParticleRenderType getRenderType()
-    {
-        return QI_PARTICLE_RENDER_TYPE;
-    }
-
     @Override
     public void tick()
     {
@@ -90,17 +92,19 @@ public class QiParticle extends TextureSheetParticle
         this.yo = this.y;
         this.zo = this.z;
 
-        move(this.xd, this.yd, this.zd);
-
         if (this.age++ >= this.lifetime)
         {
             this.remove();
         }
-
-        // If particle collides with absorbing player
-        if (target != null && target.getBoundingBox().contains(this.x, this.y, this.z))
+        else
         {
-            this.remove();
+            this.x += this.xd;
+            this.y += this.yd;
+            this.z += this.zd;
+
+            // If particle collides with absorbing player
+            if (target != null && target.getBoundingBox().contains(this.x, this.y, this.z))
+                this.remove();
         }
     }
 
@@ -115,26 +119,29 @@ public class QiParticle extends TextureSheetParticle
     }
 
     @OnlyIn(Dist.CLIENT)
-    public static class Factory implements ParticleProvider<QiParticleData>
+    public static class Factory implements ParticleProvider<SimpleParticleType>
     {
         protected final SpriteSet sprites;
 
         @Override
-        public Particle createParticle(QiParticleData particleData, ClientLevel world, double xPos, double yPos, double zPos, double xVelocity, double yVelocity, double zVelocity)
+        public Particle createParticle(SimpleParticleType particleData, ClientLevel world, double xPos, double yPos, double zPos, double xVelocity, double yVelocity, double zVelocity)
         {
+            QiSource source = QiSourceRenderer.qisource;
+            Player target = QiSourceRenderer.target;
+
             // The distance particles should reach
-            float distance = particleData.source.getSize();
+            float distance = source.getSize();
 
             // Value from 0-1 signifying how dense this QiSource currently is
-            double density = Math.sqrt(particleData.source.getQiCurrent()) / Math.sqrt((float)QiSourceConfig.MaxStorage);
+            double density = Math.sqrt(source.getQiCurrent()) / Math.sqrt((float)QiSourceConfig.MaxStorage);
 
             int life;
             Vec3 direction = new Vec3(xVelocity, yVelocity, zVelocity);
 
-            if (particleData.target == null)
+            if (target == null)
             {
                 // How long the particles last is calculated based on the QiSource density
-                life = 5 + (int)(density * 2999);
+                life = 5 + (int)(density * 499);
 
                 // Determine the velocity of the particles based on their lifespan and the distance they need to travel
                 direction = direction.scale(distance/(float)life);
@@ -148,14 +155,13 @@ public class QiParticle extends TextureSheetParticle
             QiParticle particle = new QiParticle(world, xPos, yPos, zPos, direction.x, direction.y, direction.z, life, sprites);
             particle.pickSprite(sprites);
 
-            Color color = Elements.getElement(particleData.source.getElement()).color;
+            Color color = Elements.getElement(source.getElement()).color;
             particle.setColor(color.getRed() / 255f, color.getGreen() / 255f, color.getBlue() / 255f);
 
-            particle.target = particleData.target;
+            particle.target = target;
 
             return particle;
         }
-
 
         public Factory(SpriteSet sprite)
         {

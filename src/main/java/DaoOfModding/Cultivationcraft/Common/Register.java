@@ -1,10 +1,10 @@
 package DaoOfModding.Cultivationcraft.Common;
 
 import DaoOfModding.Cultivationcraft.Client.Particles.Blood.BloodParticleType;
-import DaoOfModding.Cultivationcraft.Client.Particles.QiParticleType;
 import DaoOfModding.Cultivationcraft.Common.Containers.FlyingSwordContainer;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import net.minecraft.core.particles.ParticleType;
+import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.inventory.MenuType;
@@ -32,10 +32,10 @@ public class Register
                                                                                         .setUpdateInterval(3)
                                                                                         .build("flyingsword"));
 
-    public static RegistryObject<MenuType<FlyingSwordContainer>> ContainerTypeFlyingSword = CONTAINERS.register("flyingsword", () -> IForgeMenuType.create(FlyingSwordContainer::createContainerClientSide));
+    public static final RegistryObject<MenuType<FlyingSwordContainer>> ContainerTypeFlyingSword = CONTAINERS.register("flyingsword", () -> IForgeMenuType.create(FlyingSwordContainer::createContainerClientSide));
 
-    public static RegistryObject<QiParticleType> qiParticleType = PARTICLES.register("qiparticle", () -> new QiParticleType());
-    public static RegistryObject<BloodParticleType> bloodParticleType = PARTICLES.register("bloodparticle", () -> new BloodParticleType());
+    public static final RegistryObject<SimpleParticleType> qiParticleType = PARTICLES.register("qiparticle", () -> new SimpleParticleType(true));
+    public static final RegistryObject<BloodParticleType> bloodParticleType = PARTICLES.register("bloodparticle", () -> new BloodParticleType());
 
     public static void init(IEventBus bus)
     {

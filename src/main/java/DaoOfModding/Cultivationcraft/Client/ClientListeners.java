@@ -2,6 +2,7 @@ package DaoOfModding.Cultivationcraft.Client;
 
 import DaoOfModding.Cultivationcraft.Client.Animations.CultivatorModelHandler;
 import DaoOfModding.Cultivationcraft.Client.GUI.SkillHotbarOverlay;
+import DaoOfModding.Cultivationcraft.Client.Renderers.QiSourceRenderer;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.BodyModifications;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.IBodyModifications;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.CultivatorTechniques;
@@ -12,6 +13,7 @@ import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.PlayerStatControl;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.PassiveTechniques.PassiveTechnique;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.Technique;
+import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import DaoOfModding.mlmanimator.Client.Poses.PlayerPoseHandler;
 import DaoOfModding.mlmanimator.Client.Poses.PoseHandler;
 import net.minecraft.client.Minecraft;

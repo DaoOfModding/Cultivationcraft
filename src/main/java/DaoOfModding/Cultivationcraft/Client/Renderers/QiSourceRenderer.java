@@ -1,26 +1,23 @@
 package DaoOfModding.Cultivationcraft.Client.Renderers;
 
-import DaoOfModding.Cultivationcraft.Client.Particles.QiParticleData;
+import DaoOfModding.Cultivationcraft.Client.Particles.QiParticle;
 import DaoOfModding.Cultivationcraft.Client.genericClientFunctions;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.ChunkQiSources.ChunkQiSources;
 import DaoOfModding.Cultivationcraft.Common.Qi.QiSource;
-import DaoOfModding.Cultivationcraft.Common.Qi.QiSourceConfig;
-import DaoOfModding.Cultivationcraft.Cultivationcraft;
+import DaoOfModding.Cultivationcraft.Common.Register;
 import DaoOfModding.mlmanimator.Client.Poses.PoseHandler;
 import net.minecraft.client.Minecraft;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.phys.Vec3;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
 
 public class QiSourceRenderer
 {
     protected static float tick = 0;
+    public static QiSource qisource = null;
+    public static Player target = null;
 
     public static void renderQiSources(float partialTick)
     {
@@ -57,7 +54,7 @@ public class QiSourceRenderer
 
         // If only one player is absorbing return that player
         if (players.size() == 1)
-            return  Minecraft.getInstance().level.getPlayerByUUID((UUID)players.keySet().toArray()[0]);
+            return Minecraft.getInstance().level.getPlayerByUUID((UUID)players.keySet().toArray()[0]);
 
         int absorbingAmount = 0;
 
@@ -115,8 +112,9 @@ public class QiSourceRenderer
 
         direction = direction.normalize();
 
-        QiParticleData particle = new QiParticleData(source);
-        particle.setTarget(absorbing);
-        Minecraft.getInstance().level.addParticle(particle, x, y, z, direction.x, direction.y, direction.z);
+        // TODO: These don't seem to clean up properly, causing lag over time
+        qisource = source;
+        target = absorbing;
+        Minecraft.getInstance().level.addParticle(Register.qiParticleType.get(), x, y, z, direction.x, direction.y, direction.z);
     }
 }
