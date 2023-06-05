@@ -4,7 +4,7 @@ import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.*;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.BodyForgeTechniques.*;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.PassiveTechniques.ExpandingStomachTechnique;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.PassiveTechniques.GlideTechnique;
-import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.PassiveTechniques.JetTechnique;
+import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.BodyForgeTechniques.JetTechnique;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import net.minecraft.world.entity.player.Player;
 
@@ -27,8 +27,8 @@ public class TechniqueControl
         TechniqueControl.addTechnique(DartTechnique.class);
         TechniqueControl.addTechnique(BounceTechnique.class);
         TechniqueControl.addTechnique(JetLegTechnique.class);
+        TechniqueControl.addTechnique(JetTechnique.class);
         TechniqueControl.addPassiveTechnique(ExpandingStomachTechnique.class);
-        TechniqueControl.addPassiveTechnique(JetTechnique.class);
         TechniqueControl.addPassiveTechnique(GlideTechnique.class);
     }
 

@@ -14,6 +14,9 @@ public class StaminaHandler
 
     public static boolean consumeStamina(Player player, float stamina)
     {
+        if (player.isCreative())
+            return true;
+
         // Multiply stamina use by weight
         stamina = stamina * BodyPartStatControl.getStats(player.getUUID()).getStat(StatIDs.weight);
 

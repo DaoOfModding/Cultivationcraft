@@ -1,4 +1,4 @@
-package DaoOfModding.Cultivationcraft.Common.Qi.Techniques.PassiveTechniques;
+package DaoOfModding.Cultivationcraft.Common.Qi.Techniques.BodyForgeTechniques;
 
 import DaoOfModding.Cultivationcraft.Client.Animations.BodyPartModelNames;
 import DaoOfModding.Cultivationcraft.Client.Physics;
@@ -10,38 +10,45 @@ import DaoOfModding.Cultivationcraft.Common.Qi.CultivationTypes;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.PlayerStatModifications;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.StatIDs;
+import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.MovementOverrideTechnique;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
+import DaoOfModding.Cultivationcraft.StaminaHandler;
 import DaoOfModding.mlmanimator.Client.Models.MultiLimbedModel;
 import DaoOfModding.mlmanimator.Client.Poses.PoseHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.TickEvent;
 
-public class JetTechnique extends PassiveTechnique
+public class JetTechnique extends MovementOverrideTechnique
 {
     public static final ResourceLocation jetQuest = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.quest.jet");
+    protected static final float speed = 0.2f;
+    protected static final float staminaUse = 0.01f;
 
     boolean enabled = false;
+    boolean forward = true;
 
-    PlayerStatModifications enabledStats = new PlayerStatModifications();
+    protected Vec3 targetSpeed = new Vec3(0, 0, 0);
+    protected Vec3 currentSpeed = new Vec3(0, 0, 0);
 
     public JetTechnique()
     {
         super();
 
         langLocation = "cultivationcraft.technique.jet";
-        enabledStats.setStat(StatIDs.movementSpeed, 0.1f);
+        type = useType.Toggle;
+        multiple = false;
+
+        icon = new ResourceLocation(Cultivationcraft.MODID, "textures/techniques/icons/jets.png");
     }
 
     @Override
     public PlayerStatModifications getStats()
     {
-        if (enabled)
-            return enabledStats;
-        else
-            return stats;
+        return stats;
     }
 
     @Override
@@ -56,27 +63,71 @@ public class JetTechnique extends PassiveTechnique
     }
 
     @Override
+    public boolean overwriteForward()
+    {
+        forward = true;
+        return false;
+    }
+
+    @Override
     public void tickClient(TickEvent.PlayerTickEvent event)
     {
-        // Disable jets if in water
-        if (event.player.isInWater())
+        super.tickClient(event);
+
+        // Do nothing if player isn't pressing forward or is not in water or does not have the stamina remaining to move
+        if (!forward || event.player.isInWater() || !StaminaHandler.consumeStamina(event.player, staminaUse))
         {
-            enableJets(false, event.player);
-            return;
+            forward = false;
+            targetSpeed = new Vec3(0, 0, 0);
+        }
+        else
+        {
+            targetSpeed = event.player.getForward();
+            targetSpeed = new Vec3(targetSpeed.x, 0, targetSpeed.z).normalize().scale(speed);
         }
 
-        Vec3 delta = Physics.getDelta(event.player);
-        Vec3 move = new Vec3(delta.x, 0, delta.z);
-        Vec3 direction = event.player.getForward().normalize();
+        applySpeed(event.player);
+    }
 
-        QuestHandler.progressQuest(event.player, jetQuest, move.length());
+    @Override
+    public void tickInactiveClient(TickEvent.PlayerTickEvent event)
+    {
+        super.tickInactiveClient(event);
 
-        double dot = move.normalize().dot(direction);
+        targetSpeed = new Vec3(0, 0, 0);
+        forward = false;
 
-        if (dot > 0 && move.length() > 0)
-            enableJets(true, event.player);
-        else
-            enableJets(false, event.player);
+        applySpeed(event.player);
+    }
+
+    @Override
+    public void deactivate(Player player)
+    {
+        forward = false;
+        enableJets(false, player);
+
+        super.deactivate(player);
+    }
+
+    protected void applySpeed(Player player)
+    {
+        // Only toggle jets for player character
+        if (player.getUUID().compareTo(Minecraft.getInstance().player.getUUID()) == 0)
+        {
+            if (forward)
+                enableJets(true, player);
+            else
+                enableJets(false, player);
+        }
+
+        QuestHandler.progressQuest(player, jetQuest, currentSpeed.length());
+
+        // Slowly ramp up to the target speed
+        currentSpeed = currentSpeed.lerp(targetSpeed, 0.1);
+
+        player.setDeltaMovement(player.getDeltaMovement().add(currentSpeed));
+
+        forward = false;
     }
 
     protected void enableJets(Boolean on, Player player)
@@ -116,8 +167,6 @@ public class JetTechnique extends PassiveTechnique
             model.getLimb(BodyPartModelNames.jetLeftSmoke).getModelPart().visible = true;
             model.getLimb(BodyPartModelNames.jetRightSmoke).getModelPart().visible = true;
         }
-
-        BodyPartStatControl.updateStats(player);
     }
 
     @Override
