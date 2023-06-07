@@ -31,6 +31,8 @@ import net.minecraftforge.event.TickEvent;
 
 public class BiteTechnique extends AttackOverrideTechnique
 {
+    public static final ResourceLocation biteQuest = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.quest.bite");
+
     public BiteTechnique()
     {
         super();

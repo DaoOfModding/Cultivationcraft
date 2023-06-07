@@ -15,6 +15,7 @@ import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.Quest;
 import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.DefaultPlayerBodyPartWeights;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.StatIDs;
+import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.BodyForgeTechniques.BiteTechnique;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.BodyForgeTechniques.JetTechnique;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import DaoOfModding.mlmanimator.Client.Models.GenericLimbNames;
@@ -170,7 +171,7 @@ public class BodyPartNames
         sharpBones.addNeededPart(BodyPartNames.startingEyesPart);
         sharpBones.getStatChanges().setStat(StatIDs.boneAttackModifier, 8);
         sharpBones.addTextureColorChange(TextureList.bone, new Color(0.8f, 0.8f, 0.8f));
-        sharpBones.setQuest(DefaultQuests.defaultBoneQuest);
+        sharpBones.setQuest(DefaultQuests.defaultBodyQuest);
 
         BodyPartOption bigBones = new BodyPartOption(bigBonePart, bodyPosition, boneSubPosition,  "cultivationcraft.gui.bodypart.bone.big");
         bigBones.addTextureChange(TextureList.bone, new ResourceLocation(Cultivationcraft.MODID, "textures/models/bone/bone.png"));
@@ -179,6 +180,7 @@ public class BodyPartNames
         bigBones.getStatChanges().setStat(StatIDs.armor, 12);
         bigBones.getStatChanges().setStat(StatIDs.armorToughness, 2);
         bigBones.getStatChanges().setStat(StatIDs.width, 0.2f);
+        bigBones.getStatChanges().setStat(StatIDs.boneAttackModifier, 3f);
         bigBones.setQuest(DefaultQuests.defaultBoneQuest);
 
         BodyPartOption fireBones = new BodyPartOption(elementalBonePart + Elements.fireElement, bodyPosition, boneSubPosition,  "cultivationcraft.gui.bodypart.bone.fire");
@@ -301,6 +303,7 @@ public class BodyPartNames
         burningBlood.setElement(Elements.fireElement);
         burningBlood.getStatChanges().setElementalStat(StatIDs.resistanceModifier, Elements.fireElement, 25);
         burningBlood.getStatChanges().setElementalStat(StatIDs.resistanceModifier, Elements.waterElement, -25);
+        burningBlood.setQuest(DefaultQuests.defaultLiveQuest);
 
         addOption(hungerBlood);
         addOption(qiBlood);
@@ -510,6 +513,7 @@ public class BodyPartNames
         jaw.addFirstPersonModel(BodyPartModelNames.FPjawModel);
         jaw.setViewPoint(BodyPartModelNames.jawModel);
         jaw.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.basePosition);
+        jaw.setQuest(DefaultQuests.defaultBodyQuest);
 
         addPart(jaw);
     }
@@ -522,6 +526,7 @@ public class BodyPartNames
         reinforce.addArm(new Arm(InteractionHand.OFF_HAND, GenericLimbNames.leftArm, GenericLimbNames.lowerLeftArm, true));
         reinforce.addArm(new Arm(InteractionHand.MAIN_HAND, GenericLimbNames.rightArm, GenericLimbNames.lowerRightArm, false));
         reinforce.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.basePosition);
+        reinforce.setQuest(DefaultQuests.defaultBodyQuest);
 
         addPart(reinforce);
 
@@ -534,6 +539,7 @@ public class BodyPartNames
         shortArm.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.basePosition);
         shortArm.getStatChanges().setStat(StatIDs.weight, DefaultPlayerBodyPartWeights.armWeight * -1);
         shortArm.getStatChanges().setStat(StatIDs.attackRange, StatIDs.defaultAttackRange * -0.5f);
+        shortArm.setQuest(DefaultQuests.defaultBodyQuest);
 
         addPart(shortArm);
 
@@ -573,6 +579,7 @@ public class BodyPartNames
         headArms.addNeededPosition(BodyPartNames.armPosition, BodyPartNames.basePosition);
         headArms.addNeededPosition(BodyPartNames.headPosition, BodyPartNames.basePosition);
         headArms.addNotNeededPart(BodyPartNames.glideArmPart);
+        headArms.setQuest(DefaultQuests.defaultBodyQuest);
 
         addOption(headArms);
     }
@@ -594,6 +601,7 @@ public class BodyPartNames
         flatTeeth.setTexture(TextureList.bone);
         flatTeeth.getStatChanges().setStat(StatIDs.weight, 0.02f);
         flatTeeth.getStatChanges().setStat(StatIDs.biteAttackModifier, 0.75f);
+        flatTeeth.setQuest(new Quest(BiteTechnique.biteQuest, 750));
 
         addOption(flatTeeth);
 
@@ -607,6 +615,7 @@ public class BodyPartNames
         sharpTeeth.setTexture(TextureList.bone);
         sharpTeeth.getStatChanges().setStat(StatIDs.weight, 0.02f);
         sharpTeeth.getStatChanges().setStat(StatIDs.biteAttackModifier, 1.5f);
+        sharpTeeth.setQuest(new Quest(BiteTechnique.biteQuest, 1000));
 
         addOption(sharpTeeth);
 
@@ -617,6 +626,7 @@ public class BodyPartNames
         frontHeadConnection.adjustRotationPoint(new Vec3(0.5, 0.5, 0));
         frontHead.setConnection(frontHeadConnection);
         frontHead.addNeededPosition(BodyPartNames.headPosition, BodyPartNames.basePosition);
+        frontHead.setQuest(DefaultQuests.defaultBodyQuest);
 
         addOption(frontHead);
     }

@@ -40,6 +40,11 @@ public class QiDamageSource extends DamageSource
         return new QiDamageSource("player", player, element);
     }
 
+    public static QiDamageSource playerAttack(Player player, ResourceLocation element, String source)
+    {
+        return new QiDamageSource(source, player, element);
+    }
+
     public QiDamageSource(DamageSource source)
     {
         super(source.msgId);

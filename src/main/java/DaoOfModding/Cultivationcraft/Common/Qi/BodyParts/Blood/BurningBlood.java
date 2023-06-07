@@ -29,6 +29,7 @@ public class BurningBlood extends CultivatorBlood
             return;
 
         QiDamageSource damage = new QiDamageSource("burningBlood", Elements.fireElement);
+        damage.setInternal();
         player.hurt(damage, 1f);
     }
 

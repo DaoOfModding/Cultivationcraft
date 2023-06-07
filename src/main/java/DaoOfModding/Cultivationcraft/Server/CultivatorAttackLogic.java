@@ -34,15 +34,13 @@ public class CultivatorAttackLogic
     }
 
     // Attack specified entity with specified player, server only
-    public static boolean attackEntity(Player player, Entity toAttack, double range, float damage, SoundEvent attackSound, ResourceLocation element)
+    public static boolean attackEntity(Player player, Entity toAttack, double range, float damage, SoundEvent attackSound, ResourceLocation element, String source)
     {
         if (!canAttack(player, toAttack, range))
             return false;
 
         // TODO: Add knockback as an attackModifier
         float knockback = 1;
-
-        // TODO: Check if toAttack entity is a cultivator, apply damage resistances && any extra stuff if so
 
         Vec3 entityMotion = toAttack.getDeltaMovement();
         float entityHealth = 0;
@@ -51,7 +49,7 @@ public class CultivatorAttackLogic
             entityHealth = ((LivingEntity) toAttack).getHealth();
 
         // If player does no damage (?) then play a corresponding sound and do nothing
-        if (!toAttack.hurt(QiDamageSource.playerAttack(player, element), damage)) {
+        if (!toAttack.hurt(QiDamageSource.playerAttack(player, element, source), damage)) {
             player.level.playSound((Player) null, player.getX(), player.getY(), player.getZ(), SoundEvents.PLAYER_ATTACK_NODAMAGE, player.getSoundSource(), 1.0F, 1.0F);
             return false;
         }

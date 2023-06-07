@@ -9,6 +9,7 @@ import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.PlayerStatModifications;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.StatIDs;
 import DaoOfModding.Cultivationcraft.Network.PacketHandler;
+import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -48,14 +49,19 @@ public class Damage
     {
         QiDamageSource source = damageSourceToQiDamageSource(event.getSource());
 
-        Elements.getElement(source.getElement()).applyStatusEffect(event.getEntity(), event.getAmount());
+        if (source.getElement() != null)
+            Elements.getElement(source.getElement()).applyStatusEffect(event.getEntity(), event.getAmount());
     }
 
     // TODO: Mob resistances
     public static float damageEntity(LivingHurtEvent event)
     {
-        //QiDamageSource source = damageSourceToQiDamageSource(event.getSource());
         float damage = event.getAmount();
+
+        if (event.getSource().getEntity() != null && event.getSource().getEntity() instanceof ServerPlayer)
+        {
+            QuestHandler.damageProgress((Player)event.getSource().getEntity(), damageSourceToQiDamageSource(event.getSource()), damage);
+        }
 
         return damage;
     }
@@ -66,24 +72,30 @@ public class Damage
         float damage = armorAbsorption((Player)event.getEntity(), source, event.getAmount());
         float resistedDamage = resistDamage(damage, source.damageElement, (Player)event.getEntity());
 
-        QuestHandler.progressQuest((Player)event.getEntity(), Quest.DAMAGE_TAKEN, event.getAmount());
-
         if (resistedDamage <= 0)
         {
+            QuestHandler.progressQuest((Player) event.getEntity(), Quest.DAMAGE_RESISTED, event.getAmount());
+
             // If taking negative damage then heal that amount
             event.getEntity().heal(resistedDamage * -1);
 
             return true;
         }
 
-        QuestHandler.progressQuest((Player) event.getEntity(), Quest.DAMAGE_RESISTED, event.getAmount() - resistedDamage);
+        QuestHandler.progressQuest((Player)event.getEntity(), Quest.DAMAGE_TAKEN, resistedDamage);
+        QuestHandler.progressQuest((Player)event.getEntity(), Quest.DAMAGE_RESISTED, event.getAmount() - resistedDamage);
+
+        if (event.getSource().getEntity() != null && event.getSource().getEntity() instanceof ServerPlayer)
+            QuestHandler.damageProgress((Player)event.getSource().getEntity(), damageSourceToQiDamageSource(event.getSource()), resistedDamage);
 
         Vec3 position = source.getSourcePosition();
 
         if (position == null && source.getEntity() != null)
             position = source.getEntity().position();
 
-        PacketHandler.sendBloodSpawnToClient(event.getEntity().getUUID(), position, event.getAmount());
+        // Do not spawn blood from internal damage
+        if (!source.isInternal())
+            PacketHandler.sendBloodSpawnToClient(event.getEntity().getUUID(), position, event.getAmount());
 
         return false;
     }

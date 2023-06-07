@@ -232,6 +232,8 @@ public class CommonListeners
     @SubscribeEvent
     public static void playerRespawns(PlayerEvent.PlayerRespawnEvent event)
     {
+        QuestHandler.resetQuest(event.getEntity(), Quest.LIVE);
+
         CultivatorStats.getCultivatorStats(event.getEntity()).setDisconnected(false);
 
         CultivatorTechniques.getCultivatorTechniques(event.getEntity()).determinePassives(event.getEntity());

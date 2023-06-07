@@ -60,6 +60,7 @@ public class BodyforgeScreen extends GenericTabScreen
     protected final int selectedTextXPos = xSize / 2;
     protected final int selectedTextYPos = 70;
 
+    protected int oldMode = 0;
     protected int mode = 0;
     protected boolean descriptionMode = true;
 
@@ -237,6 +238,8 @@ public class BodyforgeScreen extends GenericTabScreen
 
             cancel.unselect();
 
+            updateBodyPartList();
+
             return true;
         }
 
@@ -276,6 +279,12 @@ public class BodyforgeScreen extends GenericTabScreen
     {
         if (forgePart.getSelected() == null)
             return;
+
+        if (oldMode != mode)
+        {
+            oldMode = mode;
+            updateBodyPartList();
+        }
 
         BodyPart part = BodyPartNames.getPart(forgePart.getSelected().toString());
         if (part == null)
@@ -333,9 +342,6 @@ public class BodyforgeScreen extends GenericTabScreen
 
     protected void drawSelection(PoseStack PoseStack, int mouseX, int mouseY)
     {
-        if (mode == 1)
-            updateBodyPartList();
-
         mode = 0;
 
         int edgeSpacingX = (this.width - this.xSize) / 2;

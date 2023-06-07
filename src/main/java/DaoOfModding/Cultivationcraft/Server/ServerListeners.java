@@ -22,6 +22,7 @@ import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.item.ItemTossEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
@@ -40,6 +41,8 @@ public class ServerListeners
         if (event.phase == TickEvent.Phase.START)
         {
             QuestHandler.progressQuest(event.player, Quest.TIME_ALIVE, 1.0 / (20.0 * 60.0));
+            QuestHandler.progressQuest(event.player, Quest.LIVE, 1.0 / (20.0 * 60.0));
+
             ICultivatorTechniques techs = CultivatorTechniques.getCultivatorTechniques(event.player);
 
             for (int i = 0; i < CultivatorTechniques.numberOfTechniques; i++)

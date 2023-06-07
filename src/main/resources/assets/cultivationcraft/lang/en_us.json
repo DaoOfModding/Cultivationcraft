@@ -66,8 +66,10 @@
   "cultivationcraft.quest.qisource": "Seconds spent cultivating from a QiSource",
   "cultivationcraft.quest.damagetaken": "Damage taken",
   "cultivationcraft.quest.damageresisted": "Damage resisted",
+  "cultivationcraft.quest.damageabsorbed": "Damage absorbed",
   "cultivationcraft.quest.bounce": "Height bounced",
-  "cultivationcraft.quest.live": "Minutes spent alive",
+  "cultivationcraft.quest.alive": "Minutes spent alive",
+  "cultivationcraft.quest.live": "Minutes spent without dying",
   "cultivationcraft.quest.fly": "Blocks flown",
   "cultivationcraft.quest.walk": "Blocks walked",
   "cultivationcraft.quest.swim": "Blocks swam",
@@ -76,6 +78,7 @@
   "cultivationcraft.quest.hop": "Times hopped",
   "cultivationcraft.quest.heal": "Health healed",
   "cultivationcraft.quest.drainstamina": "Stamina used",
+  "cultivationcraft.quest.bite": "Bite damage dealt",
 
 
   "cultivationcraft.technique.example": "Example Technique",
@@ -103,7 +106,10 @@
   "cultivationcraft.technique.float.description": "Toggle on to replace your jump with the ability to blow yourself up into a balloon and slowly float upwards",
 
   "cultivationcraft.technique.jetlegs": "Leg Jets",
-  "cultivationcraft.technique.jetlegs.description": "Toggle on activate your leg jets allowing you to propell yourself into the air by holding jump",
+  "cultivationcraft.technique.jetlegs.description": "Toggle on to activate your leg jets allowing you to propel yourself into the air by holding jump",
+
+  "cultivationcraft.technique.jet": "Back Jets",
+  "cultivationcraft.technique.jet.description": "Toggle on to activate your back jets providing you with a significant increase to your forward momentum",
 
   "cultivationcraft.technique.spread": "Spread Wings",
   "cultivationcraft.technique.spread.description": "Toggle on to spread your wings. Hold jump whilst in the air to raise your wings and release jump to flap them downwards, raising your higher into the air",
