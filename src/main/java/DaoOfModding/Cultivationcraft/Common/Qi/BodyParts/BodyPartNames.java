@@ -241,7 +241,7 @@ public class BodyPartNames
         BodyPartOption lightningBones = new BodyPartOption(elementalBonePart + Elements.lightningElement, bodyPosition, boneSubPosition,  "cultivationcraft.gui.bodypart.bone.lightning");
         lightningBones.setElement(Elements.lightningElement);
         lightningBones.addTextureChange(TextureList.bone, new ResourceLocation(Cultivationcraft.MODID, "textures/models/bone/bone.png"));
-        lightningBones.addTextureColorChange(TextureList.bone, Misc.saturate(Elements.getElement(Elements.lightningElement).color, 0.75f));
+        lightningBones.addTextureColorChange(TextureList.bone, Misc.saturate(Elements.getElement(Elements.lightningElement).color, 0.85f));
         lightningBones.addNeededPart(BodyPartNames.startingEyesPart);
         lightningBones.getStatChanges().setStat(StatIDs.boneAttackModifier, 6);
         lightningBones.getStatChanges().setElementalStat(StatIDs.resistanceModifier, Elements.lightningElement, 75);
@@ -250,7 +250,7 @@ public class BodyPartNames
         lightningBones.getStatChanges().setElementalStat(StatIDs.resistanceModifier, Elements.earthElement, -25);
         lightningBones.getStatChanges().setElementalStat(StatIDs.resistanceModifier, Elements.waterElement, -25);
         lightningBones.getStatChanges().setElementalStat(StatIDs.resistanceModifier, Elements.windElement, -25);
-        lightningBones.setQuest(DefaultQuests.defaultBoneQuest);
+        lightningBones.setQuest(DefaultQuests.defaultBodyQuest);
 
         addOption(reinforceBones);
         addOption(sharpBones);
