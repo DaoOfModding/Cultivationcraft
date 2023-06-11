@@ -274,10 +274,13 @@ public class CommonListeners
     @SubscribeEvent
     public static void playerDisconnects(PlayerEvent.PlayerLoggedOutEvent event)
     {
-        ICultivatorStats stats = CultivatorStats.getCultivatorStats(event.getEntity());
+        if (!event.getEntity().isDeadOrDying())
+        {
+            ICultivatorStats stats = CultivatorStats.getCultivatorStats(event.getEntity());
 
-        if (stats != null)
-            stats.setDisconnected(true);
+            if (stats != null)
+                stats.setDisconnected(true);
+        }
 
         if (!event.getEntity().getCommandSenderWorld().isClientSide())
             SkillHotbarServer.removePlayer(event.getEntity().getUUID());

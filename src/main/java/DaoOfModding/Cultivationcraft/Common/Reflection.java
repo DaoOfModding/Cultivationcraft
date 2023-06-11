@@ -1,20 +1,22 @@
 package DaoOfModding.Cultivationcraft.Common;
 
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.FoodStats.QiFoodStats;
-import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
-import DaoOfModding.Cultivationcraft.Common.Qi.Stats.StatIDs;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 
 public class Reflection
 {
     protected static Field aboveGroundTick;
-    static Field foodStatField;
+    protected static Field foodStatField;
+    protected static Method lightningTargetAroundMethod;
 
     public static void setup()
     {
@@ -22,6 +24,21 @@ public class Reflection
         aboveGroundTick = ObfuscationReflectionHelper.findField(ServerGamePacketListenerImpl.class, "f_9737_");
 
         foodStatField = ObfuscationReflectionHelper.findField(Player.class,"f_36097_");
+
+        lightningTargetAroundMethod = ObfuscationReflectionHelper.findMethod(ServerLevel.class,"m_143288_", BlockPos.class);
+    }
+
+    public static BlockPos findLightningTargetAround(ServerLevel level, BlockPos pos)
+    {
+        try
+        {
+            return (BlockPos) lightningTargetAroundMethod.invoke(level, pos);
+        }
+        catch (Exception e)
+        {
+            Cultivationcraft.LOGGER.error("Error calling findLightningTargetAround method: " + e);
+            return null;
+        }
     }
 
     public static void allowFlight(ServerPlayer entity)
