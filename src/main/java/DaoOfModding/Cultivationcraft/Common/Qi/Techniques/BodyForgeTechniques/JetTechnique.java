@@ -19,6 +19,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.TickEvent;
 
@@ -125,6 +126,10 @@ public class JetTechnique extends MovementOverrideTechnique
         // Slowly ramp up to the target speed
         currentSpeed = currentSpeed.lerp(targetSpeed, 0.1);
 
+        // Adds friction when in air so that speed doesn't increase exponentially from jets
+        if (!player.isOnGround())
+            player.setDeltaMovement(player.getDeltaMovement().multiply(0.8, 1, 0.8));
+
         player.setDeltaMovement(player.getDeltaMovement().add(currentSpeed));
 
         forward = false;
@@ -145,7 +150,7 @@ public class JetTechnique extends MovementOverrideTechnique
         enabled = on;
 
         // Only send info if this is the player character
-        if (Minecraft.getInstance().player == player)
+        if (player.isLocalPlayer())
         {
             if (enabled)
                 sendInfo(1);

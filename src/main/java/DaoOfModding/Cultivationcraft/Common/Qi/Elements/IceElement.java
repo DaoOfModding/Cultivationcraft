@@ -1,9 +1,11 @@
 package DaoOfModding.Cultivationcraft.Common.Qi.Elements;
 
 
-import DaoOfModding.Cultivationcraft.Common.Qi.QiSourceConfig;
+import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
+import DaoOfModding.Cultivationcraft.Common.Qi.Stats.StatIDs;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -30,5 +32,10 @@ public class IceElement extends ElementVariant
             level.setBlockAndUpdate(pos, Blocks.ICE.defaultBlockState());
             level.gameEvent(null, GameEvent.BLOCK_PLACE, pos);
         }
+    }
+
+    public float resistanceModifier(Player player)
+    {
+        return (int)(BodyPartStatControl.getStats(player.getUUID()).getElementalStat(StatIDs.resistanceModifier, Elements.waterElement) * -0.5f);
     }
 }

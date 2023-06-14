@@ -1,10 +1,14 @@
 package DaoOfModding.Cultivationcraft.Common.Qi.Elements;
 
 import DaoOfModding.Cultivationcraft.Common.Qi.QiSource;
+import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
+import DaoOfModding.Cultivationcraft.Common.Qi.Stats.PlayerStatModifications;
+import DaoOfModding.Cultivationcraft.Common.Qi.Stats.StatIDs;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -53,6 +57,11 @@ public class Element
 
     public void effectBlock(Level level, BlockPos pos)
     {
+    }
+
+    public float resistanceModifier(Player player)
+    {
+        return 0;
     }
 
     public void addVariant(ElementVariant element)
