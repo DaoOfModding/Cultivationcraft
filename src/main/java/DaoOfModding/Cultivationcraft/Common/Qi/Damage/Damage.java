@@ -49,7 +49,7 @@ public class Damage
     {
         QiDamageSource source = damageSourceToQiDamageSource(event.getSource());
 
-        if (source.getElement() != null)
+        if (source.getElement() != null && source.doStatusEffect())
             Elements.getElement(source.getElement()).applyStatusEffect(event.getEntity(), event.getAmount());
     }
 

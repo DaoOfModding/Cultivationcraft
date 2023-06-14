@@ -17,7 +17,9 @@ public class QiDamageSource extends DamageSource
     protected Entity entity;
     protected Vec3 sourcePos;
 
-    public QiDamageSource(String msgId, ResourceLocation element)
+    protected boolean doStatusEffect = true;
+
+    public QiDamageSource(String msgId, ResourceLocation element, Boolean statusEffect)
     {
         super(msgId);
 
@@ -26,23 +28,26 @@ public class QiDamageSource extends DamageSource
         // Bypass armor if this damage source has an element
         if (damageElement.compareTo(Elements.noElement) != 0)
             bypassArmor();
+
+        doStatusEffect = statusEffect;
     }
 
-    public QiDamageSource(String msgId, Entity attacker, ResourceLocation element)
+    public QiDamageSource(String msgId, Entity attacker, ResourceLocation element, Boolean statusEffect)
     {
         super(msgId);
         entity = attacker;
         damageElement = element;
+        doStatusEffect = statusEffect;
     }
 
-    public static QiDamageSource playerAttack(Player player, ResourceLocation element)
+    public static QiDamageSource playerAttack(Player player, ResourceLocation element, Boolean statusEffect)
     {
-        return new QiDamageSource("player", player, element);
+        return new QiDamageSource("player", player, element, statusEffect);
     }
 
-    public static QiDamageSource playerAttack(Player player, ResourceLocation element, String source)
+    public static QiDamageSource playerAttack(Player player, ResourceLocation element, String source, Boolean statusEffect)
     {
-        return new QiDamageSource(source, player, element);
+        return new QiDamageSource(source, player, element, statusEffect);
     }
 
     public QiDamageSource(DamageSource source)
@@ -55,6 +60,9 @@ public class QiDamageSource extends DamageSource
 
         if (source.isExplosion() || source.isFire())
             element = Elements.fireElement;
+
+        if (source.isFire())
+            doStatusEffect = false;
 
         if (getMsgId().compareTo(DamageSource.DRAGON_BREATH.getMsgId()) == 0)
             element = Elements.fireElement;
@@ -105,6 +113,11 @@ public class QiDamageSource extends DamageSource
         return internal;
     }
 
+    public boolean doStatusEffect()
+    {
+        return doStatusEffect;
+    }
+
     public static void DamageSourceToDamageSource(QiDamageSource to, DamageSource from)
     {
         if (from.isBypassArmor())
@@ -142,6 +155,9 @@ public class QiDamageSource extends DamageSource
 
         to.entity = from.getEntity();
         to.sourcePos = from.getSourcePosition();
+
+        if (to.isFire())
+            to.doStatusEffect = false;
     }
 
     @Override

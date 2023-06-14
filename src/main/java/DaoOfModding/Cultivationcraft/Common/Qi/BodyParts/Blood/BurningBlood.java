@@ -14,6 +14,8 @@ import net.minecraft.world.level.Level;
 
 public class BurningBlood extends CultivatorBlood
 {
+    int tick = 0;
+
     public BurningBlood()
     {
         colour = new Vector3f(0.7f, 0 ,0);
@@ -28,7 +30,7 @@ public class BurningBlood extends CultivatorBlood
         if (ServerListeners.tick % 20 != 0)
             return;
 
-        QiDamageSource damage = new QiDamageSource("burningBlood", Elements.fireElement);
+        QiDamageSource damage = new QiDamageSource("burningBlood", Elements.fireElement, false);
         damage.setInternal();
         player.hurt(damage, 1f);
     }
@@ -36,6 +38,14 @@ public class BurningBlood extends CultivatorBlood
     @Override
     public void externalTick(Level level, double x, double y, double z)
     {
+        tick++;
+
+        // Only run this once every 20 ticks
+        if (tick < 20)
+            return;
+
+        tick = 0;
+
         BlockPos pos = new BlockPos(Mth.floor(x), Mth.floor(y), Mth.floor(z));
 
         Elements.getElement(Elements.fireElement).effectBlock(level, pos);
