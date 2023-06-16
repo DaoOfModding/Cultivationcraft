@@ -280,12 +280,6 @@ public class BodyforgeScreen extends GenericTabScreen
         if (forgePart.getSelected() == null)
             return;
 
-        if (oldMode != mode)
-        {
-            oldMode = mode;
-            updateBodyPartList();
-        }
-
         BodyPart part = BodyPartNames.getPart(forgePart.getSelected().toString());
         if (part == null)
             part = BodyPartNames.getOption(forgePart.getSelected().toString());
@@ -317,6 +311,8 @@ public class BodyforgeScreen extends GenericTabScreen
 
         String questPart = modifications.getLastForged();
 
+        oldMode = mode;
+
         // If there is a current in-progress quest part then draw the quest screen, otherwise draw the part screen
         if (questPart.compareTo("") != 0)
         {
@@ -343,6 +339,9 @@ public class BodyforgeScreen extends GenericTabScreen
     protected void drawSelection(PoseStack PoseStack, int mouseX, int mouseY)
     {
         mode = 0;
+
+        if (oldMode != mode)
+            updateBodyPartList();
 
         int edgeSpacingX = (this.width - this.xSize) / 2;
         int edgeSpacingY = (this.height - this.ySize) / 2;

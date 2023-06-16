@@ -123,12 +123,14 @@ public class JetTechnique extends MovementOverrideTechnique
 
         QuestHandler.progressQuest(player, jetQuest, currentSpeed.length());
 
+        Vec3 oldSpeed = currentSpeed;
+
         // Slowly ramp up to the target speed
         currentSpeed = currentSpeed.lerp(targetSpeed, 0.1);
 
         // Adds friction when in air so that speed doesn't increase exponentially from jets
         if (!player.isOnGround())
-            player.setDeltaMovement(player.getDeltaMovement().multiply(0.8, 1, 0.8));
+            player.setDeltaMovement(player.getDeltaMovement().subtract(oldSpeed.multiply(0.4, 0, 0.4)));
 
         player.setDeltaMovement(player.getDeltaMovement().add(currentSpeed));
 

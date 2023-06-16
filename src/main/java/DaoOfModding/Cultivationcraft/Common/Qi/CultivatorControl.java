@@ -7,6 +7,8 @@ import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.MovementOverrideTechni
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.Technique;
 import net.minecraft.world.entity.player.Player;
 
+import java.util.ArrayList;
+
 public class CultivatorControl
 {
     // Returns the first active attack override for the specified player
@@ -27,9 +29,11 @@ public class CultivatorControl
         return -1;
     }
 
-    // Returns the first active movement override for the specified player
-    public static int getMovementOverride(Player player)
+    // Returns the all active movement overrides for the specified player
+    public static ArrayList<MovementOverrideTechnique> getMovementOverride(Player player)
     {
+        ArrayList<MovementOverrideTechnique> overrides = new ArrayList<>();
+
         // Get all cultivator techniques and check if any of them are active attack overrides
         ICultivatorTechniques techs = CultivatorTechniques.getCultivatorTechniques(player);
 
@@ -39,9 +43,9 @@ public class CultivatorControl
 
             // If this technique is an active attack override then attack with it and cancel the default attack
             if (testTech != null && testTech.isActive() && testTech instanceof MovementOverrideTechnique)
-                return i;
+                overrides.add((MovementOverrideTechnique)testTech);
         }
 
-        return -1;
+        return overrides;
     }
 }

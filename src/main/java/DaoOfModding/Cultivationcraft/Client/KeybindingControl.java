@@ -33,6 +33,7 @@ import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
 import static org.lwjgl.glfw.GLFW.*;
@@ -222,15 +223,11 @@ public class KeybindingControl
 
     protected static void handleMovementTechOverrides()
     {
-        // Get all cultivator techniques and check if any of them are active movement overrides
-        int slot = CultivatorControl.getMovementOverride(genericClientFunctions.getPlayer());
-
-        // Do nothing if there is no active movement override
-        if (slot == -1)
-            return;
-
-        MovementOverrideTechnique movementTech = (MovementOverrideTechnique)CultivatorTechniques.getCultivatorTechniques(genericClientFunctions.getPlayer()).getTechnique(slot);
-        handleTechMovementOverride(movementTech);
+        // Get all active movement overrides and handle any overrides
+        for (MovementOverrideTechnique tech : CultivatorControl.getMovementOverride(genericClientFunctions.getPlayer()))
+        {
+            handleTechMovementOverride(tech);
+        }
     }
 
     protected static void handleTechMovementOverride(MovementOverrideTechnique movementTech)
