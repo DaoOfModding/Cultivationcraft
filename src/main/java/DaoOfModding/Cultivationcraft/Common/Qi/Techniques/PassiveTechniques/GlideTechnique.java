@@ -84,6 +84,8 @@ public class GlideTechnique extends PassiveTechnique
         // Adjust fall speed based on horizontal movement
         if (yMotion < 0)
             yMotion = minFallSpeed + ((currentMotion.y - minFallSpeed) * horizontalSpeedPercentage);
+        else
+            return;
 
         player.setDeltaMovement(xMotion, yMotion, zMotion);
 

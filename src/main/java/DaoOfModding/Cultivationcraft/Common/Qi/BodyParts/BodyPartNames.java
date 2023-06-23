@@ -696,7 +696,7 @@ public class BodyPartNames
         jetLeg.addModel(BodyPartModelNames.jetLegRightModel);
         jetLeg.addNeededPart(BodyPartNames.startingEyesPart);
         jetLeg.getStatChanges().setStat(StatIDs.wingSupport, 10);
-        jetLeg.getStatChanges().setStat(StatIDs.flightSpeed, 0.4f);
+        jetLeg.getStatChanges().setStat(StatIDs.flightSpeed, 0.5f);
         jetLeg.getStatChanges().setStat(StatIDs.fallHeight, 4f);
         jetLeg.addUniqueTag(BodyPartTags.flight);
         jetLeg.setQuest(DefaultQuests.defaultFlightQuest);

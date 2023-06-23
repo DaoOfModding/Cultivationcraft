@@ -27,6 +27,7 @@ import net.minecraftforge.event.TickEvent;
 public class JetLegTechnique extends MovementOverrideTechnique
 {
     protected float staminaUse = 0.02f;
+    protected boolean jump = false;
 
     public JetLegTechnique()
     {
@@ -35,6 +36,8 @@ public class JetLegTechnique extends MovementOverrideTechnique
         langLocation = "cultivationcraft.technique.jetlegs";
         type = useType.Toggle;
         multiple = false;
+        momentum = true;
+        momentumFactor = 0.2f;
 
         icon = new ResourceLocation(Cultivationcraft.MODID, "textures/techniques/icons/jetlegs.png");
     }
@@ -50,6 +53,18 @@ public class JetLegTechnique extends MovementOverrideTechnique
         return false;
     }
 
+    protected void calculateJetPower(Player player)
+    {
+        PlayerStatControl stats = BodyPartStatControl.getPlayerStatControl(player.getUUID());
+
+        float weightModifier = stats.getFlightWeightModifier();
+
+        float upwardsPower = stats.getStats().getStat(StatIDs.flightSpeed);
+        double y = (upwardsPower * weightModifier);
+
+        setMomentum(new Vec3(0, y, 0));
+    }
+
     @Override
     public void tickClient(TickEvent.PlayerTickEvent event)
     {
@@ -62,18 +77,37 @@ public class JetLegTechnique extends MovementOverrideTechnique
         MultiLimbedModel model = PoseHandler.getPlayerPoseHandler(event.player.getUUID()).getPlayerModel();
 
         // Activate the leg jets if player is moving upwards
-        if (Physics.getDelta(event.player).y > 0)
+        if (jump)
         {
             model.getLimb(BodyPartModelNames.jetLegLeftEmitter).getModelPart().visible = true;
             model.getLimb(BodyPartModelNames.jetLegRightEmitter).getModelPart().visible = true;
 
             PoseHandler.getPlayerPoseHandler(event.player.getUUID()).disableJumpingAnimationThisTick = true;
+
+            calculateJetPower(event.player);
         }
         else
         {
             model.getLimb(BodyPartModelNames.jetLegLeftEmitter).getModelPart().visible = false;
             model.getLimb(BodyPartModelNames.jetLegRightEmitter).getModelPart().visible = false;
+
+            setMomentum(new Vec3(0, 0, 0));
         }
+
+        jump = false;
+
+        QuestHandler.progressQuest(event.player, Quest.FLIGHT, currentSpeed.length());
+    }
+
+    @Override
+    public void tickInactiveClient(TickEvent.PlayerTickEvent event)
+    {
+        super.tickInactiveClient(event);
+
+        setMomentum(new Vec3(0, 0, 0));
+        jump = false;
+
+        QuestHandler.progressQuest(event.player, Quest.FLIGHT, currentSpeed.length());
     }
 
     @Override
@@ -97,17 +131,7 @@ public class JetLegTechnique extends MovementOverrideTechnique
         if (!StaminaHandler.consumeStamina(player, staminaUse))
             return false;
 
-        PlayerStatControl stats = BodyPartStatControl.getPlayerStatControl(player.getUUID());
-
-        float weightModifier = stats.getFlightWeightModifier();
-        Vec3 delta = player.getDeltaMovement();
-
-        float upwardsPower = stats.getStats().getStat(StatIDs.flightSpeed);
-        double y = ((1 - weightModifier) * delta.y) + (upwardsPower * weightModifier);
-
-        player.setDeltaMovement(new Vec3(delta.x, y, delta.z));
-
-        QuestHandler.progressQuest(player, Quest.FLIGHT, player.getDeltaMovement().length());
+        jump = true;
 
         return true;
     }

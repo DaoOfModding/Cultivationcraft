@@ -26,7 +26,7 @@ import net.minecraftforge.event.TickEvent;
 public class JetTechnique extends MovementOverrideTechnique
 {
     public static final ResourceLocation jetQuest = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.quest.jet");
-    protected static final float speed = 0.2f;
+    protected static final float speed = 0.1f;
     protected static final float staminaUse = 0.01f;
 
     boolean enabled = false;
@@ -42,6 +42,7 @@ public class JetTechnique extends MovementOverrideTechnique
         langLocation = "cultivationcraft.technique.jet";
         type = useType.Toggle;
         multiple = false;
+        momentum = true;
 
         icon = new ResourceLocation(Cultivationcraft.MODID, "textures/techniques/icons/jets.png");
     }
@@ -79,15 +80,25 @@ public class JetTechnique extends MovementOverrideTechnique
         if (!forward || event.player.isInWater() || !StaminaHandler.consumeStamina(event.player, staminaUse))
         {
             forward = false;
-            targetSpeed = new Vec3(0, 0, 0);
+            setMomentum(new Vec3(0, 0, 0));
         }
         else
         {
-            targetSpeed = event.player.getForward();
-            targetSpeed = new Vec3(targetSpeed.x, 0, targetSpeed.z).normalize().scale(speed);
+            Vec3 forward = event.player.getForward();
+            setMomentum(new Vec3(forward.x, 0, forward.z).normalize().scale(speed));
         }
 
-        applySpeed(event.player);
+        // Only toggle jets for player character
+        if (event.player.getUUID().compareTo(Minecraft.getInstance().player.getUUID()) == 0)
+        {
+            if (forward)
+                enableJets(true, event.player);
+            else
+                enableJets(false, event.player);
+        }
+
+        forward = false;
+        QuestHandler.progressQuest(event.player, jetQuest, currentSpeed.length());
     }
 
     @Override
@@ -95,10 +106,10 @@ public class JetTechnique extends MovementOverrideTechnique
     {
         super.tickInactiveClient(event);
 
-        targetSpeed = new Vec3(0, 0, 0);
+        enableJets(false, event.player);
+        setMomentum(new Vec3(0, 0, 0));
         forward = false;
-
-        applySpeed(event.player);
+        QuestHandler.progressQuest(event.player, jetQuest, currentSpeed.length());
     }
 
     @Override
@@ -108,33 +119,6 @@ public class JetTechnique extends MovementOverrideTechnique
         enableJets(false, player);
 
         super.deactivate(player);
-    }
-
-    protected void applySpeed(Player player)
-    {
-        // Only toggle jets for player character
-        if (player.getUUID().compareTo(Minecraft.getInstance().player.getUUID()) == 0)
-        {
-            if (forward)
-                enableJets(true, player);
-            else
-                enableJets(false, player);
-        }
-
-        QuestHandler.progressQuest(player, jetQuest, currentSpeed.length());
-
-        Vec3 oldSpeed = currentSpeed;
-
-        // Slowly ramp up to the target speed
-        currentSpeed = currentSpeed.lerp(targetSpeed, 0.1);
-
-        // Adds friction when in air so that speed doesn't increase exponentially from jets
-        if (!player.isOnGround())
-            player.setDeltaMovement(player.getDeltaMovement().subtract(oldSpeed.multiply(0.4, 0, 0.4)));
-
-        player.setDeltaMovement(player.getDeltaMovement().add(currentSpeed));
-
-        forward = false;
     }
 
     protected void enableJets(Boolean on, Player player)
