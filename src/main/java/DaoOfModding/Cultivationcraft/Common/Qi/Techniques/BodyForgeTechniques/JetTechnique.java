@@ -12,6 +12,7 @@ import DaoOfModding.Cultivationcraft.Common.Qi.Stats.PlayerStatModifications;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.StatIDs;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.MovementOverrideTechnique;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
+import DaoOfModding.Cultivationcraft.Network.ClientPacketHandler;
 import DaoOfModding.Cultivationcraft.StaminaHandler;
 import DaoOfModding.mlmanimator.Client.Models.MultiLimbedModel;
 import DaoOfModding.mlmanimator.Client.Poses.PoseHandler;
@@ -116,33 +117,20 @@ public class JetTechnique extends MovementOverrideTechnique
     public void deactivate(Player player)
     {
         forward = false;
-        enableJets(false, player);
+
+        if (player.level.isClientSide)
+            enableJets(false, player);
 
         super.deactivate(player);
     }
 
     protected void enableJets(Boolean on, Player player)
     {
-        // Do nothing if not trying to change jet state
-        if (enabled == on)
-            return;
-
         MultiLimbedModel model = PoseHandler.getPlayerPoseHandler(player.getUUID()).getPlayerModel();
 
         // Do nothing if the model has yet to be initialised
         if (model == null)
             return;
-
-        enabled = on;
-
-        // Only send info if this is the player character
-        if (player.isLocalPlayer())
-        {
-            if (enabled)
-                sendInfo(1);
-            else
-                sendInfo(0);
-        }
 
         if (on)
         {
@@ -157,6 +145,21 @@ public class JetTechnique extends MovementOverrideTechnique
             model.getLimb(BodyPartModelNames.jetRightFlame).getModelPart().visible = false;
             model.getLimb(BodyPartModelNames.jetLeftSmoke).getModelPart().visible = true;
             model.getLimb(BodyPartModelNames.jetRightSmoke).getModelPart().visible = true;
+        }
+
+        // Do nothing if not trying to change jet state
+        if (enabled == on)
+            return;
+
+        enabled = on;
+
+        // Only send info if this is the player character
+        if (player.isLocalPlayer())
+        {
+            if (enabled)
+                sendInfo(1);
+            else
+                sendInfo(0);
         }
     }
 
