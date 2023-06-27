@@ -7,6 +7,7 @@ import net.minecraftforge.event.TickEvent;
 public class MovementOverrideTechnique extends Technique
 {
     protected boolean momentum = false;
+    protected boolean stopMovement = false;
     protected Vec3 targetSpeed = new Vec3(0, 0, 0);
     protected Vec3 currentSpeed = new Vec3(0, 0, 0);
 
@@ -57,6 +58,11 @@ public class MovementOverrideTechnique extends Technique
     public void setMomentum(Vec3 speed)
     {
         targetSpeed = speed;
+    }
+
+    public boolean stopMovement(Player player)
+    {
+        return stopMovement;
     }
 
     // Called when the keybinding for the specified input is pressed

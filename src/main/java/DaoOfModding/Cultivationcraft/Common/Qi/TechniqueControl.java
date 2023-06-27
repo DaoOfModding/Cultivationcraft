@@ -2,8 +2,7 @@ package DaoOfModding.Cultivationcraft.Common.Qi;
 
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.*;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.BodyForgeTechniques.*;
-import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.PassiveTechniques.ExpandingStomachTechnique;
-import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.PassiveTechniques.GlideTechnique;
+import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.PassiveTechniques.*;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.BodyForgeTechniques.JetTechnique;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import net.minecraft.world.entity.player.Player;

@@ -160,8 +160,11 @@ public class KeybindingControl
         if (chatOpen())
             return;
 
-        handleMovementTechOverrides();
-        handleMovementPartOverrides();
+        if (!handleMovementStopOverrides())
+        {
+            handleMovementTechOverrides();
+            handleMovementPartOverrides();
+        }
 
         handleKeyOverrides();
     }
@@ -219,6 +222,23 @@ public class KeybindingControl
                 handlePartMovementOverride((MovementOverridePart) part);
             else if (part instanceof MovementOverridePartOption)
                 handlePartMovementOverride((MovementOverridePartOption) part);
+    }
+
+    protected static boolean handleMovementStopOverrides()
+    {
+        for (MovementOverrideTechnique tech : CultivatorControl.getMovementOverride(genericClientFunctions.getPlayer()))
+            if (tech.stopMovement(genericClientFunctions.getPlayer()))
+            {
+                overwriteJump = true;
+                overwriteDown = true;
+                overwriteLeft = true;
+                overwriteUp = true;
+                overwriteRight = true;
+
+                return true;
+            }
+
+        return false;
     }
 
     protected static void handleMovementTechOverrides()

@@ -9,20 +9,40 @@ import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.Cu
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.ICultivatorTechniques;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPart;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartOption;
+import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.PlayerStatControl;
+import DaoOfModding.Cultivationcraft.Common.Qi.Stats.PlayerStatModifications;
+import DaoOfModding.Cultivationcraft.Common.Qi.Stats.StatIDs;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.PassiveTechniques.PassiveTechnique;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.Technique;
+import DaoOfModding.Cultivationcraft.Common.Reflection;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
+import DaoOfModding.mlmanimator.Client.MultiLimbedRenderer;
 import DaoOfModding.mlmanimator.Client.Poses.PlayerPoseHandler;
 import DaoOfModding.mlmanimator.Client.Poses.PoseHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.AbstractClientPlayer;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.Pose;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.level.material.FogType;
+import net.minecraft.world.level.material.LavaFluid;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.*;
 import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
+import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.common.Mod;
@@ -35,6 +55,21 @@ public class ClientListeners
     public static long lastTickTime = System.nanoTime();
     public static int tick = 0;
 
+    @SubscribeEvent
+    public static void MovementInputUpdate(MovementInputUpdateEvent event)
+    {
+        if (event.getEntity() instanceof Player)
+        {
+            // TODO: Clear fire
+            clearStatus(event.getEntity());
+
+            // Required to enable swimming in lava
+            if (event.getEntity().isInLava())
+                Reflection.setWasTouchingWater(event.getEntity());
+        }
+    }
+
+    @SubscribeEvent
     public static void playerTick(TickEvent.PlayerTickEvent event)
     {
         if (event.side == LogicalSide.CLIENT && event.phase == TickEvent.Phase.START)
@@ -97,8 +132,53 @@ public class ClientListeners
                 for (BodyPartOption part : parts.values())
                     part.onClientTick(event.player);
         }
+
+        clearStatus(event.player);
     }
 
+    // Temp to clear fire if have fire resistance
+    public static void clearStatus(Player player)
+    {
+        if (!player.isOnFire())
+            return;
+
+        // Adjust player vision in lava based on fire resistance
+        PlayerStatModifications stats = BodyPartStatControl.getStats(player.getUUID());
+        float fireResistance = stats.getElementalStat(StatIDs.resistanceModifier, Elements.fireElement);
+
+        if (fireResistance >= 100)
+        {
+            player.clearFire();
+            player.setSharedFlagOnFire(false);
+        }
+    }
+
+    /*@SubscribeEvent
+    public static void overlayRender(RenderBlockScreenEffectEvent event)
+    {
+        if (event.getBlockState() == Blocks.FIRE.defaultBlockState())
+            event.setCanceled(true);
+    }*/
+
+    // Allow vision in lava
+    @SubscribeEvent
+    public static void fogDensityEvent(ViewportEvent.RenderFog event)
+    {
+        if (event.getType() == FogType.LAVA)
+        {
+            event.setNearPlaneDistance(-8.0f);
+
+            // Adjust player vision in lava based on fire resistance
+            PlayerStatModifications stats = BodyPartStatControl.getStats(Minecraft.getInstance().player.getUUID());
+            float fireResistance = stats.getElementalStat(StatIDs.resistanceModifier, Elements.fireElement) / 100f;
+            fireResistance = Math.min(1, fireResistance);
+
+            event.setFarPlaneDistance(Math.max(0, 24f * fireResistance));
+
+            // This... is not CANCELING the event, it is allowing the changes to be saved :/
+            event.setCanceled(true);
+        }
+    }
 
     @SubscribeEvent
     public static void overlayRender(RenderGuiOverlayEvent.Pre event)

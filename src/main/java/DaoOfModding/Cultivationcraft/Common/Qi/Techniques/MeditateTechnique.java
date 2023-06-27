@@ -42,6 +42,8 @@ public class MeditateTechnique extends MovementOverrideTechnique
 
         pose = GenericQiPoses.CrossLegs.clone();
 
+        stopMovement = true;
+
         setLegAnimationLockOffWhileActive(20);
     }
 
@@ -122,35 +124,5 @@ public class MeditateTechnique extends MovementOverrideTechnique
             return true;
 
         return false;
-    }
-
-    @Override
-    public boolean overwriteForward()
-    {
-        return true;
-    }
-
-    @Override
-    public boolean overwriteLeft()
-    {
-        return true;
-    }
-
-    @Override
-    public boolean overwriteRight()
-    {
-        return true;
-    }
-
-    @Override
-    public boolean overwriteBackward()
-    {
-        return true;
-    }
-
-    @Override
-    public boolean overwriteJump()
-    {
-        return true;
     }
 }
