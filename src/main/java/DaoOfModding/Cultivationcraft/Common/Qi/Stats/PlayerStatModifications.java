@@ -12,44 +12,24 @@ public class PlayerStatModifications
     protected HashMap<ResourceLocation, Float> stats = new HashMap<>();
     protected HashMap<ResourceLocation, HashMap<ResourceLocation, Float>> elementalStats = new HashMap<>();
 
-    protected boolean locked = false;
-
-    public void lock()
-    {
-        while (!locked)
-            locked = true;
-    }
-
-    public void unlock()
-    {
-        locked = false;
-    }
-
     public float getStat(ResourceLocation ID)
     {
-        lock();
-
         float value = 0;
 
         if (stats.containsKey(ID))
             value = stats.get(ID);
 
-        unlock();
 
         return value;
     }
 
     public float getElementalStat(ResourceLocation ID, ResourceLocation element)
     {
-        lock();
-
         float value = 0;
 
         if (elementalStats.containsKey(ID))
             if (elementalStats.get(ID).containsKey(element))
                 value = elementalStats.get(ID).get(element);
-
-        unlock();
 
         return value;
     }

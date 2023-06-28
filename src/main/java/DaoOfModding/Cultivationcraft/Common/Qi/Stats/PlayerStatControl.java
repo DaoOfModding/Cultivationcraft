@@ -58,8 +58,6 @@ public class PlayerStatControl
 
     public void updateStats(Player player)
     {
-        stats.lock();
-
         // Clear the existing stats
         setupStats();
 
@@ -106,8 +104,6 @@ public class PlayerStatControl
         // Only apply player attribute modifiers on the server
         if (!player.level.isClientSide)
             applyStats(player);
-
-        stats.unlock();
 
         PlayerHealthManager.updateFoodStats(player);
         PlayerHealthManager.updateLungs(player);
