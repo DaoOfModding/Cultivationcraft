@@ -37,7 +37,7 @@ public class BodyforgeCommand
     {
         for(ServerPlayer serverplayer : players)
         {
-            BodyModifications.getBodyModifications(serverplayer).setProgress((int)BodyPartStatControl.getStats(serverplayer.getUUID()).getStat(StatIDs.qiCost));
+            BodyModifications.getBodyModifications(serverplayer).setProgress((int)BodyPartStatControl.getStats(serverplayer).getStat(StatIDs.qiCost));
             PacketHandler.sendBodyModificationsToClient(serverplayer);
         }
 

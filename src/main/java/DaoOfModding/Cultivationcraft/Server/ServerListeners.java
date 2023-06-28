@@ -10,6 +10,7 @@ import DaoOfModding.Cultivationcraft.Common.FlyingSwordController;
 import DaoOfModding.Cultivationcraft.Common.FlyingSwordEntity;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPart;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartOption;
+import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.PlayerHealthManager;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.Quest;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.QuestHandler;
 import DaoOfModding.Cultivationcraft.Common.Qi.Damage.Damage;
@@ -73,6 +74,10 @@ public class ServerListeners
 
             modifications.setHealth(event.player.getHealth());
 
+            // Breath once every second
+            if (tick %20 == 0)
+                PlayerHealthManager.getLungs(event.player).breath(event.player);
+
             for (BodyPart part : modifications.getModifications().values())
                 part.onServerTick(event.player);
 
@@ -99,6 +104,7 @@ public class ServerListeners
         }
     }
 
+    @SubscribeEvent
     public static void LevelTick(TickEvent.LevelTickEvent event)
     {
         // Clone the array list so it doesn't bork out if modified during ticking

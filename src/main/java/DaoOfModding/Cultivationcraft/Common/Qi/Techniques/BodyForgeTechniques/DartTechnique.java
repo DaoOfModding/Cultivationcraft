@@ -103,7 +103,7 @@ public class DartTechnique extends Technique
             return;
         }
 
-        float weightModifier = BodyPartStatControl.getPlayerStatControl(event.player.getUUID()).getFlightWeightModifier();
+        float weightModifier = BodyPartStatControl.getPlayerStatControl(event.player).getFlightWeightModifier();
         float slowAmount = ((doubledCooldown * weightModifier) / (cooldown * 2));
 
         if (slowAmount > 1)
@@ -162,7 +162,7 @@ public class DartTechnique extends Technique
         if (!StaminaHandler.consumeStamina(player, staminaUse))
             return;
 
-        float weightModifier = BodyPartStatControl.getPlayerStatControl(player.getUUID()).getFlightWeightModifier();
+        float weightModifier = BodyPartStatControl.getPlayerStatControl(player).getFlightWeightModifier();
 
         float speed = 20 * weightModifier;
 

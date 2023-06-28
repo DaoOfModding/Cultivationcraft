@@ -36,6 +36,6 @@ public class IceElement extends ElementVariant
 
     public float resistanceModifier(Player player)
     {
-        return (int)(BodyPartStatControl.getStats(player.getUUID()).getElementalStat(StatIDs.resistanceModifier, Elements.waterElement) * -0.5f);
+        return (int)(BodyPartStatControl.getStats(player).getElementalStat(StatIDs.resistanceModifier, Elements.waterElement) * -0.5f);
     }
 }

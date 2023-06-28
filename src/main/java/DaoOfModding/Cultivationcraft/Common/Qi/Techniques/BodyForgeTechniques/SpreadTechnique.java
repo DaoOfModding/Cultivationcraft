@@ -202,7 +202,7 @@ public class SpreadTechnique extends Technique
 
         Vec3 motion = Physics.getDelta(player);
 
-        float weightModifier = BodyPartStatControl.getPlayerStatControl(player.getUUID()).getFlightWeightModifier();
+        float weightModifier = BodyPartStatControl.getPlayerStatControl(player).getFlightWeightModifier();
 
         float maxFallSpeed = -0.4f * (1 / weightModifier);
         float FlapSpeed = 0.4f * weightModifier;

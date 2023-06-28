@@ -7,8 +7,10 @@ import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.BodyM
 import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.IBodyModifications;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.CultivatorTechniques;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.ICultivatorTechniques;
+import DaoOfModding.Cultivationcraft.Common.CommonListeners;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPart;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartOption;
+import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.PlayerHealthManager;
 import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.PlayerStatControl;
@@ -61,7 +63,7 @@ public class ClientListeners
         if (event.getEntity() instanceof Player)
         {
             // TODO: Clear fire
-            clearStatus(event.getEntity());
+            CommonListeners.clearStatus(event.getEntity());
 
             // Required to enable swimming in lava
             if (event.getEntity().isInLava())
@@ -69,11 +71,8 @@ public class ClientListeners
         }
     }
 
-    @SubscribeEvent
-    public static void playerTick(TickEvent.PlayerTickEvent event)
-    {
-        if (event.side == LogicalSide.CLIENT && event.phase == TickEvent.Phase.START)
-        {
+    public static void playerTick(TickEvent.PlayerTickEvent event) {
+        if (event.side == LogicalSide.CLIENT && event.phase == TickEvent.Phase.START) {
             if (event.player == genericClientFunctions.getPlayer())
                 KeybindingControl.handleMovementOverrides();
 
@@ -87,35 +86,34 @@ public class ClientListeners
                 return;
 
             // Update the cultivator model if needed
-            CultivatorModelHandler.updateModifications((AbstractClientPlayer)event.player);
+            CultivatorModelHandler.updateModifications((AbstractClientPlayer) event.player);
 
             Physics.Bounce(event.player);
+
+            if (!Minecraft.getInstance().hasSingleplayerServer())
+                // Breath once every second
+                if (tick % 20 == 0)
+                    PlayerHealthManager.getLungs(event.player).breath(event.player);
 
             // Tick through all active cultivator techniques
             ICultivatorTechniques techs = CultivatorTechniques.getCultivatorTechniques(event.player);
 
-            for (int i = 0; i < CultivatorTechniques.numberOfTechniques; i++)
-            {
+            for (int i = 0; i < CultivatorTechniques.numberOfTechniques; i++) {
                 Technique tech = techs.getTechnique(i);
 
-                if (tech != null)
-                {
-                    if (techs.getTechnique(i).isValid(event.player))
-                    {
+                if (tech != null) {
+                    if (techs.getTechnique(i).isValid(event.player)) {
                         if (tech.isActive())
                             tech.tickClient(event);
                         else
                             tech.tickInactiveClient(event);
-                    }
-                    else
-                    {
+                    } else {
                         techs.setTechnique(i, null);
                     }
                 }
             }
 
-            for (PassiveTechnique passive : techs.getPassives())
-            {
+            for (PassiveTechnique passive : techs.getPassives()) {
                 if (passive.isActive())
                     passive.tickClient(event);
                 else
@@ -131,25 +129,6 @@ public class ClientListeners
             for (HashMap<String, BodyPartOption> parts : modifications.getModificationOptions().values())
                 for (BodyPartOption part : parts.values())
                     part.onClientTick(event.player);
-        }
-
-        clearStatus(event.player);
-    }
-
-    // Temp to clear fire if have fire resistance
-    public static void clearStatus(Player player)
-    {
-        if (!player.isOnFire())
-            return;
-
-        // Adjust player vision in lava based on fire resistance
-        PlayerStatModifications stats = BodyPartStatControl.getStats(player.getUUID());
-        float fireResistance = stats.getElementalStat(StatIDs.resistanceModifier, Elements.fireElement);
-
-        if (fireResistance >= 100)
-        {
-            player.clearFire();
-            player.setSharedFlagOnFire(false);
         }
     }
 
@@ -169,7 +148,7 @@ public class ClientListeners
             event.setNearPlaneDistance(-8.0f);
 
             // Adjust player vision in lava based on fire resistance
-            PlayerStatModifications stats = BodyPartStatControl.getStats(Minecraft.getInstance().player.getUUID());
+            PlayerStatModifications stats = BodyPartStatControl.getStats(Minecraft.getInstance().player);
             float fireResistance = stats.getElementalStat(StatIDs.resistanceModifier, Elements.fireElement) / 100f;
             fireResistance = Math.min(1, fireResistance);
 
@@ -212,6 +191,11 @@ public class ClientListeners
             // Move the armor/XP/air bar up slightly
             event.getPoseStack().pushPose();
             event.getPoseStack().translate(0, -10, 0);
+        }
+        else if(event.getOverlay().id() == VanillaGuiOverlay.AIR_LEVEL.id())
+        {
+            // Cancel the vanilla air level rendering
+            event.setCanceled(true);
         }
     }
 

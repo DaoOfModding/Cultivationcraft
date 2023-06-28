@@ -59,7 +59,7 @@ public class BounceTechnique extends Technique
     {
         // Technique is valid if the player is a body cultivator and has any bounceHeight stat
         if (CultivatorStats.getCultivatorStats(player).getCultivationType() == CultivationTypes.BODY_CULTIVATOR &&
-                BodyPartStatControl.getStats(player.getUUID()).getStat(StatIDs.bounceHeight) > 0)
+                BodyPartStatControl.getStats(player).getStat(StatIDs.bounceHeight) > 0)
             return true;
 
         return false;

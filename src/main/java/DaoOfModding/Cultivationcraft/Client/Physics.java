@@ -39,7 +39,7 @@ public class Physics
     // Increase player jump speed based on the jump height
     public static void applyJump(Player player)
     {
-        PlayerStatControl stats = BodyPartStatControl.getPlayerStatControl(player.getUUID());
+        PlayerStatControl stats = BodyPartStatControl.getPlayerStatControl(player);
         float jumpHeight = stats.getStats().getStat(StatIDs.jumpHeight) - 1;
         double jumpBoost = player.hasEffect(MobEffects.JUMP) ? (double)(0.1F * (float)(player.getEffect(MobEffects.JUMP).getAmplifier() + 1)) : 0.0D;
 
@@ -61,7 +61,7 @@ public class Physics
 
     public static void Bounce(Player player)
     {
-        float bounceHeight = BodyPartStatControl.getStats(player.getUUID()).getStat(StatIDs.bounceHeight) * getBlockJumpFactor(player);
+        float bounceHeight = BodyPartStatControl.getStats(player).getStat(StatIDs.bounceHeight) * getBlockJumpFactor(player);
 
         // Do nothing if the player has no bounce stat
         if (bounceHeight == 0)
@@ -108,7 +108,7 @@ public class Physics
     // Increase the distance you can fall without taking damage by the fall height
     public static float reduceFallDistance(Player player, float distance)
     {
-        PlayerStatControl stats = BodyPartStatControl.getPlayerStatControl(player.getUUID());
+        PlayerStatControl stats = BodyPartStatControl.getPlayerStatControl(player);
 
         distance -= (stats.getStats().getStat(StatIDs.fallHeight) - 1) * stats.getLegWeightModifier();
 
@@ -125,7 +125,7 @@ public class Physics
     {
         // TODO: Maybe need to adjust vertical swim speed here?
         /*
-        float swimSpeed = BodyPartStatControl.getStats(player.getUUID()).getStat(StatIDs.swimSpeed);
+        float swimSpeed = BodyPartStatControl.getStats(player).getStat(StatIDs.swimSpeed);
 
             double d3 = player.getLookAngle().y;
             double d4 = d3 < -0.2D ? 0.085D : 0.06D;

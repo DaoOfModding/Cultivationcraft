@@ -94,7 +94,7 @@ public class BiteTechnique extends AttackOverrideTechnique
     @Override
     public float getAttack(Player player)
     {
-        PlayerStatModifications stats = BodyPartStatControl.getPlayerStatControl(player.getUUID()).getStats();
+        PlayerStatModifications stats = BodyPartStatControl.getPlayerStatControl(player).getStats();
 
         return damage * stats.getStat(StatIDs.boneAttackModifier) * stats.getStat(StatIDs.biteAttackModifier);
     }

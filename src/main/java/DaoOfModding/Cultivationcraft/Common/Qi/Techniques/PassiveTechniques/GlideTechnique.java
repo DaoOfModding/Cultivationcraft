@@ -55,7 +55,7 @@ public class GlideTechnique extends PassiveTechnique
 
         player.fallDistance = 0;
 
-        float weightModifier = BodyPartStatControl.getPlayerStatControl(player.getUUID()).getFlightWeightModifier();
+        float weightModifier = BodyPartStatControl.getPlayerStatControl(player).getFlightWeightModifier();
 
         float maxHorizontalSpeed = 0.75f;
         float horizontalSpeedIncrease = 0.025f * weightModifier;

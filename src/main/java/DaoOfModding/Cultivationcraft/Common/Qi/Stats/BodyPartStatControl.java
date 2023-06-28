@@ -14,37 +14,52 @@ import java.util.UUID;
 public class BodyPartStatControl
 {
     protected static HashMap<UUID, PlayerStatControl> stats = new HashMap<UUID, PlayerStatControl>();
+    protected static HashMap<UUID, PlayerStatControl> statsServer = new HashMap<UUID, PlayerStatControl>();
 
-    public static void addStats(UUID playerID, PlayerStatModifications statsToAdd)
+    public static void addStats(Player player, PlayerStatModifications statsToAdd)
     {
-        getPlayerStatControl(playerID).getStats().combine(statsToAdd);
+        getPlayerStatControl(player).getStats().combine(statsToAdd);
     }
 
-    public static PlayerStatControl getPlayerStatControl(UUID playerID)
+    public static PlayerStatControl getPlayerStatControl(Player player)
     {
-        if (!stats.containsKey(playerID))
-            stats.put(playerID, new PlayerStatControl());
+        UUID playerID = player.getUUID();
 
-        return stats.get(playerID);
+        if (player.level.isClientSide)
+        {
+            if (!stats.containsKey(playerID))
+                stats.put(playerID, new PlayerStatControl());
+
+            return stats.get(playerID);
+        }
+        else
+        {
+            if (!statsServer.containsKey(playerID))
+                statsServer.put(playerID, new PlayerStatControl());
+
+            return statsServer.get(playerID);
+        }
     }
 
     public static void applyCaps(Player player)
     {
-        PlayerStatModifications stats = getPlayerStatControl(player.getUUID()).getStats();
+        PlayerStatModifications stats = getPlayerStatControl(player).getStats();
+
         Blood blood = PlayerHealthManager.getBlood(player);
 
-        for (Map.Entry<ResourceLocation, Float> eStat : stats.elementalStats.get(StatIDs.resistanceModifier).entrySet())
-            if (eStat.getValue() > 100 && !blood.canHeal(eStat.getKey()))
-                stats.setElementalStat(StatIDs.resistanceModifier, eStat.getKey(), 100);
+        if (stats.elementalStats.get(StatIDs.resistanceModifier) != null)
+            for (Map.Entry<ResourceLocation, Float> eStat : stats.elementalStats.get(StatIDs.resistanceModifier).entrySet())
+                if (eStat.getValue() > 100 && !blood.canHeal(eStat.getKey()))
+                    stats.setElementalStat(StatIDs.resistanceModifier, eStat.getKey(), 100);
     }
 
-    public static PlayerStatModifications getStats(UUID playerID)
+    public static PlayerStatModifications getStats(Player player)
     {
-        return getPlayerStatControl(playerID).getStats();
+        return getPlayerStatControl(player).getStats();
     }
 
     public static void updateStats(Player player)
     {
-        getPlayerStatControl(player.getUUID()).updateStats(player);
+        getPlayerStatControl(player).updateStats(player);
     }
 }

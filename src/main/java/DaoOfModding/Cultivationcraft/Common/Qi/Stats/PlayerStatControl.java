@@ -58,6 +58,8 @@ public class PlayerStatControl
 
     public void updateStats(Player player)
     {
+        stats.lock();
+
         // Clear the existing stats
         setupStats();
 
@@ -70,7 +72,7 @@ public class PlayerStatControl
             if (player.level.isClientSide())
                 part.onLoad(player.getUUID());
 
-            BodyPartStatControl.addStats(player.getUUID(), part.getStatChanges());
+            BodyPartStatControl.addStats(player, part.getStatChanges());
         }
 
         // Add all existing body part option stats to the players stats
@@ -80,7 +82,7 @@ public class PlayerStatControl
                 if (player.level.isClientSide())
                     part.onLoad(player.getUUID());
 
-                BodyPartStatControl.addStats(player.getUUID(), part.getStatChanges());
+                BodyPartStatControl.addStats(player, part.getStatChanges());
             }
 
         // Add all existing stat modifiers on active techniques to the player stats
@@ -90,11 +92,11 @@ public class PlayerStatControl
         {
             Technique tech = techs.getTechnique(i);
             if (tech != null && tech.isActive() && tech.getStats() != null)
-                BodyPartStatControl.addStats(player.getUUID(), tech.getStats());
+                BodyPartStatControl.addStats(player, tech.getStats());
         }
 
         for (PassiveTechnique passive : techs.getPassives())
-            BodyPartStatControl.addStats(player.getUUID(), passive.getStats());
+            BodyPartStatControl.addStats(player, passive.getStats());
 
         calculateVariantResistances(player);
 
@@ -105,7 +107,10 @@ public class PlayerStatControl
         if (!player.level.isClientSide)
             applyStats(player);
 
+        stats.unlock();
+
         PlayerHealthManager.updateFoodStats(player);
+        PlayerHealthManager.updateLungs(player);
     }
 
     // Applies additional resistances for variant elements
@@ -120,7 +125,7 @@ public class PlayerStatControl
             resistances.setElementalStat(StatIDs.resistanceModifier, element, resist);
         }
 
-        BodyPartStatControl.addStats(player.getUUID(), resistances);
+        BodyPartStatControl.addStats(player, resistances);
     }
 
     protected void applyStats(Player player)

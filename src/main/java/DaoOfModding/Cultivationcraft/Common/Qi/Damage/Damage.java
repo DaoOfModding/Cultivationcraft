@@ -35,7 +35,7 @@ public class Damage
 
     public static float resistDamage(float damage, ResourceLocation element, Player player)
     {
-        PlayerStatModifications stats = BodyPartStatControl.getStats(player.getUUID());
+        PlayerStatModifications stats = BodyPartStatControl.getStats(player);
 
         float multiplier = (1 - (stats.getElementalStat(StatIDs.resistanceModifier, element)  / 100.0f));
 
@@ -72,12 +72,19 @@ public class Damage
         float damage = armorAbsorption((Player)event.getEntity(), source, event.getAmount());
         float resistedDamage = resistDamage(damage, source.damageElement, (Player)event.getEntity());
 
+
         if (resistedDamage <= 0)
         {
             QuestHandler.progressQuest((Player) event.getEntity(), Quest.DAMAGE_RESISTED, event.getAmount());
 
+            float heal = resistedDamage * -1;
+
+            // Cap amount lava can heal to 2hp a second
+            if (event.getSource().getMsgId().compareTo(DamageSource.LAVA.getMsgId()) == 0)
+                heal = 0.2f;
+
             // If taking negative damage then heal that amount
-            event.getEntity().heal(resistedDamage * -1);
+            event.getEntity().heal(heal);
 
             return true;
         }

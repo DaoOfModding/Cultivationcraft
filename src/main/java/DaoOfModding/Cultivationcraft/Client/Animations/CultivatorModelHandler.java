@@ -80,7 +80,7 @@ public class CultivatorModelHandler
                 for (BodyPartOption option : options.values())
                     option.updateTextures(newModel.getTextureHandler());
 
-            PlayerStatModifications stats = BodyPartStatControl.getStats(player.getUUID());
+            PlayerStatModifications stats = BodyPartStatControl.getStats(player);
 
             // Lock the handler so it can be modified without other threads messing with it
             handler.lock();

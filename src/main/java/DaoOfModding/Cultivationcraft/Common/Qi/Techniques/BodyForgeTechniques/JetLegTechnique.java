@@ -56,7 +56,7 @@ public class JetLegTechnique extends MovementOverrideTechnique
 
     protected void calculateJetPower(Player player)
     {
-        PlayerStatControl stats = BodyPartStatControl.getPlayerStatControl(player.getUUID());
+        PlayerStatControl stats = BodyPartStatControl.getPlayerStatControl(player);
 
         float weightModifier = stats.getFlightWeightModifier();
 

@@ -4,6 +4,7 @@ import DaoOfModding.Cultivationcraft.Client.GUI.HelpItems;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartNames;
 import DaoOfModding.Cultivationcraft.Client.Animations.GenericQiPoses;
 import DaoOfModding.Cultivationcraft.Client.ClientItemControl;
+import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Lungs.BreathingHandler;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.DefaultQuests;
 import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
 import DaoOfModding.Cultivationcraft.Common.Qi.QiSourceConfig;
@@ -51,6 +52,7 @@ public class Cultivationcraft {
         BodyPartNames.init();
         Reflection.setup();
         DefaultQuests.init();
+        BreathingHandler.init();
     }
 
     protected void clientInit(final FMLClientSetupEvent event)

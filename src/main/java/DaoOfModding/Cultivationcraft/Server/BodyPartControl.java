@@ -33,7 +33,7 @@ public class BodyPartControl
 
             // If the QI progress is higher than the QI needed for this part
             // Add this part onto player's body modifications and clear the selection
-            if (BodyPartStatControl.getStats(player.getUUID()).getStat(StatIDs.qiCost) < modifications.getProgress())
+            if (BodyPartStatControl.getStats(player).getStat(StatIDs.qiCost) < modifications.getProgress())
             {
                 if (toComplete instanceof BodyPartOption)
                     modifications.setOption((BodyPartOption)toComplete);
@@ -53,7 +53,7 @@ public class BodyPartControl
 
                 CultivatorTechniques.getCultivatorTechniques(player).determinePassives(player);
 
-                BodyPartStatControl.addStats(player.getUUID(), toComplete.getStatChanges());
+                BodyPartStatControl.addStats(player, toComplete.getStatChanges());
                 BodyPartStatControl.updateStats(player);
             }
         }

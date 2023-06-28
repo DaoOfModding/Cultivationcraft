@@ -325,7 +325,7 @@ public class BodyPart
         if (element == null)
             return true;
 
-        List<QiSource> sources = ChunkQiSources.getQiSourcesInRange(player.level, player.position(), (int) BodyPartStatControl.getPlayerStatControl(player.getUUID()).getStats().getStat(StatIDs.qiAbsorbRange));
+        List<QiSource> sources = ChunkQiSources.getQiSourcesInRange(player.level, player.position(), (int) BodyPartStatControl.getPlayerStatControl(player).getStats().getStat(StatIDs.qiAbsorbRange));
 
         for (QiSource source : sources)
             if (source.getElement().compareTo(element) == 0)

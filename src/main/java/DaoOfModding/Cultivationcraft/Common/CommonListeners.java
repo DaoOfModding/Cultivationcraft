@@ -18,7 +18,10 @@ import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.FoodStats.QiFoodStats;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.Quest;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.QuestHandler;
 import DaoOfModding.Cultivationcraft.Common.Qi.Damage.Damage;
+import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
+import DaoOfModding.Cultivationcraft.Common.Qi.Stats.PlayerStatModifications;
+import DaoOfModding.Cultivationcraft.Common.Qi.Stats.StatIDs;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import DaoOfModding.Cultivationcraft.Network.PacketHandler;
 import DaoOfModding.Cultivationcraft.Server.ServerItemControl;
@@ -72,6 +75,26 @@ public class CommonListeners
         }
         else
             ServerListeners.playerTick(event);
+
+
+        clearStatus(event.player);
+    }
+
+    // Temp to clear fire if have fire resistance
+    public static void clearStatus(Player player)
+    {
+        if (!player.isOnFire())
+            return;
+
+        // Adjust player vision in lava based on fire resistance
+        PlayerStatModifications stats = BodyPartStatControl.getStats(player);
+        float fireResistance = stats.getElementalStat(StatIDs.resistanceModifier, Elements.fireElement);
+
+        if (fireResistance >= 100)
+        {
+            player.clearFire();
+            player.setSharedFlagOnFire(false);
+        }
     }
 
     @SubscribeEvent

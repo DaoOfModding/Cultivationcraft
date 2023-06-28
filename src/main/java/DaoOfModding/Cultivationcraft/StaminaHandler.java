@@ -19,7 +19,7 @@ public class StaminaHandler
             return true;
 
         // Multiply stamina use by weight
-        stamina = stamina * BodyPartStatControl.getStats(player.getUUID()).getStat(StatIDs.weight);
+        stamina = stamina * BodyPartStatControl.getStats(player).getStat(StatIDs.weight);
 
         if (((QiFoodStats)player.getFoodData()).getTrueFoodLevel() < stamina)
             return false;

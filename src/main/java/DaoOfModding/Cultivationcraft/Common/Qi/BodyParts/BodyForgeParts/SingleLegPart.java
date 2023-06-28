@@ -49,7 +49,7 @@ public class SingleLegPart extends MovementOverridePart
         if (player.isOnGround() && !player.isInWater())
         {
             Vec3 direction = player.getForward().normalize();
-            float weight = BodyPartStatControl.getPlayerStatControl(player.getUUID()).getLegWeightModifier();
+            float weight = BodyPartStatControl.getPlayerStatControl(player).getLegWeightModifier();
             float speed = player.getSpeed() * weight;
 
             // Move player forward based on their movement speed whilst jumping 1 block high

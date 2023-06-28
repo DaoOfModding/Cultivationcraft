@@ -375,7 +375,7 @@ public class BodyforgeScreen extends GenericTabScreen
 
         // Render the progress bar
         IBodyModifications modifications = BodyModifications.getBodyModifications(genericClientFunctions.getPlayer());
-        float progress = (float)modifications.getProgress() / (float) BodyPartStatControl.getStats(genericClientFunctions.getPlayer().getUUID()).getStat(StatIDs.qiCost);
+        float progress = (float)modifications.getProgress() / (float) BodyPartStatControl.getStats(genericClientFunctions.getPlayer()).getStat(StatIDs.qiCost);
 
         RenderSystem.setShaderTexture(0, TEXTURE);
 

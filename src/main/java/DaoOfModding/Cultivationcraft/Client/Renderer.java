@@ -86,7 +86,7 @@ public class Renderer
     public static void renderHP()
     {
         float health = genericClientFunctions.getPlayer().getHealth();
-        float maxHealth = BodyPartStatControl.getStats(genericClientFunctions.getPlayer().getUUID()).getStat(StatIDs.maxHP);
+        float maxHealth = BodyPartStatControl.getStats(genericClientFunctions.getPlayer()).getStat(StatIDs.maxHP);
         float healthPercent = health/maxHealth;
 
         int scaledWidth = Minecraft.getInstance().getWindow().getGuiScaledWidth();
@@ -101,6 +101,8 @@ public class Renderer
 
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         healthOrb.render((int)(scaledWidth * 0.1), scaledHeight - 50, 40, 40);
+
+        PlayerHealthManager.getLungs(genericClientFunctions.getPlayer()).render((int)(scaledWidth * 0.9) - 40, scaledHeight - 50);
     }
 
     public static void renderStamina()
@@ -113,7 +115,7 @@ public class Renderer
         if (genericClientFunctions.getPlayer().getFoodData() instanceof QiFoodStats)
             stamina = ((QiFoodStats)genericClientFunctions.getPlayer().getFoodData()).getTrueFoodLevel();
 
-        float maxStamina = BodyPartStatControl.getStats(genericClientFunctions.getPlayer().getUUID()).getStat(StatIDs.maxStamina);
+        float maxStamina = BodyPartStatControl.getStats(genericClientFunctions.getPlayer()).getStat(StatIDs.maxStamina);
 
         float staminaPercent = stamina/maxStamina;
 

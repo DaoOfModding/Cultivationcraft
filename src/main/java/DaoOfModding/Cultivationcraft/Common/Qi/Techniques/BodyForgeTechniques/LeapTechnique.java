@@ -167,7 +167,7 @@ public class LeapTechnique extends Technique
         Vec3 forward = player.getForward().normalize();
 
         // Get the modified jump height of the player
-        float jumpPower = BodyPartStatControl.getStats(player.getUUID()).getStat(StatIDs.jumpHeight);
+        float jumpPower = BodyPartStatControl.getStats(player).getStat(StatIDs.jumpHeight);
 
         // Move the player forward based on the jump power, as well as applying a height jump of 1 block
         player.setDeltaMovement(currentMotion.add(forward.x * jumpPower * 0.4f, 0.52f, forward.z * jumpPower * 0.4f));

@@ -10,6 +10,7 @@ import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Blood.QiBlood;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyForgeParts.*;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.FoodStats.CarnivoreFoodStats;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.FoodStats.HerbivoreFoodStats;
+import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Lungs.QiLungs;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.DefaultQuests;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.Quest;
 import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
@@ -89,6 +90,8 @@ public class BodyPartNames
     public static final String qiBloodPart = "qiBlood";
     public static final String burningBloodPart = "burningBlood";
 
+    public static final String reinforcedLungPart = "reinforcedLung";
+
     // LOCATIONS
     public static final String headFrontPart = "headfront";
 
@@ -117,6 +120,7 @@ public class BodyPartNames
     public static final String boneSubPosition = "BONE";
     public static final String stomachSubPosition = "STOMACH";
     public static final String bloodSubPosition = "BLOOD";
+    public static final String lungSubPosition = "LUNG";
     public static final String backSubPosition = "BACK";
 
 
@@ -138,6 +142,7 @@ public class BodyPartNames
         addSubPartDisplayName(bodyPosition, boneSubPosition, "cultivationcraft.gui.bodypart.bone");
         addSubPartDisplayName(bodyPosition, stomachSubPosition, "cultivationcraft.gui.bodypart.stomach");
         addSubPartDisplayName(bodyPosition, bloodSubPosition, "cultivationcraft.gui.bodypart.blood");
+        addSubPartDisplayName(bodyPosition, lungSubPosition, "cultivationcraft.gui.bodypart.lung");
         addSubPartDisplayName(bodyPosition, backSubPosition, "cultivationcraft.gui.bodypart.back");
         addSubPartDisplayName(headPosition, eyeSubPosition, "cultivationcraft.gui.headpart.eye");
         addSubPartDisplayName(headPosition, mouthSubPosition, "cultivationcraft.gui.headpart.mouth");
@@ -266,6 +271,7 @@ public class BodyPartNames
         setupStomachOptions();
         setupBackOptions();
         setupBloodOptions();
+        setupLungOptions();
 
 
         // TODO - Disabled longneck for the moment as it's buggy and has no point
@@ -308,6 +314,17 @@ public class BodyPartNames
         addOption(hungerBlood);
         addOption(qiBlood);
         addOption(burningBlood);
+    }
+
+    protected static void setupLungOptions()
+    {
+        LungPart reinforcedLungs = new LungPart(reinforcedLungPart, bodyPosition, lungSubPosition, "cultivationcraft.gui.generic.reinforce");
+        reinforcedLungs.addUniqueTag(BodyPartTags.lung);
+        reinforcedLungs.addNeededPart(BodyPartNames.startingEyesPart);
+        reinforcedLungs.setLungType(new QiLungs());
+        //reinforcedLungs.setQuest();
+
+        addOption(reinforcedLungs);
     }
 
     protected static void setupStomachOptions()
