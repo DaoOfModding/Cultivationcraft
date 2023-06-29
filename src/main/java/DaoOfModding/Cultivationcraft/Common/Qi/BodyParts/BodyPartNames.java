@@ -10,6 +10,10 @@ import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Blood.QiBlood;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyForgeParts.*;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.FoodStats.CarnivoreFoodStats;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.FoodStats.HerbivoreFoodStats;
+import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Lungs.Lung.FireLung;
+import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Lungs.Lung.QiLung;
+import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Lungs.Lung.WaterLung;
+import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Lungs.LungConnection;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Lungs.QiLungs;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.DefaultQuests;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.Quest;
@@ -91,6 +95,8 @@ public class BodyPartNames
     public static final String burningBloodPart = "burningBlood";
 
     public static final String reinforcedLungPart = "reinforcedLung";
+    public static final String aquaticLungPart = "aquaticLung";
+    public static final String fireLungPart = "fireLung";
 
     // LOCATIONS
     public static final String headFrontPart = "headfront";
@@ -322,9 +328,27 @@ public class BodyPartNames
         reinforcedLungs.addUniqueTag(BodyPartTags.lung);
         reinforcedLungs.addNeededPart(BodyPartNames.startingEyesPart);
         reinforcedLungs.setLungType(new QiLungs());
-        //reinforcedLungs.setQuest();
+        reinforcedLungs.setLung(LungConnection.location, new QiLung());
+        reinforcedLungs.setQuest(DefaultQuests.defaultLiveQuest);
+
+        LungPart aquaticLungs = new LungPart(aquaticLungPart, bodyPosition, lungSubPosition, "cultivationcraft.gui.bodypart.lung.aquatic");
+        aquaticLungs.addUniqueTag(BodyPartTags.lung);
+        aquaticLungs.addNeededPart(BodyPartNames.startingEyesPart);
+        aquaticLungs.setLungType(new QiLungs());
+        aquaticLungs.setLung(LungConnection.location, new WaterLung());
+        aquaticLungs.setQuest(DefaultQuests.defaultLiveQuest);
+
+        LungPart fireLungs = new LungPart(fireLungPart, bodyPosition, lungSubPosition, "cultivationcraft.gui.bodypart.lung.fire");
+        fireLungs.addUniqueTag(BodyPartTags.lung);
+        fireLungs.addUniqueTag(BodyPartTags.flame);
+        fireLungs.addNeededPart(BodyPartNames.startingEyesPart);
+        fireLungs.setLungType(new QiLungs());
+        fireLungs.setLung(LungConnection.location, new FireLung());
+        fireLungs.setQuest(DefaultQuests.defaultLiveQuest);
 
         addOption(reinforcedLungs);
+        addOption(aquaticLungs);
+        addOption(fireLungs);
     }
 
     protected static void setupStomachOptions()

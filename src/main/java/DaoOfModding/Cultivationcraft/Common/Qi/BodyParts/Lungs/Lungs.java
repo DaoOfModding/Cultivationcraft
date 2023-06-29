@@ -17,7 +17,7 @@ public class Lungs
 
     protected Color breathingColor = Breath.AIR.color;
 
-    Lung lung = new Lung();
+    LungConnection[] lung = {new LungConnection(new Lung())};
 
 
     public void breath(Player player)
@@ -25,7 +25,7 @@ public class Lungs
         Breath breathing = BreathingHandler.getBreath(player);
         breathingColor = breathing.color;
 
-        lung.breath(20, breathing, player);
+        lung[0].getLung().breath(10, breathing, player);
     }
 
     public void render(int x, int y)
@@ -38,28 +38,38 @@ public class Lungs
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         lungs.render(x, y, 40, 40);
 
-        renderLungs(x, y);
+        for (int i = 0; i < lung.length; i++)
+            lung[i].renderLungs(x, y);
     }
 
-    public void renderLungs(int x, int y)
+    public int getLungAmount()
     {
-        lung.render(x, y, false);
-        lung.render(x, y, true);
+        return lung.length;
+    }
+
+    public void setLung(int position, Lung newLung)
+    {
+        lung[position].setLung(newLung);
+    }
+
+    public LungConnection getConnection(int number)
+    {
+        return lung[number];
     }
 
     public float getCurrent(Breath breath)
     {
-        if (!lung.canBreath(breath))
-            return 0;
-
-        return lung.getCurrent() * 2;
+        return lung[0].getCurrent(breath);
     }
 
     public Lungs copy(Lungs lungCopy)
     {
         Lungs newLung = new Lungs();
 
-        newLung.lung.setCurrent(lungCopy.getCurrent(lung.getBreath()) / 2);
+        for (int i = 0; i < getLungAmount(); i++)
+            newLung.setLung(i, getConnection(i).getLung());
+
+        newLung.lung[0].getLung().setCurrent(lungCopy.getCurrent(lung[0].getLung().getBreath()) / 2);
         newLung.breathingColor = lungCopy.breathingColor;
 
         return newLung;

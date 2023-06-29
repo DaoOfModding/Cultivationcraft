@@ -52,16 +52,30 @@ public class PlayerHealthManager
     {
         Lungs lung = new Lungs();
 
+        lung = lung.copy(getLungs(player));
+
         // If the player is not a body cultivator or has not forged their blood, then return the default blood type
         if (CultivatorStats.getCultivatorStats(player).getCultivationType() == CultivationTypes.BODY_CULTIVATOR)
         {
             IBodyModifications modifications = BodyModifications.getBodyModifications(player);
 
             if (modifications.hasOption(BodyPartNames.bodyPosition, BodyPartNames.lungSubPosition))
-                lung = ((LungPart)modifications.getOption(BodyPartNames.bodyPosition, BodyPartNames.lungSubPosition)).getLungType();
-        }
+            {
+                LungPart part = ((LungPart) modifications.getOption(BodyPartNames.bodyPosition, BodyPartNames.lungSubPosition));
+                lung = part.getLungType();
 
-        lung = lung.copy(getLungs(player));
+                // Loop through each lung connection and check if a lung type has been assigned
+                for (int i = 0; i < lung.getLungAmount(); i++)
+                {
+                    Lung lungConnection = part.getLung(lung.getConnection(i).location);
+
+                    if (lungConnection != null)
+                        lung.setLung(i, lungConnection);
+                }
+
+                lung = lung.copy(getLungs(player));
+            }
+        }
 
         lungs.put(player.getUUID(), lung);
     }

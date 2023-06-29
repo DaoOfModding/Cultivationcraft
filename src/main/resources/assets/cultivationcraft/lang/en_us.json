@@ -210,13 +210,17 @@
   "cultivationcraft.gui.bodypart.bone.lightning": "Lightning infused",
   "cultivationcraft.gui.bodypart.bone.lightning.description": "Infused bones with Lightning element.\nGives no armor, but gives resistance to Lightning",
 
-
   "cultivationcraft.gui.bodypart.blood.hunger": "Default Blood",
   "cultivationcraft.gui.bodypart.blood.hunger.description": "Basic cultivator blood, heals you by draining hunger",
   "cultivationcraft.gui.bodypart.blood.qi": "Qi Blood",
   "cultivationcraft.gui.bodypart.blood.qi.description": "Removes passive healing, but allows you to heal quickly by absorbing from Qi sources",
   "cultivationcraft.gui.bodypart.blood.burning": "Burning Blood",
   "cultivationcraft.gui.bodypart.blood.burning.description": "Blood so hot it burns everything it touches. Including you.\nAllows you to break the fire resistance cap and be healed by fire damage",
+
+  "cultivationcraft.gui.bodypart.lung.aquatic": "Aquatic Lungs",
+  "cultivationcraft.gui.bodypart.lung.aquatic.description": "Allows you to breath in water - and only in water",
+  "cultivationcraft.gui.bodypart.lung.fire": "Flaming Lungs",
+  "cultivationcraft.gui.bodypart.lung.fire.description": "Store flame in your lungs for use by other body parts - however you can breath nothing but flames",
 
   "cultivationcraft.gui.bodypart.skin.stretchy": "Stretchy",
   "cultivationcraft.gui.bodypart.skin.stretchy.description": "Forge your skin to be able to freely stretch into much larger sizes",

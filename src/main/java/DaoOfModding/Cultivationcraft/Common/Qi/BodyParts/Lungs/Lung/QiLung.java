@@ -5,14 +5,19 @@ import net.minecraft.world.entity.player.Player;
 
 public class QiLung extends Lung
 {
-    // Tries to breath, returns how much breath is remaining to be used
+    public QiLung()
+    {
+        capacity = 300;
+    }
+
+    // Tries to breath, returns how much breath has been used
     public float breath(float amount, Breath breath, Player player)
     {
         if (canBreath != breath)
         {
             if (current < amount)
             {
-                float remaining = amount - current;
+                float remaining = current;
                 current = 0;
 
                 return remaining;
@@ -21,15 +26,16 @@ public class QiLung extends Lung
             {
                 current -= amount;
 
-                return 0;
+                return amount;
             }
         }
 
-        current += amount;
+        // Fill up lungs twice as fast as they empty
+        current += amount * 2;
 
         if (current > capacity)
             current = capacity;
 
-        return 0;
+        return amount;
     }
 }

@@ -10,7 +10,7 @@ public class QiLungs extends Lungs
 
     public QiLungs()
     {
-        lung = new QiLung();
+        setLung(0, new QiLung());
     }
 
     public void breath(Player player)
@@ -21,7 +21,16 @@ public class QiLungs extends Lungs
         Breath breathing = BreathingHandler.getBreath(player);
         breathingColor = breathing.color;
 
-        float amountRemaining = lung.breath(10, breathing, player);
+        float amountRemaining = 10;
+
+        // Go through each lung trying to use breath / amount of lungs
+        for (int i = 0; i < lung.length; i++)
+            amountRemaining -= lung[i].getLung().breath(amountRemaining / lung.length, breathing, player);
+
+        // If there is still breath left, go through each lung again and try to use all of the breath
+        if (amountRemaining > 0)
+            for (int i = 0; i < lung.length; i++)
+                amountRemaining -= lung[i].getLung().breath(amountRemaining, breathing, player);
 
         if (amountRemaining > 0)
             suffocate(amountRemaining);
@@ -53,7 +62,10 @@ public class QiLungs extends Lungs
     {
         QiLungs newLung = new QiLungs();
 
-        newLung.lung.setCurrent(lungCopy.getCurrent(lung.getBreath()) / 2);
+        for (int i = 0; i < getLungAmount(); i++)
+            newLung.setLung(i, getConnection(i).getLung());
+
+        newLung.lung[0].getLung().setCurrent(lungCopy.getCurrent(lung[0].getLung().getBreath()) / 2);
         newLung.breathingColor = lungCopy.breathingColor;
 
         if (lungCopy instanceof QiLungs)
