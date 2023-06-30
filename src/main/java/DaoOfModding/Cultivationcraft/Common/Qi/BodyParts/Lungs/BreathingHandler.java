@@ -1,5 +1,7 @@
 package DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Lungs;
 
+import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.CultivatorTechniques;
+import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.ICultivatorTechniques;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.Blocks;
@@ -34,6 +36,11 @@ public class BreathingHandler
 
     public static Breath getBreath(Player player)
     {
+        ICultivatorTechniques techs = CultivatorTechniques.getCultivatorTechniques(player);
+
+        if (techs != null && !techs.canBreath(player))
+            return Breath.NONE;
+
         if (fluidBreaths.containsKey(player.getEyeInFluidType()))
             return fluidBreaths.get(player.getEyeInFluidType());
 

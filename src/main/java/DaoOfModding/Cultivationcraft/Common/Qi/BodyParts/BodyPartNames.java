@@ -98,6 +98,7 @@ public class BodyPartNames
     public static final String burningBloodPart = "burningBlood";
 
     public static final String reinforcedLungPart = "reinforcedLung";
+    public static final String floatingLungPart = "floatingLung";
     public static final String aquaticLungPart = "aquaticLung";
     public static final String fireLungPart = "fireLung";
     public static final String mixedLungPart = "mixedLung";
@@ -357,6 +358,13 @@ public class BodyPartNames
         reinforcedLungs.getStatChanges().setStat(StatIDs.maxHP, 2);
         reinforcedLungs.setQuest(DefaultQuests.defaultLiveQuest);
 
+        LungPart floatingLungs = new LungPart(floatingLungPart, bodyPosition, lungSubPosition, "cultivationcraft.gui.bodypart.lung.floating");
+        floatingLungs.addUniqueTag(BodyPartTags.lung);
+        floatingLungs.addNeededPart(BodyPartNames.expandingBodyPart);
+        floatingLungs.setLungType(new QiLungs());
+        floatingLungs.setLung(LungConnection.location, new QiLung());
+        floatingLungs.setQuest(DefaultQuests.defaultFlightQuest);
+
         LungPart aquaticLungs = new LungPart(aquaticLungPart, bodyPosition, lungSubPosition, "cultivationcraft.gui.bodypart.lung.aquatic");
         aquaticLungs.addUniqueTag(BodyPartTags.lung);
         aquaticLungs.addNeededPart(BodyPartNames.startingEyesPart);
@@ -385,6 +393,7 @@ public class BodyPartNames
         mixedLungs.setQuest(DefaultQuests.defaultLiveQuest);
 
         addOption(reinforcedLungs);
+        addOption(floatingLungs);
         addOption(aquaticLungs);
         addOption(fireLungs);
         addOption(mixedLungs);

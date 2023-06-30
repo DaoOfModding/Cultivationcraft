@@ -71,8 +71,10 @@ public class ClientListeners
         }
     }
 
-    public static void playerTick(TickEvent.PlayerTickEvent event) {
-        if (event.side == LogicalSide.CLIENT && event.phase == TickEvent.Phase.START) {
+    public static void playerTick(TickEvent.PlayerTickEvent event)
+    {
+        if (event.side == LogicalSide.CLIENT && event.phase == TickEvent.Phase.START)
+        {
             if (event.player == genericClientFunctions.getPlayer())
                 KeybindingControl.handleMovementOverrides();
 
@@ -98,11 +100,13 @@ public class ClientListeners
             // Tick through all active cultivator techniques
             ICultivatorTechniques techs = CultivatorTechniques.getCultivatorTechniques(event.player);
 
-            for (int i = 0; i < CultivatorTechniques.numberOfTechniques; i++) {
+            for (int i = 0; i < CultivatorTechniques.numberOfTechniques; i++)
+            {
                 Technique tech = techs.getTechnique(i);
 
                 if (tech != null) {
-                    if (techs.getTechnique(i).isValid(event.player)) {
+                    if (tech.isValid(event.player))
+                    {
                         if (tech.isActive())
                             tech.tickClient(event);
                         else
@@ -113,11 +117,15 @@ public class ClientListeners
                 }
             }
 
-            for (PassiveTechnique passive : techs.getPassives()) {
-                if (passive.isActive())
-                    passive.tickClient(event);
-                else
-                    passive.tickInactiveClient(event);
+            for (PassiveTechnique passive : techs.getPassives())
+            {
+                if (passive.isValid(event.player))
+                {
+                    if (passive.isActive())
+                        passive.tickClient(event);
+                    else
+                        passive.tickInactiveClient(event);
+                }
             }
 
             // Tick through all body modifications on the player

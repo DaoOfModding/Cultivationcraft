@@ -54,9 +54,6 @@ public class RollTechnique extends Technique
     public boolean isValid(Player player)
     {
         // TODO: Add
-        // Technique is valid if the player is a body cultivator
-        if (CultivatorStats.getCultivatorStats(player).getCultivationType() == CultivationTypes.BODY_CULTIVATOR)
-            return true;
 
         return false;
     }

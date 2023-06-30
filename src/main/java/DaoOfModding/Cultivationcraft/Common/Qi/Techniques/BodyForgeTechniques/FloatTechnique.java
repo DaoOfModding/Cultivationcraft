@@ -1,9 +1,14 @@
 package DaoOfModding.Cultivationcraft.Common.Qi.Techniques.BodyForgeTechniques;
 
 import DaoOfModding.Cultivationcraft.Client.Physics;
+import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.BodyModifications;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStats;
+import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartNames;
+import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.Quest;
+import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.QuestHandler;
 import DaoOfModding.Cultivationcraft.Common.Qi.CultivationTypes;
 import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
+import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.Technique;
 import DaoOfModding.Cultivationcraft.Common.Reflection;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
@@ -23,6 +28,8 @@ public class FloatTechnique extends Technique
     protected boolean jumpPressed = false;
 
     protected PlayerPose floating = new PlayerPose();
+
+    protected float staminaUse = 0.01f;
 
     public FloatTechnique()
     {
@@ -48,14 +55,13 @@ public class FloatTechnique extends Technique
         floating.addAngle(GenericLimbNames.leftArm, new Vec3(Math.toRadians(0), 0, Math.toRadians(0)), GenericPoses.jumpArmPriority + 5, 5f, -1);
         floating.addAngle(GenericLimbNames.rightArm, new Vec3(Math.toRadians(0), 0, Math.toRadians(130)), GenericPoses.jumpArmPriority + 5, 5f, -1);
         floating.addAngle(GenericLimbNames.rightArm, new Vec3(Math.toRadians(0), 0, Math.toRadians(0)), GenericPoses.jumpArmPriority + 5, 5f, -1);
-
     }
 
     @Override
     public boolean isValid(Player player)
     {
-        // TODO: add body parts for this technique
-        if (CultivatorStats.getCultivatorStats(player).getCultivationType() == CultivationTypes.BODY_CULTIVATOR)
+        if (CultivatorStats.getCultivatorStats(player).getCultivationType() == CultivationTypes.BODY_CULTIVATOR &&
+                BodyModifications.getBodyModifications(player).hasOption(BodyPartNames.bodyPosition, BodyPartNames.lungSubPosition, BodyPartNames.floatingLungPart))
             return true;
 
         return false;
@@ -65,11 +71,15 @@ public class FloatTechnique extends Technique
     public void tickClient(TickEvent.PlayerTickEvent event)
     {
         super.tickClient(event);
-        tickInactiveClient(event);
 
         // Reset flapping if player is on the ground
         if (jumpPressed)
+        {
+            canBreathWhileActive = false;
             floatUp(event.player);
+        }
+        else
+            canBreathWhileActive = true;
     }
 
     @Override
@@ -77,8 +87,13 @@ public class FloatTechnique extends Technique
     {
         Reflection.allowFlight((ServerPlayer) event.player);
 
+        // Reset flapping if player is on the ground
+        if (jumpPressed)
+            canBreathWhileActive = false;
+        else
+            canBreathWhileActive = true;
+
         super.tickServer(event);
-        tickInactiveServer(event);
     }
 
     public void floatUp(Player player)
@@ -87,10 +102,11 @@ public class FloatTechnique extends Technique
 
         Vec3 movement = Physics.getDelta(player);
 
-        // TODO: Calc this based off weight
-        float floating = 0.1f;
+        float floating = 0.1f - (0.15f * BodyPartStatControl.getPlayerStatControl(player).getFlightWeightModifier());
 
         player.setDeltaMovement(movement.x, floating, movement.z);
+
+        QuestHandler.progressQuest(player, Quest.FLIGHT, player.getDeltaMovement().length());
     }
 
     @Override

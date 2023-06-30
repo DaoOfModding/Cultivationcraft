@@ -27,6 +27,25 @@ public class CultivatorTechniques implements ICultivatorTechniques
         techniques[slot] = tech;
     }
 
+    public boolean canBreath(Player player)
+    {
+        for (int i = 0; i < CultivatorTechniques.numberOfTechniques; i++)
+        {
+            Technique tech = getTechnique(i);
+
+            if (tech != null && tech.isValid(player) && tech.isActive() && tech.disableBreathing())
+                return  false;
+        }
+
+        for (PassiveTechnique passive : getPassives())
+        {
+            if (passive.isValid(player) && passive.isActive() && passive.disableBreathing())
+                return false;
+        }
+
+        return true;
+    }
+
     public void determinePassives(Player player)
     {
         passives.clear();

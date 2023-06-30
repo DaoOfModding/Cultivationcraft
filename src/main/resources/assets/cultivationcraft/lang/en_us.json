@@ -222,6 +222,8 @@
 
   "cultivationcraft.gui.bodypart.lung.reinforce": "Reinforced Lungs",
   "cultivationcraft.gui.bodypart.lung.reinforce.description": "Reinforces your lungs, increasing their capacity and slightly increasing your health",
+  "cultivationcraft.gui.bodypart.lung.floating": "Inflatable Lungs",
+  "cultivationcraft.gui.bodypart.lung.floating.description": "Allows you to expand your lungs, causing you to float whilst holding your breath",
   "cultivationcraft.gui.bodypart.lung.aquatic": "Aquatic Lungs",
   "cultivationcraft.gui.bodypart.lung.aquatic.description": "Allows you to breath in water - and only in water",
   "cultivationcraft.gui.bodypart.lung.fire": "Flaming Lungs",

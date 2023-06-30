@@ -17,6 +17,8 @@ public interface ICultivatorTechniques
     public CompoundTag writeNBT();
     public void readNBT(CompoundTag nbt);
 
+    public boolean canBreath(Player player);
+
     public void determinePassives(Player player);
     public ArrayList<PassiveTechnique> getPassives();
 

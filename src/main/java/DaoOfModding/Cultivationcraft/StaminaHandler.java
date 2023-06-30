@@ -44,7 +44,6 @@ public class StaminaHandler
                 player.getFoodData().setSaturation(0);
             }
 
-
         ((QiFoodStats) player.getFoodData()).setFoodLevel(((QiFoodStats) player.getFoodData()).getTrueFoodLevel() - stamina);
 
         return true;

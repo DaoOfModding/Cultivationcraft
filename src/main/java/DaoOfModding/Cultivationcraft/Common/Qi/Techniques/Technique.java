@@ -74,6 +74,8 @@ public class Technique
     protected int animationRecoveryTime = 20;
     protected int legAnimationCountdown = 0;
 
+    protected boolean canBreathWhileActive = true;
+
     public Technique()
     {
         langLocation = "cultivationcraft.technique.example";
@@ -90,6 +92,11 @@ public class Technique
     {
         legAnimationLockOff = true;
         animationRecoveryTime = ticksWhileDeactivated;
+    }
+
+    public boolean disableBreathing()
+    {
+        return !canBreathWhileActive;
     }
 
     public String getDescription()
