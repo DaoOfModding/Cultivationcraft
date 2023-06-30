@@ -23,14 +23,40 @@ public class QiLungs extends Lungs
 
         float amountRemaining = 10;
 
-        // Go through each lung trying to use breath / amount of lungs
-        for (int i = 0; i < lung.length; i++)
-            amountRemaining -= lung[i].getLung().breath(amountRemaining / lung.length, breathing, player);
+        if (!canBreath(breathing))
+        {
+            float toTry = amountRemaining / lung.length;
 
-        // If there is still breath left, go through each lung again and try to use all of the breath
-        if (amountRemaining > 0)
+            // Go through each lung trying to breath the amount remaining equally
             for (int i = 0; i < lung.length; i++)
-                amountRemaining -= lung[i].getLung().breath(amountRemaining, breathing, player);
+                amountRemaining -= lung[i].getLung().breath(toTry, breathing, player);
+
+            // If there is still breath left, go through each lung again and try to use all of the breath
+            if (amountRemaining > 0)
+                for (int i = 0; i < lung.length; i++)
+                    amountRemaining -= lung[i].getLung().breath(amountRemaining, breathing, player);
+        }
+        else
+        {
+            float amount = 0;
+
+            for (int i = 0; i < lung.length; i++)
+                if (lung[i].getLung().canBreath(breathing))
+                    amount++;
+
+            float toTry = amountRemaining / amount;
+
+            // Go through each lung that can breath trying to breath the amount remaining equally
+            for (int i = 0; i < lung.length; i++)
+                if (lung[i].getLung().canBreath(breathing))
+                    amountRemaining -= lung[i].getLung().breath(toTry, breathing, player);
+
+            // If there is still breath left, go through each lung again and try to use all of the breath
+            if (amountRemaining > 0)
+                for (int i = 0; i < lung.length; i++)
+                    if (lung[i].getLung().canBreath(breathing))
+                        amountRemaining -= lung[i].getLung().breath(amountRemaining, breathing, player);
+        }
 
         if (amountRemaining > 0)
             suffocate(amountRemaining);

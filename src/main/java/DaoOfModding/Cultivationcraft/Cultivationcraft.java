@@ -40,6 +40,7 @@ public class Cultivationcraft {
         modEventBus.addListener(this::clientInit);
 
         Register.init(modEventBus);
+        BodyPartNames.registerLungLocations();
     }
 
     protected void commonInit(final FMLCommonSetupEvent event)

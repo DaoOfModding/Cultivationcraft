@@ -13,7 +13,10 @@ import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.FoodStats.HerbivoreFood
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Lungs.Lung.FireLung;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Lungs.Lung.QiLung;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Lungs.Lung.WaterLung;
-import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Lungs.LungConnection;
+import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Lungs.LungConnection.LeftLungConnection;
+import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Lungs.LungConnection.LungConnection;
+import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Lungs.LungConnection.RightLungConnection;
+import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Lungs.MixedLungs;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Lungs.QiLungs;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.DefaultQuests;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.Quest;
@@ -97,6 +100,7 @@ public class BodyPartNames
     public static final String reinforcedLungPart = "reinforcedLung";
     public static final String aquaticLungPart = "aquaticLung";
     public static final String fireLungPart = "fireLung";
+    public static final String mixedLungPart = "mixedLung";
 
     // LOCATIONS
     public static final String headFrontPart = "headfront";
@@ -135,6 +139,8 @@ public class BodyPartNames
     protected static HashMap<String, String> displayNames = new HashMap<String, String>();
     protected static HashMap<String, HashMap<String, String>> subPartDisplayNames = new HashMap<String, HashMap<String, String>>();
 
+    protected static ArrayList<ResourceLocation> lungLocations = new ArrayList<ResourceLocation>();
+
     public static void init()
     {
         addDisplayName(headPosition, "cultivationcraft.gui.headpart");
@@ -156,6 +162,9 @@ public class BodyPartNames
         addSubPartDisplayName(armPosition, locationSubPosition, "cultivationcraft.gui.generic.location");
         addSubPartDisplayName(headPosition, locationSubPosition, "cultivationcraft.gui.generic.location");
 
+        addSubPartDisplayName(bodyPosition, LeftLungConnection.location.toString(), "cultivationcraft.gui.bodypart.lung.left");
+        addSubPartDisplayName(bodyPosition, RightLungConnection.location.toString(), "cultivationcraft.gui.bodypart.lung.right");
+
 
         setupBodyParts();
         setupBodyOptions();
@@ -166,6 +175,22 @@ public class BodyPartNames
         setupArmParts();
 
         setupLegParts();
+    }
+
+    public static void registerLungLocations()
+    {
+        addLungLocation(LeftLungConnection.location);
+        addLungLocation(RightLungConnection.location);
+    }
+
+    public static void addLungLocation(ResourceLocation location)
+    {
+        lungLocations.add(location);
+    }
+
+    public static ArrayList<ResourceLocation> getLungLocations()
+    {
+        return lungLocations;
     }
 
     protected static void setupBodyOptions()
@@ -324,11 +349,12 @@ public class BodyPartNames
 
     protected static void setupLungOptions()
     {
-        LungPart reinforcedLungs = new LungPart(reinforcedLungPart, bodyPosition, lungSubPosition, "cultivationcraft.gui.generic.reinforce");
+        LungPart reinforcedLungs = new LungPart(reinforcedLungPart, bodyPosition, lungSubPosition, "cultivationcraft.gui.bodypart.lung.reinforce");
         reinforcedLungs.addUniqueTag(BodyPartTags.lung);
         reinforcedLungs.addNeededPart(BodyPartNames.startingEyesPart);
         reinforcedLungs.setLungType(new QiLungs());
         reinforcedLungs.setLung(LungConnection.location, new QiLung());
+        reinforcedLungs.getStatChanges().setStat(StatIDs.maxHP, 2);
         reinforcedLungs.setQuest(DefaultQuests.defaultLiveQuest);
 
         LungPart aquaticLungs = new LungPart(aquaticLungPart, bodyPosition, lungSubPosition, "cultivationcraft.gui.bodypart.lung.aquatic");
@@ -336,7 +362,10 @@ public class BodyPartNames
         aquaticLungs.addNeededPart(BodyPartNames.startingEyesPart);
         aquaticLungs.setLungType(new QiLungs());
         aquaticLungs.setLung(LungConnection.location, new WaterLung());
+        aquaticLungs.getStatChanges().setElementalStat(StatIDs.resistanceModifier, Elements.waterElement, 50);
+        aquaticLungs.getStatChanges().setElementalStat(StatIDs.resistanceModifier, Elements.windElement, -50);
         aquaticLungs.setQuest(DefaultQuests.defaultLiveQuest);
+        aquaticLungs.setElement(Elements.waterElement);
 
         LungPart fireLungs = new LungPart(fireLungPart, bodyPosition, lungSubPosition, "cultivationcraft.gui.bodypart.lung.fire");
         fireLungs.addUniqueTag(BodyPartTags.lung);
@@ -344,11 +373,57 @@ public class BodyPartNames
         fireLungs.addNeededPart(BodyPartNames.startingEyesPart);
         fireLungs.setLungType(new QiLungs());
         fireLungs.setLung(LungConnection.location, new FireLung());
+        fireLungs.getStatChanges().setElementalStat(StatIDs.resistanceModifier, Elements.fireElement, 50);
+        fireLungs.getStatChanges().setElementalStat(StatIDs.resistanceModifier, Elements.waterElement, -50);
         fireLungs.setQuest(DefaultQuests.defaultLiveQuest);
+        fireLungs.setElement(Elements.fireElement);
+
+        LungPart mixedLungs = new LungPart(mixedLungPart, bodyPosition, lungSubPosition, "cultivationcraft.gui.bodypart.lung.mixed");
+        mixedLungs.addUniqueTag(BodyPartTags.lung);
+        mixedLungs.addNeededPart(BodyPartNames.startingEyesPart);
+        mixedLungs.setLungType(new MixedLungs());
+        mixedLungs.setQuest(DefaultQuests.defaultLiveQuest);
 
         addOption(reinforcedLungs);
         addOption(aquaticLungs);
         addOption(fireLungs);
+        addOption(mixedLungs);
+
+        for (ResourceLocation location : getLungLocations())
+            setupLungConnectionOptions(location);
+    }
+
+    protected static void setupLungConnectionOptions(ResourceLocation location)
+    {
+        LungPart defaultLungs = new LungPart(reinforcedLungPart + location, bodyPosition, location.toString(), "cultivationcraft.gui.bodypart.lung.reinforce");
+        defaultLungs.addNeededTags(BodyPartTags.lung);
+        defaultLungs.setQuest(DefaultQuests.defaultLiveQuest);
+        defaultLungs.getStatChanges().setStat(StatIDs.maxHP, 1);
+        defaultLungs.setLung(location, new QiLung());
+        defaultLungs.setNeededLungLocation(location);
+
+        LungPart fireLungs = new LungPart(fireLungPart + location, bodyPosition, location.toString(), "cultivationcraft.gui.bodypart.lung.fire");
+        fireLungs.addUniqueTag(BodyPartTags.flame);
+        fireLungs.addNeededTags(BodyPartTags.lung);
+        fireLungs.getStatChanges().setElementalStat(StatIDs.resistanceModifier, Elements.fireElement, 25);
+        fireLungs.getStatChanges().setElementalStat(StatIDs.resistanceModifier, Elements.waterElement, -25);
+        fireLungs.setQuest(DefaultQuests.defaultLiveQuest);
+        fireLungs.setLung(location, new FireLung());
+        fireLungs.setNeededLungLocation(location);
+        fireLungs.setElement(Elements.fireElement);
+
+        LungPart aquaticLungs = new LungPart(aquaticLungPart + location, bodyPosition, location.toString(), "cultivationcraft.gui.bodypart.lung.aquatic");
+        aquaticLungs.addNeededTags(BodyPartTags.lung);
+        aquaticLungs.getStatChanges().setElementalStat(StatIDs.resistanceModifier, Elements.waterElement, 25);
+        aquaticLungs.getStatChanges().setElementalStat(StatIDs.resistanceModifier, Elements.windElement, -25);
+        aquaticLungs.setQuest(DefaultQuests.defaultLiveQuest);
+        aquaticLungs.setLung(location, new WaterLung());
+        aquaticLungs.setNeededLungLocation(location);
+        aquaticLungs.setElement(Elements.waterElement);
+
+        addOption(defaultLungs);
+        addOption(fireLungs);
+        addOption(aquaticLungs);
     }
 
     protected static void setupStomachOptions()

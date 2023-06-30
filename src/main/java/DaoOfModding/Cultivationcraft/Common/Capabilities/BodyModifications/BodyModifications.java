@@ -125,6 +125,22 @@ public class BodyModifications implements IBodyModifications
         return options.get(limb).get(subPosition);
     }
 
+    public ArrayList<BodyPart> getBodyPartsOfType(Class type)
+    {
+        ArrayList<BodyPart> parts = new ArrayList<>();
+
+        for (BodyPart part : modifications.values())
+            if (part.getClass() == type)
+                parts.add(part);
+
+        for (HashMap<String, BodyPartOption> optionSearch : options.values())
+            for (BodyPart part : optionSearch.values())
+                if (part.getClass() == type)
+                    parts.add(part);
+
+        return parts;
+    }
+
     public void setModification(BodyPart part)
     {
         modifications.put(part.getPosition(), part);

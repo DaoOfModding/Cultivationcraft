@@ -3,6 +3,7 @@ package DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Lungs;
 import DaoOfModding.Cultivationcraft.Client.ClientListeners;
 import DaoOfModding.Cultivationcraft.Client.GUI.animatedTexture;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Lungs.Lung.Lung;
+import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Lungs.LungConnection.LungConnection;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.resources.ResourceLocation;
@@ -26,6 +27,24 @@ public class Lungs
         breathingColor = breathing.color;
 
         lung[0].getLung().breath(10, breathing, player);
+    }
+
+    public boolean hasConnectionAt(ResourceLocation location)
+    {
+        for (int i = 0; i < lung.length; i++)
+            if (lung[i].getLocation() == location)
+                return true;
+
+        return false;
+    }
+
+    public boolean canBreath(Breath breath)
+    {
+        for (int i = 0; i < lung.length; i++)
+            if (lung[i].getLung().canBreath(breath))
+                return true;
+
+        return false;
     }
 
     public void render(int x, int y)

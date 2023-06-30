@@ -32,6 +32,7 @@ public interface IBodyModifications
     public boolean hasOption(String limb, String subPosition, String modificationID);
     public BodyPart getModification(String limb);
     public BodyPartOption getOption(String limb, String subPosition);
+    public ArrayList<BodyPart> getBodyPartsOfType(Class type);
     public void setModification(BodyPart part);
     public void setOption(BodyPartOption option);
     public HashMap<String, BodyPart> getModifications();

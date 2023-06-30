@@ -217,10 +217,17 @@
   "cultivationcraft.gui.bodypart.blood.burning": "Burning Blood",
   "cultivationcraft.gui.bodypart.blood.burning.description": "Blood so hot it burns everything it touches. Including you.\nAllows you to break the fire resistance cap and be healed by fire damage",
 
+  "cultivationcraft.gui.bodypart.lung.left": "Left Lung",
+  "cultivationcraft.gui.bodypart.lung.right": "Right Lung",
+
+  "cultivationcraft.gui.bodypart.lung.reinforce": "Reinforced Lungs",
+  "cultivationcraft.gui.bodypart.lung.reinforce.description": "Reinforces your lungs, increasing their capacity and slightly increasing your health",
   "cultivationcraft.gui.bodypart.lung.aquatic": "Aquatic Lungs",
   "cultivationcraft.gui.bodypart.lung.aquatic.description": "Allows you to breath in water - and only in water",
   "cultivationcraft.gui.bodypart.lung.fire": "Flaming Lungs",
   "cultivationcraft.gui.bodypart.lung.fire.description": "Store flame in your lungs for use by other body parts - however you can breath nothing but flames",
+  "cultivationcraft.gui.bodypart.lung.mixed": "Mixed Lungs",
+  "cultivationcraft.gui.bodypart.lung.mixed.description": "Modify your lungs to allow each lung to breath differently",
 
   "cultivationcraft.gui.bodypart.skin.stretchy": "Stretchy",
   "cultivationcraft.gui.bodypart.skin.stretchy.description": "Forge your skin to be able to freely stretch into much larger sizes",

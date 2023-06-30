@@ -14,9 +14,11 @@ import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.FoodStats.QiFoodStats;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.StatIDs;
 import DaoOfModding.Cultivationcraft.Common.Reflection;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.food.FoodData;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
 
@@ -64,13 +66,20 @@ public class PlayerHealthManager
                 LungPart part = ((LungPart) modifications.getOption(BodyPartNames.bodyPosition, BodyPartNames.lungSubPosition));
                 lung = part.getLungType();
 
+                ArrayList<BodyPart> lungParts = modifications.getBodyPartsOfType(LungPart.class);
+
                 // Loop through each lung connection and check if a lung type has been assigned
                 for (int i = 0; i < lung.getLungAmount(); i++)
                 {
-                    Lung lungConnection = part.getLung(lung.getConnection(i).location);
+                    ResourceLocation location = lung.getConnection(i).getLocation();
 
-                    if (lungConnection != null)
-                        lung.setLung(i, lungConnection);
+                    for (BodyPart testLung : lungParts)
+                    {
+                        Lung lungConnection = ((LungPart)testLung).getLung(location);
+
+                        if (lungConnection != null)
+                            lung.setLung(i, lungConnection);
+                    }
                 }
 
                 lung = lung.copy(getLungs(player));

@@ -1,22 +1,30 @@
-package DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Lungs;
+package DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Lungs.LungConnection;
 
+import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Lungs.Breath;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Lungs.Lung.Lung;
 import net.minecraft.resources.ResourceLocation;
 
 public class LungConnection
 {
     public static final ResourceLocation location = new ResourceLocation("default");
+    protected ResourceLocation loc;
     protected Lung lung;
 
     public LungConnection(Lung newLung)
     {
         lung = newLung;
+        loc = location;
     }
 
     public void renderLungs(int x, int y)
     {
         lung.render(x, y, false);
         lung.render(x, y, true);
+    }
+
+    public ResourceLocation getLocation()
+    {
+        return loc;
     }
 
     public void setLung(Lung newLung)
