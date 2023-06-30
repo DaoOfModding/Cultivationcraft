@@ -4,6 +4,7 @@ import DaoOfModding.Cultivationcraft.Client.Animations.BodyPartModelNames;
 import DaoOfModding.Cultivationcraft.Client.Physics;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.BodyModifications;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStats;
+import DaoOfModding.Cultivationcraft.Common.PlayerUtils;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartNames;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.QuestHandler;
 import DaoOfModding.Cultivationcraft.Common.Qi.CultivationTypes;
@@ -154,7 +155,7 @@ public class JetTechnique extends MovementOverrideTechnique
         enabled = on;
 
         // Only send info if this is the player character
-        if (player.isLocalPlayer())
+        if (PlayerUtils.isClientPlayerCharacter(player))
         {
             if (enabled)
                 sendInfo(1);

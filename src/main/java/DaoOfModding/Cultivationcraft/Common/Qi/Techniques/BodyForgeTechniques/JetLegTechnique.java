@@ -5,6 +5,7 @@ import DaoOfModding.Cultivationcraft.Client.Animations.BodyPartModelNames;
 import DaoOfModding.Cultivationcraft.Client.Physics;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.BodyModifications;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStats;
+import DaoOfModding.Cultivationcraft.Common.PlayerUtils;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartNames;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.Quest;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.QuestHandler;
@@ -78,7 +79,7 @@ public class JetLegTechnique extends MovementOverrideTechnique
         MultiLimbedModel model = PoseHandler.getPlayerPoseHandler(event.player.getUUID()).getPlayerModel();
 
         // Activate the leg jets if player is moving upwards
-        if ((event.player.isLocalPlayer() && jump) || (!event.player.isLocalPlayer() && currentSpeed.y > 0 && Physics.getDelta(event.player).y > 0))
+        if ((PlayerUtils.isClientPlayerCharacter(event.player) && jump) || (!PlayerUtils.isClientPlayerCharacter(event.player) && currentSpeed.y > 0 && Physics.getDelta(event.player).y > 0))
         {
             model.getLimb(BodyPartModelNames.jetLegLeftEmitter).getModelPart().visible = true;
             model.getLimb(BodyPartModelNames.jetLegRightEmitter).getModelPart().visible = true;

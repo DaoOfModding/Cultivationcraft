@@ -1,6 +1,7 @@
 package DaoOfModding.Cultivationcraft.Common;
 
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.core.Direction;
@@ -17,6 +18,11 @@ public class PlayerUtils
     public static boolean lookingDown(Player player)
     {
         return player.getLookAngle().y < -0.75;
+    }
+
+    public static boolean isClientPlayerCharacter(Player player)
+    {
+        return (player.level.isClientSide && Minecraft.getInstance().player.getUUID().compareTo(player.getUUID()) == 0);
     }
 
     public static Direction movementDirection(Player player)

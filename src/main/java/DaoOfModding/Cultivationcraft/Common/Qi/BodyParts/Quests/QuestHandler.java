@@ -4,6 +4,7 @@ import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.BodyM
 import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.IBodyModifications;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStats;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.ICultivatorStats;
+import DaoOfModding.Cultivationcraft.Common.PlayerUtils;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPart;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartNames;
 import DaoOfModding.Cultivationcraft.Common.Qi.CultivationTypes;
@@ -50,7 +51,7 @@ public class QuestHandler
     public static void resetQuest(Player player, ResourceLocation mode)
     {
         // Don't do anything if this is client side and the player is not the player character
-        if (player.level.isClientSide && !player.isLocalPlayer())
+        if (player.level.isClientSide && !PlayerUtils.isClientPlayerCharacter(player))
             return;
 
         ICultivatorStats stats = CultivatorStats.getCultivatorStats(player);
@@ -74,7 +75,7 @@ public class QuestHandler
     public static void progressQuest(Player player, ResourceLocation mode, double amount)
     {
         // Don't do anything if this is client side and the player is not the player character
-        if (player.level.isClientSide && !player.isLocalPlayer())
+        if (player.level.isClientSide && !PlayerUtils.isClientPlayerCharacter(player))
             return;
 
         amount *= debug.questProgressSpeed;
@@ -108,7 +109,7 @@ public class QuestHandler
         if (progress == 0 && !debug.skipQuest)
             return;
 
-        if (player.isLocalPlayer())
+        if (PlayerUtils.isClientPlayerCharacter(player))
             ClientPacketHandler.sendQuestProgressToServer(player.getUUID(), progress);
         else if (!player.level.isClientSide)
             PacketHandler.sendQuestProgressToClient(player.getUUID(), progress);
@@ -121,7 +122,7 @@ public class QuestHandler
     {
         IBodyModifications modifications = BodyModifications.getBodyModifications(player);
 
-        if (player.isLocalPlayer())
+        if (PlayerUtils.isClientPlayerCharacter(player))
         {
             modifications.setQuestProgress(modifications.getQuestProgress() + progress);
             return;

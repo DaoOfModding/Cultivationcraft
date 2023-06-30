@@ -1,5 +1,6 @@
 package DaoOfModding.Cultivationcraft.Common.Qi.Techniques;
 
+import DaoOfModding.Cultivationcraft.Common.PlayerUtils;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartNames;
 import DaoOfModding.Cultivationcraft.Client.ClientItemControl;
 import DaoOfModding.Cultivationcraft.Client.Renderer;
@@ -42,7 +43,7 @@ public class DivineSenseTechnique extends Technique
     @Override
     public void tickClient(TickEvent.PlayerTickEvent event)
     {
-        if (event.player.isLocalPlayer())
+        if (PlayerUtils.isClientPlayerCharacter(event.player))
             Renderer.QiSourcesVisible = true;
     }
 
@@ -51,7 +52,7 @@ public class DivineSenseTechnique extends Technique
     {
         super.deactivate(player);
 
-        if (player.isLocalPlayer())
+        if (PlayerUtils.isClientPlayerCharacter(player))
             Renderer.QiSourcesVisible = false;
     }
 
