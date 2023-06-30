@@ -54,7 +54,7 @@ public class PlayerHealthManager
     {
         Lungs lung = new Lungs();
 
-        lung = lung.copy(getLungs(player));
+        lung = lung.copy(player);
 
         // If the player is not a body cultivator or has not forged their blood, then return the default blood type
         if (CultivatorStats.getCultivatorStats(player).getCultivationType() == CultivationTypes.BODY_CULTIVATOR)
@@ -82,7 +82,7 @@ public class PlayerHealthManager
                     }
                 }
 
-                lung = lung.copy(getLungs(player));
+                lung = lung.copy(player);
             }
         }
 

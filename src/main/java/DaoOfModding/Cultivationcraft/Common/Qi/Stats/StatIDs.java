@@ -10,6 +10,7 @@ public class StatIDs
     public static final ResourceLocation swimSpeed = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.stat.swimspeed");
     public static final ResourceLocation maxHP = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.stat.maxhp");
     public static final ResourceLocation maxStamina = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.stat.maxstamina");
+    public static final ResourceLocation lungCapacity = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.stat.lungcapacity");
     public static final ResourceLocation jumpHeight = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.stat.jumpheight");
     public static final ResourceLocation fallHeight = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.stat.fallheight");
     public static final ResourceLocation bounceHeight = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.stat.bounceheight");
@@ -48,6 +49,7 @@ public class StatIDs
 
     public static final int defaultMaxHP = 20;
     public static final int defaultMaxStamina = 20;
+    public static final int defaultLungCapacity = 300;
     public static final float defaultMovementSpeed = 0.10000000149011612f;
 
     public static final float defaultSwimSpeed = 1;

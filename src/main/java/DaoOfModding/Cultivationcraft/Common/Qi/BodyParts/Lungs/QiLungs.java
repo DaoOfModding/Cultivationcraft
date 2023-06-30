@@ -1,6 +1,7 @@
 package DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Lungs;
 
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Lungs.Lung.QiLung;
+import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.PlayerHealthManager;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.player.Player;
 
@@ -84,12 +85,16 @@ public class QiLungs extends Lungs
         return suffocating;
     }
 
-    public QiLungs copy(Lungs lungCopy)
+    public QiLungs copy(Player player)
     {
+        Lungs lungCopy = PlayerHealthManager.getLungs(player);
         QiLungs newLung = new QiLungs();
 
         for (int i = 0; i < getLungAmount(); i++)
+        {
             newLung.setLung(i, getConnection(i).getLung());
+            newLung.getConnection(i).calculateCapacity(player);
+        }
 
         newLung.lung[0].getLung().setCurrent(lungCopy.getCurrent(lung[0].getLung().getBreath()) / 2);
         newLung.breathingColor = lungCopy.breathingColor;

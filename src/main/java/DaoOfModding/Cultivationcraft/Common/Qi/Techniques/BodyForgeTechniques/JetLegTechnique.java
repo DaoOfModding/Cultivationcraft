@@ -7,6 +7,8 @@ import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.BodyM
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStats;
 import DaoOfModding.Cultivationcraft.Common.PlayerUtils;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartNames;
+import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Lungs.Breath;
+import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.PlayerHealthManager;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.Quest;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.QuestHandler;
 import DaoOfModding.Cultivationcraft.Common.Qi.CultivationTypes;
@@ -28,9 +30,9 @@ import net.minecraftforge.event.TickEvent;
 
 public class JetLegTechnique extends MovementOverrideTechnique
 {
-    protected float staminaUse = 0.02f;
     protected boolean jump = false;
     protected boolean enabled = false;
+    protected static final float flameUse = 0.025f;
 
     public JetLegTechnique()
     {
@@ -125,7 +127,7 @@ public class JetLegTechnique extends MovementOverrideTechnique
         super.tickServer(event);
         tickInactiveServer(event);
 
-        if (enabled && !StaminaHandler.consumeStamina(event.player, staminaUse))
+        if (enabled && !PlayerHealthManager.getLungs(event.player).drainBreath(Breath.FIRE, flameUse))
             enabled = false;
     }
 
@@ -175,7 +177,7 @@ public class JetLegTechnique extends MovementOverrideTechnique
             return false;
 
         // Do nothing if player is out of stamina
-        if (!StaminaHandler.consumeStamina(player, staminaUse))
+        if (!PlayerHealthManager.getLungs(player).drainBreath(Breath.FIRE, flameUse))
             return false;
 
         jump = true;

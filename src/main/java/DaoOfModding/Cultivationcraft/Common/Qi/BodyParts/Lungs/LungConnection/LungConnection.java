@@ -2,7 +2,10 @@ package DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Lungs.LungConnection;
 
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Lungs.Breath;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Lungs.Lung.Lung;
+import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
+import DaoOfModding.Cultivationcraft.Common.Qi.Stats.StatIDs;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Player;
 
 public class LungConnection
 {
@@ -20,6 +23,16 @@ public class LungConnection
     {
         lung.render(x, y, false);
         lung.render(x, y, true);
+    }
+
+    public void calculateCapacity(Player player)
+    {
+        lung.setCapacity(BodyPartStatControl.getPlayerStatControl(player).getStats().getStat(StatIDs.lungCapacity));
+    }
+
+    public float drain(Breath breath, float amount)
+    {
+        return lung.drain(breath, amount);
     }
 
     public ResourceLocation getLocation()

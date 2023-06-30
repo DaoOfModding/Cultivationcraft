@@ -38,6 +38,7 @@ public class PlayerStatControl
         stats.setStat(StatIDs.weight, StatIDs.defaultWeight);
         stats.setStat(StatIDs.maxHP, StatIDs.defaultMaxHP);
         stats.setStat(StatIDs.maxStamina, StatIDs.defaultMaxStamina);
+        stats.setStat(StatIDs.lungCapacity, StatIDs.defaultLungCapacity);
         stats.setStat(StatIDs.qiAbsorbRange, StatIDs.defaultQiAbsorbRange);
         stats.setStat(StatIDs.staminaUse, StatIDs.defaultStaminaUse);
         stats.setStat(StatIDs.healthRegen, StatIDs.defaultHealthRegen);

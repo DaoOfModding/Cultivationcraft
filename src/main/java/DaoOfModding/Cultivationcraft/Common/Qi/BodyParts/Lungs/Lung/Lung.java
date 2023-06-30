@@ -24,9 +24,37 @@ public class Lung
         return 0;
     }
 
+    // Tries to drain the specified amount of breath from the lungs
+    // Returns the amount that couldn't be drained
+    public float drain(Breath type, float amount)
+    {
+        if (type != canBreath)
+            return amount;
+
+        if (current < amount)
+        {
+            amount -= current;
+            current = 0;
+
+            return amount;
+        }
+
+        current -= amount;
+
+        return 0;
+    }
+
     public void setCurrent(float amount)
     {
         current = amount;
+
+        if (current > capacity)
+            current = capacity;
+    }
+
+    public void setCapacity(float amount)
+    {
+        capacity = amount;
 
         if (current > capacity)
             current = capacity;

@@ -6,6 +6,8 @@ import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.BodyM
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStats;
 import DaoOfModding.Cultivationcraft.Common.PlayerUtils;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartNames;
+import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Lungs.Breath;
+import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.PlayerHealthManager;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.QuestHandler;
 import DaoOfModding.Cultivationcraft.Common.Qi.CultivationTypes;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
@@ -29,7 +31,7 @@ public class JetTechnique extends MovementOverrideTechnique
 {
     public static final ResourceLocation jetQuest = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.quest.jet");
     protected static final float speed = 0.1f;
-    protected static final float staminaUse = 0.01f;
+    protected static final float flameUse = 0.025f;
 
     boolean enabled = false;
     boolean forward = true;
@@ -79,7 +81,7 @@ public class JetTechnique extends MovementOverrideTechnique
         super.tickClient(event);
 
         // Do nothing if player isn't pressing forward or is not in water or does not have the stamina remaining to move
-        if (!forward || event.player.isInWater() || !StaminaHandler.consumeStamina(event.player, staminaUse))
+        if (!forward || event.player.isInWater() || !PlayerHealthManager.getLungs(event.player).drainBreath(Breath.FIRE, flameUse))
         {
             forward = false;
             setMomentum(new Vec3(0, 0, 0));
@@ -109,7 +111,7 @@ public class JetTechnique extends MovementOverrideTechnique
         super.tickServer(event);
 
         if (enabled)
-            StaminaHandler.consumeStamina(event.player, staminaUse);
+            PlayerHealthManager.getLungs(event.player).drainBreath(Breath.FIRE, flameUse);
     }
 
     @Override

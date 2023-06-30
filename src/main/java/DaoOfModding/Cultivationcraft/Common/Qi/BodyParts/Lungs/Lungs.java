@@ -4,6 +4,7 @@ import DaoOfModding.Cultivationcraft.Client.ClientListeners;
 import DaoOfModding.Cultivationcraft.Client.GUI.animatedTexture;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Lungs.Lung.Lung;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Lungs.LungConnection.LungConnection;
+import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.PlayerHealthManager;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.resources.ResourceLocation;
@@ -61,6 +62,19 @@ public class Lungs
             lung[i].renderLungs(x, y);
     }
 
+    public boolean drainBreath(Breath type, float amount)
+    {
+        float toDrain = amount;
+
+        for (int i = 0; i < getLungAmount(); i++)
+            toDrain = lung[i].drain(type, toDrain);
+
+        if (toDrain > 0)
+            return false;
+
+        return true;
+    }
+
     public int getLungAmount()
     {
         return lung.length;
@@ -81,12 +95,16 @@ public class Lungs
         return lung[0].getCurrent(breath);
     }
 
-    public Lungs copy(Lungs lungCopy)
+    public Lungs copy(Player player)
     {
+        Lungs lungCopy = PlayerHealthManager.getLungs(player);
         Lungs newLung = new Lungs();
 
         for (int i = 0; i < getLungAmount(); i++)
+        {
             newLung.setLung(i, getConnection(i).getLung());
+            newLung.getConnection(i).calculateCapacity(player);
+        }
 
         newLung.lung[0].getLung().setCurrent(lungCopy.getCurrent(lung[0].getLung().getBreath()) / 2);
         newLung.breathingColor = lungCopy.breathingColor;
