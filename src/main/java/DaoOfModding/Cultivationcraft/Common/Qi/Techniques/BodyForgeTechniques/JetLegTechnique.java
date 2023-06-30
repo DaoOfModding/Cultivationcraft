@@ -30,6 +30,7 @@ public class JetLegTechnique extends MovementOverrideTechnique
 {
     protected float staminaUse = 0.02f;
     protected boolean jump = false;
+    protected boolean enabled = false;
 
     public JetLegTechnique()
     {
@@ -79,22 +80,26 @@ public class JetLegTechnique extends MovementOverrideTechnique
         MultiLimbedModel model = PoseHandler.getPlayerPoseHandler(event.player.getUUID()).getPlayerModel();
 
         // Activate the leg jets if player is moving upwards
-        if ((PlayerUtils.isClientPlayerCharacter(event.player) && jump) || (!PlayerUtils.isClientPlayerCharacter(event.player) && currentSpeed.y > 0 && Physics.getDelta(event.player).y > 0))
+        if (PlayerUtils.isClientPlayerCharacter(event.player))
         {
-            model.getLimb(BodyPartModelNames.jetLegLeftEmitter).getModelPart().visible = true;
-            model.getLimb(BodyPartModelNames.jetLegRightEmitter).getModelPart().visible = true;
-
-            PoseHandler.getPlayerPoseHandler(event.player.getUUID()).disableJumpingAnimationThisTick = true;
-
-            calculateJetPower(event.player);
+            if (jump)
+                enableJets(true, event.player);
+            else
+                enableJets(false, event.player);
         }
         else
         {
-            model.getLimb(BodyPartModelNames.jetLegLeftEmitter).getModelPart().visible = false;
-            model.getLimb(BodyPartModelNames.jetLegRightEmitter).getModelPart().visible = false;
-
-            setMomentum(new Vec3(0, 0, 0));
+            if (enabled)
+                enableJets(true, event.player);
+            else
+                enableJets(false, event.player);
         }
+
+        if (enabled)
+            calculateJetPower(event.player);
+        else
+            setMomentum(new Vec3(0, 0, 0));
+
 
         jump = false;
 
@@ -119,6 +124,46 @@ public class JetLegTechnique extends MovementOverrideTechnique
 
         super.tickServer(event);
         tickInactiveServer(event);
+
+        if (enabled && !StaminaHandler.consumeStamina(event.player, staminaUse))
+            enabled = false;
+    }
+
+    protected void enableJets(Boolean on, Player player)
+    {
+        MultiLimbedModel model = PoseHandler.getPlayerPoseHandler(player.getUUID()).getPlayerModel();
+
+        // Do nothing if the model has yet to be initialised
+        if (model == null)
+            return;
+
+        if (on)
+        {
+            model.getLimb(BodyPartModelNames.jetLegLeftEmitter).getModelPart().visible = true;
+            model.getLimb(BodyPartModelNames.jetLegRightEmitter).getModelPart().visible = true;
+
+            PoseHandler.getPlayerPoseHandler(player.getUUID()).disableJumpingAnimationThisTick = true;
+        }
+        else
+        {
+            model.getLimb(BodyPartModelNames.jetLegLeftEmitter).getModelPart().visible = false;
+            model.getLimb(BodyPartModelNames.jetLegRightEmitter).getModelPart().visible = false;
+        }
+
+        // Do nothing if not trying to change jet state
+        if (enabled == on)
+            return;
+
+        enabled = on;
+
+        // Only send info if this is the player character
+        if (PlayerUtils.isClientPlayerCharacter(player))
+        {
+            if (enabled)
+                sendInfo(1);
+            else
+                sendInfo(0);
+        }
     }
 
     @Override
@@ -150,5 +195,20 @@ public class JetLegTechnique extends MovementOverrideTechnique
         }
 
         super.deactivate(player);
+    }
+
+    @Override
+    // Process a received int info packet
+    public void processInfo(Player player, int info)
+    {
+        boolean on = false;
+
+        if (info == 1)
+            on = true;
+
+        if (!player.level.isClientSide())
+            enabled = on;
+        else
+            enableJets(on, player);
     }
 }

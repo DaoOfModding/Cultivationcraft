@@ -12,6 +12,7 @@ import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.Technique;
 import DaoOfModding.Cultivationcraft.Common.Reflection;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
+import DaoOfModding.Cultivationcraft.StaminaHandler;
 import DaoOfModding.mlmanimator.Client.Models.GenericLimbNames;
 import DaoOfModding.mlmanimator.Client.Poses.GenericPoses;
 import DaoOfModding.mlmanimator.Client.Poses.PlayerPose;
@@ -76,6 +77,7 @@ public class FloatTechnique extends Technique
         if (jumpPressed)
         {
             canBreathWhileActive = false;
+            StaminaHandler.consumeStamina(event.player, staminaUse);
             floatUp(event.player);
         }
         else
@@ -89,7 +91,10 @@ public class FloatTechnique extends Technique
 
         // Reset flapping if player is on the ground
         if (jumpPressed)
+        {
             canBreathWhileActive = false;
+            StaminaHandler.consumeStamina(event.player, staminaUse);
+        }
         else
             canBreathWhileActive = true;
 

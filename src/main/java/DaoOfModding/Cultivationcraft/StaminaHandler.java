@@ -1,11 +1,8 @@
 package DaoOfModding.Cultivationcraft;
 
-import DaoOfModding.Cultivationcraft.Common.PlayerUtils;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.FoodStats.QiFoodStats;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.StatIDs;
-import DaoOfModding.Cultivationcraft.Network.ClientPacketHandler;
-import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.player.Player;
 
 public class StaminaHandler
@@ -27,8 +24,8 @@ public class StaminaHandler
             return false;
 
         // Update stamina on server here
-        if (PlayerUtils.isClientPlayerCharacter(player))
-            ClientPacketHandler.consumeStaminaOnServer(stamina);
+        /*if (PlayerUtils.isClientPlayerCharacter(player))
+            ClientPacketHandler.consumeStaminaOnServer(stamina);*/
 
         float saturation = player.getFoodData().getSaturationLevel();
 

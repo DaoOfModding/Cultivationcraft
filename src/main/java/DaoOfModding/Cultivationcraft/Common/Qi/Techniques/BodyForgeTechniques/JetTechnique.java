@@ -104,6 +104,15 @@ public class JetTechnique extends MovementOverrideTechnique
     }
 
     @Override
+    public void tickServer(TickEvent.PlayerTickEvent event)
+    {
+        super.tickServer(event);
+
+        if (enabled)
+            StaminaHandler.consumeStamina(event.player, staminaUse);
+    }
+
+    @Override
     public void tickInactiveClient(TickEvent.PlayerTickEvent event)
     {
         super.tickInactiveClient(event);

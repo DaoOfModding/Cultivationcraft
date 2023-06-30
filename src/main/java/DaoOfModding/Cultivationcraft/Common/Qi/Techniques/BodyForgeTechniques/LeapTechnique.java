@@ -137,7 +137,6 @@ public class LeapTechnique extends Technique
         }
         else
         {
-            System.out.println("Leaping...");
             Vec3 currentMotion = Physics.getDelta(player).normalize();
 
             PlayerPose newPose = defaultLeapLegs.clone();
@@ -176,6 +175,7 @@ public class LeapTechnique extends Technique
     // Do the leap
     protected void doLeap(Player player)
     {
+        StaminaHandler.consumeStamina(player, staminaUse);
         leaping = true;
         player.setOnGround(false);
     }
