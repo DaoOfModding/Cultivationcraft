@@ -234,7 +234,7 @@ public class ClientListeners
         {
             tick = (tick + 1) % 800;
 
-            if(ClientItemControl.thisWorld != null)
+            if(ClientItemControl.hasLoaded)
             {
                 // Attempt to process any ChunkQiSource packets pending
                 AddChunkQiSourceToClient.processPackets();

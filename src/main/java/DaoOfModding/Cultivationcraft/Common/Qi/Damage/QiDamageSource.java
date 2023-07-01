@@ -14,7 +14,7 @@ public class QiDamageSource extends DamageSource
     // Internal damage bypasses armor, external does not
     protected boolean internal = false;
 
-    protected Entity entity;
+    protected Entity entity = null;
     protected Vec3 sourcePos;
 
     protected boolean doStatusEffect = true;
@@ -154,7 +154,19 @@ public class QiDamageSource extends DamageSource
             to.setProjectile();
 
         to.entity = from.getEntity();
-        to.sourcePos = from.getSourcePosition();
+
+        try
+        {
+            to.sourcePos = from.getSourcePosition();
+        }
+        // Fixing crashes caused by other mods dying when from.getSourcePosition() is called
+        catch (NullPointerException e)
+        {
+            if (to.entity == null)
+                to.sourcePos = null;
+            else
+                to.sourcePos = to.entity.position();
+        }
 
         if (to.isFire())
             to.doStatusEffect = false;

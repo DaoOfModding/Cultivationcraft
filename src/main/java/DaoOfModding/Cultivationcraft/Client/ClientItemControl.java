@@ -14,8 +14,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
 public class ClientItemControl
 {
-    public static LevelAccessor thisWorld;
-
+    public static Boolean hasLoaded = false;
 
     public static void init(FMLClientSetupEvent event)
     {

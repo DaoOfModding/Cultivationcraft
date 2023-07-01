@@ -7,6 +7,7 @@ import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.Technique;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import DaoOfModding.Cultivationcraft.Network.PacketHandler;
 import DaoOfModding.Cultivationcraft.Server.ServerItemControl;
+import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.fml.LogicalSide;
@@ -102,10 +103,11 @@ public class CultivatorTechniquesPacket extends Packet
     protected void processPacket()
     {
         // Get the stats for the specified player
-        ICultivatorTechniques techs = CultivatorTechniques.getCultivatorTechniques(ClientItemControl.thisWorld.getPlayerByUUID(owner));
+        ICultivatorTechniques techs = CultivatorTechniques.getCultivatorTechniques(Minecraft.getInstance().level.getPlayerByUUID(owner));
 
         for (int i = 0; i < CultivatorTechniques.numberOfTechniques; i++)
-             techs.setTechnique(i, techniques[i]);
+            techs.setTechnique(i, techniques[i]);
+
     }
 
     // Process received packet on server

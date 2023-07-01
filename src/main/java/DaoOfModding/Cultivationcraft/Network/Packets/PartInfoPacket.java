@@ -5,6 +5,7 @@ import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.BodyM
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPart;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import DaoOfModding.Cultivationcraft.Network.PacketHandler;
+import net.minecraft.client.Minecraft;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.network.FriendlyByteBuf;
@@ -99,7 +100,7 @@ public class PartInfoPacket extends Packet
     // Process received packet on the Client
     protected void processPacket()
     {
-        Player Player = ClientItemControl.thisWorld.getPlayerByUUID(player);
+        Player Player = Minecraft.getInstance().level.getPlayerByUUID(player);
 
         BodyPart part;
         // Send the key press to the technique used

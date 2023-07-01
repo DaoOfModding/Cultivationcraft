@@ -6,6 +6,7 @@ import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.IBody
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.CultivatorTechniques;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
+import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.fml.LogicalSide;
@@ -77,7 +78,7 @@ public class BodyModificationsPacket extends Packet
     // Process received packet on client
     protected void processPacket()
     {
-        Player player = ClientItemControl.thisWorld.getPlayerByUUID(owner);
+        Player player = Minecraft.getInstance().level.getPlayerByUUID(owner);
 
         // Get the modifications for the specified player
         IBodyModifications modifications = BodyModifications.getBodyModifications(player);

@@ -144,7 +144,7 @@ public class CommonListeners
     public static void worldLoad(LevelEvent.Load event)
     {
         if (event.getLevel().isClientSide())
-            ClientItemControl.thisWorld = event.getLevel();
+            ClientItemControl.hasLoaded = true;
         else
             ServerItemControl.loaded = true;
     }

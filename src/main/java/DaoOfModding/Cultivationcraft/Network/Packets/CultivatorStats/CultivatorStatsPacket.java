@@ -5,6 +5,7 @@ import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.Cultiva
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.ICultivatorStats;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import DaoOfModding.Cultivationcraft.Network.Packets.Packet;
+import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.network.NetworkEvent;
@@ -95,7 +96,7 @@ public class CultivatorStatsPacket extends Packet
     protected void processPacket()
     {
         // Get the stats for the specified player
-        ICultivatorStats stats = CultivatorStats.getCultivatorStats(ClientItemControl.thisWorld.getPlayerByUUID(owner));
+        ICultivatorStats stats = CultivatorStats.getCultivatorStats(Minecraft.getInstance().level.getPlayerByUUID(owner));
 
         stats.setFlyingItemSpeed(flyingItemSpeed);
         stats.setFlyingItemMaxSpeed(flyingItemMAXSpeed);

@@ -5,6 +5,7 @@ import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.Cu
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.Technique;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import DaoOfModding.Cultivationcraft.Network.PacketHandler;
+import net.minecraft.client.Minecraft;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.network.FriendlyByteBuf;
@@ -85,7 +86,7 @@ public class TechniqueInfoPacket extends Packet
     // Process received packet on the Client
     protected void processPacket()
     {
-        Player Player = ClientItemControl.thisWorld.getPlayerByUUID(player);
+        Player Player = Minecraft.getInstance().level.getPlayerByUUID(player);
 
         // Send the key press to the technique used
         Technique tech = CultivatorTechniques.getCultivatorTechniques(Player).getTechniqueByName(name);

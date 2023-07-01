@@ -6,6 +6,7 @@ import DaoOfModding.Cultivationcraft.Network.Packets.Packet;
 import DaoOfModding.Cultivationcraft.Network.PacketHandler;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.ICultivatorStats;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
+import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.phys.HitResult;
@@ -117,7 +118,7 @@ public class CultivatorTargetPacket extends Packet
 
     protected void processClientPacket()
     {
-        processPacket(ClientItemControl.thisWorld.getPlayerByUUID(player));
+        processPacket(Minecraft.getInstance().level.getPlayerByUUID(player));
     }
 
     // Process received packet
