@@ -68,7 +68,7 @@ public class ClientListeners
 
             // Required to enable swimming in lava
             if (event.getEntity().isInLava())
-                Reflection.setWasTouchingWater(event.getEntity());
+                Reflection.setWasTouchingWater(event.getEntity(), true);
         }
     }
 
@@ -138,6 +138,11 @@ public class ClientListeners
             for (HashMap<String, BodyPartOption> parts : modifications.getModificationOptions().values())
                 for (BodyPartOption part : parts.values())
                     part.onClientTick(event.player);
+
+
+            // Disabled water touching in lava here to stop constant splashing sounds
+            if (event.player.isInLava())
+                Reflection.setWasTouchingWater(event.player, false);
         }
     }
 

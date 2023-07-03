@@ -17,12 +17,15 @@ import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.PlayerStatControl;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.StatIDs;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
+import DaoOfModding.Cultivationcraft.Network.PacketHandler;
 import DaoOfModding.Cultivationcraft.Server.BodyPartControl;
+import DaoOfModding.Cultivationcraft.Server.ServerListeners;
 import DaoOfModding.Cultivationcraft.debug;
 import DaoOfModding.mlmanimator.Client.Poses.PoseHandler;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.fml.LogicalSide;
 
 import java.util.List;
 
@@ -111,6 +114,10 @@ public class MeditateTechnique extends MovementOverrideTechnique
                 toAdd *= debug.qiCollectingSpeed;
 
                 modifications.addProgress(toAdd);
+
+                // Update the client every second to ensure progress doesn't get descynced
+                if (event.side == LogicalSide.SERVER && ServerListeners.tick % 20 == 0)
+                    PacketHandler.sendBodyModificationsToClient(event.player);
             }
         }
     }

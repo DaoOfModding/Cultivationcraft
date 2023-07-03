@@ -80,7 +80,7 @@ public class Damage
             float heal = resistedDamage * -1;
 
             // Cap amount lava can heal to 2hp a second
-            if (event.getSource().getMsgId().compareTo(DamageSource.LAVA.getMsgId()) == 0)
+            if (event.getSource().getMsgId().compareTo(DamageSource.LAVA.getMsgId()) == 0 && heal > 0.2f)
                 heal = 0.2f;
 
             // If taking negative damage then heal that amount

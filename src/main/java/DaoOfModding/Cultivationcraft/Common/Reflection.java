@@ -39,12 +39,12 @@ public class Reflection
         lightningTargetAroundMethod = ObfuscationReflectionHelper.findMethod(ServerLevel.class,"m_143288_", BlockPos.class);
     }
 
-    public static void setWasTouchingWater(Player entity)
+    public static void setWasTouchingWater(Player entity, boolean on)
     {
         try
         {
-            wasTouchingWater.set(entity, true);
-            wasUnderwater.set(entity, true);
+            wasTouchingWater.set(entity, on);
+            wasUnderwater.set(entity, on);
         }
         catch (Exception e)
         {

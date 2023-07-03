@@ -38,12 +38,6 @@ public class ClientPacketHandler
         PacketHandler.channel.sendToServer(pack);
     }
 
-    public static void consumeStaminaOnServer(float stamina)
-    {
-        StaminaUsePacket pack = new StaminaUsePacket(stamina);
-        PacketHandler.channel.sendToServer(pack);
-    }
-
     public static void sendAttackToServer(UUID playerID, HitResult.Type type, Vec3 pos, UUID targetID, int slot)
     {
         AttackPacket pack = new AttackPacket(playerID, type, pos, targetID, slot);

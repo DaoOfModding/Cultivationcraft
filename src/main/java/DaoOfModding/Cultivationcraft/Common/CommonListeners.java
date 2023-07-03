@@ -52,7 +52,7 @@ import java.util.HashMap;
 @Mod.EventBusSubscriber()
 public class CommonListeners
 {
-    protected static ArrayList<IChunkQiSources> tickingQiSources = new ArrayList<IChunkQiSources>();
+    public static ArrayList<IChunkQiSources> tickingQiSources = new ArrayList<IChunkQiSources>();
 
     @SubscribeEvent
     public static void playerTick(TickEvent.PlayerTickEvent event)
@@ -209,7 +209,7 @@ public class CommonListeners
     }
 
     @SubscribeEvent
-    public static void LevelChunkLoad(ChunkEvent.Unload event)
+    public static void LevelChunkUnload(ChunkEvent.Unload event)
     {
         IChunkQiSources sources = ChunkQiSources.getChunkQiSources((LevelChunk) event.getChunk());
         tickingQiSources.remove(sources);

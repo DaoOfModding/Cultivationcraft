@@ -22,6 +22,8 @@ public class QiFoodStats extends FoodData
     public int tickTimer = 0;
     protected float lastFoodLevel = 20;
 
+    protected float lastSendFood = 0;
+
     public void setMaxFood(int newMaxFood)
     {
         maxFood = newMaxFood;
@@ -70,6 +72,16 @@ public class QiFoodStats extends FoodData
                 this.tickTimer = 0;
             }
         }
+    }
+
+    public boolean shouldUpdate()
+    {
+        if (foodLevel == lastFoodLevel)
+            return false;
+
+        lastFoodLevel = foodLevel;
+
+        return true;
     }
 
     protected void drainFood(Player player)

@@ -33,7 +33,7 @@ public class DivineSenseTechnique extends Technique
         multiple = false;
 
         icon = new ResourceLocation(Cultivationcraft.MODID, "textures/techniques/icons/divinesense.png");
-        setOverlay(new ResourceLocation(Cultivationcraft.MODID, "textures/techniques/overlays/divinesense.png"));
+        //setOverlay(new ResourceLocation(Cultivationcraft.MODID, "textures/techniques/overlays/divinesense.png"));
 
         stats.setStat(StatIDs.staminaDrain, 0.05f);
 

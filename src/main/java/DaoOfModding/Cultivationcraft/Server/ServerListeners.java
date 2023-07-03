@@ -6,10 +6,12 @@ import DaoOfModding.Cultivationcraft.Common.Capabilities.ChunkQiSources.IChunkQi
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStats;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.CultivatorTechniques;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.ICultivatorTechniques;
+import DaoOfModding.Cultivationcraft.Common.CommonListeners;
 import DaoOfModding.Cultivationcraft.Common.FlyingSwordController;
 import DaoOfModding.Cultivationcraft.Common.FlyingSwordEntity;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPart;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartOption;
+import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.FoodStats.QiFoodStats;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.PlayerHealthManager;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.Quest;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.QuestHandler;
@@ -25,7 +27,9 @@ import net.minecraftforge.event.entity.item.ItemTossEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.event.level.ChunkEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.common.Mod;
 
 import java.util.ArrayList;
@@ -34,7 +38,6 @@ import java.util.HashMap;
 @Mod.EventBusSubscriber()
 public class ServerListeners
 {
-    protected static ArrayList<IChunkQiSources> tickingQiSources = new ArrayList<IChunkQiSources>();
     public static long lastServerTickTime = System.nanoTime();
     public static int tick = 0;
 
@@ -85,6 +88,14 @@ public class ServerListeners
             for (HashMap<String, BodyPartOption> parts : modifications.getModificationOptions().values())
                 for (BodyPartOption part : parts.values())
                     part.onServerTick(event.player);
+
+            // Update the client every second if it has not been updated to ensure that stamina doesn't get descynced
+            if (tick % 20 == 0)
+            {
+                if (event.player.getFoodData() instanceof QiFoodStats)
+                    if (((QiFoodStats) event.player.getFoodData()).shouldUpdate())
+                        PacketHandler.updateStaminaForClients(((QiFoodStats) event.player.getFoodData()).getTrueFoodLevel(), event.player);
+            }
         }
     }
 
@@ -108,8 +119,12 @@ public class ServerListeners
     @SubscribeEvent
     public static void LevelTick(TickEvent.LevelTickEvent event)
     {
+        // Only do on server
+        if (event.side == LogicalSide.CLIENT)
+            return;
+
         // Clone the array list so it doesn't bork out if modified during ticking
-        ArrayList<IChunkQiSources> ticking = (ArrayList<IChunkQiSources>)tickingQiSources.clone();
+        ArrayList<IChunkQiSources> ticking = (ArrayList<IChunkQiSources>) CommonListeners.tickingQiSources.clone();
 
         for (IChunkQiSources sources : ticking)
         {
@@ -117,7 +132,7 @@ public class ServerListeners
             {
                 boolean update = false;
 
-                if (sources.tick(event.level))
+                if (sources.tick(event.level) || tick % 400 == 0)
                     update = true;
 
                 if (update)

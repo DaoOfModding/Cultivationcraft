@@ -152,6 +152,14 @@ public class PacketHandler
         channel.send(distribute, pack2);
     }
 
+    public static void updateStaminaForClients(float stamina, Player player)
+    {
+        PacketDistributor.PacketTarget target = PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> player);
+
+        StaminaUsePacket pack = new StaminaUsePacket(stamina, player.getUUID());
+        channel.send(target, pack);
+    }
+
     public static void sendBodyModificationsToSpecificClient(Player player, ServerPlayer toSend)
     {
         PacketDistributor.PacketTarget target = PacketDistributor.PLAYER.with(() -> toSend);

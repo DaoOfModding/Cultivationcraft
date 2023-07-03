@@ -63,7 +63,7 @@ public class KeybindingControl
         keyBindings[0] = new KeyMapping("Switch Hotbar", GLFW_KEY_GRAVE_ACCENT, "Cultivation");
         keyBindings[1] = new KeyMapping("Flying Sword Target", GLFW_KEY_R, "Cultivation");
         keyBindings[2] = new KeyMapping("Flying Sword Recall", GLFW_KEY_O, "Cultivation");
-        keyBindings[3] = new KeyMapping("Flying Sword Screen Test", GLFW_KEY_L, "Cultivation");
+        keyBindings[3] = new KeyMapping("Flying Sword Screen Test", GLFW_KEY_K, "Cultivation");
 
         event.register(keyBindings[0]);
         /*event.register(keyBindings[1]);
