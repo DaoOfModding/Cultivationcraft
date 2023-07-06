@@ -29,6 +29,23 @@ public class CultivatorControl
         return -1;
     }
 
+    public static int getTechnique(Player player, Technique techSearch)
+    {
+        // Get all cultivator techniques and check if any of them are active attack overrides
+        ICultivatorTechniques techs = CultivatorTechniques.getCultivatorTechniques(player);
+
+        for (int i = 0; i < 9; i ++)
+        {
+            Technique testTech = techs.getTechnique(i);
+
+            // If this technique is an active attack override then attack with it and cancel the default attack
+            if (testTech == techSearch)
+                return i;
+        }
+
+        return -1;
+    }
+
     // Returns the all active movement overrides for the specified player
     public static ArrayList<MovementOverrideTechnique> getMovementOverride(Player player)
     {

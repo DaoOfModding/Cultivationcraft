@@ -1,6 +1,6 @@
 package DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Lungs.Lung;
 
-import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Lungs.Breath;
+import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Lungs.Breath.Breath;
 import net.minecraft.world.entity.player.Player;
 
 public class QiLung extends Lung

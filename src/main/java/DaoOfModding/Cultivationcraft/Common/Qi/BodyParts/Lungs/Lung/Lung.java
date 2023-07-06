@@ -1,7 +1,7 @@
 package DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Lungs.Lung;
 
 import DaoOfModding.Cultivationcraft.Client.GUI.animatedTexture;
-import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Lungs.Breath;
+import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Lungs.Breath.Breath;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.resources.ResourceLocation;

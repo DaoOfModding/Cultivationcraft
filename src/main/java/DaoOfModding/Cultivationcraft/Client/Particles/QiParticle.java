@@ -88,6 +88,8 @@ public class QiParticle extends TextureSheetParticle
     @Override
     public void tick()
     {
+        //super.tick();
+
         this.xo = this.x;
         this.yo = this.y;
         this.zo = this.z;
@@ -98,12 +100,10 @@ public class QiParticle extends TextureSheetParticle
         }
         else
         {
-            this.x += this.xd;
-            this.y += this.yd;
-            this.z += this.zd;
+            this.move(this.xd, this.yd, this.zd);
 
             // If particle collides with absorbing player
-            if (target != null && target.getBoundingBox().contains(this.x, this.y, this.z))
+            if (target != null && target.getBoundingBox().intersects(this.getBoundingBox()))
                 this.remove();
         }
     }

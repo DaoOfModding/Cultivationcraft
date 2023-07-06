@@ -39,7 +39,7 @@ public class Damage
 
         float multiplier = (1 - (stats.getElementalStat(StatIDs.resistanceModifier, element)  / 100.0f));
 
-        if (multiplier < 0 && !PlayerHealthManager.getBlood(player).canHeal(element))
+        if (multiplier < 0 && !PlayerHealthManager.getBlood(player).canHeal(element, player))
             multiplier = 0;
 
         return damage * multiplier;
@@ -89,8 +89,11 @@ public class Damage
             return true;
         }
 
-        QuestHandler.progressQuest((Player)event.getEntity(), Quest.DAMAGE_TAKEN, resistedDamage);
-        QuestHandler.progressQuest((Player)event.getEntity(), Quest.DAMAGE_RESISTED, event.getAmount() - resistedDamage);
+        if (event.getEntity().hurtTime > 0 && event.getEntity().isAlive())
+        {
+            QuestHandler.progressQuest((Player) event.getEntity(), Quest.DAMAGE_TAKEN, resistedDamage);
+            QuestHandler.progressQuest((Player) event.getEntity(), Quest.DAMAGE_RESISTED, event.getAmount() - resistedDamage);
+        }
 
         if (event.getSource().getEntity() != null && event.getSource().getEntity() instanceof ServerPlayer)
             QuestHandler.damageProgress((Player)event.getSource().getEntity(), damageSourceToQiDamageSource(event.getSource()), resistedDamage);

@@ -2,6 +2,7 @@ package DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Lungs;
 
 import DaoOfModding.Cultivationcraft.Client.ClientListeners;
 import DaoOfModding.Cultivationcraft.Client.GUI.animatedTexture;
+import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Lungs.Breath.Breath;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Lungs.Lung.Lung;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Lungs.LungConnection.LungConnection;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.PlayerHealthManager;
@@ -17,7 +18,7 @@ public class Lungs
     protected animatedTexture lungs = new animatedTexture(new ResourceLocation(Cultivationcraft.MODID, "textures/gui/lungtube.png"));
     protected final animatedTexture lungsFilling = new animatedTexture(new ResourceLocation(Cultivationcraft.MODID, "textures/gui/lungtubefilling.png"));
 
-    protected Color breathingColor = Breath.AIR.color;
+    protected Color breathingColor = Breath.AIR.getColor();
 
     LungConnection[] lung = {new LungConnection(new Lung())};
 
@@ -25,7 +26,7 @@ public class Lungs
     public void breath(Player player)
     {
         Breath breathing = BreathingHandler.getBreath(player);
-        breathingColor = breathing.color;
+        breathingColor = breathing.getColor();
 
         lung[0].getLung().breath(10, breathing, player);
     }

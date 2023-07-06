@@ -98,6 +98,7 @@ public class BodyPartNames
     public static final String burningBloodPart = "burningBlood";
 
     public static final String reinforcedLungPart = "reinforcedLung";
+    public static final String highPressureLungPart = "highpressureLung";
     public static final String floatingLungPart = "floatingLung";
     public static final String aquaticLungPart = "aquaticLung";
     public static final String fireLungPart = "fireLung";
@@ -163,6 +164,7 @@ public class BodyPartNames
         addSubPartDisplayName(armPosition, locationSubPosition, "cultivationcraft.gui.generic.location");
         addSubPartDisplayName(headPosition, locationSubPosition, "cultivationcraft.gui.generic.location");
 
+        addSubPartDisplayName(bodyPosition, LungConnection.location.toString(), "cultivationcraft.gui.bodypart.lung.default");
         addSubPartDisplayName(bodyPosition, LeftLungConnection.location.toString(), "cultivationcraft.gui.bodypart.lung.left");
         addSubPartDisplayName(bodyPosition, RightLungConnection.location.toString(), "cultivationcraft.gui.bodypart.lung.right");
 
@@ -180,6 +182,7 @@ public class BodyPartNames
 
     public static void registerLungLocations()
     {
+        addLungLocation(LungConnection.location);
         addLungLocation(LeftLungConnection.location);
         addLungLocation(RightLungConnection.location);
     }
@@ -354,41 +357,23 @@ public class BodyPartNames
         reinforcedLungs.addUniqueTag(BodyPartTags.lung);
         reinforcedLungs.addNeededPart(BodyPartNames.startingEyesPart);
         reinforcedLungs.setLungType(new QiLungs());
-        reinforcedLungs.setLung(LungConnection.location, new QiLung());
-        reinforcedLungs.getStatChanges().setStat(StatIDs.maxHP, 2);
         reinforcedLungs.getStatChanges().setStat(StatIDs.lungCapacity, 300);
         reinforcedLungs.setQuest(DefaultQuests.defaultLiveQuest);
 
+        LungPart highPressureLungs = new LungPart(highPressureLungPart, bodyPosition, lungSubPosition, "cultivationcraft.gui.bodypart.lung.highpressure");
+        highPressureLungs.addUniqueTag(BodyPartTags.lung);
+        highPressureLungs.addNeededPart(BodyPartNames.startingEyesPart);
+        highPressureLungs.setLungType(new QiLungs());
+        highPressureLungs.getStatChanges().setStat(StatIDs.lungCapacity, 150);
+        highPressureLungs.setQuest(DefaultQuests.defaultLiveQuest);
+
         LungPart floatingLungs = new LungPart(floatingLungPart, bodyPosition, lungSubPosition, "cultivationcraft.gui.bodypart.lung.floating");
         floatingLungs.addUniqueTag(BodyPartTags.lung);
+        floatingLungs.addUniqueTag(BodyPartTags.flight);
         floatingLungs.addNeededPart(BodyPartNames.expandingBodyPart);
         floatingLungs.setLungType(new QiLungs());
-        floatingLungs.setLung(LungConnection.location, new QiLung());
         floatingLungs.setQuest(DefaultQuests.defaultFlightQuest);
         floatingLungs.getStatChanges().setStat(StatIDs.lungCapacity, -100);
-
-        LungPart aquaticLungs = new LungPart(aquaticLungPart, bodyPosition, lungSubPosition, "cultivationcraft.gui.bodypart.lung.aquatic");
-        aquaticLungs.addUniqueTag(BodyPartTags.lung);
-        aquaticLungs.addNeededPart(BodyPartNames.startingEyesPart);
-        aquaticLungs.setLungType(new QiLungs());
-        aquaticLungs.setLung(LungConnection.location, new WaterLung());
-        aquaticLungs.getStatChanges().setElementalStat(StatIDs.resistanceModifier, Elements.waterElement, 50);
-        aquaticLungs.getStatChanges().setElementalStat(StatIDs.resistanceModifier, Elements.windElement, -50);
-        aquaticLungs.setQuest(DefaultQuests.defaultLiveQuest);
-        aquaticLungs.setElement(Elements.waterElement);
-        aquaticLungs.getStatChanges().setStat(StatIDs.lungCapacity, 300);
-
-        LungPart fireLungs = new LungPart(fireLungPart, bodyPosition, lungSubPosition, "cultivationcraft.gui.bodypart.lung.fire");
-        fireLungs.addUniqueTag(BodyPartTags.lung);
-        fireLungs.addUniqueTag(BodyPartTags.flame);
-        fireLungs.addNeededPart(BodyPartNames.startingEyesPart);
-        fireLungs.setLungType(new QiLungs());
-        fireLungs.setLung(LungConnection.location, new FireLung());
-        fireLungs.getStatChanges().setElementalStat(StatIDs.resistanceModifier, Elements.fireElement, 50);
-        fireLungs.getStatChanges().setElementalStat(StatIDs.resistanceModifier, Elements.waterElement, -50);
-        fireLungs.setQuest(DefaultQuests.defaultLiveQuest);
-        fireLungs.setElement(Elements.fireElement);
-        fireLungs.getStatChanges().setStat(StatIDs.lungCapacity, 300);
 
         LungPart mixedLungs = new LungPart(mixedLungPart, bodyPosition, lungSubPosition, "cultivationcraft.gui.bodypart.lung.mixed");
         mixedLungs.addUniqueTag(BodyPartTags.lung);
@@ -397,9 +382,8 @@ public class BodyPartNames
         mixedLungs.setQuest(DefaultQuests.defaultLiveQuest);
 
         addOption(reinforcedLungs);
+        addOption(highPressureLungs);
         addOption(floatingLungs);
-        addOption(aquaticLungs);
-        addOption(fireLungs);
         addOption(mixedLungs);
 
         for (ResourceLocation location : getLungLocations())
@@ -411,7 +395,7 @@ public class BodyPartNames
         LungPart defaultLungs = new LungPart(reinforcedLungPart + location, bodyPosition, location.toString(), "cultivationcraft.gui.bodypart.lung.reinforce");
         defaultLungs.addNeededTags(BodyPartTags.lung);
         defaultLungs.setQuest(DefaultQuests.defaultLiveQuest);
-        defaultLungs.getStatChanges().setStat(StatIDs.maxHP, 1);
+        defaultLungs.getStatChanges().setStat(StatIDs.maxHP, 2);
         defaultLungs.setLung(location, new QiLung());
         defaultLungs.setNeededLungLocation(location);
 
@@ -453,14 +437,14 @@ public class BodyPartNames
         carnivorousStomach.addNeededPart(BodyPartNames.startingEyesPart);
         carnivorousStomach.getStatChanges().setStat(StatIDs.maxStamina, 20);
         carnivorousStomach.setFoodStats(new CarnivoreFoodStats());
-        expandingStomach.setQuest(DefaultQuests.defaultStaminaQuest);
+        carnivorousStomach.setQuest(DefaultQuests.defaultStaminaQuest);
 
         StomachPart herbivoreStomach = new StomachPart(herbivorousStomachPart, bodyPosition, stomachSubPosition,  "cultivationcraft.gui.bodypart.stomach.herbivorous");
         herbivoreStomach.addUniqueTag(BodyPartTags.hunger);
         herbivoreStomach.addNeededPart(BodyPartNames.startingEyesPart);
         herbivoreStomach.getStatChanges().setStat(StatIDs.maxStamina, 20);
         herbivoreStomach.setFoodStats(new HerbivoreFoodStats());
-        expandingStomach.setQuest(DefaultQuests.defaultStaminaQuest);
+        herbivoreStomach.setQuest(DefaultQuests.defaultStaminaQuest);
 
         addOption(expandingStomach);
         addOption(carnivorousStomach);
@@ -601,7 +585,7 @@ public class BodyPartNames
         dfin.addQuad(BodyPartModelNames.dorsalFinQuad);
         dfin.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.basePosition);
         dfin.getStatChanges().setStat(StatIDs.weight, 0.01f);
-        dfin.getStatChanges().setStat(StatIDs.swimSpeed, 0.5f);
+        dfin.getStatChanges().setStat(StatIDs.swimSpeed, 1f);
         dfin.setQuest(DefaultQuests.defaultSwimQuest);
 
         addOption(addWings);
@@ -681,7 +665,7 @@ public class BodyPartNames
         fArm.addArm(new Arm(InteractionHand.MAIN_HAND, BodyPartModelNames.flipperRightModel, BodyPartModelNames.flipperLowerRightModel, false));
         fArm.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.basePosition);
         fArm.getStatChanges().setStat(StatIDs.weight, DefaultPlayerBodyPartWeights.armWeight * -1.8f);
-        fArm.getStatChanges().setStat(StatIDs.swimSpeed, 0.5f);
+        fArm.getStatChanges().setStat(StatIDs.swimSpeed, 1f);
         fArm.getStatChanges().setStat(StatIDs.armAttackModifier, -0.5f);
         fArm.setQuest(DefaultQuests.defaultSwimQuest);
 

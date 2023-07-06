@@ -27,6 +27,8 @@ public class TechniqueControl
         TechniqueControl.addTechnique(BounceTechnique.class);
         TechniqueControl.addTechnique(JetLegTechnique.class);
         TechniqueControl.addTechnique(JetTechnique.class);
+        TechniqueControl.addTechnique(SpitTechnique.class);
+        TechniqueControl.addTechnique(BeamTechnique.class);
         TechniqueControl.addPassiveTechnique(ExpandingStomachTechnique.class);
         TechniqueControl.addPassiveTechnique(GlideTechnique.class);
     }

@@ -78,7 +78,7 @@ public class GlideTechnique extends PassiveTechnique
         double zMotion = currentMotion.z + direction.z * speedModifer;
         double yMotion = currentMotion.y;
 
-        double horizontalSpeedPercentage = (1 - (horizontalSpeed / maxHorizontalSpeed));
+        double horizontalSpeedPercentage = (1 - Math.min(horizontalSpeed / maxHorizontalSpeed, 1));
 
         // Only reduce fall speed if falling
         // Adjust fall speed based on horizontal movement

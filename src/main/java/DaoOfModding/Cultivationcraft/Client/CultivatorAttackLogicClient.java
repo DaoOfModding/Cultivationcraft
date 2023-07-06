@@ -25,7 +25,7 @@ public class CultivatorAttackLogicClient
     {
         HitResult result = KeybindingControl.getMouseOver(range);
 
-        if (result.getType() == HitResult.Type.BLOCK)
+        if (result != null && result.getType() == HitResult.Type.BLOCK)
             return ((BlockHitResult) result).getBlockPos();
 
         return null;

@@ -112,7 +112,6 @@ public class QiSourceRenderer
 
         direction = direction.normalize();
 
-        // TODO: These don't seem to clean up properly, causing lag over time
         qisource = source;
         target = absorbing;
         Minecraft.getInstance().level.addParticle(Register.qiParticleType.get(), x, y, z, direction.x, direction.y, direction.z);

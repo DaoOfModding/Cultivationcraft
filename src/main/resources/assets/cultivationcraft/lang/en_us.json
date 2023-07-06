@@ -122,6 +122,8 @@
   "cultivationcraft.technique.bounce": "Bounce Harder",
   "cultivationcraft.technique.bounce.description": "Toggle on to curl yourself into a ball when in the air, increasing the amount you bounce when you land",
 
+  "cultivationcraft.technique.exhale": "Exhale Breath",
+  "cultivationcraft.technique.exhale.description": "Exhale your breath at high speed to damage enemies and break blocks",
 
   "cultivationcraft.commands.reset.single": "%s had their bodyforge status reset",
   "cultivationcraft.commands.reset.multiple": "%s players had their bodyforge status reset",
@@ -219,11 +221,14 @@
   "cultivationcraft.gui.bodypart.blood.burning": "Burning Blood",
   "cultivationcraft.gui.bodypart.blood.burning.description": "Blood so hot it burns everything it touches. Including you.\nAllows you to break the fire resistance cap and be healed by fire damage",
 
+  "cultivationcraft.gui.bodypart.lung.default": "Lung Type",
   "cultivationcraft.gui.bodypart.lung.left": "Left Lung",
   "cultivationcraft.gui.bodypart.lung.right": "Right Lung",
 
   "cultivationcraft.gui.bodypart.lung.reinforce": "Reinforced Lungs",
   "cultivationcraft.gui.bodypart.lung.reinforce.description": "Reinforces your lungs, increasing their capacity and slightly increasing your health",
+  "cultivationcraft.gui.bodypart.lung.highpressure": "High Pressure Lungs",
+  "cultivationcraft.gui.bodypart.lung.highpressure.description": "Pressurises your lungs, allowing you to expel their contents at high velocity",
   "cultivationcraft.gui.bodypart.lung.floating": "Inflatable Lungs",
   "cultivationcraft.gui.bodypart.lung.floating.description": "Allows you to expand your lungs, causing you to float whilst holding your breath",
   "cultivationcraft.gui.bodypart.lung.aquatic": "Aquatic Lungs",

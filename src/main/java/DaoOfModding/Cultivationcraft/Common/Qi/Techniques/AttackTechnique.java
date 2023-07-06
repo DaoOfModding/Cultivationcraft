@@ -13,6 +13,8 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
@@ -79,6 +81,11 @@ public class AttackTechnique extends Technique
         return damage;
     }
 
+    protected float getMinePower(BlockGetter p_60801_, BlockPos p_60802_)
+    {
+        return minePower;
+    }
+
     public void attackNothing(Player player)
     {
         player.level.playSound((Player) null, player.getX(), player.getY(), player.getZ(), missSound, player.getSoundSource(), 1.0F, 1.0F);
@@ -87,8 +94,11 @@ public class AttackTechnique extends Technique
     public void attackBlock(Player player, BlockState block, BlockPos pos)
     {
         player.level.playSound((Player) null, player.getX(), player.getY(), player.getZ(), attackSound, player.getSoundSource(), 1.0F, 1.0F);
+    }
 
-        // TODO: Mine block here
+    protected void onBlockDestroy(Level level, BlockPos pos)
+    {
+
     }
 
     // Attack specified entity with specified player, server only

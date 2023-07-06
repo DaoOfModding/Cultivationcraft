@@ -13,6 +13,7 @@ import com.mojang.math.Vector3f;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 public class Blood
@@ -33,7 +34,7 @@ public class Blood
         return orbFilling;
     }
 
-    public boolean canHeal(ResourceLocation element)
+    public boolean canHeal(ResourceLocation element, @Nullable Player player)
     {
         return false;
     }

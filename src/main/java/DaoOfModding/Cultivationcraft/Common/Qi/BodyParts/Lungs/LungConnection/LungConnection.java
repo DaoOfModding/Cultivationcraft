@@ -1,6 +1,6 @@
 package DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Lungs.LungConnection;
 
-import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Lungs.Breath;
+import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Lungs.Breath.Breath;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Lungs.Lung.Lung;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.StatIDs;
@@ -9,7 +9,7 @@ import net.minecraft.world.entity.player.Player;
 
 public class LungConnection
 {
-    public static final ResourceLocation location = new ResourceLocation("default");
+    public static final ResourceLocation location = new ResourceLocation("defaultlung");
     protected ResourceLocation loc;
     protected Lung lung;
 

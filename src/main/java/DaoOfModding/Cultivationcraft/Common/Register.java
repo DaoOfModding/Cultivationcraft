@@ -1,6 +1,8 @@
 package DaoOfModding.Cultivationcraft.Common;
 
 import DaoOfModding.Cultivationcraft.Client.Particles.Blood.BloodParticleType;
+import DaoOfModding.Cultivationcraft.Client.Particles.Spit.SpitParticleType;
+import DaoOfModding.Cultivationcraft.Client.Particles.WaterParticle.WaterParticleType;
 import DaoOfModding.Cultivationcraft.Common.Containers.FlyingSwordContainer;
 import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
@@ -55,6 +57,8 @@ public class Register
 
     public static final RegistryObject<SimpleParticleType> qiParticleType = PARTICLES.register("qiparticle", () -> new SimpleParticleType(true));
     public static final RegistryObject<BloodParticleType> bloodParticleType = PARTICLES.register("bloodparticle", () -> new BloodParticleType());
+    public static final RegistryObject<SpitParticleType> spitParticleType = PARTICLES.register("spitparticle", () -> new SpitParticleType());
+    public static final RegistryObject<WaterParticleType> waterParticleType = PARTICLES.register("waterparticle", () -> new WaterParticleType());
 
     // Override vanilla lava to make it swimmable and drownable
     private static final DeferredRegister<FluidType> VANILLA_FLUID_TYPES = DeferredRegister.create(ForgeRegistries.Keys.FLUID_TYPES, "minecraft");

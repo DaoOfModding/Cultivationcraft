@@ -1,5 +1,6 @@
 package DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Lungs;
 
+import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Lungs.Breath.Breath;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Lungs.Lung.QiLung;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.PlayerHealthManager;
 import net.minecraft.world.damagesource.DamageSource;
@@ -20,7 +21,7 @@ public class QiLungs extends Lungs
         player.setAirSupply(40);
 
         Breath breathing = BreathingHandler.getBreath(player);
-        breathingColor = breathing.color;
+        breathingColor = breathing.getColor();
 
         float amountRemaining = 10;
 

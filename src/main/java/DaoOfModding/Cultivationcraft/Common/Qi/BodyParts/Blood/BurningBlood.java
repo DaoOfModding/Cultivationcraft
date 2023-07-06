@@ -12,6 +12,8 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 
+import javax.annotation.Nullable;
+
 public class BurningBlood extends CultivatorBlood
 {
     int tick = 0;
@@ -52,9 +54,9 @@ public class BurningBlood extends CultivatorBlood
     }
 
     @Override
-    public boolean canHeal(ResourceLocation element)
+    public boolean canHeal(ResourceLocation element, @Nullable Player player)
     {
-        if (element == Elements.fireElement)
+        if (element == Elements.fireElement && (player == null || player.hurtTime == 0))
             return true;
 
         return false;

@@ -49,7 +49,7 @@ public class BodyPartStatControl
 
         if (stats.elementalStats.get(StatIDs.resistanceModifier) != null)
             for (Map.Entry<ResourceLocation, Float> eStat : stats.elementalStats.get(StatIDs.resistanceModifier).entrySet())
-                if (eStat.getValue() > 100 && !blood.canHeal(eStat.getKey()))
+                if (eStat.getValue() > 100 && !blood.canHeal(eStat.getKey(), null))
                     stats.setElementalStat(StatIDs.resistanceModifier, eStat.getKey(), 100);
     }
 

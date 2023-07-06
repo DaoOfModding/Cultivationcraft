@@ -54,7 +54,7 @@ public class Technique
     protected int cooldownCount = 0;
 
     // Length of time until max channel in ticks
-    protected int channelLength = 1;
+    protected int channelLength = 0;
     protected int currentChannel = 0;
 
     protected PlayerPose pose = new PlayerPose();
@@ -219,6 +219,9 @@ public class Technique
 
     protected void addModifiers(Player player)
     {
+        if (modifiers.size() == 0 && effects.size() == 0)
+            return;
+
         AttributeInstance modifierInstance = player.getAttribute(net.minecraftforge.common.ForgeMod.ENTITY_GRAVITY.get());
 
         for (AttributeModifier modifier : modifiers)
@@ -229,12 +232,14 @@ public class Technique
             if (!player.hasEffect(effect))
                 player.addEffect(new MobEffectInstance(effect, 9999999, 0, false, false));
 
-        if (stats != null)
-            BodyPartStatControl.updateStats(player);
+        BodyPartStatControl.updateStats(player);
     }
 
     protected void removeModifiers(Player player)
     {
+        if (modifiers.size() == 0 && effects.size() == 0)
+            return;
+
         AttributeInstance modifierInstance = player.getAttribute(net.minecraftforge.common.ForgeMod.ENTITY_GRAVITY.get());
 
         for (AttributeModifier modifier : modifiers)
@@ -244,8 +249,7 @@ public class Technique
             if (player.hasEffect(effect))
                 player.removeEffect(effect);
 
-        if (stats != null)
-            BodyPartStatControl.updateStats(player);
+        BodyPartStatControl.updateStats(player);
     }
 
     // Called when the use key is released for a channel skill
@@ -348,9 +352,6 @@ public class Technique
             return;
         }
 
-        if (legAnimationLockOff)
-            legAnimationCountdown = animationRecoveryTime;
-
         addModifiers(event.player);
 
         // While the key is being held down increase the currentChannel duration
@@ -369,7 +370,10 @@ public class Technique
         }
 
         if (legAnimationLockOff)
+        {
             PoseHandler.getPlayerPoseHandler(event.player.getUUID()).lockLegPose(null);
+            legAnimationCountdown = animationRecoveryTime;
+        }
 
         addModifiers(event.player);
 
@@ -411,7 +415,7 @@ public class Technique
     // Put code here for things only the person using the technique can see
     public void renderPlayerView()
     {
-        if (active && type == useType.Channel)
+        if (active && type == useType.Channel && channelLength > 0)
         {
             int scaledWidth = Minecraft.getInstance().getWindow().getGuiScaledWidth();
             int scaledHeight = Minecraft.getInstance().getWindow().getGuiScaledHeight();
