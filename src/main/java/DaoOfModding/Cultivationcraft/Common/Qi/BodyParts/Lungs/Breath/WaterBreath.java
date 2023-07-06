@@ -6,6 +6,7 @@ import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FlowingFluid;
 import net.minecraft.world.phys.Vec3;
 
@@ -25,9 +26,10 @@ public class WaterBreath extends Breath
         return new WaterParticleData(endTarget, targetEntity);
     }
 
-    @Override
     public void onBlockDestroy(Level level, BlockPos pos)
     {
-        level.setBlock(pos, fluid.getSource().defaultFluidState().createLegacyBlock(), 2);
+        BlockState state = fluid.getSource().defaultFluidState().createLegacyBlock();
+
+        level.setBlock(pos, state, 2);
     }
 }

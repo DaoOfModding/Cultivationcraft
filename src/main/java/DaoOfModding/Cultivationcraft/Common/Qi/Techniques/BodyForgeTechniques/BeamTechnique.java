@@ -66,8 +66,9 @@ public class BeamTechnique extends ChanneledAttackTechnique
         if (!PlayerHealthManager.getLungs(event.player).drainBreath(breath, consumptionAmount))
             return;
 
-        if (ClientListeners.tick % 10 == 0)
-            event.player.level.playSound((Player) null, event.player.getX(), event.player.getY(), event.player.getZ(), SoundEvents.BUBBLE_COLUMN_BUBBLE_POP, event.player.getSoundSource(), 1.0F, 1.0F);
+        // This was doing nothing
+        //if (ClientListeners.tick % 10 == 0)
+        //    event.player.level.playSound((Player) null, event.player.getX(), event.player.getY(), event.player.getZ(), SoundEvents.BUBBLE_COLUMN_BUBBLE_POP, event.player.getSoundSource(), 1.0F, 1.0F);
 
         super.tickClient(event);
 
@@ -117,7 +118,7 @@ public class BeamTechnique extends ChanneledAttackTechnique
 
     public void onBlockDestroy(Level level, BlockPos pos)
     {
-        breath.onBlockDestroy(level, target);
+        breath.onBlockDestroy(level, pos);
     }
 
     public float getAttack(Player player)

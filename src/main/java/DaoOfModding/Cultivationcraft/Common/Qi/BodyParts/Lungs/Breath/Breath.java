@@ -74,7 +74,6 @@ public class Breath
 
     public void onBlockDestroy(Level level, BlockPos pos)
     {
-
     }
 
     public float getDigPower(BlockGetter p_60801_, BlockPos p_60802_)

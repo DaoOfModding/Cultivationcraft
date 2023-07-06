@@ -219,6 +219,9 @@ public class CommonListeners
     @SubscribeEvent
     public static void playerJoinsWorld(PlayerEvent.PlayerLoggedInEvent event)
     {
+        // Set 5 seconds where the logged in player cannot take damage
+        event.getEntity().hurtTime = 100;
+
         CultivatorStats.getCultivatorStats(event.getEntity()).setDisconnected(false);
 
         CultivatorTechniques.getCultivatorTechniques(event.getEntity()).determinePassives(event.getEntity());
