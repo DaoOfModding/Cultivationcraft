@@ -1,5 +1,8 @@
 package DaoOfModding.Cultivationcraft.Client.GUI;
 
+import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.CultivatorTechniques;
+import DaoOfModding.Cultivationcraft.Common.Qi.TechniqueControl;
+import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.Technique;
 import DaoOfModding.Cultivationcraft.Network.ClientPacketHandler;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -72,8 +75,13 @@ public class SkillHotbarOverlay
     // Called when the use item button is pressed and the hotbar is active
     public static void useSkill(boolean keyDown)
     {
+        if (!isActive())
+            return;
+
+        Technique tech = CultivatorTechniques.getCultivatorTechniques(Minecraft.getInstance().player).getTechnique(skillSelected);
+
+        if (tech != null && (tech.getType() != Technique.useType.Channel || !(tech.isActive() && keyDown)))
         // Send message to server to use this skill
-        if (isActive())
             ClientPacketHandler.sendTechniqueUseToServer(skillSelected, keyDown);
     }
 

@@ -4,7 +4,6 @@ import DaoOfModding.Cultivationcraft.Client.CultivatorAttackLogicClient;
 import DaoOfModding.Cultivationcraft.Common.Qi.CultivatorControl;
 import DaoOfModding.Cultivationcraft.Network.ClientPacketHandler;
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.state.BlockState;
@@ -132,35 +131,5 @@ public class ChanneledAttackTechnique extends AttackTechnique
         player.level.destroyBlockProgress(player.getId(), null, -1);
 
         target = null;
-    }
-
-    @Override
-    public void readNBTData(CompoundTag nbt)
-    {
-        super.readNBTData(nbt);
-
-        progress = nbt.getFloat("progress");
-
-        if (nbt.contains("targetX"))
-        {
-            target = new BlockPos(nbt.getInt("targetX"), nbt.getInt("targetY"), nbt.getInt("targetZ"));
-        }
-    }
-
-    @Override
-    public CompoundTag writeNBT()
-    {
-        CompoundTag nbt = super.writeNBT();
-
-        nbt.putFloat("progress", progress);
-
-        if (target != null)
-        {
-            nbt.putInt("targetX", target.getX());
-            nbt.putInt("targetY", target.getY());
-            nbt.putInt("targetZ", target.getZ());
-        }
-
-        return nbt;
     }
 }

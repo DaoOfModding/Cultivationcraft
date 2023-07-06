@@ -33,7 +33,7 @@ import java.util.ArrayList;
 
 public class Technique
 {
-    protected enum useType {Toggle, Channel, Tap};
+    public enum useType {Toggle, Channel, Tap};
 
     protected useType type;
 
@@ -92,6 +92,11 @@ public class Technique
     {
         legAnimationLockOff = true;
         animationRecoveryTime = ticksWhileDeactivated;
+    }
+
+    public useType getType()
+    {
+        return type;
     }
 
     public boolean disableBreathing()
