@@ -15,6 +15,9 @@ import DaoOfModding.Cultivationcraft.Common.Commands.BodyforgeCommand;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPart;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartOption;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.FoodStats.QiFoodStats;
+import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Lungs.Lung.Lung;
+import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Lungs.Lungs;
+import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.PlayerHealthManager;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.Quest;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.QuestHandler;
 import DaoOfModding.Cultivationcraft.Common.Qi.Damage.Damage;
@@ -268,6 +271,15 @@ public class CommonListeners
             ServerItemControl.sendPlayerStats(event.getEntity(), (Player)event.getEntity());
 
         BodyPartStatControl.updateStats(event.getEntity());
+
+        // Refill lungs on spawn
+        Lungs lung = PlayerHealthManager.getLungs(event.getEntity());
+
+        for (int i = 0; i < lung.getLungAmount(); i++)
+        {
+            Lung currentLung = lung.getConnection(i).getLung();
+            currentLung.setCurrent(currentLung.getCapacity());
+        }
     }
 
     // Fired off when an player changes dimension

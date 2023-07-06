@@ -80,6 +80,11 @@ public class Lung
         return current / capacity;
     }
 
+    public float getCapacity()
+    {
+        return capacity;
+    }
+
     public void render(int x, int y, boolean mirror)
     {
         float breathPercent = getFullness();

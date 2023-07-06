@@ -119,9 +119,14 @@ public class Renderer
 
         float staminaPercent = stamina/maxStamina;
 
+        float saturationPercent =  genericClientFunctions.getPlayer().getFoodData().getSaturationLevel()/maxStamina;
+
 
         RenderSystem.setShaderColor(1.0F, 0.5F, 0.0F, 0.7F);
         outerfilling.render((int)(scaledWidth * 0.1 - 5), (int)(scaledHeight - (5 + 50 * staminaPercent)), 50, (int)(50 * staminaPercent), staminaPercent);
+
+        RenderSystem.setShaderColor(1.0F, 0.9F, 0.2F, 0.5F);
+        outerfilling.render((int)(scaledWidth * 0.1 - 5), (int)(scaledHeight - (5 + 50 * saturationPercent)), 50, (int)(50 * saturationPercent), saturationPercent);
 
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         healthOrb.render((int)(scaledWidth * 0.1 - 5), scaledHeight - 55, 50, 50);

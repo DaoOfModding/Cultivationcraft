@@ -1,6 +1,5 @@
 package DaoOfModding.Cultivationcraft.Common.Qi.Techniques.BodyForgeTechniques;
 
-import DaoOfModding.Cultivationcraft.Client.ClientListeners;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.BodyModifications;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStats;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.ICultivatorStats;
@@ -17,7 +16,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -53,8 +51,7 @@ public class BeamTechnique extends ChanneledAttackTechnique
         {
             breath = PlayerHealthManager.getLungs(player).getConnection(0).getLung().getBreath();
 
-            if (breath.canExpell())
-                return true;
+            return breath.canExpell();
         }
 
         return false;

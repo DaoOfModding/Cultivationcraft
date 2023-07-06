@@ -6,6 +6,7 @@ import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.QuestHandler;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.StatIDs;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
+import DaoOfModding.Cultivationcraft.StaminaHandler;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.food.FoodData;
@@ -55,7 +56,7 @@ public class QiFoodStats extends FoodData
 
         // Handle passive stamina drain
         // Divided by 20 to convert seconds into ticks
-        setFoodLevel(Math.min(Math.max(getTrueFoodLevel() - BodyPartStatControl.getStats(player).getStat(StatIDs.staminaDrain) / 20, 0), getMaxFood()));
+        StaminaHandler.consumeStamina(player,BodyPartStatControl.getStats(player).getStat(StatIDs.staminaDrain) / 20.0f);
 
         // Get the player's blood and let it handle passive regen
         PlayerHealthManager.getBlood(player).regen(player);
