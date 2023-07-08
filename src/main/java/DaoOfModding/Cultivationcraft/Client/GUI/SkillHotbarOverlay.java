@@ -83,6 +83,9 @@ public class SkillHotbarOverlay
         if (tech != null && (tech.getType() != Technique.useType.Channel || !(tech.isActive() && keyDown)))
         // Send message to server to use this skill
             ClientPacketHandler.sendTechniqueUseToServer(skillSelected, keyDown);
+
+        if (tech != null & !keyDown && tech.getType() != Technique.useType.Channel)
+            tech.deactivate(Minecraft.getInstance().player);
     }
 
     public static void setSelection(int selection)

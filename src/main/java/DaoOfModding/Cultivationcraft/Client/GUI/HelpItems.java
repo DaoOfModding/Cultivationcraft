@@ -25,6 +25,7 @@ public class HelpItems
         addStatsField(new SelectableText("cultivationcraft.stat.maxstamina"));
         addStatsField(new SelectableText("cultivationcraft.stat.staminadrain"));
         addStatsField(new SelectableText("cultivationcraft.stat.staminause"));
+        addStatsField(new SelectableText("cultivationcraft.stat.lungcapacity"));
         addStatsField(new SelectableText("cultivationcraft.stat.jumpheight"));
         addStatsField(new SelectableText("cultivationcraft.stat.fallheight"));
         addStatsField(new SelectableText("cultivationcraft.stat.bounceheight"));

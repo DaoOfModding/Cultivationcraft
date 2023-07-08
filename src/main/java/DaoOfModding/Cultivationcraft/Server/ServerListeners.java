@@ -20,6 +20,7 @@ import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.PassiveTechniques.Pass
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import DaoOfModding.Cultivationcraft.Network.PacketHandler;
 import DaoOfModding.Cultivationcraft.StaminaHandler;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.chunk.LevelChunk;
@@ -98,6 +99,24 @@ public class ServerListeners
                         PacketHandler.updateStaminaForClients(((QiFoodStats) event.player.getFoodData()).getTrueFoodLevel(), event.player);
             }
         }
+    }
+
+    @SubscribeEvent
+    public static void startTracking(PlayerEvent.StartTracking event)
+    {
+        if (event.getEntity().level.isClientSide)
+            return;
+
+        if (!(event.getTarget() instanceof  Player))
+            return;
+
+        Player target = (Player)event.getTarget();
+
+        PacketHandler.sendBodyModificationsToSpecificClient(target, (ServerPlayer) event.getEntity());
+        PacketHandler.sendCultivatorTechniquesToSpecificClient(target, (ServerPlayer) event.getEntity());
+
+        if (target.getFoodData() instanceof QiFoodStats)
+            PacketHandler.updateStaminaForClients(((QiFoodStats) target.getFoodData()).getTrueFoodLevel(), target);
     }
 
     @SubscribeEvent

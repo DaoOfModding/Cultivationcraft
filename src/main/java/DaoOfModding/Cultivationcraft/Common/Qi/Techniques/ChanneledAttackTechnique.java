@@ -44,7 +44,9 @@ public class ChanneledAttackTechnique extends AttackTechnique
     {
         super.deactivate(player);
 
-        unmine(player);
+        if (player.level.isClientSide)
+            unmine(player);
+
         targetEntity = null;
     }
 

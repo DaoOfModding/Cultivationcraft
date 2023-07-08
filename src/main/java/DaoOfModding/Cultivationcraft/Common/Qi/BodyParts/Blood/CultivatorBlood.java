@@ -19,8 +19,23 @@ public class CultivatorBlood extends Blood
 
         QiFoodStats food = (QiFoodStats)player.getFoodData();
 
+        if (flag && food.getSaturationLevel() > 0.0F && player.isHurt() && food.getFoodLevel() >= food.getMaxFood())
+        {
+            ++food.tickTimer;
+            if (food.tickTimer >= 10)
+            {
+                float f = Math.min(food.getSaturationLevel(), 4.0F);
+
+                if (!player.level.isClientSide)
+                    QuestHandler.progressQuest(player, Quest.HEAL, f / 4.0F);
+
+                player.heal(f / 4.0F);
+                food.addExhaustion(f);
+                food.tickTimer = 0;
+            }
+        }
         // If the player has stamina and is hurt, then heal
-        if (flag && food.getFoodLevel() > 0 && player.isHurt())
+        else if (flag && food.getFoodLevel() > 0 && player.isHurt())
         {
             // Get player regen, divided by 20 to convert seconds into ticks
             float regen = BodyPartStatControl.getStats(player).getStat(StatIDs.healthRegen) / 20;
