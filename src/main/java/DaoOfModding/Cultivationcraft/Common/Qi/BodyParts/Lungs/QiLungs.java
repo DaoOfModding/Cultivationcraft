@@ -5,6 +5,7 @@ import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Lungs.Lung.QiLung;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.PlayerHealthManager;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 
 public class QiLungs extends Lungs
 {
@@ -23,7 +24,8 @@ public class QiLungs extends Lungs
         Breath breathing = BreathingHandler.getBreath(player);
         breathingColor = breathing.getColor();
 
-        float amountRemaining = 10;
+        int Respiration = EnchantmentHelper.getRespiration(player);
+        Float amountRemaining = 10.0f / (Respiration + 1);
 
         if (!canBreath(breathing))
         {
