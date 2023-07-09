@@ -207,6 +207,8 @@
   "cultivationcraft.gui.bodypart.bone.hollow.description": "Hollows out the inside of your bones, vastly decreasing your weight but also decreasing your armor",
   "cultivationcraft.gui.bodypart.bone.small": "Small Bones",
   "cultivationcraft.gui.bodypart.bone.small.description": "Decreases the size of your bones, decreasing your overall size and weight, but offering you no additional protection",
+  "cultivationcraft.gui.bodypart.bone.dinosaur": "Dinosaur Bones",
+  "cultivationcraft.gui.bodypart.bone.dinosaur.description": "Incredibly large, heavy bones that provide both high defensive and offensive power",
   "cultivationcraft.gui.bodypart.bone.sharp": "Sharp Bones",
   "cultivationcraft.gui.bodypart.bone.sharp.description": "Sharpen bones, provides no extra protection but deals much more damage",
 

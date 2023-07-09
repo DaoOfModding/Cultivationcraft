@@ -200,29 +200,57 @@ public class CultivatorModelHandler
         GenericCultivatorTextureValues.addCultivatorBodyLayers(model.getLimb(GenericLimbNames.body), 0, 0);
         model.getLimb(GenericLimbNames.body).generateCube();
 
-        GenericCultivatorTextureValues.addCultivatorRightArmLayers(model.getLimb(GenericLimbNames.rightArm), 0, 0);
-        GenericCultivatorTextureValues.addCultivatorLeftArmLayers(model.getLimb(GenericLimbNames.leftArm), 0, 0);
-        model.getLimb(GenericLimbNames.rightArm).generateCube();
-        model.getLimb(GenericLimbNames.leftArm).generateCube();
+        if (model.getLimb(GenericLimbNames.rightArm) != null)
+        {
+            GenericCultivatorTextureValues.addCultivatorRightArmLayers(model.getLimb(GenericLimbNames.rightArm), 0, 0);
+            model.getLimb(GenericLimbNames.rightArm).generateCube();
+        }
 
-        model.getLimb(GenericLimbNames.lowerLeftArm).addLayer(new UVPair(GenericTextureValues.leftArm.u(), GenericTextureValues.leftArm.v() + 6), GenericTextureValues.skin_Size, 0.0F, TextureList.skin, false, 4, Direction.UP);
-        model.getLimb(GenericLimbNames.lowerLeftArm).addLayer(new UVPair(GenericTextureValues.leftSleeve.u(), GenericTextureValues.leftSleeve.v() + 6), GenericTextureValues.skin_Size, 0.5F, TextureList.skin, false, 4, Direction.UP);
-        model.getLimb(GenericLimbNames.lowerRightArm).addLayer(new UVPair(GenericTextureValues.rightArm.u(), GenericTextureValues.rightArm.v() + 6), GenericTextureValues.skin_Size, 0.0F, TextureList.skin, false, 4, Direction.UP);
-        model.getLimb(GenericLimbNames.lowerRightArm).addLayer(new UVPair(GenericTextureValues.rightSleeve.u(), GenericTextureValues.rightSleeve.v() + 6), GenericTextureValues.skin_Size, 0.5F, TextureList.skin, false, 4, Direction.UP);
-        model.getLimb(GenericLimbNames.lowerRightArm).generateCube();
-        model.getLimb(GenericLimbNames.lowerLeftArm).generateCube();
+        if (model.getLimb(GenericLimbNames.leftArm) != null)
+        {
+            GenericCultivatorTextureValues.addCultivatorLeftArmLayers(model.getLimb(GenericLimbNames.leftArm), 0, 0);
+            model.getLimb(GenericLimbNames.leftArm).generateCube();
+        }
 
-        GenericCultivatorTextureValues.addCultivatorRightLegLayers(model.getLimb(GenericLimbNames.rightLeg), 0, 0);
-        GenericCultivatorTextureValues.addCultivatorLeftLegLayers(model.getLimb(GenericLimbNames.leftLeg), 0, 0);
-        model.getLimb(GenericLimbNames.rightLeg).generateCube();
-        model.getLimb(GenericLimbNames.leftLeg).generateCube();
+        if (model.getLimb(GenericLimbNames.lowerLeftArm) != null)
+        {
+            model.getLimb(GenericLimbNames.lowerLeftArm).addLayer(new UVPair(GenericTextureValues.leftArm.u(), GenericTextureValues.leftArm.v() + 6), GenericTextureValues.skin_Size, 0.0F, TextureList.skin, false, 4, Direction.UP);
+            model.getLimb(GenericLimbNames.lowerLeftArm).addLayer(new UVPair(GenericTextureValues.leftSleeve.u(), GenericTextureValues.leftSleeve.v() + 6), GenericTextureValues.skin_Size, 0.5F, TextureList.skin, false, 4, Direction.UP);
+            model.getLimb(GenericLimbNames.lowerLeftArm).generateCube();
+        }
 
-        model.getLimb(GenericLimbNames.lowerRightLeg).addLayer(new UVPair(GenericTextureValues.rightLeg.u(), GenericTextureValues.rightLeg.v() + 6), GenericTextureValues.skin_Size, 0.0F, TextureList.skin, false, 4);
-        model.getLimb(GenericLimbNames.lowerRightLeg).addLayer(new UVPair(GenericTextureValues.rightPants.u(), GenericTextureValues.rightPants.v() + 6), GenericTextureValues.skin_Size, 0.5F, TextureList.skin, false, 4);
-        model.getLimb(GenericLimbNames.lowerLeftLeg).addLayer(new UVPair(GenericTextureValues.leftLeg.u(), GenericTextureValues.leftLeg.v() + 6), GenericTextureValues.skin_Size, 0.0F, TextureList.skin, false, 4);
-        model.getLimb(GenericLimbNames.lowerLeftLeg).addLayer(new UVPair(GenericTextureValues.leftPants.u(), GenericTextureValues.leftPants.v() + 6), GenericTextureValues.skin_Size, 0.5F, TextureList.skin, false, 4);
-        model.getLimb(GenericLimbNames.lowerRightLeg).generateCube();
-        model.getLimb(GenericLimbNames.lowerLeftLeg).generateCube();
+        if (model.getLimb(GenericLimbNames.lowerRightArm) != null)
+        {
+            model.getLimb(GenericLimbNames.lowerRightArm).addLayer(new UVPair(GenericTextureValues.rightArm.u(), GenericTextureValues.rightArm.v() + 6), GenericTextureValues.skin_Size, 0.0F, TextureList.skin, false, 4, Direction.UP);
+            model.getLimb(GenericLimbNames.lowerRightArm).addLayer(new UVPair(GenericTextureValues.rightSleeve.u(), GenericTextureValues.rightSleeve.v() + 6), GenericTextureValues.skin_Size, 0.5F, TextureList.skin, false, 4, Direction.UP);
+            model.getLimb(GenericLimbNames.lowerRightArm).generateCube();
+        }
+
+        if (model.getLimb(GenericLimbNames.rightLeg) != null)
+        {
+            GenericCultivatorTextureValues.addCultivatorRightLegLayers(model.getLimb(GenericLimbNames.rightLeg), 0, 0);
+            model.getLimb(GenericLimbNames.rightLeg).generateCube();
+        }
+
+        if (model.getLimb(GenericLimbNames.leftLeg) != null)
+        {
+            GenericCultivatorTextureValues.addCultivatorLeftLegLayers(model.getLimb(GenericLimbNames.leftLeg), 0, 0);
+            model.getLimb(GenericLimbNames.leftLeg).generateCube();
+        }
+
+        if (model.getLimb(GenericLimbNames.lowerRightLeg) != null)
+        {
+            model.getLimb(GenericLimbNames.lowerRightLeg).addLayer(new UVPair(GenericTextureValues.rightLeg.u(), GenericTextureValues.rightLeg.v() + 6), GenericTextureValues.skin_Size, 0.0F, TextureList.skin, false, 4);
+            model.getLimb(GenericLimbNames.lowerRightLeg).addLayer(new UVPair(GenericTextureValues.rightPants.u(), GenericTextureValues.rightPants.v() + 6), GenericTextureValues.skin_Size, 0.5F, TextureList.skin, false, 4);
+            model.getLimb(GenericLimbNames.lowerRightLeg).generateCube();
+        }
+
+        if (model.getLimb(GenericLimbNames.lowerLeftLeg) != null)
+        {
+            model.getLimb(GenericLimbNames.lowerLeftLeg).addLayer(new UVPair(GenericTextureValues.leftLeg.u(), GenericTextureValues.leftLeg.v() + 6), GenericTextureValues.skin_Size, 0.0F, TextureList.skin, false, 4);
+            model.getLimb(GenericLimbNames.lowerLeftLeg).addLayer(new UVPair(GenericTextureValues.leftPants.u(), GenericTextureValues.leftPants.v() + 6), GenericTextureValues.skin_Size, 0.5F, TextureList.skin, false, 4);
+            model.getLimb(GenericLimbNames.lowerLeftLeg).generateCube();
+        }
     }
 
     protected static void processParts (MultiLimbedModel model, Collection<BodyPart> parts, BodyPartModels models, IBodyModifications modifications, HashMap<String, BodyPartLocation> partLocations, PlayerPoseHandler handler)

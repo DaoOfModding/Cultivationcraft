@@ -91,6 +91,7 @@ public class BodyPartNames
     public static final String structuralBonePart = "structuralBone";
     public static final String hollowBonePart = "hollowBone";
     public static final String smallBonePart = "smallBone";
+    public static final String dinoBonePart = "dinoBone";
 
     public static final String reinforcedStomachPart = "reinforcedStomach";
     public static final String expandingStomachPart = "expandingStomach";
@@ -237,6 +238,16 @@ public class BodyPartNames
         structuralBones.getStatChanges().setStat(StatIDs.boneAttackModifier, 1);
         structuralBones.setQuest(DefaultQuests.defaultBoneQuest);
 
+        BodyPartOption dinosaurBones = new BodyPartOption(dinoBonePart, bodyPosition, boneSubPosition,  "cultivationcraft.gui.bodypart.bone.dinosaur");
+        dinosaurBones.addTextureChange(TextureList.bone, new ResourceLocation(Cultivationcraft.MODID, "textures/models/bone/bone.png"));
+        dinosaurBones.addNeededPart(BodyPartNames.startingEyesPart);
+        dinosaurBones.getStatChanges().setStat(StatIDs.size, 1f);
+        dinosaurBones.getStatChanges().setStat(StatIDs.weight, 2f);
+        dinosaurBones.getStatChanges().setStat(StatIDs.armor, 10);
+        dinosaurBones.getStatChanges().setStat(StatIDs.armorToughness, 1);
+        dinosaurBones.getStatChanges().setStat(StatIDs.boneAttackModifier, 0.5f);
+        dinosaurBones.setQuest(DefaultQuests.defaultBoneQuest);
+
         BodyPartOption hollowBones = new BodyPartOption(hollowBonePart, bodyPosition, boneSubPosition,  "cultivationcraft.gui.bodypart.bone.hollow");
         hollowBones.addTextureChange(TextureList.bone, new ResourceLocation(Cultivationcraft.MODID, "textures/models/bone/bone.png"));
         hollowBones.addNeededPart(BodyPartNames.startingEyesPart);
@@ -329,6 +340,7 @@ public class BodyPartNames
         addOption(smallBones);
         addOption(hollowBones);
         addOption(structuralBones);
+        addOption(dinosaurBones);
         addOption(fireBones);
         addOption(waterBones);
         addOption(windBones);
@@ -344,7 +356,7 @@ public class BodyPartNames
 
 
         // TODO - Disabled longneck for the moment as it's buggy and has no point
-        /*BodyPartOption longneck = new BodyPartOption(longNeckPart, bodyPosition, locationSubPosition, "cultivationcraft.gui.headpart.longneck", 1000);
+        /*BodyPartOption longneck = new BodyPartOption(longNeckPart, bodyPosition, locationSubPosition, "cultivationcraft.gui.headpart.longneck");
         longneck.addModel(BodyPartModelNames.longNeckModel);
 
         BodyPartLocation longneckLocation = new BodyPartLocation(headPosition, basePosition, BodyPartModelNames.longNeckModelEnd);
