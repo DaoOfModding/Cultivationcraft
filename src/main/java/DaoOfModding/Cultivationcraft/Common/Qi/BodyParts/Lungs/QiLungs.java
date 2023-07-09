@@ -24,11 +24,13 @@ public class QiLungs extends Lungs
         Breath breathing = BreathingHandler.getBreath(player);
         breathingColor = breathing.getColor();
 
-        int Respiration = EnchantmentHelper.getRespiration(player);
-        Float amountRemaining = 10.0f / (Respiration + 1);
+        Float amountRemaining = 10.0f;
 
         if (!canBreath(breathing))
         {
+            int Respiration = EnchantmentHelper.getRespiration(player);
+            amountRemaining = amountRemaining / (Respiration + 1);
+
             float toTry = amountRemaining / lung.length;
 
             // Go through each lung trying to breath the amount remaining equally
