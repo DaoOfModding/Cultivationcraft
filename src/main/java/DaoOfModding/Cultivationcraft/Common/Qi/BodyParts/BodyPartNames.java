@@ -206,14 +206,14 @@ public class BodyPartNames
         BodyPartOption reinforceBones = new BodyPartOption(reinforceBonePart, bodyPosition, boneSubPosition,  "cultivationcraft.gui.generic.reinforce");
         reinforceBones.addTextureChange(TextureList.bone, new ResourceLocation(Cultivationcraft.MODID, "textures/models/bone/bone.png"));
         reinforceBones.addNeededPart(BodyPartNames.startingEyesPart);
-        reinforceBones.getStatChanges().setStat(StatIDs.boneAttackModifier, 2);
+        reinforceBones.getStatChanges().setStat(StatIDs.boneAttackModifier, 1);
         reinforceBones.getStatChanges().setStat(StatIDs.armor, 6);
         reinforceBones.setQuest(DefaultQuests.defaultBoneQuest);
 
         BodyPartOption sharpBones = new BodyPartOption(sharpBonePart, bodyPosition, boneSubPosition,  "cultivationcraft.gui.bodypart.bone.sharp");
         sharpBones.addTextureChange(TextureList.bone, new ResourceLocation(Cultivationcraft.MODID, "textures/models/bone/bone.png"));
         sharpBones.addNeededPart(BodyPartNames.startingEyesPart);
-        sharpBones.getStatChanges().setStat(StatIDs.boneAttackModifier, 4);
+        sharpBones.getStatChanges().setStat(StatIDs.boneAttackModifier, 1.5f);
         sharpBones.addTextureColorChange(TextureList.bone, new Color(0.8f, 0.8f, 0.8f));
         sharpBones.setQuest(DefaultQuests.defaultBodyQuest);
 
@@ -234,7 +234,7 @@ public class BodyPartNames
         structuralBones.getStatChanges().setStat(StatIDs.legSupport, 2);
         structuralBones.getStatChanges().setStat(StatIDs.weight, 1f);
         structuralBones.getStatChanges().setStat(StatIDs.armor, 8);
-        structuralBones.getStatChanges().setStat(StatIDs.boneAttackModifier, 2);
+        structuralBones.getStatChanges().setStat(StatIDs.boneAttackModifier, 1);
         structuralBones.setQuest(DefaultQuests.defaultBoneQuest);
 
         BodyPartOption hollowBones = new BodyPartOption(hollowBonePart, bodyPosition, boneSubPosition,  "cultivationcraft.gui.bodypart.bone.hollow");
@@ -243,7 +243,7 @@ public class BodyPartNames
         hollowBones.getStatChanges().setStat(StatIDs.weight, -0.4f);
         hollowBones.getStatChanges().setStat(StatIDs.armor, -2);
         hollowBones.getStatChanges().setStat(StatIDs.armorToughness, -1);
-        hollowBones.getStatChanges().setStat(StatIDs.boneAttackModifier, 2);
+        hollowBones.getStatChanges().setStat(StatIDs.boneAttackModifier, 0.75f);
         hollowBones.setQuest(DefaultQuests.defaultBoneQuest);
 
         BodyPartOption smallBones = new BodyPartOption(smallBonePart, bodyPosition, boneSubPosition,  "cultivationcraft.gui.bodypart.bone.small");
@@ -251,7 +251,7 @@ public class BodyPartNames
         smallBones.addNeededPart(BodyPartNames.startingEyesPart);
         smallBones.getStatChanges().setStat(StatIDs.weight, -0.2f);
         smallBones.getStatChanges().setStat(StatIDs.size, -0.25f);
-        smallBones.getStatChanges().setStat(StatIDs.boneAttackModifier, 2);
+        smallBones.getStatChanges().setStat(StatIDs.boneAttackModifier, 1);
         smallBones.setQuest(DefaultQuests.defaultBoneQuest);
 
         BodyPartOption fireBones = new BodyPartOption(elementalBonePart + Elements.fireElement, bodyPosition, boneSubPosition,  "cultivationcraft.gui.bodypart.bone.fire");
@@ -259,7 +259,7 @@ public class BodyPartNames
         fireBones.addTextureChange(TextureList.bone, new ResourceLocation(Cultivationcraft.MODID, "textures/models/bone/bone.png"));
         fireBones.addTextureColorChange(TextureList.bone, Misc.saturate(Elements.getElement(Elements.fireElement).color, 0.75f));
         fireBones.addNeededPart(BodyPartNames.startingEyesPart);
-        fireBones.getStatChanges().setStat(StatIDs.boneAttackModifier, 2);
+        fireBones.getStatChanges().setStat(StatIDs.boneAttackModifier, 1);
         fireBones.getStatChanges().setElementalStat(StatIDs.resistanceModifier, Elements.fireElement, 50);
         fireBones.getStatChanges().setElementalStat(StatIDs.resistanceModifier, Elements.waterElement, -50);
         fireBones.getStatChanges().setStat(StatIDs.armor, 4);
@@ -270,7 +270,7 @@ public class BodyPartNames
         waterBones.addTextureChange(TextureList.bone, new ResourceLocation(Cultivationcraft.MODID, "textures/models/bone/bone.png"));
         waterBones.addTextureColorChange(TextureList.bone, Misc.saturate(Elements.getElement(Elements.waterElement).color, 0.75f));
         waterBones.addNeededPart(BodyPartNames.startingEyesPart);
-        waterBones.getStatChanges().setStat(StatIDs.boneAttackModifier, 2);
+        waterBones.getStatChanges().setStat(StatIDs.boneAttackModifier, 1);
         waterBones.getStatChanges().setElementalStat(StatIDs.resistanceModifier, Elements.waterElement, 50);
         waterBones.getStatChanges().setElementalStat(StatIDs.resistanceModifier, Elements.windElement, -50);
         waterBones.getStatChanges().setStat(StatIDs.armor, 4);
@@ -281,7 +281,7 @@ public class BodyPartNames
         windBones.addTextureChange(TextureList.bone, new ResourceLocation(Cultivationcraft.MODID, "textures/models/bone/bone.png"));
         windBones.addTextureColorChange(TextureList.bone, Misc.saturate(Elements.getElement(Elements.windElement).color, 0.75f));
         windBones.addNeededPart(BodyPartNames.startingEyesPart);
-        windBones.getStatChanges().setStat(StatIDs.boneAttackModifier, 2);
+        windBones.getStatChanges().setStat(StatIDs.boneAttackModifier, 1);
         windBones.getStatChanges().setElementalStat(StatIDs.resistanceModifier, Elements.windElement, 50);
         windBones.getStatChanges().setElementalStat(StatIDs.resistanceModifier, Elements.earthElement, -50);
         windBones.getStatChanges().setStat(StatIDs.armor, 4);
@@ -292,7 +292,7 @@ public class BodyPartNames
         earthBones.addTextureChange(TextureList.bone, new ResourceLocation(Cultivationcraft.MODID, "textures/models/bone/bone.png"));
         earthBones.addTextureColorChange(TextureList.bone, Misc.saturate(Elements.getElement(Elements.earthElement).color, 0.75f));
         earthBones.addNeededPart(BodyPartNames.startingEyesPart);
-        earthBones.getStatChanges().setStat(StatIDs.boneAttackModifier, 2);
+        earthBones.getStatChanges().setStat(StatIDs.boneAttackModifier, 1);
         earthBones.getStatChanges().setElementalStat(StatIDs.resistanceModifier, Elements.earthElement, 50);
         earthBones.getStatChanges().setElementalStat(StatIDs.resistanceModifier, Elements.woodElement, -50);
         earthBones.getStatChanges().setStat(StatIDs.armor, 4);
@@ -303,7 +303,7 @@ public class BodyPartNames
         woodBones.addTextureChange(TextureList.bone, new ResourceLocation(Cultivationcraft.MODID, "textures/models/bone/bone.png"));
         woodBones.addTextureColorChange(TextureList.bone, Misc.saturate(Elements.getElement(Elements.woodElement).color, 0.75f));
         woodBones.addNeededPart(BodyPartNames.startingEyesPart);
-        woodBones.getStatChanges().setStat(StatIDs.boneAttackModifier, 2);
+        woodBones.getStatChanges().setStat(StatIDs.boneAttackModifier, 1);
         woodBones.getStatChanges().setElementalStat(StatIDs.resistanceModifier, Elements.woodElement, 50);
         woodBones.getStatChanges().setElementalStat(StatIDs.resistanceModifier, Elements.fireElement, -50);
         woodBones.getStatChanges().setStat(StatIDs.armor, 4);
@@ -314,7 +314,7 @@ public class BodyPartNames
         lightningBones.addTextureChange(TextureList.bone, new ResourceLocation(Cultivationcraft.MODID, "textures/models/bone/bone.png"));
         lightningBones.addTextureColorChange(TextureList.bone, Misc.saturate(Elements.getElement(Elements.lightningElement).color, 0.85f));
         lightningBones.addNeededPart(BodyPartNames.startingEyesPart);
-        lightningBones.getStatChanges().setStat(StatIDs.boneAttackModifier, 6);
+        lightningBones.getStatChanges().setStat(StatIDs.boneAttackModifier, 1.75f);
         lightningBones.getStatChanges().setElementalStat(StatIDs.resistanceModifier, Elements.lightningElement, 75);
         lightningBones.getStatChanges().setElementalStat(StatIDs.resistanceModifier, Elements.windElement, -25);
         lightningBones.getStatChanges().setElementalStat(StatIDs.resistanceModifier, Elements.fireElement, -25);
@@ -764,7 +764,7 @@ public class BodyPartNames
         flatTeeth.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.boneSubPosition);
         flatTeeth.setTexture(TextureList.bone);
         flatTeeth.getStatChanges().setStat(StatIDs.weight, 0.02f);
-        flatTeeth.getStatChanges().setStat(StatIDs.biteAttackModifier, 0.75f);
+        flatTeeth.getStatChanges().setStat(StatIDs.biteAttackModifier, 1f);
         flatTeeth.setQuest(new Quest(BiteTechnique.biteQuest, 750));
 
         addOption(flatTeeth);

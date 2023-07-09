@@ -45,7 +45,7 @@ public class BiteTechnique extends AttackOverrideTechnique
         attackSound = SoundEvents.FOX_BITE;
         missSound = SoundEvents.FOX_BITE;
 
-        damage = 2;
+        damage = 8;
         range = 3.5;
 
         staminaUse = 0.05f;

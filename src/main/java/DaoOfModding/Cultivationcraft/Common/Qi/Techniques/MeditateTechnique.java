@@ -61,7 +61,7 @@ public class MeditateTechnique extends MovementOverrideTechnique
     public void tickClient(TickEvent.PlayerTickEvent event)
     {
         // We can increase the progress on the client, as it will just be overridden later
-        increaseProgress(event);
+        //increaseProgress(event);
 
         super.tickClient(event);
     }
@@ -115,9 +115,9 @@ public class MeditateTechnique extends MovementOverrideTechnique
 
                 modifications.addProgress(toAdd);
 
-                // Update the client every second to ensure progress doesn't get descynced
-                if (event.side == LogicalSide.SERVER && ServerListeners.tick % 20 == 0)
-                    PacketHandler.sendBodyModificationsToClient(event.player);
+                // Update the client progress
+                //if (event.side == LogicalSide.SERVER && ServerListeners.tick % 20 == 0)
+                PacketHandler.sendBodyModificationsToClient(event.player);
             }
         }
     }

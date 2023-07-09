@@ -10,7 +10,7 @@ public class QiSourceConfig
     public final static int MaxSources = 1;
     public final static int MaxSize = 64;
     public final static int MinSize = 16;
-    public final static int MaxStorage = 1000000000;
+    public final static int MaxStorage = 100000000;
     public final static int MinStorage = 1000000;
 
     protected final static int defaultRarity = 40;

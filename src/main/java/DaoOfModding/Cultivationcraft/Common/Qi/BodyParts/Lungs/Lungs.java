@@ -10,6 +10,7 @@ import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 
 import java.awt.*;
 
@@ -28,7 +29,11 @@ public class Lungs
         Breath breathing = BreathingHandler.getBreath(player);
         breathingColor = breathing.getColor();
 
-        lung[0].getLung().breath(10, breathing, player);
+        int Respiration = EnchantmentHelper.getRespiration(player);
+
+        Float amount = 10.0f / (Respiration + 1);
+
+        lung[0].getLung().breath(amount, breathing, player);
     }
 
     public boolean hasConnectionAt(ResourceLocation location)

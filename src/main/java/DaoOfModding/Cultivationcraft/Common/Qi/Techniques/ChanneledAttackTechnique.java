@@ -21,7 +21,7 @@ public class ChanneledAttackTechnique extends AttackTechnique
     protected boolean destroyed = false;
 
     // The number of ticks between each damage hit
-    float hitInterval = 20;
+    float hitInterval = 10;
 
     public ChanneledAttackTechnique()
     {
