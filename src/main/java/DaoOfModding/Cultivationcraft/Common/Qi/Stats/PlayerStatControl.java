@@ -13,6 +13,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
+import net.minecraftforge.common.ForgeMod;
 
 import java.util.HashMap;
 
@@ -25,6 +26,8 @@ public class PlayerStatControl
     AttributeModifier armorModifier;
     AttributeModifier armorToughnessModifier;
     AttributeModifier swimModifier;
+    AttributeModifier attackModifier;
+    AttributeModifier rangeModifier;
 
     // Setup players with the default player stats
     public PlayerStatControl()
@@ -49,6 +52,8 @@ public class PlayerStatControl
         stats.setStat(StatIDs.jumpHeight, StatIDs.defaultJumpHeight);
         stats.setStat(StatIDs.fallHeight, StatIDs.defaultFallHeight);
         stats.setStat(StatIDs.legSupport, StatIDs.defaultLegSupport);
+        stats.setStat(StatIDs.armAttackModifier, StatIDs.defaultAttackModifier);
+        stats.setStat(StatIDs.attackRange, StatIDs.defaultAttackRange);
         stats.setElementalStat(StatIDs.resistanceModifier, Elements.lightningElement, StatIDs.defaultLightningResist);
     }
 
@@ -147,12 +152,16 @@ public class PlayerStatControl
         armorModifier = new AttributeModifier("BodyForgeArmor", stats.getStat(StatIDs.armor), AttributeModifier.Operation.ADDITION);
         armorToughnessModifier = new AttributeModifier("BodyForgeArmorToughness", stats.getStat(StatIDs.armorToughness), AttributeModifier.Operation.ADDITION);
         swimModifier = new AttributeModifier("BodyForgeSwimSpeed", stats.getStat(StatIDs.swimSpeed) - StatIDs.defaultSwimSpeed, AttributeModifier.Operation.ADDITION);
+        rangeModifier = new AttributeModifier("BodyForgeReach", stats.getStat(StatIDs.armAttackModifier) - StatIDs.defaultAttackRange, AttributeModifier.Operation.ADDITION);
+        attackModifier = new AttributeModifier("BodyForgeAttack", stats.getStat(StatIDs.armAttackModifier) - StatIDs.defaultAttackModifier, AttributeModifier.Operation.MULTIPLY_TOTAL);
 
         player.getAttribute(Attributes.MAX_HEALTH).addTransientModifier(healthModifier);
         player.getAttribute(Attributes.MOVEMENT_SPEED).addTransientModifier(movementModifier);
         player.getAttribute(Attributes.ARMOR).addTransientModifier(armorModifier);
         player.getAttribute(Attributes.ARMOR_TOUGHNESS).addTransientModifier(armorToughnessModifier);
-        player.getAttribute(net.minecraftforge.common.ForgeMod.SWIM_SPEED.get()).addTransientModifier(swimModifier);
+        player.getAttribute(ForgeMod.SWIM_SPEED.get()).addTransientModifier(swimModifier);
+        player.getAttribute(ForgeMod.REACH_DISTANCE.get()).addTransientModifier(rangeModifier);
+        player.getAttribute(Attributes.ATTACK_DAMAGE).addTransientModifier(attackModifier);
     }
 
     // Returns a modifier based on how overweight the player is
