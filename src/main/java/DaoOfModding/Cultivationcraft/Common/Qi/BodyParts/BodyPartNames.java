@@ -245,7 +245,7 @@ public class BodyPartNames
         dinosaurBones.getStatChanges().setStat(StatIDs.weight, 2f);
         dinosaurBones.getStatChanges().setStat(StatIDs.armor, 10);
         dinosaurBones.getStatChanges().setStat(StatIDs.armorToughness, 1);
-        dinosaurBones.getStatChanges().setStat(StatIDs.boneAttackModifier, 0.5f);
+        dinosaurBones.getStatChanges().setStat(StatIDs.boneAttackModifier, 1.5f);
         dinosaurBones.setQuest(DefaultQuests.defaultBoneQuest);
 
         BodyPartOption hollowBones = new BodyPartOption(hollowBonePart, bodyPosition, boneSubPosition,  "cultivationcraft.gui.bodypart.bone.hollow");

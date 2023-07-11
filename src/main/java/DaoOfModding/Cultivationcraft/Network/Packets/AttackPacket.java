@@ -134,8 +134,10 @@ public class AttackPacket extends Packet
 
         if (targetType == HitResult.Type.ENTITY)
         {
+            double range = ((AttackTechnique)tech).getRange(ownerEntity);
+
             // Create a large bounding box at the specified position then search for a list of entities at that location
-            AABB scan = new AABB(targetPos.x - 10, targetPos.y - 10, targetPos.z - 10, targetPos.x + 10, targetPos.y + 10, targetPos.z + 10);
+            AABB scan = new AABB(targetPos.x - range * 2, targetPos.y - range * 2, targetPos.z - range * 2, targetPos.x + range * 2, targetPos.y + range * 2, targetPos.z + range * 2);
 
             List<Entity> entities = ownerEntity.getCommandSenderWorld().getEntitiesOfClass(Entity.class, scan);
 

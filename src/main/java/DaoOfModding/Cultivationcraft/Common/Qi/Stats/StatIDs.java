@@ -63,7 +63,7 @@ public class StatIDs
     public static final float defaultHealthRegen = 0.1f;
 
     public static final float defaultAttackRange = 4.5f;
-    public static final float defaultAttackModifier = 4.5f;
+    public static final float defaultAttackModifier = 1;
 
     public static final float defaultQiAbsorbRange = 1;
 

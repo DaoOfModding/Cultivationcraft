@@ -100,7 +100,7 @@ public class BodyPartOption extends BodyPart
             if (subPos.compareTo(getSubPosition()) == 0)
                 return false;
 
-        if (!isInCorrectElement(player))
+        if (!isInCorrectElement(player) && !player.isCreative())
             return false;
 
         return true;

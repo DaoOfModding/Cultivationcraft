@@ -93,7 +93,7 @@ public class MeditateTechnique extends MovementOverrideTechnique
                 int toAdd = 0;
 
                 // Only absorb passively if no element is set
-                if (element == null)
+                if (element == null || event.player.isCreative())
                     toAdd = QiSource.getDefaultQi();
 
                 // Draw Qi from each Qi source available

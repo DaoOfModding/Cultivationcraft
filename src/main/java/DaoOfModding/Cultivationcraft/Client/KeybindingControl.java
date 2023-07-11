@@ -1,7 +1,6 @@
 package DaoOfModding.Cultivationcraft.Client;
 
 import DaoOfModding.Cultivationcraft.Client.GUI.ScreenTabControl;
-import DaoOfModding.Cultivationcraft.Client.GUI.Screens.StatScreen;
 import DaoOfModding.Cultivationcraft.Client.GUI.SkillHotbarOverlay;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.BodyModifications;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.IBodyModifications;
@@ -11,7 +10,6 @@ import DaoOfModding.Cultivationcraft.Common.Misc;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyForgeParts.MovementOverridePart;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyForgeParts.MovementOverridePartOption;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPart;
-import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartOption;
 import DaoOfModding.Cultivationcraft.Common.Qi.CultivatorControl;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.AttackOverrideTechnique;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.MovementOverrideTechnique;
@@ -20,7 +18,6 @@ import DaoOfModding.Cultivationcraft.Network.ClientPacketHandler;
 import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.phys.AABB;
@@ -33,11 +30,9 @@ import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
-import java.util.ArrayList;
 import java.util.UUID;
 
 import static org.lwjgl.glfw.GLFW.*;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_L;
 
 @Mod.EventBusSubscriber(value = Dist.CLIENT)
 public class KeybindingControl
@@ -147,7 +142,7 @@ public class KeybindingControl
 
         AttackOverrideTechnique attackTech = (AttackOverrideTechnique)CultivatorTechniques.getCultivatorTechniques(genericClientFunctions.getPlayer()).getTechnique(slot);
 
-        Minecraft.getInstance().options.keyAttack.setDown(false);
+        // Minecraft.getInstance().options.keyAttack.setDown(false);
         // Attack with the attack override
         attackTech.attack(genericClientFunctions.getPlayer(), slot);
 
@@ -345,12 +340,8 @@ public class KeybindingControl
         if (chatOpen())
             return;
 
-        // TODO: Make this not shit -.-
-
-        if (Minecraft.getInstance().options.keyAttack.isDown())
-        {
+        if (Minecraft.getInstance().options.keyAttack.isActiveAndMatches(InputConstants.Type.MOUSE.getOrCreate(event.getButton())))
             event.setCanceled(handleAttackOverrides());
-        }
     }
 
     @SubscribeEvent

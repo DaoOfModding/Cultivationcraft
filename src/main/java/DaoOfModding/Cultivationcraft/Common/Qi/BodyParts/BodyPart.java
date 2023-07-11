@@ -314,7 +314,7 @@ public class BodyPart
             if (part.getPosition().compareTo(limbPosition) == 0)
                 return false;
 
-        if (!isInCorrectElement(player))
+        if (!isInCorrectElement(player) && !player.isCreative())
             return false;
 
         return true;
