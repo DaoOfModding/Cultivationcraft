@@ -727,7 +727,7 @@ public class BodyPartNames
         fArm.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.basePosition);
         fArm.getStatChanges().setStat(StatIDs.weight, DefaultPlayerBodyPartWeights.armWeight * -1.8f);
         fArm.getStatChanges().setStat(StatIDs.swimSpeed, 1f);
-        fArm.getStatChanges().setStat(StatIDs.armAttackModifier, -0.5f);
+        fArm.getStatChanges().setStat(StatIDs.armAttackModifier, -0.25f);
 
         fArm.setQuest(DefaultQuests.defaultSwimQuest);
 

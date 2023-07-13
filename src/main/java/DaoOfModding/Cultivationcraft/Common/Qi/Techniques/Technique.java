@@ -229,15 +229,24 @@ public class Technique
 
         AttributeInstance modifierInstance = player.getAttribute(net.minecraftforge.common.ForgeMod.ENTITY_GRAVITY.get());
 
+        boolean modified = false;
+
         for (AttributeModifier modifier : modifiers)
             if (!modifierInstance.hasModifier(modifier))
+            {
                 modifierInstance.addTransientModifier(modifier);
+                modified = true;
+            }
 
         for (MobEffect effect : effects)
             if (!player.hasEffect(effect))
+            {
                 player.addEffect(new MobEffectInstance(effect, 9999999, 0, false, false));
+                modified = true;
+            }
 
-        BodyPartStatControl.updateStats(player);
+        if (modified)
+            BodyPartStatControl.updateStats(player);
     }
 
     protected void removeModifiers(Player player)

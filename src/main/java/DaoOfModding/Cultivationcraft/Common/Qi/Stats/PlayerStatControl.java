@@ -153,7 +153,7 @@ public class PlayerStatControl
         armorToughnessModifier = new AttributeModifier("BodyForgeArmorToughness", stats.getStat(StatIDs.armorToughness), AttributeModifier.Operation.ADDITION);
         swimModifier = new AttributeModifier("BodyForgeSwimSpeed", stats.getStat(StatIDs.swimSpeed) - StatIDs.defaultSwimSpeed, AttributeModifier.Operation.ADDITION);
         rangeModifier = new AttributeModifier("BodyForgeReach", stats.getStat(StatIDs.attackRange) - StatIDs.defaultAttackRange, AttributeModifier.Operation.ADDITION);
-        attackModifier = new AttributeModifier("BodyForgeAttack", stats.getStat(StatIDs.armAttackModifier) - StatIDs.defaultAttackModifier, AttributeModifier.Operation.MULTIPLY_TOTAL);
+        attackModifier = new AttributeModifier("BodyForgeAttack", stats.getStat(StatIDs.armAttackModifier), AttributeModifier.Operation.MULTIPLY_TOTAL);
 
         player.getAttribute(Attributes.MAX_HEALTH).addTransientModifier(healthModifier);
         player.getAttribute(Attributes.MOVEMENT_SPEED).addTransientModifier(movementModifier);
