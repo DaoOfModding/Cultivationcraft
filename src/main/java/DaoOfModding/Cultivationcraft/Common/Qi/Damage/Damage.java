@@ -89,7 +89,7 @@ public class Damage
             return true;
         }
 
-        if (event.getEntity().hurtTime > 0 && event.getEntity().isAlive())
+        if (event.getEntity().hurtTime == 0 && event.getEntity().isAlive())
         {
             QuestHandler.progressQuest((Player) event.getEntity(), Quest.DAMAGE_TAKEN, resistedDamage);
             QuestHandler.progressQuest((Player) event.getEntity(), Quest.DAMAGE_RESISTED, event.getAmount() - resistedDamage);
