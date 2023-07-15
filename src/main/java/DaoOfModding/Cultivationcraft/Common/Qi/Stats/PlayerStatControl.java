@@ -145,7 +145,13 @@ public class PlayerStatControl
             player.getAttribute(Attributes.ARMOR_TOUGHNESS).removeModifier(armorToughnessModifier);
 
         if (swimModifier != null)
-            player.getAttribute(net.minecraftforge.common.ForgeMod.SWIM_SPEED.get()).removeModifier(swimModifier);
+            player.getAttribute(ForgeMod.SWIM_SPEED.get()).removeModifier(swimModifier);
+
+        if (rangeModifier != null)
+            player.getAttribute(ForgeMod.REACH_DISTANCE.get()).removeModifier(rangeModifier);
+
+        if (attackModifier != null)
+            player.getAttribute(Attributes.ATTACK_DAMAGE).removeModifier(attackModifier);
 
         healthModifier = new AttributeModifier("BodyForgeHealth", stats.getStat(StatIDs.maxHP) - StatIDs.defaultMaxHP, AttributeModifier.Operation.ADDITION);
         movementModifier = new AttributeModifier("BodyForgeMove", stats.getStat(StatIDs.movementSpeed) * getLegWeightModifier() - StatIDs.defaultMovementSpeed, AttributeModifier.Operation.ADDITION);
