@@ -266,10 +266,6 @@ public class CommonListeners
         CultivatorStats.getCultivatorStats(event.getEntity()).setDisconnected(false);
 
         CultivatorTechniques.getCultivatorTechniques(event.getEntity()).determinePassives(event.getEntity());
-
-        if (!event.getEntity().getCommandSenderWorld().isClientSide())
-            ServerItemControl.sendPlayerStats(event.getEntity(), (Player)event.getEntity());
-
         BodyPartStatControl.updateStats(event.getEntity());
 
         // Refill lungs on spawn
@@ -280,6 +276,9 @@ public class CommonListeners
             Lung currentLung = lung.getConnection(i).getLung();
             currentLung.setCurrent(currentLung.getCapacity());
         }
+
+        if (!event.getEntity().getCommandSenderWorld().isClientSide())
+            ServerItemControl.sendPlayerStats(event.getEntity(), event.getEntity());
     }
 
     // Fired off when an player changes dimension
@@ -328,8 +327,8 @@ public class CommonListeners
     public static void onPlayerDeath(PlayerEvent.Clone event)
     {
         // Do nothing if this wasn't a death
-        if (!event.isWasDeath())
-            return;
+        //if (!event.isWasDeath())
+        //    return;
 
         event.getOriginal().reviveCaps();
 

@@ -61,6 +61,13 @@ public class QiFoodStats extends FoodData
         // Get the player's blood and let it handle passive regen
         PlayerHealthManager.getBlood(player).regen(player);
 
+        // Ensure that health and stamina don't go above max values
+        if (player.getHealth() > player.getMaxHealth())
+            player.setHealth(player.getMaxHealth());
+
+        if (getFoodLevel() > getMaxFood())
+            setFoodLevel(getMaxFood());
+
         // Check starve conditions
         if (this.foodLevel <= 0)
         {

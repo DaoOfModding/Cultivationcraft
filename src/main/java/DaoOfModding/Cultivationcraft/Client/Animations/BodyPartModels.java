@@ -96,6 +96,9 @@ public class BodyPartModels
         else
             rightArm.extend(GenericResizers.getArmResizer());
 
+        rightArm.setHands(true);
+        rightArm.getChildren().get(0).setHands(true);
+
         ExtendableModelRenderer leftArm = new ExtendableModelRenderer(GenericLimbNames.leftArm);
         GenericCultivatorTextureValues.addGenericLeftArmLayers(leftArm);
         leftArm.setRotationPoint(new Vec3(0.5D, 0.66D, 0.5D));
@@ -109,6 +112,9 @@ public class BodyPartModels
             leftArm.extend(GenericResizers.getSlimArmResizer());
         else
             leftArm.extend(GenericResizers.getArmResizer());
+
+        leftArm.setHands(true);
+        leftArm.getChildren().get(0).setHands(true);
 
         leftArm.setHitbox(false);
         rightArm.setHitbox(false);
@@ -129,6 +135,11 @@ public class BodyPartModels
         rFlipper.setFixedPosAdjustment(0F, 2F, 0.0F);
         lFlipper.generateCube();
         rFlipper.generateCube();
+
+        lFlipper.setHands(true);
+        lFlipper.getChildren().get(0).setHands(true);
+        rFlipper.setHands(true);
+        rFlipper.getChildren().get(0).setHands(true);
 
         lFlipper.setHitbox(false);
         rFlipper.setHitbox(false);
@@ -154,6 +165,7 @@ public class BodyPartModels
         else
             shortRightArm.extend(new defaultResizeModule(new Vec3(4.0D, 12.0D ,4.0D)));
 
+        shortRightArm.setHands(true);
 
         ExtendableModelRenderer shortLeftArm = new ExtendableModelRenderer(BodyPartModelNames.shortArmLeftModel);
         GenericCultivatorTextureValues.addGenericLeftArmLayers(shortLeftArm);
@@ -170,6 +182,7 @@ public class BodyPartModels
         else
             shortLeftArm.extend(new defaultResizeModule(new Vec3(4.0D, 12.0D ,4.0D)));
 
+        shortLeftArm.setHands(true);
 
         shortLeftArm.setHitbox(false);
         shortRightArm.setHitbox(false);

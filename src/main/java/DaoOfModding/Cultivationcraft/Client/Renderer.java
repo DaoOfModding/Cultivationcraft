@@ -95,7 +95,6 @@ public class Renderer
         Blood blood = PlayerHealthManager.getBlood(genericClientFunctions.getPlayer());
         Vector3f colour = blood.getColour();
 
-        //GlStateManager._blendColor(1, 0, 0, 1);
         RenderSystem.setShaderColor(colour.x(), colour.y(), colour.z(), 0.7f);
         blood.getOrbFilling().render((int)(scaledWidth * 0.1), (int)(scaledHeight - (10 + 40 * healthPercent)), 40, (int)(40 * healthPercent), healthPercent);
 

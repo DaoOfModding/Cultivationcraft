@@ -63,7 +63,6 @@ public class ClientListeners
     {
         if (event.getEntity() instanceof Player)
         {
-            // TODO: Clear fire
             CommonListeners.clearStatus(event.getEntity());
 
             // Required to enable swimming in lava
@@ -187,17 +186,17 @@ public class ClientListeners
         }
         else if (event.getOverlay().id() == VanillaGuiOverlay.FOOD_LEVEL.id())
         {
-            // Render stamina and health the other way around, so health renders ontop of stamina
+            // Render HP here instead of in PLAYER_HEALTH as boss bars somehow bork up PLAYER_HEALTH rendering :/
             if (!Minecraft.getInstance().player.isCreative())
+            {
                 Renderer.renderStamina();
+                Renderer.renderHP();
+            }
 
             event.setCanceled(true);
         }
         else if (event.getOverlay().id() == VanillaGuiOverlay.PLAYER_HEALTH.id())
         {
-            if (!Minecraft.getInstance().player.isCreative())
-                Renderer.renderHP();
-
             event.setCanceled(true);
         }
         else if(event.getOverlay().id() == VanillaGuiOverlay.ARMOR_LEVEL.id())

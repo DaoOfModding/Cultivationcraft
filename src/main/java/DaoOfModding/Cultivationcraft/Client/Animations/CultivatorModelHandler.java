@@ -399,30 +399,23 @@ public class CultivatorModelHandler
 
         // Add models for any options tied to specific body parts to this body part
         for (BodyPartOption option : modifications.getModificationOptions(part.getPosition()).values())
-            for (Map.Entry<String, ArrayList<String>> optionModelCollections : option.getOptionModels().entrySet())
-            {
+            for (Map.Entry<String, ArrayList<String>> optionModelCollections : option.getOptionModels().entrySet()) {
                 // Get the ID of the model this model list is connected to
                 String baseModelID = optionModelCollections.getKey();
 
                 // If the model this collection is tied to exists
-                if (model.hasLimb(baseModelID))
-                {
-                    for (String optionModels : optionModelCollections.getValue())
-                    {
+                if (model.hasLimb(baseModelID)) {
+                    for (String optionModels : optionModelCollections.getValue()) {
                         model.addLimb(optionModels, models.getModel(optionModels, option.getSubPosition()), baseModelID);
 
                         for (Map.Entry<String, ExtendableModelRenderer> entry : models.getReferences(optionModels).entrySet())
                             model.addLimbReference(entry.getKey(), entry.getValue());
 
-                        for (Arm arm : option.getArms())
-                        {
-                            if (arm.hand == InteractionHand.MAIN_HAND && model.getHand(0) == null)
-                            {
+                        for (Arm arm : option.getArms()) {
+                            if (arm.hand == InteractionHand.MAIN_HAND && model.getHand(0) == null) {
                                 model.setHand(0, model.getLimb(arm.lowerLimb));
                                 model.setRightShoulder(model.getLimb(arm.upperLimb));
-                            }
-                            else if (arm.hand == InteractionHand.OFF_HAND && model.getHand(1) == null)
-                            {
+                            } else if (arm.hand == InteractionHand.OFF_HAND && model.getHand(1) == null) {
                                 model.setHand(1, model.getLimb(arm.lowerLimb));
                                 model.setLeftShoulder(model.getLimb(arm.upperLimb));
                             }
