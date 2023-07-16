@@ -7,6 +7,7 @@ import DaoOfModding.Cultivationcraft.Common.Misc;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Blood.BurningBlood;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Blood.CultivatorBlood;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Blood.QiBlood;
+import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Blood.WaterBlood;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyForgeParts.*;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.FoodStats.CarnivoreFoodStats;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.FoodStats.HerbivoreFoodStats;
@@ -101,6 +102,7 @@ public class BodyPartNames
     public static final String hungerBloodPart = "hungerBlood";
     public static final String qiBloodPart = "qiBlood";
     public static final String burningBloodPart = "burningBlood";
+    public static final String waterBloodPart = "waterBlood";
 
     public static final String reinforcedLungPart = "reinforcedLung";
     public static final String highPressureLungPart = "highpressureLung";
@@ -392,9 +394,21 @@ public class BodyPartNames
         burningBlood.getStatChanges().setElementalStat(StatIDs.resistanceModifier, Elements.waterElement, -25);
         burningBlood.setQuest(DefaultQuests.defaultLiveQuest);
 
+        BloodPart waterBlood = new BloodPart(waterBloodPart, bodyPosition, bloodSubPosition, "cultivationcraft.gui.bodypart.blood.water");
+        waterBlood.addUniqueTag(BodyPartTags.blood);
+        waterBlood.addNeededPart(BodyPartNames.startingEyesPart);
+        waterBlood.setBloodType(new WaterBlood());
+        waterBlood.setElement(Elements.waterElement);
+        waterBlood.getStatChanges().setStat(StatIDs.healthRegen, 0.2f);
+        waterBlood.getStatChanges().setStat(StatIDs.healthStaminaConversion, -0.5f);
+        waterBlood.getStatChanges().setElementalStat(StatIDs.resistanceModifier, Elements.waterElement, 25);
+        waterBlood.getStatChanges().setElementalStat(StatIDs.resistanceModifier, Elements.windElement, -25);
+        waterBlood.setQuest(DefaultQuests.defaultHealQuest);
+
         addOption(hungerBlood);
         addOption(qiBlood);
         addOption(burningBlood);
+        addOption(waterBlood);
     }
 
     protected static void setupLungOptions()

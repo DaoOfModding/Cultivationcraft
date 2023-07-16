@@ -6,6 +6,7 @@ import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.Quest;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.QuestHandler;
 import DaoOfModding.Cultivationcraft.Common.Qi.QiSource;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
+import net.minecraft.client.particle.Particle;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
@@ -23,6 +24,7 @@ public class Blood
 
     // How many ticks blood particles remain for
     public int life = 20*60;
+    protected float staminaHealingModifier = 6;
 
     public Vector3f getColour()
     {
@@ -42,9 +44,13 @@ public class Blood
     // Handle passive player regen here
     public void regen(Player player)
     {
-        // Vanilla health regen
-        boolean flag = player.level.getGameRules().getBoolean(GameRules.RULE_NATURAL_REGENERATION);
+        if (!staminaHealing(player))
+            naturalHealing(player);
+    }
 
+    public boolean staminaHealing(Player player)
+    {
+        boolean flag = player.level.getGameRules().getBoolean(GameRules.RULE_NATURAL_REGENERATION);
         QiFoodStats food = (QiFoodStats)player.getFoodData();
 
         if (flag && food.getSaturationLevel() > 0.0F && player.isHurt() && food.getFoodLevel() >= food.getMaxFood())
@@ -52,21 +58,31 @@ public class Blood
             ++food.tickTimer;
             if (food.tickTimer >= 10)
             {
-                float f = Math.min(food.getSaturationLevel(), 6.0F);
+                float f = Math.min(food.getSaturationLevel(), staminaHealingModifier);
 
                 if (!player.level.isClientSide)
-                    QuestHandler.progressQuest(player, Quest.HEAL, f / 6.0F);
+                    QuestHandler.progressQuest(player, Quest.HEAL, f / staminaHealingModifier);
 
                 player.heal(f / 6.0F);
                 food.addExhaustion(f);
                 food.tickTimer = 0;
             }
+
+            return true;
         }
-        else if (flag && food.getFoodLevel() >= food.getMaxFood() * 0.9 && player.isHurt())
+
+        return false;
+    }
+
+    public void naturalHealing(Player player)
+    {
+        boolean flag = player.level.getGameRules().getBoolean(GameRules.RULE_NATURAL_REGENERATION);
+        QiFoodStats food = (QiFoodStats)player.getFoodData();
+
+        if (flag && food.getFoodLevel() >= food.getMaxFood() * 0.9 && player.isHurt())
         {
             ++food.tickTimer;
-            if (food.tickTimer >= 80)
-            {
+            if (food.tickTimer >= 80) {
                 if (!player.level.isClientSide)
                     QuestHandler.progressQuest(player, Quest.HEAL, 1.0F);
 
@@ -78,8 +94,10 @@ public class Blood
     }
 
     // Each droplet of blood will call this function every tick
-    public void externalTick(Level level, double x, double y, double z)
+    // If true is returned the particle with be removed
+    public boolean externalTick(Level level, double x, double y, double z, boolean onGround)
     {
+        return false;
     }
 
     public ParticleOptions getParticle(Player player)

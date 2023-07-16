@@ -72,7 +72,8 @@ public class BloodParticle extends TextureSheetParticle
         this.yd *= this.friction;
         this.zd *= this.friction;
 
-        blood.externalTick(level, x, y, z);
+        if (blood.externalTick(level, x, y, z, this.onGround))
+            this.remove();
     }
 
     @Override

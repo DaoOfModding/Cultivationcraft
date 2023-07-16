@@ -231,6 +231,8 @@
   "cultivationcraft.gui.bodypart.blood.qi.description": "Removes passive healing, but allows you to heal quickly by absorbing from Qi sources",
   "cultivationcraft.gui.bodypart.blood.burning": "Burning Blood",
   "cultivationcraft.gui.bodypart.blood.burning.description": "Blood so hot it burns everything it touches. Including you.\nAllows you to break the fire resistance cap and be healed by fire damage",
+  "cultivationcraft.gui.bodypart.blood.water": "Water Blood",
+  "cultivationcraft.gui.bodypart.blood.water.description": "Your blood is diluted with water, healing you whilst in water.\nAllows you to break the water resistance cap and be healed by water damage",
 
   "cultivationcraft.gui.bodypart.lung.default": "Lung Type",
   "cultivationcraft.gui.bodypart.lung.left": "Left Lung",

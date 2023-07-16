@@ -44,6 +44,12 @@ public class ClientPacketHandler
         PacketHandler.channel.sendToServer(pack);
     }
 
+    public static void sendExternalBloodTick(double x, double y, double z, boolean onGround)
+    {
+        ExternalBloodTickPacket pack = new ExternalBloodTickPacket(x, y, z, onGround);
+        PacketHandler.channel.sendToServer(pack);
+    }
+
     public static void sendElementalEffectToServer(ResourceLocation element, ResourceKey<Level> level, BlockPos pos)
     {
         ElementalEffectPacket pack = new ElementalEffectPacket(element, level, pos);

@@ -37,7 +37,7 @@ public class BloodRenderer
         }
     }
 
-    protected static Vec3 getBloodDirection(Player player, Vec3 source)
+    public static Vec3 getBloodDirection(Player player, Vec3 source)
     {
         Vec3 direction;
 

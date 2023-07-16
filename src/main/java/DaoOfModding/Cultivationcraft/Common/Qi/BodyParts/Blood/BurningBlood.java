@@ -38,19 +38,21 @@ public class BurningBlood extends CultivatorBlood
     }
 
     @Override
-    public void externalTick(Level level, double x, double y, double z)
+    public boolean externalTick(Level level, double x, double y, double z, boolean onGround)
     {
         tick++;
 
         // Only run this once every 20 ticks
         if (tick < 20)
-            return;
+            return false;
 
         tick = 0;
 
         BlockPos pos = new BlockPos(Mth.floor(x), Mth.floor(y), Mth.floor(z));
 
         Elements.getElement(Elements.fireElement).effectBlock(level, pos);
+
+        return false;
     }
 
     @Override
