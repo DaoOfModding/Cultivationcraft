@@ -1,16 +1,12 @@
 package DaoOfModding.Cultivationcraft.Network.Packets;
 
-import DaoOfModding.Cultivationcraft.Client.Renderers.BloodRenderer;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.PlayerHealthManager;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
-import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.network.NetworkEvent;
 
-import java.util.UUID;
 import java.util.function.Supplier;
 
 public class ExternalBloodTickPacket extends Packet

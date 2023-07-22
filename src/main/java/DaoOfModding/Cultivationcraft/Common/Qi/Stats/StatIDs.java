@@ -31,10 +31,9 @@ public class StatIDs
     public static final ResourceLocation width = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.stat.width");
     public static final ResourceLocation size = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.stat.size");
 
-    // TODO: Make this do something
-    public static final ResourceLocation attackRange = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.stat.attackrange");
+    public static final ResourceLocation stepHeight = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.stat.stepHeightModifier");
 
-    // TODO: Make this do something
+    public static final ResourceLocation attackRange = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.stat.attackrange");
     public static final ResourceLocation armAttackModifier = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.stat.armattackmodifier");
 
     public static final ResourceLocation legSupport = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.stat.legweight");

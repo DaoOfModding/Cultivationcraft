@@ -28,6 +28,7 @@ public class PlayerStatControl
     AttributeModifier swimModifier;
     AttributeModifier attackModifier;
     AttributeModifier rangeModifier;
+    AttributeModifier stepHeightModifier;
 
     // Setup players with the default player stats
     public PlayerStatControl()
@@ -76,7 +77,7 @@ public class PlayerStatControl
             if (player.level.isClientSide())
                 part.onLoad(player.getUUID());
 
-            BodyPartStatControl.addStats(player, part.getStatChanges());
+            stats.combine(part.getStatChanges());
         }
 
         // Add all existing body part option stats to the players stats
@@ -86,7 +87,7 @@ public class PlayerStatControl
                 if (player.level.isClientSide())
                     part.onLoad(player.getUUID());
 
-                BodyPartStatControl.addStats(player, part.getStatChanges());
+                stats.combine(part.getStatChanges());
             }
 
         // Add all existing stat modifiers on active techniques to the player stats
@@ -96,13 +97,14 @@ public class PlayerStatControl
         {
             Technique tech = techs.getTechnique(i);
             if (tech != null && tech.isActive() && tech.getStats() != null)
-                BodyPartStatControl.addStats(player, tech.getStats());
+                stats.combine(tech.getStats());
         }
 
         for (PassiveTechnique passive : techs.getPassives())
-            BodyPartStatControl.addStats(player, passive.getStats());
+            stats.combine(passive.getStats());
 
         calculateVariantResistances(player);
+        calculateSizeStatChanges();
 
         // Apply resistance caps
         BodyPartStatControl.applyCaps(player);
@@ -113,6 +115,21 @@ public class PlayerStatControl
 
         PlayerHealthManager.updateFoodStats(player);
         PlayerHealthManager.updateLungs(player);
+    }
+
+    // Applies additional stat changes based on player size
+    protected void calculateSizeStatChanges()
+    {
+        PlayerStatModifications sizeChanges = new PlayerStatModifications();
+
+        float sizeAdjustment = stats.getStats().get(StatIDs.size) - 1;
+
+        sizeChanges.setStat(StatIDs.attackRange, sizeAdjustment * StatIDs.defaultAttackRange);
+
+        if (sizeAdjustment > 0)
+            sizeChanges.setStat(StatIDs.stepHeight, sizeAdjustment * 0.5f);
+
+        stats.combine(sizeChanges);
     }
 
     // Applies additional resistances for variant elements
@@ -127,7 +144,7 @@ public class PlayerStatControl
             resistances.setElementalStat(StatIDs.resistanceModifier, element, resist);
         }
 
-        BodyPartStatControl.addStats(player, resistances);
+        stats.combine(resistances);
     }
 
     protected void applyStats(Player player)
@@ -153,6 +170,9 @@ public class PlayerStatControl
         if (attackModifier != null)
             player.getAttribute(Attributes.ATTACK_DAMAGE).removeModifier(attackModifier);
 
+        if (stepHeightModifier != null)
+            player.getAttribute(ForgeMod.STEP_HEIGHT_ADDITION.get()).removeModifier(stepHeightModifier);
+
         healthModifier = new AttributeModifier("BodyForgeHealth", stats.getStat(StatIDs.maxHP) - StatIDs.defaultMaxHP, AttributeModifier.Operation.ADDITION);
         movementModifier = new AttributeModifier("BodyForgeMove", stats.getStat(StatIDs.movementSpeed) * getLegWeightModifier() - StatIDs.defaultMovementSpeed, AttributeModifier.Operation.ADDITION);
         armorModifier = new AttributeModifier("BodyForgeArmor", stats.getStat(StatIDs.armor), AttributeModifier.Operation.ADDITION);
@@ -160,6 +180,7 @@ public class PlayerStatControl
         swimModifier = new AttributeModifier("BodyForgeSwimSpeed", stats.getStat(StatIDs.swimSpeed) - StatIDs.defaultSwimSpeed, AttributeModifier.Operation.ADDITION);
         rangeModifier = new AttributeModifier("BodyForgeReach", stats.getStat(StatIDs.attackRange) - StatIDs.defaultAttackRange, AttributeModifier.Operation.ADDITION);
         attackModifier = new AttributeModifier("BodyForgeAttack", stats.getStat(StatIDs.armAttackModifier)  - StatIDs.defaultAttackModifier, AttributeModifier.Operation.MULTIPLY_TOTAL);
+        stepHeightModifier = new AttributeModifier("BodyForgeStepHeight", stats.getStat(StatIDs.stepHeight) , AttributeModifier.Operation.ADDITION);
 
         player.getAttribute(Attributes.MAX_HEALTH).addTransientModifier(healthModifier);
         player.getAttribute(Attributes.MOVEMENT_SPEED).addTransientModifier(movementModifier);
@@ -168,6 +189,7 @@ public class PlayerStatControl
         player.getAttribute(ForgeMod.SWIM_SPEED.get()).addTransientModifier(swimModifier);
         player.getAttribute(ForgeMod.REACH_DISTANCE.get()).addTransientModifier(rangeModifier);
         player.getAttribute(Attributes.ATTACK_DAMAGE).addTransientModifier(attackModifier);
+        player.getAttribute(ForgeMod.STEP_HEIGHT_ADDITION.get()).addTransientModifier(stepHeightModifier);
     }
 
     // Returns a modifier based on how overweight the player is

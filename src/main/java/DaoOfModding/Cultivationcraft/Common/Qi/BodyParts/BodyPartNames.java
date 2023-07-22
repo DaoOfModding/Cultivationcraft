@@ -653,7 +653,7 @@ public class BodyPartNames
         jets.addNeededTags(BodyPartTags.flame);
         jets.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.basePosition);
         jets.getStatChanges().setStat(StatIDs.weight, 0.04f);
-        jets.setQuest(new Quest(JetTechnique.jetQuest, 10000));
+        jets.setQuest(new Quest(JetTechnique.jetQuest, 3000));
 
         BodyPartOption dfin = new BodyPartOption(dfinPart, bodyPosition, backSubPosition, "cultivationcraft.gui.bodypart.back.dfin");
         dfin.addQuad(BodyPartModelNames.dorsalFinQuad);

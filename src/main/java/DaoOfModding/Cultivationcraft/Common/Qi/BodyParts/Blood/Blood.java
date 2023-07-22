@@ -13,6 +13,7 @@ import net.minecraft.world.entity.player.Player;
 import com.mojang.math.Vector3f;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -100,9 +101,9 @@ public class Blood
         return false;
     }
 
-    public ParticleOptions getParticle(Player player)
+    public void onHit(Player player, Vec3 source, double amount)
     {
-        return null;
+
     }
 
     // Is called when meditating

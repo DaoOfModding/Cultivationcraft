@@ -58,6 +58,8 @@
   "cultivationcraft.stat.width.text": "The extra amount this character is stretched horizontally",
   "cultivationcraft.stat.size": "Size",
   "cultivationcraft.stat.size.text": "The extra amount this character's total size is increased by",
+  "cultivationcraft.stat.stepHeightModifier": "Step Height",
+  "cultivationcraft.stat.stepHeightModifier.text": "The maximum height this player can step over",
   "cultivationcraft.stat.qiabsorb": "Qi Absorb",
   "cultivationcraft.stat.qiabsorb.text": "The amount of Qi this character is capable of absorbing per tick",
   "cultivationcraft.stat.qiabsorbrange": "Qi Absorb Range",

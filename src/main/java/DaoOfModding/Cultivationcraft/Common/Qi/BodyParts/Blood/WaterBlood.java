@@ -1,7 +1,7 @@
 package DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Blood;
 
+import DaoOfModding.Cultivationcraft.Client.Renderers.BloodRenderer;
 import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
-import DaoOfModding.Cultivationcraft.Network.ClientPacketHandler;
 import com.mojang.math.Vector3f;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
@@ -10,6 +10,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nullable;
 
@@ -43,24 +44,59 @@ public class WaterBlood extends CultivatorBlood
         return false;
     }
 
-    @Override
-    public boolean externalTick(Level level, double x, double y, double z, boolean onGround)
+    // Called when player takes damage
+    public void onHit(Player player, Vec3 source, double amount)
     {
-        if (!onGround)
-            return false;
+        if (player.level.isClientSide)
+            return;
 
-        if (level.isClientSide)
+        int waterLevel = (int)(amount / 5f);
+        if (waterLevel > 7)
+            waterLevel = 7;
+        if (waterLevel < 2)
+            waterLevel = 2;
+
+        BlockPos blockpos = new BlockPos(player.position());
+
+        placeWater(player.level, blockpos, waterLevel);
+
+
+        Vec3 dir = BloodRenderer.getBloodDirection(player, source);
+
+        int x = 0;
+        int z = 0;
+
+        if (dir.x >= 0.25)
+            x = 1;
+        else if (dir.x <= -0.25)
+            x = -1;
+
+        if (dir.z >= 0.25)
+            z = 1;
+        else if (dir.z <= -0.25)
+            z = -1;
+
+        BlockPos addWaterSpawn = new BlockPos(player.position().x + x, player.position().y, player.position().z + z);
+
+        placeWater(player.level, addWaterSpawn, waterLevel-1);
+
+        if (x != 0 && z != 0)
         {
-            ClientPacketHandler.sendExternalBloodTick(x, y, z, onGround);
-            return true;
-        }
+            addWaterSpawn = new BlockPos(player.position().x, player.position().y, player.position().z + z);
+            placeWater(player.level, addWaterSpawn, waterLevel-1);
 
-        BlockPos blockpos = new BlockPos((float)x, (float)y, (float)z);
+            addWaterSpawn = new BlockPos(player.position().x + x, player.position().y, player.position().z);
+            placeWater(player.level, addWaterSpawn, waterLevel-1);
+        }
+    }
+
+    protected void placeWater(Level level, BlockPos blockpos, int waterLevel)
+    {
 
         // If the player is standing in water, increase it's height by 1
         if (level.getBlockState(blockpos).is(Blocks.WATER))
         {
-            int height = level.getBlockState(blockpos).getValue(LiquidBlock.LEVEL) + 1;
+            int height = level.getBlockState(blockpos).getValue(LiquidBlock.LEVEL) + waterLevel;
 
             if (height > 15)
                 height = 15;
@@ -72,11 +108,9 @@ public class WaterBlood extends CultivatorBlood
         // If the player is standing in air, add 1 height high water 1
         else if (level.getBlockState(blockpos).isAir())
         {
-            BlockState state = Blocks.WATER.defaultBlockState().setValue(LiquidBlock.LEVEL, 1);
+            BlockState state = Blocks.WATER.defaultBlockState().setValue(LiquidBlock.LEVEL, waterLevel);
             level.setBlock(blockpos, state, 2);
             level.sendBlockUpdated(blockpos, state, state, 1);
         }
-
-        return true;
     }
 }

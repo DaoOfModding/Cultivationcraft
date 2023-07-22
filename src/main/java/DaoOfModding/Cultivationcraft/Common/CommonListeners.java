@@ -261,7 +261,8 @@ public class CommonListeners
     @SubscribeEvent
     public static void playerRespawns(PlayerEvent.PlayerRespawnEvent event)
     {
-        QuestHandler.resetQuest(event.getEntity(), Quest.LIVE);
+        if(!event.isEndConquered())
+            QuestHandler.resetQuest(event.getEntity(), Quest.LIVE);
 
         CultivatorStats.getCultivatorStats(event.getEntity()).setDisconnected(false);
 
@@ -326,10 +327,6 @@ public class CommonListeners
     @SubscribeEvent
     public static void onPlayerDeath(PlayerEvent.Clone event)
     {
-        // Do nothing if this wasn't a death
-        //if (!event.isWasDeath())
-        //    return;
-
         event.getOriginal().reviveCaps();
 
         // Copy across the player's capabilities to the revived entity
@@ -338,6 +335,9 @@ public class CommonListeners
         CultivatorTechniques.getCultivatorTechniques(event.getEntity()).readNBT(CultivatorTechniques.getCultivatorTechniques(event.getOriginal()).writeNBT());
 
         event.getOriginal().invalidateCaps();
+
+        if (event.isWasDeath())
+            QuestHandler.resetQuest(event.getEntity(), Quest.LIVE);
 
     }
 

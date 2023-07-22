@@ -72,6 +72,8 @@ public class Damage
         float damage = armorAbsorption((Player)event.getEntity(), source, event.getAmount());
         float resistedDamage = resistDamage(damage, source.damageElement, (Player)event.getEntity());
 
+        if (source.getElement().compareTo(Elements.fireElement) == 0 && event.getEntity().fireImmune() && resistedDamage > 0)
+            resistedDamage = 0;
 
         if (resistedDamage <= 0)
         {
@@ -105,7 +107,9 @@ public class Damage
 
         // Do not spawn blood from internal damage
         if (!source.isInternal())
-            PacketHandler.sendBloodSpawnToClient(event.getEntity().getUUID(), position, event.getAmount());
+        {
+            PlayerHealthManager.getBlood((Player) event.getEntity()).onHit((Player) event.getEntity(), position, event.getAmount());
+        }
 
         return false;
     }
