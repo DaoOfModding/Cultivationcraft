@@ -38,7 +38,7 @@ public class BodyPart
     protected ArrayList<String> firstPersonModelIDs = new ArrayList<String>();
     protected String limbPosition;
     protected String displayNamePosition;
-    protected PlayerStatModifications stats;
+    protected PlayerStatModifications stats = new PlayerStatModifications();
     protected String textureID = TextureList.skin;
     protected Quest quest;
 
@@ -69,8 +69,6 @@ public class BodyPart
 
         limbPosition = position;
         displayNamePosition = displayNamePos;
-
-        stats = new PlayerStatModifications();
 
         quest = new Quest(Quest.TIME_ALIVE, 0);
     }

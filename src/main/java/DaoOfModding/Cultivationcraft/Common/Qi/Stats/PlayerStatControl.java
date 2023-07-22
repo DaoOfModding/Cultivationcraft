@@ -120,9 +120,12 @@ public class PlayerStatControl
     // Applies additional stat changes based on player size
     protected void calculateSizeStatChanges()
     {
+        if (stats.getStats().get(StatIDs.size) == null)
+            return;
+
         PlayerStatModifications sizeChanges = new PlayerStatModifications();
 
-        float sizeAdjustment = stats.getStats().get(StatIDs.size) - 1;
+        float sizeAdjustment = stats.getStats().get(StatIDs.size);
 
         sizeChanges.setStat(StatIDs.attackRange, sizeAdjustment * StatIDs.defaultAttackRange);
 
