@@ -120,7 +120,7 @@ public class BiteTechnique extends AttackOverrideTechnique
                 player.level.destroyBlock(pos, false);
             }
 
-            player.getFoodData().eat(nutrition, nutrition);
+            player.getFoodData().eat(nutrition, 0.8f);
         }
         else
             super.attackBlock(player, block, pos);

@@ -40,6 +40,7 @@ public class HelpItems
         addStatsField(new SelectableText("cultivationcraft.stat.resistancemodifier"));
         addStatsField(new SelectableText("cultivationcraft.stat.width"));
         addStatsField(new SelectableText("cultivationcraft.stat.size"));
+        addStatsField(new SelectableText("cultivationcraft.stat.stepheightmodifier"));
         addStatsField(new SelectableText("cultivationcraft.stat.qiabsorb"));
         addStatsField(new SelectableText("cultivationcraft.stat.qiabsorbrange"));
         addStatsField(new SelectableText("cultivationcraft.stat.qicost"));

@@ -840,6 +840,7 @@ public class BodyPartNames
         largelegpart.addNeededPosition(BodyPartNames.armPosition, BodyPartNames.locationSubPosition);
         largelegpart.getStatChanges().setStat(StatIDs.weight, DefaultPlayerBodyPartWeights.legWeight * 2f);
         largelegpart.getStatChanges().setStat(StatIDs.legSupport, 10);
+        largelegpart.getStatChanges().setStat(StatIDs.stepHeight, 0.5f);
         largelegpart.setQuest(DefaultQuests.defaultLegQuest);
 
         addPart(largelegpart);
