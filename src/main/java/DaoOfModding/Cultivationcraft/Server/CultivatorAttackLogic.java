@@ -49,7 +49,8 @@ public class CultivatorAttackLogic
             entityHealth = ((LivingEntity) toAttack).getHealth();
 
         // If player does no damage (?) then play a corresponding sound and do nothing
-        if (!toAttack.hurt(QiDamageSource.playerAttack(player, element, source, true), damage)) {
+        if (!toAttack.hurt(QiDamageSource.playerAttack(player, element, source, true), damage))
+        {
             player.level.playSound((Player) null, player.getX(), player.getY(), player.getZ(), SoundEvents.PLAYER_ATTACK_NODAMAGE, player.getSoundSource(), 1.0F, 1.0F);
             return false;
         }

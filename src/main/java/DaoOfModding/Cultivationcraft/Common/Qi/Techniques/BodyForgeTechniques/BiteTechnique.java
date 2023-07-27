@@ -9,6 +9,7 @@ import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.FoodStats.QiFoodStats;
 import DaoOfModding.Cultivationcraft.Common.Qi.CultivationTypes;
 import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
+import DaoOfModding.Cultivationcraft.Common.Qi.Stats.PlayerStatControl;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.PlayerStatModifications;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.StatIDs;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.AttackOverrideTechnique;
@@ -69,6 +70,11 @@ public class BiteTechnique extends AttackOverrideTechnique
                 return true;
 
         return false;
+    }
+
+    public double getRange(Player player)
+    {
+        return range * (1 + BodyPartStatControl.getPlayerStatControl(player).getSizeAdjustment());
     }
 
     // Ticks on server side, only called if Technique is active and owned by the player

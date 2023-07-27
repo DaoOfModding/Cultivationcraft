@@ -384,6 +384,7 @@ public class BodyPartNames
         qiBlood.addNeededPart(BodyPartNames.startingEyesPart);
         qiBlood.setBloodType(new QiBlood());
         qiBlood.setQuest(DefaultQuests.defaultHealQuest);
+        qiBlood.getStatChanges().setStat(StatIDs.maxHP, StatIDs.defaultMaxHP * 2);
 
         BloodPart burningBlood = new BloodPart(burningBloodPart, bodyPosition, bloodSubPosition, "cultivationcraft.gui.bodypart.blood.burning");
         burningBlood.addUniqueTag(BodyPartTags.blood);
@@ -892,9 +893,6 @@ public class BodyPartNames
         jetLeg.getStatChanges().setStat(StatIDs.fallHeight, 4f);
         jetLeg.addUniqueTag(BodyPartTags.flight);
         jetLeg.setQuest(DefaultQuests.defaultFlightQuest);
-
-        // TODO: Add flame generating body part
-        //jetLeg.addNeededTags(BodyPartTags.flame);
 
         addPart(jetLeg);
     }

@@ -26,7 +26,7 @@ public class QiDamageSource extends DamageSource
         damageElement = element;
 
         // Bypass armor if this damage source has an element
-        if (damageElement.compareTo(Elements.noElement) != 0)
+        if (damageElement != null || damageElement.compareTo(Elements.noElement) != 0)
             bypassArmor();
 
         doStatusEffect = statusEffect;

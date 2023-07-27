@@ -53,11 +53,13 @@ public class ChanneledAttackTechnique extends AttackTechnique
     // Try to attack with specified player, client only
     public void attack(Player player, int slot)
     {
-        targetEntity = CultivatorAttackLogicClient.tryAttackEntity(range);
+        targetEntity = CultivatorAttackLogicClient.tryAttackEntity(getRange(player));
 
         // Do nothing if not entity is found
         if (targetEntity == null)
             return;
+
+        System.out.println("ATTACKING ENTITY...");
 
         if (ticksSinceHit == 0)
         {
@@ -90,7 +92,7 @@ public class ChanneledAttackTechnique extends AttackTechnique
 
     protected void mine(Player player)
     {
-        BlockPos pos = CultivatorAttackLogicClient.tryAttackBlock(range);
+        BlockPos pos = CultivatorAttackLogicClient.tryAttackBlock(getRange(player));
 
         if (target == null || pos == null || pos.compareTo(target) != 0)
         {

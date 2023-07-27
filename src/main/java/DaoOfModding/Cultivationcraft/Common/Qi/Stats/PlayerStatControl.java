@@ -125,7 +125,7 @@ public class PlayerStatControl
 
         PlayerStatModifications sizeChanges = new PlayerStatModifications();
 
-        float sizeAdjustment = stats.getStats().get(StatIDs.size);
+        float sizeAdjustment = getSizeAdjustment();
 
         sizeChanges.setStat(StatIDs.attackRange, sizeAdjustment * StatIDs.defaultAttackRange);
 
@@ -133,6 +133,11 @@ public class PlayerStatControl
             sizeChanges.setStat(StatIDs.stepHeight, sizeAdjustment * 0.5f);
 
         stats.combine(sizeChanges);
+    }
+
+    public float getSizeAdjustment()
+    {
+        return stats.getStats().get(StatIDs.size);
     }
 
     // Applies additional resistances for variant elements
