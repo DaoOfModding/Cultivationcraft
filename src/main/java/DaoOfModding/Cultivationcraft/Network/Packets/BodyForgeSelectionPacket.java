@@ -4,6 +4,7 @@ import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartNames;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.BodyModifications;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.IBodyModifications;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPart;
+import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import DaoOfModding.Cultivationcraft.Network.PacketHandler;
 import net.minecraft.world.entity.player.Player;
@@ -70,26 +71,24 @@ public class BodyForgeSelectionPacket extends Packet
         // Reset the body forge progress
         modifications.setProgress(0);
 
-        // Set the current selection to nothing if nothing was passed through
-        if (selectionID.compareTo("") == 0)
-        {
-            modifications.setSelection(selectionID);
-        }
-        else
+        // Get the body part if it was not nothing
+        if (selectionID.compareTo("") != 0)
         {
             // Ensure that this is a valid selection for this player
             BodyPart part = BodyPartNames.getPart(selectionID);
             if (part == null)
                 part = BodyPartNames.getOption(selectionID);
 
-            if (part == null || !part.canBeForged(player)) {
+            if (part == null || !part.canBeForged(player))
+            {
                 Cultivationcraft.LOGGER.warn(player.getName().getString() + " tried to forge an invalid bodyPart: " + selectionID);
                 return;
             }
-
-            // Set the new selection
-            modifications.setSelection(selectionID);
         }
+
+        // Set the new selection
+        modifications.setSelection(selectionID);
+        BodyPartStatControl.updateStats(player);
 
         // Update clients with new selection
         PacketHandler.sendBodyModificationsToClient(player);

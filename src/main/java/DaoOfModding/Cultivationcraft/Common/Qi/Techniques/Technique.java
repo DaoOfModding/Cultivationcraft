@@ -28,6 +28,7 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.entity.living.LivingFallEvent;
 
 import java.util.ArrayList;
 
@@ -264,6 +265,12 @@ public class Technique
                 player.removeEffect(effect);
 
         BodyPartStatControl.updateStats(player);
+    }
+
+    // Called when a fall event is called and this technique is active
+    public void onFall(LivingFallEvent event)
+    {
+
     }
 
     // Called when the use key is released for a channel skill

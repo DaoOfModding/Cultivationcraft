@@ -59,8 +59,6 @@ public class ChanneledAttackTechnique extends AttackTechnique
         if (targetEntity == null)
             return;
 
-        System.out.println("ATTACKING ENTITY...");
-
         if (ticksSinceHit == 0)
         {
             ClientPacketHandler.sendAttackToServer(player.getUUID(), HitResult.Type.ENTITY, targetEntity.position(), targetEntity.getUUID(), slot);

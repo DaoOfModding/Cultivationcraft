@@ -24,12 +24,14 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.entity.living.LivingFallEvent;
 
 public class JetLegTechnique extends MovementOverrideTechnique
 {
     protected boolean jump = false;
     protected boolean enabled = false;
     protected static final float flameUse = 0.025f;
+    protected int enabledTicks = 0;
 
     public JetLegTechnique()
     {
@@ -126,6 +128,26 @@ public class JetLegTechnique extends MovementOverrideTechnique
 
         if (enabled && !PlayerHealthManager.getLungs(event.player).drainBreath(Breath.FIRE, flameUse))
             enabled = false;
+
+        if (enabled)
+            enabledTicks++;
+        else
+            enabledTicks--;
+
+        enabledTicks = Math.min(20, Math.max(0, enabledTicks));
+    }
+
+    public void onFall(LivingFallEvent event)
+    {
+        if (enabledTicks > 10)
+        {
+            event.setCanceled(true);
+        }
+        else if (enabledTicks > 5)
+        {
+            float damageMultiplier = 1 - ((enabledTicks - 5) / 5f);
+            event.setDamageMultiplier(event.getDamageMultiplier() * damageMultiplier);
+        }
     }
 
     protected void enableJets(Boolean on, Player player)

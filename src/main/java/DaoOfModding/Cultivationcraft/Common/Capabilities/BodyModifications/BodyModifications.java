@@ -42,6 +42,10 @@ public class BodyModifications implements IBodyModifications
     public void setSelection(String selection)
     {
         selected = selection;
+
+        // If nothing is selected reset progress
+        if (selection.compareTo("") == 0)
+            setProgress(0);
     }
 
     public String getLastForged()

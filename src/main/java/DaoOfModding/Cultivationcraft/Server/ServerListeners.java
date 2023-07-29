@@ -27,6 +27,7 @@ import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.item.ItemTossEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
+import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.level.ChunkEvent;
@@ -99,6 +100,21 @@ public class ServerListeners
                         PacketHandler.updateStaminaForClients(((QiFoodStats) event.player.getFoodData()).getTrueFoodLevel(), event.player);
             }
         }
+    }
+
+    @SubscribeEvent
+    public static void onFall(LivingFallEvent event)
+    {
+        if (event.getEntity().level.isClientSide || !(event.getEntity() instanceof Player))
+            return;
+
+        ICultivatorTechniques techs = CultivatorTechniques.getCultivatorTechniques((Player)event.getEntity());
+
+        for (int i = 0; i < CultivatorTechniques.numberOfTechniques; i++)
+            if (techs.getTechnique(i) != null)
+                if (techs.getTechnique(i).isActive())
+                    techs.getTechnique(i).onFall(event);
+
     }
 
     @SubscribeEvent

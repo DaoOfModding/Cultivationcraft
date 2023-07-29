@@ -6,6 +6,7 @@ import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.IBody
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPart;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartNames;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartOption;
+import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import DaoOfModding.Cultivationcraft.Network.PacketHandler;
 import net.minecraft.network.FriendlyByteBuf;
@@ -70,6 +71,7 @@ public class QuestCancelPacket extends Packet
             modifications.removeOption(option);
         }
 
+        BodyPartStatControl.updateStats(ownerEntity);
         PacketHandler.sendBodyModificationsToClient(ownerEntity);
     }
 }
