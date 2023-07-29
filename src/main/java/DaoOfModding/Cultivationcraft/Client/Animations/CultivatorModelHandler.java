@@ -102,6 +102,10 @@ public class CultivatorModelHandler
             newModel.getViewPoint().getModelPart().zRot = handler.getPlayerModel().getViewPoint().getModelPart().zRot;
             newModel.setupLookVector(handler.getPlayerModel().getLookVector());
 
+            newModel.getLimb(GenericLimbNames.leftWingElytra).getModelPart().visible = handler.getPlayerModel().getLimb(GenericLimbNames.leftWingElytra).getModelPart().visible;
+            newModel.getLimb(GenericLimbNames.rightWingElytra).getModelPart().visible = handler.getPlayerModel().getLimb(GenericLimbNames.rightWingElytra).getModelPart().visible;
+            newModel.getLimb(GenericLimbNames.cloak).getModelPart().visible = handler.getPlayerModel().getLimb(GenericLimbNames.cloak).getModelPart().visible;
+
             // Update the player model with the new one
             handler.setPlayerModel(newModel);
             handler.setCrawling(false);
