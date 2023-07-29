@@ -4,8 +4,10 @@ import DaoOfModding.Cultivationcraft.Client.Textures.TextureList;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.PlayerStatModifications;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.StatIDs;
+import DaoOfModding.mlmanimator.Client.AnimationFramework.AnimationSpeedCalculator;
 import DaoOfModding.mlmanimator.Client.Models.Quads.Quad;
 import DaoOfModding.mlmanimator.Client.Poses.Arm;
+import DaoOfModding.mlmanimator.Client.Poses.PlayerPose;
 import DaoOfModding.mlmanimator.Client.Poses.PlayerPoseHandler;
 import DaoOfModding.mlmanimator.Client.Poses.PoseHandler;
 import DaoOfModding.mlmanimator.Client.Models.*;
@@ -72,6 +74,8 @@ public class CultivatorModelHandler
 
             processParts(newModel, parts, models, modifications, partLocations, handler);
 
+            PlayerPose defaultSize = new PlayerPose();
+
             // Update textures from body parts
             for (BodyPart part : parts)
                 part.updateTextures(newModel.getTextureHandler());
@@ -85,7 +89,18 @@ public class CultivatorModelHandler
             // Lock the handler so it can be modified without other threads messing with it
             handler.lock();
 
-            handler.resize(new Vec3(stats.getStat(StatIDs.size) + stats.getStat(StatIDs.width), stats.getStat(StatIDs.size) , stats.getStat(StatIDs.size) + stats.getStat(StatIDs.width)));
+            // Resize the new body and the handler to be the correct size
+            float size = stats.getStat(StatIDs.size);
+            float width = stats.getStat(StatIDs.width);
+
+            handler.resize(new Vec3(size + width, size, size + width));
+            newModel.getBody().addToResizeForThisAndChildren(new Vec3(size + width, size, size + width));
+
+            // Ensure the head is looking in the correct direction
+            newModel.getViewPoint().getModelPart().xRot = handler.getPlayerModel().getViewPoint().getModelPart().xRot;
+            newModel.getViewPoint().getModelPart().yRot = handler.getPlayerModel().getViewPoint().getModelPart().yRot;
+            newModel.getViewPoint().getModelPart().zRot = handler.getPlayerModel().getViewPoint().getModelPart().zRot;
+            newModel.setupLookVector(handler.getPlayerModel().getLookVector());
 
             // Update the player model with the new one
             handler.setPlayerModel(newModel);

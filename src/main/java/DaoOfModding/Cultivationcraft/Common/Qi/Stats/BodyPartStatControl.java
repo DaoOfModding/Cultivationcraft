@@ -41,10 +41,8 @@ public class BodyPartStatControl
         }
     }
 
-    public static void applyCaps(Player player)
+    public static void applyCaps(Player player, PlayerStatModifications stats)
     {
-        PlayerStatModifications stats = getPlayerStatControl(player).getStats();
-
         Blood blood = PlayerHealthManager.getBlood(player);
 
         if (stats.elementalStats.get(StatIDs.resistanceModifier) != null)

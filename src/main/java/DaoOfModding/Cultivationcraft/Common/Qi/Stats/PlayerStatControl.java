@@ -33,29 +33,28 @@ public class PlayerStatControl
     // Setup players with the default player stats
     public PlayerStatControl()
     {
-        setupStats();
+        setupStats(stats);
     }
 
-    public void setupStats()
+    public void setupStats(PlayerStatModifications newStats)
     {
-        stats = new PlayerStatModifications();
-        stats.setStat(StatIDs.weight, StatIDs.defaultWeight);
-        stats.setStat(StatIDs.maxHP, StatIDs.defaultMaxHP);
-        stats.setStat(StatIDs.maxStamina, StatIDs.defaultMaxStamina);
-        stats.setStat(StatIDs.lungCapacity, StatIDs.defaultLungCapacity);
-        stats.setStat(StatIDs.qiAbsorbRange, StatIDs.defaultQiAbsorbRange);
-        stats.setStat(StatIDs.staminaUse, StatIDs.defaultStaminaUse);
-        stats.setStat(StatIDs.healthRegen, StatIDs.defaultHealthRegen);
-        stats.setStat(StatIDs.healthStaminaConversion, StatIDs.defaulthealthStaminaConversion);
-        stats.setStat(StatIDs.movementSpeed, StatIDs.defaultMovementSpeed);
-        stats.setStat(StatIDs.swimSpeed, StatIDs.defaultSwimSpeed);
-        stats.setStat(StatIDs.attackRange, StatIDs.defaultAttackRange);
-        stats.setStat(StatIDs.jumpHeight, StatIDs.defaultJumpHeight);
-        stats.setStat(StatIDs.fallHeight, StatIDs.defaultFallHeight);
-        stats.setStat(StatIDs.legSupport, StatIDs.defaultLegSupport);
-        stats.setStat(StatIDs.armAttackModifier, StatIDs.defaultAttackModifier);
-        stats.setStat(StatIDs.attackRange, StatIDs.defaultAttackRange);
-        stats.setElementalStat(StatIDs.resistanceModifier, Elements.lightningElement, StatIDs.defaultLightningResist);
+        newStats.setStat(StatIDs.weight, StatIDs.defaultWeight);
+        newStats.setStat(StatIDs.maxHP, StatIDs.defaultMaxHP);
+        newStats.setStat(StatIDs.maxStamina, StatIDs.defaultMaxStamina);
+        newStats.setStat(StatIDs.lungCapacity, StatIDs.defaultLungCapacity);
+        newStats.setStat(StatIDs.qiAbsorbRange, StatIDs.defaultQiAbsorbRange);
+        newStats.setStat(StatIDs.staminaUse, StatIDs.defaultStaminaUse);
+        newStats.setStat(StatIDs.healthRegen, StatIDs.defaultHealthRegen);
+        newStats.setStat(StatIDs.healthStaminaConversion, StatIDs.defaulthealthStaminaConversion);
+        newStats.setStat(StatIDs.movementSpeed, StatIDs.defaultMovementSpeed);
+        newStats.setStat(StatIDs.swimSpeed, StatIDs.defaultSwimSpeed);
+        newStats.setStat(StatIDs.attackRange, StatIDs.defaultAttackRange);
+        newStats.setStat(StatIDs.jumpHeight, StatIDs.defaultJumpHeight);
+        newStats.setStat(StatIDs.fallHeight, StatIDs.defaultFallHeight);
+        newStats.setStat(StatIDs.legSupport, StatIDs.defaultLegSupport);
+        newStats.setStat(StatIDs.armAttackModifier, StatIDs.defaultAttackModifier);
+        newStats.setStat(StatIDs.attackRange, StatIDs.defaultAttackRange);
+        newStats.setElementalStat(StatIDs.resistanceModifier, Elements.lightningElement, StatIDs.defaultLightningResist);
     }
 
     public PlayerStatModifications getStats()
@@ -65,11 +64,13 @@ public class PlayerStatControl
 
     public void updateStats(Player player)
     {
-        // Clear the existing stats
-        setupStats();
+        PlayerStatModifications newStats = new PlayerStatModifications();
 
-        stats.setStat(StatIDs.qiAbsorb, BodyPartQiCostController.calculateQiAbsorb(player));
-        stats.setStat(StatIDs.qiCost, BodyPartQiCostController.calculateQiCost(player));
+        // Clear the existing stats
+        setupStats(newStats);
+
+        newStats.setStat(StatIDs.qiAbsorb, BodyPartQiCostController.calculateQiAbsorb(player));
+        newStats.setStat(StatIDs.qiCost, BodyPartQiCostController.calculateQiCost(player));
 
         // Add all existing body part stats to the players stats
         for (BodyPart part : BodyModifications.getBodyModifications(player).getModifications().values())
@@ -77,7 +78,7 @@ public class PlayerStatControl
             if (player.level.isClientSide())
                 part.onLoad(player.getUUID());
 
-            stats.combine(part.getStatChanges());
+            newStats.combine(part.getStatChanges());
         }
 
         // Add all existing body part option stats to the players stats
@@ -87,7 +88,7 @@ public class PlayerStatControl
                 if (player.level.isClientSide())
                     part.onLoad(player.getUUID());
 
-                stats.combine(part.getStatChanges());
+                newStats.combine(part.getStatChanges());
             }
 
         // Add all existing stat modifiers on active techniques to the player stats
@@ -97,17 +98,19 @@ public class PlayerStatControl
         {
             Technique tech = techs.getTechnique(i);
             if (tech != null && tech.isActive() && tech.getStats() != null)
-                stats.combine(tech.getStats());
+                newStats.combine(tech.getStats());
         }
 
         for (PassiveTechnique passive : techs.getPassives())
-            stats.combine(passive.getStats());
+            newStats.combine(passive.getStats());
 
-        calculateVariantResistances(player);
-        calculateSizeStatChanges();
+        calculateVariantResistances(player, newStats);
+        calculateSizeStatChanges(newStats);
 
         // Apply resistance caps
-        BodyPartStatControl.applyCaps(player);
+        BodyPartStatControl.applyCaps(player, newStats);
+
+        stats = newStats;
 
         // Only apply player attribute modifiers on the server
         if (!player.level.isClientSide)
@@ -118,30 +121,35 @@ public class PlayerStatControl
     }
 
     // Applies additional stat changes based on player size
-    protected void calculateSizeStatChanges()
+    protected void calculateSizeStatChanges(PlayerStatModifications newStats)
     {
-        if (stats.getStats().get(StatIDs.size) == null)
+        if (newStats.getStats().get(StatIDs.size) == null)
             return;
 
         PlayerStatModifications sizeChanges = new PlayerStatModifications();
 
-        float sizeAdjustment = getSizeAdjustment();
+        float sizeAdjustment = getSizeAdjustment(newStats);
 
         sizeChanges.setStat(StatIDs.attackRange, sizeAdjustment * StatIDs.defaultAttackRange);
 
         if (sizeAdjustment > 0)
             sizeChanges.setStat(StatIDs.stepHeight, sizeAdjustment * 0.5f);
 
-        stats.combine(sizeChanges);
+        newStats.combine(sizeChanges);
     }
 
     public float getSizeAdjustment()
     {
-        return stats.getStats().get(StatIDs.size);
+        return getSizeAdjustment(stats);
+    }
+
+    public float getSizeAdjustment(PlayerStatModifications newStats)
+    {
+        return newStats.getStats().get(StatIDs.size);
     }
 
     // Applies additional resistances for variant elements
-    protected void calculateVariantResistances(Player player)
+    protected void calculateVariantResistances(Player player, PlayerStatModifications newStats)
     {
         PlayerStatModifications resistances = new PlayerStatModifications();
 
@@ -152,7 +160,7 @@ public class PlayerStatControl
             resistances.setElementalStat(StatIDs.resistanceModifier, element, resist);
         }
 
-        stats.combine(resistances);
+        newStats.combine(resistances);
     }
 
     protected void applyStats(Player player)
