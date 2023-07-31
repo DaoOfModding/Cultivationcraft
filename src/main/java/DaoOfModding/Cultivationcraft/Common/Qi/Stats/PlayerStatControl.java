@@ -145,6 +145,9 @@ public class PlayerStatControl
 
     public float getSizeAdjustment(PlayerStatModifications newStats)
     {
+        if (!newStats.getStats().containsKey(StatIDs.size))
+            return 0;
+
         return newStats.getStats().get(StatIDs.size);
     }
 

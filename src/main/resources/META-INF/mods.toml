@@ -57,6 +57,6 @@ Harness Qi to cultivate and gain power
 [[dependencies.cultivationcraft]]
     modId="mlmanimator"
     mandatory=true
-    versionRange="[0.1.8,)"
+    versionRange="[0.2.0,)"
     ordering="BEFORE"
     side="BOTH"

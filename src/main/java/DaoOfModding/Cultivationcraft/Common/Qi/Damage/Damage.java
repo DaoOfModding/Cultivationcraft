@@ -72,7 +72,7 @@ public class Damage
         float damage = armorAbsorption((Player)event.getEntity(), source, event.getAmount());
         float resistedDamage = resistDamage(damage, source.damageElement, (Player)event.getEntity());
 
-        if (source.getElement().compareTo(Elements.fireElement) == 0 && event.getEntity().fireImmune() && resistedDamage > 0)
+        if (source.getElement() != null && source.getElement().compareTo(Elements.fireElement) == 0 && event.getEntity().fireImmune() && resistedDamage > 0)
             resistedDamage = 0;
 
         if (resistedDamage <= 0)
