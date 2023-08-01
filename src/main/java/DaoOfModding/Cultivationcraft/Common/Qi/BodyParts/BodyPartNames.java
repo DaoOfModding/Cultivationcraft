@@ -74,6 +74,9 @@ public class BodyPartNames
 
     public static final String startingEyesPart = "qisight";
 
+    public static final String headFinPart = "headfin";
+    public static final String headFlowerPart = "headflower";
+
     public static final String flatTeethPart = "flatteeth";
     public static final String sharpTeethPart = "sharpteeth";
 
@@ -135,6 +138,7 @@ public class BodyPartNames
 
     public static final String eyeSubPosition = "EYE";
     public static final String mouthSubPosition = "MOUTH";
+    public static final String topHeadSubPosition = "TOP";
     public static final String skinSubPosition = "SKIN";
     public static final String boneSubPosition = "BONE";
     public static final String stomachSubPosition = "STOMACH";
@@ -167,6 +171,7 @@ public class BodyPartNames
         addSubPartDisplayName(bodyPosition, backSubPosition, "cultivationcraft.gui.bodypart.back");
         addSubPartDisplayName(headPosition, eyeSubPosition, "cultivationcraft.gui.headpart.eye");
         addSubPartDisplayName(headPosition, mouthSubPosition, "cultivationcraft.gui.headpart.mouth");
+        addSubPartDisplayName(headPosition, topHeadSubPosition, "cultivationcraft.gui.headpart.top");
         addSubPartDisplayName(bodyPosition, locationSubPosition, "cultivationcraft.gui.generic.location");
         addSubPartDisplayName(armPosition, locationSubPosition, "cultivationcraft.gui.generic.location");
         addSubPartDisplayName(headPosition, locationSubPosition, "cultivationcraft.gui.generic.location");
@@ -820,6 +825,25 @@ public class BodyPartNames
         frontHead.setQuest(DefaultQuests.defaultBodyQuest);
 
         addOption(frontHead);
+
+        BodyPartOption headFin = new BodyPartOption(headFinPart, headPosition, topHeadSubPosition, "cultivationcraft.gui.headpart.top.fin");
+        headFin.addQuad(BodyPartModelNames.headFinQuad);
+        headFin.addNeededPosition(BodyPartNames.headPosition, BodyPartNames.basePosition);
+        headFin.getStatChanges().setStat(StatIDs.weight, 0.01f);
+        headFin.getStatChanges().setStat(StatIDs.swimSpeed, 1f);
+        headFin.setQuest(DefaultQuests.defaultSwimQuest);
+
+        addOption(headFin);
+
+        /*BodyPartOption headFlower = new BodyPartOption(headFlowerPart, headPosition, topHeadSubPosition, "cultivationcraft.gui.headpart.top.flower");
+        headFlower.addModel(BodyPartModelNames.headFlowerModel);
+        headFlower.addQuad(BodyPartModelNames.headFlowerQuads);
+        headFlower.addNeededPosition(BodyPartNames.headPosition, BodyPartNames.basePosition);
+        headFlower.addUniqueTag(BodyPartTags.hunger);
+        headFlower.setElement(Elements.woodElement);
+        headFlower.setQuest(DefaultQuests.defaultStaminaQuest);
+
+        addOption(headFlower);*/
     }
 
     protected static void setupLegParts()

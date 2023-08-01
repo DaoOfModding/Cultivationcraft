@@ -409,7 +409,7 @@ public class CultivatorModelHandler
 
         for (String modelID : part.getFirstPersonModelIDs())
         {
-            ExtendableModelRenderer modelPart = models.getModel(modelID, part.getPosition());
+            ExtendableModelRenderer modelPart = models.getModel(modelID);
             model.addFirstPersonLimb(modelID, modelPart);
 
             for (Map.Entry<String, ExtendableModelRenderer> entry : models.getReferences(modelID).entrySet())
@@ -425,7 +425,7 @@ public class CultivatorModelHandler
                 // If the model this collection is tied to exists
                 if (model.hasLimb(baseModelID)) {
                     for (String optionModels : optionModelCollections.getValue()) {
-                        model.addLimb(optionModels, models.getModel(optionModels, option.getSubPosition()), baseModelID);
+                        model.addLimb(optionModels, models.getModel(optionModels), baseModelID);
 
                         for (Map.Entry<String, ExtendableModelRenderer> entry : models.getReferences(optionModels).entrySet())
                             model.addLimbReference(entry.getKey(), entry.getValue());

@@ -1,6 +1,8 @@
 package DaoOfModding.Cultivationcraft;
 
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.FoodStats.QiFoodStats;
+import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.Quest;
+import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.QuestHandler;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.StatIDs;
 import net.minecraft.world.entity.player.Player;
@@ -22,6 +24,9 @@ public class StaminaHandler
 
         if (((QiFoodStats)player.getFoodData()).getTrueFoodLevel() < stamina)
             return false;
+
+        if (!player.level.isClientSide)
+            QuestHandler.progressQuest(player, Quest.DRAIN_STAMINA, stamina);
 
         // Update stamina on server here
         /*if (PlayerUtils.isClientPlayerCharacter(player))

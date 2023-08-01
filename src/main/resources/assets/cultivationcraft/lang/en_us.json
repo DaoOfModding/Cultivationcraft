@@ -301,6 +301,14 @@
   "cultivationcraft.gui.headpart.mouth.sharpteeth": "Sharp Teeth",
   "cultivationcraft.gui.headpart.mouth.sharpteeth.description": "Grow larger, sharper teeth, providing you with a highly damaging bite attack",
 
+  "cultivationcraft.gui.headpart.top": "Top",
+
+  "cultivationcraft.gui.headpart.top.fin": "Fin",
+  "cultivationcraft.gui.headpart.top.fin.description": "Grow a fin from your head that increases your swimming speed. For reasons.",
+
+  "cultivationcraft.gui.headpart.top.flower": "Flower",
+  "cultivationcraft.gui.headpart.top.flower.description": "Who needs a stomach when you can grow a giant flower from your head to photosynthesise nutrients from the sun.",
+
   "cultivationcraft.gui.armpart.short": "Short Arms",
   "cultivationcraft.gui.armpart.short.description": "Some people need elbows, you are not one of those people",
 
