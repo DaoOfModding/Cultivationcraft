@@ -1,5 +1,6 @@
 package DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications;
 
+import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyForgeParts.StomachPart;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartNames;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPart;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartOption;
@@ -259,6 +260,7 @@ public class BodyModifications implements IBodyModifications
         for (String limb : modifications.getAllKeys())
         {
             BodyPart part = BodyPartNames.getPart(modifications.getString(limb));
+
             setModification(part);
             addTags(part);
         }
@@ -272,6 +274,7 @@ public class BodyModifications implements IBodyModifications
             for (String part : option.getAllKeys())
             {
                 BodyPartOption optionPart = BodyPartNames.getOption(option.getString(part));
+
                 setOption(optionPart);
                 addTags(optionPart);
             }

@@ -340,9 +340,10 @@ public class BodyPartModels
         flowerPart.setPos(0.5F, 0F, 0.5F);
         flowerPart.extend(new defaultResizeModule(new Vec3(1, -0.5f, 1)));
         flowerPart.setHitbox(false);
+        flowerPart.setFirstPersonRender(false);
 
         QuadCollection flowerQuads = new QuadCollection();
-        addPetals(3, 8, 3, flowerQuads, flowerPart);
+        addPetals(2.5f, 6, 2, flowerQuads, flowerPart);
 
         addModel(BodyPartModelNames.headFlowerModel, flowerPart);
         addQuadCollection(BodyPartModelNames.headFlowerQuads, flowerQuads);
@@ -350,8 +351,9 @@ public class BodyPartModels
 
     protected void addPetals(float petalWidth, float petalLength, float petalLift, QuadCollection flowerQuads, ExtendableModelRenderer flowerPart)
     {
-        addPetals(petalWidth * 0.9f, petalLength * 0.9f, petalLift * 0.25f, flowerQuads, flowerPart, 0, 0, 0);
-        addPetals(petalWidth, petalLength, petalLift, flowerQuads, flowerPart, petalWidth * 0.9f, petalLength * 0.9f, petalLift * 0.25f);
+        addPetals(petalWidth, petalLength, petalLift, flowerQuads, flowerPart, 0, 0, 0);
+        /*addPetals(petalWidth, petalLength * 0.75f, petalLift * 0.2f, flowerQuads, flowerPart, 0, 0, 0);
+        addPetals(petalWidth, petalLength, petalLift, flowerQuads, flowerPart, petalWidth, petalLength * 0.75f, petalLift * 0.2f);*/
     }
 
     protected void addPetals(float petalWidth, float petalLength, float petalLift, QuadCollection flowerQuads, ExtendableModelRenderer flowerPart, float baseWidth, float baseLength, float baseLift)
@@ -359,11 +361,16 @@ public class BodyPartModels
         petalLift += 0.5;
         baseLift += 0.5;
 
+        float seperator = 0.25f;
+
         float zeroWidth = -baseWidth;
         float oneWidth = 1 + baseWidth;
 
         float zeroLength = -baseLength;
         float oneLength = 1 + baseLength;
+
+        petalLength -= baseLength;
+        petalWidth -= seperator;
 
         addPetal(new Vec3(zeroWidth - petalWidth, petalLift, oneLength + petalLength),
                 new Vec3(zeroWidth + 0.25, baseLift, oneLength),
@@ -388,6 +395,8 @@ public class BodyPartModels
                 new Vec3(oneLength, baseLift, oneWidth - 0.25),
                 new Vec3(oneLength + petalLength, petalLift, oneWidth + petalWidth),
                 flowerQuads, flowerPart);
+
+        petalWidth += seperator;
 
         // Add diagonal petals
         addPetal(new Vec3(oneWidth + petalWidth, petalLift, oneLength + petalLength),
@@ -423,8 +432,7 @@ public class BodyPartModels
         flowerPart.addQuadLinkage(new QuadLinkage(flowerQuad, Quad.QuadVertex.BottomRight, quad3));
         flowerPart.addQuadLinkage(new QuadLinkage(flowerQuad, Quad.QuadVertex.TopRight, quad4));
 
-        flowerQuad.addLayer(new UVPair(0, 0), TextureList.boneSize, 0, TextureList.bone);
-        flowerQuad.addSmallLayer(new UVPair(0, 0), TextureList.boneSize, 0, TextureList.bone);
+        flowerQuad.addLayer(new UVPair(0, 0), TextureList.petalSize, 0, TextureList.petal);
         collection.addQuad(flowerQuad);
     }
 

@@ -11,6 +11,7 @@ import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Blood.WaterBlood;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyForgeParts.*;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.FoodStats.CarnivoreFoodStats;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.FoodStats.HerbivoreFoodStats;
+import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.FoodStats.PhotosynthesisFoodStats;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Lungs.Lung.FireLung;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Lungs.Lung.QiLung;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Lungs.Lung.WaterLung;
@@ -835,15 +836,17 @@ public class BodyPartNames
 
         addOption(headFin);
 
-        /*BodyPartOption headFlower = new BodyPartOption(headFlowerPart, headPosition, topHeadSubPosition, "cultivationcraft.gui.headpart.top.flower");
+        StomachPart headFlower = new StomachPart(headFlowerPart, headPosition, topHeadSubPosition, "cultivationcraft.gui.headpart.top.flower");
+        headFlower.addTextureChange(TextureList.petal, new ResourceLocation(Cultivationcraft.MODID, "textures/models/petal/petal.png"));
         headFlower.addModel(BodyPartModelNames.headFlowerModel);
         headFlower.addQuad(BodyPartModelNames.headFlowerQuads);
         headFlower.addNeededPosition(BodyPartNames.headPosition, BodyPartNames.basePosition);
         headFlower.addUniqueTag(BodyPartTags.hunger);
         headFlower.setElement(Elements.woodElement);
         headFlower.setQuest(DefaultQuests.defaultStaminaQuest);
+        headFlower.setFoodStats(new PhotosynthesisFoodStats());
 
-        addOption(headFlower);*/
+        addOption(headFlower);
     }
 
     protected static void setupLegParts()

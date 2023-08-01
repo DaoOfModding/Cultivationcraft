@@ -110,8 +110,17 @@ public class PlayerHealthManager
         // Otherwise use the default food handler
         IBodyModifications modifications = BodyModifications.getBodyModifications(player);
 
-        if (modifications.hasOption(BodyPartNames.bodyPosition, BodyPartNames.stomachSubPosition))
-            food = ((StomachPart)modifications.getOption(BodyPartNames.bodyPosition, BodyPartNames.stomachSubPosition)).getFoodStats().clone();
+
+        ArrayList<BodyPart> stomach = modifications.getBodyPartsOfType(StomachPart.class);
+        if (stomach.size() > 0)
+        {
+            food = ((StomachPart) stomach.get(0)).getFoodStats().clone();
+        }
+
+        /*if (modifications.hasOption(BodyPartNames.bodyPosition, BodyPartNames.stomachSubPosition))
+            food = ((StomachPart)modifications.getOption(BodyPartNames.bodyPosition, BodyPartNames.stomachSubPosition)).getFoodStats().clone();*/
+
+        System.out.println(player.level.isClientSide + " - " + food.getClass().getName());
 
         // Set the players max stamina
         food.setMaxFood((int)BodyPartStatControl.getStats(player).getStat(StatIDs.maxStamina));
