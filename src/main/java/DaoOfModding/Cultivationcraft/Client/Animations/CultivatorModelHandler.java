@@ -76,6 +76,8 @@ public class CultivatorModelHandler
 
             PlayerPose defaultSize = new PlayerPose();
 
+
+
             // Update textures from body parts
             for (BodyPart part : parts)
                 part.updateTextures(newModel.getTextureHandler());

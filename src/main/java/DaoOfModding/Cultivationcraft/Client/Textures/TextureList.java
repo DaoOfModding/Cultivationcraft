@@ -1,7 +1,9 @@
 package DaoOfModding.Cultivationcraft.Client.Textures;
 
+import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import DaoOfModding.mlmanimator.Client.Models.TextureHandler;
 import net.minecraft.client.model.geom.builders.UVPair;
+import net.minecraft.resources.ResourceLocation;
 
 public class TextureList
 {
@@ -15,6 +17,7 @@ public class TextureList
 
     public static void updateTextures(TextureHandler handler)
     {
+        handler.addTexture(TextureList.petal, new ResourceLocation(Cultivationcraft.MODID, "textures/models/petal/petal.png"));
         handler.addTexture(elementalColored, handler.getTexture(TextureHandler.BLANK));
     }
 }

@@ -335,7 +335,7 @@ public class BodyPartModels
         addQuadCollection(BodyPartModelNames.headFinQuad, finQuads);
 
         ExtendableModelRenderer flowerPart = new ExtendableModelRenderer(BodyPartModelNames.headFlowerModel);
-        flowerPart.addLayer(new UVPair(0, 0), TextureList.boneSize, 0, TextureList.bone);
+        flowerPart.addLayer(new UVPair(GenericTextureValues.head.u() + 12, GenericTextureValues.head.v() + 4), GenericTextureValues.skin_Size, 0.01F, "PLAYERSKIN");
         flowerPart.setRotationPoint(new Vec3(0.5D, 1, 0.5D));
         flowerPart.setPos(0.5F, 0F, 0.5F);
         flowerPart.extend(new defaultResizeModule(new Vec3(1, -0.5f, 1)));
@@ -378,10 +378,10 @@ public class BodyPartModels
                 new Vec3(oneWidth + petalWidth, petalLift, oneLength + petalLength),
                 flowerQuads, flowerPart);
 
-        addPetal(new Vec3(zeroWidth - petalWidth, petalLift, zeroLength - petalLength),
-                new Vec3(zeroWidth + 0.25, baseLift, zeroLength),
+        addPetal(new Vec3(oneWidth + petalWidth, petalLift, zeroLength - petalLength),
                 new Vec3(oneWidth - 0.25, baseLift, zeroLength),
-                new Vec3(oneWidth + petalWidth, petalLift, zeroLength - petalLength),
+                new Vec3(zeroWidth + 0.25, baseLift, zeroLength),
+                new Vec3(zeroWidth - petalWidth, petalLift, zeroLength - petalLength),
                 flowerQuads, flowerPart);
 
         addPetal(new Vec3(zeroLength - petalLength, petalLift, zeroWidth - petalWidth),
@@ -390,10 +390,10 @@ public class BodyPartModels
                 new Vec3(zeroLength - petalLength, petalLift, oneWidth + petalWidth),
                 flowerQuads, flowerPart);
 
-        addPetal(new Vec3(oneLength + petalLength, petalLift, zeroWidth - petalWidth),
-                new Vec3(oneLength, baseLift, zeroWidth + 0.25),
+        addPetal(new Vec3(oneLength + petalLength, petalLift, oneWidth + petalWidth),
                 new Vec3(oneLength, baseLift, oneWidth - 0.25),
-                new Vec3(oneLength + petalLength, petalLift, oneWidth + petalWidth),
+                new Vec3(oneLength, baseLift, zeroWidth + 0.25),
+                new Vec3(oneLength + petalLength, petalLift, zeroWidth - petalWidth),
                 flowerQuads, flowerPart);
 
         petalWidth += seperator;
@@ -405,10 +405,10 @@ public class BodyPartModels
                 new Vec3(oneLength + petalLength, petalLift, oneWidth + petalWidth),
                 flowerQuads, flowerPart);
 
-        addPetal(new Vec3(oneWidth + petalWidth, petalLift, zeroLength - petalLength),
-                new Vec3(oneWidth - 0.25, baseLift, zeroLength),
+        addPetal(new Vec3(oneLength + petalLength, petalLift, zeroWidth - petalWidth),
                 new Vec3(oneLength, baseLift, zeroWidth + 0.25),
-                new Vec3(oneLength + petalLength, petalLift, zeroWidth - petalWidth),
+                new Vec3(oneWidth - 0.25, baseLift, zeroLength),
+                new Vec3(oneWidth + petalWidth, petalLift, zeroLength - petalLength),
                 flowerQuads, flowerPart);
 
         addPetal(new Vec3(zeroLength - petalLength, petalLift, oneWidth + petalWidth),
@@ -417,10 +417,10 @@ public class BodyPartModels
                 new Vec3(zeroWidth - petalWidth, petalLift, oneLength + petalLength),
                 flowerQuads, flowerPart);
 
-        addPetal(new Vec3(zeroLength - petalLength, petalLift, zeroWidth - petalWidth),
-                new Vec3(zeroLength, baseLift, zeroWidth + 0.25),
+        addPetal(new Vec3(zeroWidth - petalWidth, petalLift, zeroLength - petalLength),
                 new Vec3(zeroWidth + 0.25, baseLift, zeroLength),
-                new Vec3(zeroWidth - petalWidth, petalLift, zeroLength - petalLength),
+                new Vec3(zeroLength, baseLift, zeroWidth + 0.25),
+                new Vec3(zeroLength - petalLength, petalLift, zeroWidth - petalWidth),
                 flowerQuads, flowerPart);
     }
 
@@ -433,6 +433,7 @@ public class BodyPartModels
         flowerPart.addQuadLinkage(new QuadLinkage(flowerQuad, Quad.QuadVertex.TopRight, quad4));
 
         flowerQuad.addLayer(new UVPair(0, 0), TextureList.petalSize, 0, TextureList.petal);
+        flowerQuad.setRenderFirstPerson(false);
         collection.addQuad(flowerQuad);
     }
 

@@ -837,7 +837,6 @@ public class BodyPartNames
         addOption(headFin);
 
         StomachPart headFlower = new StomachPart(headFlowerPart, headPosition, topHeadSubPosition, "cultivationcraft.gui.headpart.top.flower");
-        headFlower.addTextureChange(TextureList.petal, new ResourceLocation(Cultivationcraft.MODID, "textures/models/petal/petal.png"));
         headFlower.addModel(BodyPartModelNames.headFlowerModel);
         headFlower.addQuad(BodyPartModelNames.headFlowerQuads);
         headFlower.addNeededPosition(BodyPartNames.headPosition, BodyPartNames.basePosition);
@@ -845,6 +844,8 @@ public class BodyPartNames
         headFlower.setElement(Elements.woodElement);
         headFlower.setQuest(DefaultQuests.defaultStaminaQuest);
         headFlower.setFoodStats(new PhotosynthesisFoodStats());
+        headFlower.getStatChanges().setElementalStat(StatIDs.resistanceModifier, Elements.woodElement, 50);
+        headFlower.getStatChanges().setElementalStat(StatIDs.resistanceModifier, Elements.fireElement, -50);
 
         addOption(headFlower);
     }
