@@ -78,6 +78,8 @@ public class BodyPartNames
     public static final String headFinPart = "headfin";
     public static final String headFlowerPart = "headflower";
 
+    public static final String rotatingPetalPart = "rotatingPetal";
+
     public static final String flatTeethPart = "flatteeth";
     public static final String sharpTeethPart = "sharpteeth";
 
@@ -146,6 +148,7 @@ public class BodyPartNames
     public static final String bloodSubPosition = "BLOOD";
     public static final String lungSubPosition = "LUNG";
     public static final String backSubPosition = "BACK";
+    public static final String petalSubPosition = "PETAL";
 
 
     protected static ArrayList<BodyPart> parts = new ArrayList<BodyPart>();
@@ -173,6 +176,7 @@ public class BodyPartNames
         addSubPartDisplayName(headPosition, eyeSubPosition, "cultivationcraft.gui.headpart.eye");
         addSubPartDisplayName(headPosition, mouthSubPosition, "cultivationcraft.gui.headpart.mouth");
         addSubPartDisplayName(headPosition, topHeadSubPosition, "cultivationcraft.gui.headpart.top");
+        addSubPartDisplayName(headPosition, petalSubPosition, "cultivationcraft.gui.headpart.top.petal");
         addSubPartDisplayName(bodyPosition, locationSubPosition, "cultivationcraft.gui.generic.location");
         addSubPartDisplayName(armPosition, locationSubPosition, "cultivationcraft.gui.generic.location");
         addSubPartDisplayName(headPosition, locationSubPosition, "cultivationcraft.gui.generic.location");
@@ -848,6 +852,13 @@ public class BodyPartNames
         headFlower.getStatChanges().setElementalStat(StatIDs.resistanceModifier, Elements.fireElement, -50);
 
         addOption(headFlower);
+
+        BodyPartOption rotatingPetals = new BodyPartOption(rotatingPetalPart, headPosition, petalSubPosition, "cultivationcraft.gui.headpart.top.petal.rotating");
+        rotatingPetals.addNeededPart(BodyPartNames.headFlowerPart);
+        rotatingPetals.addUniqueTag(BodyPartTags.flight);
+        rotatingPetals.setQuest(DefaultQuests.defaultFlightQuest);
+
+        addOption(rotatingPetals);
     }
 
     protected static void setupLegParts()

@@ -78,8 +78,6 @@ public class JetLegTechnique extends MovementOverrideTechnique
         if (event.player.isInWater())
             return;
 
-        MultiLimbedModel model = PoseHandler.getPlayerPoseHandler(event.player.getUUID()).getPlayerModel();
-
         // Activate the leg jets if player is moving upwards
         if (PlayerUtils.isClientPlayerCharacter(event.player))
         {

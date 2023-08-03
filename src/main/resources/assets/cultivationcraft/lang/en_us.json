@@ -130,6 +130,9 @@
   "cultivationcraft.technique.exhale": "Exhale Breath",
   "cultivationcraft.technique.exhale.description": "Exhale your breath at high speed to damage enemies and break blocks",
 
+  "cultivationcraft.technique.spinpetal": "Spin Petals",
+  "cultivationcraft.technique.spinpetal.description": "Spin your petals around to propel yourself into the air",
+
   "cultivationcraft.commands.reset.single": "%s had their bodyforge status reset",
   "cultivationcraft.commands.reset.multiple": "%s players had their bodyforge status reset",
 
@@ -307,7 +310,12 @@
   "cultivationcraft.gui.headpart.top.fin.description": "Grow a fin from your head that increases your swimming speed. For reasons.",
 
   "cultivationcraft.gui.headpart.top.flower": "Flower",
-  "cultivationcraft.gui.headpart.top.flower.description": "Who needs a stomach when you can grow a giant flower from your head to photosynthesise nutrients from the sun.",
+  "cultivationcraft.gui.headpart.top.flower.description": "Who needs a stomach when you can grow a giant flower from your head to photosynthesise nutrients from the sun",
+
+  "cultivationcraft.gui.headpart.top.petal": "Petal",
+
+  "cultivationcraft.gui.headpart.top.petal.rotating": "Spinning Petals",
+  "cultivationcraft.gui.headpart.top.petal.rotating.description": "Forge your petals to be able to spin around, propelling you into the air",
 
   "cultivationcraft.gui.armpart.short": "Short Arms",
   "cultivationcraft.gui.armpart.short.description": "Some people need elbows, you are not one of those people",
