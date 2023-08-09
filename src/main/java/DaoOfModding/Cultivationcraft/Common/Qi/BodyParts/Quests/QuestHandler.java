@@ -133,6 +133,9 @@ public class QuestHandler
             BodyPart part = BodyPartNames.getPartOrOption(modifications.getLastForged());
             Quest quest = part.getQuest();
 
+            if (progress < 0)
+                progress = 0;
+
             progress = modifications.getQuestProgress() + progress;
 
             // If the quest isn't complete then update the progress

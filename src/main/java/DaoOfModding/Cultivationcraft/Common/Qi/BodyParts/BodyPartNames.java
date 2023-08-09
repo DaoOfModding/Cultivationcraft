@@ -57,6 +57,7 @@ public class BodyPartNames
 
     // ARMS
     public static final String shortArmPart = "shortarm";
+    public static final String longArmPart = "longarm";
     public static final String flipperArmPart = "flipperarm";
 
     public static final String headArmsPart = "headarms";
@@ -744,6 +745,20 @@ public class BodyPartNames
         addPart(shortArm);
 
 
+        BodyPart longArm = new BodyPart(longArmPart, armPosition, "cultivationcraft.gui.armpart.long");
+        longArm.addModel(BodyPartModelNames.longArmLeftModel);
+        longArm.addModel(BodyPartModelNames.longArmRightModel);
+        longArm.addArm(new Arm(InteractionHand.OFF_HAND, BodyPartModelNames.longArmLeftModel, BodyPartModelNames.longArmLowerLeftModel, true));
+        longArm.addArm(new Arm(InteractionHand.MAIN_HAND, BodyPartModelNames.longArmRightModel, BodyPartModelNames.longArmLowerRightModel, false));
+        longArm.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.basePosition);
+        longArm.getStatChanges().setStat(StatIDs.weight, DefaultPlayerBodyPartWeights.armWeight);
+        longArm.getStatChanges().setStat(StatIDs.attackRange, StatIDs.defaultAttackRange * 0.5f);
+        longArm.setQuest(DefaultQuests.defaultBodyQuest);
+        longArm.addNotNeededPart(BodyPartNames.feetPart);
+
+        addPart(longArm);
+
+
         BodyPart fArm = new BodyPart(flipperArmPart, armPosition, "cultivationcraft.gui.armpart.flipper");
         fArm.addModel(BodyPartModelNames.flipperLeftModel);
         fArm.addModel(BodyPartModelNames.flipperRightModel);
@@ -856,7 +871,6 @@ public class BodyPartNames
         BodyPartOption rotatingPetals = new BodyPartOption(rotatingPetalPart, headPosition, petalSubPosition, "cultivationcraft.gui.headpart.top.petal.rotating");
         rotatingPetals.addNeededPart(BodyPartNames.headFlowerPart);
         rotatingPetals.addUniqueTag(BodyPartTags.flight);
-        rotatingPetals.setQuest(DefaultQuests.defaultFlightQuest);
 
         addOption(rotatingPetals);
     }

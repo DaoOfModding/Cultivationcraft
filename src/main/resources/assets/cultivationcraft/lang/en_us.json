@@ -320,6 +320,9 @@
   "cultivationcraft.gui.armpart.short": "Short Arms",
   "cultivationcraft.gui.armpart.short.description": "Some people need elbows, you are not one of those people",
 
+  "cultivationcraft.gui.armpart.long": "Long Arms",
+  "cultivationcraft.gui.armpart.long.description": "Stretch out your arms, increasing your reach",
+
   "cultivationcraft.gui.armpart.flipper": "Flipper Arms",
   "cultivationcraft.gui.armpart.flipper.description": "Flatten your arms into flippers\nGreat at swimming, not so great at anything else",
 

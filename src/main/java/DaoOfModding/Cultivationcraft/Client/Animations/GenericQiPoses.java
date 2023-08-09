@@ -122,6 +122,11 @@ public class GenericQiPoses
         Idle.addAngle(BodyPartModelNames.flipperLowerLeftModel, new Vec3(0, 0, 0), 0);
         Idle.addAngle(BodyPartModelNames.flipperLowerRightModel, new Vec3(0, 0, 0), 0);
 
+        Idle.addAngle(BodyPartModelNames.longArmLeftModel, new Vec3(0, 0, 0), 0);
+        Idle.addAngle(BodyPartModelNames.longArmRightModel, new Vec3(0, 0, 0), 0);
+        Idle.addAngle(BodyPartModelNames.longArmLowerLeftModel, new Vec3(0, 0, 0), 0);
+        Idle.addAngle(BodyPartModelNames.longArmLowerRightModel, new Vec3(0, 0, 0), 0);
+
         // Mouth closed
         Idle.addAngle(BodyPartModelNames.FPjawModel, new Vec3(Math.toRadians(-80), 0, 0), 1);
         Idle.addAngle(BodyPartModelNames.FPjawModelLower, new Vec3(Math.toRadians(160), 0, 0), 1);
@@ -226,6 +231,11 @@ public class GenericQiPoses
         Walk.addAngle(BodyPartModelNames.shortArmRightModel, new Vec3(Math.toRadians(-45.0D), Math.toRadians(0.0D), 0.0D), 5);
         Walk.addAngle(BodyPartModelNames.shortArmRightModel, new Vec3(Math.toRadians(45.0D), Math.toRadians(0.0D), 0.0D), 5);
 
+        Walk.addAngle(BodyPartModelNames.longArmLeftModel, new Vec3(Math.toRadians(45.0D), Math.toRadians(0.0D), 0.0D), 5);
+        Walk.addAngle(BodyPartModelNames.longArmLeftModel, new Vec3(Math.toRadians(-45.0D), Math.toRadians(0.0D), 0.0D), 5);
+        Walk.addAngle(BodyPartModelNames.longArmRightModel, new Vec3(Math.toRadians(-45.0D), Math.toRadians(0.0D), 0.0D), 5);
+        Walk.addAngle(BodyPartModelNames.longArmRightModel, new Vec3(Math.toRadians(45.0D), Math.toRadians(0.0D), 0.0D), 5);
+
         Walk.addAngle(BodyPartModelNames.flipperLowerLeftModel, new Vec3(Math.toRadians(0D), Math.toRadians(0.0D), 0), 5);
         Walk.addAngle(BodyPartModelNames.flipperLowerRightModel, new Vec3(Math.toRadians(0D), Math.toRadians(0.0D), 0), 5);
         Walk.addAngle(BodyPartModelNames.flipperLowerLeftModel, new Vec3(Math.toRadians(0D), Math.toRadians(0.0D), Math.toRadians(-45.0D)), 5);
@@ -267,6 +277,9 @@ public class GenericQiPoses
 
         GenericPoses.Jumping.addAngle(BodyPartModelNames.shortArmLeftModel, new Vec3(Math.toRadians(-180.0D), Math.toRadians(0.0D), Math.toRadians(30.0D)), 10, 5.0F, -1);
         GenericPoses.Jumping.addAngle(BodyPartModelNames.shortArmRightModel, new Vec3(Math.toRadians(-180.0D), Math.toRadians(0.0D), Math.toRadians(-30.0D)), 10, 5.0F, -1);
+
+        GenericPoses.Jumping.addAngle(BodyPartModelNames.longArmLeftModel, new Vec3(Math.toRadians(-180.0D), Math.toRadians(0.0D), Math.toRadians(30.0D)), 10, 5.0F, -1);
+        GenericPoses.Jumping.addAngle(BodyPartModelNames.longArmRightModel, new Vec3(Math.toRadians(-180.0D), Math.toRadians(0.0D), Math.toRadians(-30.0D)), 10, 5.0F, -1);
     }
 
     protected static void setupSwimming()
@@ -504,6 +517,11 @@ public class GenericQiPoses
 
         CrossLegs.addAngle(GenericLimbNames.lowerLeftArm, new Vec3(Math.toRadians(-30), 0, 0), GenericPoses.walkArmPriority + 4);
         CrossLegs.addAngle(GenericLimbNames.lowerRightArm, new Vec3(Math.toRadians(-30), 0, 0), GenericPoses.walkArmPriority + 4);
+
+        CrossLegs.addAngle(BodyPartModelNames.longArmLeftModel, new Vec3(Math.toRadians(0), Math.toRadians(-30), 0), GenericPoses.walkArmPriority + 4);
+        CrossLegs.addAngle(BodyPartModelNames.longArmRightModel, new Vec3(Math.toRadians(0), Math.toRadians(30), 0), GenericPoses.walkArmPriority + 4);
+        CrossLegs.addAngle(BodyPartModelNames.longArmLowerLeftModel, new Vec3(Math.toRadians(-30), 0, 0), GenericPoses.walkArmPriority + 4);
+        CrossLegs.addAngle(BodyPartModelNames.longArmLowerRightModel, new Vec3(Math.toRadians(-30), 0, 0), GenericPoses.walkArmPriority + 4);
 
         CrossLegs.addAngle(GenericLimbNames.leftLeg, new Vec3(Math.toRadians(45), Math.toRadians(-180), Math.toRadians(-90)), GenericPoses.walkLegPriority + 4);
         CrossLegs.addAngle(GenericLimbNames.rightLeg, new Vec3(Math.toRadians(45), Math.toRadians(180), Math.toRadians(90)), GenericPoses.walkLegPriority + 4);

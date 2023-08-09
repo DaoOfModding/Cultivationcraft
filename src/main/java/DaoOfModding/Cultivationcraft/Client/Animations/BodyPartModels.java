@@ -149,6 +149,31 @@ public class BodyPartModels
         addReference(BodyPartModelNames.flipperRightModel, BodyPartModelNames.flipperLowerRightModel, rFlipper.getChildren().get(0));
 
 
+        ExtendableModelRenderer leftLongArm = leftArm.clone();
+        ExtendableModelRenderer rightLongArm = rightArm.clone();
+        leftLongArm.setDefaultResize(new Vec3(1, 1.5, 1));
+        rightLongArm.setDefaultResize(new Vec3(1, 1.5, 1));
+        leftLongArm.getChildren().get(0).setDefaultResize(new Vec3(1, 1.5, 1));
+        rightLongArm.getChildren().get(0).setDefaultResize(new Vec3(1, 1.5, 1));
+        leftLongArm.setFixedPosAdjustment(2F, 2F, 0.0F);
+        rightLongArm.setFixedPosAdjustment(-2F, 2F, 0.0F);
+        leftLongArm.generateCube();
+        rightLongArm.generateCube();
+
+        leftLongArm.setHands(true);
+        leftLongArm.getChildren().get(0).setHands(true);
+        rightLongArm.setHands(true);
+        rightLongArm.getChildren().get(0).setHands(true);
+
+        leftLongArm.setHitbox(false);
+        rightLongArm.setHitbox(false);
+
+        addModel(BodyPartModelNames.longArmLeftModel, leftLongArm);
+        addReference(BodyPartModelNames.longArmLeftModel, BodyPartModelNames.longArmLowerLeftModel, leftLongArm.getChildren().get(0));
+        addModel(BodyPartModelNames.longArmRightModel, rightLongArm);
+        addReference(BodyPartModelNames.longArmRightModel, BodyPartModelNames.longArmLowerRightModel, rightLongArm.getChildren().get(0));
+
+
         ExtendableModelRenderer shortRightArm = new ExtendableModelRenderer(BodyPartModelNames.shortArmRightModel);
         GenericCultivatorTextureValues.addGenericRightArmLayers(shortRightArm);
         shortRightArm.setRotationPoint(new Vec3(0.5D, 0.66D, 0.5D));

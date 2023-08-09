@@ -19,7 +19,10 @@ public class SkillHotbarServer
 
     public static boolean isActive(UUID player)
     {
-        return skillHotbarActive.get(player);
+        if (skillHotbarActive.containsKey(player))
+            return skillHotbarActive.get(player);
+
+        return false;
     }
 
     public static void switchActive(UUID player)

@@ -33,6 +33,11 @@ public class BodyPartModelNames
     public static final String shortArmLeftModel = "SHORT_ARM_LEFT_MODEL";
     public static final String shortArmRightModel = "SHORT_ARM_RIGHT_MODEL";
 
+    public static final String longArmLeftModel = "LONG_ARM_LEFT_MODEL";
+    public static final String longArmRightModel = "LONG_ARM_RIGHT_MODEL";
+    public static final String longArmLowerLeftModel = "LONG_ARM_LOWER_LEFT_MODEL";
+    public static final String longArmLowerRightModel = "LONG_ARM_LOWER_RIGHT_MODEL";
+
     public static final String flipperLeftModel = "FLIPPER_ARM_LEFT_MODEL";
     public static final String flipperRightModel = "FLIPPER_ARM_RIGHT_MODEL";
     public static final String flipperLowerLeftModel = "FLIPPER_ARM_LOWER_LEFT_MODEL";
