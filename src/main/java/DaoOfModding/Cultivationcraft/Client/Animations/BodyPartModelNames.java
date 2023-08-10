@@ -81,6 +81,11 @@ public class BodyPartModelNames
     public static final String jetLegRightLowerModel = "JET_LEG_RIGHT_LOWER_MODEL";
     public static final String jetLegRightEmitter = "JET_LEG_RIGHT_EMITTER";
 
+    public static final String longLegLeftModel = "LONG_LEG_LEFT_MODEL";
+    public static final String longLegRightModel = "LONG_LEG_RIGHT_MODEL";
+    public static final String longLegLeftLowerModel = "LONG_LEG_LEFT_LOWER_MODEL";
+    public static final String longLegRightLowerModel = "LONG_LEG_RIGHT_LOWER_MODEL";
+
     public static final String lwingUpperArmModel = "LEFT_WING_UPPER_ARM_MODEL";
     public static final String lwingStrand1Model = "LEFT_WING_STRAND_1_MODEL";
     public static final String lwingStrand2Model = "LEFT_WING_STRAND_2_MODEL";

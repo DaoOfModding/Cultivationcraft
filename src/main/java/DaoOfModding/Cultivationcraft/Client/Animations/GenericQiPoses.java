@@ -72,6 +72,11 @@ public class GenericQiPoses
         GenericPoses.addLeg(BodyPartModelNames.jetLegRightModel);
         GenericPoses.addLeg(BodyPartModelNames.jetLegRightLowerModel);
         GenericPoses.addLeg(BodyPartModelNames.jetLegRightEmitter);
+
+        GenericPoses.addLeg(BodyPartModelNames.longLegLeftLowerModel);
+        GenericPoses.addLeg(BodyPartModelNames.longLegLeftModel);
+        GenericPoses.addLeg(BodyPartModelNames.longLegRightLowerModel);
+        GenericPoses.addLeg(BodyPartModelNames.longLegRightModel);
     }
 
     protected static void setupIdle()
@@ -110,6 +115,11 @@ public class GenericQiPoses
         Idle.addAngle(BodyPartModelNames.jetLegLeftLowerModel, new Vec3(0, 0, 0), 0);
         Idle.addAngle(BodyPartModelNames.jetLegRightModel, new Vec3(0, 0, 0), 0);
         Idle.addAngle(BodyPartModelNames.jetLegRightLowerModel, new Vec3(0, 0, 0), 0);
+
+        Idle.addAngle(BodyPartModelNames.longLegLeftModel, new Vec3(0, 0, 0), 0);
+        Idle.addAngle(BodyPartModelNames.longLegLeftLowerModel, new Vec3(0, 0, 0), 0);
+        Idle.addAngle(BodyPartModelNames.longLegRightModel, new Vec3(0, 0, 0), 0);
+        Idle.addAngle(BodyPartModelNames.longLegRightLowerModel, new Vec3(0, 0, 0), 0);
 
         Idle.addAngle(BodyPartModelNames.footRightModel, new Vec3(0, 0, 0), 0);
         Idle.addAngle(BodyPartModelNames.footLeftModel, new Vec3(0, 0, 0), 0);
@@ -214,6 +224,7 @@ public class GenericQiPoses
 
         Walk = Walk.combine(AnimationBuilder.generateRepeatingMirroredLimbs(BodyPartModelNames.jetLegLeftModel, BodyPartModelNames.jetLegRightModel, walkAngle, GenericPoses.walkLegPriority, AnimationSpeedCalculator.defaultSpeedInTicks / 2, 1));
         Walk = Walk.combine(AnimationBuilder.generateRepeatingMirroredLimbs(BodyPartModelNames.largeLegLeftModel, BodyPartModelNames.largeLegRightModel, walkAngle, GenericPoses.walkLegPriority, AnimationSpeedCalculator.defaultSpeedInTicks/2, 1));
+        Walk = Walk.combine(AnimationBuilder.generateRepeatingMirroredLimbs(BodyPartModelNames.longLegLeftModel, BodyPartModelNames.longLegRightModel, walkAngle, GenericPoses.walkLegPriority, AnimationSpeedCalculator.defaultSpeedInTicks/2, 1));
 
         lowerWalkAngle = new Vec3[5];
         lowerWalkAngle[0] = new Vec3(Math.toRadians(45), Math.toRadians(0), Math.toRadians(0));
@@ -224,6 +235,7 @@ public class GenericQiPoses
 
         Walk = Walk.combine(AnimationBuilder.generateRepeatingMirroredLimbs(BodyPartModelNames.jetLegLeftLowerModel, BodyPartModelNames.jetLegRightLowerModel, lowerWalkAngle, GenericPoses.walkLegPriority, AnimationSpeedCalculator.defaultSpeedInTicks / 2, 1));
         Walk = Walk.combine(AnimationBuilder.generateRepeatingMirroredLimbs(BodyPartModelNames.largeLegLeftLowerModel, BodyPartModelNames.largeLegRightLowerModel, lowerWalkAngle, GenericPoses.walkLegPriority, AnimationSpeedCalculator.defaultSpeedInTicks/2, 1));
+        Walk = Walk.combine(AnimationBuilder.generateRepeatingMirroredLimbs(BodyPartModelNames.longLegLeftLowerModel, BodyPartModelNames.longLegRightLowerModel, lowerWalkAngle, GenericPoses.walkLegPriority, AnimationSpeedCalculator.defaultSpeedInTicks/2, 1));
 
 
         Walk.addAngle(BodyPartModelNames.shortArmLeftModel, new Vec3(Math.toRadians(45.0D), Math.toRadians(0.0D), 0.0D), 5);
@@ -296,6 +308,11 @@ public class GenericQiPoses
         GenericPoses.SwimmingMoving.addAngle(BodyPartModelNames.jetLegRightModel, new Vec3(Math.toRadians(30), 0, 0), GenericPoses.swimLegPriority, 15f, 1);
         GenericPoses.SwimmingMoving.addAngle(BodyPartModelNames.jetLegLeftModel, new Vec3(Math.toRadians(30), 0, 0), GenericPoses.swimLegPriority, 15f, 1);
         GenericPoses.SwimmingMoving.addAngle(BodyPartModelNames.jetLegRightModel, new Vec3(Math.toRadians(-30), 0, 0), GenericPoses.swimLegPriority, 15f, 1);
+
+        GenericPoses.SwimmingMoving.addAngle(BodyPartModelNames.longLegLeftModel, new Vec3(Math.toRadians(-30), 0, 0), GenericPoses.swimLegPriority, 15f, 1);
+        GenericPoses.SwimmingMoving.addAngle(BodyPartModelNames.longLegRightModel, new Vec3(Math.toRadians(30), 0, 0), GenericPoses.swimLegPriority, 15f, 1);
+        GenericPoses.SwimmingMoving.addAngle(BodyPartModelNames.longLegLeftModel, new Vec3(Math.toRadians(30), 0, 0), GenericPoses.swimLegPriority, 15f, 1);
+        GenericPoses.SwimmingMoving.addAngle(BodyPartModelNames.longLegRightModel, new Vec3(Math.toRadians(-30), 0, 0), GenericPoses.swimLegPriority, 15f, 1);
 
         GenericPoses.SwimmingMoving.addAngle(BodyPartModelNames.largeLegLeftModel, new Vec3(Math.toRadians(-30), 0, 0), GenericPoses.swimLegPriority, 15f, 1);
         GenericPoses.SwimmingMoving.addAngle(BodyPartModelNames.largeLegRightModel, new Vec3(Math.toRadians(30), 0, 0), GenericPoses.swimLegPriority, 15f, 1);
@@ -391,6 +408,11 @@ public class GenericQiPoses
         GenericPoses.Crouching.addAngle(BodyPartModelNames.jetLegRightModel, new Vec3(Math.toRadians(-70), 0, 0), GenericPoses.crouchPriority);
         GenericPoses.Crouching.addAngle(BodyPartModelNames.jetLegRightLowerModel, new Vec3(Math.toRadians(70), 0, 0), GenericPoses.crouchPriority);
 
+        GenericPoses.Crouching.addAngle(BodyPartModelNames.longLegLeftModel, new Vec3(Math.toRadians(-70), 0, 0), GenericPoses.crouchPriority);
+        GenericPoses.Crouching.addAngle(BodyPartModelNames.longLegLeftLowerModel, new Vec3(Math.toRadians(70), 0, 0), GenericPoses.crouchPriority);
+        GenericPoses.Crouching.addAngle(BodyPartModelNames.longLegRightModel, new Vec3(Math.toRadians(-70), 0, 0), GenericPoses.crouchPriority);
+        GenericPoses.Crouching.addAngle(BodyPartModelNames.longLegRightLowerModel, new Vec3(Math.toRadians(70), 0, 0), GenericPoses.crouchPriority);
+
         GenericPoses.Crouching.addAngle(BodyPartModelNames.largeLegLeftModel, new Vec3(Math.toRadians(-50), 0, 0), GenericPoses.crouchPriority);
         GenericPoses.Crouching.addAngle(BodyPartModelNames.largeLegLeftLowerModel, new Vec3(Math.toRadians(50), 0, 0), GenericPoses.crouchPriority);
         GenericPoses.Crouching.addAngle(BodyPartModelNames.largeLegRightModel, new Vec3(Math.toRadians(-50), 0, 0), GenericPoses.crouchPriority);
@@ -431,6 +453,7 @@ public class GenericQiPoses
         walkAngle[4] = new Vec3(Math.toRadians(-30), Math.toRadians(0), Math.toRadians(0));
 
         PlayerPose CrouchingWalk = AnimationBuilder.generateRepeatingMirroredLimbs(BodyPartModelNames.jetLegLeftModel, BodyPartModelNames.jetLegRightModel, walkAngle, GenericPoses.crouchPriority, AnimationSpeedCalculator.defaultSpeedInTicks / 2, 1);
+        CrouchingWalk = CrouchingWalk.combine(AnimationBuilder.generateRepeatingMirroredLimbs(BodyPartModelNames.longLegLeftModel, BodyPartModelNames.longLegRightModel, walkAngle, GenericPoses.crouchPriority, AnimationSpeedCalculator.defaultSpeedInTicks / 2, 1));
 
         Vec3[] lowerWalkAngle = new Vec3[5];
         lowerWalkAngle[0] = new Vec3(Math.toRadians(95), Math.toRadians(0), Math.toRadians(0));
@@ -440,6 +463,7 @@ public class GenericQiPoses
         lowerWalkAngle[4] = new Vec3(Math.toRadians(85), Math.toRadians(0), Math.toRadians(0));
 
         CrouchingWalk = CrouchingWalk.combine(AnimationBuilder.generateRepeatingMirroredLimbs(BodyPartModelNames.jetLegLeftLowerModel, BodyPartModelNames.jetLegRightLowerModel, lowerWalkAngle, GenericPoses.crouchPriority, AnimationSpeedCalculator.defaultSpeedInTicks / 2, 1));
+        CrouchingWalk = CrouchingWalk.combine(AnimationBuilder.generateRepeatingMirroredLimbs(BodyPartModelNames.longLegLeftLowerModel, BodyPartModelNames.longLegRightLowerModel, lowerWalkAngle, GenericPoses.crouchPriority, AnimationSpeedCalculator.defaultSpeedInTicks / 2, 1));
 
 
         walkAngle[0] = new Vec3(Math.toRadians(-70), Math.toRadians(0), Math.toRadians(0));
@@ -531,6 +555,9 @@ public class GenericQiPoses
 
         CrossLegs.addAngle(BodyPartModelNames.jetLegLeftModel, new Vec3(Math.toRadians(45), Math.toRadians(-180), Math.toRadians(-90)), GenericPoses.walkLegPriority + 4);
         CrossLegs.addAngle(BodyPartModelNames.jetLegRightModel, new Vec3(Math.toRadians(45), Math.toRadians(180), Math.toRadians(90)), GenericPoses.walkLegPriority + 4);
+
+        CrossLegs.addAngle(BodyPartModelNames.longLegLeftModel, new Vec3(Math.toRadians(45), Math.toRadians(-180), Math.toRadians(-90)), GenericPoses.walkLegPriority + 4);
+        CrossLegs.addAngle(BodyPartModelNames.longLegRightModel, new Vec3(Math.toRadians(45), Math.toRadians(180), Math.toRadians(90)), GenericPoses.walkLegPriority + 4);
 
         CrossLegs.addAngle(BodyPartModelNames.jetLegLeftLowerModel, new Vec3(Math.toRadians(90), 0, 0), GenericPoses.walkLegPriority + 4);
         CrossLegs.addAngle(BodyPartModelNames.jetLegRightLowerModel, new Vec3(Math.toRadians(90), 0, 0), GenericPoses.walkLegPriority + 4);

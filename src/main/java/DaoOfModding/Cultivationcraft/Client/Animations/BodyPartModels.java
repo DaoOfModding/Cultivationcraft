@@ -1358,6 +1358,30 @@ public class BodyPartModels
         addModel(BodyPartModelNames.largeLegRightModel, largeRightLeg);
         addReference(BodyPartModelNames.largeLegLeftModel, BodyPartModelNames.largeLegLeftLowerModel, largeLeftLeg.getChildren().get(0));
         addReference(BodyPartModelNames.largeLegRightModel, BodyPartModelNames.largeLegRightLowerModel, largeRightLeg.getChildren().get(0));
+
+
+        ExtendableModelRenderer leftLongLeg = new ExtendableModelRenderer(BodyPartModelNames.longLegLeftModel);
+        GenericCultivatorTextureValues.addGenericLeftLegLayers(leftLongLeg);
+        leftLongLeg.setPos(0.25F, 1.0F, 0.5F);
+        leftLongLeg.setRotationPoint(new Vec3(0.5, 0.66, 0.5));
+        leftLongLeg.setFixedPosAdjustment(0F, 2F, 0.0F);
+        leftLongLeg.setDefaultResize(new Vec3(1, 1.5f, 1));
+        leftLongLeg.extend(GenericResizers.getLegResizer());
+        leftLongLeg.getChildren().get(0).setDefaultResize(new Vec3(1, 1.5f, 1));
+
+        ExtendableModelRenderer rightLongLeg = new ExtendableModelRenderer(BodyPartModelNames.longLegRightModel);
+        GenericCultivatorTextureValues.addGenericRightLegLayers(rightLongLeg);
+        rightLongLeg.setPos(0.75F, 1.0F, 0.5F);
+        rightLongLeg.setRotationPoint(new Vec3(0.5, 0.66, 0.5));
+        rightLongLeg.setFixedPosAdjustment(0F, 2F, 0.0F);
+        rightLongLeg.setDefaultResize(new Vec3(1, 1.5f, 1));
+        rightLongLeg.extend(GenericResizers.getLegResizer());
+        rightLongLeg.getChildren().get(0).setDefaultResize(new Vec3(1, 1.5f, 1));
+
+        addModel(BodyPartModelNames.longLegLeftModel, leftLongLeg);
+        addModel(BodyPartModelNames.longLegRightModel, rightLongLeg);
+        addReference(BodyPartModelNames.longLegLeftModel, BodyPartModelNames.longLegLeftLowerModel, leftLongLeg.getChildren().get(0));
+        addReference(BodyPartModelNames.longLegRightModel, BodyPartModelNames.longLegRightLowerModel, rightLongLeg.getChildren().get(0));
     }
 
     public void addQuadCollection(String ID, QuadCollection quad)

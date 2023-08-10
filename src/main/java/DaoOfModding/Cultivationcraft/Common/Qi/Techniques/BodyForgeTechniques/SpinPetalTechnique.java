@@ -7,6 +7,7 @@ import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartNames;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.QuestHandler;
 import DaoOfModding.Cultivationcraft.Common.Qi.CultivationTypes;
 import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
+import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.MovementOverrideTechnique;
 import DaoOfModding.Cultivationcraft.Common.Reflection;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
@@ -72,7 +73,7 @@ public class SpinPetalTechnique extends MovementOverrideTechnique
     public void spin(Player player)
     {
         PoseHandler.addPose(player.getUUID(), spinUp);
-        player.setDeltaMovement(player.getDeltaMovement().add(spinVector));
+        player.setDeltaMovement(player.getDeltaMovement().add(spinVector.scale(BodyPartStatControl.getPlayerStatControl(player).getFlightWeightModifier())));
         QuestHandler.progressQuest(player, player.getDeltaMovement().length());
     }
 

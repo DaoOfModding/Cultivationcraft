@@ -42,8 +42,8 @@
   "cultivationcraft.stat.flightspeed.text": "The amount of blocks this character moves per tick whilst flying",
   "cultivationcraft.stat.legweight": "Leg Weight Limit",
   "cultivationcraft.stat.legweight.text": "The amount of weight this character's legs can support before their movement speed starts being slowed",
-  "cultivationcraft.stat.wingweight": "Wing Weight Limit",
-  "cultivationcraft.stat.wingweight.text": "The amount of weight this character's wings can support before their flying speed starts being slowed",
+  "cultivationcraft.stat.wingweight": "Flight Weight Limit",
+  "cultivationcraft.stat.wingweight.text": "The amount of weight this character can support before their flying speed starts being slowed",
   "cultivationcraft.stat.attackrange": "Attack Range",
   "cultivationcraft.stat.attackrange.text": "The range (in blocks) the character can hit with an attack",
   "cultivationcraft.stat.armattackmodifier": "Arm Attack Modifier",
@@ -344,8 +344,11 @@
   "cultivationcraft.gui.legpart.large": "Large Legs",
   "cultivationcraft.gui.legpart.large.description": "Bigger is better, and these are VERY big\nAllows you to support a LOT of weight, but very slow",
 
-  "cultivationcraft.gui.legpart.jet": "Jet Leg",
+  "cultivationcraft.gui.legpart.jet": "Jet Legs",
   "cultivationcraft.gui.legpart.jet.description": "Grow jet boosters from your legs, allowing you to fly through the sky by spouting fire from your feet",
+
+  "cultivationcraft.gui.legpart.long": "Long Legs",
+  "cultivationcraft.gui.legpart.long.description": "Stretch out your legs, slightly increasing your movement speed, jump height, step heigh and weight",
 
   "cultivationcraft.gui.help": "Help",
 

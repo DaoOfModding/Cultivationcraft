@@ -69,6 +69,7 @@ public class BodyPartNames
     public static final String hexaLegPart = "hexaleg";
     public static final String singleLegPart = "oneleg";
     public static final String jetLegPart = "jetleg";
+    public static final String longLegPart = "longleg";
 
     // OPTIONS
     public static final String reinforceSkinPart = "reinforceSkin";
@@ -871,6 +872,7 @@ public class BodyPartNames
         BodyPartOption rotatingPetals = new BodyPartOption(rotatingPetalPart, headPosition, petalSubPosition, "cultivationcraft.gui.headpart.top.petal.rotating");
         rotatingPetals.addNeededPart(BodyPartNames.headFlowerPart);
         rotatingPetals.addUniqueTag(BodyPartTags.flight);
+        rotatingPetals.getStatChanges().setStat(StatIDs.wingSupport, 1f);
 
         addOption(rotatingPetals);
     }
@@ -948,6 +950,18 @@ public class BodyPartNames
         jetLeg.setQuest(DefaultQuests.defaultFlightQuest);
 
         addPart(jetLeg);
+
+        BodyPart longLeg = new BodyPart(longLegPart, legPosition, "cultivationcraft.gui.legpart.long");
+        longLeg.addModel(BodyPartModelNames.longLegLeftModel);
+        longLeg.addModel(BodyPartModelNames.longLegRightModel);
+        longLeg.addNeededPart(BodyPartNames.startingEyesPart);
+        longLeg.getStatChanges().setStat(StatIDs.stepHeight, 0.5f);
+        longLeg.getStatChanges().setStat(StatIDs.jumpHeight, 1f);
+        longLeg.getStatChanges().setStat(StatIDs.movementSpeed, 0.05f);
+        longLeg.getStatChanges().setStat(StatIDs.weight, DefaultPlayerBodyPartWeights.legWeight);
+        longLeg.setQuest(DefaultQuests.defaultLegQuest);
+
+        addPart(longLeg);
     }
 
     public static String getDisplayName(String position)
