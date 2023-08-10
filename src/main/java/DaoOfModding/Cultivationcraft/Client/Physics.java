@@ -40,13 +40,19 @@ public class Physics
     public static void applyJump(Player player)
     {
         PlayerStatControl stats = BodyPartStatControl.getPlayerStatControl(player);
-        float jumpHeight = stats.getStats().getStat(StatIDs.jumpHeight) - 1;
+        float jumpHeight = (stats.getStats().getStat(StatIDs.jumpHeight) - StatIDs.defaultJumpHeight) * stats.getLegWeightModifier();
         double jumpBoost = player.hasEffect(MobEffects.JUMP) ? (double)(0.1F * (float)(player.getEffect(MobEffects.JUMP).getAmplifier() + 1)) : 0.0D;
+
+        // Why? I don't know, Minecraft is weird like that
+        if (jumpBoost == 0 && jumpHeight > 0)
+            jumpHeight++;
+
+        jumpBoost += jumpHeight * 0.1f;
 
         Vec3 currentMotion = getDelta(player);
 
         // Increase not only the height jump but also multiply X and Z momentum
-        player.setDeltaMovement(currentMotion.x + (currentMotion.x * jumpHeight * 0.2f) * stats.getLegWeightModifier(), (0.42f + jumpHeight * 0.1f) * stats.getLegWeightModifier() * getBlockJumpFactor(player) + jumpBoost, currentMotion.z + (currentMotion.z * jumpHeight * 0.2f) * stats.getLegWeightModifier());
+        player.setDeltaMovement(currentMotion.x + (currentMotion.x * jumpHeight * 0.2f), (0.42f) * getBlockJumpFactor(player) + jumpBoost, currentMotion.z + (currentMotion.z * jumpHeight * 0.2f));
 
         QuestHandler.progressQuest(player, Quest.JUMP, 1);
     }
