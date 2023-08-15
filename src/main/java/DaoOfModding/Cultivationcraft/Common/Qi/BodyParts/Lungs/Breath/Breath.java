@@ -1,13 +1,17 @@
 package DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Lungs.Breath;
 
 import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
+import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.Technique;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FlowingFluid;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.Vec3;
@@ -19,7 +23,7 @@ public class Breath
     public static final Breath NONE = new Breath(new Color(0, 0, 0, 0), Elements.noElement);
     public static final Breath AIR = new Breath(new Color(255, 255, 255, 255), Elements.noElement);
     public static final Breath WATER = new WaterBreath(new Color(127, 200, 255, 255), Elements.waterElement, Fluids.WATER, 8f, 5f);
-    public static final Breath FIRE = new Breath(new Color(255, 0, 0, 255), Elements.fireElement, Fluids.LAVA);
+    public static final Breath FIRE = new FireBreath(new Color(255, 0, 0, 255), Elements.fireElement, Fluids.LAVA, 0f, 20f);
 
     Color color;
     FlowingFluid fluid;
@@ -72,6 +76,20 @@ public class Breath
         return null;
     }
 
+
+    // Returns whether the specified block is mineable
+    public boolean canBeMined(Player player, BlockPos pos, Direction direction, Technique source)
+    {
+        return true;
+    }
+
+    // Returns whether this block should be destroyed on hit or not
+    public boolean doBlockAttack(Player player, BlockPos pos, Direction direction)
+    {
+        return true;
+    }
+
+    // Called after this breath destroys a block at the specified location
     public void onBlockDestroy(Level level, BlockPos pos)
     {
     }

@@ -2,6 +2,7 @@ package DaoOfModding.Cultivationcraft.Client;
 
 import DaoOfModding.Cultivationcraft.Client.Particles.*;
 import DaoOfModding.Cultivationcraft.Client.Particles.Blood.BloodParticle;
+import DaoOfModding.Cultivationcraft.Client.Particles.FireParticle.FireParticle;
 import DaoOfModding.Cultivationcraft.Client.Particles.Spit.SpitParticle;
 import DaoOfModding.Cultivationcraft.Client.Particles.WaterParticle.WaterParticle;
 import DaoOfModding.Cultivationcraft.Common.Register;
@@ -22,6 +23,7 @@ public class clientRegister
             event.register(Register.bloodParticleType.get(), BloodParticle.Factory::new);
             event.register(Register.spitParticleType.get(), SpitParticle.Factory::new);
             event.register(Register.waterParticleType.get(), WaterParticle.Factory::new);
+            event.register(Register.fireParticleType.get(), FireParticle.Factory::new);
         }
     }
 }

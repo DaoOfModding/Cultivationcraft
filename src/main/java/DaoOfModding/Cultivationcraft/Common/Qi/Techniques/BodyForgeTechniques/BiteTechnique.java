@@ -15,6 +15,7 @@ import DaoOfModding.Cultivationcraft.Common.Qi.Stats.StatIDs;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.AttackOverrideTechnique;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
@@ -106,7 +107,7 @@ public class BiteTechnique extends AttackOverrideTechnique
     }
 
     @Override
-    public void attackBlock(Player player, BlockState block, BlockPos pos)
+    public void attackBlock(Player player, BlockState block, BlockPos pos, Direction direction)
     {
         int nutrition = ((QiFoodStats) player.getFoodData()).getNutrition(block);
 
@@ -129,7 +130,7 @@ public class BiteTechnique extends AttackOverrideTechnique
             player.getFoodData().eat(nutrition, 0.8f);
         }
         else
-            super.attackBlock(player, block, pos);
+            super.attackBlock(player, block, pos, direction);
     }
 
     @Override

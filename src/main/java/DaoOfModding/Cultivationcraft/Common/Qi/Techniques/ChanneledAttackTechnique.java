@@ -4,9 +4,11 @@ import DaoOfModding.Cultivationcraft.Client.CultivatorAttackLogicClient;
 import DaoOfModding.Cultivationcraft.Common.Qi.CultivatorControl;
 import DaoOfModding.Cultivationcraft.Network.ClientPacketHandler;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.TickEvent;
@@ -37,7 +39,12 @@ public class ChanneledAttackTechnique extends AttackTechnique
         attack(event.player, CultivatorControl.getTechnique(event.player, this));
 
         if (targetEntity == null)
-            mine(event.player);
+        {
+            BlockHitResult result = CultivatorAttackLogicClient.tryAttackBlock(getRange(event.player));
+
+            if (result != null)
+                mine(event.player, result.getBlockPos(), result.getDirection());
+        }
     }
 
     public void deactivate(Player player)
@@ -61,7 +68,7 @@ public class ChanneledAttackTechnique extends AttackTechnique
 
         if (ticksSinceHit == 0)
         {
-            ClientPacketHandler.sendAttackToServer(player.getUUID(), HitResult.Type.ENTITY, targetEntity.position(), targetEntity.getUUID(), slot);
+            ClientPacketHandler.sendAttackToServer(player.getUUID(), HitResult.Type.ENTITY, targetEntity.position(), targetEntity.getUUID(), null, slot);
         }
         else
         {
@@ -85,13 +92,10 @@ public class ChanneledAttackTechnique extends AttackTechnique
     public void attackBlock(Player player, BlockState block, BlockPos pos)
     {
         player.level.destroyBlock(pos, true);
-        onBlockDestroy(player.level, pos);
     }
 
-    protected void mine(Player player)
+    protected void mine(Player player, BlockPos pos, Direction direction)
     {
-        BlockPos pos = CultivatorAttackLogicClient.tryAttackBlock(getRange(player));
-
         if (target == null || pos == null || pos.compareTo(target) != 0)
         {
             progress = 0;
@@ -124,7 +128,7 @@ public class ChanneledAttackTechnique extends AttackTechnique
         }
         else if (player.level.isClientSide)
         {
-            ClientPacketHandler.sendAttackToServer(player.getUUID(), HitResult.Type.BLOCK, new Vec3(pos.getX(), pos.getY(), pos.getZ()), player.getUUID(), CultivatorControl.getTechnique(player, this));
+            ClientPacketHandler.sendAttackToServer(player.getUUID(), HitResult.Type.BLOCK, new Vec3(pos.getX(), pos.getY(), pos.getZ()), player.getUUID(), direction, CultivatorControl.getTechnique(player, this));
         }
     }
 

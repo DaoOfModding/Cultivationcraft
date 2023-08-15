@@ -9,6 +9,7 @@ import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import DaoOfModding.Cultivationcraft.Network.PacketHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.network.FriendlyByteBuf;
@@ -31,14 +32,18 @@ public class AttackPacket extends Packet
     protected Vec3 targetPos = null;
     protected UUID target = null;
     protected int techSlot = 0;
+    protected Direction direction = Direction.UP;
 
-    public AttackPacket(UUID playerID, HitResult.Type type, Vec3 pos, UUID targetUUID, int slot)
+    public AttackPacket(UUID playerID, HitResult.Type type, Vec3 pos, UUID targetUUID, Direction dir, int slot)
     {
         player = playerID;
         targetType = type;
         targetPos = pos;
         target = targetUUID;
         techSlot = slot;
+
+        if (dir != null)
+            direction = dir;
     }
 
     @Override
@@ -55,6 +60,8 @@ public class AttackPacket extends Packet
                 buffer.writeDouble(targetPos.y);
                 buffer.writeDouble(targetPos.z);
 
+                buffer.writeEnum(direction);
+
                 if (targetType == HitResult.Type.ENTITY)
                     buffer.writeUUID(target);
             }
@@ -63,7 +70,7 @@ public class AttackPacket extends Packet
 
     public static AttackPacket decode(FriendlyByteBuf buffer)
     {
-        AttackPacket returnValue = new AttackPacket(null, HitResult.Type.MISS, null, null, 0);
+        AttackPacket returnValue = new AttackPacket(null, HitResult.Type.MISS, null, null, Direction.UP,0);
 
         try
         {
@@ -74,17 +81,20 @@ public class AttackPacket extends Packet
 
             Vec3 readingPos = null;
             UUID readingTargetID = null;
+            Direction readingDir = null;
 
             // Only read the target position if there is a target
             if (readingType != HitResult.Type.MISS) {
                 readingPos = new Vec3(buffer.readDouble(), buffer.readDouble(), buffer.readDouble());
+
+                readingDir = buffer.readEnum(Direction.class);
 
                 // Only read the target ID if target is an entity
                 if (readingType == HitResult.Type.ENTITY)
                     readingTargetID = buffer.readUUID();
             }
 
-            return new AttackPacket(readingPlayer, readingType, readingPos, readingTargetID, slot);
+            return new AttackPacket(readingPlayer, readingType, readingPos, readingTargetID, readingDir, slot);
 
         }
         catch (IllegalArgumentException | IndexOutOfBoundsException e)
@@ -130,7 +140,7 @@ public class AttackPacket extends Packet
             return;
 
         // Send packet to all clients
-        PacketHandler.sendAttackToClient(player, targetType, targetPos, target, techSlot);
+        PacketHandler.sendAttackToClient(player, targetType, targetPos, target, direction, techSlot);
 
         if (targetType == HitResult.Type.ENTITY)
         {
@@ -156,7 +166,7 @@ public class AttackPacket extends Packet
             BlockState block = ownerEntity.getCommandSenderWorld().getBlockState(pos);
 
             if (block != null)
-                ((AttackTechnique)tech).attackBlock(ownerEntity, block, pos);
+                ((AttackTechnique)tech).attackBlock(ownerEntity, block, pos, direction);
         }
         else
             ((AttackTechnique)tech).attackNothing(ownerEntity);

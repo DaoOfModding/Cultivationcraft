@@ -21,12 +21,12 @@ public class CultivatorAttackLogicClient
         return null;
     }
 
-    public static BlockPos tryAttackBlock(double range)
+    public static BlockHitResult tryAttackBlock(double range)
     {
         HitResult result = KeybindingControl.getMouseOver(range);
 
         if (result != null && result.getType() == HitResult.Type.BLOCK)
-            return ((BlockHitResult) result).getBlockPos();
+            return ((BlockHitResult) result);
 
         return null;
     }

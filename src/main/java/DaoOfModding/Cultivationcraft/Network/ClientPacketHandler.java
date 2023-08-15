@@ -8,6 +8,7 @@ import DaoOfModding.Cultivationcraft.Network.Packets.*;
 import DaoOfModding.Cultivationcraft.Network.Packets.CultivatorStats.CultivatorTargetPacket;
 import DaoOfModding.Cultivationcraft.Network.Packets.CultivatorStats.RecallFlyingSwordPacket;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
@@ -38,9 +39,9 @@ public class ClientPacketHandler
         PacketHandler.channel.sendToServer(pack);
     }
 
-    public static void sendAttackToServer(UUID playerID, HitResult.Type type, Vec3 pos, UUID targetID, int slot)
+    public static void sendAttackToServer(UUID playerID, HitResult.Type type, Vec3 pos, UUID targetID, Direction direction, int slot)
     {
-        AttackPacket pack = new AttackPacket(playerID, type, pos, targetID, slot);
+        AttackPacket pack = new AttackPacket(playerID, type, pos, targetID, direction, slot);
         PacketHandler.channel.sendToServer(pack);
     }
 

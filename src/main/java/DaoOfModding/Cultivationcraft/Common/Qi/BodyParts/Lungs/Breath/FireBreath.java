@@ -1,6 +1,6 @@
 package DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Lungs.Breath;
 
-import DaoOfModding.Cultivationcraft.Client.Particles.WaterParticle.WaterParticleData;
+import DaoOfModding.Cultivationcraft.Client.Particles.FireParticle.FireParticleData;
 import DaoOfModding.Cultivationcraft.Common.Qi.CultivatorControl;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.Technique;
 import DaoOfModding.Cultivationcraft.Network.ClientPacketHandler;
@@ -11,18 +11,17 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.SimpleWaterloggedBlock;
+import net.minecraft.world.level.block.BaseFireBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.FlowingFluid;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 
 import java.awt.*;
 
-public class WaterBreath extends Breath
+public class FireBreath extends Breath
 {
-    public WaterBreath(Color col, ResourceLocation newElement, FlowingFluid flu, float diggingPower, float damagePower)
+    public FireBreath(Color col, ResourceLocation newElement, FlowingFluid flu, float diggingPower, float damagePower)
     {
         super(col, newElement, flu, diggingPower, damagePower);
 
@@ -31,7 +30,7 @@ public class WaterBreath extends Breath
 
     public ParticleOptions getParticle(Vec3 endTarget, Entity targetEntity)
     {
-        return new WaterParticleData(endTarget, targetEntity);
+        return new FireParticleData(endTarget, targetEntity);
     }
 
     public void onBlockDestroy(Level level, BlockPos pos)
@@ -44,28 +43,25 @@ public class WaterBreath extends Breath
     // Returns whether the specified block is mineable
     public boolean canBeMined(Player player, BlockPos pos, Direction direction, Technique source)
     {
-        BlockState state = player.level.getBlockState(pos);
-
-        if (state.hasProperty(BlockStateProperties.WATERLOGGED) && !state.getValue(BlockStateProperties.WATERLOGGED))
+        BlockPos blockpos1 = pos.relative(direction);
+        if (BaseFireBlock.canBePlacedAt(player.level, blockpos1, player.getDirection()))
         {
             ClientPacketHandler.sendAttackToServer(player.getUUID(), HitResult.Type.BLOCK, new Vec3(pos.getX(), pos.getY(), pos.getZ()), player.getUUID(), direction, CultivatorControl.getTechnique(player, source));
-            return false;
         }
 
-        return true;
+        return false;
     }
 
     // Returns whether this block should be destroyed on hit or not
-    public boolean doBlockAttack(Player player, BlockPos pos)
+    public boolean doBlockAttack(Player player, BlockPos pos, Direction direction)
     {
-        BlockState state = player.level.getBlockState(pos);
-
-        if (state.hasProperty(BlockStateProperties.WATERLOGGED) && !state.getValue(BlockStateProperties.WATERLOGGED))
+        BlockPos blockpos1 = pos.relative(direction);
+        if (BaseFireBlock.canBePlacedAt(player.level, blockpos1, player.getDirection()))
         {
-            player.level.setBlock(pos, state.setValue(BlockStateProperties.WATERLOGGED, Boolean.valueOf(true)), 2);
-            return false;
+            BlockState blockstate1 = BaseFireBlock.getState(player.level, blockpos1);
+            player.level.setBlock(blockpos1, blockstate1, 11);
         }
 
-        return true;
+        return false;
     }
 }

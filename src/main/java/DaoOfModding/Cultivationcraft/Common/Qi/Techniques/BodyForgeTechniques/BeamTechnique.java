@@ -14,11 +14,13 @@ import DaoOfModding.mlmanimator.Client.Poses.PlayerPoseHandler;
 import DaoOfModding.mlmanimator.Client.Poses.PoseHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.TickEvent;
 
@@ -113,9 +115,24 @@ public class BeamTechnique extends ChanneledAttackTechnique
         }
     }
 
-    public void onBlockDestroy(Level level, BlockPos pos)
+    @Override
+    protected void mine(Player player, BlockPos pos, Direction direction)
     {
-        breath.onBlockDestroy(level, pos);
+        if (pos == null)
+            return;
+
+        if (breath.canBeMined(player, pos, direction,this))
+            super.mine(player, pos, direction);
+    }
+
+    @Override
+    public void attackBlock(Player player, BlockState block, BlockPos pos, Direction direction)
+    {
+        if (breath.doBlockAttack(player, pos, direction))
+        {
+            player.level.destroyBlock(pos, true);
+            breath.onBlockDestroy(player.level, pos);
+        }
     }
 
     public float getAttack(Player player)

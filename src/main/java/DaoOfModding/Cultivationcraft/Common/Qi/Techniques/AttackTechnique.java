@@ -7,6 +7,7 @@ import DaoOfModding.mlmanimator.Client.Poses.PoseHandler;
 import DaoOfModding.mlmanimator.Client.Poses.PlayerPose;
 import DaoOfModding.Cultivationcraft.Network.ClientPacketHandler;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -16,6 +17,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 
@@ -42,6 +44,7 @@ public class AttackTechnique extends Technique
         UUID attackUUID = null;
         Entity attackEntity = CultivatorAttackLogicClient.tryAttackEntity(getRange(player));
         Vec3 location = new Vec3(0, 0, 0);
+        Direction direction = null;
 
         if (attackEntity != null)
         {
@@ -51,16 +54,17 @@ public class AttackTechnique extends Technique
         }
         else
         {
-            BlockPos blockpos = CultivatorAttackLogicClient.tryAttackBlock(getRange(player));
+            BlockHitResult blockpos = CultivatorAttackLogicClient.tryAttackBlock(getRange(player));
 
             if (blockpos != null)
             {
-                location = new Vec3(blockpos.getX(), blockpos.getY(), blockpos.getZ());
+                location = new Vec3(blockpos.getBlockPos().getX(), blockpos.getBlockPos().getY(), blockpos.getBlockPos().getZ());
                 result = HitResult.Type.BLOCK;
+                direction = blockpos.getDirection();
             }
         }
 
-        ClientPacketHandler.sendAttackToServer(player.getUUID(), result, location, attackUUID, slot);
+        ClientPacketHandler.sendAttackToServer(player.getUUID(), result, location, attackUUID, direction, slot);
     }
 
     public void attackAnimation(Player player)
@@ -91,14 +95,9 @@ public class AttackTechnique extends Technique
         player.level.playSound((Player) null, player.getX(), player.getY(), player.getZ(), missSound, player.getSoundSource(), 1.0F, 1.0F);
     }
 
-    public void attackBlock(Player player, BlockState block, BlockPos pos)
+    public void attackBlock(Player player, BlockState block, BlockPos pos, Direction direction)
     {
         player.level.playSound((Player) null, player.getX(), player.getY(), player.getZ(), attackSound, player.getSoundSource(), 1.0F, 1.0F);
-    }
-
-    protected void onBlockDestroy(Level level, BlockPos pos)
-    {
-
     }
 
     // Attack specified entity with specified player, server only

@@ -12,6 +12,7 @@ import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import DaoOfModding.Cultivationcraft.Network.Packets.*;
 import DaoOfModding.Cultivationcraft.Network.Packets.CultivatorStats.*;
 import DaoOfModding.Cultivationcraft.Network.Packets.keypressPacket;
+import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.resources.ResourceLocation;
@@ -90,9 +91,9 @@ public class PacketHandler
         channel.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> ServerLifecycleHooks.getCurrentServer().getPlayerList().getPlayer(playerID)), pack);
     }
 
-    public static void sendAttackToClient(UUID playerID, HitResult.Type type, Vec3 pos, UUID targetID, int slot)
+    public static void sendAttackToClient(UUID playerID, HitResult.Type type, Vec3 pos, UUID targetID, Direction direction, int slot)
     {
-        AttackPacket pack = new AttackPacket(playerID, type, pos, targetID, slot);
+        AttackPacket pack = new AttackPacket(playerID, type, pos, targetID, direction, slot);
         channel.send(PacketDistributor.TRACKING_ENTITY.with(() -> ServerLifecycleHooks.getCurrentServer().getPlayerList().getPlayer(playerID)), pack);
     }
 
