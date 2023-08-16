@@ -1,5 +1,6 @@
 package DaoOfModding.Cultivationcraft.Common.Qi.Elements;
 
+import DaoOfModding.Cultivationcraft.Common.Qi.Damage.QiDamageSource;
 import DaoOfModding.Cultivationcraft.Network.ClientPacketHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
@@ -21,7 +22,7 @@ public class FireElement extends Element
         effectTickChance = 1.0;
     }
 
-    public void applyStatusEffect(Entity target, float damageAmount)
+    public void applyStatusEffect(QiDamageSource source, Entity target, float damageAmount)
     {
         target.setSecondsOnFire((int)damageAmount);
     }

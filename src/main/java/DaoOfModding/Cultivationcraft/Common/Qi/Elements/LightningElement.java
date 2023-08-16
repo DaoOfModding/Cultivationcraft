@@ -1,5 +1,6 @@
 package DaoOfModding.Cultivationcraft.Common.Qi.Elements;
 
+import DaoOfModding.Cultivationcraft.Common.Qi.Damage.QiDamageSource;
 import DaoOfModding.Cultivationcraft.Common.Reflection;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
@@ -22,7 +23,7 @@ public class LightningElement extends ElementVariant
         effectTickChance = 1.0 / 200.0;
     }
 
-    public void applyStatusEffect(Entity target, float damageAmount)
+    public void applyStatusEffect(QiDamageSource source, Entity target, float damageAmount)
     {
         if (!(target.level instanceof ServerLevel))
             return;

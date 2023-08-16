@@ -21,6 +21,8 @@ import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.PlayerHealthManager;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.Quest;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.QuestHandler;
 import DaoOfModding.Cultivationcraft.Common.Qi.Damage.Damage;
+import DaoOfModding.Cultivationcraft.Common.Qi.Effects.Wind;
+import DaoOfModding.Cultivationcraft.Common.Qi.Effects.WindInstance;
 import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.PlayerStatModifications;
@@ -81,6 +83,12 @@ public class CommonListeners
 
 
         clearStatus(event.player);
+    }
+
+    @SubscribeEvent
+    public static void playerTick(LivingEvent.LivingTickEvent event)
+    {
+        Wind.tick(event.getEntity());
     }
 
     // Temp to clear fire if have fire resistance

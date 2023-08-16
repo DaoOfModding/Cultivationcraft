@@ -1,5 +1,6 @@
 package DaoOfModding.Cultivationcraft.Common.Qi.Elements;
 
+import DaoOfModding.Cultivationcraft.Common.Qi.Damage.QiDamageSource;
 import DaoOfModding.Cultivationcraft.Common.Qi.QiSource;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.PlayerStatModifications;
@@ -51,7 +52,7 @@ public class Element
         return false;
     }
 
-    public void applyStatusEffect(Entity target, float damageAmount)
+    public void applyStatusEffect(QiDamageSource source, Entity target, float damageAmount)
     {
     }
 

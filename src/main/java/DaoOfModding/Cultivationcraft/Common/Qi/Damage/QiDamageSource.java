@@ -175,6 +175,9 @@ public class QiDamageSource extends DamageSource
     @Override
     public Vec3 getSourcePosition()
     {
+        if (sourcePos == null && entity != null)
+            sourcePos = entity.position();
+
         return sourcePos;
     }
 

@@ -50,7 +50,7 @@ public class Damage
         QiDamageSource source = damageSourceToQiDamageSource(event.getSource());
 
         if (source.getElement() != null && source.doStatusEffect())
-            Elements.getElement(source.getElement()).applyStatusEffect(event.getEntity(), event.getAmount());
+            Elements.getElement(source.getElement()).applyStatusEffect(source, event.getEntity(), event.getAmount());
     }
 
     // TODO: Mob resistances

@@ -8,12 +8,14 @@ import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.Cultiva
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.ICultivatorStats;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.CultivatorTechniques;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.ICultivatorTechniques;
+import DaoOfModding.Cultivationcraft.Common.Qi.Effects.WindInstance;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import DaoOfModding.Cultivationcraft.Network.Packets.*;
 import DaoOfModding.Cultivationcraft.Network.Packets.CultivatorStats.*;
 import DaoOfModding.Cultivationcraft.Network.Packets.keypressPacket;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.chunk.LevelChunk;
@@ -40,6 +42,7 @@ public class PacketHandler
     protected static final byte QUEST_CANCEL = 31;
     protected static final byte FLYING_SWORD_NBT_ID = 35;
     protected static final byte FLYING_SWORD_RECALL = 36;
+    protected static final byte WIND_INSTANCE = 43;
     protected static final byte BLOOD_SPAWN_ID = 55;
     protected static final byte EXTERNAL_BLOOD_TICK_ID = 56;
     protected static final byte CULTIVATOR_TARGET_ID = 76;
@@ -70,6 +73,7 @@ public class PacketHandler
         channel.registerMessage(QUEST_CANCEL, QuestCancelPacket.class, QuestCancelPacket::encode, QuestCancelPacket::decode, QuestCancelPacket::handle);
         channel.registerMessage(FLYING_SWORD_NBT_ID, ConvertToFlyingPacket.class, ConvertToFlyingPacket::encode, ConvertToFlyingPacket::decode, ConvertToFlyingPacket::handle);
         channel.registerMessage(FLYING_SWORD_RECALL, RecallFlyingSwordPacket.class, RecallFlyingSwordPacket::encode, RecallFlyingSwordPacket::decode, RecallFlyingSwordPacket::handle);
+        channel.registerMessage(WIND_INSTANCE, WindPacket.class, WindPacket::encode, WindPacket::decode, WindPacket::handle);
         channel.registerMessage(BLOOD_SPAWN_ID, BloodPacket.class, BloodPacket::encode, BloodPacket::decode, BloodPacket::handle);
         channel.registerMessage(EXTERNAL_BLOOD_TICK_ID, ExternalBloodTickPacket.class, ExternalBloodTickPacket::encode, ExternalBloodTickPacket::decode, ExternalBloodTickPacket::handle);
         channel.registerMessage(CULTIVATOR_TARGET_ID, CultivatorTargetPacket.class, CultivatorTargetPacket::encode, CultivatorTargetPacket::decode, CultivatorTargetPacket::handle);
@@ -116,6 +120,13 @@ public class PacketHandler
         ChunkQiSourcesPacket pack = new ChunkQiSourcesPacket(sources);
 
         channel.send(PacketDistributor.TRACKING_CHUNK.with(() -> LevelChunk), pack);
+    }
+
+    public static void sendWindInstanceToClients(WindInstance wind, Entity entity)
+    {
+        WindPacket pack = new WindPacket(wind, entity.getUUID());
+
+        channel.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> entity), pack);
     }
 
     public static void sendChunkQiSourcesToClient(LevelChunk LevelChunk, ServerPlayer player)

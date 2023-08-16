@@ -306,10 +306,10 @@ public class BodyPartNames
         windBones.addTextureChange(TextureList.bone, new ResourceLocation(Cultivationcraft.MODID, "textures/models/bone/bone.png"));
         windBones.addTextureColorChange(TextureList.bone, Misc.saturate(Elements.getElement(Elements.windElement).color, 0.75f));
         windBones.addNeededPart(BodyPartNames.startingEyesPart);
-        windBones.getStatChanges().setStat(StatIDs.boneAttackModifier, 1);
+        windBones.getStatChanges().setStat(StatIDs.boneAttackModifier, 0.75f);
         windBones.getStatChanges().setElementalStat(StatIDs.resistanceModifier, Elements.windElement, 50);
         windBones.getStatChanges().setElementalStat(StatIDs.resistanceModifier, Elements.earthElement, -50);
-        windBones.getStatChanges().setStat(StatIDs.armor, 4);
+        windBones.getStatChanges().setStat(StatIDs.weight, -0.1f);
         windBones.setQuest(DefaultQuests.defaultBoneQuest);
 
         BodyPartOption earthBones = new BodyPartOption(elementalBonePart + Elements.earthElement, bodyPosition, boneSubPosition,  "cultivationcraft.gui.bodypart.bone.earth");

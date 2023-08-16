@@ -1,5 +1,6 @@
 package DaoOfModding.Cultivationcraft.Common.Qi.Elements;
 
+import DaoOfModding.Cultivationcraft.Common.Qi.Damage.QiDamageSource;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 
@@ -12,7 +13,7 @@ public class WaterElement extends Element
         super(resourcelocation, elementColor, newDensity);
     }
 
-    public void applyStatusEffect(Entity target, float damageAmount)
+    public void applyStatusEffect(QiDamageSource source, Entity target, float damageAmount)
     {
         target.clearFire();
     }
