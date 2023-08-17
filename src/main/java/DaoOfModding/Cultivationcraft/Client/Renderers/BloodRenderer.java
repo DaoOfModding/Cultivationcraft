@@ -21,9 +21,10 @@ public class BloodRenderer
         if (source != null)
         {
             double x = player.getX() - source.x();
+            double y = player.getY() - source.y();
             double z = player.getZ() - source.z();
 
-            direction = new Vec3(x, 0 , z);
+            direction = new Vec3(x, y , z);
         }
         else
             direction = new Vec3(Math.random()* 2 - 1, 0, Math.random() * 2 - 1);
@@ -31,6 +32,6 @@ public class BloodRenderer
         double rand = Math.random() * 0.3 - 0.15;
 
         direction = direction.normalize();
-        return direction.add(rand, 0, -rand);
+        return direction.add(rand, Math.random() * 0.3 - 0.15, -rand);
     }
 }

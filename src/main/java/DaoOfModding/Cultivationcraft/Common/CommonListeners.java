@@ -62,6 +62,8 @@ public class CommonListeners
     @SubscribeEvent
     public static void playerTick(TickEvent.PlayerTickEvent event)
     {
+        //Wind.tick(event.player);
+
         if (!event.player.isAlive())
             return;
 
@@ -86,7 +88,7 @@ public class CommonListeners
     }
 
     @SubscribeEvent
-    public static void playerTick(LivingEvent.LivingTickEvent event)
+    public static void entityTick(LivingEvent.LivingTickEvent event)
     {
         Wind.tick(event.getEntity());
     }
@@ -276,6 +278,8 @@ public class CommonListeners
 
         CultivatorTechniques.getCultivatorTechniques(event.getEntity()).determinePassives(event.getEntity());
         BodyPartStatControl.updateStats(event.getEntity());
+
+        Wind.clearWindEffect(event.getEntity().getUUID());
 
         // Refill lungs on spawn
         Lungs lung = PlayerHealthManager.getLungs(event.getEntity());

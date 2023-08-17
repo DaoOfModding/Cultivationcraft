@@ -59,12 +59,12 @@ public class Blood
             ++food.tickTimer;
             if (food.tickTimer >= 10)
             {
-                float f = Math.min(food.getSaturationLevel(), staminaHealingModifier);
+                float f = Math.min(food.getSaturationLevel(), 6);
 
                 if (!player.level.isClientSide)
                     QuestHandler.progressQuest(player, Quest.HEAL, f / staminaHealingModifier);
 
-                player.heal(f / 6.0F);
+                player.heal(f / staminaHealingModifier);
                 food.addExhaustion(f);
                 food.tickTimer = 0;
             }

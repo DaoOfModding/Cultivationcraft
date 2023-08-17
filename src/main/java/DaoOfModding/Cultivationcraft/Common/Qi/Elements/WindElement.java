@@ -22,6 +22,6 @@ public class WindElement extends Element
             return;
 
         Vec3 direction = target.position().subtract(source.getSourcePosition()).normalize();
-        Wind.addWindEffect(target, new WindInstance(direction, damageAmount * 0.05f, damageAmount));
+        Wind.addWindEffect(target, new WindInstance(direction, damageAmount * 0.025f, damageAmount/5f));
     }
 }

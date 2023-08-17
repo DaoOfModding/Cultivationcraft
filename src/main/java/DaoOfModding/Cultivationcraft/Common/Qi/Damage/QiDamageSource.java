@@ -86,6 +86,7 @@ public class QiDamageSource extends DamageSource
             setInternal();
 
         damageElement = element;
+        sourcePos = source.getSourcePosition();
 
         // Bypass armor if this damage source has an element
         if (damageElement.compareTo(Elements.noElement) != 0)

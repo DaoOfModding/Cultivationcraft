@@ -4,10 +4,7 @@ import DaoOfModding.Cultivationcraft.Client.Animations.BodyPartLocation;
 import DaoOfModding.Cultivationcraft.Client.Animations.BodyPartModelNames;
 import DaoOfModding.Cultivationcraft.Client.Textures.TextureList;
 import DaoOfModding.Cultivationcraft.Common.Misc;
-import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Blood.BurningBlood;
-import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Blood.CultivatorBlood;
-import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Blood.QiBlood;
-import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Blood.WaterBlood;
+import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Blood.*;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyForgeParts.*;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.FoodStats.CarnivoreFoodStats;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.FoodStats.HerbivoreFoodStats;
@@ -111,6 +108,7 @@ public class BodyPartNames
     public static final String qiBloodPart = "qiBlood";
     public static final String burningBloodPart = "burningBlood";
     public static final String waterBloodPart = "waterBlood";
+    public static final String gaseousBloodPart = "gaseousBlood";
 
     public static final String reinforcedLungPart = "reinforcedLung";
     public static final String highPressureLungPart = "highpressureLung";
@@ -391,6 +389,18 @@ public class BodyPartNames
         hungerBlood.setBloodType(new CultivatorBlood());
         hungerBlood.setQuest(DefaultQuests.defaultHealQuest);
 
+        BloodPart gaseousBlood = new BloodPart(gaseousBloodPart, bodyPosition, bloodSubPosition, "cultivationcraft.gui.bodypart.blood.gaseous");
+        gaseousBlood.addUniqueTag(BodyPartTags.blood);
+        gaseousBlood.addNeededPart(BodyPartNames.startingEyesPart);
+        gaseousBlood.setElement(Elements.windElement);
+        gaseousBlood.getStatChanges().setStat(StatIDs.weight, -0.1f);
+        gaseousBlood.getStatChanges().setStat(StatIDs.healthRegen, 2f);
+        gaseousBlood.getStatChanges().setStat(StatIDs.maxHP, -10);
+        gaseousBlood.getStatChanges().setElementalStat(StatIDs.resistanceModifier, Elements.windElement, 25);
+        gaseousBlood.getStatChanges().setElementalStat(StatIDs.resistanceModifier, Elements.earthElement, -25);
+        gaseousBlood.setBloodType(new GaseousBlood());
+        gaseousBlood.setQuest(DefaultQuests.defaultHealQuest);
+
         BloodPart qiBlood = new BloodPart(qiBloodPart, bodyPosition, bloodSubPosition, "cultivationcraft.gui.bodypart.blood.qi");
         qiBlood.addUniqueTag(BodyPartTags.blood);
         qiBlood.addNeededPart(BodyPartNames.startingEyesPart);
@@ -419,6 +429,7 @@ public class BodyPartNames
         waterBlood.setQuest(DefaultQuests.defaultHealQuest);
 
         addOption(hungerBlood);
+        addOption(gaseousBlood);
         addOption(qiBlood);
         addOption(burningBlood);
         addOption(waterBlood);

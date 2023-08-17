@@ -232,6 +232,8 @@
 
   "cultivationcraft.gui.bodypart.blood.hunger": "Default Blood",
   "cultivationcraft.gui.bodypart.blood.hunger.description": "Basic cultivator blood, heals you by draining hunger",
+  "cultivationcraft.gui.bodypart.blood.gaseous": "Gaseous Blood",
+  "cultivationcraft.gui.bodypart.blood.gaseous.description": "Your blood becomes gaseous, healing you quickly whilst moving through the air.\nAllows you to break the wind resistance cap and be healed by wind damage",
   "cultivationcraft.gui.bodypart.blood.qi": "Qi Blood",
   "cultivationcraft.gui.bodypart.blood.qi.description": "Removes passive healing, but vastly increases your max HP and allows you to heal quickly by absorbing from Qi sources",
   "cultivationcraft.gui.bodypart.blood.burning": "Burning Blood",

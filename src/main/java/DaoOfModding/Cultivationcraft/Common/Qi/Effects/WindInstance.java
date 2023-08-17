@@ -52,10 +52,8 @@ public class WindInstance
 
         float speed = momentum;
 
-        if (weight > power)
-        {
-            // TODO: Reduce speed here
-        }
+        if (weight >= power)
+            speed *= Math.max(0f, 2 - weight / power);
 
         entity.setDeltaMovement(entity.getDeltaMovement().add(dir.scale(speed)));
 
@@ -68,8 +66,8 @@ public class WindInstance
     public boolean isDone()
     {
         if (life > 0)
-            return true;
+            return false;
 
-        return false;
+        return true;
     }
 }

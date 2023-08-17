@@ -34,6 +34,11 @@ public class Wind
         PacketHandler.sendWindInstanceToClients(wind, entity);
     }
 
+    public static void clearWindEffect(UUID entity)
+    {
+        windEffects.remove(entity);
+    }
+
     public static void addWindEffectClient(UUID entity, WindInstance wind)
     {
         if (!windEffects.containsKey(entity))

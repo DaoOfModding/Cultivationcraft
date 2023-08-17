@@ -1,6 +1,7 @@
 package DaoOfModding.Cultivationcraft.Common;
 
 import DaoOfModding.Cultivationcraft.Client.Particles.Blood.BloodParticleType;
+import DaoOfModding.Cultivationcraft.Client.Particles.Blood.GaseousBloodParticleType;
 import DaoOfModding.Cultivationcraft.Client.Particles.FireParticle.FireParticleType;
 import DaoOfModding.Cultivationcraft.Client.Particles.Spit.SpitParticleType;
 import DaoOfModding.Cultivationcraft.Client.Particles.WaterParticle.WaterParticleType;
@@ -58,6 +59,7 @@ public class Register
 
     public static final RegistryObject<SimpleParticleType> qiParticleType = PARTICLES.register("qiparticle", () -> new SimpleParticleType(true));
     public static final RegistryObject<BloodParticleType> bloodParticleType = PARTICLES.register("bloodparticle", () -> new BloodParticleType());
+    public static final RegistryObject<GaseousBloodParticleType> gaseousBloodParticleType = PARTICLES.register("gaseousbloodparticle", () -> new GaseousBloodParticleType());
     public static final RegistryObject<SpitParticleType> spitParticleType = PARTICLES.register("spitparticle", () -> new SpitParticleType());
     public static final RegistryObject<WaterParticleType> waterParticleType = PARTICLES.register("waterparticle", () -> new WaterParticleType());
     public static final RegistryObject<FireParticleType> fireParticleType = PARTICLES.register("fireparticle", () -> new FireParticleType());
