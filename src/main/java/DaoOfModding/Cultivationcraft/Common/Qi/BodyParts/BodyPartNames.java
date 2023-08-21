@@ -12,6 +12,7 @@ import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.FoodStats.Photosynthesi
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Lungs.Lung.FireLung;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Lungs.Lung.QiLung;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Lungs.Lung.WaterLung;
+import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Lungs.Lung.WindLung;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Lungs.LungConnection.LeftLungConnection;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Lungs.LungConnection.LungConnection;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Lungs.LungConnection.RightLungConnection;
@@ -114,6 +115,7 @@ public class BodyPartNames
     public static final String highPressureLungPart = "highpressureLung";
     public static final String floatingLungPart = "floatingLung";
     public static final String aquaticLungPart = "aquaticLung";
+    public static final String windLungPart = "windLung";
     public static final String fireLungPart = "fireLung";
     public static final String mixedLungPart = "mixedLung";
 
@@ -263,7 +265,7 @@ public class BodyPartNames
         BodyPartOption hollowBones = new BodyPartOption(hollowBonePart, bodyPosition, boneSubPosition,  "cultivationcraft.gui.bodypart.bone.hollow");
         hollowBones.addTextureChange(TextureList.bone, new ResourceLocation(Cultivationcraft.MODID, "textures/models/bone/bone.png"));
         hollowBones.addNeededPart(BodyPartNames.startingEyesPart);
-        hollowBones.getStatChanges().setStat(StatIDs.weight, -0.4f);
+        hollowBones.getStatChanges().setStat(StatIDs.weight, -0.3f);
         hollowBones.getStatChanges().setStat(StatIDs.armor, -2);
         hollowBones.getStatChanges().setStat(StatIDs.armorToughness, -1);
         hollowBones.getStatChanges().setStat(StatIDs.boneAttackModifier, 0.75f);
@@ -393,7 +395,7 @@ public class BodyPartNames
         gaseousBlood.addUniqueTag(BodyPartTags.blood);
         gaseousBlood.addNeededPart(BodyPartNames.startingEyesPart);
         gaseousBlood.setElement(Elements.windElement);
-        gaseousBlood.getStatChanges().setStat(StatIDs.weight, -0.1f);
+        gaseousBlood.getStatChanges().setStat(StatIDs.weight, -0.05f);
         gaseousBlood.getStatChanges().setStat(StatIDs.healthRegen, 2f);
         gaseousBlood.getStatChanges().setStat(StatIDs.maxHP, -10);
         gaseousBlood.getStatChanges().setElementalStat(StatIDs.resistanceModifier, Elements.windElement, 25);
@@ -502,9 +504,19 @@ public class BodyPartNames
         aquaticLungs.setNeededLungLocation(location);
         aquaticLungs.setElement(Elements.waterElement);
 
+        LungPart windLungs = new LungPart(windLungPart + location, bodyPosition, location.toString(), "cultivationcraft.gui.bodypart.lung.wind");
+        windLungs.addNeededTags(BodyPartTags.lung);
+        windLungs.getStatChanges().setElementalStat(StatIDs.resistanceModifier, Elements.windElement, 25);
+        windLungs.getStatChanges().setElementalStat(StatIDs.resistanceModifier, Elements.earthElement, -25);
+        windLungs.setQuest(DefaultQuests.defaultLiveQuest);
+        windLungs.setLung(location, new WindLung());
+        windLungs.setNeededLungLocation(location);
+        windLungs.setElement(Elements.windElement);
+
         addOption(defaultLungs);
         addOption(fireLungs);
         addOption(aquaticLungs);
+        addOption(windLungs);
     }
 
     protected static void setupStomachOptions()

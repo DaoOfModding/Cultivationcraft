@@ -255,6 +255,8 @@
   "cultivationcraft.gui.bodypart.lung.aquatic.description": "Allows you to breath in water - and only in water",
   "cultivationcraft.gui.bodypart.lung.fire": "Flaming Lungs",
   "cultivationcraft.gui.bodypart.lung.fire.description": "Store flame in your lungs for use by other body parts - however you can breath nothing but flames",
+  "cultivationcraft.gui.bodypart.lung.wind": "Windy Lungs",
+  "cultivationcraft.gui.bodypart.lung.wind.description": "Breath almost like normal, your breath just tends to push others around",
   "cultivationcraft.gui.bodypart.lung.mixed": "Mixed Lungs",
   "cultivationcraft.gui.bodypart.lung.mixed.description": "Modify your lungs to allow each lung to breath differently",
 

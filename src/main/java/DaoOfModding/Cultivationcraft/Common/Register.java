@@ -5,6 +5,7 @@ import DaoOfModding.Cultivationcraft.Client.Particles.Blood.GaseousBloodParticle
 import DaoOfModding.Cultivationcraft.Client.Particles.FireParticle.FireParticleType;
 import DaoOfModding.Cultivationcraft.Client.Particles.Spit.SpitParticleType;
 import DaoOfModding.Cultivationcraft.Client.Particles.WaterParticle.WaterParticleType;
+import DaoOfModding.Cultivationcraft.Client.Particles.WindParticle.WindParticleType;
 import DaoOfModding.Cultivationcraft.Common.Containers.FlyingSwordContainer;
 import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
@@ -62,6 +63,7 @@ public class Register
     public static final RegistryObject<GaseousBloodParticleType> gaseousBloodParticleType = PARTICLES.register("gaseousbloodparticle", () -> new GaseousBloodParticleType());
     public static final RegistryObject<SpitParticleType> spitParticleType = PARTICLES.register("spitparticle", () -> new SpitParticleType());
     public static final RegistryObject<WaterParticleType> waterParticleType = PARTICLES.register("waterparticle", () -> new WaterParticleType());
+    public static final RegistryObject<WindParticleType> windParticleType = PARTICLES.register("windparticle", () -> new WindParticleType());
     public static final RegistryObject<FireParticleType> fireParticleType = PARTICLES.register("fireparticle", () -> new FireParticleType());
 
     // Override vanilla lava to make it swimmable and drownable

@@ -17,6 +17,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -59,6 +60,15 @@ public class BeamTechnique extends ChanneledAttackTechnique
         return false;
     }
 
+
+    @Override
+    // Attack specified entity with specified player, server only
+    public void attackEntity(Player player, Entity toAttack)
+    {
+        if (breath.tryAttack(player, toAttack))
+            super.attackEntity(player, toAttack);
+    }
+
     // Ticks on client side, only called if Technique is active
     public void tickClient(TickEvent.PlayerTickEvent event)
     {
@@ -79,6 +89,8 @@ public class BeamTechnique extends ChanneledAttackTechnique
     {
         if (!PlayerHealthManager.getLungs(event.player).drainBreath(breath, consumptionAmount))
             return;
+
+        breath.tick(event.player);
 
         super.tickServer(event);
     }

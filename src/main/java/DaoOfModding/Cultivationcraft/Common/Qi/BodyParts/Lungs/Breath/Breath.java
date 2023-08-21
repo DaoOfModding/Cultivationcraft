@@ -24,6 +24,7 @@ public class Breath
     public static final Breath AIR = new Breath(new Color(255, 255, 255, 255), Elements.noElement);
     public static final Breath WATER = new WaterBreath(new Color(127, 200, 255, 255), Elements.waterElement, Fluids.WATER, 8f, 5f);
     public static final Breath FIRE = new FireBreath(new Color(255, 0, 0, 255), Elements.fireElement, Fluids.LAVA, 0f, 20f);
+    public static final Breath WIND = new WindBreath(new Color(200, 255, 225, 255), Elements.windElement, Fluids.LAVA, 99f, 0f);
 
     Color color;
     FlowingFluid fluid;
@@ -49,6 +50,11 @@ public class Breath
         digPower = diggingPower;
         damage = damagePower;
         element = newElement;
+    }
+
+    public void tick(Player player)
+    {
+
     }
 
     public ResourceLocation getElement()
@@ -92,6 +98,12 @@ public class Breath
     // Called after this breath destroys a block at the specified location
     public void onBlockDestroy(Level level, BlockPos pos)
     {
+    }
+
+    // Called to see if this breath can damage the specified entity (on server)
+    public boolean tryAttack(Player player, Entity toAttack)
+    {
+        return true;
     }
 
     public float getDigPower(BlockGetter p_60801_, BlockPos p_60802_)

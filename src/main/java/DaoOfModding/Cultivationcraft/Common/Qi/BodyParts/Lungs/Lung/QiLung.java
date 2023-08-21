@@ -13,7 +13,7 @@ public class QiLung extends Lung
     // Tries to breath, returns how much breath has been used
     public float breath(float amount, Breath breath, Player player)
     {
-        if (canBreath != breath)
+        if (!canBreath(breath))
         {
             if (current < amount)
             {

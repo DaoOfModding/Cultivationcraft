@@ -8,7 +8,7 @@ import net.minecraft.world.phys.Vec3;
 
 public class WindInstance
 {
-    protected static final int MaxLife = 40;
+    protected static final int MaxLife = 20;
 
     protected Vec3 dir;
     protected float momentum;
@@ -58,7 +58,7 @@ public class WindInstance
         entity.setDeltaMovement(entity.getDeltaMovement().add(dir.scale(speed)));
 
         // Reduce momentum of the wind
-        momentum *= 0.98;
+        momentum *= 0.95;
 
         life--;
     }

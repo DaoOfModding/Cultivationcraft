@@ -103,6 +103,9 @@ public class AttackTechnique extends Technique
     // Attack specified entity with specified player, server only
     public void attackEntity(Player player, Entity toAttack)
     {
+        if (getAttack(player) == 0)
+            return;
+
         if (!CultivatorAttackLogic.attackEntity(player, toAttack, getRange(player), getAttack(player), attackSound, getElement(), langLocation))
             return;
 
