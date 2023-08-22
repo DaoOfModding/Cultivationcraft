@@ -444,9 +444,9 @@ public class BodyPart
 
     // Send an int info packet to other clients
     // Client only, only if owner of bodyPart
-    public void sendInfo(int info, String partID, String limbID)
+    public void sendInfo(int info)
     {
-        ClientPacketHandler.sendPartInfoToServer(genericClientFunctions.getPlayer().getUUID(), info, partID, limbID);
+        ClientPacketHandler.sendPartInfoToServer(genericClientFunctions.getPlayer().getUUID(), info, "", limbPosition);
     }
 
     // Process a received int info packet

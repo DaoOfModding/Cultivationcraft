@@ -9,4 +9,5 @@ public class BodyPartTags
     public static final String blood = "blood";
     public static final String lung = "lung";
     public static final String flame = "flame";
+    public static final String wind = "wind";
 }

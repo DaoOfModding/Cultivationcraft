@@ -351,8 +351,11 @@
   "cultivationcraft.gui.legpart.jet": "Jet Legs",
   "cultivationcraft.gui.legpart.jet.description": "Grow jet boosters from your legs, allowing you to fly through the sky by spouting fire from your feet",
 
+  "cultivationcraft.gui.legpart.airjump": "Air Boosting Legs",
+  "cultivationcraft.gui.legpart.airjump.description": "Grow boosters from your legs, spurting out puffs of wind to allow you to jump again whilst in the air",
+
   "cultivationcraft.gui.legpart.long": "Long Legs",
-  "cultivationcraft.gui.legpart.long.description": "Stretch out your legs, slightly increasing your movement speed, jump height, step heigh and weight",
+  "cultivationcraft.gui.legpart.long.description": "Stretch out your legs, slightly increasing your movement speed, jump height, step height and weight",
 
   "cultivationcraft.gui.help": "Help",
 

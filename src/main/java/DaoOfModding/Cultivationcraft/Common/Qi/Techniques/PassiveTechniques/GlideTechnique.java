@@ -36,7 +36,6 @@ public class GlideTechnique extends PassiveTechnique
     @Override
     public boolean isValid(Player player)
     {
-        // Technique is valid if the player is a body cultivator with appropriate teeth
         if (CultivatorStats.getCultivatorStats(player).getCultivationType() == CultivationTypes.BODY_CULTIVATOR &&
                 (BodyModifications.getBodyModifications(player).hasModification(BodyPartNames.armPosition, BodyPartNames.glideArmPart)))
             return true;

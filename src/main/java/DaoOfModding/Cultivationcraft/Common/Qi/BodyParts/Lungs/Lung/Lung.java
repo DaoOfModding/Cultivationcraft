@@ -28,7 +28,7 @@ public class Lung
     // Returns the amount that couldn't be drained
     public float drain(Breath type, float amount)
     {
-        if (type != canBreath)
+        if (!canBreath(type))
             return amount;
 
         if (current < amount)

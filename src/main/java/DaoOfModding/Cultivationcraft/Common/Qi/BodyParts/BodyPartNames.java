@@ -67,6 +67,7 @@ public class BodyPartNames
     public static final String hexaLegPart = "hexaleg";
     public static final String singleLegPart = "oneleg";
     public static final String jetLegPart = "jetleg";
+    public static final String airJumpLegPart = "airjumpleg";
     public static final String longLegPart = "longleg";
 
     // OPTIONS
@@ -505,6 +506,7 @@ public class BodyPartNames
         aquaticLungs.setElement(Elements.waterElement);
 
         LungPart windLungs = new LungPart(windLungPart + location, bodyPosition, location.toString(), "cultivationcraft.gui.bodypart.lung.wind");
+        windLungs.addUniqueTag(BodyPartTags.wind);
         windLungs.addNeededTags(BodyPartTags.lung);
         windLungs.getStatChanges().setElementalStat(StatIDs.resistanceModifier, Elements.windElement, 25);
         windLungs.getStatChanges().setElementalStat(StatIDs.resistanceModifier, Elements.earthElement, -25);
@@ -973,6 +975,18 @@ public class BodyPartNames
         jetLeg.setQuest(DefaultQuests.defaultFlightQuest);
 
         addPart(jetLeg);
+
+        BodyPart airJumpLeg = new AirJumpLegPart(airJumpLegPart, legPosition, "cultivationcraft.gui.legpart.airjump");
+        airJumpLeg.addModel(BodyPartModelNames.jetLegLeftModel);
+        airJumpLeg.addModel(BodyPartModelNames.jetLegRightModel);
+        airJumpLeg.addNeededPart(BodyPartNames.startingEyesPart);
+        jetLeg.addNeededTags(BodyPartTags.wind);
+        airJumpLeg.getStatChanges().setStat(StatIDs.jumpHeight, 4);
+        airJumpLeg.getStatChanges().setStat(StatIDs.fallHeight, 8);
+        airJumpLeg.addUniqueTag(BodyPartTags.flight);
+        airJumpLeg.setQuest(new Quest(Quest.JUMP, 1000));
+
+        addPart(airJumpLeg);
 
         BodyPart longLeg = new BodyPart(longLegPart, legPosition, "cultivationcraft.gui.legpart.long");
         longLeg.addModel(BodyPartModelNames.longLegLeftModel);
