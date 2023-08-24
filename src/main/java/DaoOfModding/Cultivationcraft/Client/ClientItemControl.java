@@ -39,6 +39,9 @@ public class ClientItemControl
         BodyPartGUIs.addGUI(BodyPartNames.expandingBodyPart, new BodyPartGUI(new ResourceLocation(Cultivationcraft.MODID, "textures/gui/bodyparts/" + BodyPartNames.DefaultBody + ".png"), 0, 0, 18, 28, true));
         BodyPartGUIs.addGUI(BodyPartNames.shortBodyPart, new BodyPartGUI(new ResourceLocation(Cultivationcraft.MODID, "textures/gui/bodyparts/" + BodyPartNames.shortBodyPart + ".png"), 0, 0, 18, 14, true));
 
+        BodyPartGUIs.addGUI(BodyPartNames.reinforcedLegPart, new BodyPartGUI(new ResourceLocation(Cultivationcraft.MODID, "textures/gui/bodyparts/" + BodyPartNames.DefaultLeftLeg + ".png"), 1, 2, 8, 30, true));
+        BodyPartGUIs.addGUI(BodyPartNames.reinforcedLegPart, new BodyPartGUI(new ResourceLocation(Cultivationcraft.MODID, "textures/gui/bodyparts/" + BodyPartNames.DefaultRightLeg + ".png"), -1, 2, 8, 30, true));
+
         BodyPartGUIs.addGUI(BodyPartNames.reinforcedArmPart, new BodyPartGUI(new ResourceLocation(Cultivationcraft.MODID, "textures/gui/bodyparts/" + BodyPartNames.DefaultLeftArm + ".png"), 2, -1, 11, 29, true));
         BodyPartGUIs.addGUI(BodyPartNames.reinforcedArmPart, new BodyPartGUI(new ResourceLocation(Cultivationcraft.MODID, "textures/gui/bodyparts/" + BodyPartNames.DefaultRightArm + ".png"), -2, -1, 11, 29, true));
 
@@ -50,6 +53,9 @@ public class ClientItemControl
 
         BodyPartGUIs.addGUI(BodyPartNames.longArmPart, new BodyPartGUI(new ResourceLocation(Cultivationcraft.MODID, "textures/gui/bodyparts/" + BodyPartNames.longArmPart + "left.png"), 2, -1, 11, 39, true));
         BodyPartGUIs.addGUI(BodyPartNames.longArmPart, new BodyPartGUI(new ResourceLocation(Cultivationcraft.MODID, "textures/gui/bodyparts/" + BodyPartNames.longArmPart + "right.png"), -2, -1, 11, 39, true));
+
+        BodyPartGUIs.addGUI(BodyPartNames.bulkyArmPart, new BodyPartGUI(new ResourceLocation(Cultivationcraft.MODID, "textures/gui/bodyparts/" + BodyPartNames.bulkyArmPart + "left.png"), 2, -1, 16, 24, true));
+        BodyPartGUIs.addGUI(BodyPartNames.bulkyArmPart, new BodyPartGUI(new ResourceLocation(Cultivationcraft.MODID, "textures/gui/bodyparts/" + BodyPartNames.bulkyArmPart + "right.png"), -2, -1, 16, 24, true));
 
         BodyPartGUIs.addGUI(BodyPartNames.glideArmPart, new BodyPartGUI(new ResourceLocation(Cultivationcraft.MODID, "textures/gui/bodyparts/" + BodyPartNames.glideArmPart + "left.png"), 2, -1, 11, 29, true));
         BodyPartGUIs.addGUI(BodyPartNames.glideArmPart, new BodyPartGUI(new ResourceLocation(Cultivationcraft.MODID, "textures/gui/bodyparts/" + BodyPartNames.glideArmPart + "right.png"), -2, -1, 11, 29, true));
@@ -68,6 +74,8 @@ public class ClientItemControl
         BodyPartGUIs.addGUI(BodyPartNames.hexaLegPart, new BodyPartGUI(new ResourceLocation(Cultivationcraft.MODID, "textures/gui/bodyparts/" + BodyPartNames.hexaLegPart + "right.png"), 1.65f, 2, 19, 19, true));
         BodyPartGUIs.addGUI(BodyPartNames.jetLegPart, new BodyPartGUI(new ResourceLocation(Cultivationcraft.MODID, "textures/gui/bodyparts/" + BodyPartNames.DefaultLeftLeg + ".png"), 1, 2, 8, 30, true));
         BodyPartGUIs.addGUI(BodyPartNames.jetLegPart, new BodyPartGUI(new ResourceLocation(Cultivationcraft.MODID, "textures/gui/bodyparts/" + BodyPartNames.DefaultRightLeg + ".png"), -1, 2, 8, 30, true));
+        BodyPartGUIs.addGUI(BodyPartNames.airJumpLegPart, new BodyPartGUI(new ResourceLocation(Cultivationcraft.MODID, "textures/gui/bodyparts/" + BodyPartNames.DefaultLeftLeg + ".png"), 1, 2, 8, 30, true));
+        BodyPartGUIs.addGUI(BodyPartNames.airJumpLegPart, new BodyPartGUI(new ResourceLocation(Cultivationcraft.MODID, "textures/gui/bodyparts/" + BodyPartNames.DefaultRightLeg + ".png"), -1, 2, 8, 30, true));
         BodyPartGUIs.addGUI(BodyPartNames.longLegPart, new BodyPartGUI(new ResourceLocation(Cultivationcraft.MODID, "textures/gui/bodyparts/" + BodyPartNames.longLegPart + "left.png"), 1, 2, 8, 45, true));
         BodyPartGUIs.addGUI(BodyPartNames.longLegPart, new BodyPartGUI(new ResourceLocation(Cultivationcraft.MODID, "textures/gui/bodyparts/" + BodyPartNames.longLegPart + "right.png"), -1, 2, 8, 45, true));
 

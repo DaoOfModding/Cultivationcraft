@@ -174,6 +174,30 @@ public class BodyPartModels
         addReference(BodyPartModelNames.longArmRightModel, BodyPartModelNames.longArmLowerRightModel, rightLongArm.getChildren().get(0));
 
 
+        ExtendableModelRenderer leftBulkyArm = leftArm.clone();
+        ExtendableModelRenderer rightBulkyArm = rightArm.clone();
+        leftBulkyArm.setDefaultResize(new Vec3(1.5, 0.75, 1.5));
+        rightBulkyArm.setDefaultResize(new Vec3(1.5, 0.75, 1.5));
+        leftBulkyArm.getChildren().get(0).setDefaultResize(new Vec3(1.5, 0.75, 1.5));
+        rightBulkyArm.getChildren().get(0).setDefaultResize(new Vec3(1.5, 0.75, 1.5));
+        leftBulkyArm.setFixedPosAdjustment(2F, 2F, 0.0F);
+        rightBulkyArm.setFixedPosAdjustment(-2F, 2F, 0.0F);
+        leftBulkyArm.generateCube();
+        rightBulkyArm.generateCube();
+
+        leftBulkyArm.setHands(true);
+        leftBulkyArm.getChildren().get(0).setHands(true);
+        rightBulkyArm.setHands(true);
+        rightBulkyArm.getChildren().get(0).setHands(true);
+
+        leftBulkyArm.setHitbox(false);
+        rightBulkyArm.setHitbox(false);
+
+        addModel(BodyPartModelNames.bulkyArmLeftModel, leftBulkyArm);
+        addReference(BodyPartModelNames.bulkyArmLeftModel, BodyPartModelNames.bulkyArmLowerLeftModel, leftBulkyArm.getChildren().get(0));
+        addModel(BodyPartModelNames.bulkyArmRightModel, rightBulkyArm);
+        addReference(BodyPartModelNames.bulkyArmRightModel, BodyPartModelNames.bulkyArmLowerRightModel, rightBulkyArm.getChildren().get(0));
+
         ExtendableModelRenderer shortRightArm = new ExtendableModelRenderer(BodyPartModelNames.shortArmRightModel);
         GenericCultivatorTextureValues.addGenericRightArmLayers(shortRightArm);
         shortRightArm.setRotationPoint(new Vec3(0.5D, 0.66D, 0.5D));
@@ -1382,6 +1406,25 @@ public class BodyPartModels
         addModel(BodyPartModelNames.longLegRightModel, rightLongLeg);
         addReference(BodyPartModelNames.longLegLeftModel, BodyPartModelNames.longLegLeftLowerModel, leftLongLeg.getChildren().get(0));
         addReference(BodyPartModelNames.longLegRightModel, BodyPartModelNames.longLegRightLowerModel, rightLongLeg.getChildren().get(0));
+
+        ExtendableModelRenderer defaultLeftLeg = new ExtendableModelRenderer(GenericLimbNames.leftLeg);
+        GenericCultivatorTextureValues.addGenericLeftLegLayers(defaultLeftLeg);
+        defaultLeftLeg.setPos(0.25F, 1.0F, 0.5F);
+        defaultLeftLeg.setRotationPoint(new Vec3(0.5, 0.66, 0.5));
+        defaultLeftLeg.setFixedPosAdjustment(0F, 2F, 0.0F);
+        defaultLeftLeg.extend(GenericResizers.getLegResizer());
+
+        ExtendableModelRenderer defaultRightLeg = new ExtendableModelRenderer(GenericLimbNames.rightLeg);
+        GenericCultivatorTextureValues.addGenericRightLegLayers(defaultRightLeg);
+        defaultRightLeg.setPos(0.75F, 1.0F, 0.5F);
+        defaultRightLeg.setRotationPoint(new Vec3(0.5, 0.66, 0.5));
+        defaultRightLeg.setFixedPosAdjustment(0F, 2F, 0.0F);
+        defaultRightLeg.extend(GenericResizers.getLegResizer());
+
+        addModel(GenericLimbNames.leftLeg, defaultLeftLeg);
+        addModel(GenericLimbNames.rightLeg, defaultRightLeg);
+        addReference(GenericLimbNames.leftLeg, GenericLimbNames.lowerLeftLeg, defaultLeftLeg.getChildren().get(0));
+        addReference(GenericLimbNames.rightLeg, GenericLimbNames.lowerRightLeg, defaultRightLeg.getChildren().get(0));
     }
 
     public void addQuadCollection(String ID, QuadCollection quad)

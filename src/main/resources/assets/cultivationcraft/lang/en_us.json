@@ -327,6 +327,9 @@
   "cultivationcraft.gui.armpart.long": "Long Arms",
   "cultivationcraft.gui.armpart.long.description": "Stretch out your arms, increasing your reach",
 
+  "cultivationcraft.gui.armpart.bulky": "Bulky Arms",
+  "cultivationcraft.gui.armpart.bulky.description": "Vastly increase the muscle mass in your arms, making you heavier but increases the damage of your swings.\nUnfortinately also makes your arms slightly shorter, decreasing their range",
+
   "cultivationcraft.gui.armpart.flipper": "Flipper Arms",
   "cultivationcraft.gui.armpart.flipper.description": "Flatten your arms into flippers\nGreat at swimming, not so great at anything else",
 

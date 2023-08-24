@@ -56,6 +56,7 @@ public class BodyPartNames
     // ARMS
     public static final String shortArmPart = "shortarm";
     public static final String longArmPart = "longarm";
+    public static final String bulkyArmPart = "bulkyarm";
     public static final String flipperArmPart = "flipperarm";
 
     public static final String headArmsPart = "headarms";
@@ -785,6 +786,20 @@ public class BodyPartNames
         addPart(longArm);
 
 
+        BodyPart bulkyArm = new BodyPart(bulkyArmPart, armPosition, "cultivationcraft.gui.armpart.bulky");
+        bulkyArm.addModel(BodyPartModelNames.bulkyArmLeftModel);
+        bulkyArm.addModel(BodyPartModelNames.bulkyArmRightModel);
+        bulkyArm.addArm(new Arm(InteractionHand.OFF_HAND, BodyPartModelNames.bulkyArmLeftModel, BodyPartModelNames.bulkyArmLowerLeftModel, true));
+        bulkyArm.addArm(new Arm(InteractionHand.MAIN_HAND, BodyPartModelNames.bulkyArmRightModel, BodyPartModelNames.bulkyArmLowerRightModel, false));
+        bulkyArm.addNeededPosition(BodyPartNames.bodyPosition, BodyPartNames.basePosition);
+        bulkyArm.getStatChanges().setStat(StatIDs.weight, DefaultPlayerBodyPartWeights.armWeight * 1.5f);
+        bulkyArm.getStatChanges().setStat(StatIDs.attackRange, StatIDs.defaultAttackRange * -0.25f);
+        bulkyArm.getStatChanges().setStat(StatIDs.armAttackModifier, 0.5f);
+        bulkyArm.setQuest(DefaultQuests.defaultBodyQuest);
+
+        addPart(bulkyArm);
+
+
         BodyPart fArm = new BodyPart(flipperArmPart, armPosition, "cultivationcraft.gui.armpart.flipper");
         fArm.addModel(BodyPartModelNames.flipperLeftModel);
         fArm.addModel(BodyPartModelNames.flipperRightModel);
@@ -904,6 +919,18 @@ public class BodyPartNames
 
     protected static void setupLegParts()
     {
+        BodyPart reinforce = new BodyPart(reinforcedLegPart, legPosition, "cultivationcraft.gui.generic.reinforce");
+        reinforce.addModel(GenericLimbNames.leftLeg);
+        reinforce.addModel(GenericLimbNames.rightLeg);
+        reinforce.addNeededPart(BodyPartNames.startingEyesPart);
+        reinforce.getStatChanges().setStat(StatIDs.jumpHeight, 1f);
+        reinforce.getStatChanges().setStat(StatIDs.fallHeight, 1f);
+        reinforce.getStatChanges().setStat(StatIDs.legSupport, 0.25f);
+        reinforce.getStatChanges().setStat(StatIDs.movementSpeed, 0.025f);
+        reinforce.setQuest(DefaultQuests.defaultLegQuest);
+
+        addPart(reinforce);
+
         BodyPart feetpart = new BodyPart(feetPart, legPosition, "cultivationcraft.gui.legpart.feet");
         feetpart.addModel(BodyPartModelNames.footLeftModel);
         feetpart.addModel(BodyPartModelNames.footRightModel);
