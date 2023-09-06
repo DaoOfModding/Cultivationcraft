@@ -18,7 +18,7 @@ import java.util.UUID;
 
 public class CultivatorStats implements ICultivatorStats
 {
-    protected int cultivationType = CultivationTypes.BODY_CULTIVATOR;
+    protected int cultivationType = CultivationTypes.NO_CULTIVATION;
 
     protected double flyingItemSpeed = 0.06;
     protected double flyingItemMAXSpeed = 2;

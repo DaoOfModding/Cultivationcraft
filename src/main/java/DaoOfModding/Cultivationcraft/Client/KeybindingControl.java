@@ -4,12 +4,14 @@ import DaoOfModding.Cultivationcraft.Client.GUI.ScreenTabControl;
 import DaoOfModding.Cultivationcraft.Client.GUI.SkillHotbarOverlay;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.BodyModifications;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.IBodyModifications;
+import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStats;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.CultivatorTechniques;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.ICultivatorTechniques;
 import DaoOfModding.Cultivationcraft.Common.Misc;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyForgeParts.MovementOverridePart;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyForgeParts.MovementOverridePartOption;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPart;
+import DaoOfModding.Cultivationcraft.Common.Qi.CultivationTypes;
 import DaoOfModding.Cultivationcraft.Common.Qi.CultivatorControl;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.AttackOverrideTechnique;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.MovementOverrideTechnique;
@@ -354,6 +356,20 @@ public class KeybindingControl
             if (chatOpen())
                 return;
 
+            if (keyBindings[3].isDown())
+            {
+                ScreenTabControl.openTab();
+                //Minecraft.getInstance().forceSetScreen(new StatScreen());
+                //ClientPacketHandler.sendKeypressToServer(Register.keyPresses.FLYINGSWORDSCREEN);
+            }
+
+            // Do not do hotbar interactions if the player has no cultivation
+            if (CultivatorStats.getCultivatorStats(genericClientFunctions.getPlayer()).getCultivationType() == CultivationTypes.NO_CULTIVATION)
+            {
+                SkillHotbarOverlay.setActive(false);
+                return;
+            }
+
             handleHotbarKeybinds();
             handleHotbarInteracts();
             //handleMovementOverrides();
@@ -395,14 +411,6 @@ public class KeybindingControl
             if (keyBindings[2].isDown())
             {
                 ClientPacketHandler.sendRecallFlyingToServer(true, genericClientFunctions.getPlayer().getUUID());
-            }
-
-
-            if (keyBindings[3].isDown())
-            {
-                ScreenTabControl.openTab();
-                //Minecraft.getInstance().forceSetScreen(new StatScreen());
-                //ClientPacketHandler.sendKeypressToServer(Register.keyPresses.FLYINGSWORDSCREEN);
             }
         }
     }

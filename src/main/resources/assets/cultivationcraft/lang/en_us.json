@@ -148,6 +148,8 @@
   "cultivationcraft.gui.tab2": "Cultivate",
   "cultivationcraft.gui.tab3": "Help",
 
+  "cultivationcraft.gui.cultivationselection": "Cultivation Type Selection",
+
   "cultivationcraft.gui.bind": "Bind Item",
   "cultivationcraft.gui.done": "Done",
   "cultivationcraft.gui.cancel": "Cancel",

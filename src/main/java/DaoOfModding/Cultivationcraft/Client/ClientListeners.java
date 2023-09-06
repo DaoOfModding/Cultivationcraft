@@ -5,12 +5,14 @@ import DaoOfModding.Cultivationcraft.Client.GUI.SkillHotbarOverlay;
 import DaoOfModding.Cultivationcraft.Client.Renderers.QiSourceRenderer;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.BodyModifications;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.IBodyModifications;
+import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStats;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.CultivatorTechniques;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.ICultivatorTechniques;
 import DaoOfModding.Cultivationcraft.Common.CommonListeners;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPart;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartOption;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.PlayerHealthManager;
+import DaoOfModding.Cultivationcraft.Common.Qi.CultivationTypes;
 import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.PlayerStatControl;
@@ -182,8 +184,12 @@ public class ClientListeners
 
         if (event.getOverlay().id() == VanillaGuiOverlay.HOTBAR.id())
         {
-            SkillHotbarOverlay.PreRenderSkillHotbar(event.getPoseStack());
-            Renderer.renderTechniqueOverlays();
+            // Do not render the skill hotbar if the player has no cultivation
+            if (CultivatorStats.getCultivatorStats(genericClientFunctions.getPlayer()).getCultivationType() != CultivationTypes.NO_CULTIVATION)
+            {
+                SkillHotbarOverlay.PreRenderSkillHotbar(event.getPoseStack());
+                Renderer.renderTechniqueOverlays();
+            }
         }
         else if (event.getOverlay().id() == VanillaGuiOverlay.FOOD_LEVEL.id())
         {

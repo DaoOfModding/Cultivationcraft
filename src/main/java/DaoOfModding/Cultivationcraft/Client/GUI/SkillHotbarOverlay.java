@@ -116,6 +116,11 @@ public class SkillHotbarOverlay
         isActive = !isActive;
     }
 
+    public static void setActive(boolean on)
+    {
+        isActive = on;
+    }
+
     public static boolean isActive()
     {
         return isActive;

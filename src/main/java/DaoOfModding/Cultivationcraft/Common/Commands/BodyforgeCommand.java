@@ -1,6 +1,8 @@
 package DaoOfModding.Cultivationcraft.Common.Commands;
 
 import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.BodyModifications;
+import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStats;
+import DaoOfModding.Cultivationcraft.Common.Qi.CultivationTypes;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.StatIDs;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
@@ -71,6 +73,9 @@ public class BodyforgeCommand
         {
             BodyModifications.getBodyModifications(serverplayer).clearModifications();
             PacketHandler.sendBodyModificationsToClient(serverplayer);
+
+            CultivatorStats.getCultivatorStats(serverplayer).setCultivationType(CultivationTypes.NO_CULTIVATION);
+            PacketHandler.sendCultivatorStatsToClient(serverplayer);
         }
 
         if (players.size() == 1)
