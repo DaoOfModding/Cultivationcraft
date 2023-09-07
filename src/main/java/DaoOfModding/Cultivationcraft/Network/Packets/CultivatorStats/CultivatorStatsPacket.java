@@ -1,6 +1,5 @@
 package DaoOfModding.Cultivationcraft.Network.Packets.CultivatorStats;
 
-import DaoOfModding.Cultivationcraft.Client.ClientItemControl;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStats;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.ICultivatorStats;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
@@ -16,23 +15,12 @@ import java.util.function.Supplier;
 public class CultivatorStatsPacket extends Packet
 {
     protected UUID owner;
-
-    protected double flyingItemSpeed;
-    protected double flyingItemMAXSpeed;
-    protected double flyingItemturnSpeed;
-    protected double flyingItemControlRange;
+    protected ICultivatorStats cultStats;
 
     public CultivatorStatsPacket(UUID ownerID, ICultivatorStats stats)
     {
         owner = ownerID;
-
-        if (stats != null)
-        {
-            flyingItemSpeed = stats.getFlyingItemSpeed();
-            flyingItemMAXSpeed = stats.getFlyingItemMaxSpeed();
-            flyingItemturnSpeed = stats.getFlyingItemTurnSpeed();
-            flyingItemControlRange = stats.getFlyingControlRange();
-        }
+        cultStats = stats;
     }
 
     @Override
@@ -41,10 +29,7 @@ public class CultivatorStatsPacket extends Packet
         if (owner != null)
         {
             buffer.writeUUID(owner);
-            buffer.writeDouble(flyingItemSpeed);
-            buffer.writeDouble(flyingItemMAXSpeed);
-            buffer.writeDouble(flyingItemturnSpeed);
-            buffer.writeDouble(flyingItemControlRange);
+            buffer.writeNbt(cultStats.writeNBT());
         }
     }
 
@@ -57,11 +42,8 @@ public class CultivatorStatsPacket extends Packet
             // Read in the send values
             UUID readingOwner = buffer.readUUID();
 
-            ICultivatorStats stats = new CultivatorStats();
-            stats.setFlyingItemSpeed(buffer.readDouble());
-            stats.setFlyingItemMaxSpeed(buffer.readDouble());
-            stats.setFlyingItemTurnSpeed(buffer.readDouble());
-            stats.setFlyingControlRange(buffer.readDouble());
+            CultivatorStats stats = new CultivatorStats();
+            stats.readNBT(buffer.readNbt());
 
             return new CultivatorStatsPacket(readingOwner, stats);
 
@@ -95,12 +77,7 @@ public class CultivatorStatsPacket extends Packet
     // Process received packet on client
     protected void processPacket()
     {
-        // Get the stats for the specified player
-        ICultivatorStats stats = CultivatorStats.getCultivatorStats(Minecraft.getInstance().level.getPlayerByUUID(owner));
-
-        stats.setFlyingItemSpeed(flyingItemSpeed);
-        stats.setFlyingItemMaxSpeed(flyingItemMAXSpeed);
-        stats.setFlyingItemTurnSpeed(flyingItemturnSpeed);
-        stats.setFlyingControlRange(flyingItemControlRange);
+        // Update the stats for the specified player
+        CultivatorStats.getCultivatorStats(Minecraft.getInstance().level.getPlayerByUUID(owner)).readNBT(cultStats.writeNBT());
     }
 }

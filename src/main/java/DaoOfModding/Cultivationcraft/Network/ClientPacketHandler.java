@@ -6,6 +6,7 @@ import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.IC
 import DaoOfModding.Cultivationcraft.Common.Register;
 import DaoOfModding.Cultivationcraft.Network.Packets.*;
 import DaoOfModding.Cultivationcraft.Network.Packets.CultivatorStats.CultivatorTargetPacket;
+import DaoOfModding.Cultivationcraft.Network.Packets.CultivatorStats.CultivatorTypePacket;
 import DaoOfModding.Cultivationcraft.Network.Packets.CultivatorStats.RecallFlyingSwordPacket;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -86,6 +87,12 @@ public class ClientPacketHandler
     public static void sendQuestCancelToServer()
     {
         QuestCancelPacket packet = new QuestCancelPacket();
+        PacketHandler.channel.sendToServer(packet);
+    }
+
+    public static void sendCultivationTypeToServer(UUID player, int type)
+    {
+        CultivatorTypePacket packet = new CultivatorTypePacket(player, type);
         PacketHandler.channel.sendToServer(packet);
     }
 

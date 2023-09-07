@@ -150,6 +150,9 @@
 
   "cultivationcraft.gui.cultivationselection": "Cultivation Type Selection",
 
+  "cultivationcraft.gui.cultivationtype.0": "Become a Qi Condenser\n \nHold Qi inside your body and use it to affect your environment.",
+  "cultivationcraft.gui.cultivationtype.1": "Become a Body Forger\n \nUse Qi to transform various different parts of your body into different, more specialized forms.",
+
   "cultivationcraft.gui.bind": "Bind Item",
   "cultivationcraft.gui.done": "Done",
   "cultivationcraft.gui.cancel": "Cancel",
@@ -163,6 +166,10 @@
 
   "cultivationcraft.gui.bodyforge": "Forge Body",
   "cultivationcraft.gui.forge": "Forge",
+
+  "cultivationcraft.gui.cultivate": "Cultivate",
+  "cultivationcraft.gui.internal": "Internal",
+  "cultivationcraft.gui.external": "External",
 
   "cultivationcraft.gui.headpart": "Head",
   "cultivationcraft.gui.bodypart": "Body",

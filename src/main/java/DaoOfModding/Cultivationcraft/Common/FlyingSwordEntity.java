@@ -256,7 +256,7 @@ public class FlyingSwordEntity extends ItemEntity
     protected void handleEntityCollisions()
     {
         // Get a list of entities within this entities bounding box
-        List<Entity> collisionEntities = this.level.getEntities(this, getBoundingBox(), null);
+        List<Entity> collisionEntities = this.level.getEntities(this, getBoundingBox());
 
         // If there are entities within this entities bounding box
         if (!collisionEntities.isEmpty())

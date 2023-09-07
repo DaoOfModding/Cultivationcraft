@@ -46,6 +46,7 @@ public class PacketHandler
     protected static final byte BLOOD_SPAWN_ID = 55;
     protected static final byte EXTERNAL_BLOOD_TICK_ID = 56;
     protected static final byte CULTIVATOR_TARGET_ID = 76;
+    protected static final byte CULTIVATOR_TYPE = 95;
     protected static final byte BODY_FORGE_SELECTION = 96;
     protected static final byte BODY_MODIFICATIONS = 97;
     protected static final byte CULTIVATOR_TECHNIQUES = 98;
@@ -79,6 +80,7 @@ public class PacketHandler
         channel.registerMessage(CULTIVATOR_TARGET_ID, CultivatorTargetPacket.class, CultivatorTargetPacket::encode, CultivatorTargetPacket::decode, CultivatorTargetPacket::handle);
         channel.registerMessage(CULTIVATOR_TECHNIQUES, CultivatorTechniquesPacket.class, CultivatorTechniquesPacket::encode, CultivatorTechniquesPacket::decode, CultivatorTechniquesPacket::handle);
         channel.registerMessage(CULTIVATOR_STATS, CultivatorStatsPacket.class, CultivatorStatsPacket::encode, CultivatorStatsPacket::decode, CultivatorStatsPacket::handle);
+        channel.registerMessage(CULTIVATOR_TYPE, CultivatorTypePacket.class, CultivatorTypePacket::encode, CultivatorTypePacket::decode, CultivatorTypePacket::handle);
         channel.registerMessage(BODY_FORGE_SELECTION, BodyForgeSelectionPacket.class, BodyForgeSelectionPacket::encode, BodyForgeSelectionPacket::decode, BodyForgeSelectionPacket::handle);
         channel.registerMessage(BODY_MODIFICATIONS, BodyModificationsPacket.class, BodyModificationsPacket::encode, BodyModificationsPacket::decode, BodyModificationsPacket::handle);
     }
