@@ -63,7 +63,7 @@ public class FlyingSwordRenderer extends EntityRenderer<FlyingSwordEntity>
         float f1 = 0;
 
         // Only bob if Flying Sword is in control range
-        if (entityIn.isInRange())
+        if (entityIn.canControl())
             f1 = shouldBob() ? Mth.sin(((float)entityIn.getAge() + partialTicks) / 10.0F + entityIn.bobOffs) * 0.1F + 0.1F : 0;
 
 

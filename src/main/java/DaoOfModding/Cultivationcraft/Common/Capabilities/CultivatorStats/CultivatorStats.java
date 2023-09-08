@@ -20,52 +20,13 @@ public class CultivatorStats implements ICultivatorStats
 {
     protected int cultivationType = CultivationTypes.NO_CULTIVATION;
 
-    protected double flyingItemSpeed = 0.06;
-    protected double flyingItemMAXSpeed = 2;
-    protected double flyingItemturnSpeed = 0.4;
-    protected double flyingItemControlRange = 25;
-
     protected HitResult.Type targetType = HitResult.Type.MISS;
     protected Entity targetEntity = null;
     protected BlockPos targetBlock = null;
 
-    protected boolean recallOn = false;
-
     protected boolean disconnected = false;
 
     protected HashMap<String, StatModifier> modifiers = new HashMap<String, StatModifier>();
-
-    public double getFlyingItemSpeed() {
-        return flyingItemSpeed;
-    }
-
-    public void setFlyingItemSpeed(double newSpeed) {
-        flyingItemSpeed = newSpeed;
-    }
-
-    public double getFlyingItemTurnSpeed() {
-        return flyingItemturnSpeed;
-    }
-
-    public void setFlyingItemTurnSpeed(double newSpeed) {
-        flyingItemturnSpeed = newSpeed;
-    }
-
-    public double getFlyingItemMaxSpeed() {
-        return flyingItemMAXSpeed;
-    }
-
-    public void setFlyingItemMaxSpeed(double newSpeed) {
-        flyingItemMAXSpeed = newSpeed;
-    }
-
-    public double getFlyingControlRange() {
-        return flyingItemControlRange;
-    }
-
-    public void setFlyingControlRange(double newRange) {
-        flyingItemControlRange = newRange;
-    }
 
     public int getCultivationType()
     {
@@ -180,14 +141,6 @@ public class CultivatorStats implements ICultivatorStats
         return false;
     }
 
-    public boolean getRecall() {
-        return recallOn;
-    }
-
-    public void setRecall(boolean recall) {
-        recallOn = recall;
-    }
-
     public void setDisconnected(boolean value) {
         disconnected = value;
     }
@@ -198,13 +151,8 @@ public class CultivatorStats implements ICultivatorStats
 
     public CompoundTag writeNBT()
     {
-
         CompoundTag nbt = new CompoundTag();
         nbt.putInt("TYPE", getCultivationType());
-        nbt.putDouble("FIS", getFlyingItemSpeed());
-        nbt.putDouble("FITS", getFlyingItemTurnSpeed());
-        nbt.putDouble("FIMS", getFlyingItemMaxSpeed());
-        nbt.putDouble("FICR", getFlyingControlRange());
 
         return nbt;
     }
@@ -212,10 +160,6 @@ public class CultivatorStats implements ICultivatorStats
     public void readNBT(CompoundTag nbt)
     {
         setCultivationType(nbt.getInt("TYPE"));
-        setFlyingItemSpeed(nbt.getDouble("FIS"));
-        setFlyingItemTurnSpeed(nbt.getDouble("FITS"));
-        setFlyingItemMaxSpeed(nbt.getDouble("FIMS"));
-        setFlyingControlRange(nbt.getDouble("FICR"));
     }
 
     public static boolean isCultivator(Player player)

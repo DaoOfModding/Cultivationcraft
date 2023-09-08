@@ -11,18 +11,6 @@ import java.util.UUID;
 
 public interface ICultivatorStats
 {
-    public double getFlyingItemSpeed();
-    public void setFlyingItemSpeed(double newSpeed);
-
-    public double getFlyingItemTurnSpeed();
-    public void setFlyingItemTurnSpeed(double newSpeed);
-
-    public double getFlyingItemMaxSpeed();
-    public void setFlyingItemMaxSpeed(double newSpeed);
-
-    public double getFlyingControlRange();
-    public void setFlyingControlRange(double newRange);
-
     public int getCultivationType();
     public void setCultivationType(int newType);
 
@@ -34,9 +22,6 @@ public interface ICultivatorStats
 
     public StatModifier getModifier(String id);
     public HashMap<String, StatModifier> getModifiers();
-
-    public boolean getRecall();
-    public void setRecall(boolean recall);
 
     public void setDisconnected(boolean value);
     public boolean isDisconnected();

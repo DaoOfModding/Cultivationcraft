@@ -1,6 +1,7 @@
-package DaoOfModding.Cultivationcraft.Common.Qi.Techniques;
+package DaoOfModding.Cultivationcraft.Common.Qi.Techniques.QiCondenserTechniques;
 
 import DaoOfModding.Cultivationcraft.Client.Physics;
+import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.Technique;
 import DaoOfModding.mlmanimator.Client.Models.GenericLimbNames;
 import DaoOfModding.mlmanimator.Client.Poses.GenericPoses;
 import DaoOfModding.Cultivationcraft.Client.Animations.GenericQiPoses;

@@ -4,6 +4,7 @@ import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.*;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.BodyForgeTechniques.*;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.PassiveTechniques.*;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.BodyForgeTechniques.JetTechnique;
+import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.QiCondenserTechniques.FlyingSwordFormationTechnique;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import net.minecraft.world.entity.player.Player;
 
@@ -15,6 +16,7 @@ public class TechniqueControl
     public static void init()
     {
         TechniqueControl.addTechnique(DivineSenseTechnique.class);
+        TechniqueControl.addTechnique(FlyingSwordFormationTechnique.class);
         //TechniqueControl.addTechnique(IceWalkTechnique.class);
         //TechniqueControl.addTechnique(IceAuraTechnique.class);
         TechniqueControl.addTechnique(MeditateTechnique.class);

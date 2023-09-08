@@ -7,16 +7,13 @@ import DaoOfModding.Cultivationcraft.Common.Register;
 import DaoOfModding.Cultivationcraft.Network.Packets.*;
 import DaoOfModding.Cultivationcraft.Network.Packets.CultivatorStats.CultivatorTargetPacket;
 import DaoOfModding.Cultivationcraft.Network.Packets.CultivatorStats.CultivatorTypePacket;
-import DaoOfModding.Cultivationcraft.Network.Packets.CultivatorStats.RecallFlyingSwordPacket;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.network.PacketDistributor;
 
 import java.util.UUID;
 
@@ -55,12 +52,6 @@ public class ClientPacketHandler
     public static void sendElementalEffectToServer(ResourceLocation element, ResourceKey<Level> level, BlockPos pos)
     {
         ElementalEffectPacket pack = new ElementalEffectPacket(element, level, pos);
-        PacketHandler.channel.sendToServer(pack);
-    }
-
-    public static void sendRecallFlyingToServer(boolean recall, UUID playerID)
-    {
-        RecallFlyingSwordPacket pack = new RecallFlyingSwordPacket(recall, playerID);
         PacketHandler.channel.sendToServer(pack);
     }
 

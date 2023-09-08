@@ -41,7 +41,6 @@ public class PacketHandler
     protected static final byte QUEST_PROGRESS = 30;
     protected static final byte QUEST_CANCEL = 31;
     protected static final byte FLYING_SWORD_NBT_ID = 35;
-    protected static final byte FLYING_SWORD_RECALL = 36;
     protected static final byte WIND_INSTANCE = 43;
     protected static final byte BLOOD_SPAWN_ID = 55;
     protected static final byte EXTERNAL_BLOOD_TICK_ID = 56;
@@ -73,7 +72,6 @@ public class PacketHandler
         channel.registerMessage(QUEST_PROGRESS, QuestPacket.class, QuestPacket::encode, QuestPacket::decode, QuestPacket::handle);
         channel.registerMessage(QUEST_CANCEL, QuestCancelPacket.class, QuestCancelPacket::encode, QuestCancelPacket::decode, QuestCancelPacket::handle);
         channel.registerMessage(FLYING_SWORD_NBT_ID, ConvertToFlyingPacket.class, ConvertToFlyingPacket::encode, ConvertToFlyingPacket::decode, ConvertToFlyingPacket::handle);
-        channel.registerMessage(FLYING_SWORD_RECALL, RecallFlyingSwordPacket.class, RecallFlyingSwordPacket::encode, RecallFlyingSwordPacket::decode, RecallFlyingSwordPacket::handle);
         channel.registerMessage(WIND_INSTANCE, WindPacket.class, WindPacket::encode, WindPacket::decode, WindPacket::handle);
         channel.registerMessage(BLOOD_SPAWN_ID, BloodPacket.class, BloodPacket::encode, BloodPacket::decode, BloodPacket::handle);
         channel.registerMessage(EXTERNAL_BLOOD_TICK_ID, ExternalBloodTickPacket.class, ExternalBloodTickPacket::encode, ExternalBloodTickPacket::decode, ExternalBloodTickPacket::handle);
@@ -83,12 +81,6 @@ public class PacketHandler
         channel.registerMessage(CULTIVATOR_TYPE, CultivatorTypePacket.class, CultivatorTypePacket::encode, CultivatorTypePacket::decode, CultivatorTypePacket::handle);
         channel.registerMessage(BODY_FORGE_SELECTION, BodyForgeSelectionPacket.class, BodyForgeSelectionPacket::encode, BodyForgeSelectionPacket::decode, BodyForgeSelectionPacket::handle);
         channel.registerMessage(BODY_MODIFICATIONS, BodyModificationsPacket.class, BodyModificationsPacket::encode, BodyModificationsPacket::decode, BodyModificationsPacket::handle);
-    }
-
-    public static void sendRecallFlyingToClient(boolean recall, UUID playerID)
-    {
-        RecallFlyingSwordPacket pack = new RecallFlyingSwordPacket(recall, playerID);
-        channel.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> ServerLifecycleHooks.getCurrentServer().getPlayerList().getPlayer(playerID)), pack);
     }
 
     public static void sendCultivatorTargetToClient(UUID playerID, HitResult.Type type, Vec3 pos, UUID targetID)

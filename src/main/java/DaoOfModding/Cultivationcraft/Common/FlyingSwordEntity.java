@@ -1,7 +1,13 @@
 package DaoOfModding.Cultivationcraft.Common;
 
+import DaoOfModding.Cultivationcraft.Client.genericClientFunctions;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStats;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.ICultivatorStats;
+import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.CultivatorTechniques;
+import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.ICultivatorTechniques;
+import DaoOfModding.Cultivationcraft.Common.Qi.TechniqueControl;
+import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.QiCondenserTechniques.FlyingSwordFormationTechnique;
+import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.Technique;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.protocol.Packet;
@@ -49,9 +55,14 @@ public class FlyingSwordEntity extends ItemEntity
     public Vec3 movement = new Vec3(0, 0 ,0);
     protected Player owner = null;
     protected ICultivatorStats stats = null;
+    protected FlyingSwordFormationTechnique formation = null;
 
     protected boolean recall = false;
 
+    private final float defaultspeed = 0.02f;
+    private final float defaultmaxSpeed = 1;
+    private final double defaultTurnSpeed = 0.2;
+    private final float defaultRange = 10;
 
     // Testing thing
     protected boolean orbit = false;
@@ -76,6 +87,38 @@ public class FlyingSwordEntity extends ItemEntity
             this.noPhysics = true;
 
         generateDecay();
+    }
+
+    public float getControlRange()
+    {
+        if (formation != null)
+            return formation.getSwordControlRange();
+
+        return defaultRange;
+    }
+
+    public double getTurnSpeed()
+    {
+        if (formation != null)
+            return formation.getSwordTurnSpeed();
+
+        return defaultTurnSpeed;
+    }
+
+    public float getSpeed()
+    {
+        if (formation != null)
+            return formation.getSwordMovementSpeed();
+
+        return defaultspeed;
+    }
+
+    public float getMaxSpeed()
+    {
+        if (formation != null)
+            return formation.getSwordMaxSpeed();
+
+        return defaultmaxSpeed;
     }
 
     @Override
@@ -111,7 +154,7 @@ public class FlyingSwordEntity extends ItemEntity
             {
                 owner = this.level.getPlayerByUUID(ownerID);
 
-                // if owner exists, grab this cultivator stats
+                // if owner exists, grab this cultivator's stats
                 if (owner != null)
                 {
                     movement = owner.getLookAngle().normalize();
@@ -120,6 +163,31 @@ public class FlyingSwordEntity extends ItemEntity
 
                     storeMovement();
                 }
+            }
+        }
+
+        if (owner != null)
+        {
+            ICultivatorTechniques techs = CultivatorTechniques.getCultivatorTechniques(owner);
+
+            // If no formation has been set for this sword, find the first active one
+            if (formation == null)
+            {
+                for (int i = 0; i < CultivatorTechniques.numberOfTechniques; i++)
+                    if (techs.getTechnique(i) != null && techs.getTechnique(i).isActive() && techs.getTechnique(i) instanceof FlyingSwordFormationTechnique)
+                    {
+                        formation = (FlyingSwordFormationTechnique) techs.getTechnique(i);
+                        return;
+                    }
+            }
+            // Otherwise ensure that the set formation still exists
+            else
+            {
+                for (int i = 0; i < CultivatorTechniques.numberOfTechniques; i++)
+                    if (techs.getTechnique(i) != formation)
+                        return;
+
+                formation = null;
             }
         }
     }
@@ -151,9 +219,10 @@ public class FlyingSwordEntity extends ItemEntity
         Double angle = Math.asin(direction.cross(newDirection).length());
 
         // TODO: NEEDS TO BE LOOKED AT, causing desyncs with server (I think it's fixed now)
-        if (angle != 0) {
+        if (angle != 0)
+        {
 
-            Double theta = stats.getFlyingItemTurnSpeed();
+            double theta = getTurnSpeed();
             if (theta > Math.abs(angle))
                 theta = angle;
 
@@ -181,11 +250,11 @@ public class FlyingSwordEntity extends ItemEntity
     // Move flying sword forwards in specified direction
     protected void moveForwards()
     {
-        Vec3 toMove = movement.add(direction.scale(stats.getFlyingItemSpeed()));
+        Vec3 toMove = movement.add(direction.scale(getSpeed()));
 
         // If the movement vector is going faster than the item's max speed, lower it to the max speed
-        if (toMove.length() > stats.getFlyingItemMaxSpeed())
-            toMove = toMove.normalize().scale(stats.getFlyingItemMaxSpeed());
+        if (toMove.length() > getMaxSpeed())
+            toMove = toMove.normalize().scale(getMaxSpeed());
 
         movement = toMove;
     }
@@ -318,19 +387,19 @@ public class FlyingSwordEntity extends ItemEntity
         Vec3 targetDir = new Vec3(distX, distY, distZ);
         targetDir = targetDir.normalize();
 
-        this.movement = targetDir.scale(stats.getFlyingItemMaxSpeed() * power);
+        this.movement = targetDir.scale(getMaxSpeed() * power);
     }
 
     // 'Bump' this entity backwards slightly
     protected void bumpBackwards(double power)
     {
-        this.movement = direction.scale(stats.getFlyingItemMaxSpeed() * -power);
+        this.movement = direction.scale(getMaxSpeed() * -power);
     }
 
     // Return true if Flying Sword is in control range of owner
     public boolean isInRange()
     {
-        if (owner != null && owner.isAlive() && distanceTo(owner) < stats.getFlyingControlRange())
+        if (owner != null && owner.isAlive() && distanceTo(owner) < getControlRange())
             return true;
 
         return false;
@@ -339,7 +408,7 @@ public class FlyingSwordEntity extends ItemEntity
     // Return true if Flying Sword is in control range of supplied vector
     protected boolean isInRange(Vec3 pos)
     {
-        if (position().distanceTo(pos) < stats.getFlyingControlRange())
+        if (position().distanceTo(pos) < getControlRange())
             return true;
 
         return false;
@@ -350,16 +419,24 @@ public class FlyingSwordEntity extends ItemEntity
     {
         direction = new Vec3(0, -1, 0);
 
-        movement = movement.add(direction.scale(2));
+        movement = movement.add(direction.scale(0.2));
+    }
+
+    public boolean canControl()
+    {
+        return (stats != null && formation != null && isInRange());
     }
 
     @Override
-    public void tick() {
+    public void tick()
+    {
 
-        if (getItem().onEntityItemUpdate((ItemEntity)this)) return;
-        if (this.getItem().isEmpty()) {
+        if (getItem().onEntityItemUpdate(this))
+            return;
+
+        if (this.getItem().isEmpty())
             this.remove(RemovalReason.DISCARDED);
-        } else
+        else
         {
             updateOwner();
 
@@ -368,7 +445,7 @@ public class FlyingSwordEntity extends ItemEntity
             moveDecay();
 
             // If the flying sword is in range of it's owner then do normal movement, otherwise fall to the ground
-            if (stats != null && isInRange())
+            if (canControl())
             {
                 this.baseTick();
 
@@ -376,8 +453,8 @@ public class FlyingSwordEntity extends ItemEntity
                 this.yOld = getY();
                 this.zOld = getZ();
 
-                // Set entity to be recalled if recall has been called
-                if (stats.getRecall())
+                // Set entity to be recalled if set formation is not longer active
+                if (!formation.isActive())
                     recall = true;
 
                 // Move towards target if it exists, otherwise move towards owner
@@ -405,9 +482,11 @@ public class FlyingSwordEntity extends ItemEntity
             this.move(MoverType.SELF, this.getDeltaMovement());
 
             // Increase the age, VERY important for rendering stuff (Stupid ItemEntity age being protected ;( )
-            if (this.age != -32768) {
+            if (this.age != -32768)
                 ++this.age;
-            }
+
+            if (this.age >= 200)
+                this.age = 0;
 
             if (this.getItem().isEmpty()) {
                 this.remove(RemovalReason.DISCARDED);
@@ -415,6 +494,17 @@ public class FlyingSwordEntity extends ItemEntity
 
             storeMovement();
         }
+    }
+
+    // Called when entity collides with the ground
+    @Override
+    public void resetFallDistance()
+    {
+        super.resetFallDistance();
+
+        // Stop sliding when a falling sword lodges into the ground
+        if (!canControl())
+            movement = new Vec3(0, movement.y, 0);
     }
 
     // Store the movement vector in the data manager
@@ -476,15 +566,15 @@ public class FlyingSwordEntity extends ItemEntity
     }
 
 
-    // Ripped almost word for word from ItemEntity.playerTouch. Stupid minecraft
+    // Ripped almost word for word from ItemEntity.playerTouch, otherwise ItemPickupParticle is created and crashes everything~
     @Override
     public void playerTouch(Player entityIn)
     {
+        // Only allow item to be picked up if it's collided with it's owner and is recalling
+        if (entityIn != owner || !recall) return;
+
         if (!this.level.isClientSide)
         {
-            // Only allow item to be picked up if it's collided with it's owner and is recalling
-            if (entityIn != owner || !recall) return;
-
             ItemStack itemstack = this.getItem();
             Item item = itemstack.getItem();
             int i = itemstack.getCount();

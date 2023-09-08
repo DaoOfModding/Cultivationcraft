@@ -144,7 +144,6 @@ public class ServerListeners
 
             if(ServerItemControl.loaded)
             {
-                ServerItemControl.checkForRecalls();
                 FlyingSwordBindProgresser.bindFlyingSword(System.nanoTime() - lastServerTickTime);
             }
 

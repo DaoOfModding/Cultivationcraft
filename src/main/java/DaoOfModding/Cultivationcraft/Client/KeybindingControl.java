@@ -58,13 +58,9 @@ public class KeybindingControl
     {
         keyBindings = new KeyMapping[4];
         keyBindings[0] = new KeyMapping("Switch Hotbar", GLFW_KEY_GRAVE_ACCENT, "Cultivation");
-        keyBindings[1] = new KeyMapping("Flying Sword Target", GLFW_KEY_R, "Cultivation");
-        keyBindings[2] = new KeyMapping("Flying Sword Recall", GLFW_KEY_O, "Cultivation");
-        keyBindings[3] = new KeyMapping("Flying Sword Screen Test", GLFW_KEY_K, "Cultivation");
+        keyBindings[3] = new KeyMapping("Cultivation Menu", GLFW_KEY_K, "Cultivation");
 
         event.register(keyBindings[0]);
-        /*event.register(keyBindings[1]);
-        event.register(keyBindings[2]);*/
         event.register(keyBindings[3]);
     }
 
@@ -381,6 +377,8 @@ public class KeybindingControl
                 ClientPacketHandler.sendKeypressToServer(Register.keyPresses.SKILLHOTBARSWITCH);
             }
 
+            // TODO: Set flying sword target through formation
+/*
             if (keyBindings[1].isDown())
             {
                 final HitResult result = getMouseOver(100);
@@ -406,12 +404,7 @@ public class KeybindingControl
                 }
 
                 ClientPacketHandler.sendCultivatorTargetToServer(genericClientFunctions.getPlayer().getUUID(), type, pos, targetID);
-            }
-
-            if (keyBindings[2].isDown())
-            {
-                ClientPacketHandler.sendRecallFlyingToServer(true, genericClientFunctions.getPlayer().getUUID());
-            }
+            }*/
         }
     }
 

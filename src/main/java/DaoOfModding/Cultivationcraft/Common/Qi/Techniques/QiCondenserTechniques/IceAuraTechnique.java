@@ -1,10 +1,11 @@
-package DaoOfModding.Cultivationcraft.Common.Qi.Techniques;
+package DaoOfModding.Cultivationcraft.Common.Qi.Techniques.QiCondenserTechniques;
 
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStats;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.ICultivatorStats;
 import DaoOfModding.Cultivationcraft.Common.Qi.CultivationTypes;
 import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
 import DaoOfModding.Cultivationcraft.Common.Qi.Freeze;
+import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.AuraTechnique;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.resources.ResourceLocation;

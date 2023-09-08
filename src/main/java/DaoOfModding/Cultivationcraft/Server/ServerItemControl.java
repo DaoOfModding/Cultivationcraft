@@ -16,24 +16,6 @@ public class ServerItemControl
 {
     public static boolean loaded = false;
 
-
-    // Check for any FlyingSword recalls on the server, set them to false and update clients
-    public static void checkForRecalls()
-    {
-        for(Player player : ServerLifecycleHooks.getCurrentServer().getPlayerList().getPlayers())
-        {
-            if (player.isAlive())
-            {
-                ICultivatorStats playerStats = CultivatorStats.getCultivatorStats(player);
-
-                if (playerStats != null && playerStats.getRecall()) {
-                    playerStats.setRecall(false);
-                    PacketHandler.sendRecallFlyingToClient(false, player.getUUID());
-                }
-            }
-        }
-    }
-
     public static void sendPlayerStats(Player player, Player target)
     {
         PacketHandler.sendCultivatorStatsToSpecificClient(target, (ServerPlayer)player);
