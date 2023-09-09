@@ -15,9 +15,7 @@ import java.awt.*;
 
 public class FlyingSwordContainerScreen extends AbstractContainerScreen<FlyingSwordContainer>
 {
-    protected Button bindButton;
-
-    protected static final int PROGRESS_BAR_X_POS = 43;
+    protected static final int PROGRESS_BAR_X_POS = 84;
     protected static final int PROGRESS_BAR_Y_POS = 77;
 
     protected static final int PROGRESS_BAR_X_SIZE = 89;
@@ -26,12 +24,22 @@ public class FlyingSwordContainerScreen extends AbstractContainerScreen<FlyingSw
     protected static final int PROGRESS_BAR_U = 0;
     protected static final int PROGRESS_BAR_V = 252;
 
+    private int tab = 2;
+
     public FlyingSwordContainerScreen(FlyingSwordContainer container, Inventory playerInv, Component title)
     {
         super(container, playerInv, title);
 
         imageWidth = 256;
         imageHeight = 178;
+    }
+
+    @Override
+    protected void init()
+    {
+        super.init();
+
+        this.leftPos += 41;
     }
 
     @Override
@@ -93,7 +101,8 @@ public class FlyingSwordContainerScreen extends AbstractContainerScreen<FlyingSw
     @Override
     protected void renderBg(PoseStack PoseStack, float partialTicks, int mouseX, int mouseY)
     {
-        Minecraft mc = Minecraft.getInstance();
+        drawGuiBackgroundLayer(PoseStack, partialTicks, mouseX, mouseY);
+
         RenderSystem.setShaderTexture(0, TEXTURE);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 
@@ -112,8 +121,23 @@ public class FlyingSwordContainerScreen extends AbstractContainerScreen<FlyingSw
             this.blit(PoseStack, edgeSpacingX + PROGRESS_BAR_X_POS + PROGRESS_BAR_X_SIZE - (int)(progress * -1), edgeSpacingY + PROGRESS_BAR_Y_POS,
                     PROGRESS_BAR_U, PROGRESS_BAR_V - PROGRESS_BAR_Y_SIZE,
                     (int)progress * -1, PROGRESS_BAR_Y_SIZE);
+    }
 
-        ScreenTabControl.highlightTabs(PoseStack, 2, mouseX, mouseY, edgeSpacingX, edgeSpacingY, this);
+    protected void drawGuiBackgroundLayer(PoseStack PoseStack, float partialTicks, int mouseX, int mouseY)
+    {
+        // Draw the generic tab screen
+        RenderSystem.setShaderTexture(0, GenericTabScreen.tabTexture);
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+
+        int edgeSpacingX = (this.width - this.imageWidth) / 2;
+        int edgeSpacingY = (this.height - this.imageHeight) / 2;
+
+        ScreenTabControl.drawTabs(PoseStack, edgeSpacingX, edgeSpacingY, this);
+
+        this.blit(PoseStack, edgeSpacingX, edgeSpacingY, 0, 0, this.imageWidth, this.imageHeight);
+
+        ScreenTabControl.highlightTabs(PoseStack, tab, mouseX, mouseY, edgeSpacingX, edgeSpacingY, this);
+        ScreenTabControl.tabText(PoseStack, edgeSpacingX, edgeSpacingY, this.font);
     }
 
     protected static final ResourceLocation TEXTURE = new ResourceLocation(Cultivationcraft.MODID, "textures/gui/bindingcontainer.png");

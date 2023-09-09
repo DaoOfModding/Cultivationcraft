@@ -1,5 +1,6 @@
 package DaoOfModding.Cultivationcraft.Client;
 
+import DaoOfModding.Cultivationcraft.Client.GUI.ItemDecorators.FlyingSwordDecorator;
 import DaoOfModding.Cultivationcraft.Client.Particles.*;
 import DaoOfModding.Cultivationcraft.Client.Particles.Blood.BloodParticle;
 import DaoOfModding.Cultivationcraft.Client.Particles.Blood.GaseousBloodParticle;
@@ -8,10 +9,14 @@ import DaoOfModding.Cultivationcraft.Client.Particles.Spit.SpitParticle;
 import DaoOfModding.Cultivationcraft.Client.Particles.WaterParticle.WaterParticle;
 import DaoOfModding.Cultivationcraft.Client.Particles.WindParticle.WindParticle;
 import DaoOfModding.Cultivationcraft.Common.Register;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.ItemLike;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.event.RegisterItemDecorationsEvent;
 import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class clientRegister
 {
@@ -28,6 +33,15 @@ public class clientRegister
             event.register(Register.waterParticleType.get(), WaterParticle.Factory::new);
             event.register(Register.windParticleType.get(), WindParticle.Factory::new);
             event.register(Register.fireParticleType.get(), FireParticle.Factory::new);
+        }
+
+        @SubscribeEvent
+        public static void onItemDecoratorRegistration(RegisterItemDecorationsEvent event)
+        {
+            FlyingSwordDecorator decorator = new FlyingSwordDecorator();
+
+            for (Item item : ForgeRegistries.ITEMS.getValues())
+                event.register(item, decorator);
         }
     }
 }

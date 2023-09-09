@@ -16,7 +16,7 @@ public class GenericTabScreen extends Screen
     public final int ySize = 178;
 
     protected int tab;
-    protected final ResourceLocation tabTexture = new ResourceLocation(Cultivationcraft.MODID, "textures/gui/tabscreen.png");
+    public static final ResourceLocation tabTexture = new ResourceLocation(Cultivationcraft.MODID, "textures/gui/tabscreen.png");
 
     GenericTabScreen(int activeTab, Component name, ResourceLocation tabLocation)
     {

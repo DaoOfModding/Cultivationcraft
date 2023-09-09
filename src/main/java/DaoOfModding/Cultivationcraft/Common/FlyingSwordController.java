@@ -12,8 +12,6 @@ import java.util.UUID;
 
 public class FlyingSwordController
 {
-    static List<FlyingSwordEntity> FlyingSwords = new ArrayList<FlyingSwordEntity>();
-
     public static void addFlyingItem(ItemStack item, UUID owner)
     {
         CompoundTag nbt = item.getTag();

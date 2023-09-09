@@ -44,7 +44,6 @@ public class PacketHandler
     protected static final byte WIND_INSTANCE = 43;
     protected static final byte BLOOD_SPAWN_ID = 55;
     protected static final byte EXTERNAL_BLOOD_TICK_ID = 56;
-    protected static final byte CULTIVATOR_TARGET_ID = 76;
     protected static final byte CULTIVATOR_TYPE = 95;
     protected static final byte BODY_FORGE_SELECTION = 96;
     protected static final byte BODY_MODIFICATIONS = 97;
@@ -75,18 +74,11 @@ public class PacketHandler
         channel.registerMessage(WIND_INSTANCE, WindPacket.class, WindPacket::encode, WindPacket::decode, WindPacket::handle);
         channel.registerMessage(BLOOD_SPAWN_ID, BloodPacket.class, BloodPacket::encode, BloodPacket::decode, BloodPacket::handle);
         channel.registerMessage(EXTERNAL_BLOOD_TICK_ID, ExternalBloodTickPacket.class, ExternalBloodTickPacket::encode, ExternalBloodTickPacket::decode, ExternalBloodTickPacket::handle);
-        channel.registerMessage(CULTIVATOR_TARGET_ID, CultivatorTargetPacket.class, CultivatorTargetPacket::encode, CultivatorTargetPacket::decode, CultivatorTargetPacket::handle);
         channel.registerMessage(CULTIVATOR_TECHNIQUES, CultivatorTechniquesPacket.class, CultivatorTechniquesPacket::encode, CultivatorTechniquesPacket::decode, CultivatorTechniquesPacket::handle);
         channel.registerMessage(CULTIVATOR_STATS, CultivatorStatsPacket.class, CultivatorStatsPacket::encode, CultivatorStatsPacket::decode, CultivatorStatsPacket::handle);
         channel.registerMessage(CULTIVATOR_TYPE, CultivatorTypePacket.class, CultivatorTypePacket::encode, CultivatorTypePacket::decode, CultivatorTypePacket::handle);
         channel.registerMessage(BODY_FORGE_SELECTION, BodyForgeSelectionPacket.class, BodyForgeSelectionPacket::encode, BodyForgeSelectionPacket::decode, BodyForgeSelectionPacket::handle);
         channel.registerMessage(BODY_MODIFICATIONS, BodyModificationsPacket.class, BodyModificationsPacket::encode, BodyModificationsPacket::decode, BodyModificationsPacket::handle);
-    }
-
-    public static void sendCultivatorTargetToClient(UUID playerID, HitResult.Type type, Vec3 pos, UUID targetID)
-    {
-        CultivatorTargetPacket pack = new CultivatorTargetPacket(playerID, type, pos, targetID);
-        channel.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> ServerLifecycleHooks.getCurrentServer().getPlayerList().getPlayer(playerID)), pack);
     }
 
     public static void sendAttackToClient(UUID playerID, HitResult.Type type, Vec3 pos, UUID targetID, Direction direction, int slot)
@@ -154,10 +146,6 @@ public class PacketHandler
         // Send the cultivator's stats to the client
         CultivatorStatsPacket pack = new CultivatorStatsPacket(player.getUUID(), stats);
         channel.send(distribute, pack);
-
-        // Send the cultivator's current target to the client
-        CultivatorTargetPacket pack2 = new CultivatorTargetPacket(player.getUUID(), stats.getTargetType(), stats.getTarget(), stats.getTargetID());
-        channel.send(distribute, pack2);
     }
 
     public static void updateStaminaForClients(float stamina, Player player)

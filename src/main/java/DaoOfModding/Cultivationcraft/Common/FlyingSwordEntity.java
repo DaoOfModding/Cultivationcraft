@@ -1,13 +1,10 @@
 package DaoOfModding.Cultivationcraft.Common;
 
-import DaoOfModding.Cultivationcraft.Client.genericClientFunctions;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStats;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.ICultivatorStats;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.CultivatorTechniques;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.ICultivatorTechniques;
-import DaoOfModding.Cultivationcraft.Common.Qi.TechniqueControl;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.QiCondenserTechniques.FlyingSwordFormationTechnique;
-import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.Technique;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.protocol.Packet;
@@ -200,13 +197,15 @@ public class FlyingSwordEntity extends ItemEntity
 
     protected void calculatePitchAndYaw()
     {
+        // TODO: Not turning around correctly when going in reverse?
+
         // Store the previous pitch and yaw
         xRotO = getXRot();
         yRotO = getYRot();
 
         // Calculate pitch and yaw based on direction
 
-        // Subtracting quarter of PI to align yaw in the right direction
+        // Subtracting quarter of PI to align pitch in the right direction
         setXRot((float) Math.asin(direction.y) - (float)(Math.PI / 4.0));
 
         // Subtracting half of PI to align yaw in the right direction
@@ -221,7 +220,6 @@ public class FlyingSwordEntity extends ItemEntity
         // TODO: NEEDS TO BE LOOKED AT, causing desyncs with server (I think it's fixed now)
         if (angle != 0)
         {
-
             double theta = getTurnSpeed();
             if (theta > Math.abs(angle))
                 theta = angle;
@@ -261,7 +259,7 @@ public class FlyingSwordEntity extends ItemEntity
 
     protected void moveToTarget()
     {
-        Vec3 targetPos = stats.getTarget();
+        Vec3 targetPos = formation.getTarget().position();
 
         // Check how far away the item is to the target
         double distX = getX() - targetPos.x;
@@ -458,7 +456,7 @@ public class FlyingSwordEntity extends ItemEntity
                     recall = true;
 
                 // Move towards target if it exists, otherwise move towards owner
-                if (stats.hasTarget(owner.getCommandSenderWorld()) && isInRange(stats.getTarget()) && !recall)
+                if (formation.getTarget() != null && isInRange(formation.getTarget().position()) && !recall)
                     moveToTarget();
                 else
                     moveToOwner();

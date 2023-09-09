@@ -16,7 +16,7 @@ import java.awt.*;
 
 public class ScreenTabControl
 {
-    protected static final int TAB_BAR_NUMBER = 4;
+    protected static final int TAB_BAR_NUMBER[] = {4, 4};
 
     protected static final int TAB_BAR_PADDING = 2;
 
@@ -44,18 +44,22 @@ public class ScreenTabControl
 
     public static void drawTabs(PoseStack PoseStack, int screenX, int screenY, Screen drawTo)
     {
+        int type = CultivatorStats.getCultivatorStats(Minecraft.getInstance().player).getCultivationType();
+
         // Loop through each tab, checking if the mouse is over it and highlighting it if so
-        for (int i = 0; i < TAB_BAR_NUMBER; i++)
+        for (int i = 0; i < TAB_BAR_NUMBER[type]; i++)
             drawTo.blit(PoseStack, screenX + (TAB_BAR_X_SIZE + TAB_BAR_PADDING) * i, screenY, TAB_BAR_U, TAB_BAR_V, TAB_BAR_X_SIZE, TAB_BAR_Y_SIZE);
     }
 
     public static void highlightTabs(PoseStack PoseStack, int tabSelected, int mouseX, int mouseY, int screenX, int screenY, Screen drawTo)
     {
+        int type = CultivatorStats.getCultivatorStats(Minecraft.getInstance().player).getCultivationType();
+
         mouseX = mouseX - screenX;
         mouseY = mouseY - screenY;
 
         // Loop through each tab, checking if the mouse is over it and highlighting it if so
-        for (int i = 0; i < TAB_BAR_NUMBER; i++)
+        for (int i = 0; i < TAB_BAR_NUMBER[type]; i++)
             if (tabSelected != i)
             {
                 if (mouseOver(mouseX, mouseY, i))
@@ -67,9 +71,11 @@ public class ScreenTabControl
 
     public static void tabText(PoseStack PoseStack, int screenX, int screenY, Font font)
     {
-        for (int i = 0; i < TAB_BAR_NUMBER; i++)
+        int type = CultivatorStats.getCultivatorStats(Minecraft.getInstance().player).getCultivationType();
+
+        for (int i = 0; i < TAB_BAR_NUMBER[type]; i++)
         {
-            String text = Component.translatable("cultivationcraft.gui.tab" + i).getString();
+            String text = Component.translatable("cultivationcraft.gui.tab." + type + "." + i).getString();
 
             // Draw the text centered on each tab
             font.draw(PoseStack, text, screenX + (TAB_BAR_X_SIZE + TAB_BAR_PADDING) * i + TAB_BAR_X_SIZE / 2 - font.width(text) / 2 + 1, screenY + font.lineHeight / 2, fontColor);
@@ -105,11 +111,13 @@ public class ScreenTabControl
         if (buttonPressed != 0)
             return false;
 
+        int type = CultivatorStats.getCultivatorStats(Minecraft.getInstance().player).getCultivationType();
+
         mouseX = mouseX - screenX;
         mouseY = mouseY - screenY;
 
         // Loop through each tab, checking if the mouse is over it and switching to it if so
-        for (int i = 0; i < TAB_BAR_NUMBER; i++)
+        for (int i = 0; i < TAB_BAR_NUMBER[type]; i++)
             if (mouseOver(mouseX, mouseY, i))
             {
                 selectedScreen = i;

@@ -145,11 +145,15 @@
   "cultivationcraft.commands.completeprogress.single": "Completed bodyforge progress for %s",
   "cultivationcraft.commands.completeprogress.multiple": "Completed bodyforge progress for %s players",
 
+  "cultivationcraft.gui.tab.0.0": "Stats",
+  "cultivationcraft.gui.tab.0.1": "Skills",
+  "cultivationcraft.gui.tab.0.2": "Bind",
+  "cultivationcraft.gui.tab.0.3": "Help",
 
-  "cultivationcraft.gui.tab0": "Stats",
-  "cultivationcraft.gui.tab1": "Skills",
-  "cultivationcraft.gui.tab2": "Cultivate",
-  "cultivationcraft.gui.tab3": "Help",
+  "cultivationcraft.gui.tab.1.0": "Stats",
+  "cultivationcraft.gui.tab.1.1": "Skills",
+  "cultivationcraft.gui.tab.1.2": "Cultivate",
+  "cultivationcraft.gui.tab.1.3": "Help",
 
   "cultivationcraft.gui.cultivationselection": "Cultivation Type Selection",
 

@@ -5,7 +5,6 @@ import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.Cu
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.ICultivatorTechniques;
 import DaoOfModding.Cultivationcraft.Common.Register;
 import DaoOfModding.Cultivationcraft.Network.Packets.*;
-import DaoOfModding.Cultivationcraft.Network.Packets.CultivatorStats.CultivatorTargetPacket;
 import DaoOfModding.Cultivationcraft.Network.Packets.CultivatorStats.CultivatorTypePacket;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -52,12 +51,6 @@ public class ClientPacketHandler
     public static void sendElementalEffectToServer(ResourceLocation element, ResourceKey<Level> level, BlockPos pos)
     {
         ElementalEffectPacket pack = new ElementalEffectPacket(element, level, pos);
-        PacketHandler.channel.sendToServer(pack);
-    }
-
-    public static void sendCultivatorTargetToServer(UUID playerID, HitResult.Type type, Vec3 pos, UUID targetID)
-    {
-        CultivatorTargetPacket pack = new CultivatorTargetPacket(playerID, type, pos, targetID);
         PacketHandler.channel.sendToServer(pack);
     }
 

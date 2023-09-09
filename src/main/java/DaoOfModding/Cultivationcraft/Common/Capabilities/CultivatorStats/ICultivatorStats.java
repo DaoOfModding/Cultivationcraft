@@ -14,12 +14,6 @@ public interface ICultivatorStats
     public int getCultivationType();
     public void setCultivationType(int newType);
 
-    public Vec3 getTarget();
-    public HitResult.Type getTargetType();
-    public UUID getTargetID();
-    public boolean hasTarget(Level world);
-    public void setTarget(Vec3 pos, HitResult.Type type, Level targetWorld, UUID targetID);
-
     public StatModifier getModifier(String id);
     public HashMap<String, StatModifier> getModifiers();
 
