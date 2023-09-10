@@ -2,6 +2,7 @@ package DaoOfModding.Cultivationcraft.Common.Qi.Techniques;
 
 import DaoOfModding.Cultivationcraft.Client.CultivatorAttackLogicClient;
 import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
+import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.TechniqueStats.DefaultTechniqueStatIDs;
 import DaoOfModding.Cultivationcraft.Server.CultivatorAttackLogic;
 import DaoOfModding.mlmanimator.Client.Poses.PoseHandler;
 import DaoOfModding.mlmanimator.Client.Poses.PlayerPose;
@@ -31,9 +32,15 @@ public class AttackTechnique extends Technique
 
     protected  PlayerPose attack = new PlayerPose();
 
-    protected double range = 5;
-    protected float damage = 1;
     protected int minePower = 0;
+
+    public AttackTechnique()
+    {
+        super();
+
+        addTechniqueStat(DefaultTechniqueStatIDs.range, 5);
+        addTechniqueStat(DefaultTechniqueStatIDs.damage, 1);
+    }
 
     // Try to attack with specified player, client only
     public void attack(Player player, int slot)
@@ -76,13 +83,13 @@ public class AttackTechnique extends Technique
     public double getRange(Player player)
     {
         // Default attack range
-        return range;
+        return getTechniqueStat(DefaultTechniqueStatIDs.range);
     }
 
     public float getAttack(Player player)
     {
         // Default attack damage
-        return damage;
+        return (float)getTechniqueStat(DefaultTechniqueStatIDs.damage);
     }
 
     protected float getMinePower(BlockGetter p_60801_, BlockPos p_60802_)

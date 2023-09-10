@@ -42,8 +42,6 @@ public class FlyingSwordFormationTechnique extends AttackOverrideTechnique
     @Override
     public void attack(Player player, int slot)
     {
-        range = getSwordControlRange();
-
         super.attack(player, slot);
     }
 
@@ -92,7 +90,7 @@ public class FlyingSwordFormationTechnique extends AttackOverrideTechnique
         return QiCost;
     }
 
-    public float getSwordControlRange()
+    public float getRange()
     {
         return flyingSwordRange;
     }

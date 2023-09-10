@@ -10,6 +10,7 @@ import DaoOfModding.Cultivationcraft.Common.Qi.CultivationTypes;
 import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.Technique;
+import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.TechniqueStats.DefaultTechniqueStatIDs;
 import DaoOfModding.Cultivationcraft.Common.Reflection;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import DaoOfModding.Cultivationcraft.StaminaHandler;
@@ -30,8 +31,6 @@ public class FloatTechnique extends Technique
 
     protected PlayerPose floating = new PlayerPose();
 
-    protected float staminaUse = 0.01f;
-
     public FloatTechnique()
     {
         super();
@@ -45,6 +44,8 @@ public class FloatTechnique extends Technique
         multiple = false;
 
         cooldown = 0;
+
+        addTechniqueStat(DefaultTechniqueStatIDs.staminaCost, 0.01);
 
         icon = new ResourceLocation(Cultivationcraft.MODID, "textures/techniques/icons/float.png");
 
@@ -77,7 +78,7 @@ public class FloatTechnique extends Technique
         if (jumpPressed)
         {
             canBreathWhileActive = false;
-            StaminaHandler.consumeStamina(event.player, staminaUse);
+            StaminaHandler.consumeStamina(event.player, (float)getTechniqueStat(DefaultTechniqueStatIDs.staminaCost));
             floatUp(event.player);
         }
         else
@@ -93,7 +94,7 @@ public class FloatTechnique extends Technique
         if (jumpPressed)
         {
             canBreathWhileActive = false;
-            StaminaHandler.consumeStamina(event.player, staminaUse);
+            StaminaHandler.consumeStamina(event.player, (float)getTechniqueStat(DefaultTechniqueStatIDs.staminaCost));
         }
         else
             canBreathWhileActive = true;

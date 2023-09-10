@@ -79,6 +79,7 @@ public class FlyingSwordEntity extends ItemEntity
     protected void init()
     {
         this.setNeverPickUp();
+        this.setInvulnerable(true);
 
         if (Misc.enableHarvest)
             this.noPhysics = true;
@@ -89,7 +90,7 @@ public class FlyingSwordEntity extends ItemEntity
     public float getControlRange()
     {
         if (formation != null)
-            return formation.getSwordControlRange();
+            return formation.getRange();
 
         return defaultRange;
     }

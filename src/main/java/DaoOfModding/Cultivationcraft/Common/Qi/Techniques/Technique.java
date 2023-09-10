@@ -3,6 +3,7 @@ package DaoOfModding.Cultivationcraft.Common.Qi.Techniques;
 import DaoOfModding.Cultivationcraft.Client.genericClientFunctions;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.PlayerStatModifications;
+import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.TechniqueStats.TechniqueStatModification;
 import DaoOfModding.Cultivationcraft.Network.ClientPacketHandler;
 import DaoOfModding.Cultivationcraft.StaminaHandler;
 import DaoOfModding.mlmanimator.Client.Poses.PoseHandler;
@@ -31,6 +32,9 @@ import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 public class Technique
 {
@@ -77,6 +81,12 @@ public class Technique
 
     protected boolean canBreathWhileActive = true;
 
+    protected HashMap<ResourceLocation, Double> defaultStats = new HashMap<ResourceLocation, Double>();
+    protected HashMap<ResourceLocation, Double> statLevels = new HashMap<ResourceLocation, Double>();
+    protected HashMap<ResourceLocation, TechniqueStatModification> statChangesPerLevel = new HashMap<ResourceLocation, TechniqueStatModification>();
+
+    protected boolean canLevel = false;
+
     public Technique()
     {
         langLocation = "cultivationcraft.technique.example";
@@ -85,6 +95,49 @@ public class Technique
         multiple = true;
 
         icon = new ResourceLocation(Cultivationcraft.MODID, "textures/techniques/icons/example.png");
+    }
+
+    protected void addTechniqueStat(ResourceLocation stat, double amount, TechniqueStatModification changePerLevel)
+    {
+        defaultStats.put(stat, amount);
+
+        if (canLevel)
+        {
+            statLevels.put(stat, 0.0);
+            statChangesPerLevel.put(stat, changePerLevel);
+        }
+    }
+
+    protected void addTechniqueStat(ResourceLocation stat, double amount)
+    {
+        addTechniqueStat(stat, amount, null);
+    }
+
+    public Set<ResourceLocation> getTechniqueStats()
+    {
+        return defaultStats.keySet();
+    }
+
+    public boolean hasTechniqueStat(ResourceLocation stat)
+    {
+        return defaultStats.containsKey(stat);
+    }
+
+    public double getTechniqueStat(ResourceLocation stat)
+    {
+        double defaultStat = getTechniqueDefaultStat(stat);
+
+        // If this technique can level, then loop through the stat changes and apply them to this stat
+        if (canLevel)
+            for (Map.Entry<ResourceLocation, TechniqueStatModification> modification : statChangesPerLevel.entrySet())
+                defaultStat += modification.getValue().getStatChange(stat) * statLevels.get(modification.getKey());
+
+        return defaultStat;
+    }
+
+    public double getTechniqueDefaultStat(ResourceLocation stat)
+    {
+        return defaultStats.get(stat);
     }
 
     // Deactivates the bounding box animation lock for legs whilst this tech is active

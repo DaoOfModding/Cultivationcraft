@@ -9,6 +9,7 @@ import DaoOfModding.Cultivationcraft.Common.Qi.CultivationTypes;
 import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.MovementOverrideTechnique;
+import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.TechniqueStats.DefaultTechniqueStatIDs;
 import DaoOfModding.Cultivationcraft.Common.Reflection;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import DaoOfModding.Cultivationcraft.StaminaHandler;
@@ -25,7 +26,6 @@ public class SpinPetalTechnique extends MovementOverrideTechnique
 {
     protected boolean jumpPressed = false;
     protected Vec3 spinVector = new Vec3(0, 0.15, 0);
-    protected float staminaUse = 0.02f;
 
     protected PlayerPose spinUp = new PlayerPose();
 
@@ -47,6 +47,8 @@ public class SpinPetalTechnique extends MovementOverrideTechnique
         spinUp.addAngle(BodyPartModelNames.headFlowerModel, new Vec3(0, Math.toRadians(1), 0), 5);
         spinUp.addAngle(BodyPartModelNames.headFlowerModel, new Vec3(0, Math.toRadians(-89), 0), 5);
         spinUp.addAngle(BodyPartModelNames.headFlowerModel, new Vec3(0, Math.toRadians(-179), 0), 5);
+
+        addTechniqueStat(DefaultTechniqueStatIDs.staminaCost, 0.02f);
     }
 
     @Override
@@ -88,7 +90,7 @@ public class SpinPetalTechnique extends MovementOverrideTechnique
             Reflection.allowFlight((ServerPlayer) event.player);
 
             event.player.fallDistance = 0;
-            StaminaHandler.consumeStamina(event.player, staminaUse);
+            StaminaHandler.consumeStamina(event.player, (float)getTechniqueStat(DefaultTechniqueStatIDs.staminaCost));
         }
     }
 

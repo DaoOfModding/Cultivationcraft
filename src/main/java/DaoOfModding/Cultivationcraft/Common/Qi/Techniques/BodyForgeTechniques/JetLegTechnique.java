@@ -15,6 +15,7 @@ import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.PlayerStatControl;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.StatIDs;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.MovementOverrideTechnique;
+import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.TechniqueStats.DefaultTechniqueStatIDs;
 import DaoOfModding.Cultivationcraft.Common.Reflection;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import DaoOfModding.mlmanimator.Client.Models.MultiLimbedModel;
@@ -30,7 +31,6 @@ public class JetLegTechnique extends MovementOverrideTechnique
 {
     protected boolean jump = false;
     protected boolean enabled = false;
-    protected static final float flameUse = 0.025f;
     protected int enabledTicks = 0;
 
     public JetLegTechnique()
@@ -44,6 +44,8 @@ public class JetLegTechnique extends MovementOverrideTechnique
         momentumFactor = 0.2f;
 
         icon = new ResourceLocation(Cultivationcraft.MODID, "textures/techniques/icons/jetlegs.png");
+
+        addTechniqueStat(DefaultTechniqueStatIDs.breathCost, 0.025);
     }
 
     @Override
@@ -124,7 +126,7 @@ public class JetLegTechnique extends MovementOverrideTechnique
         super.tickServer(event);
         tickInactiveServer(event);
 
-        if (enabled && !PlayerHealthManager.getLungs(event.player).drainBreath(Breath.FIRE, flameUse))
+        if (enabled && !PlayerHealthManager.getLungs(event.player).drainBreath(Breath.FIRE, (float)getTechniqueStat(DefaultTechniqueStatIDs.breathCost)))
             enabled = false;
 
         if (enabled)
@@ -194,7 +196,7 @@ public class JetLegTechnique extends MovementOverrideTechnique
             return false;
 
         // Do nothing if player is out of stamina
-        if (!PlayerHealthManager.getLungs(player).drainBreath(Breath.FIRE, flameUse))
+        if (!PlayerHealthManager.getLungs(player).drainBreath(Breath.FIRE, (float)getTechniqueStat(DefaultTechniqueStatIDs.breathCost)))
             return false;
 
         jump = true;

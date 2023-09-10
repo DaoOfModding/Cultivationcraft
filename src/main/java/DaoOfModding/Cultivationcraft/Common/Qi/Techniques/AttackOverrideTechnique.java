@@ -1,5 +1,6 @@
 package DaoOfModding.Cultivationcraft.Common.Qi.Techniques;
 
+import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.TechniqueStats.DefaultTechniqueStatIDs;
 import DaoOfModding.Cultivationcraft.StaminaHandler;
 import DaoOfModding.mlmanimator.Client.Poses.PlayerPoseHandler;
 import DaoOfModding.mlmanimator.Client.Poses.PoseHandler;
@@ -9,8 +10,6 @@ import net.minecraftforge.event.TickEvent;
 
 public class AttackOverrideTechnique extends AttackTechnique
 {
-    protected float staminaUse = 0;
-
     public AttackOverrideTechnique()
     {
         super();
@@ -28,7 +27,7 @@ public class AttackOverrideTechnique extends AttackTechnique
             return;
 
         // Do nothing if player does not have enough stamina
-        if (!StaminaHandler.consumeStamina(player, staminaUse))
+        if (hasTechniqueStat(DefaultTechniqueStatIDs.staminaCost) && !StaminaHandler.consumeStamina(player, (float)getTechniqueStat(DefaultTechniqueStatIDs.staminaCost)))
             return;
 
         if (player.level.isClientSide)
@@ -48,7 +47,7 @@ public class AttackOverrideTechnique extends AttackTechnique
             return;
 
         // Do nothing if player does not have enough stamina
-        if (!StaminaHandler.consumeStamina(player, staminaUse))
+        if (hasTechniqueStat(DefaultTechniqueStatIDs.staminaCost) && !StaminaHandler.consumeStamina(player, (float)getTechniqueStat(DefaultTechniqueStatIDs.staminaCost)))
             return;
 
         if (player.level.isClientSide)

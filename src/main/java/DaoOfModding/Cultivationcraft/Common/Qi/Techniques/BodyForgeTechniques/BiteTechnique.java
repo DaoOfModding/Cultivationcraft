@@ -13,6 +13,7 @@ import DaoOfModding.Cultivationcraft.Common.Qi.Stats.PlayerStatControl;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.PlayerStatModifications;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.StatIDs;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.AttackOverrideTechnique;
+import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.TechniqueStats.DefaultTechniqueStatIDs;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -47,10 +48,9 @@ public class BiteTechnique extends AttackOverrideTechnique
         attackSound = SoundEvents.FOX_BITE;
         missSound = SoundEvents.FOX_BITE;
 
-        damage = 8;
-        range = 3.5;
-
-        staminaUse = 0.05f;
+        addTechniqueStat(DefaultTechniqueStatIDs.staminaCost, 0.05);
+        addTechniqueStat(DefaultTechniqueStatIDs.damage, 8);
+        addTechniqueStat(DefaultTechniqueStatIDs.range, 3.5);
 
         pose.addAngle(BodyPartModelNames.jawModelLower, new Vec3(Math.toRadians(40), 0, 0), GenericQiPoses.attackPriority-1, 5f, -1);
         attack.addAngle(BodyPartModelNames.jawModelLower, new Vec3(Math.toRadians(20), 0, 0), GenericQiPoses.attackPriority, 0f, -1);
@@ -75,7 +75,7 @@ public class BiteTechnique extends AttackOverrideTechnique
 
     public double getRange(Player player)
     {
-        return range * (1 + BodyPartStatControl.getPlayerStatControl(player).getSizeAdjustment());
+        return getTechniqueStat(DefaultTechniqueStatIDs.range) * (1 + BodyPartStatControl.getPlayerStatControl(player).getSizeAdjustment());
     }
 
     // Ticks on server side, only called if Technique is active and owned by the player
@@ -103,7 +103,7 @@ public class BiteTechnique extends AttackOverrideTechnique
     {
         PlayerStatModifications stats = BodyPartStatControl.getPlayerStatControl(player).getStats();
 
-        return damage * stats.getStat(StatIDs.boneAttackModifier) * stats.getStat(StatIDs.biteAttackModifier);
+        return (float)getTechniqueStat(DefaultTechniqueStatIDs.damage) * stats.getStat(StatIDs.boneAttackModifier) * stats.getStat(StatIDs.biteAttackModifier);
     }
 
     @Override

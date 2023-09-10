@@ -9,6 +9,7 @@ import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.PlayerHealthManager;
 import DaoOfModding.Cultivationcraft.Common.Qi.CultivationTypes;
 import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.ChanneledAttackTechnique;
+import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.TechniqueStats.DefaultTechniqueStatIDs;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import DaoOfModding.mlmanimator.Client.Poses.PlayerPoseHandler;
 import DaoOfModding.mlmanimator.Client.Poses.PoseHandler;
@@ -28,7 +29,6 @@ import net.minecraftforge.event.TickEvent;
 public class BeamTechnique extends ChanneledAttackTechnique
 {
     Breath breath;
-    float consumptionAmount = 1f;
 
     public BeamTechnique()
     {
@@ -36,12 +36,14 @@ public class BeamTechnique extends ChanneledAttackTechnique
 
         type = useType.Channel;
         multiple = false;
-        range = 10;
 
         langLocation = "cultivationcraft.technique.beam";
         Element = Elements.noElement;
 
         icon = new ResourceLocation(Cultivationcraft.MODID, "textures/techniques/icons/beam.png");
+
+        addTechniqueStat(DefaultTechniqueStatIDs.range, 10);
+        addTechniqueStat(DefaultTechniqueStatIDs.breathCost, 1);
     }
 
     @Override
@@ -72,7 +74,7 @@ public class BeamTechnique extends ChanneledAttackTechnique
     // Ticks on client side, only called if Technique is active
     public void tickClient(TickEvent.PlayerTickEvent event)
     {
-        if (!PlayerHealthManager.getLungs(event.player).drainBreath(breath, consumptionAmount))
+        if (!PlayerHealthManager.getLungs(event.player).drainBreath(breath, (float)getTechniqueStat(DefaultTechniqueStatIDs.breathCost)))
             return;
 
         // This was doing nothing
@@ -87,7 +89,7 @@ public class BeamTechnique extends ChanneledAttackTechnique
     // Ticks on client side, only called if Technique is active
     public void tickServer(TickEvent.PlayerTickEvent event)
     {
-        if (!PlayerHealthManager.getLungs(event.player).drainBreath(breath, consumptionAmount))
+        if (!PlayerHealthManager.getLungs(event.player).drainBreath(breath, (float)getTechniqueStat(DefaultTechniqueStatIDs.breathCost)))
             return;
 
         breath.tick(event.player);
@@ -149,6 +151,8 @@ public class BeamTechnique extends ChanneledAttackTechnique
 
     public float getAttack(Player player)
     {
+        addTechniqueStat(DefaultTechniqueStatIDs.damage, breath.getDamage());
+
         // Default attack damage
         return breath.getDamage();
     }

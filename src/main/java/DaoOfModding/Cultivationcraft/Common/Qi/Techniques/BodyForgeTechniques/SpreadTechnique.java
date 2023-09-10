@@ -13,6 +13,7 @@ import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.StatIDs;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.Technique;
+import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.TechniqueStats.DefaultTechniqueStatIDs;
 import DaoOfModding.Cultivationcraft.Common.Reflection;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import DaoOfModding.Cultivationcraft.StaminaHandler;
@@ -35,8 +36,6 @@ public class SpreadTechnique extends Technique
     protected PlayerPose flapDown = new PlayerPose();
 
     protected PlayerPose inAir = new PlayerPose();
-
-    protected float staminaUse = 0.2f;
 
     public SpreadTechnique()
     {
@@ -97,6 +96,7 @@ public class SpreadTechnique extends Technique
         inAir.addAngle(GenericLimbNames.rightArm, new Vec3(Math.toRadians(0.0D), Math.toRadians(0.0D), Math.toRadians(30.0D)), 11, 5.0F, -1);
         inAir.addAngle(GenericLimbNames.body, new Vec3(Math.toRadians(30.0D), Math.toRadians(0.0D), Math.toRadians(0.0D)), 11, 5.0F, -1);
 
+        addTechniqueStat(DefaultTechniqueStatIDs.staminaCost, 0.2);
     }
 
     @Override
@@ -183,7 +183,7 @@ public class SpreadTechnique extends Technique
         if (groundCheck == true)
             groundCheck = false;
         else if (!player.isOnGround() && cooldownCount == 0)
-            if (StaminaHandler.consumeStamina(player, staminaUse))
+            if (StaminaHandler.consumeStamina(player, (float)getTechniqueStat(DefaultTechniqueStatIDs.staminaCost)))
                 cooldownCount = cooldown;
     }
 

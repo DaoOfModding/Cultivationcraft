@@ -11,6 +11,7 @@ import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.QuestHandler;
 import DaoOfModding.Cultivationcraft.Common.Qi.CultivationTypes;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.PlayerStatModifications;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.MovementOverrideTechnique;
+import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.TechniqueStats.DefaultTechniqueStatIDs;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import DaoOfModding.mlmanimator.Client.Models.MultiLimbedModel;
 import DaoOfModding.mlmanimator.Client.Poses.PoseHandler;
@@ -23,8 +24,6 @@ import net.minecraftforge.event.TickEvent;
 public class JetTechnique extends MovementOverrideTechnique
 {
     public static final ResourceLocation jetQuest = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.quest.jet");
-    protected static final float speed = 0.1f;
-    protected static final float flameUse = 0.025f;
 
     boolean enabled = false;
     boolean forward = true;
@@ -39,6 +38,9 @@ public class JetTechnique extends MovementOverrideTechnique
         momentum = true;
 
         icon = new ResourceLocation(Cultivationcraft.MODID, "textures/techniques/icons/jets.png");
+
+        addTechniqueStat(DefaultTechniqueStatIDs.breathCost, 0.025);
+        addTechniqueStat(DefaultTechniqueStatIDs.movementSpeed, 0.1);
     }
 
     @Override
@@ -71,7 +73,7 @@ public class JetTechnique extends MovementOverrideTechnique
         super.tickClient(event);
 
         // Do nothing if player isn't pressing forward or is not in water or does not have the stamina remaining to move
-        if (!forward || event.player.isInWater() || !PlayerHealthManager.getLungs(event.player).drainBreath(Breath.FIRE, flameUse))
+        if (!forward || event.player.isInWater() || !PlayerHealthManager.getLungs(event.player).drainBreath(Breath.FIRE, (float)getTechniqueStat(DefaultTechniqueStatIDs.breathCost)))
         {
             forward = false;
             setMomentum(new Vec3(0, 0, 0));
@@ -79,7 +81,7 @@ public class JetTechnique extends MovementOverrideTechnique
         else
         {
             Vec3 forward = event.player.getForward();
-            setMomentum(new Vec3(forward.x, 0, forward.z).normalize().scale(speed));
+            setMomentum(new Vec3(forward.x, 0, forward.z).normalize().scale(getTechniqueStat(DefaultTechniqueStatIDs.movementSpeed)));
         }
 
         // Only toggle jets for player character
@@ -101,7 +103,7 @@ public class JetTechnique extends MovementOverrideTechnique
         super.tickServer(event);
 
         if (enabled)
-            PlayerHealthManager.getLungs(event.player).drainBreath(Breath.FIRE, flameUse);
+            PlayerHealthManager.getLungs(event.player).drainBreath(Breath.FIRE, (float)getTechniqueStat(DefaultTechniqueStatIDs.breathCost));
     }
 
     @Override

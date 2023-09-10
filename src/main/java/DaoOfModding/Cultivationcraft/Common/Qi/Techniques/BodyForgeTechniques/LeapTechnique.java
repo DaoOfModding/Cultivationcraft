@@ -2,6 +2,7 @@ package DaoOfModding.Cultivationcraft.Common.Qi.Techniques.BodyForgeTechniques;
 
 import DaoOfModding.Cultivationcraft.Client.Physics;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.StatIDs;
+import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.TechniqueStats.DefaultTechniqueStatIDs;
 import DaoOfModding.Cultivationcraft.StaminaHandler;
 import DaoOfModding.mlmanimator.Client.Poses.*;
 import DaoOfModding.mlmanimator.Client.Models.GenericLimbNames;
@@ -25,7 +26,6 @@ public class LeapTechnique extends Technique
     protected PlayerPose defaultLeapLegs = new PlayerPose();
 
     protected boolean leaping = false;
-    protected float staminaUse = 0.5f;
 
     public LeapTechnique()
     {
@@ -47,6 +47,8 @@ public class LeapTechnique extends Technique
         defaultLeapLegs.addAngle(BodyPartModelNames.reverseJointRightFootModel, new Vec3(Math.toRadians(0), Math.toRadians(0), 0), GenericPoses.jumpLegPriority+3, 1f, -1);
 
         defaultLeapLegs.disableHeadLook(false, 8);
+
+        addTechniqueStat(DefaultTechniqueStatIDs.staminaCost, 0.5);
     }
 
     @Override
@@ -69,7 +71,7 @@ public class LeapTechnique extends Technique
         if (active || leaping || !keyDown || !player.isOnGround() || player.isInWater())
             return;
 
-        if (StaminaHandler.consumeStamina(player, staminaUse))
+        if (StaminaHandler.consumeStamina(player, (float)getTechniqueStat(DefaultTechniqueStatIDs.staminaCost)))
             active = true;
     }
 
@@ -175,7 +177,7 @@ public class LeapTechnique extends Technique
     // Do the leap
     protected void doLeap(Player player)
     {
-        StaminaHandler.consumeStamina(player, staminaUse);
+        StaminaHandler.consumeStamina(player, (float)getTechniqueStat(DefaultTechniqueStatIDs.staminaCost));
         leaping = true;
         player.setOnGround(false);
     }

@@ -11,6 +11,7 @@ import DaoOfModding.Cultivationcraft.Common.Qi.CultivationTypes;
 import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.Technique;
+import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.TechniqueStats.DefaultTechniqueStatIDs;
 import DaoOfModding.Cultivationcraft.Common.Reflection;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import DaoOfModding.Cultivationcraft.StaminaHandler;
@@ -30,7 +31,6 @@ public class DartTechnique extends Technique
     protected PlayerPose flap = new PlayerPose();
     protected float doubledCooldown;
     protected boolean firstDash = false;
-    protected float staminaUse = 0.2f;
 
     public DartTechnique()
     {
@@ -45,6 +45,8 @@ public class DartTechnique extends Technique
         multiple = false;
 
         cooldown = 20;
+
+        addTechniqueStat(DefaultTechniqueStatIDs.staminaCost, 0.2);
 
         icon = new ResourceLocation(Cultivationcraft.MODID, "textures/techniques/icons/dart.png");
 
@@ -159,7 +161,7 @@ public class DartTechnique extends Technique
     public void dart(Player player)
     {
         // Do nothing if player is out of stamina
-        if (!StaminaHandler.consumeStamina(player, staminaUse))
+        if (!StaminaHandler.consumeStamina(player, (float)getTechniqueStat(DefaultTechniqueStatIDs.staminaCost)))
             return;
 
         float weightModifier = BodyPartStatControl.getPlayerStatControl(player).getFlightWeightModifier();
