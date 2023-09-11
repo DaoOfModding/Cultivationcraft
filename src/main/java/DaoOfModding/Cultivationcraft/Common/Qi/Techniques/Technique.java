@@ -113,6 +113,25 @@ public class Technique
         addTechniqueStat(stat, amount, null);
     }
 
+    public String getTechniqueStatString()
+    {
+        String statString = "";
+
+        for (ResourceLocation stat : getTechniqueStats())
+        {
+            statString += "\n" + Component.translatable(stat.getPath()).getString() + ": ";
+
+            double value = getTechniqueStat(stat);
+
+            if (value % 1.0 == 0)
+                statString += (int)value;
+            else
+                statString += value;
+        }
+
+        return statString;
+    }
+
     public Set<ResourceLocation> getTechniqueStats()
     {
         return defaultStats.keySet();

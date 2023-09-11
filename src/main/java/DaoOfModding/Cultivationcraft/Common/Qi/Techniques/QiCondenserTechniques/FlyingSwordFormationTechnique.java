@@ -5,6 +5,7 @@ import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.ICultiv
 import DaoOfModding.Cultivationcraft.Common.Qi.CultivationTypes;
 import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.AttackOverrideTechnique;
+import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.TechniqueStats.DefaultTechniqueStatIDs;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import DaoOfModding.mlmanimator.Client.Poses.PoseHandler;
 import net.minecraft.core.BlockPos;
@@ -17,12 +18,11 @@ import net.minecraftforge.event.TickEvent;
 
 public class FlyingSwordFormationTechnique extends AttackOverrideTechnique
 {
+    public static final ResourceLocation flyingswordspeed = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.tstat.fsspeed");
+    public static final ResourceLocation flyingswordmaxspeed = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.tstat.fsmaxspeed");
+    public static final ResourceLocation flyingswordturnspeed = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.tstat.fsturnspeed");
+
     private final float QiCost = 20;
-    private final float Damage = 1;
-    private final float speed = 0.02f;
-    private final float maxSpeed = 1;
-    private final double turnSpeed = 0.2;
-    private final float flyingSwordRange = 10;
 
     protected Entity target = null;
 
@@ -37,6 +37,12 @@ public class FlyingSwordFormationTechnique extends AttackOverrideTechnique
         multiple = true;
 
         icon = new ResourceLocation(Cultivationcraft.MODID, "textures/techniques/icons/flyingsword.png");
+
+        addTechniqueStat(DefaultTechniqueStatIDs.range, 10);
+        addTechniqueStat(DefaultTechniqueStatIDs.damage, 0.25f);
+        addTechniqueStat(flyingswordspeed, 0.02);
+        addTechniqueStat(flyingswordmaxspeed, 1);
+        addTechniqueStat(flyingswordturnspeed, 0.2);
     }
 
     @Override
@@ -52,6 +58,14 @@ public class FlyingSwordFormationTechnique extends AttackOverrideTechnique
 
         if (player.level.isClientSide)
             PoseHandler.getPlayerPoseHandler(player.getUUID()).cancelNextAttackAnimation();
+    }
+
+    @Override
+    public void attackAnimation(Player player, Entity attackTarget)
+    {
+        target = attackTarget;
+
+        super.attackAnimation(player, attackTarget);
     }
 
     @Override
@@ -89,32 +103,6 @@ public class FlyingSwordFormationTechnique extends AttackOverrideTechnique
     {
         return QiCost;
     }
-
-    public float getRange()
-    {
-        return flyingSwordRange;
-    }
-
-    public float getSwordDamageMultiplier()
-    {
-        return Damage;
-    }
-
-    public float getSwordMovementSpeed()
-    {
-        return speed;
-    }
-
-    public float getSwordMaxSpeed()
-    {
-        return maxSpeed;
-    }
-
-    public double getSwordTurnSpeed()
-    {
-        return turnSpeed;
-    }
-
 
     @Override
     public void tickClient(TickEvent.PlayerTickEvent event)

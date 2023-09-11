@@ -5,6 +5,7 @@ import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.ICultiv
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.CultivatorTechniques;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.ICultivatorTechniques;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.QiCondenserTechniques.FlyingSwordFormationTechnique;
+import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.TechniqueStats.DefaultTechniqueStatIDs;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.protocol.Packet;
@@ -59,6 +60,7 @@ public class FlyingSwordEntity extends ItemEntity
     private final float defaultspeed = 0.02f;
     private final float defaultmaxSpeed = 1;
     private final double defaultTurnSpeed = 0.2;
+    private final float defaultdamage = 0.25f;
     private final float defaultRange = 10;
 
     // Testing thing
@@ -90,7 +92,7 @@ public class FlyingSwordEntity extends ItemEntity
     public float getControlRange()
     {
         if (formation != null)
-            return formation.getRange();
+            return (float)formation.getTechniqueStat(DefaultTechniqueStatIDs.range);
 
         return defaultRange;
     }
@@ -98,7 +100,7 @@ public class FlyingSwordEntity extends ItemEntity
     public double getTurnSpeed()
     {
         if (formation != null)
-            return formation.getSwordTurnSpeed();
+            return formation.getTechniqueStat(FlyingSwordFormationTechnique.flyingswordturnspeed);
 
         return defaultTurnSpeed;
     }
@@ -106,15 +108,23 @@ public class FlyingSwordEntity extends ItemEntity
     public float getSpeed()
     {
         if (formation != null)
-            return formation.getSwordMovementSpeed();
+            return (float)formation.getTechniqueStat(FlyingSwordFormationTechnique.flyingswordspeed);
 
         return defaultspeed;
+    }
+
+    public float getDamageModifier()
+    {
+        if (formation != null)
+            return (float)formation.getTechniqueStat(DefaultTechniqueStatIDs.damage);
+
+        return defaultdamage;
     }
 
     public float getMaxSpeed()
     {
         if (formation != null)
-            return formation.getSwordMaxSpeed();
+            return (float)formation.getTechniqueStat(FlyingSwordFormationTechnique.flyingswordmaxspeed);
 
         return defaultmaxSpeed;
     }
@@ -429,7 +439,6 @@ public class FlyingSwordEntity extends ItemEntity
     @Override
     public void tick()
     {
-
         if (getItem().onEntityItemUpdate(this))
             return;
 
@@ -667,6 +676,8 @@ public class FlyingSwordEntity extends ItemEntity
                 float f = 1;
                 if (getItem().getItem() instanceof SwordItem)
                     f = ((SwordItem)getItem().getItem()).getDamage();
+
+                f *= getDamageModifier();
 
                 float f1;
 

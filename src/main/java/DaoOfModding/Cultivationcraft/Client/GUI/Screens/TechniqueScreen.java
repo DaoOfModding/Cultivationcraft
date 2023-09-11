@@ -1,6 +1,7 @@
 package DaoOfModding.Cultivationcraft.Client.GUI.Screens;
 
-import DaoOfModding.Cultivationcraft.Client.GUI.BetterFontRenderer;
+import DaoOfModding.Cultivationcraft.Client.GUI.GUIButton;
+import DaoOfModding.Cultivationcraft.Client.GUI.TextField;
 import DaoOfModding.Cultivationcraft.Client.genericClientFunctions;
 import DaoOfModding.Cultivationcraft.Client.GUI.DropdownList;
 import DaoOfModding.Cultivationcraft.Client.GUI.TechniqueIcons;
@@ -24,13 +25,24 @@ public class TechniqueScreen extends GenericTabScreen
     public static int selected = 0;
 
     protected final int techniqueXPos = (xSize - 85) / 2;
-    protected final int techniqueYPos = 50;
+    protected final int techniqueYPos = 30;
+
+    protected GUIButton description;
+    protected GUIButton stats;
+
+    protected TextField partDescription = new TextField();
 
     public TechniqueScreen()
     {
         super(1, Component.translatable("cultivationcraft.gui.technique"), new ResourceLocation(Cultivationcraft.MODID, "textures/gui/technique.png"));
 
         updateTechniqueList();
+
+        partDescription.setSize(xSize - 60, 80);
+
+        description = new GUIButton("DESCRIPTION", Component.translatable("cultivationcraft.gui.description").getString());
+        description.select();
+        stats = new GUIButton("STATS", Component.translatable("cultivationcraft.gui.stats").getString());
     }
 
     protected void updateTechniqueList()
@@ -127,11 +139,30 @@ public class TechniqueScreen extends GenericTabScreen
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int buttonPressed)
     {
+        if (super.mouseClicked(mouseX, mouseY, buttonPressed))
+            return true;
+
+        if (partDescription.mouseClicked(mouseX, mouseY, buttonPressed))
+            return true;
+
         int edgeSpacingX = (this.width - this.xSize) / 2;
         int edgeSpacingY = (this.height - this.ySize) / 2;
 
-        if (super.mouseClicked(mouseX, mouseY, buttonPressed))
+        if (description.mouseClick((int)mouseX - (edgeSpacingX + 127 - description.width - 10), (int)mouseY - (edgeSpacingY + techniqueYPos + 15), buttonPressed))
+        {
+            stats.unselect();
+            description.select();
+
             return true;
+        }
+        else if (stats.mouseClick((int)mouseX - (edgeSpacingX + 127 + 10), (int)mouseY - (edgeSpacingY + techniqueYPos + 15), buttonPressed))
+        {
+            description.unselect();
+            stats.select();
+
+            return true;
+        }
+
 
         Class changed = (Class)techniques.mouseClick((int)mouseX - (edgeSpacingX + techniqueXPos), (int)mouseY - (edgeSpacingY + techniqueYPos), buttonPressed);
 
@@ -173,8 +204,18 @@ public class TechniqueScreen extends GenericTabScreen
 
         Technique selectedTech = CultivatorTechniques.getCultivatorTechniques(genericClientFunctions.getPlayer()).getTechnique(selected);
 
-        if (selectedTech != null)
-            BetterFontRenderer.wordwrap(font, PoseStack, selectedTech.getDescription(),edgeSpacingX + 30, edgeSpacingY + techniqueYPos + 20, Color.GRAY.getRGB(), xSize - 60);
+        if (selectedTech == null)
+            partDescription.setText("");
+        else if (description.isSelected())
+            partDescription.setText(selectedTech.getDescription());
+        else if (stats.isSelected())
+            partDescription.setText(selectedTech.getStats().toString() + selectedTech.getTechniqueStatString());
+
+        description.render(PoseStack, edgeSpacingX + 127 - description.width - 10, edgeSpacingY + techniqueYPos + 15, mouseX, mouseY, this);
+        stats.render(PoseStack, edgeSpacingX + 127 + 10, edgeSpacingY + techniqueYPos + 15, mouseX, mouseY, this);
+
+        partDescription.setPos(edgeSpacingX + 30, edgeSpacingY + techniqueYPos + 30);
+        partDescription.render(this, font, PoseStack, mouseX, mouseY);
 
         // Render the techniques dropdown list
         techniques.render(PoseStack, edgeSpacingX + techniqueXPos, edgeSpacingY + techniqueYPos, mouseX, mouseY, this);

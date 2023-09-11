@@ -45,8 +45,6 @@ public class AttackTechnique extends Technique
     // Try to attack with specified player, client only
     public void attack(Player player, int slot)
     {
-        attackAnimation(player);
-
         HitResult.Type result = HitResult.Type.MISS;
         UUID attackUUID = null;
         Entity attackEntity = CultivatorAttackLogicClient.tryAttackEntity(getRange(player));
@@ -71,10 +69,12 @@ public class AttackTechnique extends Technique
             }
         }
 
+        attackAnimation(player, attackEntity);
+
         ClientPacketHandler.sendAttackToServer(player.getUUID(), result, location, attackUUID, direction, slot);
     }
 
-    public void attackAnimation(Player player)
+    public void attackAnimation(Player player, Entity attackTarget)
     {
         // Add the attacking pose to the PoseHandler
         PoseHandler.addPose(player.getUUID(), attack);

@@ -71,8 +71,12 @@
   "cultivationcraft.tstat.staminacost": "Stamina Cost",
   "cultivationcraft.tstat.breathcost": "Breath Cost",
   "cultivationcraft.tstat.range": "Range",
-  "cultivationcraft.tstat.damage": "Damage",
+  "cultivationcraft.tstat.damage": "Damage Modifier",
   "cultivationcraft.tstat.speed": "Movement Speed",
+
+  "cultivationcraft.tstat.fsspeed": "Flying Sword Movement Speed",
+  "cultivationcraft.tstat.fsmaxspeed": "Flying Sword Max Speed",
+  "cultivationcraft.tstat.fsturnspeed": "Flying Sword Turn Speed",
 
   "cultivationcraft.quest.qisource": "Seconds spent cultivating from a QiSource",
   "cultivationcraft.quest.damagetaken": "Damage taken",

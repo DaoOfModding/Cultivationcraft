@@ -190,7 +190,29 @@ public class AttackPacket extends Packet
         if (!(tech instanceof AttackTechnique))
             return;
 
+        Entity target = null;
+
+        if (targetType == HitResult.Type.ENTITY)
+        {
+            double range = ((AttackTechnique)tech).getRange(pEntity);
+
+            // Create a large bounding box at the specified position then search for a list of entities at that location
+            AABB scan = new AABB(targetPos.x - range * 2, targetPos.y - range * 2, targetPos.z - range * 2, targetPos.x + range * 2, targetPos.y + range * 2, targetPos.z + range * 2);
+
+            List<Entity> entities = pEntity.level.getEntitiesOfClass(Entity.class, scan);
+
+            // If entities have been found, search through and try to find one with the targetID
+            if (!entities.isEmpty())
+                for (Entity testEntity : entities)
+                    if (testEntity.getUUID().equals(target))
+                    {
+                        target = testEntity;
+                        break;
+                    }
+        }
+
         // Play attack animation for the specified player
-        ((AttackTechnique)tech).attackAnimation(pEntity);
+        ((AttackTechnique)tech).attackAnimation(pEntity, target);
+
     }
 }

@@ -37,7 +37,6 @@ public class DivineSenseTechnique extends Technique
         //setOverlay(new ResourceLocation(Cultivationcraft.MODID, "textures/techniques/overlays/divinesense.png"));
 
         stats.setStat(StatIDs.staminaDrain, 0.05f);
-        addTechniqueStat(DefaultTechniqueStatIDs.staminaCost, 0.05, null);
 
         effects.add(MobEffects.NIGHT_VISION);
     }
