@@ -30,6 +30,8 @@ public class TechniqueScreen extends GenericTabScreen
     protected GUIButton description;
     protected GUIButton stats;
 
+    protected GUIButton modify;
+
     protected TextField partDescription = new TextField();
 
     public TechniqueScreen()
@@ -43,6 +45,8 @@ public class TechniqueScreen extends GenericTabScreen
         description = new GUIButton("DESCRIPTION", Component.translatable("cultivationcraft.gui.description").getString());
         description.select();
         stats = new GUIButton("STATS", Component.translatable("cultivationcraft.gui.stats").getString());
+
+        modify = new GUIButton("MODIFY", Component.translatable("cultivationcraft.gui.modify").getString());
     }
 
     protected void updateTechniqueList()
@@ -148,21 +152,6 @@ public class TechniqueScreen extends GenericTabScreen
         int edgeSpacingX = (this.width - this.xSize) / 2;
         int edgeSpacingY = (this.height - this.ySize) / 2;
 
-        if (description.mouseClick((int)mouseX - (edgeSpacingX + 127 - description.width - 10), (int)mouseY - (edgeSpacingY + techniqueYPos + 15), buttonPressed))
-        {
-            stats.unselect();
-            description.select();
-
-            return true;
-        }
-        else if (stats.mouseClick((int)mouseX - (edgeSpacingX + 127 + 10), (int)mouseY - (edgeSpacingY + techniqueYPos + 15), buttonPressed))
-        {
-            description.unselect();
-            stats.select();
-
-            return true;
-        }
-
 
         Class changed = (Class)techniques.mouseClick((int)mouseX - (edgeSpacingX + techniqueXPos), (int)mouseY - (edgeSpacingY + techniqueYPos), buttonPressed);
 
@@ -179,6 +168,29 @@ public class TechniqueScreen extends GenericTabScreen
 
             if (techniqueSelected != -1)
                 changeSelection(techniqueSelected);
+        }
+
+        if (description.mouseClick((int)mouseX - (edgeSpacingX + 127 - description.width - 10), (int)mouseY - (edgeSpacingY + techniqueYPos + 15), buttonPressed))
+        {
+            stats.unselect();
+            description.select();
+
+            return true;
+        }
+        else if (stats.mouseClick((int)mouseX - (edgeSpacingX + 127 + 10), (int)mouseY - (edgeSpacingY + techniqueYPos + 15), buttonPressed))
+        {
+            description.unselect();
+            stats.select();
+
+            return true;
+        }
+
+        Technique selectedTech = CultivatorTechniques.getCultivatorTechniques(genericClientFunctions.getPlayer()).getTechnique(selected);
+
+        if (selectedTech != null && selectedTech.canLevel() && modify.mouseClick((int)mouseX - (edgeSpacingX + 127 + 20 + modify.width), (int)mouseY - (edgeSpacingY + techniqueYPos + 15), buttonPressed))
+        {
+            Minecraft.getInstance().forceSetScreen(new TechniqueModifyScreen(selected));
+            return true;
         }
 
         return false;
@@ -213,6 +225,9 @@ public class TechniqueScreen extends GenericTabScreen
 
         description.render(PoseStack, edgeSpacingX + 127 - description.width - 10, edgeSpacingY + techniqueYPos + 15, mouseX, mouseY, this);
         stats.render(PoseStack, edgeSpacingX + 127 + 10, edgeSpacingY + techniqueYPos + 15, mouseX, mouseY, this);
+
+        if (selectedTech != null && selectedTech.canLevel())
+            modify.render(PoseStack, edgeSpacingX + 127 + 20 + modify.width, edgeSpacingY + techniqueYPos + 15, mouseX, mouseY, this);
 
         partDescription.setPos(edgeSpacingX + 30, edgeSpacingY + techniqueYPos + 30);
         partDescription.render(this, font, PoseStack, mouseX, mouseY);

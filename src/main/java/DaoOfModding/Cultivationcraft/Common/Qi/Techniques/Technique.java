@@ -108,6 +108,11 @@ public class Technique
         }
     }
 
+    public boolean canLevel()
+    {
+        return canLevel;
+    }
+
     protected void addTechniqueStat(ResourceLocation stat, double amount)
     {
         addTechniqueStat(stat, amount, null);

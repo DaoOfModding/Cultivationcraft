@@ -6,6 +6,7 @@ import DaoOfModding.Cultivationcraft.Common.Qi.CultivationTypes;
 import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.AttackOverrideTechnique;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.TechniqueStats.DefaultTechniqueStatIDs;
+import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.TechniqueStats.TechniqueStatModification;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import DaoOfModding.mlmanimator.Client.Poses.PoseHandler;
 import net.minecraft.core.BlockPos;
@@ -38,11 +39,26 @@ public class FlyingSwordFormationTechnique extends AttackOverrideTechnique
 
         icon = new ResourceLocation(Cultivationcraft.MODID, "textures/techniques/icons/flyingsword.png");
 
-        addTechniqueStat(DefaultTechniqueStatIDs.range, 10);
-        addTechniqueStat(DefaultTechniqueStatIDs.damage, 0.25f);
-        addTechniqueStat(flyingswordspeed, 0.02);
-        addTechniqueStat(flyingswordmaxspeed, 1);
-        addTechniqueStat(flyingswordturnspeed, 0.2);
+        TechniqueStatModification flyingdamageModification = new TechniqueStatModification(DefaultTechniqueStatIDs.damage);
+        TechniqueStatModification flyingrangeModification = new TechniqueStatModification(DefaultTechniqueStatIDs.range);
+        TechniqueStatModification flyingSwordSpeedModification = new TechniqueStatModification(flyingswordspeed);
+        TechniqueStatModification flyingSwordMaxSpeedModification = new TechniqueStatModification(flyingswordmaxspeed);
+        TechniqueStatModification flyingSwordTurnSpeedModification = new TechniqueStatModification(flyingswordturnspeed);
+
+        flyingdamageModification.addStatChange(DefaultTechniqueStatIDs.damage, 0.0005);
+        flyingrangeModification.addStatChange(DefaultTechniqueStatIDs.range, 0.01);
+        flyingSwordSpeedModification.addStatChange(flyingswordspeed, 0.0001);
+        flyingSwordMaxSpeedModification.addStatChange(flyingswordmaxspeed, 0.01);
+        flyingSwordTurnSpeedModification.addStatChange(flyingswordturnspeed, 0.001);
+
+
+        addTechniqueStat(DefaultTechniqueStatIDs.range, 10, flyingrangeModification);
+        addTechniqueStat(DefaultTechniqueStatIDs.damage, 0.25f, flyingdamageModification);
+        addTechniqueStat(flyingswordspeed, 0.02, flyingSwordSpeedModification);
+        addTechniqueStat(flyingswordmaxspeed, 1, flyingSwordMaxSpeedModification);
+        addTechniqueStat(flyingswordturnspeed, 0.2, flyingSwordTurnSpeedModification);
+
+        canLevel = true;
     }
 
     @Override
