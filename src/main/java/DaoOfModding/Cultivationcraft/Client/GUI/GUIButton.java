@@ -27,12 +27,21 @@ public class GUIButton
     protected String name;
     protected String ID;
 
+    protected int xpos = 0;
+    protected int ypos = 0;
+
     public GUIButton(String buttonID, String text)
     {
         ID = buttonID;
         name = text;
 
         width = baseWidth + Minecraft.getInstance().font.width(text);
+    }
+
+    public void setPos(int x, int y)
+    {
+        xpos = x;
+        ypos = y;
     }
 
     public String getID()
@@ -45,6 +54,9 @@ public class GUIButton
         // Do nothing if the left button isn't pressed
         if (buttonPressed != 0)
             return false;
+
+        mouseX -= xpos;
+        mouseY -= ypos;
 
         if (mouseX >= 0 && mouseX < width && mouseY >= 0 && mouseY < height)
         {
@@ -75,6 +87,9 @@ public class GUIButton
         // Reset the hover boolean
         hover = false;
 
+        mouseX -= xpos;
+        mouseY -= ypos;
+
         // If the mouse is over the button set hover to true
         if (mouseX >= 0 && mouseX < width && mouseY >= 0 && mouseY < height)
             hover = true;
@@ -82,12 +97,12 @@ public class GUIButton
         return hover;
     }
 
-    public void render(PoseStack PoseStack, int xpos, int ypos, int mouseX, int mouseY, GuiComponent gui)
+    public void render(PoseStack PoseStack, int mouseX, int mouseY, GuiComponent gui)
     {
         RenderSystem.setShaderTexture(0, TEXTURE);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 
-        mouseOver(mouseX - xpos, mouseY - ypos);
+        mouseOver(mouseX, mouseY);
 
         // Set the offset to draw the correct button texture
         int offset = 0;

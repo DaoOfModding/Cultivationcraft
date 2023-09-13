@@ -197,7 +197,7 @@ public class BodyforgeScreen extends GenericTabScreen
             }
 
             // Send the selected part to the server if a part is selected and the forge button is pressed
-            if (forge.mouseClick((int) mouseX - (edgeSpacingX + forgeXPos), (int) mouseY - (edgeSpacingY + forgeYPos), buttonPressed)) {
+            if (forge.mouseClick((int) mouseX, (int) mouseY, buttonPressed)) {
                 if (forgePart.getSelected() != null)
                     ClientPacketHandler.sendBodyForgeSelectionToServer(forgePart.getSelected().toString());
 
@@ -206,7 +206,7 @@ public class BodyforgeScreen extends GenericTabScreen
                 return true;
             }
 
-            if (description.mouseClick((int) mouseX - (edgeSpacingX + detailsMinXPos), (int) mouseY - (edgeSpacingY + detailsYPos - 20), buttonPressed))
+            if (description.mouseClick((int) mouseX, (int) mouseY, buttonPressed))
             {
                 description.select();
                 stats.unselect();
@@ -214,7 +214,7 @@ public class BodyforgeScreen extends GenericTabScreen
                 partDescription.resetScroll();
                 descriptionMode = true;
             }
-            else if (stats.mouseClick((int) mouseX - (edgeSpacingX + detailsMaxXPos - stats.width), (int) mouseY - (edgeSpacingY + detailsYPos - 20), buttonPressed))
+            else if (stats.mouseClick((int) mouseX , (int) mouseY, buttonPressed))
             {
                 stats.select();
                 description.unselect();
@@ -229,7 +229,7 @@ public class BodyforgeScreen extends GenericTabScreen
         }
 
         // Cancel the selection if the cancel button is pressed
-        if (cancel.mouseClick((int)mouseX - (edgeSpacingX + cancelXPos), (int)mouseY - (edgeSpacingY + cancelYPos), buttonPressed))
+        if (cancel.mouseClick((int)mouseX, (int)mouseY, buttonPressed))
         {
             if (mode != 2)
                 ClientPacketHandler.sendBodyForgeSelectionToServer("");
@@ -297,8 +297,11 @@ public class BodyforgeScreen extends GenericTabScreen
 
         partDescription.render(this, font, PoseStack, mouseX, mouseY);
 
-        description.render(PoseStack, edgeSpacingX + detailsMinXPos, edgeSpacingY + detailsYPos - 20, mouseX, mouseY, this);
-        stats.render(PoseStack, edgeSpacingX + detailsMaxXPos - stats.width, edgeSpacingY + detailsYPos - 20, mouseX, mouseY, this);
+        description.setPos(edgeSpacingX + detailsMinXPos, edgeSpacingY + detailsYPos - 20);
+        description.render(PoseStack, mouseX, mouseY, this);
+
+        stats.setPos(edgeSpacingX + detailsMaxXPos - stats.width, edgeSpacingY + detailsYPos - 20);
+        stats.render(PoseStack, mouseX, mouseY, this);
     }
 
     protected void drawGuiForgroundLayer(PoseStack PoseStack, float partialTicks, int mouseX, int mouseY)
@@ -346,7 +349,8 @@ public class BodyforgeScreen extends GenericTabScreen
         int edgeSpacingX = (this.width - this.xSize) / 2;
         int edgeSpacingY = (this.height - this.ySize) / 2;
 
-        forge.render(PoseStack, edgeSpacingX + forgeXPos, edgeSpacingY + forgeYPos, mouseX, mouseY, this);
+        forge.setPos(edgeSpacingX + forgeXPos, edgeSpacingY + forgeYPos);
+        forge.render(PoseStack, mouseX, mouseY, this);
 
         // Render the BodyPart dropdown lists
         forgePart.render(PoseStack, edgeSpacingX + bodyPartListXPos, edgeSpacingY + forgeListYPos, mouseX, mouseY, this);
@@ -384,7 +388,8 @@ public class BodyforgeScreen extends GenericTabScreen
         this.blit(PoseStack, edgeSpacingX + 9, edgeSpacingY + 160, 0, 233, length, 6);
         this.blit(PoseStack, edgeSpacingX + 10, edgeSpacingY + 161, 1, 239, (int)((length - 2) * progress), 4);
 
-        cancel.render(PoseStack, edgeSpacingX + cancelXPos, edgeSpacingY + cancelYPos, mouseX, mouseY, this);
+        cancel.setPos(edgeSpacingX + cancelXPos, edgeSpacingY + cancelYPos);
+        cancel.render(PoseStack, mouseX, mouseY, this);
     }
 
     protected void drawQuest(PoseStack PoseStack, BodyPart part, int mouseX, int mouseY)
@@ -421,7 +426,8 @@ public class BodyforgeScreen extends GenericTabScreen
         this.blit(PoseStack, edgeSpacingX + 9, edgeSpacingY + 160, 0, 233, length, 6);
         this.blit(PoseStack, edgeSpacingX + 10, edgeSpacingY + 161, 1, 239, (int)((length - 2) * (progress / quest.complete)), 4);
 
-        cancel.render(PoseStack, edgeSpacingX + cancelXPos, edgeSpacingY + cancelYPos, mouseX, mouseY, this);
+        cancel.setPos(edgeSpacingX + cancelXPos, edgeSpacingY + cancelYPos);
+        cancel.render(PoseStack, mouseX, mouseY, this);
     }
 
     protected void drawBody(PoseStack PoseStack)

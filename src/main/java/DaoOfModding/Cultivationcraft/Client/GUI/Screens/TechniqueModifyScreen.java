@@ -17,6 +17,8 @@ public class TechniqueModifyScreen extends GenericTabScreen
     protected final int statYPos = 30;
     protected final int statYSpacing = 10;
 
+    protected final int statXPosFromRight = 60;
+
     protected int techniqueNumber;
     protected Technique selectedTech;
 
@@ -24,7 +26,7 @@ public class TechniqueModifyScreen extends GenericTabScreen
 
     public TechniqueModifyScreen(int tech)
     {
-        super(1, Component.translatable("cultivationcraft.gui.technique"), new ResourceLocation(Cultivationcraft.MODID, "textures/gui/blank.png"));
+        super(1, Component.translatable("cultivationcraft.gui.technique"), new ResourceLocation(Cultivationcraft.MODID, "textures/gui/stats.png"));
 
         techniqueNumber = tech;
 
@@ -56,7 +58,11 @@ public class TechniqueModifyScreen extends GenericTabScreen
 
         for (int stat = 0; stat < stats.size(); stat++)
         {
+            double statValue = selectedTech.getTechniqueStat(stats.get(stat));
+
             font.draw(PoseStack, Component.translatable(stats.get(stat).getPath()).getString(), edgeSpacingX + statXPos, edgeSpacingY + statYPos + statYSpacing*stat, Color.black.getRGB());
+            font.draw(PoseStack, "" + statValue, edgeSpacingX + this.xSize - statXPosFromRight - font.width("" + statValue), edgeSpacingY + statYPos + statYSpacing*stat, Color.WHITE.getRGB());
+
         }
     }
 }

@@ -61,20 +61,17 @@ public class CultivationSelectionScreen extends Screen
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int buttonPressed)
     {
-        int edgeSpacingX = (this.width - this.xSize) / 2;
-        int edgeSpacingY = (this.height - this.ySize) / 2;
-
         if (super.mouseClicked(mouseX, mouseY, buttonPressed))
             return true;
 
-        if (internal.mouseClick((int)mouseX - (edgeSpacingX + selectionXPos - internal.width - selectionSpacing / 2), (int)mouseY - (edgeSpacingY + selectionYPos), buttonPressed))
+        if (internal.mouseClick((int)mouseX , (int)mouseY, buttonPressed))
         {
             external.unselect();
             type = CultivationTypes.BODY_CULTIVATOR;
 
             return true;
         }
-        else if (external.mouseClick((int)mouseX - (edgeSpacingX + selectionXPos + selectionSpacing / 2), (int)mouseY - (edgeSpacingY + selectionYPos), buttonPressed))
+        else if (external.mouseClick((int)mouseX, (int)mouseY, buttonPressed))
         {
             internal.unselect();
             type = CultivationTypes.QI_CONDENSER;
@@ -83,7 +80,7 @@ public class CultivationSelectionScreen extends Screen
         }
 
         // Choose selected cultivation method if button is pressed
-        if (cultivate.mouseClick((int)mouseX - (edgeSpacingX + cultivateXPos - cultivate.width / 2), (int)mouseY - (edgeSpacingY + cultivateYPos), buttonPressed))
+        if (cultivate.mouseClick((int)mouseX, (int)mouseY, buttonPressed))
         {
             ClientPacketHandler.sendCultivationTypeToServer(Minecraft.getInstance().player.getUUID(), type);
             this.onClose();
@@ -118,14 +115,17 @@ public class CultivationSelectionScreen extends Screen
         int edgeSpacingX = (this.width - this.xSize) / 2;
         int edgeSpacingY = (this.height - this.ySize) / 2;
 
-        internal.render(PoseStack, edgeSpacingX + selectionXPos - internal.width - selectionSpacing / 2, edgeSpacingY + selectionYPos, mouseX, mouseY, this);
-        external.render(PoseStack, edgeSpacingX + selectionXPos + selectionSpacing / 2, edgeSpacingY + selectionYPos, mouseX, mouseY, this);
+        internal.setPos(edgeSpacingX + selectionXPos - internal.width - selectionSpacing / 2, edgeSpacingY + selectionYPos);
+        internal.render(PoseStack, mouseX, mouseY, this);
+        external.setPos(edgeSpacingX + selectionXPos + selectionSpacing / 2, edgeSpacingY + selectionYPos);
+        external.render(PoseStack,  mouseX, mouseY, this);
 
         cultivationText.setPos(edgeSpacingX + cultivationTextX, edgeSpacingY + cultivationTextY);
         cultivationText.setSize(cultivationTextWidth, cultivationTextHeight);
         cultivationText.setText(Component.translatable("cultivationcraft.gui.cultivationtype." + type).getString());
         cultivationText.render(this, font, PoseStack, mouseX, mouseY);
 
-        cultivate.render(PoseStack, edgeSpacingX + cultivateXPos - cultivate.width / 2, edgeSpacingY + cultivateYPos, mouseX, mouseY, this);
+        cultivate.setPos(edgeSpacingX + cultivateXPos - cultivate.width / 2, edgeSpacingY + cultivateYPos);
+        cultivate.render(PoseStack, mouseX, mouseY, this);
     }
 }

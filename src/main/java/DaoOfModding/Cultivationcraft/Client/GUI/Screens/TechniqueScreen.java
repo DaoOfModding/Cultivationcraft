@@ -170,14 +170,14 @@ public class TechniqueScreen extends GenericTabScreen
                 changeSelection(techniqueSelected);
         }
 
-        if (description.mouseClick((int)mouseX - (edgeSpacingX + 127 - description.width - 10), (int)mouseY - (edgeSpacingY + techniqueYPos + 15), buttonPressed))
+        if (description.mouseClick((int)mouseX, (int)mouseY, buttonPressed))
         {
             stats.unselect();
             description.select();
 
             return true;
         }
-        else if (stats.mouseClick((int)mouseX - (edgeSpacingX + 127 + 10), (int)mouseY - (edgeSpacingY + techniqueYPos + 15), buttonPressed))
+        else if (stats.mouseClick((int)mouseX, (int)mouseY, buttonPressed))
         {
             description.unselect();
             stats.select();
@@ -187,7 +187,7 @@ public class TechniqueScreen extends GenericTabScreen
 
         Technique selectedTech = CultivatorTechniques.getCultivatorTechniques(genericClientFunctions.getPlayer()).getTechnique(selected);
 
-        if (selectedTech != null && selectedTech.canLevel() && modify.mouseClick((int)mouseX - (edgeSpacingX + 127 + 20 + modify.width), (int)mouseY - (edgeSpacingY + techniqueYPos + 15), buttonPressed))
+        if (selectedTech != null && selectedTech.canLevel() && modify.mouseClick((int)mouseX, (int)mouseY, buttonPressed))
         {
             Minecraft.getInstance().forceSetScreen(new TechniqueModifyScreen(selected));
             return true;
@@ -223,11 +223,16 @@ public class TechniqueScreen extends GenericTabScreen
         else if (stats.isSelected())
             partDescription.setText(selectedTech.getStats().toString() + selectedTech.getTechniqueStatString());
 
-        description.render(PoseStack, edgeSpacingX + 127 - description.width - 10, edgeSpacingY + techniqueYPos + 15, mouseX, mouseY, this);
-        stats.render(PoseStack, edgeSpacingX + 127 + 10, edgeSpacingY + techniqueYPos + 15, mouseX, mouseY, this);
+        description.setPos(edgeSpacingX + 127 - description.width - 10, edgeSpacingY + techniqueYPos + 15);
+        description.render(PoseStack, mouseX, mouseY, this);
+        stats.setPos(edgeSpacingX + 127 + 10, edgeSpacingY + techniqueYPos + 15);
+        stats.render(PoseStack, mouseX, mouseY, this);
 
         if (selectedTech != null && selectedTech.canLevel())
-            modify.render(PoseStack, edgeSpacingX + 127 + 20 + modify.width, edgeSpacingY + techniqueYPos + 15, mouseX, mouseY, this);
+        {
+            modify.setPos(edgeSpacingX + 127 + 20 + modify.width, edgeSpacingY + techniqueYPos + 15);
+            modify.render(PoseStack, mouseX, mouseY, this);
+        }
 
         partDescription.setPos(edgeSpacingX + 30, edgeSpacingY + techniqueYPos + 30);
         partDescription.render(this, font, PoseStack, mouseX, mouseY);
