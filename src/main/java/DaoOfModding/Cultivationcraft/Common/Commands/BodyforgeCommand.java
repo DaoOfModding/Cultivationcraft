@@ -74,7 +74,7 @@ public class BodyforgeCommand
             BodyModifications.getBodyModifications(serverplayer).clearModifications();
             PacketHandler.sendBodyModificationsToClient(serverplayer);
 
-            CultivatorStats.getCultivatorStats(serverplayer).setCultivationType(CultivationTypes.NO_CULTIVATION);
+            CultivatorStats.getCultivatorStats(serverplayer).reset();
             PacketHandler.sendCultivatorStatsToClient(serverplayer);
         }
 

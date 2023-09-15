@@ -19,10 +19,11 @@ import java.util.UUID;
 public class CultivatorStats implements ICultivatorStats
 {
     protected int cultivationType = CultivationTypes.NO_CULTIVATION;
+    protected int cultivationLevel = 0;
+    protected int cultivationStage = 0;
+    protected int qi = 0;
 
     protected boolean disconnected = false;
-
-    protected HashMap<String, StatModifier> modifiers = new HashMap<String, StatModifier>();
 
     public int getCultivationType()
     {
@@ -34,17 +35,34 @@ public class CultivatorStats implements ICultivatorStats
         cultivationType = newType;
     }
 
-    public StatModifier getModifier(String id)
+    public int getCultivationLevel()
     {
-        if (!modifiers.containsKey(id))
-            modifiers.put(id, new StatModifier(id));
-
-        return modifiers.get(id);
+        return cultivationLevel;
     }
 
-    public HashMap<String, StatModifier> getModifiers()
+    public void setCultivationLevel(int newLevel)
     {
-        return modifiers;
+        cultivationLevel = newLevel;
+    }
+
+    public int getCultivationStage()
+    {
+        return cultivationStage;
+    }
+
+    public void setCultivationStage(int newStage)
+    {
+        cultivationStage = newStage;
+    }
+
+    public int getQi()
+    {
+        return qi;
+    }
+
+    public void setQi(int newQi)
+    {
+        qi = newQi;
     }
 
     public void setDisconnected(boolean value) {
@@ -55,10 +73,20 @@ public class CultivatorStats implements ICultivatorStats
         return disconnected;
     }
 
+    public void reset()
+    {
+        cultivationType = CultivationTypes.NO_CULTIVATION;
+        cultivationLevel = 0;
+        cultivationStage = 0;
+        qi = 0;    }
+
     public CompoundTag writeNBT()
     {
         CompoundTag nbt = new CompoundTag();
         nbt.putInt("TYPE", getCultivationType());
+        nbt.putInt("LEVEL", getCultivationLevel());
+        nbt.putInt("STAGE", getCultivationStage());
+        nbt.putInt("QI", getQi());
 
         return nbt;
     }
@@ -66,6 +94,9 @@ public class CultivatorStats implements ICultivatorStats
     public void readNBT(CompoundTag nbt)
     {
         setCultivationType(nbt.getInt("TYPE"));
+        setCultivationLevel(nbt.getInt("LEVEL"));
+        setCultivationStage(nbt.getInt("STAGE"));
+        setQi(nbt.getInt("QI"));
     }
 
     public static boolean isCultivator(Player player)

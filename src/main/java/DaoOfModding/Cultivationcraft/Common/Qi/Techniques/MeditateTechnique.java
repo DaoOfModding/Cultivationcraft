@@ -10,8 +10,10 @@ import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartNames;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.PlayerHealthManager;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.Quest;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.QuestHandler;
+import DaoOfModding.Cultivationcraft.Common.Qi.Cultivation.CultivationType;
 import DaoOfModding.Cultivationcraft.Common.Qi.CultivationTypes;
 import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
+import DaoOfModding.Cultivationcraft.Common.Qi.ExternalCultivationHandler;
 import DaoOfModding.Cultivationcraft.Common.Qi.QiSource;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.PlayerStatControl;
@@ -66,24 +68,48 @@ public class MeditateTechnique extends MovementOverrideTechnique
         super.tickClient(event);
     }
 
-    // Increase the bodyforge progress
+    // Increase the bodyforge progress (Server only)
     protected void increaseProgress(TickEvent.PlayerTickEvent event)
     {
         ICultivatorStats stats = CultivatorStats.getCultivatorStats(event.player);
 
-        if (stats.getCultivationType() == CultivationTypes.BODY_CULTIVATOR)
+        if (stats.getCultivationType() == CultivationTypes.QI_CONDENSER)
         {
-            IBodyModifications modifications = BodyModifications.getBodyModifications(event.player);
+            CultivationType cultivation = ExternalCultivationHandler.getCultivation(event.player);
 
+            List<QiSource> sources = ChunkQiSources.getQiSourcesInRange(event.player.level, event.player.position(), cultivation.getAbsorbRange(event.player));
+
+            // If meditating in a Qi Source, increase the quest by 1 second
+            if (sources.size() > 0)
+                QuestHandler.progressQuest(event.player, Quest.QI_SOURCE_MEDITATION, 1.0/20.0);
+
+            // absorb Qi through blood first
+            int remaining = cultivation.getAbsorbSpeed(event.player);
+            remaining = PlayerHealthManager.getBlood(event.player).meditation(remaining, sources, event.player);
+
+
+            // Passively cultivate
+            cultivation.progressCultivation(event.player, QiSource.getDefaultQi(), Elements.noElement);
+
+            // Loop through every source and try to cultivate from it
+            for (QiSource source : sources)
+                remaining -= cultivation.progressCultivation(event.player, remaining, source.getElement());
+
+            PacketHandler.sendCultivatorStatsToClient(event.player);
+        }
+        else if (stats.getCultivationType() == CultivationTypes.BODY_CULTIVATOR)
+        {
             List<QiSource> sources = ChunkQiSources.getQiSourcesInRange(event.player.level, event.player.position(), (int)BodyPartStatControl.getPlayerStatControl(event.player).getStats().getStat(StatIDs.qiAbsorbRange));
 
             // If meditating in a Qi Source, increase the quest by 1 second
             if (sources.size() > 0)
                 QuestHandler.progressQuest(event.player, Quest.QI_SOURCE_MEDITATION, 1.0/20.0);
 
+            // absorb Qi through blood first
             int remaining = (int)BodyPartStatControl.getPlayerStatControl(event.player).getStats().getStat(StatIDs.qiAbsorb);
-
             remaining = PlayerHealthManager.getBlood(event.player).meditation(remaining, sources, event.player);
+
+            IBodyModifications modifications = BodyModifications.getBodyModifications(event.player);
 
             // Only absorb Qi if a part has been selected
             if (modifications.getSelection().compareTo("") != 0)

@@ -91,7 +91,12 @@ public class ScreenTabControl
         else
         {
             if (selectedScreen == 0)
-                Minecraft.getInstance().forceSetScreen(new StatScreen());
+            {
+                if (cultivationType == CultivationTypes.QI_CONDENSER)
+                    Minecraft.getInstance().forceSetScreen(new CultivationScreen());
+                else if (cultivationType == CultivationTypes.BODY_CULTIVATOR)
+                    Minecraft.getInstance().forceSetScreen(new StatScreen());
+            }
             else if (selectedScreen == 1)
                 Minecraft.getInstance().forceSetScreen(new TechniqueScreen());
             else if (selectedScreen == 2)

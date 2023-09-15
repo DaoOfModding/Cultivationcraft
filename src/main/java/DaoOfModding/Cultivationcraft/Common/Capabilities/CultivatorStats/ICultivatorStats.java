@@ -13,9 +13,14 @@ public interface ICultivatorStats
 {
     public int getCultivationType();
     public void setCultivationType(int newType);
+    public int getCultivationLevel();
+    public void setCultivationLevel(int newLevel);
+    public int getCultivationStage();
+    public void setCultivationStage(int newStage);
+    public int getQi();
+    public void setQi(int newQi);
 
-    public StatModifier getModifier(String id);
-    public HashMap<String, StatModifier> getModifiers();
+    public void reset();
 
     public void setDisconnected(boolean value);
     public boolean isDisconnected();
