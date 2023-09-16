@@ -1,5 +1,6 @@
 package DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats;
 
+import DaoOfModding.Cultivationcraft.Common.Qi.Cultivation.CultivationType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.HitResult;
@@ -13,12 +14,8 @@ public interface ICultivatorStats
 {
     public int getCultivationType();
     public void setCultivationType(int newType);
-    public int getCultivationLevel();
-    public void setCultivationLevel(int newLevel);
-    public int getCultivationStage();
-    public void setCultivationStage(int newStage);
-    public int getQi();
-    public void setQi(int newQi);
+    public CultivationType getCultivation();
+    public void setCultivation(CultivationType newCultivation);
 
     public void reset();
 

@@ -1,9 +1,13 @@
 package DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats;
 
 import DaoOfModding.Cultivationcraft.Common.Misc;
+import DaoOfModding.Cultivationcraft.Common.Qi.Cultivation.CultivationType;
+import DaoOfModding.Cultivationcraft.Common.Qi.Cultivation.DefaultCultivation;
 import DaoOfModding.Cultivationcraft.Common.Qi.CultivationTypes;
+import DaoOfModding.Cultivationcraft.Common.Qi.ExternalCultivationHandler;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -19,9 +23,7 @@ import java.util.UUID;
 public class CultivatorStats implements ICultivatorStats
 {
     protected int cultivationType = CultivationTypes.NO_CULTIVATION;
-    protected int cultivationLevel = 0;
-    protected int cultivationStage = 0;
-    protected int qi = 0;
+    protected CultivationType cultivation = new DefaultCultivation();
 
     protected boolean disconnected = false;
 
@@ -35,34 +37,14 @@ public class CultivatorStats implements ICultivatorStats
         cultivationType = newType;
     }
 
-    public int getCultivationLevel()
+    public CultivationType getCultivation()
     {
-        return cultivationLevel;
+        return cultivation;
     }
 
-    public void setCultivationLevel(int newLevel)
+    public void setCultivation(CultivationType newCultivation)
     {
-        cultivationLevel = newLevel;
-    }
-
-    public int getCultivationStage()
-    {
-        return cultivationStage;
-    }
-
-    public void setCultivationStage(int newStage)
-    {
-        cultivationStage = newStage;
-    }
-
-    public int getQi()
-    {
-        return qi;
-    }
-
-    public void setQi(int newQi)
-    {
-        qi = newQi;
+        cultivation = newCultivation;
     }
 
     public void setDisconnected(boolean value) {
@@ -76,17 +58,14 @@ public class CultivatorStats implements ICultivatorStats
     public void reset()
     {
         cultivationType = CultivationTypes.NO_CULTIVATION;
-        cultivationLevel = 0;
-        cultivationStage = 0;
-        qi = 0;    }
+        cultivation = new DefaultCultivation();
+    }
 
     public CompoundTag writeNBT()
     {
         CompoundTag nbt = new CompoundTag();
-        nbt.putInt("TYPE", getCultivationType());
-        nbt.putInt("LEVEL", getCultivationLevel());
-        nbt.putInt("STAGE", getCultivationStage());
-        nbt.putInt("QI", getQi());
+        nbt.putString("CULTIVATIONID", cultivation.ID.toString());
+        nbt.put("CULTIVATION", cultivation.writeNBT());
 
         return nbt;
     }
@@ -94,9 +73,11 @@ public class CultivatorStats implements ICultivatorStats
     public void readNBT(CompoundTag nbt)
     {
         setCultivationType(nbt.getInt("TYPE"));
-        setCultivationLevel(nbt.getInt("LEVEL"));
-        setCultivationStage(nbt.getInt("STAGE"));
-        setQi(nbt.getInt("QI"));
+
+        CultivationType newCultivation = ExternalCultivationHandler.getCultivation(new ResourceLocation(nbt.getString("CULTIVATIONID")));
+        newCultivation.readNBT(nbt.getCompound("CULTIVATION"));
+
+        cultivation = newCultivation;
     }
 
     public static boolean isCultivator(Player player)

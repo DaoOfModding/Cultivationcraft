@@ -75,7 +75,7 @@ public class MeditateTechnique extends MovementOverrideTechnique
 
         if (stats.getCultivationType() == CultivationTypes.QI_CONDENSER)
         {
-            CultivationType cultivation = ExternalCultivationHandler.getCultivation(event.player);
+            CultivationType cultivation = stats.getCultivation();
 
             List<QiSource> sources = ChunkQiSources.getQiSourcesInRange(event.player.level, event.player.position(), cultivation.getAbsorbRange(event.player));
 
