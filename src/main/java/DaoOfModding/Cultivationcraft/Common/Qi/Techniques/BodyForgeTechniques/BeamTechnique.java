@@ -74,7 +74,7 @@ public class BeamTechnique extends ChanneledAttackTechnique
     // Ticks on client side, only called if Technique is active
     public void tickClient(TickEvent.PlayerTickEvent event)
     {
-        if (!PlayerHealthManager.getLungs(event.player).drainBreath(breath, (float)getTechniqueStat(DefaultTechniqueStatIDs.breathCost)))
+        if (!PlayerHealthManager.getLungs(event.player).drainBreath(breath, (float)getTechniqueStat(DefaultTechniqueStatIDs.breathCost, event.player)))
             return;
 
         // This was doing nothing
@@ -89,7 +89,7 @@ public class BeamTechnique extends ChanneledAttackTechnique
     // Ticks on client side, only called if Technique is active
     public void tickServer(TickEvent.PlayerTickEvent event)
     {
-        if (!PlayerHealthManager.getLungs(event.player).drainBreath(breath, (float)getTechniqueStat(DefaultTechniqueStatIDs.breathCost)))
+        if (!PlayerHealthManager.getLungs(event.player).drainBreath(breath, (float)getTechniqueStat(DefaultTechniqueStatIDs.breathCost, event.player)))
             return;
 
         breath.tick(event.player);

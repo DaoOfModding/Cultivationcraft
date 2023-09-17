@@ -1,6 +1,8 @@
 package DaoOfModding.Cultivationcraft.Common.Qi.Techniques;
 
 import DaoOfModding.Cultivationcraft.Client.genericClientFunctions;
+import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStats;
+import DaoOfModding.Cultivationcraft.Common.Qi.Cultivation.CultivationType;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.PlayerStatModifications;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.TechniqueStats.TechniqueStatModification;
@@ -82,7 +84,6 @@ public class Technique
     protected boolean canBreathWhileActive = true;
 
     protected HashMap<ResourceLocation, Double> defaultStats = new HashMap<ResourceLocation, Double>();
-    protected HashMap<ResourceLocation, Double> statLevels = new HashMap<ResourceLocation, Double>();
     protected HashMap<ResourceLocation, TechniqueStatModification> statChangesPerLevel = new HashMap<ResourceLocation, TechniqueStatModification>();
 
     protected boolean canLevel = false;
@@ -102,10 +103,7 @@ public class Technique
         defaultStats.put(stat, amount);
 
         if (canLevel)
-        {
-            statLevels.put(stat, 0.0);
             statChangesPerLevel.put(stat, changePerLevel);
-        }
     }
 
     public boolean canLevel()
@@ -118,7 +116,7 @@ public class Technique
         addTechniqueStat(stat, amount, null);
     }
 
-    public String getTechniqueStatString()
+    public String getTechniqueStatString(Player player)
     {
         String statString = "";
 
@@ -126,7 +124,7 @@ public class Technique
         {
             statString += "\n" + Component.translatable(stat.getPath()).getString() + ": ";
 
-            double value = getTechniqueStat(stat);
+            double value = getTechniqueStat(stat, player);
 
             if (value % 1.0 == 0)
                 statString += (int)value;
@@ -147,14 +145,15 @@ public class Technique
         return defaultStats.containsKey(stat);
     }
 
-    public double getTechniqueStat(ResourceLocation stat)
+    public double getTechniqueStat(ResourceLocation stat, Player player)
     {
         double defaultStat = getTechniqueDefaultStat(stat);
+        CultivationType cultivation = CultivatorStats.getCultivatorStats(player).getCultivation();
 
         // If this technique can level, then loop through the stat changes and apply them to this stat
         if (canLevel)
             for (Map.Entry<ResourceLocation, TechniqueStatModification> modification : statChangesPerLevel.entrySet())
-                defaultStat += modification.getValue().getStatChange(stat) * statLevels.get(modification.getKey());
+                defaultStat += modification.getValue().getStatChange(stat) * cultivation.getStatLevel(this.getClass(), modification.getKey());
 
         return defaultStat;
     }

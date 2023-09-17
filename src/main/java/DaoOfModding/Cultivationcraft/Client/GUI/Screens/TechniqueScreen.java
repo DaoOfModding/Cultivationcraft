@@ -221,7 +221,7 @@ public class TechniqueScreen extends GenericTabScreen
         else if (description.isSelected())
             partDescription.setText(selectedTech.getDescription());
         else if (stats.isSelected())
-            partDescription.setText(selectedTech.getStats().toString() + selectedTech.getTechniqueStatString());
+            partDescription.setText(selectedTech.getStats().toString() + selectedTech.getTechniqueStatString(Minecraft.getInstance().player));
 
         description.setPos(edgeSpacingX + 127 - description.width - 10, edgeSpacingY + techniqueYPos + 15);
         description.render(PoseStack, mouseX, mouseY, this);

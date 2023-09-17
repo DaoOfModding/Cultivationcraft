@@ -73,7 +73,7 @@ public class JetTechnique extends MovementOverrideTechnique
         super.tickClient(event);
 
         // Do nothing if player isn't pressing forward or is not in water or does not have the stamina remaining to move
-        if (!forward || event.player.isInWater() || !PlayerHealthManager.getLungs(event.player).drainBreath(Breath.FIRE, (float)getTechniqueStat(DefaultTechniqueStatIDs.breathCost)))
+        if (!forward || event.player.isInWater() || !PlayerHealthManager.getLungs(event.player).drainBreath(Breath.FIRE, (float)getTechniqueStat(DefaultTechniqueStatIDs.breathCost, event.player)))
         {
             forward = false;
             setMomentum(new Vec3(0, 0, 0));
@@ -81,7 +81,7 @@ public class JetTechnique extends MovementOverrideTechnique
         else
         {
             Vec3 forward = event.player.getForward();
-            setMomentum(new Vec3(forward.x, 0, forward.z).normalize().scale(getTechniqueStat(DefaultTechniqueStatIDs.movementSpeed)));
+            setMomentum(new Vec3(forward.x, 0, forward.z).normalize().scale(getTechniqueStat(DefaultTechniqueStatIDs.movementSpeed, event.player)));
         }
 
         // Only toggle jets for player character
@@ -103,7 +103,7 @@ public class JetTechnique extends MovementOverrideTechnique
         super.tickServer(event);
 
         if (enabled)
-            PlayerHealthManager.getLungs(event.player).drainBreath(Breath.FIRE, (float)getTechniqueStat(DefaultTechniqueStatIDs.breathCost));
+            PlayerHealthManager.getLungs(event.player).drainBreath(Breath.FIRE, (float)getTechniqueStat(DefaultTechniqueStatIDs.breathCost, event.player));
     }
 
     @Override

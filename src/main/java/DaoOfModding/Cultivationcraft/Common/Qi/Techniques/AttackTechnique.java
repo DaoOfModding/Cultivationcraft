@@ -83,13 +83,13 @@ public class AttackTechnique extends Technique
     public double getRange(Player player)
     {
         // Default attack range
-        return getTechniqueStat(DefaultTechniqueStatIDs.range);
+        return getTechniqueStat(DefaultTechniqueStatIDs.range, player);
     }
 
     public float getAttack(Player player)
     {
         // Default attack damage
-        return (float)getTechniqueStat(DefaultTechniqueStatIDs.damage);
+        return (float)getTechniqueStat(DefaultTechniqueStatIDs.damage, player);
     }
 
     protected float getMinePower(BlockGetter p_60801_, BlockPos p_60802_)

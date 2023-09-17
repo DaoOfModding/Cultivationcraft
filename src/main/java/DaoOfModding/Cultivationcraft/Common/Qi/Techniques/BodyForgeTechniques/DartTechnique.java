@@ -161,7 +161,7 @@ public class DartTechnique extends Technique
     public void dart(Player player)
     {
         // Do nothing if player is out of stamina
-        if (!StaminaHandler.consumeStamina(player, (float)getTechniqueStat(DefaultTechniqueStatIDs.staminaCost)))
+        if (!StaminaHandler.consumeStamina(player, (float)getTechniqueStat(DefaultTechniqueStatIDs.staminaCost, player)))
             return;
 
         float weightModifier = BodyPartStatControl.getPlayerStatControl(player).getFlightWeightModifier();

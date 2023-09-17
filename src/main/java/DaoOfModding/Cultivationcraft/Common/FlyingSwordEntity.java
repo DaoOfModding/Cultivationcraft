@@ -92,7 +92,7 @@ public class FlyingSwordEntity extends ItemEntity
     public float getControlRange()
     {
         if (formation != null)
-            return (float)formation.getTechniqueStat(DefaultTechniqueStatIDs.range);
+            return (float)formation.getTechniqueStat(DefaultTechniqueStatIDs.range, owner);
 
         return defaultRange;
     }
@@ -100,7 +100,7 @@ public class FlyingSwordEntity extends ItemEntity
     public double getTurnSpeed()
     {
         if (formation != null)
-            return formation.getTechniqueStat(FlyingSwordFormationTechnique.flyingswordturnspeed);
+            return formation.getTechniqueStat(FlyingSwordFormationTechnique.flyingswordturnspeed, owner);
 
         return defaultTurnSpeed;
     }
@@ -108,7 +108,7 @@ public class FlyingSwordEntity extends ItemEntity
     public float getSpeed()
     {
         if (formation != null)
-            return (float)formation.getTechniqueStat(FlyingSwordFormationTechnique.flyingswordspeed);
+            return (float)formation.getTechniqueStat(FlyingSwordFormationTechnique.flyingswordspeed, owner);
 
         return defaultspeed;
     }
@@ -116,7 +116,7 @@ public class FlyingSwordEntity extends ItemEntity
     public float getDamageModifier()
     {
         if (formation != null)
-            return (float)formation.getTechniqueStat(DefaultTechniqueStatIDs.damage);
+            return (float)formation.getTechniqueStat(DefaultTechniqueStatIDs.damage, owner);
 
         return defaultdamage;
     }
@@ -124,7 +124,7 @@ public class FlyingSwordEntity extends ItemEntity
     public float getMaxSpeed()
     {
         if (formation != null)
-            return (float)formation.getTechniqueStat(FlyingSwordFormationTechnique.flyingswordmaxspeed);
+            return (float)formation.getTechniqueStat(FlyingSwordFormationTechnique.flyingswordmaxspeed, owner);
 
         return defaultmaxSpeed;
     }

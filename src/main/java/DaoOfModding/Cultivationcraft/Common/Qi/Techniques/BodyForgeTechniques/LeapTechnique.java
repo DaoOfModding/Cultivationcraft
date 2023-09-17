@@ -71,7 +71,7 @@ public class LeapTechnique extends Technique
         if (active || leaping || !keyDown || !player.isOnGround() || player.isInWater())
             return;
 
-        if (StaminaHandler.consumeStamina(player, (float)getTechniqueStat(DefaultTechniqueStatIDs.staminaCost)))
+        if (StaminaHandler.consumeStamina(player, (float)getTechniqueStat(DefaultTechniqueStatIDs.staminaCost, player)))
             active = true;
     }
 
@@ -177,7 +177,7 @@ public class LeapTechnique extends Technique
     // Do the leap
     protected void doLeap(Player player)
     {
-        StaminaHandler.consumeStamina(player, (float)getTechniqueStat(DefaultTechniqueStatIDs.staminaCost));
+        StaminaHandler.consumeStamina(player, (float)getTechniqueStat(DefaultTechniqueStatIDs.staminaCost, player));
         leaping = true;
         player.setOnGround(false);
     }

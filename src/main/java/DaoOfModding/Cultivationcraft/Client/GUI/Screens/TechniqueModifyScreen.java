@@ -5,6 +5,7 @@ import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.Cu
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.Technique;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 
@@ -58,7 +59,7 @@ public class TechniqueModifyScreen extends GenericTabScreen
 
         for (int stat = 0; stat < stats.size(); stat++)
         {
-            double statValue = selectedTech.getTechniqueStat(stats.get(stat));
+            double statValue = selectedTech.getTechniqueStat(stats.get(stat), Minecraft.getInstance().player);
 
             font.draw(PoseStack, Component.translatable(stats.get(stat).getPath()).getString(), edgeSpacingX + statXPos, edgeSpacingY + statYPos + statYSpacing*stat, Color.black.getRGB());
             font.draw(PoseStack, "" + statValue, edgeSpacingX + this.xSize - statXPosFromRight - font.width("" + statValue), edgeSpacingY + statYPos + statYSpacing*stat, Color.WHITE.getRGB());

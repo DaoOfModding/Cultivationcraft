@@ -90,7 +90,7 @@ public class SpinPetalTechnique extends MovementOverrideTechnique
             Reflection.allowFlight((ServerPlayer) event.player);
 
             event.player.fallDistance = 0;
-            StaminaHandler.consumeStamina(event.player, (float)getTechniqueStat(DefaultTechniqueStatIDs.staminaCost));
+            StaminaHandler.consumeStamina(event.player, (float)getTechniqueStat(DefaultTechniqueStatIDs.staminaCost, event.player));
         }
     }
 

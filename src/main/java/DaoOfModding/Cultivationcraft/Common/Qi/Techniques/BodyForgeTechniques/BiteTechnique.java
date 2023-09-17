@@ -75,7 +75,7 @@ public class BiteTechnique extends AttackOverrideTechnique
 
     public double getRange(Player player)
     {
-        return getTechniqueStat(DefaultTechniqueStatIDs.range) * (1 + BodyPartStatControl.getPlayerStatControl(player).getSizeAdjustment());
+        return getTechniqueStat(DefaultTechniqueStatIDs.range, player) * (1 + BodyPartStatControl.getPlayerStatControl(player).getSizeAdjustment());
     }
 
     // Ticks on server side, only called if Technique is active and owned by the player
@@ -103,7 +103,7 @@ public class BiteTechnique extends AttackOverrideTechnique
     {
         PlayerStatModifications stats = BodyPartStatControl.getPlayerStatControl(player).getStats();
 
-        return (float)getTechniqueStat(DefaultTechniqueStatIDs.damage) * stats.getStat(StatIDs.boneAttackModifier) * stats.getStat(StatIDs.biteAttackModifier);
+        return (float)getTechniqueStat(DefaultTechniqueStatIDs.damage, player) * stats.getStat(StatIDs.boneAttackModifier) * stats.getStat(StatIDs.biteAttackModifier);
     }
 
     @Override

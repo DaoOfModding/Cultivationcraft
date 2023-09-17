@@ -78,7 +78,7 @@ public class FloatTechnique extends Technique
         if (jumpPressed)
         {
             canBreathWhileActive = false;
-            StaminaHandler.consumeStamina(event.player, (float)getTechniqueStat(DefaultTechniqueStatIDs.staminaCost));
+            StaminaHandler.consumeStamina(event.player, (float)getTechniqueStat(DefaultTechniqueStatIDs.staminaCost, event.player));
             floatUp(event.player);
         }
         else
@@ -94,7 +94,7 @@ public class FloatTechnique extends Technique
         if (jumpPressed)
         {
             canBreathWhileActive = false;
-            StaminaHandler.consumeStamina(event.player, (float)getTechniqueStat(DefaultTechniqueStatIDs.staminaCost));
+            StaminaHandler.consumeStamina(event.player, (float)getTechniqueStat(DefaultTechniqueStatIDs.staminaCost, event.player));
         }
         else
             canBreathWhileActive = true;

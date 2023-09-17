@@ -27,7 +27,7 @@ public class AttackOverrideTechnique extends AttackTechnique
             return;
 
         // Do nothing if player does not have enough stamina
-        if (hasTechniqueStat(DefaultTechniqueStatIDs.staminaCost) && !StaminaHandler.consumeStamina(player, (float)getTechniqueStat(DefaultTechniqueStatIDs.staminaCost)))
+        if (hasTechniqueStat(DefaultTechniqueStatIDs.staminaCost) && !StaminaHandler.consumeStamina(player, (float)getTechniqueStat(DefaultTechniqueStatIDs.staminaCost, player)))
             return;
 
         if (player.level.isClientSide)
@@ -47,7 +47,7 @@ public class AttackOverrideTechnique extends AttackTechnique
             return;
 
         // Do nothing if player does not have enough stamina
-        if (hasTechniqueStat(DefaultTechniqueStatIDs.staminaCost) && !StaminaHandler.consumeStamina(player, (float)getTechniqueStat(DefaultTechniqueStatIDs.staminaCost)))
+        if (hasTechniqueStat(DefaultTechniqueStatIDs.staminaCost) && !StaminaHandler.consumeStamina(player, (float)getTechniqueStat(DefaultTechniqueStatIDs.staminaCost, player)))
             return;
 
         if (player.level.isClientSide)

@@ -126,7 +126,7 @@ public class JetLegTechnique extends MovementOverrideTechnique
         super.tickServer(event);
         tickInactiveServer(event);
 
-        if (enabled && !PlayerHealthManager.getLungs(event.player).drainBreath(Breath.FIRE, (float)getTechniqueStat(DefaultTechniqueStatIDs.breathCost)))
+        if (enabled && !PlayerHealthManager.getLungs(event.player).drainBreath(Breath.FIRE, (float)getTechniqueStat(DefaultTechniqueStatIDs.breathCost, event.player)))
             enabled = false;
 
         if (enabled)
@@ -196,7 +196,7 @@ public class JetLegTechnique extends MovementOverrideTechnique
             return false;
 
         // Do nothing if player is out of stamina
-        if (!PlayerHealthManager.getLungs(player).drainBreath(Breath.FIRE, (float)getTechniqueStat(DefaultTechniqueStatIDs.breathCost)))
+        if (!PlayerHealthManager.getLungs(player).drainBreath(Breath.FIRE, (float)getTechniqueStat(DefaultTechniqueStatIDs.breathCost, player)))
             return false;
 
         jump = true;

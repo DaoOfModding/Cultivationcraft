@@ -2,10 +2,15 @@ package DaoOfModding.Cultivationcraft.Common.Qi.Cultivation;
 
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStats;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.ICultivatorStats;
+import DaoOfModding.Cultivationcraft.Common.Qi.ExternalCultivationHandler;
+import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.Technique;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class CultivationType
 {
@@ -13,6 +18,12 @@ public class CultivationType
 
     protected int maxQi = 1000;
     protected int Qi = 0;
+
+    protected int techLevel = 1;
+
+    protected CultivationType previousCultivation = null;
+
+    protected HashMap<Class, HashMap<ResourceLocation, Double>> statLevels = new HashMap<Class, HashMap<ResourceLocation, Double>>();
 
     public boolean canCultivate(ResourceLocation element)
     {
@@ -47,9 +58,42 @@ public class CultivationType
         return 0;
     }
 
+    public CultivationType getPreviousCultivation()
+    {
+        return previousCultivation;
+    }
+
+    public Double getStatLevel(Class tech, ResourceLocation stat)
+    {
+        Double level = 0.0;
+
+        if (statLevels.containsKey(tech) && statLevels.get(tech).containsKey(stat))
+            level += statLevels.get(tech).get(stat);
+
+        if (previousCultivation != null)
+            level += previousCultivation.getStatLevel(tech, stat);
+
+        return level;
+    }
+
     public int getMaxQi()
     {
-        return maxQi;
+        int returnMax = maxQi;
+
+        if (previousCultivation != null)
+            returnMax += previousCultivation.getMaxQi();
+
+        return returnMax;
+    }
+
+    protected int getTechLevel()
+    {
+        int returnTech = maxQi;
+
+        if (previousCultivation != null)
+            returnTech += previousCultivation.getTechLevel();
+
+        return returnTech;
     }
 
     public int getQi()
@@ -77,11 +121,76 @@ public class CultivationType
         CompoundTag nbt = new CompoundTag();
         nbt.putInt("QI", Qi);
 
+        if (getPreviousCultivation() != null)
+        {
+            nbt.putString("PREVIOUSCULTNAME", getPreviousCultivation().ID.toString());
+            nbt.put("PREVIOUSCULT", getPreviousCultivation().writeNBT());
+        }
+
+        int i = 0;
+
+        for (Map.Entry<Class, HashMap<ResourceLocation, Double>> tech : statLevels.entrySet())
+        {
+            nbt.putString("TECH"+i+"CLASS", tech.getKey().toString());
+
+            int j = 0;
+
+            for (Map.Entry<ResourceLocation, Double> techEntry : tech.getValue().entrySet())
+            {
+                nbt.putString("TECH"+i+"ENTRY"+j+"NAME", techEntry.getKey().toString());
+                nbt.putDouble("TECH"+i+"ENTRY"+j+"VALUE", techEntry.getValue());
+            }
+
+            i++;
+        }
+
         return nbt;
     }
 
     public void readNBT(CompoundTag nbt)
     {
         Qi = nbt.getInt("QI");
+
+        if (nbt.contains("PREVIOUSCULTNAME"))
+        {
+            CultivationType newCultivation = ExternalCultivationHandler.getCultivation(new ResourceLocation(nbt.getString("PREVIOUSCULTNAME")));
+            newCultivation.readNBT(nbt.getCompound("PREVIOUSCULT"));
+
+            previousCultivation = newCultivation;
+        }
+
+        HashMap<Class, HashMap<ResourceLocation, Double>> newTechLevels = new HashMap<>();
+
+        int i = 0;
+
+        while (nbt.contains("TECH"+i+"CLASS"))
+        {
+            int j = 0;
+
+            HashMap<ResourceLocation, Double> values = new HashMap<>();
+
+            while (nbt.contains("TECH"+i+"ENTRY"+j+"NAME"))
+            {
+                values.put(new ResourceLocation(nbt.getString("TECH"+i+"ENTRY"+j+"NAME")), nbt.getDouble("TECH"+i+"ENTRY"+j+"VALUE"));
+                j++;
+            }
+
+            String className = nbt.getString("TECH"+i+"CLASS");
+
+            try
+            {
+                Class test = Class.forName(className);
+                newTechLevels.put(test, values);
+            }
+            catch (Exception e)
+            {
+                Cultivationcraft.LOGGER.error(className + " not found when loading Technique stats");
+                return;
+            }
+
+            i++;
+        }
+
+        statLevels = newTechLevels;
     }
 }

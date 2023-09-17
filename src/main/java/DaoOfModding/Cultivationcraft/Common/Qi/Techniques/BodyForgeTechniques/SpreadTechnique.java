@@ -183,7 +183,7 @@ public class SpreadTechnique extends Technique
         if (groundCheck == true)
             groundCheck = false;
         else if (!player.isOnGround() && cooldownCount == 0)
-            if (StaminaHandler.consumeStamina(player, (float)getTechniqueStat(DefaultTechniqueStatIDs.staminaCost)))
+            if (StaminaHandler.consumeStamina(player, (float)getTechniqueStat(DefaultTechniqueStatIDs.staminaCost, player)))
                 cooldownCount = cooldown;
     }
 
