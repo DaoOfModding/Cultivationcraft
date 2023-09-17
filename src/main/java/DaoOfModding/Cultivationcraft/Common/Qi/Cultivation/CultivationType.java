@@ -19,7 +19,7 @@ public class CultivationType
     protected int maxQi = 1000;
     protected int Qi = 0;
 
-    protected int techLevel = 1;
+    protected int techLevel = 100;
 
     protected CultivationType previousCultivation = null;
 
@@ -74,6 +74,32 @@ public class CultivationType
             level += previousCultivation.getStatLevel(tech, stat);
 
         return level;
+    }
+
+    public int getMaxTechLevel()
+    {
+        int level = techLevel;
+
+        if (previousCultivation != null)
+            level += getPreviousCultivation().getMaxTechLevel();
+
+        return level;
+    }
+
+    public int getTechLevelProgress(Class tech)
+    {
+        int progress = 0;
+
+        if (statLevels.containsKey(tech))
+        {
+            for (double value : statLevels.get(tech).values())
+                progress += (int)value;
+        }
+
+        if (previousCultivation != null)
+            progress += previousCultivation.getTechLevelProgress(tech);
+
+        return progress;
     }
 
     public int getMaxQi()
