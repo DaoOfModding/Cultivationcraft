@@ -39,26 +39,26 @@ public class FlyingSwordFormationTechnique extends AttackOverrideTechnique
 
         icon = new ResourceLocation(Cultivationcraft.MODID, "textures/techniques/icons/flyingsword.png");
 
+        canLevel = true;
+
         TechniqueStatModification flyingdamageModification = new TechniqueStatModification(DefaultTechniqueStatIDs.damage);
         TechniqueStatModification flyingrangeModification = new TechniqueStatModification(DefaultTechniqueStatIDs.range);
         TechniqueStatModification flyingSwordSpeedModification = new TechniqueStatModification(flyingswordspeed);
         TechniqueStatModification flyingSwordMaxSpeedModification = new TechniqueStatModification(flyingswordmaxspeed);
         TechniqueStatModification flyingSwordTurnSpeedModification = new TechniqueStatModification(flyingswordturnspeed);
 
-        flyingdamageModification.addStatChange(DefaultTechniqueStatIDs.damage, 0.0005);
-        flyingrangeModification.addStatChange(DefaultTechniqueStatIDs.range, 0.01);
-        flyingSwordSpeedModification.addStatChange(flyingswordspeed, 0.0001);
-        flyingSwordMaxSpeedModification.addStatChange(flyingswordmaxspeed, 0.01);
-        flyingSwordTurnSpeedModification.addStatChange(flyingswordturnspeed, 0.001);
+        flyingdamageModification.addStatChange(DefaultTechniqueStatIDs.damage, 0.002);
+        flyingrangeModification.addStatChange(DefaultTechniqueStatIDs.range, 0.1);
+        flyingSwordSpeedModification.addStatChange(flyingswordspeed, 0.01);
+        flyingSwordMaxSpeedModification.addStatChange(flyingswordmaxspeed, 1);
+        flyingSwordTurnSpeedModification.addStatChange(flyingswordturnspeed, 0.002);
 
 
         addTechniqueStat(DefaultTechniqueStatIDs.range, 10, flyingrangeModification);
         addTechniqueStat(DefaultTechniqueStatIDs.damage, 0.25f, flyingdamageModification);
-        addTechniqueStat(flyingswordspeed, 0.02, flyingSwordSpeedModification);
-        addTechniqueStat(flyingswordmaxspeed, 1, flyingSwordMaxSpeedModification);
+        addTechniqueStat(flyingswordspeed, 2, flyingSwordSpeedModification);
+        addTechniqueStat(flyingswordmaxspeed, 100, flyingSwordMaxSpeedModification);
         addTechniqueStat(flyingswordturnspeed, 0.2, flyingSwordTurnSpeedModification);
-
-        canLevel = true;
     }
 
     @Override

@@ -106,6 +106,19 @@ public class Technique
             statChangesPerLevel.put(stat, changePerLevel);
     }
 
+    public TechniqueStatModification getStatChangesPerLevel(ResourceLocation stat)
+    {
+        return statChangesPerLevel.get(stat);
+    }
+
+    public void levelUp(Player player, double amount)
+    {
+        if (!canLevel || player.level.isClientSide)
+            return;
+
+        CultivatorStats.getCultivatorStats(player).getCultivation().levelTech(this, amount, player);
+    }
+
     public boolean canLevel()
     {
         return canLevel;
@@ -153,7 +166,10 @@ public class Technique
         // If this technique can level, then loop through the stat changes and apply them to this stat
         if (canLevel)
             for (Map.Entry<ResourceLocation, TechniqueStatModification> modification : statChangesPerLevel.entrySet())
-                defaultStat += modification.getValue().getStatChange(stat) * cultivation.getStatLevel(this.getClass(), modification.getKey());
+            {
+                int statLevel = (int)(double)cultivation.getStatLevel(this.getClass(), modification.getKey());
+                defaultStat += modification.getValue().getStatChange(stat) * statLevel;
+            }
 
         return defaultStat;
     }

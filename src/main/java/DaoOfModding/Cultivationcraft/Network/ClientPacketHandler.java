@@ -6,6 +6,7 @@ import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.IC
 import DaoOfModding.Cultivationcraft.Common.Register;
 import DaoOfModding.Cultivationcraft.Network.Packets.*;
 import DaoOfModding.Cultivationcraft.Network.Packets.CultivatorStats.CultivatorTypePacket;
+import DaoOfModding.Cultivationcraft.Network.Packets.CultivatorStats.TechniqueStatSelectionPacket;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceKey;
@@ -21,6 +22,12 @@ public class ClientPacketHandler
     public static void sendKeypressToServer(Register.keyPresses keyPress)
     {
         keypressPacket pack = new keypressPacket(keyPress);
+        PacketHandler.channel.sendToServer(pack);
+    }
+
+    public static void sendTechStatToServer(Class tech, ResourceLocation stat)
+    {
+        TechniqueStatSelectionPacket pack = new TechniqueStatSelectionPacket(tech.toString(), stat);
         PacketHandler.channel.sendToServer(pack);
     }
 

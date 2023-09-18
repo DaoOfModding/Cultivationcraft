@@ -2,6 +2,7 @@ package DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats;
 
 import DaoOfModding.Cultivationcraft.Common.Qi.Cultivation.CultivationType;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
@@ -16,6 +17,8 @@ public interface ICultivatorStats
     public void setCultivationType(int newType);
     public CultivationType getCultivation();
     public void setCultivation(CultivationType newCultivation);
+    public ResourceLocation getTechniqueFocus(Class tech);
+    public void setTechniqueFocus(String tech, ResourceLocation focus);
 
     public void reset();
 

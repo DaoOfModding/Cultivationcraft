@@ -5,6 +5,7 @@ import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.ICultiv
 import DaoOfModding.Cultivationcraft.Common.Qi.ExternalCultivationHandler;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.Technique;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
+import DaoOfModding.Cultivationcraft.Network.PacketHandler;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
@@ -23,7 +24,7 @@ public class CultivationType
 
     protected CultivationType previousCultivation = null;
 
-    protected HashMap<Class, HashMap<ResourceLocation, Double>> statLevels = new HashMap<Class, HashMap<ResourceLocation, Double>>();
+    protected HashMap<String, HashMap<ResourceLocation, Double>> statLevels = new HashMap<>();
 
     public boolean canCultivate(ResourceLocation element)
     {
@@ -67,8 +68,8 @@ public class CultivationType
     {
         Double level = 0.0;
 
-        if (statLevels.containsKey(tech) && statLevels.get(tech).containsKey(stat))
-            level += statLevels.get(tech).get(stat);
+        if (statLevels.containsKey(tech.toString()) && statLevels.get(tech.toString()).containsKey(stat))
+            level += statLevels.get(tech.toString()).get(stat);
 
         if (previousCultivation != null)
             level += previousCultivation.getStatLevel(tech, stat);
@@ -90,9 +91,9 @@ public class CultivationType
     {
         int progress = 0;
 
-        if (statLevels.containsKey(tech))
+        if (statLevels.containsKey(tech.toString()))
         {
-            for (double value : statLevels.get(tech).values())
+            for (double value : statLevels.get(tech.toString()).values())
                 progress += (int)value;
         }
 
@@ -110,16 +111,6 @@ public class CultivationType
             returnMax += previousCultivation.getMaxQi();
 
         return returnMax;
-    }
-
-    protected int getTechLevel()
-    {
-        int returnTech = maxQi;
-
-        if (previousCultivation != null)
-            returnTech += previousCultivation.getTechLevel();
-
-        return returnTech;
     }
 
     public int getQi()
@@ -142,6 +133,38 @@ public class CultivationType
         return 10;
     }
 
+    public void levelTech(Technique tech, double amount, Player player)
+    {
+        int max = getMaxTechLevel();
+        int current = getTechLevelProgress(tech.getClass());
+
+        if (max == current)
+            return;
+
+        if (current + (int)amount >= max)
+        {
+            amount -= max - (current + (int) amount);
+            amount = (int)amount;
+        }
+
+        ResourceLocation toLevel = CultivatorStats.getCultivatorStats(player).getTechniqueFocus(tech.getClass());
+
+        if (toLevel == null)
+            toLevel = (ResourceLocation) tech.getTechniqueStats().toArray()[0];
+
+        double currentLevel = amount;
+
+        if (!statLevels.containsKey(tech.getClass().toString()))
+            statLevels.put(tech.getClass().toString(), new HashMap<>());
+
+        if (statLevels.get(tech.getClass().toString()).containsKey(toLevel))
+            currentLevel += statLevels.get(tech.getClass().toString()).get(toLevel);
+
+        statLevels.get(tech.getClass().toString()).put(toLevel, currentLevel);
+
+        PacketHandler.sendCultivatorStatsToClient(player);
+    }
+
     public CompoundTag writeNBT()
     {
         CompoundTag nbt = new CompoundTag();
@@ -155,9 +178,9 @@ public class CultivationType
 
         int i = 0;
 
-        for (Map.Entry<Class, HashMap<ResourceLocation, Double>> tech : statLevels.entrySet())
+        for (Map.Entry<String, HashMap<ResourceLocation, Double>> tech : statLevels.entrySet())
         {
-            nbt.putString("TECH"+i+"CLASS", tech.getKey().toString());
+            nbt.putString("TECH"+i+"CLASS", tech.getKey());
 
             int j = 0;
 
@@ -165,6 +188,8 @@ public class CultivationType
             {
                 nbt.putString("TECH"+i+"ENTRY"+j+"NAME", techEntry.getKey().toString());
                 nbt.putDouble("TECH"+i+"ENTRY"+j+"VALUE", techEntry.getValue());
+
+                j++;
             }
 
             i++;
@@ -185,7 +210,7 @@ public class CultivationType
             previousCultivation = newCultivation;
         }
 
-        HashMap<Class, HashMap<ResourceLocation, Double>> newTechLevels = new HashMap<>();
+        HashMap<String, HashMap<ResourceLocation, Double>> newTechLevels = new HashMap<>();
 
         int i = 0;
 
@@ -201,18 +226,7 @@ public class CultivationType
                 j++;
             }
 
-            String className = nbt.getString("TECH"+i+"CLASS");
-
-            try
-            {
-                Class test = Class.forName(className);
-                newTechLevels.put(test, values);
-            }
-            catch (Exception e)
-            {
-                Cultivationcraft.LOGGER.error(className + " not found when loading Technique stats");
-                return;
-            }
+            newTechLevels.put(nbt.getString("TECH"+i+"CLASS"), values);
 
             i++;
         }

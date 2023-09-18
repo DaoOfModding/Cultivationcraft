@@ -44,6 +44,7 @@ public class PacketHandler
     protected static final byte WIND_INSTANCE = 43;
     protected static final byte BLOOD_SPAWN_ID = 55;
     protected static final byte EXTERNAL_BLOOD_TICK_ID = 56;
+    protected static final byte CULTIVATOR_TECH_STAT = 94;
     protected static final byte CULTIVATOR_TYPE = 95;
     protected static final byte BODY_FORGE_SELECTION = 96;
     protected static final byte BODY_MODIFICATIONS = 97;
@@ -79,6 +80,7 @@ public class PacketHandler
         channel.registerMessage(CULTIVATOR_TYPE, CultivatorTypePacket.class, CultivatorTypePacket::encode, CultivatorTypePacket::decode, CultivatorTypePacket::handle);
         channel.registerMessage(BODY_FORGE_SELECTION, BodyForgeSelectionPacket.class, BodyForgeSelectionPacket::encode, BodyForgeSelectionPacket::decode, BodyForgeSelectionPacket::handle);
         channel.registerMessage(BODY_MODIFICATIONS, BodyModificationsPacket.class, BodyModificationsPacket::encode, BodyModificationsPacket::decode, BodyModificationsPacket::handle);
+        channel.registerMessage(CULTIVATOR_TECH_STAT, TechniqueStatSelectionPacket.class, TechniqueStatSelectionPacket::encode, TechniqueStatSelectionPacket::decode, TechniqueStatSelectionPacket::handle);
     }
 
     public static void sendAttackToClient(UUID playerID, HitResult.Type type, Vec3 pos, UUID targetID, Direction direction, int slot)

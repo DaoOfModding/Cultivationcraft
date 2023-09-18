@@ -108,7 +108,7 @@ public class FlyingSwordEntity extends ItemEntity
     public float getSpeed()
     {
         if (formation != null)
-            return (float)formation.getTechniqueStat(FlyingSwordFormationTechnique.flyingswordspeed, owner);
+            return (float)formation.getTechniqueStat(FlyingSwordFormationTechnique.flyingswordspeed, owner) / 100f;
 
         return defaultspeed;
     }
@@ -124,7 +124,7 @@ public class FlyingSwordEntity extends ItemEntity
     public float getMaxSpeed()
     {
         if (formation != null)
-            return (float)formation.getTechniqueStat(FlyingSwordFormationTechnique.flyingswordmaxspeed, owner);
+            return (float)formation.getTechniqueStat(FlyingSwordFormationTechnique.flyingswordmaxspeed, owner) / 100f;
 
         return defaultmaxSpeed;
     }
@@ -366,6 +366,7 @@ public class FlyingSwordEntity extends ItemEntity
         if (collisionEntity instanceof LivingEntity)
         {
             attackTargetEntity(collisionEntity);
+            formation.levelUp(owner, 0.1);
 
             return true;
         }
