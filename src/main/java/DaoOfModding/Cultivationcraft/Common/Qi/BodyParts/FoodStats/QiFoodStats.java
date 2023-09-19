@@ -1,12 +1,17 @@
 package DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.FoodStats;
 
+import DaoOfModding.Cultivationcraft.Client.GUI.animatedTexture;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.PlayerHealthManager;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.Quest;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.QuestHandler;
+import DaoOfModding.Cultivationcraft.Common.Qi.QiSource;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.StatIDs;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import DaoOfModding.Cultivationcraft.StaminaHandler;
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.math.Vector3f;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.food.FoodData;
@@ -14,6 +19,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.level.block.state.BlockState;
+
+import java.awt.*;
+import java.util.List;
 
 public class QiFoodStats extends FoodData
 {
@@ -24,6 +32,10 @@ public class QiFoodStats extends FoodData
     protected float lastFoodLevel = 20;
 
     protected float lastSendFood = 0;
+
+    protected animatedTexture outerfilling = new animatedTexture(new ResourceLocation(Cultivationcraft.MODID, "textures/gui/outerfilling.png"));
+    protected Vector3f staminaColor = new Vector3f(1.0F, 0.5F, 0.0F);
+    protected Vector3f saturationColor = new Vector3f(1.0F, 0.9F, 0.2F);
 
     public void setMaxFood(int newMaxFood)
     {
@@ -41,6 +53,21 @@ public class QiFoodStats extends FoodData
         setFoodLevel(Math.min(p_75122_1_ + getTrueFoodLevel(), maxFood));
 
         setSaturation(Math.min(getSaturationLevel() + (float)p_75122_1_ * p_75122_2_ * 2.0F, getTrueFoodLevel()));
+    }
+
+    public animatedTexture getOrb()
+    {
+        return outerfilling;
+    }
+
+    public Vector3f getColor()
+    {
+        return staminaColor;
+    }
+
+    public Vector3f getSaturationColor()
+    {
+        return saturationColor;
     }
 
     // Server side only
@@ -220,6 +247,13 @@ public class QiFoodStats extends FoodData
     public int getNutrition(BlockState block)
     {
         return 0;
+    }
+
+    // Is called when meditating
+    // Is supplied the amount of Qi the player can absorb during this turn, and returns any modifications to that amount
+    public int meditation(int QiRemaining, List<QiSource> sources, Player player)
+    {
+        return QiRemaining;
     }
 
     public QiFoodStats clone()

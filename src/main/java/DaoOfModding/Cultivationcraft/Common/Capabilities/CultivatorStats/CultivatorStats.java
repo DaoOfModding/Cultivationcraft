@@ -73,6 +73,7 @@ public class CultivatorStats implements ICultivatorStats
     public CompoundTag writeNBT()
     {
         CompoundTag nbt = new CompoundTag();
+        nbt.putInt("TYPE", cultivationType);
         nbt.putString("CULTIVATIONID", cultivation.ID.toString());
         nbt.put("CULTIVATION", cultivation.writeNBT());
 

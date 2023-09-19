@@ -2,10 +2,12 @@ package DaoOfModding.Cultivationcraft.Network.Packets.CultivatorStats;
 
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStats;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.ICultivatorStats;
+import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.PlayerHealthManager;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import DaoOfModding.Cultivationcraft.Network.Packets.Packet;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.network.NetworkEvent;
 
@@ -77,7 +79,9 @@ public class CultivatorStatsPacket extends Packet
     // Process received packet on client
     protected void processPacket()
     {
+        Player player = Minecraft.getInstance().level.getPlayerByUUID(owner);
         // Update the stats for the specified player
-        CultivatorStats.getCultivatorStats(Minecraft.getInstance().level.getPlayerByUUID(owner)).readNBT(cultStats.writeNBT());
+        CultivatorStats.getCultivatorStats(player).readNBT(cultStats.writeNBT());
+        PlayerHealthManager.updateFoodStats(player);
     }
 }

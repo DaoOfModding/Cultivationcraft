@@ -21,11 +21,11 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.resources.ResourceLocation;
 import com.mojang.math.Vector3f;
 
+import java.awt.*;
+
 public class Renderer
 {
     protected static final animatedTexture healthOrb = new animatedTexture(new ResourceLocation(Cultivationcraft.MODID, "textures/gui/healthorb.png"));
-    protected static final animatedTexture orbFilling = new animatedTexture(new ResourceLocation(Cultivationcraft.MODID, "textures/gui/orbfilling.png"));
-    protected static final animatedTexture outerfilling = new animatedTexture(new ResourceLocation(Cultivationcraft.MODID, "textures/gui/outerfilling.png"));
 
     public static boolean QiSourcesVisible = false;
 
@@ -110,22 +110,26 @@ public class Renderer
         int scaledHeight = Minecraft.getInstance().getWindow().getGuiScaledHeight();
 
         float stamina = genericClientFunctions.getPlayer().getFoodData().getFoodLevel();
-
-        if (genericClientFunctions.getPlayer().getFoodData() instanceof QiFoodStats)
-            stamina = ((QiFoodStats)genericClientFunctions.getPlayer().getFoodData()).getTrueFoodLevel();
-
         float maxStamina = BodyPartStatControl.getStats(genericClientFunctions.getPlayer()).getStat(StatIDs.maxStamina);
 
-        float staminaPercent = stamina/maxStamina;
+        if (genericClientFunctions.getPlayer().getFoodData() instanceof QiFoodStats)
+        {
+            stamina = ((QiFoodStats) genericClientFunctions.getPlayer().getFoodData()).getTrueFoodLevel();
+            maxStamina = ((QiFoodStats) genericClientFunctions.getPlayer().getFoodData()).getMaxFood();
+        }
 
+        float staminaPercent = stamina/maxStamina;
         float saturationPercent =  genericClientFunctions.getPlayer().getFoodData().getSaturationLevel()/maxStamina;
 
+        QiFoodStats stats = new QiFoodStats();
+        if (genericClientFunctions.getPlayer().getFoodData() instanceof QiFoodStats)
+            stats = (QiFoodStats)genericClientFunctions.getPlayer().getFoodData();
 
-        RenderSystem.setShaderColor(1.0F, 0.5F, 0.0F, 0.7F);
-        outerfilling.render((int)(scaledWidth * 0.1 - 5), (int)(scaledHeight - (5 + 50 * staminaPercent)), 50, (int)(50 * staminaPercent), staminaPercent);
+        RenderSystem.setShaderColor(stats.getColor().x(), stats.getColor().y(), stats.getColor().z(), 0.7f);
+        stats.getOrb().render((int)(scaledWidth * 0.1 - 5), (int)(scaledHeight - (5 + 50 * staminaPercent)), 50, (int)(50 * staminaPercent), staminaPercent);
 
-        RenderSystem.setShaderColor(1.0F, 0.9F, 0.2F, 0.5F);
-        outerfilling.render((int)(scaledWidth * 0.1 - 5), (int)(scaledHeight - (5 + 50 * saturationPercent)), 50, (int)(50 * saturationPercent), saturationPercent);
+        RenderSystem.setShaderColor(stats.getSaturationColor().x(), stats.getSaturationColor().y(), stats.getSaturationColor().z(), 0.5f);
+        stats.getOrb().render((int)(scaledWidth * 0.1 - 5), (int)(scaledHeight - (5 + 50 * saturationPercent)), 50, (int)(50 * saturationPercent), saturationPercent);
 
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         healthOrb.render((int)(scaledWidth * 0.1 - 5), scaledHeight - 55, 50, 50);

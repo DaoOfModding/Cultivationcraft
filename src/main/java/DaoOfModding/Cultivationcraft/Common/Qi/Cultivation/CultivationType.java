@@ -2,10 +2,13 @@ package DaoOfModding.Cultivationcraft.Common.Qi.Cultivation;
 
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStats;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.ICultivatorStats;
+import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.FoodStats.QiNotFoodStats;
+import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.PlayerHealthManager;
 import DaoOfModding.Cultivationcraft.Common.Qi.ExternalCultivationHandler;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.Technique;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import DaoOfModding.Cultivationcraft.Network.PacketHandler;
+import DaoOfModding.Cultivationcraft.StaminaHandler;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
@@ -18,7 +21,7 @@ public class CultivationType
     public static final ResourceLocation ID = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.cultivation.default");
 
     protected int maxQi = 1000;
-    protected int Qi = 0;
+    protected int Qi = 100;
 
     protected int techLevel = 100;
 
@@ -29,7 +32,12 @@ public class CultivationType
     public boolean canCultivate(ResourceLocation element)
     {
         return true;
-    };
+    }
+
+    public boolean consumeQi(Player player, double qiToConsume)
+    {
+        return StaminaHandler.consumeStamina(player, (float)qiToConsume);
+    }
 
     public int progressCultivation(Player player, int Qi, ResourceLocation element)
     {
@@ -115,7 +123,15 @@ public class CultivationType
 
     public int getQi()
     {
-        return Qi;
+        int returnQi = Qi;
+
+        if (returnQi > maxQi)
+            returnQi = maxQi;
+
+        if (previousCultivation != null)
+            returnQi += previousCultivation.getQi();
+
+        return returnQi;
     }
 
     public void setQi(int newQi)

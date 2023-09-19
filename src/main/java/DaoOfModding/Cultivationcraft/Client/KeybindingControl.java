@@ -376,35 +376,6 @@ public class KeybindingControl
                 SkillHotbarOverlay.switchActive();
                 ClientPacketHandler.sendKeypressToServer(Register.keyPresses.SKILLHOTBARSWITCH);
             }
-
-            // TODO: Set flying sword target through formation
-/*
-            if (keyBindings[1].isDown())
-            {
-                final HitResult result = getMouseOver(100);
-
-                HitResult.Type type = result.getType();
-                UUID targetID = null;
-
-                Vec3 pos = result.getLocation();
-
-                if (type == HitResult.Type.ENTITY)
-                    targetID = Misc.getEntityAtLocation(result.getLocation(), Minecraft.getInstance().level).getUUID();
-
-                // If result is a block, move position vector inside the block
-                if (type == HitResult.Type.BLOCK)
-                {
-                    if (Misc.enableHarvest)
-                    {
-                        pos = pos.add(genericClientFunctions.getPlayer().getLookAngle().scale(0.1));
-                        pos = new Vec3(Math.floor(pos.x), Math.floor(pos.y), Math.floor(pos.z));
-                    }
-                    else
-                        type = HitResult.Type.MISS;
-                }
-
-                ClientPacketHandler.sendCultivatorTargetToServer(genericClientFunctions.getPlayer().getUUID(), type, pos, targetID);
-            }*/
         }
     }
 

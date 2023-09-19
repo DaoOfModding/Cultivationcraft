@@ -9,6 +9,7 @@ import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.DefaultQuests;
 import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
 import DaoOfModding.Cultivationcraft.Common.Qi.QiSourceConfig;
 import DaoOfModding.Cultivationcraft.Common.Qi.TechniqueControl;
+import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.TechniqueStats.DefaultTechniqueStatIDs;
 import DaoOfModding.Cultivationcraft.Common.Reflection;
 import DaoOfModding.Cultivationcraft.Common.Register;
 import DaoOfModding.Cultivationcraft.Network.PacketHandler;
@@ -61,5 +62,6 @@ public class Cultivationcraft {
         ClientItemControl.init(event);
         GenericQiPoses.init();
         HelpItems.setup();
+        DefaultTechniqueStatIDs.init();
     }
 }

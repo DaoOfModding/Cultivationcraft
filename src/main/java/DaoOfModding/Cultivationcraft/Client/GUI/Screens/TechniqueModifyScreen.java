@@ -6,6 +6,7 @@ import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.Cultiva
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.CultivatorTechniques;
 import DaoOfModding.Cultivationcraft.Common.Qi.Cultivation.CultivationType;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.Technique;
+import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.TechniqueStats.DefaultTechniqueStatIDs;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.TechniqueStats.TechniqueStatModification;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import DaoOfModding.Cultivationcraft.Network.ClientPacketHandler;
@@ -147,10 +148,13 @@ public class TechniqueModifyScreen extends GenericTabScreen
                 Color col = Color.red;
 
                 if (value > 0)
-                {
                     amount += "+";
+
+                boolean reversed = DefaultTechniqueStatIDs.isReversedNegative(stats.get(stat));
+
+                if ((!reversed && value > 0) || (reversed && value < 0))
                     col = Color.GREEN;
-                }
+
 
                 amount += value + ")";
 

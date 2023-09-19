@@ -41,12 +41,15 @@ public class FlyingSwordFormationTechnique extends AttackOverrideTechnique
 
         canLevel = true;
 
+        TechniqueStatModification qiCostModification = new TechniqueStatModification(DefaultTechniqueStatIDs.qiCost);
         TechniqueStatModification flyingdamageModification = new TechniqueStatModification(DefaultTechniqueStatIDs.damage);
         TechniqueStatModification flyingrangeModification = new TechniqueStatModification(DefaultTechniqueStatIDs.range);
         TechniqueStatModification flyingSwordSpeedModification = new TechniqueStatModification(flyingswordspeed);
         TechniqueStatModification flyingSwordMaxSpeedModification = new TechniqueStatModification(flyingswordmaxspeed);
         TechniqueStatModification flyingSwordTurnSpeedModification = new TechniqueStatModification(flyingswordturnspeed);
 
+        qiCostModification.addStatChange(DefaultTechniqueStatIDs.qiCost, -0.0001);
+        flyingdamageModification.addStatChange(DefaultTechniqueStatIDs.qiCost, 0.0001);
         flyingdamageModification.addStatChange(DefaultTechniqueStatIDs.damage, 0.002);
         flyingrangeModification.addStatChange(DefaultTechniqueStatIDs.range, 0.1);
         flyingSwordSpeedModification.addStatChange(flyingswordspeed, 0.01);
@@ -54,8 +57,9 @@ public class FlyingSwordFormationTechnique extends AttackOverrideTechnique
         flyingSwordTurnSpeedModification.addStatChange(flyingswordturnspeed, 0.002);
 
 
+        addTechniqueStat(DefaultTechniqueStatIDs.qiCost, 0.05, qiCostModification);
         addTechniqueStat(DefaultTechniqueStatIDs.range, 10, flyingrangeModification);
-        addTechniqueStat(DefaultTechniqueStatIDs.damage, 0.25f, flyingdamageModification);
+        addTechniqueStat(DefaultTechniqueStatIDs.damage, 0.25, flyingdamageModification);
         addTechniqueStat(flyingswordspeed, 2, flyingSwordSpeedModification);
         addTechniqueStat(flyingswordmaxspeed, 100, flyingSwordMaxSpeedModification);
         addTechniqueStat(flyingswordturnspeed, 0.2, flyingSwordTurnSpeedModification);

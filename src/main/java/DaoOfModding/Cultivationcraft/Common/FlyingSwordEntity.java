@@ -454,7 +454,7 @@ public class FlyingSwordEntity extends ItemEntity
             moveDecay();
 
             // If the flying sword is in range of it's owner then do normal movement, otherwise fall to the ground
-            if (canControl())
+            if (canControl() && CultivatorStats.getCultivatorStats(owner).getCultivation().consumeQi(owner, formation.getTechniqueStat(DefaultTechniqueStatIDs.qiCost, owner)))
             {
                 this.baseTick();
 

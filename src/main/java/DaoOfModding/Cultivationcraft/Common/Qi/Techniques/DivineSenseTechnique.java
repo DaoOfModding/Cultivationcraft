@@ -37,6 +37,7 @@ public class DivineSenseTechnique extends Technique
         //setOverlay(new ResourceLocation(Cultivationcraft.MODID, "textures/techniques/overlays/divinesense.png"));
 
         stats.setStat(StatIDs.staminaDrain, 0.05f);
+        addTechniqueStat(DefaultTechniqueStatIDs.qiCost, 0.1f);
 
         effects.add(MobEffects.NIGHT_VISION);
     }
@@ -46,6 +47,23 @@ public class DivineSenseTechnique extends Technique
     {
         if (PlayerUtils.isClientPlayerCharacter(event.player))
             Renderer.QiSourcesVisible = true;
+
+        if (event.player.getFoodData().getFoodLevel() == 0)
+            this.deactivate(event.player);
+    }
+
+    @Override
+    public void tickServer(TickEvent.PlayerTickEvent event)
+    {
+        super.tickServer(event);
+
+        if (CultivatorStats.getCultivatorStats(event.player).getCultivationType() == CultivationTypes.QI_CONDENSER)
+        {
+            if (!CultivatorStats.getCultivatorStats(event.player).getCultivation().consumeQi(event.player, getTechniqueStat(DefaultTechniqueStatIDs.qiCost, event.player)))
+                this.deactivate(event.player);
+        }
+        else if (event.player.getFoodData().getFoodLevel() == 0)
+            this.deactivate(event.player);
     }
 
     @Override

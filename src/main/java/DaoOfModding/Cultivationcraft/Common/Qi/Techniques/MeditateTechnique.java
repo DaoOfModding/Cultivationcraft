@@ -1,12 +1,14 @@
 package DaoOfModding.Cultivationcraft.Common.Qi.Techniques;
 
 import DaoOfModding.Cultivationcraft.Client.Animations.GenericQiPoses;
+import DaoOfModding.Cultivationcraft.Client.genericClientFunctions;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.BodyModifications;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.IBodyModifications;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.ChunkQiSources.ChunkQiSources;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStats;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.ICultivatorStats;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartNames;
+import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.FoodStats.QiFoodStats;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.PlayerHealthManager;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.Quest;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.QuestHandler;
@@ -79,14 +81,12 @@ public class MeditateTechnique extends MovementOverrideTechnique
 
             List<QiSource> sources = ChunkQiSources.getQiSourcesInRange(event.player.level, event.player.position(), cultivation.getAbsorbRange(event.player));
 
-            // If meditating in a Qi Source, increase the quest by 1 second
-            if (sources.size() > 0)
-                QuestHandler.progressQuest(event.player, Quest.QI_SOURCE_MEDITATION, 1.0/20.0);
-
             // absorb Qi through blood first
             int remaining = cultivation.getAbsorbSpeed(event.player);
             remaining = PlayerHealthManager.getBlood(event.player).meditation(remaining, sources, event.player);
 
+            if (event.player.getFoodData() instanceof QiFoodStats)
+                remaining = ((QiFoodStats)event.player.getFoodData()).meditation(remaining, sources, event.player);
 
             // Passively cultivate
             cultivation.progressCultivation(event.player, QiSource.getDefaultQi(), Elements.noElement);

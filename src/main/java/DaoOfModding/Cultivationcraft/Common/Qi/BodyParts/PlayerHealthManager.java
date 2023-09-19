@@ -7,6 +7,7 @@ import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Blood.Blood;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyForgeParts.BloodPart;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyForgeParts.LungPart;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyForgeParts.StomachPart;
+import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.FoodStats.QiNotFoodStats;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Lungs.Lung.Lung;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Lungs.Lungs;
 import DaoOfModding.Cultivationcraft.Common.Qi.CultivationTypes;
@@ -99,27 +100,36 @@ public class PlayerHealthManager
 
     public static void updateFoodStats(Player player)
     {
-        // do nothing if the player is not a body cultivator
-        if (CultivatorStats.getCultivatorStats(player).getCultivationType() != CultivationTypes.BODY_CULTIVATOR)
-            return;
+        // If the player is a Qi Condenser then set food to be Qi
+        if (CultivatorStats.getCultivatorStats(player).getCultivationType() == CultivationTypes.QI_CONDENSER)
+        {
+            QiNotFoodStats food = new QiNotFoodStats();
+            food.setMaxFood(CultivatorStats.getCultivatorStats(player).getCultivation().getQi());
 
-        QiFoodStats food = new QiFoodStats();
+            // Update the players food stat variable
+            setFoodStats(player, food);
+        }
+        else if (CultivatorStats.getCultivatorStats(player).getCultivationType() == CultivationTypes.BODY_CULTIVATOR)
+        {
+
+            QiFoodStats food = new QiFoodStats();
 
 
-        // Update the players food stats if they have cultivated their stomach
-        // Otherwise use the default food handler
-        IBodyModifications modifications = BodyModifications.getBodyModifications(player);
+            // Update the players food stats if they have cultivated their stomach
+            // Otherwise use the default food handler
+            IBodyModifications modifications = BodyModifications.getBodyModifications(player);
 
 
-        ArrayList<BodyPart> stomach = modifications.getBodyPartsOfType(StomachPart.class);
-        if (stomach.size() > 0)
-            food = ((StomachPart) stomach.get(0)).getFoodStats().clone();
+            ArrayList<BodyPart> stomach = modifications.getBodyPartsOfType(StomachPart.class);
+            if (stomach.size() > 0)
+                food = ((StomachPart) stomach.get(0)).getFoodStats().clone();
 
-        // Set the players max stamina
-        food.setMaxFood((int)BodyPartStatControl.getStats(player).getStat(StatIDs.maxStamina));
+            // Set the players max stamina
+            food.setMaxFood((int) BodyPartStatControl.getStats(player).getStat(StatIDs.maxStamina));
 
-        // Update the players food stat variable
-        setFoodStats(player, food);
+            // Update the players food stat variable
+            setFoodStats(player, food);
+        }
     }
 
     protected static void setFoodStats(Player player, QiFoodStats newFood)
