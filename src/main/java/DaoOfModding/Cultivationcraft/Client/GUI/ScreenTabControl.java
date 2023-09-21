@@ -86,8 +86,6 @@ public class ScreenTabControl
     {
         int cultivationType = CultivatorStats.getCultivatorStats(genericClientFunctions.getPlayer()).getCultivationType();
 
-        System.out.println(cultivationType);
-
         if (cultivationType == CultivationTypes.NO_CULTIVATION)
             Minecraft.getInstance().forceSetScreen(new CultivationSelectionScreen());
         else

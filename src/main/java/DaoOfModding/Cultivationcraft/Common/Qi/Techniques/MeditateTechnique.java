@@ -86,10 +86,10 @@ public class MeditateTechnique extends MovementOverrideTechnique
             remaining = PlayerHealthManager.getBlood(event.player).meditation(remaining, sources, event.player);
 
             if (event.player.getFoodData() instanceof QiFoodStats)
-                remaining = ((QiFoodStats)event.player.getFoodData()).meditation(remaining, sources, event.player);
+                remaining = ((QiFoodStats)event.player.getFoodData()).meditation(remaining, event.player);
 
             // Passively cultivate
-            cultivation.progressCultivation(event.player, QiSource.getDefaultQi(), Elements.noElement);
+            cultivation.progressCultivation(event.player, cultivation.absorbFromQiSource(remaining, event.player), Elements.noElement);
 
             // Loop through every source and try to cultivate from it
             for (QiSource source : sources)

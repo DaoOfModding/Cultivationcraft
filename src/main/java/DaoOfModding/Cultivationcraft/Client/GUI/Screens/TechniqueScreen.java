@@ -189,7 +189,7 @@ public class TechniqueScreen extends GenericTabScreen
 
         if (selectedTech != null && selectedTech.canLevel() && modify.mouseClick((int)mouseX, (int)mouseY, buttonPressed))
         {
-            Minecraft.getInstance().forceSetScreen(new TechniqueModifyScreen(selected));
+            Minecraft.getInstance().forceSetScreen(new TechniqueModifyScreen(CultivatorTechniques.getCultivatorTechniques(genericClientFunctions.getPlayer()).getTechnique(selected), 1));
             return true;
         }
 

@@ -4,6 +4,7 @@ import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.Cultiva
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.PlayerHealthManager;
 import DaoOfModding.Cultivationcraft.Common.Qi.Cultivation.CultivationType;
 import DaoOfModding.Cultivationcraft.Common.Qi.QiSource;
+import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.TechniqueStats.DefaultCultivationStatIDs;
 import com.mojang.math.Vector3f;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -26,6 +27,9 @@ public class QiNotFoodStats extends QiFoodStats
         // Do nothing is player is dead
         if (!player.isAlive())
             return;
+
+        // Update the max food to equal the maxQi
+        setMaxFood((int) CultivatorStats.getCultivatorStats(player).getCultivation().getCultivationStat(player, DefaultCultivationStatIDs.maxQi));
 
         // Qi doesn't have saturation
         setSaturation(0);
@@ -55,34 +59,21 @@ public class QiNotFoodStats extends QiFoodStats
     }
 
     @Override
-    public int meditation(int QiRemaining, List<QiSource> sources, Player player)
+    public int meditation(int QiRemaining, Player player)
     {
         float toAbsorb = getMaxFood() - getTrueFoodLevel();
 
-        if (toAbsorb == 0)
+        if (toAbsorb <= 0)
             return QiRemaining;
 
-        float absorb = 0;
         CultivationType cultivation = CultivatorStats.getCultivatorStats(player).getCultivation();
 
-        // Draw Qi from each Qi source available
-        for (QiSource source : sources)
-        {
-            // Only absorb from QiSources of the correct element
-            if (cultivation.canCultivate(source.getElement()))
-                if (QiRemaining > 0 && absorb < toAbsorb)
-                {
-                    int absorbed = source.absorbQi(QiRemaining, player);
-                    QiRemaining -= absorbed;
-
-                    absorb += (float)absorbed;
-                }
-        }
-
-        if (absorb > toAbsorb)
-            absorb = toAbsorb;
+        float absorb = cultivation.absorbFromQiSource(QiRemaining, player);
 
         setFoodLevel(getTrueFoodLevel() + absorb);
+
+        if (getTrueFoodLevel() > getMaxFood())
+            setFoodLevel(getMaxFood());
 
         return QiRemaining;
     }

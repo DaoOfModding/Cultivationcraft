@@ -1,10 +1,10 @@
 package DaoOfModding.Cultivationcraft.Common.Qi.Cultivation;
 
+import DaoOfModding.Cultivationcraft.Common.Capabilities.ChunkQiSources.ChunkQiSources;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStats;
-import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.ICultivatorStats;
-import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.FoodStats.QiNotFoodStats;
-import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.PlayerHealthManager;
 import DaoOfModding.Cultivationcraft.Common.Qi.ExternalCultivationHandler;
+import DaoOfModding.Cultivationcraft.Common.Qi.QiSource;
+import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.PassiveTechniques.PassiveTechnique;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.Technique;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import DaoOfModding.Cultivationcraft.Network.PacketHandler;
@@ -14,20 +14,20 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class CultivationType
 {
     public static final ResourceLocation ID = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.cultivation.default");
 
-    protected int maxQi = 1000;
-    protected int Qi = 100;
-
     protected int techLevel = 100;
 
     protected CultivationType previousCultivation = null;
 
     protected HashMap<String, HashMap<ResourceLocation, Double>> statLevels = new HashMap<>();
+
+    protected PassiveTechnique passive = new PassiveTechnique();
 
     public boolean canCultivate(ResourceLocation element)
     {
@@ -39,31 +39,73 @@ public class CultivationType
         return StaminaHandler.consumeStamina(player, (float)qiToConsume);
     }
 
-    public int progressCultivation(Player player, int Qi, ResourceLocation element)
+    public PassiveTechnique getPassive()
+    {
+        return passive;
+    }
+
+    public double getCultivationStat(Player player, ResourceLocation stat)
+    {
+        double amount = getPassive().getTechniqueStat(stat, player);
+
+        if (previousCultivation != null)
+            amount += previousCultivation.getCultivationStat(player, stat);
+
+        return amount;
+    }
+
+    public float absorbFromQiSource(int amount, Player player)
+    {
+        List<QiSource> sources = ChunkQiSources.getQiSourcesInRange(player.level, player.position(), getAbsorbRange(player));
+
+        int remaining = amount;
+        float toAbsorb = 0;
+
+        // TODO: Stat for this
+        toAbsorb += QiSource.getDefaultQi() / 100f;
+
+        // Draw Qi from each Qi source available
+        for (QiSource source : sources)
+        {
+            // Only absorb from QiSources of the correct element
+            if (canCultivate(source.getElement()))
+                if (remaining > 0)
+                {
+                    int absorbed = source.absorbQi(remaining, player);
+                    remaining -= absorbed;
+
+                    toAbsorb += absorbed;
+                }
+        }
+
+        if (toAbsorb > amount)
+            return amount;
+
+        return toAbsorb;
+    }
+
+    public float progressCultivation(Player player, float Qi, ResourceLocation element)
     {
         if (!canCultivate(element))
             return Qi;
 
-        ICultivatorStats stats = CultivatorStats.getCultivatorStats(player);
+        int currentLevel = getTechLevelProgress(getPassive().getClass());
 
-        int max = getMaxQi();
-        int currentQi = getQi();
-
-        // If the current Qi is at the max, do nothing
-        if (currentQi >= max)
+        // Don't cultivate if already at the max
+        if (currentLevel >= techLevel)
             return Qi;
 
-        int remains = currentQi + Qi - max;
+        float remains = (currentLevel + Qi) - techLevel;
 
-        // If cultivating will go over the max Qi, set Qi to max and return the remaining amount
+        // If cultivating will go over the max, cultivate to the max instead
         if (remains > 0)
         {
-            setQi(max);
-            return remains;
+            getPassive().levelUp(player, remains);
+            return Qi - remains;
         }
 
-        // Add the cultivated Qi into the current Qi and return
-        setQi(currentQi + Qi);
+        // Cultivate all the supplied Qi
+        getPassive().levelUp(player, Qi);
         return 0;
     }
 
@@ -111,34 +153,6 @@ public class CultivationType
         return progress;
     }
 
-    public int getMaxQi()
-    {
-        int returnMax = maxQi;
-
-        if (previousCultivation != null)
-            returnMax += previousCultivation.getMaxQi();
-
-        return returnMax;
-    }
-
-    public int getQi()
-    {
-        int returnQi = Qi;
-
-        if (returnQi > maxQi)
-            returnQi = maxQi;
-
-        if (previousCultivation != null)
-            returnQi += previousCultivation.getQi();
-
-        return returnQi;
-    }
-
-    public void setQi(int newQi)
-    {
-        Qi = newQi;
-    }
-
     public int getAbsorbRange(Player player)
     {
         return 1;
@@ -146,7 +160,7 @@ public class CultivationType
 
     public int getAbsorbSpeed(Player player)
     {
-        return 10;
+        return 1;
     }
 
     public void levelTech(Technique tech, double amount, Player player)
@@ -184,7 +198,6 @@ public class CultivationType
     public CompoundTag writeNBT()
     {
         CompoundTag nbt = new CompoundTag();
-        nbt.putInt("QI", Qi);
 
         if (getPreviousCultivation() != null)
         {
@@ -216,8 +229,6 @@ public class CultivationType
 
     public void readNBT(CompoundTag nbt)
     {
-        Qi = nbt.getInt("QI");
-
         if (nbt.contains("PREVIOUSCULTNAME"))
         {
             CultivationType newCultivation = ExternalCultivationHandler.getCultivation(new ResourceLocation(nbt.getString("PREVIOUSCULTNAME")));

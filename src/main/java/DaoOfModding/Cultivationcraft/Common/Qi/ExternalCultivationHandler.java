@@ -1,7 +1,7 @@
 package DaoOfModding.Cultivationcraft.Common.Qi;
 
 import DaoOfModding.Cultivationcraft.Common.Qi.Cultivation.CultivationType;
-import DaoOfModding.Cultivationcraft.Common.Qi.Cultivation.DefaultCultivation;
+import DaoOfModding.Cultivationcraft.Common.Qi.Cultivation.FoundationEstablishmentCultivation;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import net.minecraft.resources.ResourceLocation;
 
@@ -11,7 +11,7 @@ public class ExternalCultivationHandler
 {
     public static void init()
     {
-        addCultivation(DefaultCultivation.class);
+        addCultivation(FoundationEstablishmentCultivation.class);
     }
 
     // List of all techniques available in the game
@@ -37,6 +37,6 @@ public class ExternalCultivationHandler
             Cultivationcraft.LOGGER.error("Error " + e + " whilst getting player cultivation of ID " + ID);
         }
 
-        return new DefaultCultivation();
+        return new FoundationEstablishmentCultivation();
     }
 }

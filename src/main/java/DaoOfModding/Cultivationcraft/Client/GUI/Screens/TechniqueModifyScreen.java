@@ -30,25 +30,22 @@ public class TechniqueModifyScreen extends GenericTabScreen
     protected final int statXPosFromRight = 80;
     protected final int buttonXPosFromRight = 20;
 
-    protected int techniqueNumber;
     protected Technique selectedTech;
 
     protected ArrayList<ResourceLocation> stats = new ArrayList<>();
     protected GUIButton[] buttons;
 
-    public TechniqueModifyScreen(int tech)
+    public TechniqueModifyScreen(Technique tech, int activeTab)
     {
-        super(1, Component.translatable("cultivationcraft.gui.technique"), new ResourceLocation(Cultivationcraft.MODID, "textures/gui/stats.png"));
+        super(activeTab, Component.translatable("cultivationcraft.gui.technique"), new ResourceLocation(Cultivationcraft.MODID, "textures/gui/stats.png"));
 
-        techniqueNumber = tech;
+        selectedTech = tech;
 
         updateStats();
     }
 
     protected void updateStats()
     {
-        selectedTech = CultivatorTechniques.getCultivatorTechniques(genericClientFunctions.getPlayer()).getTechnique(techniqueNumber);
-
         stats = new ArrayList<>();
 
         for (ResourceLocation stat : selectedTech.getTechniqueStats())
@@ -132,7 +129,15 @@ public class TechniqueModifyScreen extends GenericTabScreen
 
         font.draw(PoseStack, inspiration, edgeSpacingX + this.xSize - inspirationXPos - font.width(inspiration), edgeSpacingY + inspirationYPos, Color.white.getRGB());
 
-        TechniqueStatModification modifications = selectedTech.getStatChangesPerLevel(CultivatorStats.getCultivatorStats(Minecraft.getInstance().player).getTechniqueFocus(selectedTech.getClass()));
+
+        ResourceLocation focus = CultivatorStats.getCultivatorStats(Minecraft.getInstance().player).getTechniqueFocus(selectedTech.getClass());
+        if (focus == null)
+        {
+            focus = stats.get(0);
+            CultivatorStats.getCultivatorStats(Minecraft.getInstance().player).setTechniqueFocus(selectedTech.getClass().toString(), focus);
+        }
+
+        TechniqueStatModification modifications = selectedTech.getStatChangesPerLevel(focus);
 
         for (int stat = 0; stat < stats.size(); stat++)
         {

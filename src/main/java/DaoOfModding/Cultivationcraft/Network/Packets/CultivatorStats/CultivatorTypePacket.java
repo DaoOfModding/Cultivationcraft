@@ -16,8 +16,8 @@ import java.util.function.Supplier;
 
 public class CultivatorTypePacket extends Packet
 {
-        protected UUID player = null;
-        protected int cultivationType = CultivationTypes.NO_CULTIVATION;
+        protected UUID player;
+        protected int cultivationType;
 
         public CultivatorTypePacket(UUID playerID, int type)
         {
@@ -86,7 +86,6 @@ public class CultivatorTypePacket extends Packet
 
             // Change the player's cultivation type to the new type
             CultivatorStats.getCultivatorStats(ownerEntity).setCultivationType(cultivationType);
-
             // Send the new player stats to the clients
             PacketHandler.sendCultivatorStatsToClient(ownerEntity);
         }

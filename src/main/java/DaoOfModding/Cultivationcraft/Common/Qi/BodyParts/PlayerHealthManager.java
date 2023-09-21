@@ -14,6 +14,7 @@ import DaoOfModding.Cultivationcraft.Common.Qi.CultivationTypes;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.FoodStats.QiFoodStats;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.StatIDs;
+import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.TechniqueStats.DefaultCultivationStatIDs;
 import DaoOfModding.Cultivationcraft.Common.Reflection;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
@@ -104,7 +105,7 @@ public class PlayerHealthManager
         if (CultivatorStats.getCultivatorStats(player).getCultivationType() == CultivationTypes.QI_CONDENSER)
         {
             QiNotFoodStats food = new QiNotFoodStats();
-            food.setMaxFood(CultivatorStats.getCultivatorStats(player).getCultivation().getQi());
+            food.setMaxFood((int) CultivatorStats.getCultivatorStats(player).getCultivation().getCultivationStat(player, DefaultCultivationStatIDs.maxQi));
 
             // Update the players food stat variable
             setFoodStats(player, food);

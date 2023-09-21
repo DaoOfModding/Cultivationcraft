@@ -13,7 +13,5 @@ public class PassiveTechnique extends Technique
         langLocation = "";
         type = useType.Toggle;
         multiple = false;
-
-        active = true;
     }
 }

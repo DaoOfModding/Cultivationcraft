@@ -82,6 +82,7 @@ public class CultivatorStatsPacket extends Packet
         Player player = Minecraft.getInstance().level.getPlayerByUUID(owner);
         // Update the stats for the specified player
         CultivatorStats.getCultivatorStats(player).readNBT(cultStats.writeNBT());
+
         PlayerHealthManager.updateFoodStats(player);
     }
 }

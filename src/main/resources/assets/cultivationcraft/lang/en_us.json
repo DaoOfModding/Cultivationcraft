@@ -1,4 +1,8 @@
 {
+  "cultivationcraft.cultivation.foundation": "Foundation Establishment",
+  "cultivationcraft.cultivation.qicondensation": "Qi Condensation",
+  "cultivationcraft.cultivation.coreforming": "Core Forming",
+
   "cultivationcraft.elements.none": "Qi",
   "cultivationcraft.elements.fire": "Fire",
   "cultivationcraft.elements.earth": "Earth",
@@ -66,6 +70,8 @@
   "cultivationcraft.stat.qiabsorbrange.text": "The range (in blocks) this character can absorb Qi from",
   "cultivationcraft.stat.qicost": "Qi Cost for Forge",
   "cultivationcraft.stat.qicost.text": "The amount of Qi needed for this character to forge their next body part",
+
+  "cultivationcraft.cstat.maxqi": "Max Qi",
 
   "cultivationcraft.tstat.qicost": "Qi Cost",
   "cultivationcraft.tstat.staminacost": "Stamina Cost",

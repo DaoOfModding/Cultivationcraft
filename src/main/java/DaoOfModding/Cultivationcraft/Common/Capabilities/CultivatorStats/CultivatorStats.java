@@ -1,26 +1,19 @@
 package DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats;
 
-import DaoOfModding.Cultivationcraft.Common.Misc;
 import DaoOfModding.Cultivationcraft.Common.Qi.Cultivation.CultivationType;
-import DaoOfModding.Cultivationcraft.Common.Qi.Cultivation.DefaultCultivation;
+import DaoOfModding.Cultivationcraft.Common.Qi.Cultivation.FoundationEstablishmentCultivation;
 import DaoOfModding.Cultivationcraft.Common.Qi.CultivationTypes;
 import DaoOfModding.Cultivationcraft.Common.Qi.ExternalCultivationHandler;
-import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.HitResult;
-import net.minecraft.world.phys.Vec3;
 
 import java.util.*;
 
 public class CultivatorStats implements ICultivatorStats
 {
     protected int cultivationType = CultivationTypes.NO_CULTIVATION;
-    protected CultivationType cultivation = new DefaultCultivation();
+    protected CultivationType cultivation = new FoundationEstablishmentCultivation();
     protected HashMap<String, ResourceLocation> techFocus = new HashMap<>();
 
     protected boolean disconnected = false;
@@ -66,7 +59,7 @@ public class CultivatorStats implements ICultivatorStats
     public void reset()
     {
         cultivationType = CultivationTypes.NO_CULTIVATION;
-        cultivation = new DefaultCultivation();
+        cultivation = new FoundationEstablishmentCultivation();
         techFocus = new HashMap<>();
     }
 
@@ -98,15 +91,16 @@ public class CultivatorStats implements ICultivatorStats
         CultivationType newCultivation = ExternalCultivationHandler.getCultivation(new ResourceLocation(nbt.getString("CULTIVATIONID")));
         newCultivation.readNBT(nbt.getCompound("CULTIVATION"));
 
-        techFocus = new HashMap<>();
+        HashMap<String, ResourceLocation> newTechFocus = new HashMap<>();
 
         int i = 0;
         while (nbt.contains("TECH"+i+"NAME"))
         {
-            techFocus.put(nbt.getString("TECH"+i+"NAME"), new ResourceLocation(nbt.getString("TECH"+i+"VALUE")));
+            newTechFocus.put(nbt.getString("TECH"+i+"NAME"), new ResourceLocation(nbt.getString("TECH"+i+"VALUE")));
             i++;
         }
 
+        techFocus = newTechFocus;
         cultivation = newCultivation;
     }
 
