@@ -13,6 +13,7 @@ public class FoundationEstablishmentCultivation extends CultivationType
         super();
 
         passive = new FoundationPassive();
+        techLevel = 100;
     }
 
 }

@@ -2,6 +2,7 @@ package DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats;
 
 import DaoOfModding.Cultivationcraft.Common.Qi.Cultivation.CultivationType;
 import DaoOfModding.Cultivationcraft.Common.Qi.Cultivation.FoundationEstablishmentCultivation;
+import DaoOfModding.Cultivationcraft.Common.Qi.Cultivation.NoCultivation;
 import DaoOfModding.Cultivationcraft.Common.Qi.CultivationTypes;
 import DaoOfModding.Cultivationcraft.Common.Qi.ExternalCultivationHandler;
 import net.minecraft.nbt.CompoundTag;
@@ -13,7 +14,7 @@ import java.util.*;
 public class CultivatorStats implements ICultivatorStats
 {
     protected int cultivationType = CultivationTypes.NO_CULTIVATION;
-    protected CultivationType cultivation = new FoundationEstablishmentCultivation();
+    protected CultivationType cultivation = new NoCultivation();
     protected HashMap<String, ResourceLocation> techFocus = new HashMap<>();
 
     protected boolean disconnected = false;
@@ -59,7 +60,7 @@ public class CultivatorStats implements ICultivatorStats
     public void reset()
     {
         cultivationType = CultivationTypes.NO_CULTIVATION;
-        cultivation = new FoundationEstablishmentCultivation();
+        cultivation = new NoCultivation();
         techFocus = new HashMap<>();
     }
 
@@ -67,7 +68,7 @@ public class CultivatorStats implements ICultivatorStats
     {
         CompoundTag nbt = new CompoundTag();
         nbt.putInt("TYPE", cultivationType);
-        nbt.putString("CULTIVATIONID", cultivation.ID.toString());
+        nbt.putString("CULTIVATIONID", cultivation.getClass().toString());
         nbt.put("CULTIVATION", cultivation.writeNBT());
 
         int i = 0;
@@ -88,7 +89,7 @@ public class CultivatorStats implements ICultivatorStats
     {
         setCultivationType(nbt.getInt("TYPE"));
 
-        CultivationType newCultivation = ExternalCultivationHandler.getCultivation(new ResourceLocation(nbt.getString("CULTIVATIONID")));
+        CultivationType newCultivation = ExternalCultivationHandler.getCultivation(nbt.getString("CULTIVATIONID"));
         newCultivation.readNBT(nbt.getCompound("CULTIVATION"));
 
         HashMap<String, ResourceLocation> newTechFocus = new HashMap<>();

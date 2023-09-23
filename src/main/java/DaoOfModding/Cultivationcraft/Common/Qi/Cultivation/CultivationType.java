@@ -6,6 +6,7 @@ import DaoOfModding.Cultivationcraft.Common.Qi.ExternalCultivationHandler;
 import DaoOfModding.Cultivationcraft.Common.Qi.QiSource;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.PassiveTechniques.PassiveTechnique;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.Technique;
+import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.TechniqueStats.DefaultCultivationStatIDs;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import DaoOfModding.Cultivationcraft.Network.PacketHandler;
 import DaoOfModding.Cultivationcraft.StaminaHandler;
@@ -21,7 +22,7 @@ public class CultivationType
 {
     public static final ResourceLocation ID = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.cultivation.default");
 
-    protected int techLevel = 100;
+    protected int techLevel = 0;
 
     protected CultivationType previousCultivation = null;
 
@@ -46,7 +47,10 @@ public class CultivationType
 
     public double getCultivationStat(Player player, ResourceLocation stat)
     {
-        double amount = getPassive().getTechniqueStat(stat, player);
+        double amount = 0;
+
+        if (getPassive().hasTechniqueStat(stat))
+            amount += getPassive().getTechniqueStat(stat, player);
 
         if (previousCultivation != null)
             amount += previousCultivation.getCultivationStat(player, stat);
@@ -56,7 +60,7 @@ public class CultivationType
 
     public float absorbFromQiSource(int amount, Player player)
     {
-        List<QiSource> sources = ChunkQiSources.getQiSourcesInRange(player.level, player.position(), getAbsorbRange(player));
+        List<QiSource> sources = ChunkQiSources.getQiSourcesInRange(player.level, player.position(), (int)getCultivationStat(player, DefaultCultivationStatIDs.qiAbsorbRange));
 
         int remaining = amount;
         float toAbsorb = 0;
@@ -153,16 +157,6 @@ public class CultivationType
         return progress;
     }
 
-    public int getAbsorbRange(Player player)
-    {
-        return 1;
-    }
-
-    public int getAbsorbSpeed(Player player)
-    {
-        return 1;
-    }
-
     public void levelTech(Technique tech, double amount, Player player)
     {
         int max = getMaxTechLevel();
@@ -201,7 +195,7 @@ public class CultivationType
 
         if (getPreviousCultivation() != null)
         {
-            nbt.putString("PREVIOUSCULTNAME", getPreviousCultivation().ID.toString());
+            nbt.putString("PREVIOUSCULTNAME", getPreviousCultivation().getClass().toString());
             nbt.put("PREVIOUSCULT", getPreviousCultivation().writeNBT());
         }
 
@@ -227,11 +221,16 @@ public class CultivationType
         return nbt;
     }
 
+    public void setPreviousCultivation(CultivationType previous)
+    {
+        previousCultivation = previous;
+    }
+
     public void readNBT(CompoundTag nbt)
     {
         if (nbt.contains("PREVIOUSCULTNAME"))
         {
-            CultivationType newCultivation = ExternalCultivationHandler.getCultivation(new ResourceLocation(nbt.getString("PREVIOUSCULTNAME")));
+            CultivationType newCultivation = ExternalCultivationHandler.getCultivation(nbt.getString("PREVIOUSCULTNAME"));
             newCultivation.readNBT(nbt.getCompound("PREVIOUSCULT"));
 
             previousCultivation = newCultivation;

@@ -20,6 +20,7 @@ import DaoOfModding.Cultivationcraft.Common.Qi.QiSource;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.PlayerStatControl;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.StatIDs;
+import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.TechniqueStats.DefaultCultivationStatIDs;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import DaoOfModding.Cultivationcraft.Network.PacketHandler;
 import DaoOfModding.Cultivationcraft.Server.BodyPartControl;
@@ -79,10 +80,10 @@ public class MeditateTechnique extends MovementOverrideTechnique
         {
             CultivationType cultivation = stats.getCultivation();
 
-            List<QiSource> sources = ChunkQiSources.getQiSourcesInRange(event.player.level, event.player.position(), cultivation.getAbsorbRange(event.player));
+            List<QiSource> sources = ChunkQiSources.getQiSourcesInRange(event.player.level, event.player.position(), (int)cultivation.getCultivationStat(event.player, DefaultCultivationStatIDs.qiAbsorbRange));
 
             // absorb Qi through blood first
-            int remaining = cultivation.getAbsorbSpeed(event.player);
+            int remaining = (int)cultivation.getCultivationStat(event.player, DefaultCultivationStatIDs.qiAbsorbSpeed);
             remaining = PlayerHealthManager.getBlood(event.player).meditation(remaining, sources, event.player);
 
             if (event.player.getFoodData() instanceof QiFoodStats)

@@ -2,8 +2,8 @@ package DaoOfModding.Cultivationcraft.Common.Qi;
 
 import DaoOfModding.Cultivationcraft.Common.Qi.Cultivation.CultivationType;
 import DaoOfModding.Cultivationcraft.Common.Qi.Cultivation.FoundationEstablishmentCultivation;
+import DaoOfModding.Cultivationcraft.Common.Qi.Cultivation.NoCultivation;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
-import net.minecraft.resources.ResourceLocation;
 
 import java.util.ArrayList;
 
@@ -11,6 +11,7 @@ public class ExternalCultivationHandler
 {
     public static void init()
     {
+        addCultivation(NoCultivation.class);
         addCultivation(FoundationEstablishmentCultivation.class);
     }
 
@@ -22,21 +23,21 @@ public class ExternalCultivationHandler
         cultivationTypes.add(cultivation);
     }
 
-    public static CultivationType getCultivation(ResourceLocation ID)
+    public static CultivationType getCultivation(String className)
     {
         try
         {
             for (Class<? extends CultivationType> cultivation : cultivationTypes)
             {
-                if (cultivation.newInstance().ID == ID)
+                if (cultivation.toString().compareTo(className) == 0)
                     return cultivation.newInstance();
             }
         }
         catch (IllegalAccessException | InstantiationException e)
         {
-            Cultivationcraft.LOGGER.error("Error " + e + " whilst getting player cultivation of ID " + ID);
+            Cultivationcraft.LOGGER.error("Error " + e + " whilst getting player cultivation of ID " + className);
         }
 
-        return new FoundationEstablishmentCultivation();
+        return new NoCultivation();
     }
 }

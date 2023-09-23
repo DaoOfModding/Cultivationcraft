@@ -1,6 +1,8 @@
 package DaoOfModding.Cultivationcraft.Network.Packets.CultivatorStats;
 
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStats;
+import DaoOfModding.Cultivationcraft.Common.Qi.Cultivation.FoundationEstablishmentCultivation;
+import DaoOfModding.Cultivationcraft.Common.Qi.Cultivation.NoCultivation;
 import DaoOfModding.Cultivationcraft.Common.Qi.CultivationTypes;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import DaoOfModding.Cultivationcraft.Network.PacketHandler;
@@ -86,6 +88,15 @@ public class CultivatorTypePacket extends Packet
 
             // Change the player's cultivation type to the new type
             CultivatorStats.getCultivatorStats(ownerEntity).setCultivationType(cultivationType);
+
+            if (cultivationType == CultivationTypes.QI_CONDENSER)
+            {
+                FoundationEstablishmentCultivation newCultivation = new FoundationEstablishmentCultivation();
+                newCultivation.setPreviousCultivation(new NoCultivation());
+
+                CultivatorStats.getCultivatorStats(ownerEntity).setCultivation(newCultivation);
+            }
+
             // Send the new player stats to the clients
             PacketHandler.sendCultivatorStatsToClient(ownerEntity);
         }
