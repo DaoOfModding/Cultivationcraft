@@ -58,7 +58,8 @@ public class TechniqueModifyScreen extends GenericTabScreen
         for (int i = 0; i < buttonNumber; i++)
             buttons[i] = new GUIButton("TechStat" + i," ");
 
-        buttons[resourceLocationToNumber(CultivatorStats.getCultivatorStats(Minecraft.getInstance().player).getTechniqueFocus(selectedTech.getClass()))].select();
+        ResourceLocation selected = CultivatorStats.getCultivatorStats(Minecraft.getInstance().player).getTechniqueFocus(selectedTech.getClass());
+        buttons[resourceLocationToNumber(selected)].select();
     }
 
     protected int resourceLocationToNumber(ResourceLocation location)
@@ -115,6 +116,31 @@ public class TechniqueModifyScreen extends GenericTabScreen
         drawGuiForgroundLayer(PoseStack, partialTicks, mouseX, mouseY);
     }
 
+    protected ResourceLocation updateFocus()
+    {
+        ResourceLocation focus = selectedTech.getFirstStatChange();
+        CultivatorStats.getCultivatorStats(Minecraft.getInstance().player).setTechniqueFocus(selectedTech.getClass().toString(), focus);
+
+        updateStats();
+
+        return focus;
+    }
+
+    protected TechniqueStatModification getStatModification()
+    {
+        ResourceLocation focus = CultivatorStats.getCultivatorStats(Minecraft.getInstance().player).getTechniqueFocus(selectedTech.getClass());
+
+        if (focus == null)
+            focus = updateFocus();
+
+        TechniqueStatModification modifications = selectedTech.getStatChangesPerLevel(focus);
+
+        if (modifications == null)
+            modifications = selectedTech.getStatChangesPerLevel(updateFocus());
+
+        return modifications;
+    }
+
     protected void drawGuiForgroundLayer(PoseStack PoseStack, float partialTicks, int mouseX, int mouseY)
     {
         int edgeSpacingX = (this.width - this.xSize) / 2;
@@ -129,48 +155,67 @@ public class TechniqueModifyScreen extends GenericTabScreen
 
         font.draw(PoseStack, inspiration, edgeSpacingX + this.xSize - inspirationXPos - font.width(inspiration), edgeSpacingY + inspirationYPos, Color.white.getRGB());
 
+        drawStats(PoseStack, mouseX, mouseY);
+    }
 
-        ResourceLocation focus = CultivatorStats.getCultivatorStats(Minecraft.getInstance().player).getTechniqueFocus(selectedTech.getClass());
-        if (focus == null)
-        {
-            focus = stats.get(0);
-            CultivatorStats.getCultivatorStats(Minecraft.getInstance().player).setTechniqueFocus(selectedTech.getClass().toString(), focus);
-        }
-
-        TechniqueStatModification modifications = selectedTech.getStatChangesPerLevel(focus);
+    protected void drawStats(PoseStack PoseStack, int mouseX, int mouseY)
+    {
+        TechniqueStatModification modifications = getStatModification();
 
         for (int stat = 0; stat < stats.size(); stat++)
         {
             double statValue = selectedTech.getTechniqueStat(stats.get(stat), Minecraft.getInstance().player);
-
-            font.draw(PoseStack, Component.translatable(stats.get(stat).getPath()).getString(), edgeSpacingX + statXPos, edgeSpacingY + statYPos + statYSpacing*stat, Color.black.getRGB());
-            font.draw(PoseStack, "" + statValue, edgeSpacingX + this.xSize - statXPosFromRight - font.width("" + statValue), edgeSpacingY + statYPos + statYSpacing*stat, Color.WHITE.getRGB());
+            drawStat(PoseStack, stat, stats.get(stat), statValue);
 
             double value = modifications.getStatChange(stats.get(stat));
-            if (value != 0)
-            {
-                String amount = " (";
-                Color col = Color.red;
+            drawStatChanges(PoseStack, stat, stats.get(stat), value);
 
-                if (value > 0)
-                    amount += "+";
-
-                boolean reversed = DefaultTechniqueStatIDs.isReversedNegative(stats.get(stat));
-
-                if ((!reversed && value > 0) || (reversed && value < 0))
-                    col = Color.GREEN;
-
-
-                amount += value + ")";
-
-                font.draw(PoseStack, amount, edgeSpacingX + this.xSize - statXPosFromRight, edgeSpacingY + statYPos + statYSpacing*stat, col.getRGB());
-            }
+            // Only draw button if this stat can level
+            if (selectedTech.getStatChangesPerLevel(stats.get(stat)) != null)
+                drawButton(PoseStack, stat, mouseX, mouseY);
         }
+    }
 
-        for (int i = 0; i < buttons.length; i++)
+    protected void drawStat(PoseStack PoseStack, int pos, ResourceLocation stat, double statValue)
+    {
+        int edgeSpacingX = (this.width - this.xSize) / 2;
+        int edgeSpacingY = (this.height - this.ySize) / 2;
+
+        font.draw(PoseStack, Component.translatable(stat.getPath()).getString(), edgeSpacingX + statXPos, edgeSpacingY + statYPos + statYSpacing*pos, Color.black.getRGB());
+        font.draw(PoseStack, "" + statValue, edgeSpacingX + this.xSize - statXPosFromRight - font.width("" + statValue), edgeSpacingY + statYPos + statYSpacing*pos, Color.WHITE.getRGB());
+    }
+
+    protected void drawButton(PoseStack PoseStack, int pos, int mouseX, int mouseY)
+    {
+        int edgeSpacingX = (this.width - this.xSize) / 2;
+        int edgeSpacingY = (this.height - this.ySize) / 2;
+
+        buttons[pos].setPos(edgeSpacingX + this.xSize - buttonXPosFromRight - buttons[pos].width, edgeSpacingY + statYPos + statYSpacing*pos - 2);
+        buttons[pos].render(PoseStack, mouseX, mouseY, this);
+    }
+
+    protected void drawStatChanges(PoseStack PoseStack, int pos, ResourceLocation stat, double value)
+    {
+        if (value != 0)
         {
-            buttons[i].setPos(edgeSpacingX + this.xSize - buttonXPosFromRight - buttons[i].width, edgeSpacingY + statYPos + statYSpacing*i - 2);
-            buttons[i].render(PoseStack, mouseX, mouseY, this);
+            int edgeSpacingX = (this.width - this.xSize) / 2;
+            int edgeSpacingY = (this.height - this.ySize) / 2;
+
+            String amount = " (";
+            Color col = Color.red;
+
+            if (value > 0)
+                amount += "+";
+
+            boolean reversed = DefaultTechniqueStatIDs.isReversedNegative(stat);
+
+            if ((!reversed && value > 0) || (reversed && value < 0))
+                col = Color.GREEN;
+
+
+            amount += value + ")";
+
+            font.draw(PoseStack, amount, edgeSpacingX + this.xSize - statXPosFromRight, edgeSpacingY + statYPos + statYSpacing*pos, col.getRGB());
         }
     }
 }

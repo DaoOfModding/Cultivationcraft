@@ -37,7 +37,7 @@ public class CultivationScreen extends GenericTabScreen
 
         if (stats.mouseClick((int)mouseX, (int)mouseY, buttonPressed))
         {
-            Minecraft.getInstance().forceSetScreen(new TechniqueModifyScreen(cultivation.getPassive(), 0));
+            Minecraft.getInstance().forceSetScreen(new CultivationModifyScreen(cultivation, 0));
             return true;
         }
 

@@ -58,7 +58,7 @@ public class FlyingSwordFormationTechnique extends AttackOverrideTechnique
 
 
         addTechniqueStat(DefaultTechniqueStatIDs.qiCost, 0.05, qiCostModification);
-        addTechniqueStat(DefaultTechniqueStatIDs.range, 10, flyingrangeModification);
+        addTechniqueStat(DefaultTechniqueStatIDs.range, 10);
         addTechniqueStat(DefaultTechniqueStatIDs.damage, 0.25, flyingdamageModification);
         addTechniqueStat(flyingswordspeed, 2, flyingSwordSpeedModification);
         addTechniqueStat(flyingswordmaxspeed, 100, flyingSwordMaxSpeedModification);

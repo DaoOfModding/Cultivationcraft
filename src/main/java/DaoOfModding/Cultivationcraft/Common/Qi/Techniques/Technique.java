@@ -102,7 +102,7 @@ public class Technique
     {
         defaultStats.put(stat, amount);
 
-        if (canLevel)
+        if (canLevel && changePerLevel != null)
             statChangesPerLevel.put(stat, changePerLevel);
     }
 
@@ -122,6 +122,11 @@ public class Technique
     public boolean canLevel()
     {
         return canLevel;
+    }
+
+    public ResourceLocation getFirstStatChange()
+    {
+        return (ResourceLocation)statChangesPerLevel.keySet().toArray()[0];
     }
 
     protected void addTechniqueStat(ResourceLocation stat, double amount)
@@ -167,8 +172,11 @@ public class Technique
         if (canLevel)
             for (Map.Entry<ResourceLocation, TechniqueStatModification> modification : statChangesPerLevel.entrySet())
             {
-                int statLevel = (int)(double)cultivation.getStatLevel(this.getClass(), modification.getKey());
-                defaultStat += modification.getValue().getStatChange(stat) * statLevel;
+                if (modification.getValue() != null)
+                {
+                    int statLevel = (int) (double) cultivation.getStatLevel(this.getClass(), modification.getKey());
+                    defaultStat += modification.getValue().getStatChange(stat) * statLevel;
+                }
             }
 
         return defaultStat;
