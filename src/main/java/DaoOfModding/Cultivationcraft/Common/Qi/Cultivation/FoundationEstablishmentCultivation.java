@@ -14,6 +14,6 @@ public class FoundationEstablishmentCultivation extends CultivationType
 
         passive = new FoundationPassive();
         techLevel = 100;
+        maxedTechsToBreakthrough = 3;
     }
-
 }

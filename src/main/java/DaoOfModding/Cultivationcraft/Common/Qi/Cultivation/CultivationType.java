@@ -11,6 +11,7 @@ import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import DaoOfModding.Cultivationcraft.Network.PacketHandler;
 import DaoOfModding.Cultivationcraft.StaminaHandler;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 
@@ -23,6 +24,7 @@ public class CultivationType
     public static final ResourceLocation ID = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.cultivation.default");
 
     protected int techLevel = 0;
+    protected int maxedTechsToBreakthrough = 0;
 
     protected CultivationType previousCultivation = null;
 
@@ -38,6 +40,36 @@ public class CultivationType
     public boolean consumeQi(Player player, double qiToConsume)
     {
         return StaminaHandler.consumeStamina(player, (float)qiToConsume);
+    }
+
+    public boolean canBreakthrough(Player player)
+    {
+        if (getTechLevelProgress(passive.getClass()) >= techLevel)
+            if (getMaxedTechs() >= maxedTechsToBreakthrough)
+                return true;
+
+        return false;
+    }
+
+    public String breakthroughProgress(Player player)
+    {
+        String progress = Component.translatable("cultivationcraft.gui.cultivationprogress").getString() + ": " + getTechLevelProgress(passive.getClass()) + "/" + techLevel;
+
+        if (maxedTechsToBreakthrough > 0)
+            progress += "\n" + Component.translatable("cultivationcraft.gui.completedtech").getString() + ": " + getMaxedTechs() + "/" + maxedTechsToBreakthrough;
+
+        return progress;
+    }
+
+    public int getMaxedTechs()
+    {
+        int i = 0;
+
+        for (String tech : statLevels.keySet())
+            if (passive.getClass().toString().compareTo(tech) != 0 && getTechLevelProgress(tech) >= techLevel)
+                i++;
+
+        return i;
     }
 
     public PassiveTechnique getPassive()
@@ -143,11 +175,16 @@ public class CultivationType
 
     public int getTechLevelProgress(Class tech)
     {
+        return getTechLevelProgress(tech.toString());
+    }
+
+    public int getTechLevelProgress(String tech)
+    {
         int progress = 0;
 
-        if (statLevels.containsKey(tech.toString()))
+        if (statLevels.containsKey(tech))
         {
-            for (double value : statLevels.get(tech.toString()).values())
+            for (double value : statLevels.get(tech).values())
                 progress += (int)value;
         }
 
