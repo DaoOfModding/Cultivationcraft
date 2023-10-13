@@ -23,8 +23,6 @@ public class FlyingSwordFormationTechnique extends AttackOverrideTechnique
     public static final ResourceLocation flyingswordmaxspeed = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.tstat.fsmaxspeed");
     public static final ResourceLocation flyingswordturnspeed = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.tstat.fsturnspeed");
 
-    private final float QiCost = 20;
-
     protected Entity target = null;
 
     public FlyingSwordFormationTechnique()
@@ -117,11 +115,6 @@ public class FlyingSwordFormationTechnique extends AttackOverrideTechnique
     public Entity getTarget()
     {
         return target;
-    }
-
-    public float getSwordQiCost()
-    {
-        return QiCost;
     }
 
     @Override

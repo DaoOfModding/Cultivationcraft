@@ -540,11 +540,11 @@ public class GenericQiPoses
 
     protected static void setupHandsBehind()
     {
-        HandsBehind.addAngle(GenericLimbNames.leftArm, new Vec3(Math.toRadians(30), 0, Math.toRadians(15)), GenericPoses.walkArmPriority + 2);
-        HandsBehind.addAngle(GenericLimbNames.rightArm, new Vec3(Math.toRadians(30), 0, Math.toRadians(-15)), GenericPoses.walkArmPriority + 2);
+        HandsBehind.addAngle(GenericLimbNames.leftArm, new Vec3(Math.toRadians(30), 0, Math.toRadians(15)), GenericPoses.jumpArmPriority + 2);
+        HandsBehind.addAngle(GenericLimbNames.rightArm, new Vec3(Math.toRadians(30), 0, Math.toRadians(-15)), GenericPoses.jumpArmPriority + 2);
 
-        HandsBehind.addAngle(GenericLimbNames.lowerLeftArm, new Vec3(0, 0, Math.toRadians(30)), GenericPoses.walkArmPriority + 2);
-        HandsBehind.addAngle(GenericLimbNames.lowerRightArm, new Vec3(0, 0, Math.toRadians(-30)), GenericPoses.walkArmPriority + 2);
+        HandsBehind.addAngle(GenericLimbNames.lowerLeftArm, new Vec3(0, 0, Math.toRadians(30)), GenericPoses.jumpArmPriority + 2);
+        HandsBehind.addAngle(GenericLimbNames.lowerRightArm, new Vec3(0, 0, Math.toRadians(-30)), GenericPoses.jumpArmPriority + 2);
     }
 
     protected static void setupCrossLegs()
