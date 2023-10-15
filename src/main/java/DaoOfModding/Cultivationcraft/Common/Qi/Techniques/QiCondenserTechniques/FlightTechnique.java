@@ -1,6 +1,8 @@
 package DaoOfModding.Cultivationcraft.Common.Qi.Techniques.QiCondenserTechniques;
 
 import DaoOfModding.Cultivationcraft.Client.Animations.GenericQiPoses;
+import DaoOfModding.Cultivationcraft.Client.Renderer;
+import DaoOfModding.Cultivationcraft.Client.Renderers.QiGlowRenderer;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStats;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.ICultivatorStats;
 import DaoOfModding.Cultivationcraft.Common.Qi.CultivationTypes;
@@ -40,7 +42,7 @@ public class FlightTechnique extends Technique
         movementModification.addStatChange(DefaultTechniqueStatIDs.movementSpeed, 0.0001);
 
 
-        addTechniqueStat(DefaultTechniqueStatIDs.qiCost, 1, qiCostModification);
+        addTechniqueStat(DefaultTechniqueStatIDs.qiCost, 5, qiCostModification);
         addTechniqueStat(DefaultTechniqueStatIDs.movementSpeed, 0.01, movementModification);
     }
 
@@ -60,7 +62,7 @@ public class FlightTechnique extends Technique
     {
         if (!event.player.isOnGround())
         {
-            if (!CultivatorStats.getCultivatorStats(event.player).getCultivation().consumeQi(event.player, getTechniqueStat(DefaultTechniqueStatIDs.qiCost, event.player))) {
+            if (!CultivatorStats.getCultivatorStats(event.player).getCultivation().consumeQi(event.player, getTechniqueStat(DefaultTechniqueStatIDs.qiCost, event.player) / 20f)) {
                 deactivate(event.player);
                 return;
             }
@@ -69,6 +71,8 @@ public class FlightTechnique extends Technique
             event.player.getAbilities().flying = true;
 
             PoseHandler.addPose(event.player.getUUID(), GenericQiPoses.HandsBehind);
+
+            QiGlowRenderer.setQiVisible(event.player, Elements.getElement(Elements.noElement));
         }
 
         super.tickClient(event);
@@ -79,7 +83,7 @@ public class FlightTechnique extends Technique
     {
         if (!event.player.isOnGround())
         {
-            if (!CultivatorStats.getCultivatorStats(event.player).getCultivation().consumeQi(event.player, getTechniqueStat(DefaultTechniqueStatIDs.qiCost, event.player))) {
+            if (!CultivatorStats.getCultivatorStats(event.player).getCultivation().consumeQi(event.player, getTechniqueStat(DefaultTechniqueStatIDs.qiCost, event.player) / 20f)) {
                 deactivate(event.player);
                 return;
             }

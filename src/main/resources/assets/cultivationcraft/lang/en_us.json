@@ -87,6 +87,8 @@
   "cultivationcraft.tstat.fsmaxspeed": "Max Speed",
   "cultivationcraft.tstat.fsturnspeed": "Turn Speed",
 
+  "cultivationcraft.tstat.qihealthratio": "Qi to Health Conversion",
+
   "cultivationcraft.quest.qisource": "Seconds spent cultivating from a QiSource",
   "cultivationcraft.quest.damagetaken": "Damage taken",
   "cultivationcraft.quest.damageresisted": "Damage resisted",
@@ -113,6 +115,9 @@
 
   "cultivationcraft.technique.divinesense": "Divine Sense",
   "cultivationcraft.technique.divinesense.description": "Toggle on to sense the Qi around you, allowing you to \"see\" large concentrations of Qi",
+
+  "cultivationcraft.technique.barrier": "Qi Barrier",
+  "cultivationcraft.technique.barrier.description": "Blocks incoming damage with your Qi",
 
   "cultivationcraft.technique.flyingswordformation": "Flying Sword Formation",
   "cultivationcraft.technique.flyingswordformation.description": "Toggle on to take control of your flying swords with your Qi",

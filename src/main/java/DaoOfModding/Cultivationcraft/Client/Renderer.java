@@ -1,6 +1,7 @@
 package DaoOfModding.Cultivationcraft.Client;
 
 import DaoOfModding.Cultivationcraft.Client.GUI.animatedTexture;
+import DaoOfModding.Cultivationcraft.Client.Renderers.QiGlowRenderer;
 import DaoOfModding.Cultivationcraft.Client.Renderers.QiSourceRenderer;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.CultivatorTechniques;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.ICultivatorTechniques;
@@ -17,6 +18,10 @@ import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import net.minecraft.client.Minecraft;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.resources.ResourceLocation;
 import com.mojang.math.Vector3f;
@@ -32,8 +37,10 @@ public class Renderer
     public static void render(float partialTick)
     {
         if (!Minecraft.getInstance().isPaused())
-            //if (QiSourcesVisible)
                 QiSourceRenderer.renderQiSources(partialTick);
+
+        if (Renderer.QiSourcesVisible)
+            QiGlowRenderer.render();
 
         renderTechniques();
     }

@@ -3,6 +3,7 @@ package DaoOfModding.Cultivationcraft.Common.Qi.Techniques;
 import DaoOfModding.Cultivationcraft.Client.genericClientFunctions;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStats;
 import DaoOfModding.Cultivationcraft.Common.Qi.Cultivation.CultivationType;
+import DaoOfModding.Cultivationcraft.Common.Qi.Damage.QiDamageSource;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.PlayerStatModifications;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.TechniqueStats.TechniqueStatModification;
@@ -530,6 +531,12 @@ public class Technique
     public int getCooldown()
     {
         return cooldownCount;
+    }
+
+    // Called when taking damage, returns the amount of damage to be taken
+    public float onDamage(QiDamageSource source, float amount, Player player)
+    {
+        return amount;
     }
 
     // Rendering as the player who owns the technique

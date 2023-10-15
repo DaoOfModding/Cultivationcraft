@@ -1,6 +1,7 @@
 package DaoOfModding.Cultivationcraft.Common.Qi.Damage;
 
-import DaoOfModding.Cultivationcraft.Client.Renderers.BloodRenderer;
+import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.CultivatorTechniques;
+import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.ICultivatorTechniques;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.PlayerHealthManager;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.Quest;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.QuestHandler;
@@ -8,12 +9,11 @@ import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.PlayerStatModifications;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.StatIDs;
-import DaoOfModding.Cultivationcraft.Network.PacketHandler;
-import net.minecraft.client.Minecraft;
-import net.minecraft.network.chat.Component;
+import DaoOfModding.Cultivationcraft.Common.Qi.TechniqueControl;
+import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.PassiveTechniques.PassiveTechnique;
+import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.Technique;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.stats.Stats;
 import net.minecraft.world.damagesource.CombatRules;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffects;
@@ -30,7 +30,35 @@ public class Damage
     {
         QiDamageSource source = damageSourceToQiDamageSource(event.getSource());
 
-        return resistDamage(event.getAmount(), source.damageElement, (Player)event.getEntity());
+        float amount = resistDamage(event.getAmount(), source.damageElement, (Player)event.getEntity());
+        amount = doTechniqueResistances(source, amount, (Player)event.getEntity());
+
+        return amount;
+    }
+
+    public static float doTechniqueResistances(QiDamageSource source, float amount, Player player)
+    {
+        // Tick through all active cultivator techniques
+        ICultivatorTechniques techs = CultivatorTechniques.getCultivatorTechniques(player);
+
+        for (int i = 0; i < CultivatorTechniques.numberOfTechniques; i++)
+        {
+            Technique tech = techs.getTechnique(i);
+
+            if (tech != null)
+                if (tech.isValid(player))
+                    if (tech.isActive())
+                        amount = tech.onDamage(source, amount, player);
+        }
+
+        for (PassiveTechnique passive : techs.getPassives())
+        {
+            if (passive.isValid(player))
+                if (passive.isActive())
+                    amount = passive.onDamage(source, amount, player);
+        }
+
+        return amount;
     }
 
     public static float resistDamage(float damage, ResourceLocation element, Player player)
@@ -71,6 +99,7 @@ public class Damage
         QiDamageSource source = damageSourceToQiDamageSource(event.getSource());
         float damage = armorAbsorption((Player)event.getEntity(), source, event.getAmount());
         float resistedDamage = resistDamage(damage, source.damageElement, (Player)event.getEntity());
+        resistedDamage = doTechniqueResistances(source, resistedDamage, (Player)event.getEntity());
 
         if (source.getElement() != null && source.getElement().compareTo(Elements.fireElement) == 0 && event.getEntity().fireImmune() && resistedDamage > 0)
             resistedDamage = 0;
