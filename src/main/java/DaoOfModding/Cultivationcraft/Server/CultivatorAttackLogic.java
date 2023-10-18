@@ -27,8 +27,9 @@ public class CultivatorAttackLogic
         if (toAttack.skipAttackInteraction(player))
             return false;
 
-        if (toAttack.position().subtract(player.position()).length() > range)
-            return false;
+        if (range > -1)
+            if (toAttack.position().subtract(player.position()).length() > range)
+                return false;
 
         return true;
     }
@@ -56,7 +57,8 @@ public class CultivatorAttackLogic
         }
 
         // Play attack sound
-        player.level.playSound((Player) null, player.getX(), player.getY(), player.getZ(), attackSound, player.getSoundSource(), 1.0F, 1.0F);
+        if (attackSound != null)
+            player.level.playSound((Player) null, player.getX(), player.getY(), player.getZ(), attackSound, player.getSoundSource(), 1.0F, 1.0F);
 
         // Apply knockback to attacked entity
         if (knockback > 0) {

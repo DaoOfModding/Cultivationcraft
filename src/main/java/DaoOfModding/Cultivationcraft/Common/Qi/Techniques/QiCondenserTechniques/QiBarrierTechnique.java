@@ -1,6 +1,5 @@
 package DaoOfModding.Cultivationcraft.Common.Qi.Techniques.QiCondenserTechniques;
 
-import DaoOfModding.Cultivationcraft.Client.Animations.GenericQiPoses;
 import DaoOfModding.Cultivationcraft.Client.Renderers.QiGlowRenderer;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStats;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.ICultivatorStats;
@@ -10,11 +9,8 @@ import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.Technique;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.TechniqueStats.DefaultTechniqueStatIDs;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.TechniqueStats.TechniqueStatModification;
-import DaoOfModding.Cultivationcraft.Common.Reflection;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
-import DaoOfModding.mlmanimator.Client.Poses.PoseHandler;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.event.TickEvent;
 
@@ -90,7 +86,7 @@ public class QiBarrierTechnique extends Technique
     {
         if (CultivatorStats.getCultivatorStats(player).getCultivation().consumeQi(player, amount / getTechniqueStat(qiToHealthRatio, player)))
         {
-            levelUp(player, amount / 10);
+            levelUp(player, amount / 2);
             return 0;
         }
 

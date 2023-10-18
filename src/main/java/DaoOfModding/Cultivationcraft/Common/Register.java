@@ -7,7 +7,9 @@ import DaoOfModding.Cultivationcraft.Client.Particles.Spit.SpitParticleType;
 import DaoOfModding.Cultivationcraft.Client.Particles.WaterParticle.WaterParticleType;
 import DaoOfModding.Cultivationcraft.Client.Particles.WindParticle.WindParticleType;
 import DaoOfModding.Cultivationcraft.Client.Renderers.FlyingSwordRenderer;
+import DaoOfModding.Cultivationcraft.Client.Renderers.QiProjectileRenderer;
 import DaoOfModding.Cultivationcraft.Common.Containers.FlyingSwordContainer;
+import DaoOfModding.Cultivationcraft.Common.Qi.QiProjectile;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.SimpleParticleType;
@@ -48,6 +50,13 @@ public class Register
                                                                                         .sized(0.5f, 0.5f)
                                                                                         .setUpdateInterval(3)
                                                                                         .build("flyingsword"));
+
+    public static RegistryObject<EntityType<QiProjectile>> QIPROJECTILE = ENTITY_TYPES.register("qiprojectile", () ->
+            EntityType.Builder.<QiProjectile>of(QiProjectile::new, MobCategory.MISC)
+                    .sized(1f, 1f)
+                    .clientTrackingRange(4)
+                    .updateInterval(10)
+                    .build("qiprojectile"));
 
     public static final RegistryObject<MenuType<FlyingSwordContainer>> ContainerTypeFlyingSword = CONTAINERS.register("flyingsword", () -> IForgeMenuType.create(FlyingSwordContainer::createContainerClientSide));
 
@@ -123,6 +132,7 @@ public class Register
         public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event)
         {
             event.registerEntityRenderer(Register.FLYINGSWORD.get(), FlyingSwordRenderer::new);
+            event.registerEntityRenderer(Register.QIPROJECTILE.get(), QiProjectileRenderer::new);
 
             // ClientBlockRegister.registerBlockRenderers();
         }

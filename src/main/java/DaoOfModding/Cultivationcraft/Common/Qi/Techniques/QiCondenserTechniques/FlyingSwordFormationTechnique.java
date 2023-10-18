@@ -33,7 +33,7 @@ public class FlyingSwordFormationTechnique extends AttackOverrideTechnique
         Element = Elements.noElement;
 
         type = useType.Toggle;
-        multiple = true;
+        multiple = false;
 
         icon = new ResourceLocation(Cultivationcraft.MODID, "textures/techniques/icons/flyingsword.png");
 

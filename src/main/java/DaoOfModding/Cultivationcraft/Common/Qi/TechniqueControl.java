@@ -7,6 +7,7 @@ import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.BodyForgeTechniques.Je
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.QiCondenserTechniques.FlightTechnique;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.QiCondenserTechniques.FlyingSwordFormationTechnique;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.QiCondenserTechniques.QiBarrierTechnique;
+import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.QiCondenserTechniques.QiEmission;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import net.minecraft.world.entity.player.Player;
 
@@ -21,6 +22,7 @@ public class TechniqueControl
         TechniqueControl.addTechnique(DivineSenseTechnique.class);
         TechniqueControl.addTechnique(QiBarrierTechnique.class);
         TechniqueControl.addTechnique(FlightTechnique.class);
+        TechniqueControl.addTechnique(QiEmission.class);
         TechniqueControl.addTechnique(FlyingSwordFormationTechnique.class);
         //TechniqueControl.addTechnique(IceWalkTechnique.class);
         //TechniqueControl.addTechnique(IceAuraTechnique.class);
