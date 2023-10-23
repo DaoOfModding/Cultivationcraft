@@ -31,6 +31,12 @@ public class ClientPacketHandler
         PacketHandler.channel.sendToServer(pack);
     }
 
+    public static void sendBreakthroughToServer()
+    {
+        BreakthroughPacket pack = new BreakthroughPacket();
+        PacketHandler.channel.sendToServer(pack);
+    }
+
     public static void sendTechniqueUseToServer(int slot, boolean keyDown)
     {
         TechniqueUsePacket pack = new TechniqueUsePacket(slot, keyDown);

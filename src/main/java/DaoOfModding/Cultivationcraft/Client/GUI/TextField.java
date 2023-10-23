@@ -57,6 +57,11 @@ public class TextField
         scroll.setPos(x + width - 1 - scroll.buttonSize, y+1);
     }
 
+    public String getText()
+    {
+        return text;
+    }
+
     public void setText(String newText)
     {
         text = newText;

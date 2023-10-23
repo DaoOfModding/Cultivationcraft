@@ -21,16 +21,25 @@ import java.util.Map;
 
 public class CultivationType
 {
-    public static final ResourceLocation ID = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.cultivation.default");
+    protected String ID = "cultivationcraft.cultivation.default";
 
     protected int techLevel = 0;
     protected int maxedTechsToBreakthrough = 0;
+
+    protected int stage = 1;
+    protected int maxStage = 1;
 
     protected CultivationType previousCultivation = null;
 
     protected HashMap<String, HashMap<ResourceLocation, Double>> statLevels = new HashMap<>();
 
     protected PassiveTechnique passive = new PassiveTechnique();
+
+
+    public String getName()
+    {
+        return Component.translatable(ID).getString();
+    }
 
     public boolean canCultivate(ResourceLocation element)
     {
@@ -44,16 +53,30 @@ public class CultivationType
 
     public boolean canBreakthrough(Player player)
     {
-        if (getTechLevelProgress(passive.getClass()) >= techLevel)
+        if (getTechLevelProgressWithoutPrevious(passive.getClass().toString()) >= techLevel)
             if (getMaxedTechs() >= maxedTechsToBreakthrough)
                 return true;
 
         return false;
     }
 
+    public int getStage()
+    {
+        return stage;
+    }
+
+    public int getMaxStage()
+    {
+        return maxStage;
+    }
+
+    public void breakthrough(Player player)
+    {
+    }
+
     public String breakthroughProgress(Player player)
     {
-        String progress = Component.translatable("cultivationcraft.gui.cultivationprogress").getString() + ": " + getTechLevelProgress(passive.getClass()) + "/" + techLevel;
+        String progress = Component.translatable("cultivationcraft.gui.cultivationprogress").getString() + ": " + getTechLevelProgressWithoutPrevious(passive.getClass().toString()) + "/" + techLevel;
 
         if (maxedTechsToBreakthrough > 0)
             progress += "\n" + Component.translatable("cultivationcraft.gui.completedtech").getString() + ": " + getMaxedTechs() + "/" + maxedTechsToBreakthrough;
@@ -117,6 +140,9 @@ public class CultivationType
         if (toAbsorb > amount)
             return amount;
 
+        if (toAbsorb < 0)
+            return 0;
+
         return toAbsorb;
     }
 
@@ -125,7 +151,10 @@ public class CultivationType
         if (!canCultivate(element))
             return Qi;
 
-        int currentLevel = getTechLevelProgress(getPassive().getClass());
+        if (Qi < 0)
+            return 0;
+
+        int currentLevel = getTechLevelProgressWithoutPrevious(getPassive().getClass().toString());
 
         // Don't cultivate if already at the max
         if (currentLevel >= techLevel)
@@ -178,6 +207,19 @@ public class CultivationType
         return getTechLevelProgress(tech.toString());
     }
 
+    public int getTechLevelProgressWithoutPrevious(String tech)
+    {
+        int progress = 0;
+
+        if (statLevels.containsKey(tech))
+        {
+            for (double value : statLevels.get(tech).values())
+                progress += (int)value;
+        }
+
+        return progress;
+    }
+
     public int getTechLevelProgress(String tech)
     {
         int progress = 0;
@@ -202,11 +244,10 @@ public class CultivationType
         if (max == current)
             return;
 
-        if (current + (int)amount >= max)
-        {
-            amount -= max - (current + (int) amount);
-            amount = (int)amount;
-        }
+        double amountToLevel = max - current;
+
+        if (amount > amountToLevel)
+            amount = amountToLevel;
 
         ResourceLocation toLevel = CultivatorStats.getCultivatorStats(player).getTechniqueFocus(tech.getClass());
 
@@ -235,6 +276,8 @@ public class CultivationType
             nbt.putString("PREVIOUSCULTNAME", getPreviousCultivation().getClass().toString());
             nbt.put("PREVIOUSCULT", getPreviousCultivation().writeNBT());
         }
+
+        nbt.putInt("STAGE", getStage());
 
         int i = 0;
 
@@ -272,6 +315,8 @@ public class CultivationType
 
             previousCultivation = newCultivation;
         }
+
+        stage = nbt.getInt("STAGE");
 
         HashMap<String, HashMap<ResourceLocation, Double>> newTechLevels = new HashMap<>();
 

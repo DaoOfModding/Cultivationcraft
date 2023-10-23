@@ -91,7 +91,7 @@ public class CultivatorTypePacket extends Packet
 
             if (cultivationType == CultivationTypes.QI_CONDENSER)
             {
-                FoundationEstablishmentCultivation newCultivation = new FoundationEstablishmentCultivation();
+                FoundationEstablishmentCultivation newCultivation = new FoundationEstablishmentCultivation(1);
                 newCultivation.setPreviousCultivation(new NoCultivation());
 
                 CultivatorStats.getCultivatorStats(ownerEntity).setCultivation(newCultivation);

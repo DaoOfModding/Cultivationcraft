@@ -176,6 +176,9 @@
   "cultivationcraft.commands.completeprogress.single": "Completed bodyforge progress for %s",
   "cultivationcraft.commands.completeprogress.multiple": "Completed bodyforge progress for %s players",
 
+  "cultivationcraft.commands.levelskills.single": "Leveled all skills for %s",
+  "cultivationcraft.commands.levelskills.multiple": "Leveled all skills for %s players",
+
   "cultivationcraft.gui.tab.0.0": "Cultivate",
   "cultivationcraft.gui.tab.0.1": "Skills",
   "cultivationcraft.gui.tab.0.2": "Bind",
@@ -204,6 +207,8 @@
   "cultivationcraft.gui.description": "Desc",
   "cultivationcraft.gui.stats": "Stats",
   "cultivationcraft.gui.modify": "Modify",
+  "cultivationcraft.gui.breakthrough": "Breakthrough",
+  "cultivationcraft.gui.stage": "Stage",
 
   "cultivationcraft.gui.technique": "Techniques",
   "cultivationcraft.gui.notechnique": "None",

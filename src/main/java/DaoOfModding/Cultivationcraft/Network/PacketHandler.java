@@ -44,6 +44,7 @@ public class PacketHandler
     protected static final byte WIND_INSTANCE = 43;
     protected static final byte BLOOD_SPAWN_ID = 55;
     protected static final byte EXTERNAL_BLOOD_TICK_ID = 56;
+    protected static final byte CULTIVATION_BREAKTHROUGH = 90;
     protected static final byte CULTIVATOR_TECH_STAT = 94;
     protected static final byte CULTIVATOR_TYPE = 95;
     protected static final byte BODY_FORGE_SELECTION = 96;
@@ -75,6 +76,7 @@ public class PacketHandler
         channel.registerMessage(WIND_INSTANCE, WindPacket.class, WindPacket::encode, WindPacket::decode, WindPacket::handle);
         channel.registerMessage(BLOOD_SPAWN_ID, BloodPacket.class, BloodPacket::encode, BloodPacket::decode, BloodPacket::handle);
         channel.registerMessage(EXTERNAL_BLOOD_TICK_ID, ExternalBloodTickPacket.class, ExternalBloodTickPacket::encode, ExternalBloodTickPacket::decode, ExternalBloodTickPacket::handle);
+        channel.registerMessage(CULTIVATION_BREAKTHROUGH, BreakthroughPacket.class, BreakthroughPacket::encode, BreakthroughPacket::decode, BreakthroughPacket::handle);
         channel.registerMessage(CULTIVATOR_TECHNIQUES, CultivatorTechniquesPacket.class, CultivatorTechniquesPacket::encode, CultivatorTechniquesPacket::decode, CultivatorTechniquesPacket::handle);
         channel.registerMessage(CULTIVATOR_STATS, CultivatorStatsPacket.class, CultivatorStatsPacket::encode, CultivatorStatsPacket::decode, CultivatorStatsPacket::handle);
         channel.registerMessage(CULTIVATOR_TYPE, CultivatorTypePacket.class, CultivatorTypePacket::encode, CultivatorTypePacket::decode, CultivatorTypePacket::handle);

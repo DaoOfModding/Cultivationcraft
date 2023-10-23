@@ -68,14 +68,17 @@ public class QiNotFoodStats extends QiFoodStats
 
         CultivationType cultivation = CultivatorStats.getCultivatorStats(player).getCultivation();
 
-        float absorb = cultivation.absorbFromQiSource(QiRemaining, player);
+        if (QiRemaining < toAbsorb)
+            toAbsorb = QiRemaining;
+
+        float absorb = cultivation.absorbFromQiSource((int)toAbsorb, player);
 
         setFoodLevel(getTrueFoodLevel() + absorb);
 
         if (getTrueFoodLevel() > getMaxFood())
             setFoodLevel(getMaxFood());
 
-        return QiRemaining;
+        return (int)(QiRemaining - absorb);
     }
 
     public QiNotFoodStats clone()
