@@ -3,10 +3,13 @@ package DaoOfModding.Cultivationcraft.Client.Renderers;
 import DaoOfModding.Cultivationcraft.Client.Particles.QiParticle;
 import DaoOfModding.Cultivationcraft.Client.genericClientFunctions;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.ChunkQiSources.ChunkQiSources;
+import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Element;
+import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
 import DaoOfModding.Cultivationcraft.Common.Qi.QiSource;
 import DaoOfModding.Cultivationcraft.Common.Register;
 import DaoOfModding.mlmanimator.Client.Poses.PoseHandler;
 import net.minecraft.client.Minecraft;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.phys.Vec3;
@@ -17,7 +20,8 @@ public class QiSourceRenderer
 {
     protected static float tick = 0;
     public static QiSource qisource = null;
-    public static Player target = null;
+    public static Entity target = null;
+    public static Element element = null;
 
     public static void renderQiSources(float partialTick)
     {
@@ -114,6 +118,12 @@ public class QiSourceRenderer
 
         qisource = source;
         target = absorbing;
+        element = Elements.getElement(source.getElement());
+
         Minecraft.getInstance().level.addParticle(Register.qiParticleType.get(), x, y, z, direction.x, direction.y, direction.z);
+
+        qisource = null;
+        target = null;
+        element = Elements.getElement(Elements.noElement);
     }
 }

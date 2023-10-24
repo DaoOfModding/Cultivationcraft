@@ -77,7 +77,7 @@ public class QiProjectile extends AbstractHurtingProjectile
     }
 
     protected ParticleOptions getTrailParticle() {
-        return ParticleTypes.GLOW;
+        return Register.qiParticleType.get();
     }
 
     protected boolean shouldBurn()

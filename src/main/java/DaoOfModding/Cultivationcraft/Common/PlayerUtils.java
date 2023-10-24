@@ -1,6 +1,7 @@
 package DaoOfModding.Cultivationcraft.Common;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.core.Direction;
 import net.minecraft.world.phys.Vec3;
@@ -34,5 +35,10 @@ public class PlayerUtils
         }
 
         return dir;
+    }
+
+    public static Vec3 getPosition(Entity entity)
+    {
+        return entity.position().add(0, entity.getEyeHeight(), 0);
     }
 }

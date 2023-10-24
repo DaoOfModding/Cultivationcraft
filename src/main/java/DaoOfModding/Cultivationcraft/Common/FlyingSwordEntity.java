@@ -1,10 +1,12 @@
 package DaoOfModding.Cultivationcraft.Common;
 
 import DaoOfModding.Cultivationcraft.Client.Renderer;
+import DaoOfModding.Cultivationcraft.Client.Renderers.QiGlowRenderer;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStats;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.ICultivatorStats;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.CultivatorTechniques;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.ICultivatorTechniques;
+import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.QiCondenserTechniques.FlyingSwordFormationTechnique;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.TechniqueStats.DefaultTechniqueStatIDs;
 import net.minecraft.client.Minecraft;
@@ -479,6 +481,8 @@ public class FlyingSwordEntity extends ItemEntity
 
                 // Handle any collisions made by this entity
                 handleCollisions();
+
+                QiGlowRenderer.setQiVisible(this, Elements.getElement(formation.getElement()));
             }
             else
                 fall();
