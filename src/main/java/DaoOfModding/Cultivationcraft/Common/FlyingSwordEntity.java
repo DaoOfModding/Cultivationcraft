@@ -67,6 +67,8 @@ public class FlyingSwordEntity extends ItemEntity
     private final float defaultdamage = 0.25f;
     private final float defaultRange = 10;
 
+    private boolean canPickup = false;
+
     // Testing thing
     protected boolean orbit = false;
 
@@ -431,6 +433,7 @@ public class FlyingSwordEntity extends ItemEntity
     // Make the flying Sword fall to the ground
     protected void fall()
     {
+        canPickup = true;
         direction = new Vec3(0, -1, 0);
 
         movement = movement.add(direction.scale(0.2));
@@ -460,6 +463,8 @@ public class FlyingSwordEntity extends ItemEntity
             // If the flying sword is in range of it's owner then do normal movement, otherwise fall to the ground
             if (canControl() && CultivatorStats.getCultivatorStats(owner).getCultivation().consumeQi(owner, formation.getTechniqueStat(DefaultTechniqueStatIDs.qiCost, owner)))
             {
+                canPickup = false;
+
                 this.baseTick();
 
                 this.xOld = getX();
@@ -500,8 +505,8 @@ public class FlyingSwordEntity extends ItemEntity
             if (this.age != -32768)
                 ++this.age;
 
-            if (this.age >= 200)
-                this.age = 0;
+            if (this.age >= 400)
+                this.age = 200;
 
             if (this.getItem().isEmpty()) {
                 this.remove(RemovalReason.DISCARDED);
@@ -586,7 +591,8 @@ public class FlyingSwordEntity extends ItemEntity
     public void playerTouch(Player entityIn)
     {
         // Only allow item to be picked up if it's collided with it's owner and is recalling
-        if (entityIn != owner || !recall) return;
+        // Or when it is not being controlled by anyone
+        if (!(((getAge() > 20) && canPickup) || (entityIn == owner && recall))) return;
 
         if (!this.level.isClientSide)
         {

@@ -2,6 +2,7 @@ package DaoOfModding.Cultivationcraft.Common.Capabilities.FlyingSwordContainerIt
 
 import DaoOfModding.Cultivationcraft.Common.Capabilities.FlyingSwordBind.FlyingSwordBind;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.SwordItem;
 import net.minecraftforge.items.ItemStackHandler;
 
 public class FlyingSwordContainerItemHandler extends ItemStackHandler
@@ -19,6 +20,8 @@ public class FlyingSwordContainerItemHandler extends ItemStackHandler
         }
 
         if (stack.isEmpty()) return false;
+
+        if (!(stack.getItem() instanceof SwordItem)) return false;
 
         if (FlyingSwordBind.getFlyingSwordBind(stack) != null)
             return true;
