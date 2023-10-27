@@ -21,6 +21,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.event.entity.living.LivingAttackEvent;
+import net.minecraftforge.event.entity.player.AttackEntityEvent;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -124,5 +126,16 @@ public class AttackTechnique extends Technique
     // What to do when any entity has been killed by this technique
     protected void onKill(Player player, LivingEntity entity)
     {
+    }
+
+    // Triggers on a player attack event
+    public void onPlayerAttack(AttackEntityEvent event)
+    {
+
+    }
+
+    public boolean cancelAttack(LivingAttackEvent event)
+    {
+        return false;
     }
 }

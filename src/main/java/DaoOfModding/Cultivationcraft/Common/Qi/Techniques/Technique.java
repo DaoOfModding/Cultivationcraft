@@ -33,6 +33,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
+import net.minecraftforge.event.entity.player.AttackEntityEvent;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -105,6 +106,11 @@ public class Technique
 
         if (canLevel && changePerLevel != null)
             statChangesPerLevel.put(stat, changePerLevel);
+    }
+
+    protected void removeTechniqueStat(ResourceLocation stat)
+    {
+        defaultStats.remove(stat);
     }
 
     public TechniqueStatModification getStatChangesPerLevel(ResourceLocation stat)

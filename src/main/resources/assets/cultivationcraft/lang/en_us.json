@@ -119,6 +119,9 @@
   "cultivationcraft.technique.barrier": "Qi Barrier",
   "cultivationcraft.technique.barrier.description": "Blocks incoming damage with your Qi",
 
+  "cultivationcraft.technique.itemenhance": "Qi Channel",
+  "cultivationcraft.technique.itemenhance.description": "Channels your Qi into your attacks, enhancing their damage",
+
   "cultivationcraft.technique.emission": "Qi Emission",
   "cultivationcraft.technique.emission.description": "Shoot out a concentrated blast of Qi to damage your enemies",
 

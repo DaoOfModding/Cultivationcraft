@@ -16,7 +16,10 @@ import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.PlayerHealthManager;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.Quest;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.QuestHandler;
 import DaoOfModding.Cultivationcraft.Common.Qi.Damage.Damage;
+import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.AttackOverrideTechnique;
+import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.AttackTechnique;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.PassiveTechniques.PassiveTechnique;
+import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.Technique;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import DaoOfModding.Cultivationcraft.Network.PacketHandler;
 import DaoOfModding.Cultivationcraft.StaminaHandler;
@@ -29,6 +32,7 @@ import net.minecraftforge.event.entity.item.ItemTossEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.level.ChunkEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -208,8 +212,41 @@ public class ServerListeners
     }
 
     @SubscribeEvent
+    public static void onPlayerAttack(AttackEntityEvent event)
+    {
+        // Cycle through all active AttackTechniques and call onPlayerAttack
+
+        ICultivatorTechniques techs = CultivatorTechniques.getCultivatorTechniques(event.getEntity());
+
+        for (int i = 0; i < 9; i ++)
+        {
+            Technique testTech = techs.getTechnique(i);
+
+            if (testTech != null && testTech.isActive() && testTech instanceof AttackTechnique)
+                ((AttackTechnique)testTech).onPlayerAttack(event);
+        }
+    }
+
+    @SubscribeEvent
     public static void onPlayerHurtInitial(LivingAttackEvent event)
     {
+        // Cycle through all active AttackTechniques if this attack is coming from a player and check if this attack has been canceled
+        if (event.getSource().getEntity() != null && event.getSource().getEntity() instanceof Player)
+        {
+            ICultivatorTechniques techs = CultivatorTechniques.getCultivatorTechniques((Player)event.getSource().getEntity());
+
+            for (int i = 0; i < 9; i++) {
+                Technique testTech = techs.getTechnique(i);
+
+                if (testTech != null && testTech.isActive() && testTech instanceof AttackTechnique)
+                    if (((AttackTechnique) testTech).cancelAttack(event))
+                    {
+                        event.setCanceled(true);
+                        return;
+                    }
+            }
+        }
+
         if (event.getEntity().level.isClientSide)
             return;
 

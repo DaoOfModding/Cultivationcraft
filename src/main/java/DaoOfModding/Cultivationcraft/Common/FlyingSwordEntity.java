@@ -679,7 +679,7 @@ public class FlyingSwordEntity extends ItemEntity
     // Removed cooldown and some crit stuff, edited to attack from flying sword instead of player
     public void attackTargetEntity(Entity targetEntity)
     {
-        if (!net.minecraftforge.common.ForgeHooks.onPlayerAttackTarget(owner, targetEntity)) return;
+        //if (!net.minecraftforge.common.ForgeHooks.onPlayerAttackTarget(owner, targetEntity)) return;
 
         if (targetEntity.isAttackable())
         {

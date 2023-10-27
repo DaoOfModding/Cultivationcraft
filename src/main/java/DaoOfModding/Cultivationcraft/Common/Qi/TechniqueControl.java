@@ -4,10 +4,7 @@ import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.*;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.BodyForgeTechniques.*;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.PassiveTechniques.*;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.BodyForgeTechniques.JetTechnique;
-import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.QiCondenserTechniques.FlightTechnique;
-import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.QiCondenserTechniques.FlyingSwordFormationTechnique;
-import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.QiCondenserTechniques.QiBarrierTechnique;
-import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.QiCondenserTechniques.QiEmission;
+import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.QiCondenserTechniques.*;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import net.minecraft.world.entity.player.Player;
 
@@ -21,6 +18,7 @@ public class TechniqueControl
         TechniqueControl.addTechnique(MeditateTechnique.class);
         TechniqueControl.addTechnique(DivineSenseTechnique.class);
         TechniqueControl.addTechnique(QiBarrierTechnique.class);
+        TechniqueControl.addTechnique(ItemEnhanceTechnique.class);
         TechniqueControl.addTechnique(FlightTechnique.class);
         TechniqueControl.addTechnique(QiEmission.class);
         TechniqueControl.addTechnique(FlyingSwordFormationTechnique.class);
