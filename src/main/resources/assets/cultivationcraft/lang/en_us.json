@@ -197,7 +197,7 @@
   "cultivationcraft.gui.cultivationtype.0": "Become a Qi Condenser\n \nHold Qi inside your body and use it to affect your environment.",
   "cultivationcraft.gui.cultivationtype.1": "Become a Body Forger\n \nUse Qi to transform various different parts of your body into different, more specialized forms.",
 
-  "cultivationcraft.gui.breakthrough": "Breakthrough requirements",
+  "cultivationcraft.gui.breakthroughrequirements": "Breakthrough requirements",
   "cultivationcraft.gui.breakthroughyes": "Can Breakthrough",
   "cultivationcraft.gui.cultivationprogress": "Cultivation Progress",
   "cultivationcraft.gui.completedtech": "Skills Mastered",
@@ -212,6 +212,7 @@
   "cultivationcraft.gui.modify": "Modify",
   "cultivationcraft.gui.breakthrough": "Breakthrough",
   "cultivationcraft.gui.stage": "Stage",
+  "cultivationcraft.gui.reset": "Reset",
 
   "cultivationcraft.gui.technique": "Techniques",
   "cultivationcraft.gui.notechnique": "None",

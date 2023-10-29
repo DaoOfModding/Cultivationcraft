@@ -31,9 +31,9 @@ public class ClientPacketHandler
         PacketHandler.channel.sendToServer(pack);
     }
 
-    public static void sendBreakthroughToServer()
+    public static void sendBreakthroughToServer(Boolean downgrade)
     {
-        BreakthroughPacket pack = new BreakthroughPacket();
+        BreakthroughPacket pack = new BreakthroughPacket(downgrade);
         PacketHandler.channel.sendToServer(pack);
     }
 

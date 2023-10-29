@@ -19,6 +19,7 @@ public class CultivationScreen extends GenericTabScreen
 {
     protected GUIButton stats;
     protected GUIButton breakthroughButton;
+    protected GUIButton reset;
 
     protected int statsXPos = 20;
     protected int statsYPos = 120;
@@ -37,7 +38,8 @@ public class CultivationScreen extends GenericTabScreen
         super(0, Component.translatable("cultivationcraft.gui.cultivation"), new ResourceLocation(Cultivationcraft.MODID, "textures/gui/cultivate.png"));
 
         stats = new GUIButton("STATS", Component.translatable("cultivationcraft.gui.stats").getString());
-        breakthroughButton = new GUIButton("BBREAKTHROUGH", Component.translatable("cultivationcraft.gui.breakthrough").getString());
+        breakthroughButton = new GUIButton("BREAKTHROUGH", Component.translatable("cultivationcraft.gui.breakthrough").getString());
+        reset = new GUIButton("RESET", Component.translatable("cultivationcraft.gui.reset").getString());
 
         breakthrough.setSize(120, 60);
     }
@@ -58,14 +60,21 @@ public class CultivationScreen extends GenericTabScreen
 
         if (cultivation.canBreakthrough(Minecraft.getInstance().player) && breakthroughButton.mouseClick((int)mouseX, (int)mouseY, buttonPressed))
         {
-            ClientPacketHandler.sendBreakthroughToServer();
+            ClientPacketHandler.sendBreakthroughToServer(false);
+            return true;
+        }
+
+        if (reset.mouseClick((int)mouseX, (int)mouseY, buttonPressed))
+        {
+            ClientPacketHandler.sendBreakthroughToServer(true);
+            reset.unselect();
             return true;
         }
 
         return false;
     }
 
-        @Override
+    @Override
     public void render(PoseStack PoseStack, int mouseX, int mouseY, float partialTicks)
     {
         super.render(PoseStack, mouseX, mouseY, partialTicks);
@@ -84,7 +93,7 @@ public class CultivationScreen extends GenericTabScreen
 
         font.draw(PoseStack, name, edgeSpacingX + this.xSize/2 - font.width(name)/2, edgeSpacingY + nameYPos, 0);
 
-        font.draw(PoseStack, Component.translatable("cultivationcraft.gui.breakthrough").getString(), edgeSpacingX + breakthroughXPos, edgeSpacingY + breakthroughYPos - 10, 0);
+        font.draw(PoseStack, Component.translatable("cultivationcraft.gui.breakthroughrequirements").getString(), edgeSpacingX + breakthroughXPos, edgeSpacingY + breakthroughYPos - 10, 0);
         breakthrough.setPos(edgeSpacingX + breakthroughXPos, edgeSpacingY + breakthroughYPos);
 
         breakthrough.setText(cultivation.breakthroughProgress(Minecraft.getInstance().player));
@@ -101,5 +110,8 @@ public class CultivationScreen extends GenericTabScreen
 
         stats.setPos(edgeSpacingX + statsXPos, edgeSpacingY + statsYPos);
         stats.render(PoseStack, mouseX, mouseY, this);
+
+        reset.setPos(edgeSpacingX + statsXPos, edgeSpacingY + statsYPos + 20);
+        reset.render(PoseStack, mouseX, mouseY, this);
     }
 }

@@ -113,6 +113,11 @@ public class CultivationType
         return amount;
     }
 
+    public void reset(Player player)
+    {
+        statLevels = new HashMap<>();
+    }
+
     public float absorbFromQiSource(int amount, Player player)
     {
         List<QiSource> sources = ChunkQiSources.getQiSourcesInRange(player.level, player.position(), (int)getCultivationStat(player, DefaultCultivationStatIDs.qiAbsorbRange));
