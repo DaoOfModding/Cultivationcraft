@@ -1,5 +1,6 @@
 package DaoOfModding.Cultivationcraft.Common.Qi.Cultivation;
 
+import DaoOfModding.Cultivationcraft.Client.GUI.Screens.CultivationTypeScreens.CultivationTypeScreen;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.ChunkQiSources.ChunkQiSources;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStats;
 import DaoOfModding.Cultivationcraft.Common.Qi.ExternalCultivationHandler;
@@ -34,6 +35,8 @@ public class CultivationType
     protected HashMap<String, HashMap<ResourceLocation, Double>> statLevels = new HashMap<>();
 
     protected PassiveTechnique passive = new PassiveTechnique();
+
+    protected CultivationTypeScreen screen = new CultivationTypeScreen();
 
 
     public String getName()
@@ -72,6 +75,11 @@ public class CultivationType
 
     public void breakthrough(Player player)
     {
+    }
+
+    public CultivationTypeScreen getScreen()
+    {
+        return screen;
     }
 
     public String breakthroughProgress(Player player)
@@ -195,6 +203,11 @@ public class CultivationType
             level += previousCultivation.getStatLevel(tech, stat);
 
         return level;
+    }
+
+    public int getMaxTechLevelWithoutPrevious()
+    {
+        return techLevel;
     }
 
     public int getMaxTechLevel()
