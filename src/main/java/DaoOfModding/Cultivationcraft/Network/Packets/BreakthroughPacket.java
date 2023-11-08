@@ -83,7 +83,11 @@ public class BreakthroughPacket extends Packet
         }
         else if (cultivation.canBreakthrough(player))
         {
-            cultivation.breakthrough(player);
+            if (cultivation.hasTribulation(player))
+                cultivation.startTribulation();
+            else
+                cultivation.breakthrough(player);
+
             PacketHandler.sendCultivatorStatsToClient(player);
         }
     }

@@ -100,7 +100,25 @@ public class CultivationScreen extends GenericTabScreen
 
         if (cultivation.canBreakthrough(Minecraft.getInstance().player))
         {
-            breakthrough.setText(breakthrough.getText() + "\n \n" + Component.translatable("cultivationcraft.gui.breakthroughyes").getString());
+            if (cultivation.hasTribulation(Minecraft.getInstance().player))
+            {
+                breakthroughButton.setText(Component.translatable("cultivationcraft.gui.tribulation").getString());
+
+                if (cultivation.isTribulating())
+                {
+                    breakthroughButton.disable();
+                    breakthroughButton.unselect();
+                }
+                else
+                    breakthroughButton.enable();
+            }
+            else
+            {
+                breakthroughButton.setText(Component.translatable("cultivationcraft.gui.breakthrough").getString());
+                breakthrough.setText(breakthrough.getText() + "\n \n" + Component.translatable("cultivationcraft.gui.breakthroughyes").getString());
+
+                breakthroughButton.enable();
+            }
 
             breakthroughButton.setPos(edgeSpacingX + breakXPos, edgeSpacingY + breakYPos);
             breakthroughButton.render(PoseStack, mouseX, mouseY, this);

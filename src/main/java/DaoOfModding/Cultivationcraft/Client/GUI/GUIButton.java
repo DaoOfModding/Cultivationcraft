@@ -30,12 +30,29 @@ public class GUIButton
     protected int xpos = 0;
     protected int ypos = 0;
 
+    protected boolean disabled = false;
+
     public GUIButton(String buttonID, String text)
     {
         ID = buttonID;
         name = text;
 
         width = baseWidth + Minecraft.getInstance().font.width(text);
+    }
+
+    public void setText(String text)
+    {
+        name = text;
+    }
+
+    public void disable()
+    {
+        disabled = true;
+    }
+
+    public void enable()
+    {
+        disabled = false;
     }
 
     public void setPos(int x, int y)
@@ -52,7 +69,7 @@ public class GUIButton
     public boolean mouseClick(int mouseX, int mouseY, int buttonPressed)
     {
         // Do nothing if the left button isn't pressed
-        if (buttonPressed != 0)
+        if (buttonPressed != 0 || disabled)
             return false;
 
         mouseX -= xpos;
@@ -87,6 +104,9 @@ public class GUIButton
         // Reset the hover boolean
         hover = false;
 
+        if (disabled)
+            return hover;
+
         mouseX -= xpos;
         mouseY -= ypos;
 
@@ -101,6 +121,14 @@ public class GUIButton
     {
         RenderSystem.setShaderTexture(0, TEXTURE);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+
+        int textColor = Color.BLACK.getRGB();
+
+        if (disabled)
+        {
+            RenderSystem.setShaderColor(0.7F, 0.7F, 0.7F, 0.7F);
+            textColor = Color.GRAY.getRGB();
+        }
 
         mouseOver(mouseX, mouseY);
 
@@ -118,8 +146,7 @@ public class GUIButton
         gui.blit(PoseStack, xpos + baseWidth / 2, ypos, gui.getBlitOffset(), 0, 14 + offset * 2, width - baseWidth, height, 255, 255);
         gui.blit(PoseStack, xpos + width - baseWidth / 2, ypos, gui.getBlitOffset(), offset + baseWidth / 2, 0, baseWidth / 2, height, 255, 255);
 
-
         // Draw the button text
-        Minecraft.getInstance().font.draw(PoseStack, name, xpos + baseWidth / 2, ypos + 2, Color.BLACK.getRGB());
+        Minecraft.getInstance().font.draw(PoseStack, name, xpos + baseWidth / 2, ypos + 2, textColor);
     }
 }

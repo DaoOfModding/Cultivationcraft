@@ -201,6 +201,7 @@
   "cultivationcraft.gui.breakthroughyes": "Can Breakthrough",
   "cultivationcraft.gui.cultivationprogress": "Cultivation Progress",
   "cultivationcraft.gui.completedtech": "Skills Mastered",
+  "cultivationcraft.gui.tribulationpending": "§cTribulation §cpending",
 
   "cultivationcraft.gui.bind": "Bind Item",
   "cultivationcraft.gui.done": "Done",
@@ -211,6 +212,7 @@
   "cultivationcraft.gui.stats": "Stats",
   "cultivationcraft.gui.modify": "Modify",
   "cultivationcraft.gui.breakthrough": "Breakthrough",
+  "cultivationcraft.gui.tribulation": "Tribulation",
   "cultivationcraft.gui.stage": "Stage",
   "cultivationcraft.gui.reset": "Reset",
 

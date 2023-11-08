@@ -8,7 +8,6 @@ import DaoOfModding.Cultivationcraft.Common.Qi.QiSource;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.PassiveTechniques.PassiveTechnique;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.Technique;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.TechniqueStats.DefaultCultivationStatIDs;
-import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import DaoOfModding.Cultivationcraft.Network.PacketHandler;
 import DaoOfModding.Cultivationcraft.StaminaHandler;
 import net.minecraft.nbt.CompoundTag;
@@ -31,6 +30,9 @@ public class CultivationType
     protected int maxStage = 1;
 
     protected CultivationType previousCultivation = null;
+    protected Tribulation tribulation = new Tribulation();
+
+    protected int isTribulating = -1;
 
     protected HashMap<String, HashMap<ResourceLocation, Double>> statLevels = new HashMap<>();
 
@@ -63,6 +65,24 @@ public class CultivationType
         return false;
     }
 
+    public boolean hasTribulation(Player player)
+    {
+        if (stage == maxStage && canBreakthrough(player))
+            return true;
+
+        return false;
+    }
+
+    public void tick(Player player)
+    {
+        if (isTribulating())
+        {
+            tribulation.tick(player, isTribulating);
+
+            isTribulating++;
+        }
+    }
+
     public int getStage()
     {
         return stage;
@@ -71,6 +91,16 @@ public class CultivationType
     public int getMaxStage()
     {
         return maxStage;
+    }
+
+    public void startTribulation()
+    {
+        isTribulating = 0;
+    }
+
+    public boolean isTribulating()
+    {
+        return (isTribulating >= 0);
     }
 
     public void breakthrough(Player player)
@@ -88,6 +118,9 @@ public class CultivationType
 
         if (maxedTechsToBreakthrough > 0)
             progress += "\n" + Component.translatable("cultivationcraft.gui.completedtech").getString() + ": " + getMaxedTechs() + "/" + maxedTechsToBreakthrough;
+
+        if (hasTribulation(player))
+            progress += "\n" + Component.translatable("cultivationcraft.gui.tribulationpending").getString();
 
         return progress;
     }
@@ -296,6 +329,7 @@ public class CultivationType
         }
 
         nbt.putInt("STAGE", getStage());
+        nbt.putInt("TRIBULATING", isTribulating);
 
         int i = 0;
 
@@ -335,6 +369,7 @@ public class CultivationType
         }
 
         stage = nbt.getInt("STAGE");
+        isTribulating = nbt.getInt("TRIBULATING");
 
         HashMap<String, HashMap<ResourceLocation, Double>> newTechLevels = new HashMap<>();
 
