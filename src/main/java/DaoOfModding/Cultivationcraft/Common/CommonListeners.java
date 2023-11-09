@@ -20,6 +20,7 @@ import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Lungs.Lungs;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.PlayerHealthManager;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.Quest;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.QuestHandler;
+import DaoOfModding.Cultivationcraft.Common.Qi.CultivationTypes;
 import DaoOfModding.Cultivationcraft.Common.Qi.Damage.Damage;
 import DaoOfModding.Cultivationcraft.Common.Qi.Effects.Wind;
 import DaoOfModding.Cultivationcraft.Common.Qi.Effects.WindInstance;
@@ -349,7 +350,14 @@ public class CommonListeners
         event.getOriginal().invalidateCaps();
 
         if (event.isWasDeath())
+        {
             QuestHandler.resetQuest(event.getEntity(), Quest.LIVE);
+
+            // If player dies while tribulating, reset current stage of cultivation
+            if (CultivatorStats.getCultivatorStats(event.getEntity()).getCultivationType() == CultivationTypes.QI_CONDENSER)
+                if (CultivatorStats.getCultivatorStats(event.getEntity()).getCultivation().isTribulating())
+                    CultivatorStats.getCultivatorStats(event.getEntity()).setCultivation(CultivatorStats.getCultivatorStats(event.getEntity()).getCultivation().getPreviousCultivation());
+        }
 
     }
 

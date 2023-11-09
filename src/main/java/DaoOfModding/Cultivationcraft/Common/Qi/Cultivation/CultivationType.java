@@ -30,9 +30,9 @@ public class CultivationType
     protected int maxStage = 1;
 
     protected CultivationType previousCultivation = null;
-    protected Tribulation tribulation = new Tribulation();
+    protected Tribulation tribulation = new Tribulation(maxStage, 100, 1);
 
-    protected int isTribulating = -1;
+    protected boolean isTribulating = false;
 
     protected HashMap<String, HashMap<ResourceLocation, Double>> statLevels = new HashMap<>();
 
@@ -75,12 +75,16 @@ public class CultivationType
 
     public void tick(Player player)
     {
-        if (isTribulating())
-        {
-            tribulation.tick(player, isTribulating);
+        if (player.level.isClientSide)
+            return;
 
-            isTribulating++;
-        }
+        if (isTribulating() && player.isAlive())
+            if (tribulation.tick(player))
+            {
+                isTribulating = false;
+                tribulationComplete(player);
+                PacketHandler.sendCultivatorStatsToClient(player);
+            }
     }
 
     public int getStage()
@@ -95,15 +99,19 @@ public class CultivationType
 
     public void startTribulation()
     {
-        isTribulating = 0;
+        isTribulating = true;
     }
 
     public boolean isTribulating()
     {
-        return (isTribulating >= 0);
+        return isTribulating;
     }
 
     public void breakthrough(Player player)
+    {
+    }
+
+    public void tribulationComplete(Player player)
     {
     }
 
@@ -329,7 +337,7 @@ public class CultivationType
         }
 
         nbt.putInt("STAGE", getStage());
-        nbt.putInt("TRIBULATING", isTribulating);
+        nbt.putBoolean("TRIBULATING", isTribulating);
 
         int i = 0;
 
@@ -369,7 +377,7 @@ public class CultivationType
         }
 
         stage = nbt.getInt("STAGE");
-        isTribulating = nbt.getInt("TRIBULATING");
+        isTribulating = nbt.getBoolean("TRIBULATING");
 
         HashMap<String, HashMap<ResourceLocation, Double>> newTechLevels = new HashMap<>();
 

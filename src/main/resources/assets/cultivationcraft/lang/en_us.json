@@ -176,11 +176,14 @@
   "cultivationcraft.commands.completequest.single": "Completed quest for %s",
   "cultivationcraft.commands.completequest.multiple": "Completed quests for %s players",
 
-  "cultivationcraft.commands.completeprogress.single": "Completed bodyforge progress for %s",
-  "cultivationcraft.commands.completeprogress.multiple": "Completed bodyforge progress for %s players",
+  "cultivationcraft.commands.completeprogress.single": "Completed cultivation progress for %s",
+  "cultivationcraft.commands.completeprogress.multiple": "Completed cultivation progress for %s players",
 
   "cultivationcraft.commands.levelskills.single": "Leveled all skills for %s",
   "cultivationcraft.commands.levelskills.multiple": "Leveled all skills for %s players",
+
+  "cultivationcraft.commands.fillqi.single": "Refilled Qi for %s",
+  "cultivationcraft.commands.fillqi.multiple": "Refilled Qi for %s players",
 
   "cultivationcraft.gui.tab.0.0": "Cultivate",
   "cultivationcraft.gui.tab.0.1": "Skills",
@@ -483,13 +486,13 @@
   "cultivationcraft.gui.help.debug": "Debug",
   "cultivationcraft.gui.help.debug.text": "OP Commands for testing purposes",
 
-  "cultivationcraft.gui.help.debug.bodyforge": "bodyforge",
-  "cultivationcraft.gui.help.debug.bodyforge.text": "Commands relating to Body Forging",
+  "cultivationcraft.gui.help.debug.bodyforge": "cultivation",
+  "cultivationcraft.gui.help.debug.bodyforge.text": "Commands relating to Cultivation",
 
-  "cultivationcraft.gui.help.debug.bodyforge.completeForge": "completeForge",
-  "cultivationcraft.gui.help.debug.bodyforge.completeForge.text": "§n/bodyforge §ncompleteForge §n§lplayerName\n \nThis command will give the supplied character all the Qi needed to complete their current forge.\nMeditating is still required to complete.",
+  "cultivationcraft.gui.help.debug.bodyforge.completeCultivation": "completeCultivation",
+  "cultivationcraft.gui.help.debug.bodyforge.completeCultivation.text": "§n/cultivation §completeCultivation §n§lplayerName\n \nThis command will give the supplied character all the Qi needed to complete their current cultivation.\nMeditating is still required to complete.",
   "cultivationcraft.gui.help.debug.bodyforge.completeQuest": "completeQuest",
-  "cultivationcraft.gui.help.debug.bodyforge.completeQuest.text": "§n/bodyforge §ncompleteQuest §n§lplayerName\n \nThis command will complete the current quest for the supplied character.",
+  "cultivationcraft.gui.help.debug.bodyforge.completeQuest.text": "§n/cultivation §ncompleteQuest §n§lplayerName\n \nThis command will complete the current quest for the supplied character.",
   "cultivationcraft.gui.help.debug.bodyforge.reset": "reset",
-  "cultivationcraft.gui.help.debug.bodyforge.reset.text": "§n/bodyforge §nreset §n§lplayerName\n \nThis command will completely reset the supplied character's cultivation."
+  "cultivationcraft.gui.help.debug.bodyforge.reset.text": "§n/cultivation §nreset §n§lplayerName\n \nThis command will completely reset the supplied character's cultivation."
 }

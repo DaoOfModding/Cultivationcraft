@@ -99,7 +99,6 @@ public class Damage
         QiDamageSource source = damageSourceToQiDamageSource(event.getSource());
         float damage = armorAbsorption((Player)event.getEntity(), source, event.getAmount());
         float resistedDamage = resistDamage(damage, source.damageElement, (Player)event.getEntity());
-        resistedDamage = doTechniqueResistances(source, resistedDamage, (Player)event.getEntity());
 
         if (source.getElement() != null && source.getElement().compareTo(Elements.fireElement) == 0 && event.getEntity().fireImmune() && resistedDamage > 0)
             resistedDamage = 0;

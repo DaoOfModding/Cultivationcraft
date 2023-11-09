@@ -3,7 +3,11 @@ package DaoOfModding.Cultivationcraft.Common.Commands;
 import DaoOfModding.Cultivationcraft.Client.genericClientFunctions;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.BodyModifications;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStats;
+import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.ICultivatorStats;
+import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.FoodStats.QiFoodStats;
+import DaoOfModding.Cultivationcraft.Common.Qi.Cultivation.CultivationType;
 import DaoOfModding.Cultivationcraft.Common.Qi.CultivationTypes;
+import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.StatIDs;
 import DaoOfModding.Cultivationcraft.Common.Qi.TechniqueControl;
@@ -24,11 +28,12 @@ public class BodyforgeCommand
 {
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher)
     {
-        LiteralArgumentBuilder<CommandSourceStack> command = Commands.literal("bodyforge").requires(commandSource -> commandSource.hasPermission(2))
+        LiteralArgumentBuilder<CommandSourceStack> command = Commands.literal("cultivation").requires(commandSource -> commandSource.hasPermission(2))
                 .then(Commands.literal("reset").then(Commands.argument("players", EntityArgument.players()).executes(commandContext -> reset(commandContext.getSource(), EntityArgument.getPlayers(commandContext, "players")))))
                 .then(Commands.literal("completeQuest").then(Commands.argument("players", EntityArgument.players()).executes(commandContext -> completeQuest(commandContext.getSource(), EntityArgument.getPlayers(commandContext, "players")))))
-                .then(Commands.literal("completeForge").then(Commands.argument("players", EntityArgument.players()).executes(commandContext -> completeProgress(commandContext.getSource(), EntityArgument.getPlayers(commandContext, "players")))))
-                .then(Commands.literal("levelSkills").then(Commands.argument("players", EntityArgument.players()).executes(commandContext -> levelSkills(commandContext.getSource(), EntityArgument.getPlayers(commandContext, "players")))));
+                .then(Commands.literal("completeCultivation").then(Commands.argument("players", EntityArgument.players()).executes(commandContext -> completeProgress(commandContext.getSource(), EntityArgument.getPlayers(commandContext, "players")))))
+                .then(Commands.literal("levelSkills").then(Commands.argument("players", EntityArgument.players()).executes(commandContext -> levelSkills(commandContext.getSource(), EntityArgument.getPlayers(commandContext, "players")))))
+                .then(Commands.literal("fillQi").then(Commands.argument("players", EntityArgument.players()).executes(commandContext -> fillQi(commandContext.getSource(), EntityArgument.getPlayers(commandContext, "players")))));
 
         dispatcher.register(command);
     }
@@ -37,8 +42,18 @@ public class BodyforgeCommand
     {
         for(ServerPlayer serverplayer : players)
         {
-            BodyModifications.getBodyModifications(serverplayer).setProgress((int)BodyPartStatControl.getStats(serverplayer).getStat(StatIDs.qiCost));
-            PacketHandler.sendBodyModificationsToClient(serverplayer);
+            ICultivatorStats stats = CultivatorStats.getCultivatorStats(serverplayer);
+
+            if (stats.getCultivationType() == CultivationTypes.QI_CONDENSER)
+            {
+                stats.getCultivation().progressCultivation(serverplayer, Integer.MAX_VALUE, Elements.noElement);
+                PacketHandler.sendCultivatorStatsToClient(serverplayer);
+            }
+            else if (stats.getCultivationType() == CultivationTypes.BODY_CULTIVATOR)
+            {
+                BodyModifications.getBodyModifications(serverplayer).setProgress((int) BodyPartStatControl.getStats(serverplayer).getStat(StatIDs.qiCost));
+                PacketHandler.sendBodyModificationsToClient(serverplayer);
+            }
         }
 
         if (players.size() == 1)
@@ -91,6 +106,20 @@ public class BodyforgeCommand
             commandSourceStack.sendSuccess(Component.translatable("cultivationcraft.commands.levelskills.single", players.iterator().next().getDisplayName()), true);
         else
             commandSourceStack.sendSuccess(Component.translatable("cultivationcraft.commands.levelskills.multiple", players.size()), true);
+
+        return players.size();
+    }
+
+    protected static int fillQi(CommandSourceStack commandSourceStack, Collection<ServerPlayer> players)
+    {
+        for(ServerPlayer serverplayer : players)
+            if (serverplayer.getFoodData() instanceof QiFoodStats)
+                serverplayer.getFoodData().setFoodLevel(((QiFoodStats) serverplayer.getFoodData()).getMaxFood());
+
+        if (players.size() == 1)
+            commandSourceStack.sendSuccess(Component.translatable("cultivationcraft.commands.fillqi.single", players.iterator().next().getDisplayName()), true);
+        else
+            commandSourceStack.sendSuccess(Component.translatable("cultivationcraft.commands.fillqi.multiple", players.size()), true);
 
         return players.size();
     }

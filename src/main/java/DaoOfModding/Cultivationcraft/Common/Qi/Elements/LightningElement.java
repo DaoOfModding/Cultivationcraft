@@ -28,7 +28,7 @@ public class LightningElement extends ElementVariant
         if (!(target.level instanceof ServerLevel))
             return;
 
-        int bolts = (int)(damageAmount / 5.0) + 1;
+        int bolts = (int)(damageAmount / 5.0);
 
         BlockPos pos = target.blockPosition();
 
