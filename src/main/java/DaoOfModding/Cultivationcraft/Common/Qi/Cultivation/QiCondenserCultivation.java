@@ -1,6 +1,8 @@
 package DaoOfModding.Cultivationcraft.Common.Qi.Cultivation;
 
+import DaoOfModding.Cultivationcraft.Client.GUI.Screens.CultivationTypeScreens.CultivationTypeScreen;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStats;
+import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.PassiveTechniques.CultivationPassives.FoundationPassive;
 import net.minecraft.world.entity.player.Player;
 
 public class QiCondenserCultivation extends CultivationType
@@ -12,17 +14,21 @@ public class QiCondenserCultivation extends CultivationType
 
     public QiCondenserCultivation(int cultivationStage)
     {
-        // TODO
-        /*
         passive = new FoundationPassive();
-        techLevel = 100;
+        techLevel = 0;
         maxedTechsToBreakthrough = 3;
         maxStage = 5;
         stage = cultivationStage;
-        screen = new FoundationEstablishmentScreen();
-        tribulation = new Tribulation(maxStage, 10, 0.2f);
+        screen = new CultivationTypeScreen();
+        tribulation = new Tribulation(maxStage, 50, 0.4f);
 
-        ID = "cultivationcraft.cultivation.foundation";*/
+        ID = "cultivationcraft.cultivation.qicondensation";
+    }
+
+    @Override
+    public boolean canBreakthrough(Player player)
+    {
+        return false;
     }
 
     @Override

@@ -3,6 +3,7 @@ package DaoOfModding.Cultivationcraft.Common.Qi;
 import DaoOfModding.Cultivationcraft.Common.Qi.Cultivation.CultivationType;
 import DaoOfModding.Cultivationcraft.Common.Qi.Cultivation.FoundationEstablishmentCultivation;
 import DaoOfModding.Cultivationcraft.Common.Qi.Cultivation.NoCultivation;
+import DaoOfModding.Cultivationcraft.Common.Qi.Cultivation.QiCondenserCultivation;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ public class ExternalCultivationHandler
     {
         addCultivation(NoCultivation.class);
         addCultivation(FoundationEstablishmentCultivation.class);
+        addCultivation(QiCondenserCultivation.class);
     }
 
     // List of all techniques available in the game
