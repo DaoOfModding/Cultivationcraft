@@ -2,7 +2,9 @@
   "cultivationcraft.cultivation.none": "None",
   "cultivationcraft.cultivation.foundation": "Foundation Establishment",
   "cultivationcraft.cultivation.qicondensation": "Qi Condensation",
+  "cultivationcraft.cultivation.qicondensation.text": "Condense your Qi into a single core of compressed Qi",
   "cultivationcraft.cultivation.coreforming": "Core Forming",
+  "cultivationcraft.cultivation.coreforming.text": "Form additional cores of compressed Qi",
 
   "cultivationcraft.elements.none": "Qi",
   "cultivationcraft.elements.fire": "Fire",
@@ -197,7 +199,7 @@
 
   "cultivationcraft.gui.cultivationselection": "Cultivation Type Selection",
 
-  "cultivationcraft.gui.cultivationtype.0": "Become a Qi Condenser\n \nHold Qi inside your body and use it to affect your environment.",
+  "cultivationcraft.gui.cultivationtype.0": "Become a Qi Cultivator\n \nCultivate Qi inside your body and expel it to affect your environment.",
   "cultivationcraft.gui.cultivationtype.1": "Become a Body Forger\n \nUse Qi to transform various different parts of your body into different, more specialized forms.",
 
   "cultivationcraft.gui.breakthroughrequirements": "Breakthrough requirements",
@@ -205,6 +207,8 @@
   "cultivationcraft.gui.cultivationprogress": "Cultivation Progress",
   "cultivationcraft.gui.completedtech": "Skills Mastered",
   "cultivationcraft.gui.tribulationpending": "§cTribulation §cpending",
+
+  "cultivationcraft.gui.advanceselection": "Choose Cultivation Type to advance too",
 
   "cultivationcraft.gui.bind": "Bind Item",
   "cultivationcraft.gui.done": "Done",
@@ -218,6 +222,7 @@
   "cultivationcraft.gui.tribulation": "Tribulation",
   "cultivationcraft.gui.stage": "Stage",
   "cultivationcraft.gui.reset": "Reset",
+  "cultivationcraft.gui.advance": "Advance",
 
   "cultivationcraft.gui.technique": "Techniques",
   "cultivationcraft.gui.notechnique": "None",

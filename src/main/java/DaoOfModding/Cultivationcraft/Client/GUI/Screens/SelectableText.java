@@ -31,6 +31,7 @@ public class SelectableText
 
     protected int lineHeight = 0;
 
+    protected String ID;
     protected MutableComponent name;
     protected MutableComponent text;
 
@@ -42,8 +43,14 @@ public class SelectableText
 
     public SelectableText(String component)
     {
+        ID = component;
         name = Component.translatable(component);
         text = Component.translatable(component.concat(".text"));
+    }
+
+    public String getID()
+    {
+        return ID;
     }
 
     public String getText()

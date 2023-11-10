@@ -24,6 +24,8 @@ public class FoundationEstablishmentCultivation extends CultivationType
         screen = new FoundationEstablishmentScreen();
         tribulation = new Tribulation(maxStage, 20, 0.2f);
 
+            advancements.add(new QiCondenserCultivation(1));
+
         ID = "cultivationcraft.cultivation.foundation";
     }
 
@@ -37,16 +39,5 @@ public class FoundationEstablishmentCultivation extends CultivationType
 
             CultivatorStats.getCultivatorStats(player).setCultivation(newCultivation);
         }
-    }
-
-    @Override
-    public void tribulationComplete(Player player)
-    {
-        QiCondenserCultivation newCultivation = new QiCondenserCultivation(1);
-        newCultivation.setPreviousCultivation(this);
-
-        CultivatorStats.getCultivatorStats(player).setCultivation(newCultivation);
-
-        tribulation.reset();
     }
 }

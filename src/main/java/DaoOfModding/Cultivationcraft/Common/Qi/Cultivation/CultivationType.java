@@ -8,6 +8,7 @@ import DaoOfModding.Cultivationcraft.Common.Qi.QiSource;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.PassiveTechniques.PassiveTechnique;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.Technique;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.TechniqueStats.DefaultCultivationStatIDs;
+import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import DaoOfModding.Cultivationcraft.Network.PacketHandler;
 import DaoOfModding.Cultivationcraft.StaminaHandler;
 import net.minecraft.nbt.CompoundTag;
@@ -15,6 +16,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,6 +35,7 @@ public class CultivationType
     protected Tribulation tribulation = new Tribulation(maxStage, 100, 1);
 
     protected boolean isTribulating = false;
+    protected boolean hasTribulated = false;
 
     protected HashMap<String, HashMap<ResourceLocation, Double>> statLevels = new HashMap<>();
 
@@ -40,10 +43,17 @@ public class CultivationType
 
     protected CultivationTypeScreen screen = new CultivationTypeScreen();
 
+    protected ArrayList<CultivationType> advancements = new ArrayList<>();
+
 
     public String getName()
     {
         return Component.translatable(ID).getString();
+    }
+
+    public String getID()
+    {
+        return ID;
     }
 
     public boolean canCultivate(ResourceLocation element)
@@ -63,6 +73,36 @@ public class CultivationType
                 return true;
 
         return false;
+    }
+
+    public ArrayList<CultivationType> getAdvancements()
+    {
+        return advancements;
+    }
+
+    public void advance(Player player, String advancement)
+    {
+        CultivationType advanceTo = null;
+
+        for (CultivationType advance : advancements)
+            if (advance.getID().compareTo(advancement) == 0)
+                advanceTo = advance;
+
+        if (advanceTo == null)
+        {
+            Cultivationcraft.LOGGER.error("Tried to advance to unavailable cultivation type " + advancement);
+            return;
+        }
+
+        advanceTo.setPreviousCultivation(this);
+        CultivatorStats.getCultivatorStats(player).setCultivation(advanceTo);
+
+        tribulation.reset();
+    }
+
+    public boolean hasTribulated()
+    {
+        return hasTribulated;
     }
 
     public boolean hasTribulation(Player player)
@@ -113,6 +153,7 @@ public class CultivationType
 
     public void tribulationComplete(Player player)
     {
+        hasTribulated = true;
     }
 
     public CultivationTypeScreen getScreen()
@@ -338,6 +379,7 @@ public class CultivationType
 
         nbt.putInt("STAGE", getStage());
         nbt.putBoolean("TRIBULATING", isTribulating);
+        nbt.putBoolean("TRIBULATED", hasTribulated);
 
         int i = 0;
 
@@ -378,6 +420,7 @@ public class CultivationType
 
         stage = nbt.getInt("STAGE");
         isTribulating = nbt.getBoolean("TRIBULATING");
+        hasTribulated = nbt.getBoolean("TRIBULATED");
 
         HashMap<String, HashMap<ResourceLocation, Double>> newTechLevels = new HashMap<>();
 

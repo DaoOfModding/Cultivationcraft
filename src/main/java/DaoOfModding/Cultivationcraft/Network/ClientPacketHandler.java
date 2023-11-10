@@ -33,7 +33,13 @@ public class ClientPacketHandler
 
     public static void sendBreakthroughToServer(Boolean downgrade)
     {
-        BreakthroughPacket pack = new BreakthroughPacket(downgrade);
+        BreakthroughPacket pack = new BreakthroughPacket(downgrade, "");
+        PacketHandler.channel.sendToServer(pack);
+    }
+
+    public static void sendBreakthroughToServer(String cultivation)
+    {
+        BreakthroughPacket pack = new BreakthroughPacket(false, cultivation);
         PacketHandler.channel.sendToServer(pack);
     }
 

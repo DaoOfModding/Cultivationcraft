@@ -94,7 +94,6 @@ public class Tribulation
 
     public void spawnLightning(ServerLevel level, BlockPos pos, float power)
     {
-        System.out.println("Spawning lighting of strength " + power);
         lightningStrikes++;
 
         LightningBolt lightningbolt = EntityType.LIGHTNING_BOLT.create(level);

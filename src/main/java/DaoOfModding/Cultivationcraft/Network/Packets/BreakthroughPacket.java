@@ -25,16 +25,19 @@ import java.util.function.Supplier;
 public class BreakthroughPacket extends Packet
 {
     protected boolean downgrade = false;
+    protected String cultivationString = "";
 
-    public BreakthroughPacket(boolean down)
+    public BreakthroughPacket(boolean down, String cult)
     {
         downgrade = down;
+        cultivationString = cult;
     }
 
     @Override
     public void encode(FriendlyByteBuf buffer)
     {
         buffer.writeBoolean(downgrade);
+        buffer.writeUtf(cultivationString);
     }
 
     public static BreakthroughPacket decode(FriendlyByteBuf buffer)
@@ -43,14 +46,15 @@ public class BreakthroughPacket extends Packet
         {
             // Read in the send values
             Boolean down = buffer.readBoolean();
+            String cult = buffer.readUtf();
 
-            return new BreakthroughPacket(down);
+            return new BreakthroughPacket(down, cult);
 
         }
         catch (IllegalArgumentException | IndexOutOfBoundsException e)
         {
-            Cultivationcraft.LOGGER.warn("Exception while reading Attack message: " + e);
-            return new BreakthroughPacket(false);
+            Cultivationcraft.LOGGER.warn("Exception while reading Breakthrough message: " + e);
+            return new BreakthroughPacket(false, "");
         }
     }
 
@@ -83,6 +87,11 @@ public class BreakthroughPacket extends Packet
         }
         else if (cultivation.canBreakthrough(player))
         {
+            if (cultivationString.length() > 0)
+            {
+                if (cultivation.hasTribulated())
+                    cultivation.advance(player, cultivationString);
+            }
             if (cultivation.hasTribulation(player))
                 cultivation.startTribulation();
             else
