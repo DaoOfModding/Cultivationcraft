@@ -1,6 +1,9 @@
 package DaoOfModding.Cultivationcraft.Client.GUI;
 
 import DaoOfModding.Cultivationcraft.Client.GUI.Screens.SelectableText;
+import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStats;
+import DaoOfModding.Cultivationcraft.Common.Qi.CultivationTypes;
+import net.minecraft.client.Minecraft;
 
 import java.util.ArrayList;
 
@@ -10,8 +13,10 @@ public class HelpItems
     protected static ArrayList<SelectableText> selectOPText = new ArrayList<>();
 
     protected static SelectableText menuField = new SelectableText("cultivationcraft.gui.help.cultivationmenu");
+    protected static SelectableText qimenuField = new SelectableText("cultivationcraft.gui.help.cultivationmenu");
     protected static SelectableText statsField = new SelectableText("cultivationcraft.gui.help.cultivationmenu.stats");
     protected static SelectableText elementsField = new SelectableText("cultivationcraft.gui.help.elements");
+    protected static SelectableText qiField = new SelectableText("cultivationcraft.gui.help.qi");
 
     public static void setup()
     {
@@ -45,7 +50,7 @@ public class HelpItems
         addStatsField(new SelectableText("cultivationcraft.stat.qiabsorbrange"));
         addStatsField(new SelectableText("cultivationcraft.stat.qicost"));
 
-        SelectableText qiField = new SelectableText("cultivationcraft.gui.help.qi");
+        qiField = new SelectableText("cultivationcraft.gui.help.qi");
         qiField.addItem(new SelectableText("cultivationcraft.gui.help.qi.source"));
         qiField.addItem(elementsField);
 
@@ -81,21 +86,50 @@ public class HelpItems
         cultField.addItem(new SelectableText("cultivationcraft.gui.help.cultivationmenu.cultivate.bodyforge.progress"));
         cultField.addItem(new SelectableText("cultivationcraft.gui.help.cultivationmenu.cultivate.bodyforge.quest"));
 
+        SelectableText qicultField = new SelectableText("cultivationcraft.gui.help.cultivationmenu.cultivate");
+        qicultField.addItem(new SelectableText("cultivationcraft.gui.help.cultivationmenu.cultivate.qicondenser.breakthrough"));
+        qicultField.addItem(new SelectableText("cultivationcraft.gui.help.cultivationmenu.cultivate.qicondenser.stats"));
+        qicultField.addItem(new SelectableText("cultivationcraft.gui.help.cultivationmenu.cultivate.qicondenser.reset"));
+        qicultField.addItem(new SelectableText("cultivationcraft.gui.help.cultivationmenu.cultivate.qicondenser.tribulation"));
+
+        SelectableText bindField = new SelectableText("cultivationcraft.gui.help.cultivationmenu.bind");
+
         menuField.addItem(statsField);
         menuField.addItem(skillsField);
         menuField.addItem(cultField);
 
-        addText(menuField);
-        addText(qiField);
+        qimenuField.addItem(qicultField);
+        qimenuField.addItem(skillsField);
+        qimenuField.addItem(bindField);
 
         SelectableText debugField = new SelectableText("cultivationcraft.gui.help.debug");
         SelectableText bfdebugField = new SelectableText("cultivationcraft.gui.help.debug.bodyforge");
         debugField.addItem(bfdebugField);
-        bfdebugField.addItem(new SelectableText("cultivationcraft.gui.help.debug.bodyforge.completeForge"));
-        bfdebugField.addItem(new SelectableText("cultivationcraft.gui.help.debug.bodyforge.completeQuest"));
+        bfdebugField.addItem(new SelectableText("cultivationcraft.gui.help.debug.bodyforge.completecultivation"));
+        bfdebugField.addItem(new SelectableText("cultivationcraft.gui.help.debug.bodyforge.completequest"));
+        bfdebugField.addItem(new SelectableText("cultivationcraft.gui.help.debug.bodyforge.levelskills"));
         bfdebugField.addItem(new SelectableText("cultivationcraft.gui.help.debug.bodyforge.reset"));
+        bfdebugField.addItem(new SelectableText("cultivationcraft.gui.help.debug.bodyforge.fillqi"));
 
         addOPText(debugField);
+    }
+
+    public static void updateText()
+    {
+        selectText = new ArrayList<>();
+
+        int cultivationType = CultivatorStats.getCultivatorStats(Minecraft.getInstance().player).getCultivationType();
+
+        if (cultivationType == CultivationTypes.QI_CONDENSER)
+        {
+            addText(qimenuField);
+            addText(qiField);
+        }
+        else if (cultivationType == CultivationTypes.BODY_CULTIVATOR)
+        {
+            addText(menuField);
+            addText(qiField);
+        }
     }
 
     public static void addStatsField(SelectableText newStats)

@@ -464,6 +464,18 @@
   "cultivationcraft.gui.help.cultivationmenu.cultivate.bodyforge.quest": "Stabilizing Body Forge",
   "cultivationcraft.gui.help.cultivationmenu.cultivate.bodyforge.quest.text": "Once you have completed infusing your body with the needed Qi you will start stabilizing the body part.\n \nA progress bar and what is required to fill that bar will be displayed at the bottom of the screen, and once filled the body forge will be complete.\n \nAt any point during this process you can discard this body forge by pressing the 'Cancel' button.",
 
+  "cultivationcraft.gui.help.cultivationmenu.cultivate.qicondenser.breakthrough": "Breakthrough requirements",
+  "cultivationcraft.gui.help.cultivationmenu.cultivate.qicondenser.breakthrough.text": "Displays the requirements to breakthrough to the next stage of cultivation",
+  "cultivationcraft.gui.help.cultivationmenu.cultivate.qicondenser.stats": "Stats",
+  "cultivationcraft.gui.help.cultivationmenu.cultivate.qicondenser.stats.text": "Allows you to view your cultivations stats and select what stat to focus on, increasing its value as your cultivation progresses.",
+  "cultivationcraft.gui.help.cultivationmenu.cultivate.qicondenser.reset": "Reset",
+  "cultivationcraft.gui.help.cultivationmenu.cultivate.qicondenser.reset.text": "Resets all progress in your current stage of cultivation",
+  "cultivationcraft.gui.help.cultivationmenu.cultivate.qicondenser.tribulation": "Tribulation",
+  "cultivationcraft.gui.help.cultivationmenu.cultivate.qicondenser.tribulation.text": "Tribulations are required to advance to the next level of cultivation once you have progressed through each stage of your current cultivation level.\n \nA tribulation will call down several powerful strikes of lightning against you. If you survive all lightning strikes your cultivation with progress, otherwise your cultivation will drop a stage.",
+
+  "cultivationcraft.gui.help.cultivationmenu.bind": "Bind",
+  "cultivationcraft.gui.help.cultivationmenu.bind.text": "Bind sword items to you, turning them into Flying Swords you can control when thrown out with an active Flying Sword formation.",
+
   "cultivationcraft.gui.help.qi": "Qi",
   "cultivationcraft.gui.help.qi.text": "The Vital Energy that flows through all living creatures",
   "cultivationcraft.gui.help.qi.source": "Qi Source",
@@ -494,10 +506,14 @@
   "cultivationcraft.gui.help.debug.bodyforge": "cultivation",
   "cultivationcraft.gui.help.debug.bodyforge.text": "Commands relating to Cultivation",
 
-  "cultivationcraft.gui.help.debug.bodyforge.completeCultivation": "completeCultivation",
-  "cultivationcraft.gui.help.debug.bodyforge.completeCultivation.text": "§n/cultivation §completeCultivation §n§lplayerName\n \nThis command will give the supplied character all the Qi needed to complete their current cultivation.\nMeditating is still required to complete.",
-  "cultivationcraft.gui.help.debug.bodyforge.completeQuest": "completeQuest",
-  "cultivationcraft.gui.help.debug.bodyforge.completeQuest.text": "§n/cultivation §ncompleteQuest §n§lplayerName\n \nThis command will complete the current quest for the supplied character.",
+  "cultivationcraft.gui.help.debug.bodyforge.completecultivation": "completeCultivation",
+  "cultivationcraft.gui.help.debug.bodyforge.completecultivation.text": "§n/cultivation §ncompleteCultivation §n§lplayerName\n \nThis command will give the supplied character all the Qi needed to complete their current cultivation.\nMeditating is still required to complete.",
+  "cultivationcraft.gui.help.debug.bodyforge.completequest": "completeQuest",
+  "cultivationcraft.gui.help.debug.bodyforge.completequest.text": "§n/cultivation §ncompleteQuest §n§lplayerName\n \nThis command will complete the current quest for the supplied character.",
+  "cultivationcraft.gui.help.debug.bodyforge.levelskills": "levelSkills",
+  "cultivationcraft.gui.help.debug.bodyforge.levelskills.text": "§n/cultivation §nlevelSkills §n§lplayerName\n \nThis command will completely level all skills for the supplied character.",
   "cultivationcraft.gui.help.debug.bodyforge.reset": "reset",
-  "cultivationcraft.gui.help.debug.bodyforge.reset.text": "§n/cultivation §nreset §n§lplayerName\n \nThis command will completely reset the supplied character's cultivation."
+  "cultivationcraft.gui.help.debug.bodyforge.reset.text": "§n/cultivation §nreset §n§lplayerName\n \nThis command will completely reset the supplied character's cultivation.",
+  "cultivationcraft.gui.help.debug.bodyforge.fillqi": "fillQi",
+  "cultivationcraft.gui.help.debug.bodyforge.fillqi.text": "§n/cultivation §nfillQi §n§lplayerName\n \nThis command will completely fill the Qi/Stamina of the supplied character."
 }
