@@ -62,16 +62,6 @@ public class CultivationModifyScreen extends TechniqueModifyScreen
 
             double statValue = cultivating.getPassive().getTechniqueStat(statLocation, Minecraft.getInstance().player);
 
-            // Loop through previous cultivations and add their stat values into existing stats
-            CultivationType check = cultivating.getPreviousCultivation();
-            while (check != null)
-            {
-                if (check.getPassive().hasTechniqueStat(statLocation))
-                    statValue += check.getPassive().getTechniqueStat(statLocation, Minecraft.getInstance().player);
-
-                check = check.getPreviousCultivation();
-            }
-
             drawStat(PoseStack, stat + location, stats.get(stat), statValue);
         }
 

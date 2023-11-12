@@ -16,15 +16,16 @@ public class FoundationEstablishmentCultivation extends CultivationType
 
     public FoundationEstablishmentCultivation(int cultivationStage)
     {
+        super(cultivationStage);
+
         passive = new FoundationPassive();
         techLevel = 100;
         maxedTechsToBreakthrough = 3;
         maxStage = 5;
-        stage = cultivationStage;
         screen = new FoundationEstablishmentScreen();
-        tribulation = new Tribulation(maxStage, 20, 0.2f);
+        tribulation = new Tribulation(maxStage, 10, 0.2f);
 
-            advancements.add(new QiCondenserCultivation(1));
+        advancements.add(new QiCondenserCultivation(1));
 
         ID = "cultivationcraft.cultivation.foundation";
     }

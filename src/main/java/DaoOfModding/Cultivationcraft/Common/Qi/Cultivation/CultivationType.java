@@ -45,6 +45,17 @@ public class CultivationType
 
     protected ArrayList<CultivationType> advancements = new ArrayList<>();
 
+    public CultivationType(int currentStage)
+    {
+        stage = currentStage;
+        stageCalculations();
+    }
+
+    // Put anything here that changes based on the stage
+    public void stageCalculations()
+    {
+
+    }
 
     public String getName()
     {
@@ -197,9 +208,6 @@ public class CultivationType
         if (getPassive().hasTechniqueStat(stat))
             amount += getPassive().getTechniqueStat(stat, player);
 
-        if (previousCultivation != null)
-            amount += previousCultivation.getCultivationStat(player, stat);
-
         return amount;
     }
 
@@ -272,6 +280,16 @@ public class CultivationType
     public CultivationType getPreviousCultivation()
     {
         return previousCultivation;
+    }
+
+    public Double getStatLevelWithoutPrevious(Class tech, ResourceLocation stat)
+    {
+        Double level = 0.0;
+
+        if (statLevels.containsKey(tech.toString()) && statLevels.get(tech.toString()).containsKey(stat))
+            level += statLevels.get(tech.toString()).get(stat);
+
+        return level;
     }
 
     public Double getStatLevel(Class tech, ResourceLocation stat)
@@ -408,6 +426,7 @@ public class CultivationType
         previousCultivation = previous;
     }
 
+
     public void readNBT(CompoundTag nbt)
     {
         if (nbt.contains("PREVIOUSCULTNAME"))
@@ -419,6 +438,8 @@ public class CultivationType
         }
 
         stage = nbt.getInt("STAGE");
+        stageCalculations();
+
         isTribulating = nbt.getBoolean("TRIBULATING");
         hasTribulated = nbt.getBoolean("TRIBULATED");
 

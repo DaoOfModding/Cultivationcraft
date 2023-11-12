@@ -10,7 +10,7 @@ public class NoCultivation extends CultivationType
 
     public NoCultivation()
     {
-        super();
+        super(0);
 
         passive = new BasePassive();
     }

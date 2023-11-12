@@ -8,9 +8,11 @@ import DaoOfModding.Cultivationcraft.Client.Particles.WaterParticle.WaterParticl
 import DaoOfModding.Cultivationcraft.Client.Particles.WindParticle.WindParticleType;
 import DaoOfModding.Cultivationcraft.Client.Renderers.FlyingSwordRenderer;
 import DaoOfModding.Cultivationcraft.Client.Renderers.QiProjectileRenderer;
+import DaoOfModding.Cultivationcraft.Client.Textures.AlphaOverlayTexture;
 import DaoOfModding.Cultivationcraft.Common.Containers.FlyingSwordContainer;
 import DaoOfModding.Cultivationcraft.Common.Qi.QiProjectile;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.resources.ResourceLocation;

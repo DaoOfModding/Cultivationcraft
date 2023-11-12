@@ -4,7 +4,7 @@ import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.PassiveTechniques.Pass
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.TechniqueStats.DefaultCultivationStatIDs;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.TechniqueStats.TechniqueStatModification;
 
-public class FoundationPassive extends PassiveTechnique
+public class FoundationPassive extends BasePassive
 {
     public FoundationPassive()
     {

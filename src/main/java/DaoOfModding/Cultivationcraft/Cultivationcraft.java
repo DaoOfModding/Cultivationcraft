@@ -1,6 +1,7 @@
 package DaoOfModding.Cultivationcraft;
 
 import DaoOfModding.Cultivationcraft.Client.GUI.HelpItems;
+import DaoOfModding.Cultivationcraft.Client.Textures.initTextures;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartNames;
 import DaoOfModding.Cultivationcraft.Client.Animations.GenericQiPoses;
 import DaoOfModding.Cultivationcraft.Client.ClientItemControl;
@@ -65,5 +66,6 @@ public class Cultivationcraft {
         GenericQiPoses.init();
         HelpItems.setup();
         DefaultTechniqueStatIDs.init();
+        initTextures.init();
     }
 }
