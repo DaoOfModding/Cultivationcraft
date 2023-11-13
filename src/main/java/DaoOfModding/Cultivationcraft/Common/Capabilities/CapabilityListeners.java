@@ -4,14 +4,11 @@ import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.BodyM
 import DaoOfModding.Cultivationcraft.Common.Capabilities.ChunkQiSources.ChunkQiSourcesCapability;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStatsCapability;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.CultivatorTechniquesCapability;
-import DaoOfModding.Cultivationcraft.Common.Capabilities.FlyingSwordBind.FlyingSwordBindCapability;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.FlyingSwordContainerItemStack.FlyingSwordContainerItemStackCapability;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -22,7 +19,6 @@ public class CapabilityListeners
 {
     public static final ResourceLocation CultivatorStatsCapabilityLocation = new ResourceLocation(Cultivationcraft.MODID, "cultivatorstats");
     public static final ResourceLocation FSCItemStackCapabilityLocation = new ResourceLocation(Cultivationcraft.MODID, "fscitemstack");
-    public static final ResourceLocation FlyingSwordBindLocation = new ResourceLocation(Cultivationcraft.MODID, "flyingswordbind");
     public static final ResourceLocation ChunkQiSourcesLocation = new ResourceLocation(Cultivationcraft.MODID, "chunkqisources");
     public static final ResourceLocation CultivatorTechniquesCapabilityLocation = new ResourceLocation(Cultivationcraft.MODID, "cultivatortechniques");
     public static final ResourceLocation BodyModificationsCapabilityLocation = new ResourceLocation(Cultivationcraft.MODID, "bodymodification");
@@ -42,17 +38,6 @@ public class CapabilityListeners
             event.addCapability(BodyModificationsCapabilityLocation, new BodyModificationsCapability());
             event.addCapability(CultivatorTechniquesCapabilityLocation, new CultivatorTechniquesCapability());
             event.addCapability(FSCItemStackCapabilityLocation, new FlyingSwordContainerItemStackCapability());
-        }
-    }
-
-    @SubscribeEvent
-    public static void attachCapabilitiesItem(final AttachCapabilitiesEvent<ItemStack> event)
-    {
-        // Attach bind capability to items capable of being bound
-        if (event.getObject().getItem() instanceof SwordItem)
-        {
-            FlyingSwordBindCapability newCapability = new FlyingSwordBindCapability();
-            event.addCapability(FlyingSwordBindLocation, newCapability);
         }
     }
 }

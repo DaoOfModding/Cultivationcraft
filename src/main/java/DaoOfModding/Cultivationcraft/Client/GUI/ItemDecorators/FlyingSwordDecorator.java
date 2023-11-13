@@ -1,7 +1,6 @@
 package DaoOfModding.Cultivationcraft.Client.GUI.ItemDecorators;
 
-import DaoOfModding.Cultivationcraft.Common.Capabilities.FlyingSwordBind.FlyingSwordBind;
-import DaoOfModding.Cultivationcraft.Common.Capabilities.FlyingSwordBind.IFlyingSwordBind;
+import DaoOfModding.Cultivationcraft.Common.FlyingSwordBind;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
@@ -21,16 +20,14 @@ public class FlyingSwordDecorator implements IItemDecorator
 
     public boolean render(Font font, ItemStack stack, int xOffset, int yOffset, float blitOffset)
     {
-        IFlyingSwordBind bind = FlyingSwordBind.getFlyingSwordBind(stack);
-
         // Don't do anything if the item isn't bound
-        if (bind == null || !bind.isBound())
+        if (!FlyingSwordBind.isBound(stack))
             return false;
 
         RenderSystem.setShaderTexture(0, icon);
 
         // Render as red if not the owning player
-        if (bind.getOwner().compareTo(Minecraft.getInstance().player.getUUID()) == 0)
+        if (FlyingSwordBind.getOwner(stack).compareTo(Minecraft.getInstance().player.getUUID()) == 0)
             RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         else
             RenderSystem.setShaderColor(0.8F, 0.0F, 0.0F, 1.0F);
