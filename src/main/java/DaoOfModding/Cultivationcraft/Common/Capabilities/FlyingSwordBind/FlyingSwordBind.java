@@ -69,7 +69,8 @@ public class FlyingSwordBind implements IFlyingSwordBind
     }
 
     // Return a specified item's FlyingSwordBind
-    public static IFlyingSwordBind getFlyingSwordBind(ItemStack item) {
+    public static IFlyingSwordBind getFlyingSwordBind(ItemStack item)
+    {
         return item.getCapability(FlyingSwordBindCapability.INSTANCE).orElse(null);
     }
 

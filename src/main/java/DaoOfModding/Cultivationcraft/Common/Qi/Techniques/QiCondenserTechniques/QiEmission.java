@@ -62,11 +62,9 @@ public class QiEmission extends Technique
         if (!player.level.isClientSide && CultivatorStats.getCultivatorStats(player).getCultivation().consumeQi(player, getTechniqueStat(DefaultTechniqueStatIDs.qiCost, player)))
         {
             Vec3 pos = PlayerUtils.getPosition(player);
-            QiProjectile projectile = new QiProjectile(player.level, player, pos.x, pos.y, pos.z, Element, (int)getTechniqueStat(DefaultTechniqueStatIDs.damage, player), (float)getTechniqueStat(DefaultTechniqueStatIDs.movementSpeed, player));
+            QiProjectile projectile = new QiProjectile(player.level, player, pos.x, pos.y, pos.z, Element, (int)getTechniqueStat(DefaultTechniqueStatIDs.damage, player), (float)getTechniqueStat(DefaultTechniqueStatIDs.movementSpeed, player), this);
             projectile.setDirection(player.getLookAngle());
             player.level.addFreshEntity(projectile);
-
-            this.levelUp(player, 1);
         }
 
         deactivate(player);

@@ -372,7 +372,7 @@ public class FlyingSwordEntity extends ItemEntity
         if (collisionEntity instanceof LivingEntity)
         {
             attackTargetEntity(collisionEntity);
-            formation.levelUp(owner, 0.1);
+            formation.levelUp(owner, 1);
 
             return true;
         }
@@ -487,7 +487,9 @@ public class FlyingSwordEntity extends ItemEntity
                 // Handle any collisions made by this entity
                 handleCollisions();
 
-                QiGlowRenderer.setQiVisible(this, Elements.getElement(formation.getElement()));
+                // Set this entity to radiate Qi for clients
+                if (this.level.isClientSide)
+                    QiGlowRenderer.setQiVisible(this, Elements.getElement(formation.getElement()));
             }
             else
                 fall();

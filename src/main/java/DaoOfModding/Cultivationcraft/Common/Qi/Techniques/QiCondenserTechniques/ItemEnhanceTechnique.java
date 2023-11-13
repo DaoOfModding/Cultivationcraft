@@ -80,6 +80,8 @@ public class ItemEnhanceTechnique extends AttackTechnique
             return false;
         }
 
+        levelUp(attackingPlayer, 2);
+
         // Make a new QiDamageSource of this techniques element
         QiDamageSource newSource = new QiDamageSource(event.getSource().getMsgId(), event.getSource().getEntity(), getElement(), true);
 

@@ -15,6 +15,7 @@ import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.TechniqueStats.Default
 import DaoOfModding.Cultivationcraft.Common.Reflection;
 import DaoOfModding.Cultivationcraft.Common.Register;
 import DaoOfModding.Cultivationcraft.Network.PacketHandler;
+import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;

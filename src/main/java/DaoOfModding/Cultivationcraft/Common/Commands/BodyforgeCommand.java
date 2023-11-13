@@ -92,7 +92,7 @@ public class BodyforgeCommand
                 {
                     Technique technique = (Technique) (tech.newInstance());
 
-                    if (technique.isValid(genericClientFunctions.getPlayer()) && technique.canLevel())
+                    if (technique.isValid(serverplayer) && technique.canLevel())
                         technique.levelUp(serverplayer, amount);
                 }
                 catch (Exception e)

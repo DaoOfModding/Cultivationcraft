@@ -93,8 +93,8 @@ public class IceWalkTechnique extends Technique
         super.tickClient(event);
 
         // TODO: Better way of sliding
-        Vec3 test = Physics.getDelta(event.player).scale(0.04);
-        event.player.push(test.x, 0, test.z);
+        Vec3 BindedItemPickupListener = Physics.getDelta(event.player).scale(0.04);
+        event.player.push(BindedItemPickupListener.x, 0, BindedItemPickupListener.z);
 
         BlockPos pos = event.player.blockPosition().below();
 

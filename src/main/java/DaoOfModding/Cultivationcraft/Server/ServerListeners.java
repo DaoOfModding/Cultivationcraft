@@ -15,16 +15,12 @@ import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.FoodStats.QiFoodStats;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.PlayerHealthManager;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.Quest;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.QuestHandler;
-import DaoOfModding.Cultivationcraft.Common.Qi.Cultivation.CultivationType;
 import DaoOfModding.Cultivationcraft.Common.Qi.CultivationTypes;
 import DaoOfModding.Cultivationcraft.Common.Qi.Damage.Damage;
-import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.AttackOverrideTechnique;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.AttackTechnique;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.PassiveTechniques.PassiveTechnique;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.Technique;
-import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import DaoOfModding.Cultivationcraft.Network.PacketHandler;
-import DaoOfModding.Cultivationcraft.StaminaHandler;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
@@ -36,7 +32,6 @@ import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
-import net.minecraftforge.event.level.ChunkEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.common.Mod;
@@ -114,7 +109,7 @@ public class ServerListeners
     @SubscribeEvent
     public static void onFall(LivingFallEvent event)
     {
-        if (event.getEntity().level.isClientSide || !(event.getEntity() instanceof Player))
+        if (event.getEntity().level.isClientSide || !(event.getEntity() instanceof Player) || !event.getEntity().isAlive())
             return;
 
         ICultivatorTechniques techs = CultivatorTechniques.getCultivatorTechniques((Player)event.getEntity());
