@@ -181,6 +181,8 @@ public class TechniqueModifyScreen extends GenericTabScreen
         int edgeSpacingX = (this.width - this.xSize) / 2;
         int edgeSpacingY = (this.height - this.ySize) / 2;
 
+        statValue = (int)(statValue * 1000) / 1000.0;
+
         font.draw(PoseStack, Component.translatable(stat.getPath()).getString(), edgeSpacingX + statXPos, edgeSpacingY + statYPos + statYSpacing*pos, Color.black.getRGB());
         font.draw(PoseStack, "" + statValue, edgeSpacingX + this.xSize - statXPosFromRight - font.width("" + statValue), edgeSpacingY + statYPos + statYSpacing*pos, Color.WHITE.getRGB());
     }

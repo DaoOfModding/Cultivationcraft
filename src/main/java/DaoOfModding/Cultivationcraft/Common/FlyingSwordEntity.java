@@ -372,7 +372,6 @@ public class FlyingSwordEntity extends ItemEntity
         if (collisionEntity instanceof LivingEntity)
         {
             attackTargetEntity(collisionEntity);
-            formation.levelUp(owner, 1);
 
             return true;
         }
@@ -711,6 +710,8 @@ public class FlyingSwordEntity extends ItemEntity
                 // Knockback target
                 Vec3 Vec3 = targetEntity.getDeltaMovement();
                 boolean flag5 = targetEntity.hurt(new EntityDamageSource("player", this), f);
+
+                formation.levelUp(owner, f);
 
                 if (flag5)
                 {

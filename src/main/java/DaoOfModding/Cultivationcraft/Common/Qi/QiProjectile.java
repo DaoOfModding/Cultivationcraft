@@ -66,7 +66,7 @@ public class QiProjectile extends AbstractHurtingProjectile
         CultivatorAttackLogic.attackEntity((Player)getOwner(), hit.getEntity(), -1, damage, null, element, "QiProjectile");
 
         if (tech != null)
-            tech.levelUp((Player)getOwner(), 10);
+            tech.levelUp((Player)getOwner(), damage);
 
         this.discard();
     }

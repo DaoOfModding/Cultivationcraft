@@ -75,6 +75,7 @@ public class HelpItems
         skillsField.addItem(new SelectableText("cultivationcraft.gui.help.cultivationmenu.skills.assign"));
         skillsField.addItem(new SelectableText("cultivationcraft.gui.help.cultivationmenu.skills.hotbar"));
         skillsField.addItem(new SelectableText("cultivationcraft.gui.help.cultivationmenu.skills.activation"));
+        skillsField.addItem(new SelectableText("cultivationcraft.gui.help.cultivationmenu.skills.level"));
 
         SelectableText keyskillsField = new SelectableText("cultivationcraft.gui.help.cultivationmenu.skills.keyskills");
         skillsField.addItem(keyskillsField);

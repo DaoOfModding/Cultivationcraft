@@ -86,7 +86,7 @@ public class QiBarrierTechnique extends Technique
     {
         if (CultivatorStats.getCultivatorStats(player).getCultivation().consumeQi(player, amount / getTechniqueStat(qiToHealthRatio, player)))
         {
-            levelUp(player, amount / 2);
+            levelUp(player, amount);
             return 0;
         }
 

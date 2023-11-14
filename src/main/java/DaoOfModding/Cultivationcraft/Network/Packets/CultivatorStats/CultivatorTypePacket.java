@@ -1,6 +1,7 @@
 package DaoOfModding.Cultivationcraft.Network.Packets.CultivatorStats;
 
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStats;
+import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.PlayerHealthManager;
 import DaoOfModding.Cultivationcraft.Common.Qi.Cultivation.FoundationEstablishmentCultivation;
 import DaoOfModding.Cultivationcraft.Common.Qi.Cultivation.NoCultivation;
 import DaoOfModding.Cultivationcraft.Common.Qi.CultivationTypes;
@@ -95,6 +96,7 @@ public class CultivatorTypePacket extends Packet
                 newCultivation.setPreviousCultivation(new NoCultivation());
 
                 CultivatorStats.getCultivatorStats(ownerEntity).setCultivation(newCultivation);
+                PlayerHealthManager.updateFoodStats(ownerEntity);
             }
 
             // Send the new player stats to the clients

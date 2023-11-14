@@ -549,63 +549,63 @@ public class GenericQiPoses
 
     protected static void setupCrossLegs()
     {
-        CrossLegs.addAngle(GenericLimbNames.leftArm, new Vec3(Math.toRadians(0), Math.toRadians(-30), 0), GenericPoses.walkArmPriority + 4);
-        CrossLegs.addAngle(GenericLimbNames.rightArm, new Vec3(Math.toRadians(0), Math.toRadians(30), 0), GenericPoses.walkArmPriority + 4);
-        CrossLegs.addAngle(GenericLimbNames.lowerLeftArm, new Vec3(Math.toRadians(-30), 0, 0), GenericPoses.walkArmPriority + 4);
-        CrossLegs.addAngle(GenericLimbNames.lowerRightArm, new Vec3(Math.toRadians(-30), 0, 0), GenericPoses.walkArmPriority + 4);
+        CrossLegs.addAngle(GenericLimbNames.leftArm, new Vec3(Math.toRadians(0), Math.toRadians(-30), 0), GenericPoses.jumpArmPriority + 4);
+        CrossLegs.addAngle(GenericLimbNames.rightArm, new Vec3(Math.toRadians(0), Math.toRadians(30), 0), GenericPoses.jumpArmPriority + 4);
+        CrossLegs.addAngle(GenericLimbNames.lowerLeftArm, new Vec3(Math.toRadians(-30), 0, 0), GenericPoses.jumpArmPriority + 4);
+        CrossLegs.addAngle(GenericLimbNames.lowerRightArm, new Vec3(Math.toRadians(-30), 0, 0), GenericPoses.jumpArmPriority + 4);
 
-        CrossLegs.addAngle(BodyPartModelNames.longArmLeftModel, new Vec3(Math.toRadians(0), Math.toRadians(-30), 0), GenericPoses.walkArmPriority + 4);
-        CrossLegs.addAngle(BodyPartModelNames.longArmRightModel, new Vec3(Math.toRadians(0), Math.toRadians(30), 0), GenericPoses.walkArmPriority + 4);
-        CrossLegs.addAngle(BodyPartModelNames.longArmLowerLeftModel, new Vec3(Math.toRadians(-30), 0, 0), GenericPoses.walkArmPriority + 4);
-        CrossLegs.addAngle(BodyPartModelNames.longArmLowerRightModel, new Vec3(Math.toRadians(-30), 0, 0), GenericPoses.walkArmPriority + 4);
+        CrossLegs.addAngle(BodyPartModelNames.longArmLeftModel, new Vec3(Math.toRadians(0), Math.toRadians(-30), 0), GenericPoses.jumpArmPriority + 4);
+        CrossLegs.addAngle(BodyPartModelNames.longArmRightModel, new Vec3(Math.toRadians(0), Math.toRadians(30), 0), GenericPoses.jumpArmPriority + 4);
+        CrossLegs.addAngle(BodyPartModelNames.longArmLowerLeftModel, new Vec3(Math.toRadians(-30), 0, 0), GenericPoses.jumpArmPriority + 4);
+        CrossLegs.addAngle(BodyPartModelNames.longArmLowerRightModel, new Vec3(Math.toRadians(-30), 0, 0), GenericPoses.jumpArmPriority + 4);
 
-        CrossLegs.addAngle(BodyPartModelNames.bulkyArmLeftModel, new Vec3(Math.toRadians(0), Math.toRadians(-30), 0), GenericPoses.walkArmPriority + 4);
-        CrossLegs.addAngle(BodyPartModelNames.bulkyArmRightModel, new Vec3(Math.toRadians(0), Math.toRadians(30), 0), GenericPoses.walkArmPriority + 4);
-        CrossLegs.addAngle(BodyPartModelNames.bulkyArmLowerLeftModel, new Vec3(Math.toRadians(-30), 0, 0), GenericPoses.walkArmPriority + 4);
-        CrossLegs.addAngle(BodyPartModelNames.bulkyArmLowerRightModel, new Vec3(Math.toRadians(-30), 0, 0), GenericPoses.walkArmPriority + 4);
+        CrossLegs.addAngle(BodyPartModelNames.bulkyArmLeftModel, new Vec3(Math.toRadians(0), Math.toRadians(-30), 0), GenericPoses.jumpArmPriority + 4);
+        CrossLegs.addAngle(BodyPartModelNames.bulkyArmRightModel, new Vec3(Math.toRadians(0), Math.toRadians(30), 0), GenericPoses.jumpArmPriority + 4);
+        CrossLegs.addAngle(BodyPartModelNames.bulkyArmLowerLeftModel, new Vec3(Math.toRadians(-30), 0, 0), GenericPoses.jumpArmPriority + 4);
+        CrossLegs.addAngle(BodyPartModelNames.bulkyArmLowerRightModel, new Vec3(Math.toRadians(-30), 0, 0), GenericPoses.jumpArmPriority + 4);
 
-        CrossLegs.addAngle(GenericLimbNames.leftLeg, new Vec3(Math.toRadians(45), Math.toRadians(-180), Math.toRadians(-90)), GenericPoses.walkLegPriority + 4);
-        CrossLegs.addAngle(GenericLimbNames.rightLeg, new Vec3(Math.toRadians(45), Math.toRadians(180), Math.toRadians(90)), GenericPoses.walkLegPriority + 4);
+        CrossLegs.addAngle(GenericLimbNames.leftLeg, new Vec3(Math.toRadians(45), Math.toRadians(-180), Math.toRadians(-90)), GenericPoses.jumpLegPriority + 4);
+        CrossLegs.addAngle(GenericLimbNames.rightLeg, new Vec3(Math.toRadians(45), Math.toRadians(180), Math.toRadians(90)), GenericPoses.jumpLegPriority + 4);
 
-        CrossLegs.addAngle(GenericLimbNames.lowerLeftLeg, new Vec3(Math.toRadians(90), 0, 0), GenericPoses.walkLegPriority + 4);
-        CrossLegs.addAngle(GenericLimbNames.lowerRightLeg, new Vec3(Math.toRadians(90), 0, 0), GenericPoses.walkLegPriority + 4);
+        CrossLegs.addAngle(GenericLimbNames.lowerLeftLeg, new Vec3(Math.toRadians(90), 0, 0), GenericPoses.jumpLegPriority + 4);
+        CrossLegs.addAngle(GenericLimbNames.lowerRightLeg, new Vec3(Math.toRadians(90), 0, 0), GenericPoses.jumpLegPriority + 4);
 
-        CrossLegs.addAngle(BodyPartModelNames.jetLegLeftModel, new Vec3(Math.toRadians(45), Math.toRadians(-180), Math.toRadians(-90)), GenericPoses.walkLegPriority + 4);
-        CrossLegs.addAngle(BodyPartModelNames.jetLegRightModel, new Vec3(Math.toRadians(45), Math.toRadians(180), Math.toRadians(90)), GenericPoses.walkLegPriority + 4);
+        CrossLegs.addAngle(BodyPartModelNames.jetLegLeftModel, new Vec3(Math.toRadians(45), Math.toRadians(-180), Math.toRadians(-90)), GenericPoses.jumpLegPriority + 4);
+        CrossLegs.addAngle(BodyPartModelNames.jetLegRightModel, new Vec3(Math.toRadians(45), Math.toRadians(180), Math.toRadians(90)), GenericPoses.jumpLegPriority + 4);
 
-        CrossLegs.addAngle(BodyPartModelNames.longLegLeftModel, new Vec3(Math.toRadians(45), Math.toRadians(-180), Math.toRadians(-90)), GenericPoses.walkLegPriority + 4);
-        CrossLegs.addAngle(BodyPartModelNames.longLegRightModel, new Vec3(Math.toRadians(45), Math.toRadians(180), Math.toRadians(90)), GenericPoses.walkLegPriority + 4);
+        CrossLegs.addAngle(BodyPartModelNames.longLegLeftModel, new Vec3(Math.toRadians(45), Math.toRadians(-180), Math.toRadians(-90)), GenericPoses.jumpLegPriority + 4);
+        CrossLegs.addAngle(BodyPartModelNames.longLegRightModel, new Vec3(Math.toRadians(45), Math.toRadians(180), Math.toRadians(90)), GenericPoses.jumpLegPriority + 4);
 
-        CrossLegs.addAngle(BodyPartModelNames.jetLegLeftLowerModel, new Vec3(Math.toRadians(90), 0, 0), GenericPoses.walkLegPriority + 4);
-        CrossLegs.addAngle(BodyPartModelNames.jetLegRightLowerModel, new Vec3(Math.toRadians(90), 0, 0), GenericPoses.walkLegPriority + 4);
+        CrossLegs.addAngle(BodyPartModelNames.jetLegLeftLowerModel, new Vec3(Math.toRadians(90), 0, 0), GenericPoses.jumpLegPriority + 4);
+        CrossLegs.addAngle(BodyPartModelNames.jetLegRightLowerModel, new Vec3(Math.toRadians(90), 0, 0), GenericPoses.jumpLegPriority + 4);
 
-        CrossLegs.addAngle(BodyPartModelNames.largeLegLeftLowerModel, new Vec3(Math.toRadians(90), 0, 0), GenericPoses.walkLegPriority + 4);
-        CrossLegs.addAngle(BodyPartModelNames.largeLegRightLowerModel, new Vec3(Math.toRadians(90), 0, 0), GenericPoses.walkLegPriority + 4);
+        CrossLegs.addAngle(BodyPartModelNames.largeLegLeftLowerModel, new Vec3(Math.toRadians(90), 0, 0), GenericPoses.jumpLegPriority + 4);
+        CrossLegs.addAngle(BodyPartModelNames.largeLegRightLowerModel, new Vec3(Math.toRadians(90), 0, 0), GenericPoses.jumpLegPriority + 4);
 
-        CrossLegs.addAngle(BodyPartModelNames.footLeftModel, new Vec3(Math.toRadians(-90), 0, 0), GenericPoses.walkLegPriority + 4, 20f, -1);
-        CrossLegs.addAngle(BodyPartModelNames.footRightModel, new Vec3(Math.toRadians(-90), 0, 0), GenericPoses.walkLegPriority + 4, 20f, -1);
+        CrossLegs.addAngle(BodyPartModelNames.footLeftModel, new Vec3(Math.toRadians(-90), 0, 0), GenericPoses.jumpLegPriority + 4, 20f, -1);
+        CrossLegs.addAngle(BodyPartModelNames.footRightModel, new Vec3(Math.toRadians(-90), 0, 0), GenericPoses.jumpLegPriority + 4, 20f, -1);
 
-        CrossLegs.addAngle(BodyPartModelNames.reverseJointLeftLegModel, new Vec3(Math.toRadians(45), Math.toRadians(-180), Math.toRadians(-90)), GenericPoses.walkLegPriority + 4);
-        CrossLegs.addAngle(BodyPartModelNames.reverseJointRightLegModel, new Vec3(Math.toRadians(45), Math.toRadians(180), Math.toRadians(90)), GenericPoses.walkLegPriority + 4);
+        CrossLegs.addAngle(BodyPartModelNames.reverseJointLeftLegModel, new Vec3(Math.toRadians(45), Math.toRadians(-180), Math.toRadians(-90)), GenericPoses.jumpLegPriority + 4);
+        CrossLegs.addAngle(BodyPartModelNames.reverseJointRightLegModel, new Vec3(Math.toRadians(45), Math.toRadians(180), Math.toRadians(90)), GenericPoses.jumpLegPriority + 4);
 
-        CrossLegs.addAngle(BodyPartModelNames.reverseJointLeftLegLowerModel, new Vec3(Math.toRadians(-60), 0, 0), GenericPoses.walkLegPriority + 4);
-        CrossLegs.addAngle(BodyPartModelNames.reverseJointRightLegLowerModel, new Vec3(Math.toRadians(-60), 0, 0), GenericPoses.walkLegPriority + 4);
+        CrossLegs.addAngle(BodyPartModelNames.reverseJointLeftLegLowerModel, new Vec3(Math.toRadians(-60), 0, 0), GenericPoses.jumpLegPriority + 4);
+        CrossLegs.addAngle(BodyPartModelNames.reverseJointRightLegLowerModel, new Vec3(Math.toRadians(-60), 0, 0), GenericPoses.jumpLegPriority + 4);
 
-        CrossLegs.addAngle(BodyPartModelNames.singleLegModel, new Vec3(Math.toRadians(-90), 0, 0), GenericPoses.walkLegPriority + 4);
-        CrossLegs.addAngle(BodyPartModelNames.singleLegLowerModel, new Vec3(Math.toRadians(0), 0, 0), GenericPoses.walkLegPriority + 4);
+        CrossLegs.addAngle(BodyPartModelNames.singleLegModel, new Vec3(Math.toRadians(-90), 0, 0), GenericPoses.jumpLegPriority + 4);
+        CrossLegs.addAngle(BodyPartModelNames.singleLegLowerModel, new Vec3(Math.toRadians(0), 0, 0), GenericPoses.jumpLegPriority + 4);
 
-        CrossLegs.addAngle(BodyPartModelNames.hexaLeftLegModel, new Vec3(Math.toRadians(-150), Math.toRadians(-160), 0), GenericPoses.walkLegPriority + 4);
-        CrossLegs.addAngle(BodyPartModelNames.hexaLowerLeftLegModel, new Vec3(Math.toRadians(150), 0, 0), GenericPoses.walkLegPriority + 4);
-        CrossLegs.addAngle(BodyPartModelNames.hexaLeftLegModelTwo, new Vec3(Math.toRadians(-150), Math.toRadians(-90), 0), GenericPoses.walkLegPriority + 4);
-        CrossLegs.addAngle(BodyPartModelNames.hexaLowerLeftLegModelTwo, new Vec3(Math.toRadians(150), 0, 0), GenericPoses.walkLegPriority + 4);
-        CrossLegs.addAngle(BodyPartModelNames.hexaLeftLegModelThree, new Vec3(Math.toRadians(-150), Math.toRadians(-30), 0), GenericPoses.walkLegPriority + 4);
-        CrossLegs.addAngle(BodyPartModelNames.hexaLowerLeftLegModelThree, new Vec3(Math.toRadians(150), 0, 0), GenericPoses.walkLegPriority + 4);
+        CrossLegs.addAngle(BodyPartModelNames.hexaLeftLegModel, new Vec3(Math.toRadians(-150), Math.toRadians(-160), 0), GenericPoses.jumpLegPriority + 4);
+        CrossLegs.addAngle(BodyPartModelNames.hexaLowerLeftLegModel, new Vec3(Math.toRadians(150), 0, 0), GenericPoses.jumpLegPriority + 4);
+        CrossLegs.addAngle(BodyPartModelNames.hexaLeftLegModelTwo, new Vec3(Math.toRadians(-150), Math.toRadians(-90), 0), GenericPoses.jumpLegPriority + 4);
+        CrossLegs.addAngle(BodyPartModelNames.hexaLowerLeftLegModelTwo, new Vec3(Math.toRadians(150), 0, 0), GenericPoses.jumpLegPriority + 4);
+        CrossLegs.addAngle(BodyPartModelNames.hexaLeftLegModelThree, new Vec3(Math.toRadians(-150), Math.toRadians(-30), 0), GenericPoses.jumpLegPriority + 4);
+        CrossLegs.addAngle(BodyPartModelNames.hexaLowerLeftLegModelThree, new Vec3(Math.toRadians(150), 0, 0), GenericPoses.jumpLegPriority + 4);
 
-        CrossLegs.addAngle(BodyPartModelNames.hexaRightLegModel, new Vec3(Math.toRadians(-150), Math.toRadians(160), 0), GenericPoses.walkLegPriority + 4);
-        CrossLegs.addAngle(BodyPartModelNames.hexaLowerRightLegModel, new Vec3(Math.toRadians(150), 0, 0), GenericPoses.walkLegPriority + 4);
-        CrossLegs.addAngle(BodyPartModelNames.hexaRightLegModelTwo, new Vec3(Math.toRadians(-150), Math.toRadians(90), 0), GenericPoses.walkLegPriority + 4);
-        CrossLegs.addAngle(BodyPartModelNames.hexaLowerRightLegModelTwo, new Vec3(Math.toRadians(150), 0, 0), GenericPoses.walkLegPriority + 4);
-        CrossLegs.addAngle(BodyPartModelNames.hexaRightLegModelThree, new Vec3(Math.toRadians(-150), Math.toRadians(30), 0), GenericPoses.walkLegPriority + 4);
-        CrossLegs.addAngle(BodyPartModelNames.hexaLowerRightLegModelThree, new Vec3(Math.toRadians(150), 0, 0), GenericPoses.walkLegPriority + 4);
+        CrossLegs.addAngle(BodyPartModelNames.hexaRightLegModel, new Vec3(Math.toRadians(-150), Math.toRadians(160), 0), GenericPoses.jumpLegPriority + 4);
+        CrossLegs.addAngle(BodyPartModelNames.hexaLowerRightLegModel, new Vec3(Math.toRadians(150), 0, 0), GenericPoses.jumpLegPriority + 4);
+        CrossLegs.addAngle(BodyPartModelNames.hexaRightLegModelTwo, new Vec3(Math.toRadians(-150), Math.toRadians(90), 0), GenericPoses.jumpLegPriority + 4);
+        CrossLegs.addAngle(BodyPartModelNames.hexaLowerRightLegModelTwo, new Vec3(Math.toRadians(150), 0, 0), GenericPoses.jumpLegPriority + 4);
+        CrossLegs.addAngle(BodyPartModelNames.hexaRightLegModelThree, new Vec3(Math.toRadians(-150), Math.toRadians(30), 0), GenericPoses.jumpLegPriority + 4);
+        CrossLegs.addAngle(BodyPartModelNames.hexaLowerRightLegModelThree, new Vec3(Math.toRadians(150), 0, 0), GenericPoses.jumpLegPriority + 4);
     }
 }

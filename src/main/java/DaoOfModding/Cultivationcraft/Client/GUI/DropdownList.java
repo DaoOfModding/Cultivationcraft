@@ -3,14 +3,12 @@ package DaoOfModding.Cultivationcraft.Client.GUI;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.resources.ResourceLocation;
 
 import java.awt.*;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 public class DropdownList
 {
@@ -35,7 +33,7 @@ public class DropdownList
     // Map String, String = Name, Value
     // Name is what the entry displays
     // Value is the data stored in the entry
-    protected HashMap<String, Object> items = new HashMap<String, Object>();
+    protected LinkedHashMap<String, Object> items = new LinkedHashMap<String, Object>();
 
     protected String selected = null;
 

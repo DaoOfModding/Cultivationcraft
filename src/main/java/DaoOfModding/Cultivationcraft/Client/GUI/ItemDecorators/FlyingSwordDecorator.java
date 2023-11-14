@@ -41,6 +41,8 @@ public class FlyingSwordDecorator implements IItemDecorator
         bufferbuilder.vertex(xOffset, yOffset, 300 + blitOffset).uv(0, 0).endVertex();
         BufferUploader.drawWithShader(bufferbuilder.end());
 
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+
         return true;
     }
 }

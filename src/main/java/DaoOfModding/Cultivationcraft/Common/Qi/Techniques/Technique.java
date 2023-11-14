@@ -150,6 +150,7 @@ public class Technique
             statString += "\n" + Component.translatable(stat.getPath()).getString() + ": ";
 
             double value = getTechniqueStat(stat, player);
+            value = (int)(value * 1000) / 1000.0;
 
             if (value % 1.0 == 0)
                 statString += (int)value;

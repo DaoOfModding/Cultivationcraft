@@ -190,7 +190,7 @@ public class CultivationType
         int i = 0;
 
         for (String tech : statLevels.keySet())
-            if (passive.getClass().toString().compareTo(tech) != 0 && getTechLevelProgress(tech) >= techLevel)
+            if (passive.getClass().toString().compareTo(tech) != 0 && getTechLevelProgress(tech) >= getMaxTechLevel())
                 i++;
 
         return i;
