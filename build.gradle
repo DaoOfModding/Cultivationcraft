@@ -4,7 +4,7 @@ plugins {
     id 'net.minecraftforge.gradle' version '5.1.+'
 }
 
-version = '0.3.0(a1)'
+version = '0.3.0(a2)'
 group = 'daoofmodding.cultivationcraft'
 archivesBaseName = 'cultivationcraft'
 
