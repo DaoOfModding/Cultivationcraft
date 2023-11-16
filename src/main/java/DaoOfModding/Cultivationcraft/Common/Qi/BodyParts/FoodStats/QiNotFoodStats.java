@@ -73,7 +73,10 @@ public class QiNotFoodStats extends QiFoodStats
 
         float absorb = cultivation.absorbFromQiSource((int)toAbsorb, player);
 
-        setFoodLevel(getTrueFoodLevel() + absorb);
+        // Passive absorbtion
+        float passive = (float)cultivation.getCultivationStat(player, DefaultCultivationStatIDs.qiPassiveAbsorbSpeed);
+
+        setFoodLevel(getTrueFoodLevel() + absorb + passive);
 
         if (getTrueFoodLevel() > getMaxFood())
             setFoodLevel(getMaxFood());

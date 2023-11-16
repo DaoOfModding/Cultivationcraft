@@ -223,9 +223,6 @@ public class CultivationType
         int remaining = amount;
         float toAbsorb = 0;
 
-        // TODO: Stat for this
-        toAbsorb += QiSource.getDefaultQi() / 100f;
-
         // Draw Qi from each Qi source available
         for (QiSource source : sources)
         {
@@ -239,6 +236,25 @@ public class CultivationType
                     toAbsorb += absorbed;
                 }
         }
+
+        if (toAbsorb > amount)
+            return amount;
+
+        if (toAbsorb < 0)
+            return 0;
+
+        return toAbsorb;
+    }
+
+    public float absorbFromQiSource(int amount, Player player, QiSource source)
+    {
+        float toAbsorb = 0;
+
+        toAbsorb = 0;
+
+        // Only absorb from QiSources of the correct element
+        if (canCultivate(source.getElement()))
+            toAbsorb = source.absorbQi(amount, player);
 
         if (toAbsorb > amount)
             return amount;

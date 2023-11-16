@@ -126,7 +126,7 @@ public class CultivationScreen extends GenericTabScreen
 
         breakthrough.render(this, font, PoseStack, mouseX, mouseY);
 
-        cultivation.getScreen().render(PoseStack, partialTicks, edgeSpacingX + 159, edgeSpacingY + 32, this, cultivation);
+        cultivation.getScreen().render(PoseStack, partialTicks, edgeSpacingX + 159, edgeSpacingY + 32, this, cultivation, font);
 
         stats.setPos(edgeSpacingX + statsXPos, edgeSpacingY + statsYPos);
         stats.render(PoseStack, mouseX, mouseY, this);

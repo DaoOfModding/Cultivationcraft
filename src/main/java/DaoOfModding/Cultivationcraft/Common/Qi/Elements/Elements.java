@@ -26,6 +26,8 @@ public class Elements
     public static final ResourceLocation iceElement = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.elements.ice");
     public static final ResourceLocation lightningElement = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.elements.lightning");
 
+    public static final ResourceLocation anyElement = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.elements.any");
+
     protected static ArrayList<ResourceLocation> defaultElements = new ArrayList<>();
     protected static HashMap<ResourceKey<Level>, ArrayList<ResourceLocation>> dimensionElements = new HashMap<>();
 
@@ -148,6 +150,9 @@ public class Elements
     // Returns the element of the supplied id
     public static Element getElement(ResourceLocation element)
     {
+        if (element.compareTo(anyElement) == 0)
+            return Elements.get(noElement);
+
         return Elements.get(element);
     }
 }

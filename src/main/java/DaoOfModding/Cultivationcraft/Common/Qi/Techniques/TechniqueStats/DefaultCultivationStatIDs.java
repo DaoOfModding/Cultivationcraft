@@ -8,4 +8,5 @@ public class DefaultCultivationStatIDs
     public static final ResourceLocation maxQi = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.cstat.maxqi");
     public static final ResourceLocation qiAbsorbRange = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.cstat.absorbrange");
     public static final ResourceLocation qiAbsorbSpeed = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.cstat.absorbspeed");
+    public static final ResourceLocation qiPassiveAbsorbSpeed = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.cstat.passiveabsorb");
 }

@@ -89,12 +89,13 @@ public class MeditateTechnique extends MovementOverrideTechnique
             if (event.player.getFoodData() instanceof QiFoodStats)
                 remaining = ((QiFoodStats)event.player.getFoodData()).meditation(remaining, event.player);
 
-            // Passively cultivate
-            cultivation.progressCultivation(event.player, cultivation.absorbFromQiSource(remaining, event.player), Elements.noElement);
-
             // Loop through every source and try to cultivate from it
             for (QiSource source : sources)
                 remaining -= cultivation.progressCultivation(event.player, remaining, source.getElement());
+
+            // Passively cultivate
+            if (event.player.getFoodData().getFoodLevel() == ((QiFoodStats)event.player.getFoodData()).getMaxFood())
+                cultivation.progressCultivation(event.player, (float) cultivation.getCultivationStat(event.player, DefaultCultivationStatIDs.qiPassiveAbsorbSpeed), Elements.anyElement);
 
             PacketHandler.sendCultivatorStatsToClient(event.player);
         }
