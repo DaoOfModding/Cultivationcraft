@@ -3,8 +3,7 @@ package DaoOfModding.Cultivationcraft.Common.Qi.Cultivation;
 import DaoOfModding.Cultivationcraft.Client.GUI.Screens.CultivationTypeScreens.QiCondenserScreen;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStats;
 import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
-import DaoOfModding.Cultivationcraft.Common.Qi.ExternalCultivationHandler;
-import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.PassiveTechniques.CultivationPassives.FoundationPassive;
+import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.PassiveTechniques.CultivationPassives.QiCondenserPassive;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
@@ -24,7 +23,7 @@ public class QiCondenserCultivation extends CultivationType
     public QiCondenserCultivation(int cultivationStage)
     {
         super(cultivationStage);
-        passive = new FoundationPassive();
+        passive = new QiCondenserPassive();
         maxedTechsToBreakthrough = 3;
         maxStage = 8;
         screen = new QiCondenserScreen();

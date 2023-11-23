@@ -20,5 +20,6 @@ public class BasePassive  extends PassiveTechnique
         addTechniqueStat(DefaultCultivationStatIDs.qiAbsorbRange, 0);
         addTechniqueStat(DefaultCultivationStatIDs.qiAbsorbSpeed, 1);
         addTechniqueStat(DefaultCultivationStatIDs.qiPassiveAbsorbSpeed, 0.1);
+        addTechniqueStat(DefaultCultivationStatIDs.qiPassiveSpeed, 0);
     }
 }

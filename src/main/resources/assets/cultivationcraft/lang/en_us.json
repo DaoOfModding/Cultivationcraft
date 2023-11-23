@@ -78,6 +78,7 @@
   "cultivationcraft.cstat.absorbrange": "Qi Absorb Range",
   "cultivationcraft.cstat.absorbspeed": "Qi Absorb Speed",
   "cultivationcraft.cstat.passiveabsorb": "Ambient Qi Absorb Speed",
+  "cultivationcraft.cstat.passiveqi": "Qi Regen",
 
   "cultivationcraft.tstat.qicost": "Qi Cost",
   "cultivationcraft.tstat.staminacost": "Stamina Cost",

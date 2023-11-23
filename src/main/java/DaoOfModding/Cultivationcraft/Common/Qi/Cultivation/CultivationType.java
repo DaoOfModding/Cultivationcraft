@@ -3,6 +3,8 @@ package DaoOfModding.Cultivationcraft.Common.Qi.Cultivation;
 import DaoOfModding.Cultivationcraft.Client.GUI.Screens.CultivationTypeScreens.CultivationTypeScreen;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.ChunkQiSources.ChunkQiSources;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStats;
+import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.FoodStats.QiFoodStats;
+import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.FoodStats.QiNotFoodStats;
 import DaoOfModding.Cultivationcraft.Common.Qi.ExternalCultivationHandler;
 import DaoOfModding.Cultivationcraft.Common.Qi.QiSource;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.PassiveTechniques.PassiveTechnique;
@@ -128,6 +130,8 @@ public class CultivationType
     {
         if (player.level.isClientSide)
             return;
+
+        ((QiFoodStats)player.getFoodData()).setFoodLevel(((QiFoodStats)player.getFoodData()).getTrueFoodLevel() + (float)(getCultivationStat(player, DefaultCultivationStatIDs.qiPassiveSpeed) / 20.0));
 
         if (isTribulating() && player.isAlive())
             if (tribulation.tick(player))

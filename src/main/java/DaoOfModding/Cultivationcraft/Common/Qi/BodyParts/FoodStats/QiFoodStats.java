@@ -220,11 +220,17 @@ public class QiFoodStats extends FoodData
     public void setFoodLevel(int p_75114_1_)
     {
         foodLevel = p_75114_1_ + (foodLevel - (int)foodLevel);
+
+        if (foodLevel > maxFood)
+            foodLevel = maxFood;
     }
 
     public void setFoodLevel(float p_75114_1_)
     {
         foodLevel = p_75114_1_;
+
+        if (foodLevel > maxFood)
+            foodLevel = maxFood;
     }
 
     public boolean isEdible(ItemStack item)
