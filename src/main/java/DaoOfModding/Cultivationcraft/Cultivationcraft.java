@@ -2,6 +2,7 @@ package DaoOfModding.Cultivationcraft;
 
 import DaoOfModding.Cultivationcraft.Client.GUI.HelpItems;
 import DaoOfModding.Cultivationcraft.Client.Textures.initTextures;
+import DaoOfModding.Cultivationcraft.Common.Config;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartNames;
 import DaoOfModding.Cultivationcraft.Client.Animations.GenericQiPoses;
 import DaoOfModding.Cultivationcraft.Client.ClientItemControl;
@@ -18,7 +19,9 @@ import DaoOfModding.Cultivationcraft.Network.PacketHandler;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModList;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -42,6 +45,8 @@ public class Cultivationcraft {
 
         modEventBus.addListener(this::commonInit);
         modEventBus.addListener(this::clientInit);
+
+        ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, Config.Server.spec, "cultivationcraft.toml");
 
         Register.init(modEventBus);
         BodyPartNames.registerLungLocations();

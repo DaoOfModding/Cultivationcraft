@@ -1,5 +1,6 @@
 package DaoOfModding.Cultivationcraft.Common.Qi;
 
+import DaoOfModding.Cultivationcraft.Common.Config;
 import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Element;
 import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
@@ -118,7 +119,7 @@ public class QiSource
     {
         Element element = Elements.getElement(getElement());
 
-        if (!level.isClientSide && element.shouldDoBlockEffect())
+        if (!level.isClientSide && element.shouldDoBlockEffect() && Config.Server.qiSourceElementalEffectsOn())
             element.effectBlock(level, getRandomPos());
 
 
