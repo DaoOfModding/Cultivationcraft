@@ -83,7 +83,7 @@ public class MeditateTechnique extends MovementOverrideTechnique
             List<QiSource> sources = ChunkQiSources.getQiSourcesInRange(event.player.level, event.player.position(), (int)cultivation.getCultivationStat(event.player, DefaultCultivationStatIDs.qiAbsorbRange));
 
             // absorb Qi through blood first
-            int remaining = (int)cultivation.getCultivationStat(event.player, DefaultCultivationStatIDs.qiAbsorbSpeed);
+            int remaining = (int)(cultivation.getCultivationStat(event.player, DefaultCultivationStatIDs.qiAbsorbSpeed) / 20.0);
             remaining = PlayerHealthManager.getBlood(event.player).meditation(remaining, sources, event.player);
 
             if (event.player.getFoodData() instanceof QiFoodStats)
