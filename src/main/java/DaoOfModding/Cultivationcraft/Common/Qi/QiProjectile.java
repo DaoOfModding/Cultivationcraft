@@ -63,6 +63,12 @@ public class QiProjectile extends AbstractHurtingProjectile
         if (this.ownedBy(hit.getEntity()))
             return;
 
+        if (getOwner() == null)
+        {
+            this.discard();
+            return;
+        }
+
         CultivatorAttackLogic.attackEntity((Player)getOwner(), hit.getEntity(), -1, damage, null, element, "QiProjectile");
 
         if (tech != null)

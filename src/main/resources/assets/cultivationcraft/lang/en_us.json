@@ -86,6 +86,7 @@
   "cultivationcraft.tstat.range": "Range",
   "cultivationcraft.tstat.damage": "Damage Modifier",
   "cultivationcraft.tstat.speed": "Movement Speed",
+  "cultivationcraft.tstat.amount": "Number of Projectiles",
 
   "cultivationcraft.tstat.fsspeed": "Movement Speed",
   "cultivationcraft.tstat.fsmaxspeed": "Max Speed",

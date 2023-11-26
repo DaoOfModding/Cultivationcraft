@@ -21,7 +21,7 @@ public class QiSourceRenderer
     protected static float tick = 0;
     public static QiSource qisource = null;
     public static Entity target = null;
-    public static Element element = null;
+    public static Element element = Elements.getElement(Elements.noElement);
 
     public static void renderQiSources(float partialTick)
     {
