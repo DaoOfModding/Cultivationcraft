@@ -33,6 +33,10 @@ public class Damage
         float amount = resistDamage(event.getAmount(), source.damageElement, (Player)event.getEntity());
         amount = doTechniqueResistances(source, amount, (Player)event.getEntity());
 
+        // Double the invincibility time when hit by lightning so lighting bolts don't double hit
+        if (source.getElement().compareTo(Elements.lightningElement) == 0)
+            event.getEntity().hurtTime = event.getEntity().hurtDuration * 2;
+
         return amount;
     }
 

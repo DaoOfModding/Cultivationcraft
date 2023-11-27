@@ -220,11 +220,11 @@ public class CultivationType
         statLevels = new HashMap<>();
     }
 
-    public float absorbFromQiSource(int amount, Player player)
+    public double absorbFromQiSource(double amount, Player player)
     {
         List<QiSource> sources = ChunkQiSources.getQiSourcesInRange(player.level, player.position(), (int)getCultivationStat(player, DefaultCultivationStatIDs.qiAbsorbRange));
 
-        int remaining = amount;
+        double remaining = amount;
         float toAbsorb = 0;
 
         // Draw Qi from each Qi source available
@@ -234,7 +234,7 @@ public class CultivationType
             if (canCultivate(source.getElement()))
                 if (remaining > 0)
                 {
-                    int absorbed = source.absorbQi(remaining, player);
+                    double absorbed = source.absorbQi(remaining, player);
                     remaining -= absorbed;
 
                     toAbsorb += absorbed;
@@ -250,9 +250,9 @@ public class CultivationType
         return toAbsorb;
     }
 
-    public float absorbFromQiSource(int amount, Player player, QiSource source)
+    public double absorbFromQiSource(int amount, Player player, QiSource source)
     {
-        float toAbsorb = 0;
+        double toAbsorb = 0;
 
         toAbsorb = 0;
 

@@ -8,6 +8,8 @@ public class TechniqueStatModification
 {
     public final ResourceLocation statModification;
     protected HashMap<ResourceLocation, Double> statsPerLevel = new HashMap<ResourceLocation, Double>();
+    protected HashMap<ResourceLocation, Double> minStat = new HashMap<ResourceLocation, Double>();
+    protected HashMap<ResourceLocation, Double> maxStat = new HashMap<ResourceLocation, Double>();
 
     public TechniqueStatModification(ResourceLocation stat)
     {
@@ -19,6 +21,16 @@ public class TechniqueStatModification
         statsPerLevel.put(stat, change);
     }
 
+    public void addMinStatChange(ResourceLocation stat, double change)
+    {
+        minStat.put(stat, change);
+    }
+
+    public void addMaxStatChange(ResourceLocation stat, double change)
+    {
+        maxStat.put(stat, change);
+    }
+
     public HashMap<ResourceLocation, Double> getStatChanges()
     {
         return statsPerLevel;
@@ -27,7 +39,17 @@ public class TechniqueStatModification
     public double getStatChange(ResourceLocation stat)
     {
         if (statsPerLevel.containsKey(stat))
-            return statsPerLevel.get(stat);
+        {
+            double statValue = statsPerLevel.get(stat);
+
+            if (minStat.containsKey(stat) && minStat.get(stat) > statValue)
+                return minStat.get(stat);
+
+            if (maxStat.containsKey(stat) && maxStat.get(stat) < statValue)
+                return maxStat.get(stat);
+
+            return statValue;
+        }
 
         return 0;
     }

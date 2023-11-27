@@ -83,7 +83,8 @@ public class MeditateTechnique extends MovementOverrideTechnique
             List<QiSource> sources = ChunkQiSources.getQiSourcesInRange(event.player.level, event.player.position(), (int)cultivation.getCultivationStat(event.player, DefaultCultivationStatIDs.qiAbsorbRange));
 
             // absorb Qi through blood first
-            int remaining = (int)(cultivation.getCultivationStat(event.player, DefaultCultivationStatIDs.qiAbsorbSpeed) / 20.0);
+            double remaining = cultivation.getCultivationStat(event.player, DefaultCultivationStatIDs.qiAbsorbSpeed) / 20.0;
+
             remaining = PlayerHealthManager.getBlood(event.player).meditation(remaining, sources, event.player);
 
             if (event.player.getFoodData() instanceof QiFoodStats)
@@ -91,7 +92,7 @@ public class MeditateTechnique extends MovementOverrideTechnique
 
             // Loop through every source and try to cultivate from it
             for (QiSource source : sources)
-                remaining -= cultivation.progressCultivation(event.player, remaining, source.getElement());
+                remaining -= cultivation.progressCultivation(event.player, (float)remaining, source.getElement());
 
             // Passively cultivate
             if (event.player.getFoodData().getFoodLevel() == ((QiFoodStats)event.player.getFoodData()).getMaxFood())
@@ -108,7 +109,7 @@ public class MeditateTechnique extends MovementOverrideTechnique
                 QuestHandler.progressQuest(event.player, Quest.QI_SOURCE_MEDITATION, 1.0/20.0);
 
             // absorb Qi through blood first
-            int remaining = (int)BodyPartStatControl.getPlayerStatControl(event.player).getStats().getStat(StatIDs.qiAbsorb);
+            double remaining = (int)BodyPartStatControl.getPlayerStatControl(event.player).getStats().getStat(StatIDs.qiAbsorb);
             remaining = PlayerHealthManager.getBlood(event.player).meditation(remaining, sources, event.player);
 
             IBodyModifications modifications = BodyModifications.getBodyModifications(event.player);
@@ -132,7 +133,7 @@ public class MeditateTechnique extends MovementOverrideTechnique
                         // Do not absorb more qi than the players max absorb speed
                         if (remaining > 0)
                         {
-                            int absorbed = source.absorbQi(remaining, event.player);
+                            double absorbed = source.absorbQi(remaining, event.player);
                             remaining -= absorbed;
                             toAdd += absorbed;
                         }

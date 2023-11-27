@@ -50,7 +50,7 @@ public class QiSourceRenderer
     // Return a random player absorbing from this source, weighted by the amount they are absorbing
     protected static Player getRandomAbsorbingPlayer(QiSource source)
     {
-        HashMap<UUID, Integer> players = source.getAbsorbingPlayers();
+        HashMap<UUID, Double> players = source.getAbsorbingPlayers();
 
         // Return null if no players are absorbing from this source
         if (players.size() == 0)
@@ -62,7 +62,7 @@ public class QiSourceRenderer
 
         int absorbingAmount = 0;
 
-        for (int absorbing : players.values())
+        for (Double absorbing : players.values())
             absorbingAmount += absorbing;
 
         // Subtract a random amount from the total amount of Qi being absorbed
@@ -70,7 +70,7 @@ public class QiSourceRenderer
 
         // Go through every absorbing player, subtracting the amount they are absorbing from the randomly chosen number
         // Until it hits 0
-        for (Map.Entry<UUID, Integer> entry : players.entrySet())
+        for (Map.Entry<UUID, Double> entry : players.entrySet())
         {
             absorbingAmount -= entry.getValue();
 

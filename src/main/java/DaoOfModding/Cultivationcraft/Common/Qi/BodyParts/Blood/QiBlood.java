@@ -26,7 +26,7 @@ public class QiBlood extends Blood
     }
 
     @Override
-    public int meditation(int QiRemaining, List<QiSource> sources, Player player)
+    public double meditation(double QiRemaining, List<QiSource> sources, Player player)
     {
         float toHeal = player.getMaxHealth() - player.getHealth();
 
@@ -43,10 +43,10 @@ public class QiBlood extends Blood
                 // Do not absorb more qi than the players max absorb speed
                 if (QiRemaining > 0 && heal < toHeal)
                 {
-                    int absorbed = source.absorbQi(QiRemaining, player);
+                    Double absorbed = source.absorbQi(QiRemaining, player);
                     QiRemaining -= absorbed;
 
-                    heal += (float)absorbed / (QiSourceConfig.MaxStorage / 100000.0f);
+                    heal += absorbed / (QiSourceConfig.MaxStorage / 100000.0f);
                 }
         }
 

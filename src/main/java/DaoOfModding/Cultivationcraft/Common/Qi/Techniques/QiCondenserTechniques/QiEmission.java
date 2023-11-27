@@ -38,6 +38,8 @@ public class QiEmission extends Technique
         TechniqueStatModification amountModification = new TechniqueStatModification(amount);
 
         qiCostModification.addStatChange(DefaultTechniqueStatIDs.qiCost, -0.01);
+        qiCostModification.addMinStatChange(DefaultTechniqueStatIDs.qiCost, -9);
+
         qiDamageModification.addStatChange(DefaultTechniqueStatIDs.damage, 0.01);
         qiDamageModification.addStatChange(DefaultTechniqueStatIDs.qiCost, 0.02);
         qiSpeedModification.addStatChange(DefaultTechniqueStatIDs.movementSpeed, 0.01);

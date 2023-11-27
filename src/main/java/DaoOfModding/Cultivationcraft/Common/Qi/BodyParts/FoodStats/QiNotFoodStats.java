@@ -59,9 +59,9 @@ public class QiNotFoodStats extends QiFoodStats
     }
 
     @Override
-    public int meditation(int QiRemaining, Player player)
+    public double meditation(double QiRemaining, Player player)
     {
-        float toAbsorb = getMaxFood() - getTrueFoodLevel();
+        double toAbsorb = getMaxFood() - getTrueFoodLevel();
 
         if (toAbsorb <= 0)
             return QiRemaining;
@@ -71,12 +71,12 @@ public class QiNotFoodStats extends QiFoodStats
         if (QiRemaining < toAbsorb)
             toAbsorb = QiRemaining;
 
-        float absorb = cultivation.absorbFromQiSource((int)toAbsorb, player);
+        double absorb = cultivation.absorbFromQiSource(toAbsorb, player);
 
         // Passive absorbtion
-        float passive = (float)cultivation.getCultivationStat(player, DefaultCultivationStatIDs.qiPassiveAbsorbSpeed);
+        double passive = cultivation.getCultivationStat(player, DefaultCultivationStatIDs.qiPassiveAbsorbSpeed);
 
-        setFoodLevel(getTrueFoodLevel() + absorb + passive);
+        setFoodLevel((float)(getTrueFoodLevel() + absorb + passive));
 
         if (getTrueFoodLevel() > getMaxFood())
             setFoodLevel(getMaxFood());

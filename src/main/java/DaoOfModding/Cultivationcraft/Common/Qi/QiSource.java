@@ -36,8 +36,8 @@ public class QiSource
 
     public int spawnedTick = 0;
 
-    protected HashMap<UUID, Integer> currentAbsorbing = new HashMap();
-    protected HashMap<UUID, Integer> absorbing = new HashMap();
+    protected HashMap<UUID, Double> currentAbsorbing = new HashMap();
+    protected HashMap<UUID, Double> absorbing = new HashMap();
 
     public QiSource(BlockPos position, int size, ResourceLocation element, double qi, int regen)
     {
@@ -86,7 +86,7 @@ public class QiSource
         return (int)(qiMax * (QiSourceConfig.MaxStorage - QiSourceConfig.MinStorage)) + QiSourceConfig.MinStorage;
     }
 
-    public HashMap<UUID, Integer> getAbsorbingPlayers()
+    public HashMap<UUID, Double> getAbsorbingPlayers()
     {
         return currentAbsorbing;
     }
@@ -144,7 +144,7 @@ public class QiSource
     }
 
     // Try to absorb the specified amount of qi, returning the amount absorbed
-    public int absorbQi(int toAbsorb, Player player)
+    public double absorbQi(double toAbsorb, Player player)
     {
         if (toAbsorb > getQiCurrent())
             toAbsorb = getQiCurrent();
@@ -160,9 +160,9 @@ public class QiSource
         return toAbsorb;
     }
 
-    public void subtractQi(int toSubtract)
+    public void subtractQi(double toSubtract)
     {
-        qiCurrent -= (double)toSubtract / (double)getQiMax();
+        qiCurrent -= toSubtract / (double)getQiMax();
 
         if (qiCurrent < 0)
             qiCurrent = 0;
@@ -177,13 +177,13 @@ public class QiSource
         nbt.putString("element", Element.toString());
         nbt.putDouble("qimax", qiMax);
         nbt.putDouble("qicurrent", qiCurrent);
-        nbt.putInt("qiregen", qiRegen);
+        nbt.putDouble("qiregen", qiRegen);
 
         int i = 0;
-        for (Map.Entry<UUID, Integer> player : currentAbsorbing.entrySet())
+        for (Map.Entry<UUID, Double> player : currentAbsorbing.entrySet())
         {
             nbt.putUUID("player" + i, player.getKey());
-            nbt.putInt("amount" + i, player.getValue());
+            nbt.putDouble("amount" + i, player.getValue());
             i++;
         }
 
@@ -204,12 +204,12 @@ public class QiSource
         double qiCurrent = nbt.getDouble("qicurrent");
         int qiRegen = nbt.getInt("qiregen");
 
-        HashMap<UUID, Integer> absorbing = new HashMap();
+        HashMap<UUID, Double> absorbing = new HashMap();
 
         int i = 0;
         while (nbt.hasUUID("player" + i))
         {
-            absorbing.put(nbt.getUUID("player" + i), nbt.getInt("amount" + i));
+            absorbing.put(nbt.getUUID("player" + i), nbt.getDouble("amount" + i));
             i++;
         }
 

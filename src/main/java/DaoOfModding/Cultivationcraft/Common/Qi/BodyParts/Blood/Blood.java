@@ -108,7 +108,7 @@ public class Blood
 
     // Is called when meditating
     // Is supplied the amount of Qi the player can absorb during this turn, and returns any modifications to that amount
-    public int meditation(int QiRemaining, List<QiSource> sources, Player player)
+    public double meditation(double QiRemaining, List<QiSource> sources, Player player)
     {
         return QiRemaining;
     }
