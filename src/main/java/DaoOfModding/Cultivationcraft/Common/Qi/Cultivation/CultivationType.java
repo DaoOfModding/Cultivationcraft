@@ -314,6 +314,9 @@ public class CultivationType
 
     public Double getStatLevel(Class tech, ResourceLocation stat)
     {
+        if (tech.toString().compareTo(passive.getClass().toString()) == 0)
+            return getPassiveStatLevel(stat);
+
         Double level = 0.0;
 
         if (statLevels.containsKey(tech.toString()) && statLevels.get(tech.toString()).containsKey(stat))
@@ -321,6 +324,21 @@ public class CultivationType
 
         if (previousCultivation != null)
             level += previousCultivation.getStatLevel(tech, stat);
+
+        return level;
+    }
+
+    public Double getPassiveStatLevel(ResourceLocation stat)
+    {
+        Double level = 0.0;
+
+        String passiveString = getPassive().getClass().toString();
+
+        if (statLevels.containsKey(passiveString) && statLevels.get(passiveString).containsKey(stat))
+            level += statLevels.get(passiveString).get(stat);
+
+        if (previousCultivation != null)
+            level += previousCultivation.getPassiveStatLevel(stat);
 
         return level;
     }
@@ -405,6 +423,11 @@ public class CultivationType
         PacketHandler.sendCultivatorStatsToClient(player);
     }
 
+    public void setPreviousCultivation(CultivationType previous)
+    {
+        previousCultivation = previous;
+    }
+
     public CompoundTag writeNBT()
     {
         CompoundTag nbt = new CompoundTag();
@@ -440,12 +463,6 @@ public class CultivationType
 
         return nbt;
     }
-
-    public void setPreviousCultivation(CultivationType previous)
-    {
-        previousCultivation = previous;
-    }
-
 
     public void readNBT(CompoundTag nbt)
     {

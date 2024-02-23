@@ -39,6 +39,7 @@ public class ItemEnhanceTechnique extends AttackTechnique
         TechniqueStatModification damageModification = new TechniqueStatModification(DefaultTechniqueStatIDs.damage);
 
         qiCostModification.addStatChange(DefaultTechniqueStatIDs.qiCost, -0.01);
+        qiCostModification.addMaxStatChange(DefaultTechniqueStatIDs.qiCost, -9.9);
         damageModification.addStatChange(DefaultTechniqueStatIDs.qiCost, 0.05);
         damageModification.addStatChange(DefaultTechniqueStatIDs.damage, 0.01);
 

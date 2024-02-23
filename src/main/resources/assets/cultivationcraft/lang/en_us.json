@@ -453,7 +453,7 @@
   "cultivationcraft.gui.help.cultivationmenu.skills.activation": "Activating Skills",
   "cultivationcraft.gui.help.cultivationmenu.skills.activation.text": "Skills are generally activated by selecting them in the hotbar and right clicking.\n \nSome skills are toggled on and off by selecting them, whilst others are simply activated.\nMost skills drain Qi\\Stamina whilst active.",
   "cultivationcraft.gui.help.cultivationmenu.skills.level": "Leveling Skills",
-  "cultivationcraft.gui.help.cultivationmenu.skills.level.text": "Some skills will display a 'modify' button when selected. Pressing this button will bring up a screen showing the skills stats and allowing you to select which stat will increase with the skills level. Skills level through active use.",
+  "cultivationcraft.gui.help.cultivationmenu.skills.level.text": "Some skills will display a 'modify' button when selected. Pressing this button will bring up a screen showing the skill's stats and allowing you to select which stat will increase with the skills level. Skills level through active use.",
   "cultivationcraft.gui.help.cultivationmenu.skills.keyskills": "Important Skills",
   "cultivationcraft.gui.help.cultivationmenu.skills.keyskills.text": "Whilst there are numerous different skills a character can learn, there are a few key skills that all characters will acquire",
   "cultivationcraft.gui.help.cultivationmenu.skills.keyskills.meditate": "Meditate",
