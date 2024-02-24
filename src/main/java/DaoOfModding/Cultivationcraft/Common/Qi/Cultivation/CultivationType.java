@@ -378,6 +378,9 @@ public class CultivationType
 
     public int getTechLevelProgress(String tech)
     {
+        if (tech.compareTo(passive.getClass().toString()) == 0)
+            return getPassiveTechLevelProgress();
+
         int progress = 0;
 
         if (statLevels.containsKey(tech))
@@ -388,6 +391,24 @@ public class CultivationType
 
         if (previousCultivation != null)
             progress += previousCultivation.getTechLevelProgress(tech);
+
+        return progress;
+    }
+
+    public int getPassiveTechLevelProgress()
+    {
+        int progress = 0;
+
+        String tech = getPassive().getClass().toString();
+
+        if (statLevels.containsKey(tech))
+        {
+            for (double value : statLevels.get(tech).values())
+                progress += (int)value;
+        }
+
+        if (previousCultivation != null)
+            progress += previousCultivation.getPassiveTechLevelProgress();
 
         return progress;
     }
