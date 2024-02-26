@@ -19,11 +19,11 @@ public class QiCondenserPassive extends BasePassive
         maxQiModification.addStatChange(DefaultCultivationStatIDs.maxQi, 1);
         passiveModification.addStatChange(DefaultCultivationStatIDs.qiPassiveSpeed, 0.005);
         absorbModification.addStatChange(DefaultCultivationStatIDs.qiAbsorbSpeed, 0.05);
-        passiveAbsorbModification.addStatChange(DefaultCultivationStatIDs.qiPassiveSpeed, 0.001);
+        passiveAbsorbModification.addStatChange(DefaultCultivationStatIDs.qiPassiveAbsorbSpeed, 0.001);
 
         addTechniqueStat(DefaultCultivationStatIDs.maxQi, 0, maxQiModification);
         addTechniqueStat(DefaultCultivationStatIDs.qiPassiveSpeed, 0, passiveModification);
-        addTechniqueStat(DefaultCultivationStatIDs.qiAbsorbSpeed, 0, absorbModification);
-        addTechniqueStat(DefaultCultivationStatIDs.qiPassiveSpeed, 0, passiveAbsorbModification);
+        addTechniqueStat(DefaultCultivationStatIDs.qiAbsorbSpeed, 10, absorbModification);
+        addTechniqueStat(DefaultCultivationStatIDs.qiPassiveAbsorbSpeed, 0.1, passiveAbsorbModification);
     }
 }

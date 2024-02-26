@@ -33,18 +33,19 @@ public class QiBarrierTechnique extends Technique
 
         canLevel = true;
 
+        addMinTechniqueStat(DefaultTechniqueStatIDs.qiCost, 0.1);
+        addMaxTechniqueStat(statusResist, 1);
+
         TechniqueStatModification qiCostModification = new TechniqueStatModification(DefaultTechniqueStatIDs.qiCost);
         TechniqueStatModification qiToHealthModification = new TechniqueStatModification(qiToHealthRatio);
         TechniqueStatModification statusResistModification = new TechniqueStatModification(statusResist);
 
         qiCostModification.addStatChange(DefaultTechniqueStatIDs.qiCost, -0.0005);
-        qiCostModification.addMinStatChange(DefaultTechniqueStatIDs.qiCost, -0.9);
 
         qiToHealthModification.addStatChange(DefaultTechniqueStatIDs.qiCost, 0.001);
         qiToHealthModification.addStatChange(qiToHealthRatio, 0.0001);
 
-        statusResistModification.addStatChange(statusResist, 0.001);
-        statusResistModification.addMaxStatChange(statusResist, 1);
+        statusResistModification.addStatChange(statusResist, 0.0001);
         statusResistModification.addStatChange(qiToHealthRatio, -0.0001);
 
 

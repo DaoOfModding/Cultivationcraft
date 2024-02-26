@@ -39,6 +39,8 @@ public class FlyingSwordFormationTechnique extends AttackOverrideTechnique
 
         canLevel = true;
 
+        addMinTechniqueStat(DefaultTechniqueStatIDs.qiCost, 0.1);
+
         TechniqueStatModification qiCostModification = new TechniqueStatModification(DefaultTechniqueStatIDs.qiCost);
         TechniqueStatModification flyingdamageModification = new TechniqueStatModification(DefaultTechniqueStatIDs.damage);
         TechniqueStatModification flyingrangeModification = new TechniqueStatModification(DefaultTechniqueStatIDs.range);

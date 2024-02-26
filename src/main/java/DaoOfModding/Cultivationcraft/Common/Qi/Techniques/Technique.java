@@ -87,6 +87,8 @@ public class Technique
 
     protected HashMap<ResourceLocation, Double> defaultStats = new HashMap<ResourceLocation, Double>();
     protected HashMap<ResourceLocation, TechniqueStatModification> statChangesPerLevel = new HashMap<ResourceLocation, TechniqueStatModification>();
+    protected HashMap<ResourceLocation, Double> minStats = new HashMap<>();
+    protected HashMap<ResourceLocation, Double> maxStats = new HashMap<>();
 
     protected boolean canLevel = false;
 
@@ -106,6 +108,16 @@ public class Technique
 
         if (canLevel && changePerLevel != null)
             statChangesPerLevel.put(stat, changePerLevel);
+    }
+
+    protected void addMinTechniqueStat(ResourceLocation stat, double amount)
+    {
+        minStats.put(stat, amount);
+    }
+
+    protected void addMaxTechniqueStat(ResourceLocation stat, double amount)
+    {
+        maxStats.put(stat, amount);
     }
 
     protected void removeTechniqueStat(ResourceLocation stat)
@@ -186,6 +198,22 @@ public class Technique
                     defaultStat += modification.getValue().getStatChange(stat) * statLevel;
                 }
             }
+
+        if (minStats.containsKey(stat))
+        {
+            double min = minStats.get(stat);
+
+            if (min > defaultStat)
+                return min;
+        }
+
+        if (maxStats.containsKey(stat))
+        {
+            double max = maxStats.get(stat);
+
+            if (max < defaultStat)
+                return max;
+        }
 
         return defaultStat;
     }

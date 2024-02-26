@@ -34,6 +34,8 @@ public class FlightTechnique extends Technique
 
         canLevel = true;
 
+        addMinTechniqueStat(DefaultTechniqueStatIDs.qiCost, 0.5);
+
         TechniqueStatModification qiCostModification = new TechniqueStatModification(DefaultTechniqueStatIDs.qiCost);
         TechniqueStatModification movementModification = new TechniqueStatModification(DefaultTechniqueStatIDs.movementSpeed);
 

@@ -32,13 +32,14 @@ public class QiEmission extends Technique
 
         canLevel = true;
 
+        addMinTechniqueStat(DefaultTechniqueStatIDs.qiCost, 0.1);
+
         TechniqueStatModification qiCostModification = new TechniqueStatModification(DefaultTechniqueStatIDs.qiCost);
         TechniqueStatModification qiDamageModification = new TechniqueStatModification(DefaultTechniqueStatIDs.damage);
         TechniqueStatModification qiSpeedModification = new TechniqueStatModification(DefaultTechniqueStatIDs.movementSpeed);
         TechniqueStatModification amountModification = new TechniqueStatModification(amount);
 
         qiCostModification.addStatChange(DefaultTechniqueStatIDs.qiCost, -0.01);
-        qiCostModification.addMinStatChange(DefaultTechniqueStatIDs.qiCost, -9);
 
         qiDamageModification.addStatChange(DefaultTechniqueStatIDs.damage, 0.01);
         qiDamageModification.addStatChange(DefaultTechniqueStatIDs.qiCost, 0.02);

@@ -53,6 +53,9 @@ public class QiCondenserCultivation extends CultivationType
     @Override
     public float progressCultivation(Player player, float Qi, ResourceLocation element)
     {
+        if (Qi == 0)
+            return 0;
+
         float changedQi = super.progressCultivation(player, Qi, element);
 
         float usedQi = Qi - changedQi;
@@ -73,23 +76,42 @@ public class QiCondenserCultivation extends CultivationType
         elementProgression = new HashMap<>();
     }
 
+    // Returns the % of current cultivation that is of the selected element for this stage of cultivation
+    public float getElementFocusAmountRaw(ResourceLocation element)
+    {
+        float progress = getTechLevelProgressWithoutPrevious(passive.getClass().toString());
+        float amount = 1;
+
+        // Only try and calculate the % if any Qi has been cultivated so far
+        if (progress > 0)
+        {
+            amount = 0;
+
+            if (elementProgression.containsKey(element))
+                amount = elementProgression.get(element);
+
+            // If this is not the anyElement, add values from the any element to this one
+            if (element.compareTo(Elements.anyElement) != 0)
+                if (elementProgression.containsKey(Elements.anyElement))
+                    amount += elementProgression.get(Elements.anyElement);
+
+            if (amount != 0)
+                amount /= progress;
+        }
+
+        if (amount > 1)
+            amount = 1;
+
+        if (getPreviousCultivation() instanceof QiCondenserCultivation)
+            amount += ((QiCondenserCultivation)getPreviousCultivation()).getElementFocusAmountRaw(element);
+
+        return amount;
+    }
+
     // Returns the % of current cultivation that is of the selected element
     public float getElementFocusAmount(ResourceLocation element)
     {
-        float amount = 0;
-
-        if (elementProgression.containsKey(element))
-            amount = elementProgression.get(element);
-
-        // If this is not the anyElement, add values from the any element to this one
-        if (element.compareTo(Elements.anyElement) != 0)
-            if (elementProgression.containsKey(Elements.anyElement))
-                amount += elementProgression.get(Elements.anyElement);
-
-        amount /= getTechLevelProgressWithoutPrevious(passive.getClass().toString());
-
-        if (getPreviousCultivation() instanceof QiCondenserCultivation)
-            amount += ((QiCondenserCultivation)getPreviousCultivation()).getElementFocusAmount(element);
+        float amount = getElementFocusAmountRaw(element);
 
         amount /= stage;
 
