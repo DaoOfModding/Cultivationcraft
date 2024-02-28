@@ -57,7 +57,7 @@ public class Register
             EntityType.Builder.<QiProjectile>of(QiProjectile::new, MobCategory.MISC)
                     .sized(1f, 1f)
                     .clientTrackingRange(4)
-                    .updateInterval(3)
+                    .updateInterval(20)
                     .build("qiprojectile"));
 
     public static final RegistryObject<MenuType<FlyingSwordContainer>> ContainerTypeFlyingSword = CONTAINERS.register("flyingsword", () -> IForgeMenuType.create(FlyingSwordContainer::createContainerClientSide));

@@ -38,6 +38,15 @@ public class QiCondenserCultivation extends CultivationType
         techLevel = 200 + (100 * stage);
     }
 
+    // TEMP whilst no further cultivation
+    public boolean canBreakthrough(Player player)
+    {
+        if (stage == maxStage)
+            return false;
+
+        return super.canBreakthrough(player);
+    }
+
     @Override
     public void breakthrough(Player player)
     {

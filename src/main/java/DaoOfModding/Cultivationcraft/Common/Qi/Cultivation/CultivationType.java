@@ -128,10 +128,10 @@ public class CultivationType
 
     public void tick(Player player)
     {
+        ((QiFoodStats)player.getFoodData()).setFoodLevel(((QiFoodStats)player.getFoodData()).getTrueFoodLevel() + (float)(getCultivationStat(player, DefaultCultivationStatIDs.qiPassiveSpeed) / 20.0));
+
         if (player.level.isClientSide)
             return;
-
-        ((QiFoodStats)player.getFoodData()).setFoodLevel(((QiFoodStats)player.getFoodData()).getTrueFoodLevel() + (float)(getCultivationStat(player, DefaultCultivationStatIDs.qiPassiveSpeed) / 20.0));
 
         if (isTribulating() && player.isAlive())
             if (tribulation.tick(player))

@@ -13,6 +13,7 @@ public class DefaultTechniqueStatIDs
 
     public static final ResourceLocation range = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.tstat.range");
     public static final ResourceLocation damage = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.tstat.damage");
+    public static final ResourceLocation lifetime = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.tstat.lifetime");
 
     public static final ResourceLocation movementSpeed = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.tstat.speed");
 

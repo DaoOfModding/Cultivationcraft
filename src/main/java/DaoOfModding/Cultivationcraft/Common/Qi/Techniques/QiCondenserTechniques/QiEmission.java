@@ -37,6 +37,7 @@ public class QiEmission extends Technique
         TechniqueStatModification qiCostModification = new TechniqueStatModification(DefaultTechniqueStatIDs.qiCost);
         TechniqueStatModification qiDamageModification = new TechniqueStatModification(DefaultTechniqueStatIDs.damage);
         TechniqueStatModification qiSpeedModification = new TechniqueStatModification(DefaultTechniqueStatIDs.movementSpeed);
+        TechniqueStatModification lifetimeModification = new TechniqueStatModification(DefaultTechniqueStatIDs.lifetime);
         TechniqueStatModification amountModification = new TechniqueStatModification(amount);
 
         qiCostModification.addStatChange(DefaultTechniqueStatIDs.qiCost, -0.01);
@@ -47,10 +48,13 @@ public class QiEmission extends Technique
         qiSpeedModification.addStatChange(DefaultTechniqueStatIDs.qiCost, 0.01);
         amountModification.addStatChange(amount, 0.005);
         amountModification.addStatChange(DefaultTechniqueStatIDs.qiCost, 0.01);
+        lifetimeModification.addStatChange(DefaultTechniqueStatIDs.lifetime, 0.01);
+        lifetimeModification.addStatChange(DefaultTechniqueStatIDs.qiCost, 0.01);
 
         addTechniqueStat(DefaultTechniqueStatIDs.qiCost, 10, qiCostModification);
         addTechniqueStat(DefaultTechniqueStatIDs.damage, 5, qiDamageModification);
         addTechniqueStat(DefaultTechniqueStatIDs.movementSpeed, 0.25, qiSpeedModification);
+        addTechniqueStat(DefaultTechniqueStatIDs.lifetime, 1, lifetimeModification);
         addTechniqueStat(amount, 1, amountModification);
     }
 
@@ -72,7 +76,7 @@ public class QiEmission extends Technique
         {
             int number = (int)getTechniqueStat(amount, player);
 
-            if (number == 0)
+            if (number == 1)
                 spawnProjectile(player, new Vec3(0, 0, 0));
             else
                 spawnInCircle(player, number);
@@ -92,7 +96,7 @@ public class QiEmission extends Technique
             float x = (float)(distanceBetween * Math.cos(Math.toRadians(angleInterval * i)));
             float y = (float)(distanceBetween * Math.sin(Math.toRadians(angleInterval * i)));
 
-            spawnProjectile(player, new Vec3(x, y, 0).yRot(player.getYRot()));
+            spawnProjectile(player, new Vec3(x, y, 0).yRot((float)Math.toRadians(180 - player.getYHeadRot())));
         }
     }
 
@@ -104,7 +108,7 @@ public class QiEmission extends Technique
             return;
 
         Vec3 pos = PlayerUtils.getPosition(player).add(positionModifier);
-        QiProjectile projectile = new QiProjectile(player.level, player, pos.x, pos.y, pos.z, Element, (int)getTechniqueStat(DefaultTechniqueStatIDs.damage, player), (float)getTechniqueStat(DefaultTechniqueStatIDs.movementSpeed, player), this);
+        QiProjectile projectile = new QiProjectile(player.level, player, pos.x, pos.y, pos.z, Element, (int)getTechniqueStat(DefaultTechniqueStatIDs.damage, player), (float)getTechniqueStat(DefaultTechniqueStatIDs.movementSpeed, player), this, (float)getTechniqueStat(DefaultTechniqueStatIDs.lifetime, player));
         projectile.setDirection(player.getLookAngle());
         player.level.addFreshEntity(projectile);
     }

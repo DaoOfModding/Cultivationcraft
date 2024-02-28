@@ -39,7 +39,7 @@ public class FlightTechnique extends Technique
         TechniqueStatModification qiCostModification = new TechniqueStatModification(DefaultTechniqueStatIDs.qiCost);
         TechniqueStatModification movementModification = new TechniqueStatModification(DefaultTechniqueStatIDs.movementSpeed);
 
-        qiCostModification.addStatChange(DefaultTechniqueStatIDs.qiCost, -0.01);
+        qiCostModification.addStatChange(DefaultTechniqueStatIDs.qiCost, -0.001);
         movementModification.addStatChange(DefaultTechniqueStatIDs.qiCost, 0.05);
         movementModification.addStatChange(DefaultTechniqueStatIDs.movementSpeed, 0.00005);
 

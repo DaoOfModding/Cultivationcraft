@@ -88,6 +88,7 @@
   "cultivationcraft.tstat.speed": "Movement Speed",
   "cultivationcraft.tstat.amount": "Number of Projectiles",
   "cultivationcraft.tstat.statusresist": "Elemental Status Effect Resistance",
+  "cultivationcraft.tstat.lifetime": "Lifetime",
 
   "cultivationcraft.tstat.fsspeed": "Movement Speed",
   "cultivationcraft.tstat.fsmaxspeed": "Max Speed",

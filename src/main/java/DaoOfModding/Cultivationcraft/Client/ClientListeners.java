@@ -145,6 +145,9 @@ public class ClientListeners
             // Disabled water touching in lava here to stop constant splashing sounds
             if (event.player.isInLava())
                 Reflection.setWasTouchingWater(event.player, false);
+
+            if (CultivatorStats.getCultivatorStats(event.player).getCultivationType() == CultivationTypes.QI_CONDENSER)
+                CultivatorStats.getCultivatorStats(event.player).getCultivation().tick(event.player);
         }
     }
 
