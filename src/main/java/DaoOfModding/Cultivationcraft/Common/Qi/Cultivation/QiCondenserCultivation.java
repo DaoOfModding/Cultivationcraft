@@ -5,6 +5,7 @@ import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.Cultiva
 import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.PassiveTechniques.CultivationPassives.QiCondenserPassive;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.TechniqueStats.DefaultCultivationStatIDs;
+import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
@@ -70,9 +71,9 @@ public class QiCondenserCultivation extends CultivationType
         float usedQi = Qi - changedQi;
 
         if (!elementProgression.containsKey(element))
-            elementProgression.put(element, 0f);
-
-        elementProgression.put(element, elementProgression.get(element) + usedQi);
+            elementProgression.put(element, usedQi);
+        else
+            elementProgression.put(element, elementProgression.get(element) + usedQi);
 
         return changedQi;
     }
@@ -111,6 +112,9 @@ public class QiCondenserCultivation extends CultivationType
         if (amount > 1)
             amount = 1;
 
+        // ensuring the % isn't as high if this cultivation level is not yet finished
+        amount *= (float)getTechLevelProgressWithoutPrevious(passive.getClass().toString()) / (float)getMaxTechLevelWithoutPrevious();
+
         if (getPreviousCultivation() instanceof QiCondenserCultivation)
             amount += ((QiCondenserCultivation)getPreviousCultivation()).getElementFocusAmountRaw(element);
 
@@ -122,7 +126,7 @@ public class QiCondenserCultivation extends CultivationType
     {
         float amount = getElementFocusAmountRaw(element);
 
-        amount /= stage;
+        amount /= (stage - (1 - (float)getTechLevelProgressWithoutPrevious(passive.getClass().toString()) / (float)getMaxTechLevelWithoutPrevious()));
 
         if (amount > 1)
             return 1;
@@ -160,7 +164,10 @@ public class QiCondenserCultivation extends CultivationType
 
     protected HashMap<ResourceLocation, Float> combine(HashMap<ResourceLocation, Float> set1, HashMap<ResourceLocation, Float> set2)
     {
-        HashMap<ResourceLocation, Float> output = (HashMap<ResourceLocation, Float>)set1.clone();
+        HashMap<ResourceLocation, Float> output = new HashMap<ResourceLocation, Float>();
+
+        for (ResourceLocation element : set1.keySet())
+            output.put(element, set1.get(element));
 
         for (ResourceLocation element : set2.keySet())
         {

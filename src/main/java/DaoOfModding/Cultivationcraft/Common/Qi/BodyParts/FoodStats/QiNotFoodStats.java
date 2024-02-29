@@ -5,6 +5,7 @@ import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.PlayerHealthManager;
 import DaoOfModding.Cultivationcraft.Common.Qi.Cultivation.CultivationType;
 import DaoOfModding.Cultivationcraft.Common.Qi.QiSource;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.TechniqueStats.DefaultCultivationStatIDs;
+import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import com.mojang.math.Vector3f;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -71,17 +72,20 @@ public class QiNotFoodStats extends QiFoodStats
         if (QiRemaining < toAbsorb)
             toAbsorb = QiRemaining;
 
-        double absorb = cultivation.absorbFromQiSource(toAbsorb, player);
+        // Passive absorption
+        double passive = cultivation.getCultivationStat(player, DefaultCultivationStatIDs.qiPassiveAbsorbSpeed) / 20f;
+        toAbsorb -= passive;
 
-        // Passive absorbtion
-        double passive = cultivation.getCultivationStat(player, DefaultCultivationStatIDs.qiPassiveAbsorbSpeed);
+        double absorb = 0;
+        if (toAbsorb > 0)
+            absorb = cultivation.absorbFromQiSource(toAbsorb, player);
 
         setFoodLevel((float)(getTrueFoodLevel() + absorb + passive));
 
         if (getTrueFoodLevel() > getMaxFood())
             setFoodLevel(getMaxFood());
 
-        return (int)(QiRemaining - absorb);
+        return QiRemaining - absorb;
     }
 
     public QiNotFoodStats clone()
