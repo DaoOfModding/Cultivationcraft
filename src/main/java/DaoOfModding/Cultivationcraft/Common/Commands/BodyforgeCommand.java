@@ -46,7 +46,7 @@ public class BodyforgeCommand
 
             if (stats.getCultivationType() == CultivationTypes.QI_CONDENSER)
             {
-                stats.getCultivation().progressCultivation(serverplayer, Integer.MAX_VALUE, Elements.noElement);
+                stats.getCultivation().progressCultivation(serverplayer, Integer.MAX_VALUE, Elements.anyElement);
                 PacketHandler.sendCultivatorStatsToClient(serverplayer);
             }
             else if (stats.getCultivationType() == CultivationTypes.BODY_CULTIVATOR)

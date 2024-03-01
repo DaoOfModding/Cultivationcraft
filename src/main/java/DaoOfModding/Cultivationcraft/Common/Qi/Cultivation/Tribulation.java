@@ -72,7 +72,7 @@ public class Tribulation
                 BlockState block = level.getBlockState(blockpos);
 
                 if (!block.isAir() && !block.getMaterial().isLiquid()) {
-                    float strength = Math.min(block.getDestroySpeed(level, blockpos), 2) / 0.5f;
+                    float strength = Math.min(block.getDestroySpeed(level, blockpos), 2) * 0.5f;
 
                     // If the lightning does not have enough enough power left to break through the block, spawn the lightning on the block and return
                     if (strength > power)
