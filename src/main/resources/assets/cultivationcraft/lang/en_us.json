@@ -417,5 +417,6 @@
   "cultivationcraft.gui.help.debug.bodyforge.fillqi": "fillQi",
   "cultivationcraft.gui.help.debug.bodyforge.fillqi.text": "§n/cultivation §nfillQi §n§lplayerName\n \nThis command will completely fill the Qi/Stamina of the supplied character.",
   "item.cultivationcraft.freeze_test_item": "Freeze Test",
-  "itemGroup.cultivationcrafttab": "Cultivation Craft Debug Tab"
+  "itemGroup.cultivationcrafttab": "Cultivation Craft Debug Tab",
+  "block.cultivationcraft.frozen_block": "CC FrozenBlock"
 }

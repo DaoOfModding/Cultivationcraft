@@ -1,19 +1,72 @@
 package DaoOfModding.Cultivationcraft.Common.Blocks;
 
+import DaoOfModding.Cultivationcraft.Common.Blocks.util.TickableBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.world.level.BlockGetter;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.RenderShape;
-import net.minecraft.world.level.block.StairBlock;
+import net.minecraft.world.level.block.EntityBlock;
+import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.Half;
-import net.minecraft.world.level.block.state.properties.StairsShape;
-import net.minecraft.world.level.material.Material;
-import net.minecraft.world.phys.shapes.CollisionContext;
-import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.phys.BlockHitResult;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+public class FrozenBlock extends HorizontalDirectionalBlock implements EntityBlock {
+    public FrozenBlock(Properties properties) {
+        super(properties);
+        registerDefaultState(defaultBlockState().setValue(FACING, Direction.NORTH));
+    }
+
+    @Override
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        super.createBlockStateDefinition(builder);
+        builder.add(FACING);
+    }
+
+    /* BLOCK ENTITY */
+    @Override
+    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+        return BlockRegister.FROZEN_BLOCK_ENTITY.get().create(pos, state);
+    }
+
+    @Override
+    public @NotNull InteractionResult use(@NotNull BlockState state, Level level, @NotNull BlockPos pos, @NotNull Player player, @NotNull InteractionHand hand, @NotNull BlockHitResult blockHitResult) {
+        if (!level.isClientSide() && hand == InteractionHand.MAIN_HAND) {
+            BlockEntity be = level.getBlockEntity(pos);
+            if (be instanceof FrozenBlockEntity frozenBlockEntity) {
+                frozenBlockEntity.freezeBlock(pos);
+                player.sendSystemMessage(Component.literal("FrozenBlockEntity has been used"));
+                return InteractionResult.sidedSuccess(level.isClientSide());
+            }
+        }
+        return super.use(state, level, pos, player, hand, blockHitResult);
+    }
+
+    @Nullable
+    @Override
+    public BlockState getStateForPlacement(BlockPlaceContext ctx) {
+        return defaultBlockState().setValue(FACING, ctx.getHorizontalDirection().getOpposite());
+    }
+
+    @Nullable
+    @Override
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(@NotNull Level level, @NotNull BlockState state, @NotNull BlockEntityType<T> entityType) {
+        return TickableBlockEntity.getTickerHelper(level);
+    }
+}
+
+
+
 /*
 public class FrozenBlock extends Block
 {
@@ -38,12 +91,12 @@ public class FrozenBlock extends Block
     @Override
     public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context)
     {
-        BlockEntity BlockEntityntity = worldIn.getBlockEntity(pos);
+        BlockEntity BlockEntity = worldIn.getBlockEntity(pos);
 
-        if (worldIn != null && BlockEntityntity != null)
+        if (worldIn != null && BlockEntity != null)
         {
-            Direction dir = ((FrozenBlockEntity)BlockEntityntity).getRamp();
-            BlockState frozen = ((FrozenBlockEntity)BlockEntityntity).getFrozenBlock();
+            Direction dir = ((FrozenBlockEntity)BlockEntity).getRamp();
+            BlockState frozen = ((FrozenBlockEntity)BlockEntity).getFrozenBlock();
 
             // If the frozen block is a stair return the voxel shape of an appropriately rotated stair
             if (dir != Direction.DOWN)
