@@ -3,10 +3,6 @@ package DaoOfModding.Cultivationcraft.Common.Blocks;
 import DaoOfModding.Cultivationcraft.Common.Blocks.util.TickableBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.network.chat.Component;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -17,7 +13,6 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -37,19 +32,6 @@ public class FrozenBlock extends HorizontalDirectionalBlock implements EntityBlo
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return BlockRegister.FROZEN_BLOCK_ENTITY.get().create(pos, state);
-    }
-
-    @Override
-    public @NotNull InteractionResult use(@NotNull BlockState state, Level level, @NotNull BlockPos pos, @NotNull Player player, @NotNull InteractionHand hand, @NotNull BlockHitResult blockHitResult) {
-        if (!level.isClientSide() && hand == InteractionHand.MAIN_HAND) {
-            BlockEntity be = level.getBlockEntity(pos);
-            if (be instanceof FrozenBlockEntity frozenBlockEntity) {
-                frozenBlockEntity.freezeBlock(pos);
-                player.sendSystemMessage(Component.literal("FrozenBlockEntity has been used"));
-                return InteractionResult.sidedSuccess(level.isClientSide());
-            }
-        }
-        return super.use(state, level, pos, player, hand, blockHitResult);
     }
 
     @Nullable

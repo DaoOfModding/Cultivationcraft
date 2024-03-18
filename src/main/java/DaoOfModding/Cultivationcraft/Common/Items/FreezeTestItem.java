@@ -1,15 +1,13 @@
 package DaoOfModding.Cultivationcraft.Common.Items;
 
-import DaoOfModding.Cultivationcraft.Common.Blocks.FrozenBlockEntity;
+import DaoOfModding.Cultivationcraft.Common.Blocks.BlockRegister;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResultHolder;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
+import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.NotNull;
 
 public class FreezeTestItem extends Item {
     public FreezeTestItem(Properties properties) {
@@ -17,20 +15,20 @@ public class FreezeTestItem extends Item {
     }
 
     @Override
-    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+    public @NotNull InteractionResult useOn(@NotNull UseOnContext pContext) {
         System.out.println("Used stick");
-        BlockPos blockPos = player.blockPosition().relative(player.getDirection());
-        BlockState state = level.getBlockState(blockPos);
-        if (!level.isClientSide() && hand == InteractionHand.MAIN_HAND) {
-            if (state.getBlock() instanceof Block) {
-                // Create a new FrozenBlockEntity
-                level.setBlockEntity(new FrozenBlockEntity(blockPos, state));
-                System.out.println("Created FrozenBlockEntity");
-                return InteractionResultHolder.sidedSuccess(player.getItemInHand(hand), level.isClientSide());
-            }
-        }
+        if (!pContext.getLevel().isClientSide() && pContext.getHand() == InteractionHand.MAIN_HAND) {
+            BlockPos blockPos = pContext.getClickedPos();
+            BlockState state = pContext.getLevel().getBlockState(blockPos);
+            System.out.println("Block pos: " + blockPos);
+            System.out.println("Block state: " + state);
+            // Create a new FrozenBlockEntity
 
-        return super.use(level, player, hand);
+            pContext.getLevel().setBlock(pContext.getClickedPos(), BlockRegister.FROZEN_BLOCK.get().defaultBlockState(), 3);
+
+            return InteractionResult.SUCCESS;
+        }
+        return super.useOn(pContext);
     }
 
     private void FreezeBlock() {

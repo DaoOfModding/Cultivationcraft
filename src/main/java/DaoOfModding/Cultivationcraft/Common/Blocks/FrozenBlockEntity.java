@@ -72,36 +72,9 @@ public class FrozenBlockEntity extends BlockEntity implements TickableBlockEntit
         return NBT;
     }*/
 
-    @Override
-    public void onLoad() {
-        super.onLoad();
-        System.out.println("onLoad");
-        freezeBlock(this.getBlockPos());
-    }
-
-    public void freezeBlock(BlockPos blockPos) {
-        Level world = this.getLevel();
-        if (world != null) {
-            this.frozenBlockPos = blockPos;
-            this.previousBlockState = world.getBlockState(blockPos);
-            System.out.println("previous block state: " + this.previousBlockState);
-            System.out.println("frozen block pos: " + this.frozenBlockPos);
-
-            // Replace the block with a "frozen" state
-            world.setBlockAndUpdate(blockPos, BlockRegister.FROZEN_BLOCK.get().defaultBlockState());
-            setChanged();
-            // Schedule thawing after a set duration
-            world.scheduleTick(blockPos, BlockRegister.FROZEN_BLOCK.get(), FREEZE_DURATION_TICKS);
-            System.out.println("replaced block with frozen state");
-        }
-    }
-
     public void thawBlock() {
         System.out.println("inside thawBlock method");
         Level world = this.getLevel();
-        System.out.println("world is not null: " + (world != null));
-        System.out.println("previousBlockState is not null: " + (this.previousBlockState != null));
-        System.out.println("frozenBlockPos is not null: " + (this.frozenBlockPos != null));
         if (world != null && this.previousBlockState != null && this.frozenBlockPos != null) {
             System.out.println("reverting block to previous state");
             // Revert the block to its previous state
@@ -117,15 +90,12 @@ public class FrozenBlockEntity extends BlockEntity implements TickableBlockEntit
 
         FrozenBlockEntity frozenBlockEntity = (FrozenBlockEntity) blockEntity;
         // Do nothing if tile entity has infinite freeze duration
-        if (frozenBlockEntity.FREEZE_PROGRESS_TICKS >= FREEZE_DURATION_TICKS) {
-            return;
-        }
 
         frozenBlockEntity.FREEZE_PROGRESS_TICKS++;
         setChanged(level, blockPos, blockState);
         System.out.println("freeze progress ticks: " + frozenBlockEntity.FREEZE_PROGRESS_TICKS);
         // Replace this block with its unfrozen version (Don't update neighbouring blocks so grass and things don't break)
-        if (frozenBlockEntity.FREEZE_PROGRESS_TICKS == FREEZE_DURATION_TICKS) {
+        if (frozenBlockEntity.FREEZE_PROGRESS_TICKS >= FREEZE_DURATION_TICKS) {
             frozenBlockEntity.thawBlock();
             frozenBlockEntity.FREEZE_PROGRESS_TICKS = 0;
             setChanged(level, blockPos, blockState);
