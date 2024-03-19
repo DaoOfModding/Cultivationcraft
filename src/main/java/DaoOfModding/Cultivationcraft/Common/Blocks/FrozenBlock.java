@@ -13,13 +13,16 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class FrozenBlock extends HorizontalDirectionalBlock implements EntityBlock {
+
     public FrozenBlock(Properties properties) {
         super(properties);
-        registerDefaultState(defaultBlockState().setValue(FACING, Direction.NORTH));
+        registerDefaultState(defaultBlockState()
+                .setValue(FACING, Direction.NORTH));
     }
 
     @Override
@@ -28,9 +31,26 @@ public class FrozenBlock extends HorizontalDirectionalBlock implements EntityBlo
         builder.add(FACING);
     }
 
+    @Override
+    public void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldBlockState, boolean trigger) {
+        super.onPlace(state, level, pos, oldBlockState, trigger);
+        if (!level.isClientSide()) {
+            BlockEntity blockEntity = level.getBlockEntity(pos);
+            BlockEntity oldBlockEntity = null;
+
+            System.out.println("Block entity: " + blockEntity);
+            if (!(blockEntity instanceof FrozenBlockEntity)) {
+                oldBlockEntity = (BlockEntity) level.getBlockEntity(pos).getCapability(ForgeCapabilities.ITEM_HANDLER).orElse(null);
+            }
+            if (blockEntity instanceof FrozenBlockEntity) {
+                ((FrozenBlockEntity) blockEntity).setFrozenBlock(oldBlockState, pos, oldBlockEntity);
+            }
+        }
+    }
+
     /* BLOCK ENTITY */
     @Override
-    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+    public BlockEntity newBlockEntity(@NotNull BlockPos pos, @NotNull BlockState state) {
         return BlockRegister.FROZEN_BLOCK_ENTITY.get().create(pos, state);
     }
 

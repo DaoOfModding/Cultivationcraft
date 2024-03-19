@@ -21,11 +21,13 @@ public class BlockRegister {
 
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, Cultivationcraft.MODID);
     public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, Cultivationcraft.MODID);
+/*
+    public static final DeferredRegister<ConfiguredFeature<?, ?>> CONFIGURED_FEATURE = DeferredRegister.create(Registry.CONFIGURED_FEATURE_REGISTRY, Cultivationcraft.MODID);
+*/
 
     public static final RegistryObject<FrozenBlock> FROZEN_BLOCK = registerBlock("frozen_block",
             () -> new FrozenBlock(BlockBehaviour.Properties.of(Material.ICE_SOLID))
             , ModCreativeModeTab.CC_DEBUG_TAB);
-
     public static RegistryObject<BlockEntityType<FrozenBlockEntity>> FROZEN_BLOCK_ENTITY = BLOCK_ENTITIES.register("frozen_block_entity",
             () -> BlockEntityType.Builder.of(
                             FrozenBlockEntity::new,
