@@ -26,14 +26,13 @@ public class BlockRegister {
 */
 
     public static final RegistryObject<FrozenBlock> FROZEN_BLOCK = registerBlock("frozen_block",
-            () -> new FrozenBlock(BlockBehaviour.Properties.of(Material.ICE_SOLID))
-            , ModCreativeModeTab.CC_DEBUG_TAB);
+            () -> new FrozenBlock(BlockBehaviour.Properties.of(Material.ICE_SOLID)),
+            ModCreativeModeTab.CC_DEBUG_TAB);
     public static RegistryObject<BlockEntityType<FrozenBlockEntity>> FROZEN_BLOCK_ENTITY = BLOCK_ENTITIES.register("frozen_block_entity",
             () -> BlockEntityType.Builder.of(
-                            FrozenBlockEntity::new,
-                            FROZEN_BLOCK.get()
-                    )
-                    .build(null)
+                    FrozenBlockEntity::new,
+                    FROZEN_BLOCK.get()
+            ).build(null)
     );
 
     public static void init(IEventBus bus) {

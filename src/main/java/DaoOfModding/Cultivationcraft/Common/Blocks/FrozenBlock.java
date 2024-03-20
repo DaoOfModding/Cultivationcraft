@@ -3,6 +3,7 @@ package DaoOfModding.Cultivationcraft.Common.Blocks;
 import DaoOfModding.Cultivationcraft.Common.Blocks.util.TickableBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -13,16 +14,24 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class FrozenBlock extends HorizontalDirectionalBlock implements EntityBlock {
+    BlockState oldBlockState = null;
+    BlockEntity oldBlockEntity = null;
+    CompoundTag oldBlockEntityData = null;
 
     public FrozenBlock(Properties properties) {
         super(properties);
         registerDefaultState(defaultBlockState()
                 .setValue(FACING, Direction.NORTH));
+    }
+
+    public void setOldBlockFields(BlockState oldBlockState, BlockEntity oldBlockEntity, CompoundTag oldBlockEntityData) {
+        this.oldBlockState = oldBlockState;
+        this.oldBlockEntity = oldBlockEntity;
+        this.oldBlockEntityData = oldBlockEntityData;
     }
 
     @Override
@@ -36,14 +45,8 @@ public class FrozenBlock extends HorizontalDirectionalBlock implements EntityBlo
         super.onPlace(state, level, pos, oldBlockState, trigger);
         if (!level.isClientSide()) {
             BlockEntity blockEntity = level.getBlockEntity(pos);
-            BlockEntity oldBlockEntity = null;
-
-            System.out.println("Block entity: " + blockEntity);
-            if (!(blockEntity instanceof FrozenBlockEntity)) {
-                oldBlockEntity = (BlockEntity) level.getBlockEntity(pos).getCapability(ForgeCapabilities.ITEM_HANDLER).orElse(null);
-            }
             if (blockEntity instanceof FrozenBlockEntity) {
-                ((FrozenBlockEntity) blockEntity).setFrozenBlock(oldBlockState, pos, oldBlockEntity);
+                ((FrozenBlockEntity) blockEntity).setFrozenBlock(this.oldBlockState, pos, this.oldBlockEntity, this.oldBlockEntityData);
             }
         }
     }

@@ -2,10 +2,12 @@ package DaoOfModding.Cultivationcraft.Common.Blocks;
 
 import DaoOfModding.Cultivationcraft.Common.Blocks.util.TickableBlockEntity;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.Connection;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
@@ -21,12 +23,11 @@ import java.util.Objects;
 public class FrozenBlockEntity extends BlockEntity implements TickableBlockEntity {
     protected int FREEZE_PROGRESS_TICKS = 0;
     protected static int FREEZE_DURATION_TICKS = 50;
-
     protected BlockPos frozenBlockPos;
     protected BlockState frozenBlock = Blocks.AIR.defaultBlockState();
     protected BlockEntity frozenEntity = null;
 
-    protected Boolean isClient = false;
+    protected CompoundTag frozenEntityData;
 
 
     public FrozenBlockEntity(BlockPos blockPos, BlockState blockState) {
@@ -43,11 +44,12 @@ public class FrozenBlockEntity extends BlockEntity implements TickableBlockEntit
         this.frozenBlock = NbtUtils.readBlockState(cultivationCraftData.getCompound("FrozenBlock"));
         this.frozenBlockPos = NbtUtils.readBlockPos(cultivationCraftData.getCompound("FrozenBlockPos"));
 
-        if (cultivationCraftData.hasUUID("FrozenEntity"))
+        if (cultivationCraftData.hasUUID("FrozenEntity")) {
             this.frozenEntity = loadStatic(this.frozenBlockPos, this.frozenBlock, cultivationCraftData);
+            this.frozenEntityData = cultivationCraftData.getCompound("FrozenEntityData");
+        }
 
         // As soon as data is read in for this block, mark it as not being a client block
-        isClient = false;
         System.out.println("tag load: " + cultivationCraftData);
     }
 
@@ -57,11 +59,14 @@ public class FrozenBlockEntity extends BlockEntity implements TickableBlockEntit
 
         var cultivationCraftData = new CompoundTag();
         cultivationCraftData.putInt("unfreezeTicks", FREEZE_PROGRESS_TICKS);
+
         cultivationCraftData.put("FrozenBlock", NbtUtils.writeBlockState(frozenBlock));
         cultivationCraftData.put("FrozenBlockPos", NbtUtils.writeBlockPos(frozenBlockPos));
 
-        if (frozenEntity != null)
+        if (frozenEntity != null) {
             cultivationCraftData.put("FrozenEntity", frozenEntity.getPersistentData());
+            cultivationCraftData.put("FrozenEntityData", frozenEntityData);
+        }
         tag.put(Cultivationcraft.MODID, cultivationCraftData);
 
         System.out.println(" saveAdditional: " + tag);
@@ -88,40 +93,35 @@ public class FrozenBlockEntity extends BlockEntity implements TickableBlockEntit
         super.handleUpdateTag(tag);
     }
 
-    public void setIsClient() {
-        isClient = true;
-    }
-
-    public void setFrozenBlock(BlockState state, BlockPos pos, @Nullable BlockEntity entity) {
+    public void setFrozenBlock(BlockState state, BlockPos pos, @Nullable BlockEntity entity, @Nullable CompoundTag entityData) {
         frozenBlock = state;
         frozenBlockPos = pos;
         frozenEntity = entity;
+        frozenEntityData = entityData;
 
         setChanged();
     }
 
-    public BlockState getFrozenBlock() {
-        return frozenBlock;
-    }
-
     public void thawBlock() {
         Level world = this.getLevel();
-        System.out.println("thawing block");
-        System.out.println("world: " + world);
-        System.out.println("frozenBlock: " + frozenBlock);
-        System.out.println("frozenBlockPos: " + frozenBlockPos);
+        String msg = "Block at " + frozenBlockPos + " has thawed!\nBlock: " + frozenBlock + "\nEntity: " + frozenEntity + "\nEntity Data: " + frozenEntityData;
+        Minecraft.getInstance().player.sendSystemMessage(Component.literal(msg));
+
         if (world != null && this.frozenBlock != null && this.frozenBlockPos != null) {
-            System.out.println("reverting block to previous state");
             // Revert the block to its previous state
             world.setBlockAndUpdate(this.frozenBlockPos, this.frozenBlock);
-            if (frozenEntity != null)
-                world.setBlockEntity(this.frozenEntity);
+            if (frozenEntity != null) {
+                BlockEntity unFrozenEntity = this.frozenEntity;
+                unFrozenEntity.deserializeNBT(frozenEntityData);
+                world.setBlockEntity(unFrozenEntity);
+                System.out.println("Thawing block entity: " + unFrozenEntity + " at " + unFrozenEntity.getBlockPos() + " with data: " + unFrozenEntity.serializeNBT());
+            }
         }
     }
 
     @Override
     public void tick(Level level, BlockPos blockPos, BlockState blockState, BlockEntity blockEntity) {
-        if (level.isClientSide() && !isClient) {
+        if (level.isClientSide()) {
             return;
         }
 
