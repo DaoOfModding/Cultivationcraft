@@ -2,12 +2,10 @@ package DaoOfModding.Cultivationcraft.Common.Blocks;
 
 import DaoOfModding.Cultivationcraft.Common.Blocks.util.TickableBlockEntity;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.Connection;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
@@ -104,9 +102,6 @@ public class FrozenBlockEntity extends BlockEntity implements TickableBlockEntit
 
     public void thawBlock() {
         Level world = this.getLevel();
-        String msg = "Block at " + frozenBlockPos + " has thawed!\nBlock: " + frozenBlock + "\nEntity: " + frozenEntity + "\nEntity Data: " + frozenEntityData;
-        Minecraft.getInstance().player.sendSystemMessage(Component.literal(msg));
-
         if (world != null && this.frozenBlock != null && this.frozenBlockPos != null) {
             // Revert the block to its previous state
             world.setBlockAndUpdate(this.frozenBlockPos, this.frozenBlock);
@@ -127,7 +122,6 @@ public class FrozenBlockEntity extends BlockEntity implements TickableBlockEntit
 
         FrozenBlockEntity frozenBlockEntity = (FrozenBlockEntity) blockEntity;
         // Do nothing if tile entity has infinite freeze duration
-        System.out.println("Tick: " + frozenBlockEntity.FREEZE_PROGRESS_TICKS);
         frozenBlockEntity.FREEZE_PROGRESS_TICKS++;
         // Replace this block with its unfrozen version (Don't update neighbouring blocks so grass and things don't break)
         if (frozenBlockEntity.FREEZE_PROGRESS_TICKS >= FREEZE_DURATION_TICKS) {

@@ -2,10 +2,8 @@ package DaoOfModding.Cultivationcraft.Common.Items;
 
 import DaoOfModding.Cultivationcraft.Common.Blocks.BlockRegister;
 import DaoOfModding.Cultivationcraft.Common.Blocks.FrozenBlock;
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.Item;
@@ -26,16 +24,22 @@ public class FreezeTestItem extends Item {
             BlockPos blockPos = pContext.getClickedPos();
             BlockState oldState = pContext.getLevel().getBlockState(blockPos);
             BlockEntity oldBlockEntity = null;
+            CompoundTag oldBlockEntityData = null;
             String msg = "Block " + oldState + " at " + blockPos + " Is getting Frozen!";
             if (oldState.hasBlockEntity()) {
                 oldBlockEntity = pContext.getLevel().getBlockEntity(blockPos);
-                msg += "\nEntity: " + oldBlockEntity + "\nEntity Data: " + oldBlockEntity.serializeNBT();
-            }
-            Minecraft.getInstance().player.sendSystemMessage(Component.literal(msg));
-            // Create a new FrozenBlockEntity
-            BlockState FrozenBlockState = setFrozenBlock(oldState, oldBlockEntity, oldBlockEntity.serializeNBT());
+                oldBlockEntityData = oldBlockEntity.serializeNBT();
 
-            pContext.getLevel().setBlockAndUpdate(pContext.getClickedPos(), FrozenBlockState);
+                msg += "\nEntity: " + oldBlockEntity + "\nEntity Data: " + oldBlockEntityData;
+            }
+            System.out.println(msg);
+            // Create a new FrozenBlockEntity
+            BlockState FrozenBlockState = setFrozenBlock(oldState, oldBlockEntity, oldBlockEntityData);
+
+            if (oldBlockEntity != null) {
+                pContext.getLevel().removeBlockEntity(blockPos);
+            }
+            handleMultiBlock(pContext, oldState, blockPos, FrozenBlockState);
 
             return InteractionResult.SUCCESS;
         }
@@ -47,5 +51,9 @@ public class FreezeTestItem extends Item {
         ((FrozenBlock) FrozenBlock.getBlock()).setOldBlockFields(blockState, blockEntity, blockEntityData);
 
         return FrozenBlock;
+    }
+
+    public static boolean handleMultiBlock(UseOnContext pContext, BlockState blockState, BlockPos blockPos, BlockState FrozenBlockState) {
+        return pContext.getLevel().setBlockAndUpdate(pContext.getClickedPos(), FrozenBlockState);
     }
 }
