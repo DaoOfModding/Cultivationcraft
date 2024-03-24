@@ -32,6 +32,21 @@ public class FrozenBlock extends HorizontalDirectionalBlock implements EntityBlo
         this.oldBlockState = oldBlockState;
         this.oldBlockEntity = oldBlockEntity;
         this.oldBlockEntityData = oldBlockEntityData;
+
+        System.out.println("Old Block Fields set");
+        System.out.println(this.oldBlockState + " " + this.oldBlockEntity + " " + this.oldBlockEntityData);
+    }
+
+    public BlockState getOldBlockState() {
+        return oldBlockState;
+    }
+
+    public BlockEntity getOldBlockEntity() {
+        return oldBlockEntity;
+    }
+
+    public CompoundTag getOldBlockEntityData() {
+        return oldBlockEntityData;
     }
 
     @Override
@@ -47,6 +62,8 @@ public class FrozenBlock extends HorizontalDirectionalBlock implements EntityBlo
             BlockEntity blockEntity = level.getBlockEntity(pos);
             if (blockEntity instanceof FrozenBlockEntity) {
                 ((FrozenBlockEntity) blockEntity).setFrozenBlock(this.oldBlockState, pos, this.oldBlockEntity, this.oldBlockEntityData);
+                System.out.println("Frozen Block Entity set");
+                System.out.println(this.oldBlockState + " " + pos + " " + this.oldBlockEntity + " " + this.oldBlockEntityData);
             }
         }
     }

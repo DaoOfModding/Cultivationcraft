@@ -46,9 +46,6 @@ public class FrozenBlockEntity extends BlockEntity implements TickableBlockEntit
             this.frozenEntity = loadStatic(this.frozenBlockPos, this.frozenBlock, cultivationCraftData);
             this.frozenEntityData = cultivationCraftData.getCompound("FrozenEntityData");
         }
-
-        // As soon as data is read in for this block, mark it as not being a client block
-        System.out.println("tag load: " + cultivationCraftData);
     }
 
     @Override
@@ -66,8 +63,6 @@ public class FrozenBlockEntity extends BlockEntity implements TickableBlockEntit
             cultivationCraftData.put("FrozenEntityData", frozenEntityData);
         }
         tag.put(Cultivationcraft.MODID, cultivationCraftData);
-
-        System.out.println(" saveAdditional: " + tag);
     }
 
     @Nullable
@@ -109,7 +104,7 @@ public class FrozenBlockEntity extends BlockEntity implements TickableBlockEntit
                 BlockEntity unFrozenEntity = this.frozenEntity;
                 unFrozenEntity.deserializeNBT(frozenEntityData);
                 world.setBlockEntity(unFrozenEntity);
-                System.out.println("Thawing block entity: " + unFrozenEntity + " at " + unFrozenEntity.getBlockPos() + " with data: " + unFrozenEntity.serializeNBT());
+                /*System.out.println("Thawing block entity: " + unFrozenEntity + " at " + unFrozenEntity.getBlockPos() + " with data: " + unFrozenEntity.serializeNBT());*/
             }
         }
     }

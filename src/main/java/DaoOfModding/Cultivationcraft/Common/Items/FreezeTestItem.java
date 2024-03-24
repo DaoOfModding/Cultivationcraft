@@ -3,6 +3,7 @@ package DaoOfModding.Cultivationcraft.Common.Items;
 import DaoOfModding.Cultivationcraft.Common.Blocks.BlockRegister;
 import DaoOfModding.Cultivationcraft.Common.Blocks.FrozenBlock;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -10,6 +11,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.Property;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -22,38 +24,61 @@ public class FreezeTestItem extends Item {
     public @NotNull InteractionResult useOn(@NotNull UseOnContext pContext) {
         if (!pContext.getLevel().isClientSide() && pContext.getHand() == InteractionHand.MAIN_HAND) {
             BlockPos blockPos = pContext.getClickedPos();
-            BlockState oldState = pContext.getLevel().getBlockState(blockPos);
-            BlockEntity oldBlockEntity = null;
-            CompoundTag oldBlockEntityData = null;
-            String msg = "Block " + oldState + " at " + blockPos + " Is getting Frozen!";
-            if (oldState.hasBlockEntity()) {
-                oldBlockEntity = pContext.getLevel().getBlockEntity(blockPos);
-                oldBlockEntityData = oldBlockEntity.serializeNBT();
-
-                msg += "\nEntity: " + oldBlockEntity + "\nEntity Data: " + oldBlockEntityData;
+            BlockPos secondBlockPos = getMultiblockPos(blockPos, pContext.getLevel().getBlockState(blockPos));
+            if (secondBlockPos != null) {
+                createFrozenBlock(pContext, secondBlockPos);
             }
-            System.out.println(msg);
-            // Create a new FrozenBlockEntity
-            BlockState FrozenBlockState = setFrozenBlock(oldState, oldBlockEntity, oldBlockEntityData);
-
-            if (oldBlockEntity != null) {
-                pContext.getLevel().removeBlockEntity(blockPos);
-            }
-            handleMultiBlock(pContext, oldState, blockPos, FrozenBlockState);
-
+            createFrozenBlock(pContext, blockPos);
             return InteractionResult.SUCCESS;
         }
         return super.useOn(pContext);
     }
 
+    public static void createFrozenBlock(UseOnContext pContext, BlockPos blockPos) {
+        BlockState oldState = pContext.getLevel().getBlockState(blockPos);
+        BlockEntity oldBlockEntity = oldState.hasBlockEntity() ? pContext.getLevel().getBlockEntity(blockPos) : null;
+        CompoundTag oldBlockEntityData = oldState.hasBlockEntity() ? oldBlockEntity.serializeNBT() : null;
+        if (oldBlockEntity != null) {
+            pContext.getLevel().removeBlockEntity(blockPos);
+        }
+        BlockState FrozenBlock = setFrozenBlock(oldState, oldBlockEntity, oldBlockEntityData);
+        pContext.getLevel().setBlockAndUpdate(blockPos, FrozenBlock);
+    }
+
+    public static BlockPos getMultiblockPos(BlockPos blockPos, BlockState blockState) {
+        String name = blockState.getBlock().getName().getString();
+
+        if (name.contains("Door")) {
+            Property<?> half = blockState.getBlock().getStateDefinition().getProperty("half");
+            return blockState.getValue(half).toString().equals("upper") ? blockPos.below() : blockPos.above();
+        } else if (name.contains("Piston")) {
+            Property<?> facing = blockState.getBlock().getStateDefinition().getProperty("facing");
+            if (name.equals("Piston Head")) {
+                return blockPos.relative(((Direction) blockState.getValue(facing)).getOpposite());
+            } else {
+                if (blockState.getValue((Property<Boolean>) blockState.getBlock().getStateDefinition().getProperty("extended"))) {
+                    return blockPos.relative((Direction) blockState.getValue(facing));
+                }
+            }
+        } else if (name.contains("Bed")) {
+            Property<?> facing = blockState.getBlock().getStateDefinition().getProperty("facing");
+            Property<?> part = blockState.getBlock().getStateDefinition().getProperty("part");
+            if (blockState.getValue(part).toString().equals("foot")) {
+                return blockPos.relative((Direction) blockState.getValue(facing));
+            } else {
+                return blockPos.relative(((Direction) blockState.getValue(facing)).getOpposite());
+            }
+        }
+
+        return null;
+    }
+
     public static BlockState setFrozenBlock(BlockState blockState, @Nullable BlockEntity blockEntity, @Nullable CompoundTag blockEntityData) {
         BlockState FrozenBlock = BlockRegister.FROZEN_BLOCK.get().defaultBlockState();
         ((FrozenBlock) FrozenBlock.getBlock()).setOldBlockFields(blockState, blockEntity, blockEntityData);
-
+        System.out.println(((FrozenBlock) FrozenBlock.getBlock()).getOldBlockEntity());
+        System.out.println(((FrozenBlock) FrozenBlock.getBlock()).getOldBlockEntityData());
+        System.out.println(((FrozenBlock) FrozenBlock.getBlock()).getOldBlockState());
         return FrozenBlock;
-    }
-
-    public static boolean handleMultiBlock(UseOnContext pContext, BlockState blockState, BlockPos blockPos, BlockState FrozenBlockState) {
-        return pContext.getLevel().setBlockAndUpdate(pContext.getClickedPos(), FrozenBlockState);
     }
 }
