@@ -74,8 +74,10 @@ public class FreezeTestItem extends Item {
     }
 
     public static BlockState setFrozenBlock(BlockState blockState, @Nullable BlockEntity blockEntity, @Nullable CompoundTag blockEntityData) {
-        BlockState FrozenBlock = BlockRegister.FROZEN_BLOCK.get().defaultBlockState();
-        ((FrozenBlock) FrozenBlock.getBlock()).setOldBlockFields(blockState, blockEntity, blockEntityData);
-        return FrozenBlock;
+        BlockState frozenBlock = BlockRegister.FROZEN_BLOCK.get().defaultBlockState();
+        /* ((FrozenBlock) FrozenBlock.getBlock()).setOldBlockFields(blockState, blockEntity, blockEntityData);*/
+        ((FrozenBlock) frozenBlock.getBlock()).setOldBlockFields(blockState, blockEntity, blockEntityData);
+
+        return frozenBlock;
     }
 }

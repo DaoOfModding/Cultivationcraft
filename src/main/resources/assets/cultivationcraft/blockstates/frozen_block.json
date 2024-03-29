@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "cultivationcraft:block/frozenblock"
+      "model": "cultivationcraft:block/frozen_block"
     }
   }
 }

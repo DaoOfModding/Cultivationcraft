@@ -22,14 +22,25 @@ public class FrozenBlockEntity extends BlockEntity implements TickableBlockEntit
     protected int FREEZE_PROGRESS_TICKS = 0;
     protected static int FREEZE_DURATION_TICKS = 50;
     protected BlockPos frozenBlockPos;
-    protected BlockState frozenBlock = Blocks.AIR.defaultBlockState();
-    protected BlockEntity frozenEntity = null;
+    protected BlockState frozenBlock;
+    protected BlockEntity frozenEntity;
 
     protected CompoundTag frozenEntityData;
 
-
     public FrozenBlockEntity(BlockPos blockPos, BlockState blockState) {
         super(BlockRegister.FROZEN_BLOCK_ENTITY.get(), blockPos, blockState);
+        this.frozenBlockPos = blockPos;
+        this.frozenBlock = ((FrozenBlock) blockState.getBlock()).getOldBlockState() != null ? ((FrozenBlock) blockState.getBlock()).getOldBlockState() : Blocks.AIR.defaultBlockState();
+        this.frozenEntity = ((FrozenBlock) blockState.getBlock()).getOldBlockEntity();
+        this.frozenEntityData = ((FrozenBlock) blockState.getBlock()).getOldBlockEntityData();
+    }
+
+    public FrozenBlockEntity(BlockPos blockPos, BlockState blockState, BlockState oldBlockState, @Nullable BlockEntity frozenBlockEntity, @Nullable CompoundTag frozenEntityData) {
+        super(BlockRegister.FROZEN_BLOCK_ENTITY.get(), blockPos, blockState);
+        this.frozenBlockPos = blockPos;
+        this.frozenBlock = oldBlockState != null ? oldBlockState : Blocks.AIR.defaultBlockState();
+        this.frozenEntity = frozenBlockEntity;
+        this.frozenEntityData = frozenEntityData;
     }
 
     @Override
@@ -86,14 +97,14 @@ public class FrozenBlockEntity extends BlockEntity implements TickableBlockEntit
         super.handleUpdateTag(tag);
     }
 
-    public void setFrozenBlock(BlockState state, BlockPos pos, @Nullable BlockEntity entity, @Nullable CompoundTag entityData) {
+/*    public void setFrozenBlock(BlockState state, BlockPos pos, @Nullable BlockEntity entity, @Nullable CompoundTag entityData) {
         frozenBlock = state;
         frozenBlockPos = pos;
         frozenEntity = entity;
         frozenEntityData = entityData;
 
         setChanged();
-    }
+    }*/
 
     public void thawBlock() {
         Level world = this.getLevel();

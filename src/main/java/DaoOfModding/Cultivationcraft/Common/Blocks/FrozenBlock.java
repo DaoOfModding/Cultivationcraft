@@ -6,6 +6,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.AbstractGlassBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
@@ -14,10 +15,12 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class FrozenBlock extends HorizontalDirectionalBlock implements EntityBlock {
+public class FrozenBlock extends AbstractGlassBlock implements EntityBlock {
+    public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
     BlockState oldBlockState = null;
     BlockEntity oldBlockEntity = null;
     CompoundTag oldBlockEntityData = null;
@@ -33,7 +36,7 @@ public class FrozenBlock extends HorizontalDirectionalBlock implements EntityBlo
         this.oldBlockEntity = oldBlockEntity;
         this.oldBlockEntityData = oldBlockEntityData;
 
-        System.out.println("Old Block Fields set");
+        System.out.println("Frozen Block Fields set");
         System.out.println(this.oldBlockState + " " + this.oldBlockEntity + " " + this.oldBlockEntityData);
     }
 
@@ -55,29 +58,28 @@ public class FrozenBlock extends HorizontalDirectionalBlock implements EntityBlo
         builder.add(FACING);
     }
 
+    @Nullable
     @Override
+    public BlockState getStateForPlacement(BlockPlaceContext ctx) {
+        return defaultBlockState().setValue(FACING, ctx.getHorizontalDirection().getOpposite());
+    }
+/*    @Override
     public void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldBlockState, boolean trigger) {
         super.onPlace(state, level, pos, oldBlockState, trigger);
         if (!level.isClientSide()) {
             BlockEntity blockEntity = level.getBlockEntity(pos);
             if (blockEntity instanceof FrozenBlockEntity) {
-                ((FrozenBlockEntity) blockEntity).setFrozenBlock(this.oldBlockState, pos, this.oldBlockEntity, this.oldBlockEntityData);
+                ((FrozenBlockEntity) blockEntity).setFrozenBlock(this.oldBlockState != null ? this.oldBlockState : oldBlockState, pos, this.oldBlockEntity, this.oldBlockEntityData);
                 System.out.println("Frozen Block Entity set");
                 System.out.println(this.oldBlockState + " " + pos + " " + this.oldBlockEntity + " " + this.oldBlockEntityData);
             }
         }
-    }
+    }*/
 
     /* BLOCK ENTITY */
     @Override
     public BlockEntity newBlockEntity(@NotNull BlockPos pos, @NotNull BlockState state) {
-        return BlockRegister.FROZEN_BLOCK_ENTITY.get().create(pos, state);
-    }
-
-    @Nullable
-    @Override
-    public BlockState getStateForPlacement(BlockPlaceContext ctx) {
-        return defaultBlockState().setValue(FACING, ctx.getHorizontalDirection().getOpposite());
+        return new FrozenBlockEntity(pos, state, oldBlockState, oldBlockEntity, oldBlockEntityData);
     }
 
     @Nullable
