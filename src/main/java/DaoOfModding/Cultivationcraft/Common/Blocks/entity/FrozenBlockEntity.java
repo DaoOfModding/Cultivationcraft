@@ -1,5 +1,7 @@
-package DaoOfModding.Cultivationcraft.Common.Blocks;
+package DaoOfModding.Cultivationcraft.Common.Blocks.entity;
 
+import DaoOfModding.Cultivationcraft.Common.Blocks.BlockRegister;
+import DaoOfModding.Cultivationcraft.Common.Blocks.custom.FrozenBlock;
 import DaoOfModding.Cultivationcraft.Common.Blocks.util.TickableBlockEntity;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import net.minecraft.core.BlockPos;
@@ -9,6 +11,7 @@ import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -19,6 +22,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Objects;
 
 public class FrozenBlockEntity extends BlockEntity implements TickableBlockEntity {
+    private ItemStack itemStack;
     protected int FREEZE_PROGRESS_TICKS = 0;
     protected static int FREEZE_DURATION_TICKS = 50;
     protected BlockPos frozenBlockPos;
@@ -33,6 +37,7 @@ public class FrozenBlockEntity extends BlockEntity implements TickableBlockEntit
         this.frozenBlock = ((FrozenBlock) blockState.getBlock()).getOldBlockState() != null ? ((FrozenBlock) blockState.getBlock()).getOldBlockState() : Blocks.AIR.defaultBlockState();
         this.frozenEntity = ((FrozenBlock) blockState.getBlock()).getOldBlockEntity();
         this.frozenEntityData = ((FrozenBlock) blockState.getBlock()).getOldBlockEntityData();
+        this.itemStack = itemStack.getItem().getDefaultInstance();
     }
 
     public FrozenBlockEntity(BlockPos blockPos, BlockState blockState, BlockState oldBlockState, @Nullable BlockEntity frozenBlockEntity, @Nullable CompoundTag frozenEntityData) {
@@ -41,6 +46,7 @@ public class FrozenBlockEntity extends BlockEntity implements TickableBlockEntit
         this.frozenBlock = oldBlockState != null ? oldBlockState : Blocks.AIR.defaultBlockState();
         this.frozenEntity = frozenBlockEntity;
         this.frozenEntityData = frozenEntityData;
+        this.itemStack = new ItemStack(this.frozenBlock.getBlock().asItem());
     }
 
     @Override
@@ -76,6 +82,22 @@ public class FrozenBlockEntity extends BlockEntity implements TickableBlockEntit
         tag.put(Cultivationcraft.MODID, cultivationCraftData);
     }
 
+    public ItemStack getRenderStack() {
+        ItemStack stack;
+
+        if (frozenBlock != null) {
+            stack = itemStack.getItem().getDefaultInstance();
+        } else {
+            stack = new ItemStack(Blocks.AIR.asItem());
+        }
+
+        return stack;
+    }
+
+    public void setItemStack(ItemStack itemStack) {
+        this.itemStack = itemStack;
+    }
+
     @Nullable
     @Override
     public Packet<ClientGamePacketListener> getUpdatePacket() {
@@ -88,23 +110,10 @@ public class FrozenBlockEntity extends BlockEntity implements TickableBlockEntit
         load(Objects.requireNonNull(pkt.getTag()));
     }
 
-    /*@Override
-      public @NotNull CompoundTag getUpdateTag() {
-          return super.getUpdateTag();
-      }*/
     @Override
     public void handleUpdateTag(CompoundTag tag) {
         super.handleUpdateTag(tag);
     }
-
-/*    public void setFrozenBlock(BlockState state, BlockPos pos, @Nullable BlockEntity entity, @Nullable CompoundTag entityData) {
-        frozenBlock = state;
-        frozenBlockPos = pos;
-        frozenEntity = entity;
-        frozenEntityData = entityData;
-
-        setChanged();
-    }*/
 
     public void thawBlock() {
         Level world = this.getLevel();
@@ -115,7 +124,6 @@ public class FrozenBlockEntity extends BlockEntity implements TickableBlockEntit
                 BlockEntity unFrozenEntity = this.frozenEntity;
                 unFrozenEntity.deserializeNBT(frozenEntityData);
                 world.setBlockEntity(unFrozenEntity);
-                /*System.out.println("Thawing block entity: " + unFrozenEntity + " at " + unFrozenEntity.getBlockPos() + " with data: " + unFrozenEntity.serializeNBT());*/
             }
         }
     }
@@ -127,15 +135,15 @@ public class FrozenBlockEntity extends BlockEntity implements TickableBlockEntit
         }
 
         FrozenBlockEntity frozenBlockEntity = (FrozenBlockEntity) blockEntity;
-        // Do nothing if tile entity has infinite freeze duration
         frozenBlockEntity.FREEZE_PROGRESS_TICKS++;
-        // Replace this block with its unfrozen version (Don't update neighbouring blocks so grass and things don't break)
+
         if (frozenBlockEntity.FREEZE_PROGRESS_TICKS >= FREEZE_DURATION_TICKS) {
             frozenBlockEntity.thawBlock();
             frozenBlockEntity.FREEZE_PROGRESS_TICKS = 0;
             setChanged(level, blockPos, blockState);
         }
     }
+
 
 }
 

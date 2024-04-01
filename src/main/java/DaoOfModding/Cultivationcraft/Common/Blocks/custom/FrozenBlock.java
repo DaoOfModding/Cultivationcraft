@@ -1,5 +1,6 @@
-package DaoOfModding.Cultivationcraft.Common.Blocks;
+package DaoOfModding.Cultivationcraft.Common.Blocks.custom;
 
+import DaoOfModding.Cultivationcraft.Common.Blocks.entity.FrozenBlockEntity;
 import DaoOfModding.Cultivationcraft.Common.Blocks.util.TickableBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -35,9 +36,6 @@ public class FrozenBlock extends AbstractGlassBlock implements EntityBlock {
         this.oldBlockState = oldBlockState;
         this.oldBlockEntity = oldBlockEntity;
         this.oldBlockEntityData = oldBlockEntityData;
-
-        System.out.println("Frozen Block Fields set");
-        System.out.println(this.oldBlockState + " " + this.oldBlockEntity + " " + this.oldBlockEntityData);
     }
 
     public BlockState getOldBlockState() {
@@ -63,18 +61,6 @@ public class FrozenBlock extends AbstractGlassBlock implements EntityBlock {
     public BlockState getStateForPlacement(BlockPlaceContext ctx) {
         return defaultBlockState().setValue(FACING, ctx.getHorizontalDirection().getOpposite());
     }
-/*    @Override
-    public void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldBlockState, boolean trigger) {
-        super.onPlace(state, level, pos, oldBlockState, trigger);
-        if (!level.isClientSide()) {
-            BlockEntity blockEntity = level.getBlockEntity(pos);
-            if (blockEntity instanceof FrozenBlockEntity) {
-                ((FrozenBlockEntity) blockEntity).setFrozenBlock(this.oldBlockState != null ? this.oldBlockState : oldBlockState, pos, this.oldBlockEntity, this.oldBlockEntityData);
-                System.out.println("Frozen Block Entity set");
-                System.out.println(this.oldBlockState + " " + pos + " " + this.oldBlockEntity + " " + this.oldBlockEntityData);
-            }
-        }
-    }*/
 
     /* BLOCK ENTITY */
     @Override

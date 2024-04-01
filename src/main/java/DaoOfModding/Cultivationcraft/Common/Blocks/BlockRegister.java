@@ -1,5 +1,7 @@
 package DaoOfModding.Cultivationcraft.Common.Blocks;
 
+import DaoOfModding.Cultivationcraft.Common.Blocks.custom.FrozenBlock;
+import DaoOfModding.Cultivationcraft.Common.Blocks.entity.FrozenBlockEntity;
 import DaoOfModding.Cultivationcraft.Common.Items.ModCreativeModeTab;
 import DaoOfModding.Cultivationcraft.Common.Register;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;

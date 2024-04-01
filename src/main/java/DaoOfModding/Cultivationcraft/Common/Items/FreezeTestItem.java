@@ -1,7 +1,7 @@
 package DaoOfModding.Cultivationcraft.Common.Items;
 
 import DaoOfModding.Cultivationcraft.Common.Blocks.BlockRegister;
-import DaoOfModding.Cultivationcraft.Common.Blocks.FrozenBlock;
+import DaoOfModding.Cultivationcraft.Common.Blocks.custom.FrozenBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -75,7 +75,6 @@ public class FreezeTestItem extends Item {
 
     public static BlockState setFrozenBlock(BlockState blockState, @Nullable BlockEntity blockEntity, @Nullable CompoundTag blockEntityData) {
         BlockState frozenBlock = BlockRegister.FROZEN_BLOCK.get().defaultBlockState();
-        /* ((FrozenBlock) FrozenBlock.getBlock()).setOldBlockFields(blockState, blockEntity, blockEntityData);*/
         ((FrozenBlock) frozenBlock.getBlock()).setOldBlockFields(blockState, blockEntity, blockEntityData);
 
         return frozenBlock;
