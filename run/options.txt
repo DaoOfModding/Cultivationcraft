@@ -31,13 +31,13 @@ simulationDistance:12
 entityDistanceScaling:1.0
 guiScale:2
 particles:0
-maxFps:120
+maxFps:140
 graphicsMode:1
 ao:2
 prioritizeChunkUpdates:0
 biomeBlendRadius:2
 renderClouds:"true"
-resourcePacks:[]
+resourcePacks:["vanilla","mod_resources"]
 incompatibleResourcePacks:[]
 lastServer:
 lang:en_us

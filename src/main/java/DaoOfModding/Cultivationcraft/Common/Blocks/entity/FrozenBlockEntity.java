@@ -28,8 +28,8 @@ public class FrozenBlockEntity extends BlockEntity implements TickableBlockEntit
     protected BlockPos frozenBlockPos;
     protected BlockState frozenBlock;
     protected BlockEntity frozenEntity;
-
     protected CompoundTag frozenEntityData;
+    protected boolean isSecondBlock;
 
     public FrozenBlockEntity(BlockPos blockPos, BlockState blockState) {
         super(BlockRegister.FROZEN_BLOCK_ENTITY.get(), blockPos, blockState);
@@ -38,15 +38,17 @@ public class FrozenBlockEntity extends BlockEntity implements TickableBlockEntit
         this.frozenEntity = ((FrozenBlock) blockState.getBlock()).getOldBlockEntity();
         this.frozenEntityData = ((FrozenBlock) blockState.getBlock()).getOldBlockEntityData();
         this.itemStack = itemStack.getItem().getDefaultInstance();
+        this.isSecondBlock = ((FrozenBlock) blockState.getBlock()).isSecondBlock();
     }
 
-    public FrozenBlockEntity(BlockPos blockPos, BlockState blockState, BlockState oldBlockState, @Nullable BlockEntity frozenBlockEntity, @Nullable CompoundTag frozenEntityData) {
+    public FrozenBlockEntity(BlockPos blockPos, BlockState blockState, BlockState oldBlockState, @Nullable BlockEntity frozenBlockEntity, @Nullable CompoundTag frozenEntityData, boolean isSecondBlock) {
         super(BlockRegister.FROZEN_BLOCK_ENTITY.get(), blockPos, blockState);
         this.frozenBlockPos = blockPos;
         this.frozenBlock = oldBlockState != null ? oldBlockState : Blocks.AIR.defaultBlockState();
         this.frozenEntity = frozenBlockEntity;
         this.frozenEntityData = frozenEntityData;
         this.itemStack = new ItemStack(this.frozenBlock.getBlock().asItem());
+        this.isSecondBlock = isSecondBlock;
     }
 
     @Override
@@ -58,6 +60,8 @@ public class FrozenBlockEntity extends BlockEntity implements TickableBlockEntit
 
         this.frozenBlock = NbtUtils.readBlockState(cultivationCraftData.getCompound("FrozenBlock"));
         this.frozenBlockPos = NbtUtils.readBlockPos(cultivationCraftData.getCompound("FrozenBlockPos"));
+        this.itemStack = new ItemStack(this.frozenBlock.getBlock().asItem());
+        this.isSecondBlock = cultivationCraftData.getBoolean("isSecondBlock");
 
         if (cultivationCraftData.hasUUID("FrozenEntity")) {
             this.frozenEntity = loadStatic(this.frozenBlockPos, this.frozenBlock, cultivationCraftData);
@@ -74,6 +78,7 @@ public class FrozenBlockEntity extends BlockEntity implements TickableBlockEntit
 
         cultivationCraftData.put("FrozenBlock", NbtUtils.writeBlockState(frozenBlock));
         cultivationCraftData.put("FrozenBlockPos", NbtUtils.writeBlockPos(frozenBlockPos));
+        cultivationCraftData.putBoolean("isSecondBlock", isSecondBlock);
 
         if (frozenEntity != null) {
             cultivationCraftData.put("FrozenEntity", frozenEntity.getPersistentData());
@@ -84,8 +89,8 @@ public class FrozenBlockEntity extends BlockEntity implements TickableBlockEntit
 
     public ItemStack getRenderStack() {
         ItemStack stack;
-
-        if (frozenBlock != null) {
+        System.out.println("isSecondBlock: " + isSecondBlock + " itemStack: " + itemStack);
+        if (frozenBlock != null && !isSecondBlock) {
             stack = itemStack.getItem().getDefaultInstance();
         } else {
             stack = new ItemStack(Blocks.AIR.asItem());
@@ -95,7 +100,8 @@ public class FrozenBlockEntity extends BlockEntity implements TickableBlockEntit
     }
 
     public void setItemStack(ItemStack itemStack) {
-        this.itemStack = itemStack;
+        System.out.println("isSecondBlock: " + isSecondBlock + " itemStack: " + itemStack);
+        this.itemStack = !isSecondBlock ? itemStack : new ItemStack(Blocks.AIR.asItem());
     }
 
     @Nullable

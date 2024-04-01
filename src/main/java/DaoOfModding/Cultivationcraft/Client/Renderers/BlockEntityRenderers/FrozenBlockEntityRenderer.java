@@ -34,10 +34,14 @@ public class FrozenBlockEntityRenderer implements BlockEntityRenderer<FrozenBloc
         pPoseStack.mulPose(Vector3f.YP.rotationDegrees(-f));
 
 
-        itemRenderer.renderStatic(itemStack, ItemTransforms.TransformType.NONE,
-                getLightLevel(pBlockEntity.getLevel(), pBlockEntity.getBlockPos()),
-                OverlayTexture.NO_OVERLAY, pPoseStack, pBufferSource, 1);
+        if (!((FrozenBlock) pBlockEntity.getBlockState().getBlock()).isSecondBlock()) {
+            System.out.println("Rendering first block");
+            itemRenderer.renderStatic(itemStack, ItemTransforms.TransformType.NONE,
+                    getLightLevel(pBlockEntity.getLevel(), pBlockEntity.getBlockPos()),
+                    OverlayTexture.NO_OVERLAY, pPoseStack, pBufferSource, 1);
+        }
         pPoseStack.popPose();
+
     }
 
     private int getLightLevel(Level level, BlockPos pos) {

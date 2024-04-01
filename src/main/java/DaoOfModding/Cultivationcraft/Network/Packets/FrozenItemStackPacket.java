@@ -19,18 +19,6 @@ public class FrozenItemStackPacket extends Packet {
         this.pos = pos;
     }
 
-    /*    public FrozenItemStackPacket(FriendlyByteBuf buf) {
-     *//*
-        List<ItemStack> collection = buf.readCollection(ArrayList::new, FriendlyByteBuf::readItem);
-*//*
-        itemStack = new ItemStackHandler(collection.size());
-        for (int i = 0; i < collection.size(); i++) {
-            itemStackHandler.insertItem(i, collection.get(i), false);
-        }
-        itemStack = buf.readItem();
-        this.pos = buf.readBlockPos();
-    }*/
-
     public void encode(FriendlyByteBuf buf) {
         buf.writeItem(itemStack.getItem().getDefaultInstance());
         buf.writeBlockPos(pos);

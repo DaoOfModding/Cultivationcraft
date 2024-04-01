@@ -5,8 +5,6 @@ import DaoOfModding.Cultivationcraft.Common.Blocks.entity.FrozenBlockEntity;
 import DaoOfModding.Cultivationcraft.Common.Items.ModCreativeModeTab;
 import DaoOfModding.Cultivationcraft.Common.Register;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
-import net.minecraft.client.renderer.ItemBlockRenderTypes;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
@@ -15,9 +13,6 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -55,13 +50,5 @@ public class BlockRegister {
 
     public static <T extends Block> RegistryObject<Item> registerBlockItem(String name, RegistryObject<T> block, CreativeModeTab tab) {
         return Register.ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties().tab(tab)));
-    }
-
-    @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
-    public static class RegistryEvents {
-        @SubscribeEvent
-        public static void registerRenderers(FMLClientSetupEvent event) {
-            ItemBlockRenderTypes.setRenderLayer(FROZEN_BLOCK.get(), RenderType.translucent());
-        }
     }
 }
