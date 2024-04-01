@@ -9,6 +9,7 @@ import DaoOfModding.Cultivationcraft.Common.Qi.ExternalCultivationHandler;
 import DaoOfModding.Cultivationcraft.Common.Qi.QiSource;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.PassiveTechniques.PassiveTechnique;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.Technique;
+import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.TechniqueModifiers.TechniqueModifier;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.TechniqueStats.DefaultCultivationStatIDs;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import DaoOfModding.Cultivationcraft.Network.PacketHandler;
@@ -40,6 +41,8 @@ public class CultivationType
     protected boolean hasTribulated = false;
 
     protected HashMap<String, HashMap<ResourceLocation, Double>> statLevels = new HashMap<>();
+
+    protected ArrayList<TechniqueModifier> modifiers = new ArrayList<>();
 
     protected PassiveTechnique passive = new PassiveTechnique();
 
@@ -77,6 +80,22 @@ public class CultivationType
     public boolean consumeQi(Player player, double qiToConsume)
     {
         return StaminaHandler.consumeStamina(player, (float)qiToConsume);
+    }
+
+    public ArrayList<TechniqueModifier> getModifiers()
+    {
+        ArrayList<TechniqueModifier> totalModifiers = new ArrayList<>();
+
+        for (TechniqueModifier mod : getModifiers())
+            totalModifiers.add(mod);
+
+        if (getPreviousCultivation() != null)
+        {
+            for (TechniqueModifier mod : getPreviousCultivation().getModifiers())
+                totalModifiers.add(mod);
+        }
+
+        return totalModifiers;
     }
 
     public boolean canBreakthrough(Player player)
