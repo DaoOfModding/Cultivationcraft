@@ -9,8 +9,8 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.AbstractGlassBlock;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.DirectionalBlock;
 import net.minecraft.world.level.block.EntityBlock;
-import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -21,10 +21,12 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class FrozenBlock extends AbstractGlassBlock implements EntityBlock {
-    public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
+    public static final DirectionProperty FACING = DirectionalBlock.FACING;
     BlockState oldBlockState = null;
     BlockEntity oldBlockEntity = null;
     CompoundTag oldBlockEntityData = null;
+    protected boolean isSecondBlock = false;
+
 
     public FrozenBlock(Properties properties) {
         super(properties);
@@ -32,10 +34,13 @@ public class FrozenBlock extends AbstractGlassBlock implements EntityBlock {
                 .setValue(FACING, Direction.NORTH));
     }
 
-    public void setOldBlockFields(BlockState oldBlockState, BlockEntity oldBlockEntity, CompoundTag oldBlockEntityData) {
+    public void setOldBlockFields(BlockState oldBlockState, BlockEntity oldBlockEntity, CompoundTag oldBlockEntityData, boolean isSecondBlock) {
         this.oldBlockState = oldBlockState;
         this.oldBlockEntity = oldBlockEntity;
         this.oldBlockEntityData = oldBlockEntityData;
+        this.isSecondBlock = isSecondBlock;
+
+        System.out.println(this.isSecondBlock);
     }
 
     public BlockState getOldBlockState() {
@@ -50,6 +55,10 @@ public class FrozenBlock extends AbstractGlassBlock implements EntityBlock {
         return oldBlockEntityData;
     }
 
+    public boolean isSecondBlock() {
+        return isSecondBlock;
+    }
+
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         super.createBlockStateDefinition(builder);
@@ -59,13 +68,13 @@ public class FrozenBlock extends AbstractGlassBlock implements EntityBlock {
     @Nullable
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext ctx) {
-        return defaultBlockState().setValue(FACING, ctx.getHorizontalDirection().getOpposite());
+        return defaultBlockState().setValue(FACING, ctx.getNearestLookingDirection().getOpposite());
     }
 
     /* BLOCK ENTITY */
     @Override
     public BlockEntity newBlockEntity(@NotNull BlockPos pos, @NotNull BlockState state) {
-        return new FrozenBlockEntity(pos, state, oldBlockState, oldBlockEntity, oldBlockEntityData);
+        return new FrozenBlockEntity(pos, state, oldBlockState, oldBlockEntity, oldBlockEntityData, isSecondBlock);
     }
 
     @Nullable

@@ -26,22 +26,22 @@ public class FreezeTestItem extends Item {
             BlockPos blockPos = pContext.getClickedPos();
             BlockPos secondBlockPos = getMultiblockPos(blockPos, pContext.getLevel().getBlockState(blockPos));
             if (secondBlockPos != null) {
-                createFrozenBlock(pContext, secondBlockPos);
+                createFrozenBlock(pContext, secondBlockPos, true);
             }
-            createFrozenBlock(pContext, blockPos);
+            createFrozenBlock(pContext, blockPos, false);
             return InteractionResult.SUCCESS;
         }
         return super.useOn(pContext);
     }
 
-    public static void createFrozenBlock(UseOnContext pContext, BlockPos blockPos) {
+    public static void createFrozenBlock(UseOnContext pContext, BlockPos blockPos, boolean isSecondBlock) {
         BlockState oldState = pContext.getLevel().getBlockState(blockPos);
         BlockEntity oldBlockEntity = oldState.hasBlockEntity() ? pContext.getLevel().getBlockEntity(blockPos) : null;
         CompoundTag oldBlockEntityData = oldState.hasBlockEntity() ? oldBlockEntity.serializeNBT() : null;
         if (oldBlockEntity != null) {
             pContext.getLevel().removeBlockEntity(blockPos);
         }
-        BlockState FrozenBlock = setFrozenBlock(oldState, oldBlockEntity, oldBlockEntityData);
+        BlockState FrozenBlock = setFrozenBlock(oldState, oldBlockEntity, oldBlockEntityData, isSecondBlock);
         pContext.getLevel().setBlockAndUpdate(blockPos, FrozenBlock);
     }
 
@@ -73,9 +73,15 @@ public class FreezeTestItem extends Item {
         return null;
     }
 
-    public static BlockState setFrozenBlock(BlockState blockState, @Nullable BlockEntity blockEntity, @Nullable CompoundTag blockEntityData) {
+    public static BlockState setFrozenBlock(BlockState blockState, @Nullable BlockEntity blockEntity, @Nullable CompoundTag blockEntityData, boolean isSecondBlock) {
         BlockState frozenBlock = BlockRegister.FROZEN_BLOCK.get().defaultBlockState();
-        ((FrozenBlock) frozenBlock.getBlock()).setOldBlockFields(blockState, blockEntity, blockEntityData);
+        Property<Direction> facing = blockState.getBlock().getStateDefinition().getProperty("facing") != null ? (Property<Direction>) blockState.getBlock().getStateDefinition().getProperty("facing") : null;
+
+        if (facing != null && !blockState.getValue(facing).equals(Direction.UP) && !blockState.getValue(facing).equals(Direction.DOWN)) {
+            frozenBlock = frozenBlock.setValue(FrozenBlock.FACING, blockState.getValue(facing));
+        }
+
+        ((FrozenBlock) frozenBlock.getBlock()).setOldBlockFields(blockState, blockEntity, blockEntityData, isSecondBlock);
 
         return frozenBlock;
     }
