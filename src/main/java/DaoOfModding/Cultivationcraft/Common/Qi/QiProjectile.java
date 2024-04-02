@@ -1,5 +1,6 @@
 package DaoOfModding.Cultivationcraft.Common.Qi;
 
+import DaoOfModding.Cultivationcraft.Client.Renderers.QiSourceRenderer;
 import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Element;
 import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.QiCondenserTechniques.QiEmission;
@@ -70,13 +71,17 @@ public class QiProjectile extends AbstractHurtingProjectile
     public float getAlpha()
     {
         if (entityData.get(ID_LIFE) > 20)
-            return 1;
+            return 0.8f;
 
-        return entityData.get(ID_LIFE) / 20f;
+        return (entityData.get(ID_LIFE) / 20f) * 0.8f;
     }
 
     public void tick()
     {
+        QiSourceRenderer.element = Elements.getElement(getElement());
+        QiSourceRenderer.qisource = null;
+        QiSourceRenderer.target = null;
+
         super.tick();
 
         if (!level.isClientSide)
@@ -96,6 +101,11 @@ public class QiProjectile extends AbstractHurtingProjectile
         xPower = dir.x;
         yPower = dir.y;
         zPower = dir.z;
+    }
+
+    public ResourceLocation getElement()
+    {
+        return element;
     }
 
     protected void onHitEntity(EntityHitResult hit)
@@ -122,6 +132,8 @@ public class QiProjectile extends AbstractHurtingProjectile
     {
         BlockState blockstate = this.level.getBlockState(hit.getBlockPos());
         blockstate.onProjectileHit(this.level, blockstate, hit, this);
+
+        Elements.getElement(getElement()).effectBlock(this.level, hit.getBlockPos());
 
         // Destroy this projectile if it hits a block
         this.discard();

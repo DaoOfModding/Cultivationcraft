@@ -86,7 +86,7 @@ public class CultivationType
     {
         ArrayList<TechniqueModifier> totalModifiers = new ArrayList<>();
 
-        for (TechniqueModifier mod : getModifiers())
+        for (TechniqueModifier mod : modifiers)
             totalModifiers.add(mod);
 
         if (getPreviousCultivation() != null)
