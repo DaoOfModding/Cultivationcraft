@@ -79,9 +79,10 @@ public class FreezeTestItem extends Item {
 
         if (facing != null && !blockState.getValue(facing).equals(Direction.UP) && !blockState.getValue(facing).equals(Direction.DOWN)) {
             frozenBlock = frozenBlock.setValue(FrozenBlock.FACING, blockState.getValue(facing));
+            frozenBlock = frozenBlock.setValue(FrozenBlock.IS_SECOND_BLOCK, isSecondBlock);
         }
 
-        ((FrozenBlock) frozenBlock.getBlock()).setOldBlockFields(blockState, blockEntity, blockEntityData, isSecondBlock);
+        ((FrozenBlock) frozenBlock.getBlock()).setOldBlockFields(blockState, blockEntity, blockEntityData);
 
         return frozenBlock;
     }

@@ -16,31 +16,30 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class FrozenBlock extends AbstractGlassBlock implements EntityBlock {
     public static final DirectionProperty FACING = DirectionalBlock.FACING;
+    public static final BooleanProperty IS_SECOND_BLOCK = BooleanProperty.create("is_second_block");
     BlockState oldBlockState = null;
     BlockEntity oldBlockEntity = null;
     CompoundTag oldBlockEntityData = null;
-    protected boolean isSecondBlock = false;
-
 
     public FrozenBlock(Properties properties) {
         super(properties);
         registerDefaultState(defaultBlockState()
-                .setValue(FACING, Direction.NORTH));
+                .setValue(FACING, Direction.NORTH)
+                .setValue(IS_SECOND_BLOCK, Boolean.valueOf(false)));
+
     }
 
-    public void setOldBlockFields(BlockState oldBlockState, BlockEntity oldBlockEntity, CompoundTag oldBlockEntityData, boolean isSecondBlock) {
+    public void setOldBlockFields(BlockState oldBlockState, BlockEntity oldBlockEntity, CompoundTag oldBlockEntityData) {
         this.oldBlockState = oldBlockState;
         this.oldBlockEntity = oldBlockEntity;
         this.oldBlockEntityData = oldBlockEntityData;
-        this.isSecondBlock = isSecondBlock;
-
-        System.out.println(this.isSecondBlock);
     }
 
     public BlockState getOldBlockState() {
@@ -55,26 +54,26 @@ public class FrozenBlock extends AbstractGlassBlock implements EntityBlock {
         return oldBlockEntityData;
     }
 
-    public boolean isSecondBlock() {
-        return isSecondBlock;
+    public boolean getIsSecondBlock() {
+        return defaultBlockState().getValue(IS_SECOND_BLOCK);
     }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        super.createBlockStateDefinition(builder);
-        builder.add(FACING);
+        builder.add(FACING, IS_SECOND_BLOCK);
     }
 
     @Nullable
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext ctx) {
-        return defaultBlockState().setValue(FACING, ctx.getNearestLookingDirection().getOpposite());
+        return defaultBlockState()
+                .setValue(FACING, ctx.getNearestLookingDirection().getOpposite());
     }
 
     /* BLOCK ENTITY */
     @Override
     public BlockEntity newBlockEntity(@NotNull BlockPos pos, @NotNull BlockState state) {
-        return new FrozenBlockEntity(pos, state, oldBlockState, oldBlockEntity, oldBlockEntityData, isSecondBlock);
+        return new FrozenBlockEntity(pos, state, oldBlockState, oldBlockEntity, oldBlockEntityData, IS_SECOND_BLOCK);
     }
 
     @Nullable
@@ -83,55 +82,3 @@ public class FrozenBlock extends AbstractGlassBlock implements EntityBlock {
         return TickableBlockEntity.getTickerHelper(level);
     }
 }
-
-
-
-/*
-public class FrozenBlock extends Block
-{
-    protected static final VoxelShape BLOCK = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D);
-    BlockState[] stairStates = new BlockState[4];
-    StairBlock[] stair = new StairBlock[4];
-
-    public FrozenBlock()
-    {
-        super(Block.Properties.of(Material.ICE).strength(-1.0F, 3600000.0F).friction(0.989f).noLootTable().noOcclusion());
-
-        // Create appropriate block states for each stair direction
-        stairStates[Direction.EAST.get2DDataValue()] = Blocks.COBBLESTONE_STAIRS.defaultBlockState().setValue(StairBlock.FACING, Direction.EAST).setValue(StairBlock.HALF, Half.BOTTOM).setValue(StairBlock.SHAPE, StairsShape.STRAIGHT).setValue(StairBlock.WATERLOGGED, false);
-        stairStates[Direction.WEST.get2DDataValue()] = Blocks.COBBLESTONE_STAIRS.defaultBlockState().setValue(StairBlock.FACING, Direction.WEST).setValue(StairBlock.HALF, Half.BOTTOM).setValue(StairBlock.SHAPE, StairsShape.STRAIGHT).setValue(StairBlock.WATERLOGGED, false);
-        stairStates[Direction.SOUTH.get2DDataValue()] = Blocks.COBBLESTONE_STAIRS.defaultBlockState().setValue(StairBlock.FACING, Direction.SOUTH).setValue(StairBlock.HALF, Half.BOTTOM).setValue(StairBlock.SHAPE, StairsShape.STRAIGHT).setValue(StairBlock.WATERLOGGED, false);
-        stairStates[Direction.NORTH.get2DDataValue()] = Blocks.COBBLESTONE_STAIRS.defaultBlockState().setValue(StairBlock.FACING, Direction.NORTH).setValue(StairBlock.HALF, Half.BOTTOM).setValue(StairBlock.SHAPE, StairsShape.STRAIGHT).setValue(StairBlock.WATERLOGGED, false);
-
-        for (int i = 0; i < 4; i++)
-            stair[i] = new StairBlock(stairStates[i], this.properties);
-    }
-
-    @Override
-    public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context)
-    {
-        BlockEntity BlockEntity = worldIn.getBlockEntity(pos);
-
-        if (worldIn != null && BlockEntity != null)
-        {
-            Direction dir = ((FrozenBlockEntity)BlockEntity).getRamp();
-            BlockState frozen = ((FrozenBlockEntity)BlockEntity).getFrozenBlock();
-
-            // If the frozen block is a stair return the voxel shape of an appropriately rotated stair
-            if (dir != Direction.DOWN)
-                return stair[dir.get2DDataValue()].getShape(stairStates[dir.get2DDataValue()], worldIn, pos, context);
-            // If the frozen block isn't air or liquid then return the VoxelShape of the frozen block
-            else if (frozen.getMaterial() != Material.AIR && !frozen.getMaterial().isLiquid())
-                return ((FrozenBlockEntity)worldIn.getBlockEntity(pos)).getFrozenBlock().getBlock().getShape(frozen, worldIn, pos, context);
-        }
-
-        // Return a normal block VoxelShape
-        return BLOCK;
-    }
-
-
-    @Override
-    public RenderShape getRenderShape(BlockState iBlockState) {
-        return RenderShape.MODEL;
-    }
-}*/

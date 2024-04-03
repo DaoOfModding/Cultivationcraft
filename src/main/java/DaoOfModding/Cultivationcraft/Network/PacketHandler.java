@@ -83,7 +83,6 @@ public class PacketHandler {
         channel.registerMessage(BODY_FORGE_SELECTION, BodyForgeSelectionPacket.class, BodyForgeSelectionPacket::encode, BodyForgeSelectionPacket::decode, BodyForgeSelectionPacket::handle);
         channel.registerMessage(BODY_MODIFICATIONS, BodyModificationsPacket.class, BodyModificationsPacket::encode, BodyModificationsPacket::decode, BodyModificationsPacket::handle);
         channel.registerMessage(CULTIVATOR_TECH_STAT, TechniqueStatSelectionPacket.class, TechniqueStatSelectionPacket::encode, TechniqueStatSelectionPacket::decode, TechniqueStatSelectionPacket::handle);
-        channel.registerMessage(FROZEN_BLOCK_RENDER, FrozenItemStackPacket.class, FrozenItemStackPacket::encode, FrozenItemStackPacket::decode, FrozenItemStackPacket::handle);
     }
 
     public static void sendAttackToClient(UUID playerID, HitResult.Type type, Vec3 pos, UUID targetID, Direction direction, int slot) {
@@ -191,9 +190,5 @@ public class PacketHandler {
 
         CultivatorTechniquesPacket pack = new CultivatorTechniquesPacket(player.getUUID(), techs);
         channel.send(PacketDistributor.PLAYER.with(() -> toSend), pack);
-    }
-
-    public static <MSG> void sendFrozenItemStackToClient(MSG message) {
-        channel.send(PacketDistributor.ALL.noArg(), message);
     }
 }

@@ -7,22 +7,18 @@ import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
-import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Objects;
-
 public class FrozenBlockEntity extends BlockEntity implements TickableBlockEntity {
-    private ItemStack itemStack;
     protected int FREEZE_PROGRESS_TICKS = 0;
     protected static int FREEZE_DURATION_TICKS = 50;
     protected BlockPos frozenBlockPos;
@@ -37,18 +33,17 @@ public class FrozenBlockEntity extends BlockEntity implements TickableBlockEntit
         this.frozenBlock = ((FrozenBlock) blockState.getBlock()).getOldBlockState() != null ? ((FrozenBlock) blockState.getBlock()).getOldBlockState() : Blocks.AIR.defaultBlockState();
         this.frozenEntity = ((FrozenBlock) blockState.getBlock()).getOldBlockEntity();
         this.frozenEntityData = ((FrozenBlock) blockState.getBlock()).getOldBlockEntityData();
-        this.itemStack = itemStack.getItem().getDefaultInstance();
-        this.isSecondBlock = ((FrozenBlock) blockState.getBlock()).isSecondBlock();
+        this.isSecondBlock = ((FrozenBlock) blockState.getBlock()).getIsSecondBlock();
     }
 
-    public FrozenBlockEntity(BlockPos blockPos, BlockState blockState, BlockState oldBlockState, @Nullable BlockEntity frozenBlockEntity, @Nullable CompoundTag frozenEntityData, boolean isSecondBlock) {
+    public FrozenBlockEntity(BlockPos blockPos, BlockState blockState, BlockState oldBlockState, @Nullable BlockEntity frozenBlockEntity, @Nullable CompoundTag frozenEntityData, BooleanProperty isSecondBlock) {
         super(BlockRegister.FROZEN_BLOCK_ENTITY.get(), blockPos, blockState);
         this.frozenBlockPos = blockPos;
         this.frozenBlock = oldBlockState != null ? oldBlockState : Blocks.AIR.defaultBlockState();
         this.frozenEntity = frozenBlockEntity;
         this.frozenEntityData = frozenEntityData;
-        this.itemStack = new ItemStack(this.frozenBlock.getBlock().asItem());
-        this.isSecondBlock = isSecondBlock;
+        this.isSecondBlock = blockState.getValue(isSecondBlock);
+        System.out.println("isSecondBlock: " + blockState.getValue(isSecondBlock) + " frozenBlock: " + oldBlockState);
     }
 
     @Override
@@ -60,7 +55,6 @@ public class FrozenBlockEntity extends BlockEntity implements TickableBlockEntit
 
         this.frozenBlock = NbtUtils.readBlockState(cultivationCraftData.getCompound("FrozenBlock"));
         this.frozenBlockPos = NbtUtils.readBlockPos(cultivationCraftData.getCompound("FrozenBlockPos"));
-        this.itemStack = new ItemStack(this.frozenBlock.getBlock().asItem());
         this.isSecondBlock = cultivationCraftData.getBoolean("isSecondBlock");
 
         if (cultivationCraftData.hasUUID("FrozenEntity")) {
@@ -87,38 +81,36 @@ public class FrozenBlockEntity extends BlockEntity implements TickableBlockEntit
         tag.put(Cultivationcraft.MODID, cultivationCraftData);
     }
 
-    public ItemStack getRenderStack() {
-        ItemStack stack;
-        System.out.println("isSecondBlock: " + isSecondBlock + " itemStack: " + itemStack);
-        if (frozenBlock != null && !isSecondBlock) {
-            stack = itemStack.getItem().getDefaultInstance();
-        } else {
-            stack = new ItemStack(Blocks.AIR.asItem());
+    @Override
+    public CompoundTag getUpdateTag() {
+        CompoundTag tag = new CompoundTag();
+        var cultivationCraftData = new CompoundTag();
+        cultivationCraftData.putInt("unfreezeTicks", FREEZE_PROGRESS_TICKS);
+
+        cultivationCraftData.put("FrozenBlock", NbtUtils.writeBlockState(frozenBlock));
+        cultivationCraftData.put("FrozenBlockPos", NbtUtils.writeBlockPos(frozenBlockPos));
+        cultivationCraftData.putBoolean("isSecondBlock", isSecondBlock);
+
+        if (frozenEntity != null) {
+            cultivationCraftData.put("FrozenEntity", frozenEntity.getPersistentData());
+            cultivationCraftData.put("FrozenEntityData", frozenEntityData);
         }
-
-        return stack;
+        tag.put(Cultivationcraft.MODID, cultivationCraftData);
+        return tag;
     }
 
-    public void setItemStack(ItemStack itemStack) {
-        System.out.println("isSecondBlock: " + isSecondBlock + " itemStack: " + itemStack);
-        this.itemStack = !isSecondBlock ? itemStack : new ItemStack(Blocks.AIR.asItem());
-    }
-
-    @Nullable
-    @Override
-    public Packet<ClientGamePacketListener> getUpdatePacket() {
-        return super.getUpdatePacket();
-    }
-
-    @Override
-    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
-        super.onDataPacket(net, pkt);
-        load(Objects.requireNonNull(pkt.getTag()));
-    }
-
-    @Override
+    /*@Override
     public void handleUpdateTag(CompoundTag tag) {
         super.handleUpdateTag(tag);
+    }*/
+
+    @Override
+    public Packet<ClientGamePacketListener> getUpdatePacket() {
+        return ClientboundBlockEntityDataPacket.create(this);
+    }
+    
+    public BlockState getFrozenBlock() {
+        return frozenBlock;
     }
 
     public void thawBlock() {
@@ -139,18 +131,14 @@ public class FrozenBlockEntity extends BlockEntity implements TickableBlockEntit
         if (level.isClientSide()) {
             return;
         }
+        this.FREEZE_PROGRESS_TICKS++;
 
-        FrozenBlockEntity frozenBlockEntity = (FrozenBlockEntity) blockEntity;
-        frozenBlockEntity.FREEZE_PROGRESS_TICKS++;
-
-        if (frozenBlockEntity.FREEZE_PROGRESS_TICKS >= FREEZE_DURATION_TICKS) {
-            frozenBlockEntity.thawBlock();
-            frozenBlockEntity.FREEZE_PROGRESS_TICKS = 0;
+        if (this.FREEZE_PROGRESS_TICKS >= FREEZE_DURATION_TICKS) {
+            this.thawBlock();
+            this.FREEZE_PROGRESS_TICKS = 0;
             setChanged(level, blockPos, blockState);
         }
     }
-
-
 }
 
 /*
