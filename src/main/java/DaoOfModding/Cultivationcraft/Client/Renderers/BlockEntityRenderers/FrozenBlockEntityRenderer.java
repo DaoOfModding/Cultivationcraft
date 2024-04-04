@@ -15,6 +15,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.block.state.BlockState;
 
+import java.util.Objects;
+
 public class FrozenBlockEntityRenderer implements BlockEntityRenderer<FrozenBlockEntity> {
     public FrozenBlockEntityRenderer(BlockEntityRendererProvider.Context context) {
     }
@@ -22,7 +24,7 @@ public class FrozenBlockEntityRenderer implements BlockEntityRenderer<FrozenBloc
     @Override
     public void render(FrozenBlockEntity pBlockEntity, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBufferSource, int pPackedLight, int pPackedOverlay) {
         BlockRenderDispatcher blockRenderer = Minecraft.getInstance().getBlockRenderer();
-        BlockState blockState = ((FrozenBlockEntity) pBlockEntity).getFrozenBlock();
+        BlockState blockState = pBlockEntity.getOldBlockState();
         String name = blockState.getBlock().getName().getString();
 
         pPoseStack.pushPose();
@@ -30,8 +32,8 @@ public class FrozenBlockEntityRenderer implements BlockEntityRenderer<FrozenBloc
         pPoseStack.scale(0.999F, 0.999F, 0.999F);
 
         if (name.contains("Chest")) renderChest(pBlockEntity, pPoseStack);
-        if (!((FrozenBlock) pBlockEntity.getBlockState().getBlock()).getIsSecondBlock()) {
-            blockRenderer.renderSingleBlock(blockState, pPoseStack, pBufferSource, getLightLevel(pBlockEntity.getLevel(), pBlockEntity.getBlockPos()), pPackedOverlay);
+        if (!pBlockEntity.isSecondBlock()) {
+            blockRenderer.renderSingleBlock(blockState, pPoseStack, pBufferSource, getLightLevel(Objects.requireNonNull(pBlockEntity.getLevel()), pBlockEntity.getBlockPos()), pPackedOverlay);
         }
         pPoseStack.popPose();
     }

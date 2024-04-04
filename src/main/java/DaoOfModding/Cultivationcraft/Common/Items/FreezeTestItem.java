@@ -2,6 +2,7 @@ package DaoOfModding.Cultivationcraft.Common.Items;
 
 import DaoOfModding.Cultivationcraft.Common.Blocks.BlockRegister;
 import DaoOfModding.Cultivationcraft.Common.Blocks.custom.FrozenBlock;
+import DaoOfModding.Cultivationcraft.Common.Blocks.entity.FrozenBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -9,11 +10,11 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.Property;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 public class FreezeTestItem extends Item {
     public FreezeTestItem(Properties properties) {
@@ -25,24 +26,31 @@ public class FreezeTestItem extends Item {
         if (!pContext.getLevel().isClientSide() && pContext.getHand() == InteractionHand.MAIN_HAND) {
             BlockPos blockPos = pContext.getClickedPos();
             BlockPos secondBlockPos = getMultiblockPos(blockPos, pContext.getLevel().getBlockState(blockPos));
+            Level level = pContext.getLevel();
             if (secondBlockPos != null) {
-                createFrozenBlock(pContext, secondBlockPos, true);
+                createFrozenBlock(level, secondBlockPos, true);
             }
-            createFrozenBlock(pContext, blockPos, false);
+            createFrozenBlock(level, blockPos, false);
             return InteractionResult.SUCCESS;
         }
         return super.useOn(pContext);
     }
 
-    public static void createFrozenBlock(UseOnContext pContext, BlockPos blockPos, boolean isSecondBlock) {
-        BlockState oldState = pContext.getLevel().getBlockState(blockPos);
-        BlockEntity oldBlockEntity = oldState.hasBlockEntity() ? pContext.getLevel().getBlockEntity(blockPos) : null;
-        CompoundTag oldBlockEntityData = oldState.hasBlockEntity() ? oldBlockEntity.serializeNBT() : null;
-        if (oldBlockEntity != null) {
-            pContext.getLevel().removeBlockEntity(blockPos);
+    public static void createFrozenBlock(Level world, BlockPos blockPos, boolean isSecondBlock) {
+        BlockState oldState = world.getBlockState(blockPos);
+        BlockEntity oldBlockEntity = null;
+        CompoundTag oldBlockEntityData = null;
+        if (oldState.hasBlockEntity()) {
+            oldBlockEntity = world.getBlockEntity(blockPos);
+            oldBlockEntityData = oldBlockEntity.serializeNBT();
+            world.removeBlockEntity(blockPos);
         }
-        BlockState FrozenBlock = setFrozenBlock(oldState, oldBlockEntity, oldBlockEntityData, isSecondBlock);
-        pContext.getLevel().setBlockAndUpdate(blockPos, FrozenBlock);
+
+        if (!world.isClientSide()) {
+            BlockState FrozenBlock = setFrozenBlock(oldState, isSecondBlock);
+            world.setBlockAndUpdate(blockPos, FrozenBlock);
+            ((FrozenBlockEntity) world.getBlockEntity(blockPos)).setOldBlockFields(oldState, oldBlockEntity, oldBlockEntityData);
+        }
     }
 
     public static BlockPos getMultiblockPos(BlockPos blockPos, BlockState blockState) {
@@ -73,17 +81,19 @@ public class FreezeTestItem extends Item {
         return null;
     }
 
-    public static BlockState setFrozenBlock(BlockState blockState, @Nullable BlockEntity blockEntity, @Nullable CompoundTag blockEntityData, boolean isSecondBlock) {
+    public static BlockState setFrozenBlock(BlockState oldBlockState, boolean isSecondBlock) {
         BlockState frozenBlock = BlockRegister.FROZEN_BLOCK.get().defaultBlockState();
-        Property<Direction> facing = blockState.getBlock().getStateDefinition().getProperty("facing") != null ? (Property<Direction>) blockState.getBlock().getStateDefinition().getProperty("facing") : null;
-
-        if (facing != null && !blockState.getValue(facing).equals(Direction.UP) && !blockState.getValue(facing).equals(Direction.DOWN)) {
-            frozenBlock = frozenBlock.setValue(FrozenBlock.FACING, blockState.getValue(facing));
+        Property<Direction> facing = oldBlockState.getBlock().getStateDefinition().getProperty("facing") != null
+                ? (Property<Direction>) oldBlockState.getBlock().getStateDefinition().getProperty("facing")
+                : null;
+        if (
+                facing != null
+                        && !oldBlockState.getValue(facing).equals(Direction.UP)
+                        && !oldBlockState.getValue(facing).equals(Direction.DOWN)
+        ) {
+            frozenBlock = frozenBlock.setValue(FrozenBlock.FACING, oldBlockState.getValue(facing));
             frozenBlock = frozenBlock.setValue(FrozenBlock.IS_SECOND_BLOCK, isSecondBlock);
         }
-
-        ((FrozenBlock) frozenBlock.getBlock()).setOldBlockFields(blockState, blockEntity, blockEntityData);
-
         return frozenBlock;
     }
 }

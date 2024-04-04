@@ -1,3 +1,4 @@
+/*
 package DaoOfModding.Cultivationcraft.Network.Packets;
 
 import DaoOfModding.Cultivationcraft.Common.Blocks.entity.FrozenBlockEntity;
@@ -45,3 +46,4 @@ public class FrozenItemStackPacket extends Packet {
         });
     }
 }
+*/
