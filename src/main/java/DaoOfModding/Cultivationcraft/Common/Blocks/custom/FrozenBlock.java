@@ -46,7 +46,6 @@ public class FrozenBlock extends AbstractGlassBlock implements EntityBlock {
     /* BLOCK ENTITY */
     @Override
     public BlockEntity newBlockEntity(@NotNull BlockPos pos, @NotNull BlockState state) {
-        System.out.println();
         return new FrozenBlockEntity(pos, state);
     }
 
