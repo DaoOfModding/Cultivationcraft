@@ -18,6 +18,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import java.util.Objects;
 
 public class FrozenBlockEntityRenderer implements BlockEntityRenderer<FrozenBlockEntity> {
+    private int CHEST = 1;
+    private int BED = 2;
+
     public FrozenBlockEntityRenderer(BlockEntityRendererProvider.Context context) {
     }
 
@@ -31,7 +34,8 @@ public class FrozenBlockEntityRenderer implements BlockEntityRenderer<FrozenBloc
         pPoseStack.translate(0.0005D, 0.0005D, 0.0005D);
         pPoseStack.scale(0.999F, 0.999F, 0.999F);
 
-        if (name.contains("Chest")) renderChest(pBlockEntity, pPoseStack);
+        if (name.contains("Chest")) renderSpecial(pBlockEntity, pPoseStack, CHEST);
+        if (name.contains("Bed")) renderSpecial(pBlockEntity, pPoseStack, BED);
         if (!pBlockEntity.isSecondBlock()) {
             blockRenderer.renderSingleBlock(blockState, pPoseStack, pBufferSource, getLightLevel(Objects.requireNonNull(pBlockEntity.getLevel()), pBlockEntity.getBlockPos()), pPackedOverlay);
         }
@@ -44,15 +48,30 @@ public class FrozenBlockEntityRenderer implements BlockEntityRenderer<FrozenBloc
         return LightTexture.pack(blockLight, skyLight);
     }
 
-    private void renderChest(FrozenBlockEntity pBlockEntity, PoseStack pPoseStack) {
+    private void renderSpecial(FrozenBlockEntity pBlockEntity, PoseStack pPoseStack, int blockRendered) {
         float f = pBlockEntity.getBlockState().getValue(FrozenBlock.FACING).toYRot();
         pPoseStack.mulPose(Vector3f.YP.rotationDegrees(-f));
 
-        switch (pBlockEntity.getBlockState().getValue(FrozenBlock.FACING)) {
-            case NORTH -> pPoseStack.translate(-1D, 0D, -1D);
-            case SOUTH -> pPoseStack.translate(0D, 0D, 0D);
-            case WEST -> pPoseStack.translate(0D, 0D, -1D);
-            case EAST -> pPoseStack.translate(-1D, 0D, 0D);
+        switch (blockRendered) {
+            case 1 -> {
+                switch (pBlockEntity.getBlockState().getValue(FrozenBlock.FACING)) {
+                    case NORTH -> pPoseStack.translate(-1D, 0D, -1D);
+                    case SOUTH -> pPoseStack.translate(0D, 0D, 0D);
+                    case WEST -> pPoseStack.translate(0D, 0D, -1D);
+                    case EAST -> pPoseStack.translate(-1D, 0D, 0D);
+                }
+            }
+            case 2 -> {
+                switch (pBlockEntity.getBlockState().getValue(FrozenBlock.FACING)) {
+                    case NORTH -> pPoseStack.translate(-1D, 0D, -1D);
+                    case SOUTH -> pPoseStack.translate(0D, 0D, 0D);
+                    case WEST -> pPoseStack.translate(0D, 0D, -1D);
+                    case EAST -> pPoseStack.translate(-1D, 0D, 0D);
+                }
+                ;
+            }
         }
+
+
     }
 }

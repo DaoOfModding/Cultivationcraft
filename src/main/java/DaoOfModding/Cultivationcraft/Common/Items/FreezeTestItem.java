@@ -47,10 +47,36 @@ public class FreezeTestItem extends Item {
         }
 
         if (!world.isClientSide()) {
-            BlockState FrozenBlock = setFrozenBlock(oldState, isSecondBlock);
+            BlockState FrozenBlock = setFrozenBlock(oldState, handleIsBedSecondBlock(oldState));
             world.setBlockAndUpdate(blockPos, FrozenBlock);
             ((FrozenBlockEntity) world.getBlockEntity(blockPos)).setOldBlockFields(oldState, oldBlockEntity, oldBlockEntityData);
         }
+    }
+
+    public static boolean handleIsBedSecondBlock(BlockState oldBlockState) {
+        BlockState bed = oldBlockState.getBlock().getName().getString().contains("Bed") ? oldBlockState : null;
+        boolean isBed = bed != null;
+        boolean isSecondBlock = isBed && bed.getValue(bed.getBlock().getStateDefinition().getProperty("part")).toString().equals("foot");
+        if (isBed && isSecondBlock) {
+            return true;
+        }
+        return false;
+    }
+
+    public static BlockState setFrozenBlock(BlockState oldBlockState, boolean isSecondBlock) {
+        BlockState frozenBlock = BlockRegister.FROZEN_BLOCK.get().defaultBlockState();
+        Property<Direction> facing = oldBlockState.getBlock().getStateDefinition().getProperty("facing") != null
+                ? (Property<Direction>) oldBlockState.getBlock().getStateDefinition().getProperty("facing")
+                : null;
+        if (
+                facing != null
+                        && !oldBlockState.getValue(facing).equals(Direction.UP)
+                        && !oldBlockState.getValue(facing).equals(Direction.DOWN)
+        ) {
+            frozenBlock = frozenBlock.setValue(FrozenBlock.FACING, oldBlockState.getValue(facing));
+            frozenBlock = frozenBlock.setValue(FrozenBlock.IS_SECOND_BLOCK, Boolean.valueOf(isSecondBlock));
+        }
+        return frozenBlock;
     }
 
     public static BlockPos getMultiblockPos(BlockPos blockPos, BlockState blockState) {
@@ -79,21 +105,5 @@ public class FreezeTestItem extends Item {
         }
 
         return null;
-    }
-
-    public static BlockState setFrozenBlock(BlockState oldBlockState, boolean isSecondBlock) {
-        BlockState frozenBlock = BlockRegister.FROZEN_BLOCK.get().defaultBlockState();
-        Property<Direction> facing = oldBlockState.getBlock().getStateDefinition().getProperty("facing") != null
-                ? (Property<Direction>) oldBlockState.getBlock().getStateDefinition().getProperty("facing")
-                : null;
-        if (
-                facing != null
-                        && !oldBlockState.getValue(facing).equals(Direction.UP)
-                        && !oldBlockState.getValue(facing).equals(Direction.DOWN)
-        ) {
-            frozenBlock = frozenBlock.setValue(FrozenBlock.FACING, oldBlockState.getValue(facing));
-            frozenBlock = frozenBlock.setValue(FrozenBlock.IS_SECOND_BLOCK, isSecondBlock);
-        }
-        return frozenBlock;
     }
 }

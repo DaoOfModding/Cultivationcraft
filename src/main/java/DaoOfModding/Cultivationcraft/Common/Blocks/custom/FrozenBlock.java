@@ -20,12 +20,9 @@ import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.WeakHashMap;
-
 public class FrozenBlock extends AbstractGlassBlock implements EntityBlock {
     public static final DirectionProperty FACING = DirectionalBlock.FACING;
     public static final BooleanProperty IS_SECOND_BLOCK = BooleanProperty.create("is_second_block");
-    private final WeakHashMap<BlockPos, FrozenBlockEntity> blockEntities = new WeakHashMap<>();
 
     public FrozenBlock(Properties properties) {
         super(properties);
@@ -39,10 +36,6 @@ public class FrozenBlock extends AbstractGlassBlock implements EntityBlock {
         builder.add(FACING, IS_SECOND_BLOCK);
     }
 
-    public boolean getIsSecondBlock() {
-        return defaultBlockState().getValue(IS_SECOND_BLOCK);
-    }
-
     @Nullable
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext ctx) {
@@ -53,8 +46,8 @@ public class FrozenBlock extends AbstractGlassBlock implements EntityBlock {
     /* BLOCK ENTITY */
     @Override
     public BlockEntity newBlockEntity(@NotNull BlockPos pos, @NotNull BlockState state) {
-        FrozenBlockEntity newBlockEntity = new FrozenBlockEntity(pos, state);
-        return newBlockEntity;
+        System.out.println();
+        return new FrozenBlockEntity(pos, state);
     }
 
     @Nullable
