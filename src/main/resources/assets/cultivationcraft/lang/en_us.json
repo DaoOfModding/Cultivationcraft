@@ -5,6 +5,7 @@
   "cultivationcraft.cultivation.qicondensation.text": "Condense your Qi into a single compressed core",
   "cultivationcraft.cultivation.coreforming": "Core Forming",
   "cultivationcraft.cultivation.coreforming.text": "Form additional cores of compressed Qi",
+
   "cultivationcraft.elements.none": "Qi",
   "cultivationcraft.elements.fire": "Fire",
   "cultivationcraft.elements.earth": "Earth",
@@ -13,6 +14,7 @@
   "cultivationcraft.elements.water": "Water",
   "cultivationcraft.elements.ice": "Ice",
   "cultivationcraft.elements.lightning": "Lightning",
+
   "cultivationcraft.stat.weight": "Weight",
   "cultivationcraft.stat.weight.text": "How much the character weights, a higher weight increases stamina costs and can decrease movement speed",
   "cultivationcraft.stat.armor": "Armor",
@@ -71,11 +73,13 @@
   "cultivationcraft.stat.qiabsorbrange.text": "The range (in blocks) this character can absorb Qi from",
   "cultivationcraft.stat.qicost": "Qi Cost for Forge",
   "cultivationcraft.stat.qicost.text": "The amount of Qi needed for this character to forge their next body part",
+
   "cultivationcraft.cstat.maxqi": "Max Qi",
   "cultivationcraft.cstat.absorbrange": "Qi Absorb Range",
   "cultivationcraft.cstat.absorbspeed": "Qi Absorb Speed",
   "cultivationcraft.cstat.passiveabsorb": "Ambient Qi Absorb Speed",
   "cultivationcraft.cstat.passiveqi": "Qi Regen",
+
   "cultivationcraft.tstat.qicost": "Qi Cost",
   "cultivationcraft.tstat.staminacost": "Stamina Cost",
   "cultivationcraft.tstat.breathcost": "Breath Cost",
@@ -85,10 +89,13 @@
   "cultivationcraft.tstat.amount": "Number of Projectiles",
   "cultivationcraft.tstat.statusresist": "Elemental Status Effect Resistance",
   "cultivationcraft.tstat.lifetime": "Lifetime",
+
   "cultivationcraft.tstat.fsspeed": "Movement Speed",
   "cultivationcraft.tstat.fsmaxspeed": "Max Speed",
   "cultivationcraft.tstat.fsturnspeed": "Turn Speed",
+
   "cultivationcraft.tstat.qihealthratio": "Qi to Health Conversion",
+
   "cultivationcraft.quest.qisource": "Seconds spent cultivating from a QiSource",
   "cultivationcraft.quest.damagetaken": "Damage taken",
   "cultivationcraft.quest.damageresisted": "Damage resisted",
@@ -105,79 +112,114 @@
   "cultivationcraft.quest.heal": "Health healed",
   "cultivationcraft.quest.drainstamina": "Stamina used",
   "cultivationcraft.quest.bite": "Bite damage dealt",
+
+
   "cultivationcraft.technique.example": "Example Technique",
   "cultivationcraft.technique.example.description": "This is an example description",
+
   "cultivationcraft.technique.meditate": "Meditate",
   "cultivationcraft.technique.meditate.description": "Activate to meditate, absorbing the Qi around you to enhance your cultivation",
+
   "cultivationcraft.technique.divinesense": "Divine Sense",
   "cultivationcraft.technique.divinesense.description": "Toggle on to sense the Qi around you, allowing you to \"see\" large concentrations of Qi",
+
   "cultivationcraft.technique.barrier": "Qi Barrier",
   "cultivationcraft.technique.barrier.description": "Blocks incoming damage with your Qi",
+
   "cultivationcraft.technique.itemenhance": "Qi Channel",
   "cultivationcraft.technique.itemenhance.description": "Channels your Qi into your attacks, enhancing their damage",
+
   "cultivationcraft.technique.emission": "Qi Emission",
   "cultivationcraft.technique.emission.description": "Shoot out a concentrated blast of Qi to damage your enemies",
+
   "cultivationcraft.technique.flyingswordformation": "Flying Sword Formation",
   "cultivationcraft.technique.flyingswordformation.description": "Toggle on to take control of your flying swords with your Qi",
+
   "cultivationcraft.technique.flight": "Flight",
   "cultivationcraft.technique.flight.description": "Toggle on to take flight with your Qi",
+
   "cultivationcraft.technique.icewalk": "Ice Walk",
   "cultivationcraft.technique.icewalk.description": "Toggle on to freeze whatever is below your feet as you move, including air!",
+
   "cultivationcraft.technique.leap": "Leap",
   "cultivationcraft.technique.leap.description": "Activate to quickly leap forward a great distance",
+
   "cultivationcraft.technique.beam": "Exhale",
   "cultivationcraft.technique.beam.description": "Breath out the contents of your lungs in a high pressure stream, damaging any entities or blocks hit",
+
   "cultivationcraft.technique.bite": "Bite",
   "cultivationcraft.technique.bite.description": "Toggle on to replace your attack with a bite attack when selected",
+
   "cultivationcraft.technique.roll": "Roll",
   "cultivationcraft.technique.roll.description": "Toggle on to roll around instead of walking.\n§cWARNING: §cDOING §cTHIS §cIN §cFIRST §cPERSON §cIS §cNOT §cADVISED",
+
   "cultivationcraft.technique.float": "Float",
   "cultivationcraft.technique.float.description": "Toggle on to replace your jump with the ability to blow yourself up into a balloon and slowly float upwards",
+
   "cultivationcraft.technique.jetlegs": "Leg Jets",
   "cultivationcraft.technique.jetlegs.description": "Toggle on to activate your leg jets allowing you to propel yourself into the air by holding jump",
+
   "cultivationcraft.technique.jet": "Back Jets",
   "cultivationcraft.technique.jet.description": "Toggle on to activate your back jets providing you with a significant increase to your forward momentum",
+
   "cultivationcraft.technique.spread": "Spread Wings",
   "cultivationcraft.technique.spread.description": "Toggle on to spread your wings. Hold jump whilst in the air to raise your wings and release jump to flap them downwards, raising your higher into the air",
+
   "cultivationcraft.technique.dart": "Spread Wings",
   "cultivationcraft.technique.dart.description": "Toggle on to spread your wings. Press jump to quickly dart in the direction you are looking",
+
   "cultivationcraft.technique.bounce": "Bounce Harder",
   "cultivationcraft.technique.bounce.description": "Toggle on to curl yourself into a ball when in the air, increasing the amount you bounce when you land",
+
   "cultivationcraft.technique.exhale": "Exhale Breath",
   "cultivationcraft.technique.exhale.description": "Exhale your breath at high speed to damage enemies and break blocks",
+
   "cultivationcraft.technique.spinpetal": "Spin Petals",
   "cultivationcraft.technique.spinpetal.description": "Spin your petals around to propel yourself into the air",
+
   "cultivationcraft.commands.reset.single": "%s had their bodyforge status reset",
   "cultivationcraft.commands.reset.multiple": "%s players had their bodyforge status reset",
+
   "cultivationcraft.commands.completequest.single": "Completed quest for %s",
   "cultivationcraft.commands.completequest.multiple": "Completed quests for %s players",
+
   "cultivationcraft.commands.completeprogress.single": "Completed cultivation progress for %s",
   "cultivationcraft.commands.completeprogress.multiple": "Completed cultivation progress for %s players",
+
   "cultivationcraft.commands.levelskills.single": "Leveled all skills for %s",
   "cultivationcraft.commands.levelskills.multiple": "Leveled all skills for %s players",
+
   "cultivationcraft.commands.fillqi.single": "Refilled Qi for %s",
   "cultivationcraft.commands.fillqi.multiple": "Refilled Qi for %s players",
+
   "cultivationcraft.gui.tab.0.0": "Cultivate",
   "cultivationcraft.gui.tab.0.1": "Skills",
   "cultivationcraft.gui.tab.0.2": "Bind",
   "cultivationcraft.gui.tab.0.3": "Help",
+
   "cultivationcraft.gui.tab.1.0": "Stats",
   "cultivationcraft.gui.tab.1.1": "Skills",
   "cultivationcraft.gui.tab.1.2": "Forge",
   "cultivationcraft.gui.tab.1.3": "Help",
+
   "cultivationcraft.gui.cultivationselection": "Cultivation Type Selection",
+
   "cultivationcraft.gui.cultivationtype.0": "Become a Qi Cultivator\n \nCultivate Qi inside your body and expel it to affect your environment.",
   "cultivationcraft.gui.cultivationtype.1": "Become a Body Forger\n \nUse Qi to transform various different parts of your body into different, more specialized forms.",
+
   "cultivationcraft.gui.breakthroughrequirements": "Breakthrough requirements",
   "cultivationcraft.gui.breakthroughyes": "Can Breakthrough",
   "cultivationcraft.gui.cultivationprogress": "Cultivation Progress",
   "cultivationcraft.gui.completedtech": "Skills Mastered",
   "cultivationcraft.gui.tribulationpending": "§cTribulation §cpending",
+
   "cultivationcraft.gui.advanceselection": "Choose Cultivation Type to advance too",
+
   "cultivationcraft.gui.bind": "Bind Item",
   "cultivationcraft.gui.done": "Done",
   "cultivationcraft.gui.cancel": "Cancel",
   "cultivationcraft.gui.remaining": "Remaining: %s seconds",
+
   "cultivationcraft.gui.description": "Desc",
   "cultivationcraft.gui.stats": "Stats",
   "cultivationcraft.gui.modify": "Modify",
@@ -186,34 +228,46 @@
   "cultivationcraft.gui.stage": "Stage",
   "cultivationcraft.gui.reset": "Reset",
   "cultivationcraft.gui.advance": "Advance",
+
   "cultivationcraft.gui.technique": "Techniques",
   "cultivationcraft.gui.notechnique": "None",
+
   "cultivationcraft.gui.bodyforge": "Forge Body",
   "cultivationcraft.gui.forge": "Forge",
+
   "cultivationcraft.gui.cultivate": "Cultivate",
   "cultivationcraft.gui.internal": "Internal",
   "cultivationcraft.gui.external": "External",
+
   "cultivationcraft.gui.headpart": "Head",
   "cultivationcraft.gui.bodypart": "Body",
   "cultivationcraft.gui.armpart": "Arms",
   "cultivationcraft.gui.legpart": "Legs",
+
   "cultivationcraft.gui.generic.base": "Base",
   "cultivationcraft.gui.generic.reinforce": "Reinforce",
   "cultivationcraft.gui.generic.reinforce.description": "Reinforce this body part to be stronger without making any significant change to its structure",
+
   "cultivationcraft.gui.generic.location": "Location",
+
   "cultivationcraft.gui.generic.stabilizing": "Stabilizing",
+
   "cultivationcraft.gui.bodypart.expanding": "Expandable",
   "cultivationcraft.gui.bodypart.expanding.description": "Forge your body to enable it to increase and decrease in size",
+
   "cultivationcraft.gui.bodypart.short": "Short",
   "cultivationcraft.gui.bodypart.short.description": "Half the height, Half the weight, Half the health",
+
   "cultivationcraft.gui.bodypart.skin": "Skin",
   "cultivationcraft.gui.bodypart.bone": "Bones",
   "cultivationcraft.gui.bodypart.back": "Back",
   "cultivationcraft.gui.bodypart.stomach": "Stomach",
   "cultivationcraft.gui.bodypart.blood": "Blood",
   "cultivationcraft.gui.bodypart.lung": "Lungs",
+
   "cultivationcraft.gui.bodypart.skin.rubber": "Rubber",
   "cultivationcraft.gui.bodypart.skin.rubber.description": "Forge your skin into a rubber-like consistency, making it stretchy, bouncy and providing an extremely high resistance to lightning",
+
   "cultivationcraft.gui.bodypart.skin.scale.fire": "Fire Scales",
   "cultivationcraft.gui.bodypart.skin.scale.fire.description": "Forge fire infused scales to protect you from flames",
   "cultivationcraft.gui.bodypart.skin.scale.water": "Water Scales",
@@ -226,6 +280,7 @@
   "cultivationcraft.gui.bodypart.skin.scale.wood.description": "Forge wood infused scales to protect you from wood",
   "cultivationcraft.gui.bodypart.skin.scale.lightning": "Lightning Scales",
   "cultivationcraft.gui.bodypart.skin.scale.lightning.description": "Forge lightning infused scales to protect you from lightning",
+
   "cultivationcraft.gui.bodypart.bone.big": "Big Boned",
   "cultivationcraft.gui.bodypart.bone.big.description": "Increases bone thickness, letting them absorb a lot more damage but increasing your size and weight",
   "cultivationcraft.gui.bodypart.bone.structural": "Structural Bones",
@@ -238,6 +293,7 @@
   "cultivationcraft.gui.bodypart.bone.dinosaur.description": "Incredibly large, heavy bones that provide both high defensive and offensive power",
   "cultivationcraft.gui.bodypart.bone.sharp": "Sharp Bones",
   "cultivationcraft.gui.bodypart.bone.sharp.description": "Sharpen bones, provides no extra protection but deals much more damage",
+
   "cultivationcraft.gui.bodypart.bone.fire": "Fire infused",
   "cultivationcraft.gui.bodypart.bone.fire.description": "Infused bones with fire element.\nSlightly less armor, but gives resistance to fire",
   "cultivationcraft.gui.bodypart.bone.water": "Water infused",
@@ -250,6 +306,7 @@
   "cultivationcraft.gui.bodypart.bone.wood.description": "Infused bones with wood element.\nSlightly less armor, but gives resistance to wood",
   "cultivationcraft.gui.bodypart.bone.lightning": "Lightning infused",
   "cultivationcraft.gui.bodypart.bone.lightning.description": "Infused bones with Lightning element.\nGives no armor, but gives resistance to Lightning",
+
   "cultivationcraft.gui.bodypart.blood.hunger": "Default Blood",
   "cultivationcraft.gui.bodypart.blood.hunger.description": "Basic cultivator blood, heals you by draining hunger",
   "cultivationcraft.gui.bodypart.blood.gaseous": "Gaseous Blood",
@@ -260,9 +317,11 @@
   "cultivationcraft.gui.bodypart.blood.burning.description": "Blood so hot it burns everything it touches. Including you.\nAllows you to break the fire resistance cap and be healed by fire damage",
   "cultivationcraft.gui.bodypart.blood.water": "Water Blood",
   "cultivationcraft.gui.bodypart.blood.water.description": "Your blood is diluted with water, healing you whilst in water.\nAllows you to break the water resistance cap and be healed by water damage",
+
   "cultivationcraft.gui.bodypart.lung.default": "Lung Type",
   "cultivationcraft.gui.bodypart.lung.left": "Left Lung",
   "cultivationcraft.gui.bodypart.lung.right": "Right Lung",
+
   "cultivationcraft.gui.bodypart.lung.reinforce": "Reinforced Lungs",
   "cultivationcraft.gui.bodypart.lung.reinforce.description": "Reinforces your lungs, increasing their capacity and slightly increasing your health",
   "cultivationcraft.gui.bodypart.lung.highpressure": "High Pressure Lungs",
@@ -277,77 +336,115 @@
   "cultivationcraft.gui.bodypart.lung.wind.description": "Breath almost like normal, your breath just tends to push others around",
   "cultivationcraft.gui.bodypart.lung.mixed": "Mixed Lungs",
   "cultivationcraft.gui.bodypart.lung.mixed.description": "Modify your lungs to allow each lung to breath differently",
+
   "cultivationcraft.gui.bodypart.skin.stretchy": "Stretchy",
   "cultivationcraft.gui.bodypart.skin.stretchy.description": "Forge your skin to be able to freely stretch into much larger sizes",
+
   "cultivationcraft.gui.bodypart.stomach.expanding": "Expanding",
   "cultivationcraft.gui.bodypart.stomach.expanding.description": "Forge your stomach to expand as needed, vastly increasing your maximum stamina but also increasing your size and weight as you eat",
+
   "cultivationcraft.gui.bodypart.stomach.carnivorous": "Carnivorous",
   "cultivationcraft.gui.bodypart.stomach.carnivorous.description": "Forge your stomach to gain extra nutrition from meat, but you can only eat meat",
+
   "cultivationcraft.gui.bodypart.stomach.herbivorous": "Herbivorous",
   "cultivationcraft.gui.bodypart.stomach.herbivorous.description": "Forge your stomach to be able to eat vegetation, but you can not eat meat",
+
   "cultivationcraft.gui.bodypart.back.wings": "Wings",
   "cultivationcraft.gui.bodypart.back.wings.description": "Grow wings to carry you through the sky",
+
   "cultivationcraft.gui.bodypart.back.iwings": "Insect Wings",
   "cultivationcraft.gui.bodypart.back.iwings.description": "Grow delicate insect wings allowing you to quickly dart through the sky",
+
   "cultivationcraft.gui.bodypart.back.jet": "Jet Boosters",
   "cultivationcraft.gui.bodypart.back.jet.description": "Grow flame spewing jet boosters from your back to increase your movement speed, but only when moving forwards",
+
   "cultivationcraft.gui.bodypart.back.dfin": "Dorsal Fin",
   "cultivationcraft.gui.bodypart.back.dfin.description": "Grow a dorsal fin that increases your swimming speed. For reasons.",
+
   "cultivationcraft.gui.armpart.headarms": "Arms on Head",
   "cultivationcraft.gui.armpart.headarms.description": "Attach your arms to your head rather than your body",
+
   "cultivationcraft.gui.headpart.location.front": "Front",
   "cultivationcraft.gui.headpart.location.front.description": "Move your head from the top of your body to the front",
+
   "cultivationcraft.gui.headpart.jaw": "Unhinged Jaw",
   "cultivationcraft.gui.headpart.jaw.description": "Unhinge your jaw to allow your mouth to open much wider than usually possible",
+
   "cultivationcraft.gui.headpart.longneck": "Long Neck",
   "cultivationcraft.gui.headpart.longneck.description": "~~~~~TODO~~~~~~",
+
   "cultivationcraft.gui.headpart.eye": "Eyes",
+
   "cultivationcraft.gui.headpart.eye.qisight": "Qi Sight",
   "cultivationcraft.gui.headpart.eye.qisight.description": "Forge your eyes to be able to see large concentrations of Qi",
+
   "cultivationcraft.gui.headpart.mouth": "Mouth",
+
   "cultivationcraft.gui.headpart.mouth.flatteeth": "Flat Teeth",
   "cultivationcraft.gui.headpart.mouth.flatteeth.description": "Grow larger, flat teeth, allowing you to chew up and swallow almost any substance",
   "cultivationcraft.gui.headpart.mouth.sharpteeth": "Sharp Teeth",
   "cultivationcraft.gui.headpart.mouth.sharpteeth.description": "Grow larger, sharper teeth, providing you with a highly damaging bite attack",
+
   "cultivationcraft.gui.headpart.top": "Top",
+
   "cultivationcraft.gui.headpart.top.fin": "Fin",
   "cultivationcraft.gui.headpart.top.fin.description": "Grow a fin from your head that increases your swimming speed. For reasons.",
+
   "cultivationcraft.gui.headpart.top.flower": "Flower",
   "cultivationcraft.gui.headpart.top.flower.description": "Who needs a stomach when you can grow a giant flower from your head to photosynthesise nutrients from the sun",
+
   "cultivationcraft.gui.headpart.top.petal": "Petal",
+
   "cultivationcraft.gui.headpart.top.petal.rotating": "Spinning Petals",
   "cultivationcraft.gui.headpart.top.petal.rotating.description": "Forge your petals to be able to spin around, propelling you into the air",
+
   "cultivationcraft.gui.armpart.short": "Short Arms",
   "cultivationcraft.gui.armpart.short.description": "Some people need elbows, you are not one of those people",
+
   "cultivationcraft.gui.armpart.long": "Long Arms",
   "cultivationcraft.gui.armpart.long.description": "Stretch out your arms, increasing your reach",
+
   "cultivationcraft.gui.armpart.bulky": "Bulky Arms",
   "cultivationcraft.gui.armpart.bulky.description": "Vastly increase the muscle mass in your arms, making you heavier but increases the damage of your swings.\nUnfortinately also makes your arms slightly shorter, decreasing their range",
+
   "cultivationcraft.gui.armpart.flipper": "Flipper Arms",
   "cultivationcraft.gui.armpart.flipper.description": "Flatten your arms into flippers\nGreat at swimming, not so great at anything else",
+
   "cultivationcraft.gui.armpart.glide": "Gliding Arms",
   "cultivationcraft.gui.armpart.glide.description": "Grow a thin membrane connecting your arms to your body, providing you with the ability to glide through the air that cannot be disabled",
+
   "cultivationcraft.gui.legpart.feet": "Feet",
   "cultivationcraft.gui.legpart.feet.description": "Remove the useless space between your feet and your body. Vastly increases the amount of weight your legs can support, but decreases movement speed",
+
   "cultivationcraft.gui.legpart.reversejoint": "Reverse-Jointed",
   "cultivationcraft.gui.legpart.reversejoint.description": "Reverse the joints in your knees allowing you to jump significantly higher",
+
   "cultivationcraft.gui.legpart.hexaLeg": "Six Legs",
   "cultivationcraft.gui.legpart.hexaLeg.description": "6 longer, smaller legs. Moves fast, jumps high, places your body close to the ground, but can not support much weight",
+
   "cultivationcraft.gui.legpart.singleLeg": "Single Leg",
   "cultivationcraft.gui.legpart.singleLeg.description": "Remove one of your superfluous legs, allowing superior movement through hopping and greatly increasing jump height",
+
   "cultivationcraft.gui.legpart.large": "Large Legs",
   "cultivationcraft.gui.legpart.large.description": "Bigger is better, and these are VERY big\nAllows you to support a LOT of weight, but very slow",
+
   "cultivationcraft.gui.legpart.jet": "Jet Legs",
   "cultivationcraft.gui.legpart.jet.description": "Grow jet boosters from your legs, allowing you to fly through the sky by spouting fire from your feet",
+
   "cultivationcraft.gui.legpart.airjump": "Air Boosting Legs",
   "cultivationcraft.gui.legpart.airjump.description": "Grow boosters from your legs, spurting out puffs of wind to allow you to jump again whilst in the air",
+
   "cultivationcraft.gui.legpart.long": "Long Legs",
   "cultivationcraft.gui.legpart.long.description": "Stretch out your legs, slightly increasing your movement speed, jump height, step height and weight",
+
   "cultivationcraft.gui.help": "Help",
+
   "cultivationcraft.gui.help.cultivationmenu": "Cultivation Menu",
   "cultivationcraft.gui.help.cultivationmenu.text": "The screen for viewing and controlling all cultivation related aspects of your character.\n \nContains multiple different tabs relating to the different aspects of your cultivation",
+
   "cultivationcraft.gui.help.cultivationmenu.stats": "Stats",
   "cultivationcraft.gui.help.cultivationmenu.stats.text": "View the stats of your character effected by your cultivation",
+
   "cultivationcraft.gui.help.cultivationmenu.skills": "Skills",
   "cultivationcraft.gui.help.cultivationmenu.skills.text": "View and assigned the different skills available to your character",
   "cultivationcraft.gui.help.cultivationmenu.skills.assign": "Assigning Skills",
@@ -364,6 +461,7 @@
   "cultivationcraft.gui.help.cultivationmenu.skills.keyskills.meditate.text": "All characters always have access to the meditate skill.\n \nWhen toggled on, the character cannot move but absorbs any nearby Qi, progressing their cultivation.",
   "cultivationcraft.gui.help.cultivationmenu.skills.keyskills.qisight": "Qi Sight",
   "cultivationcraft.gui.help.cultivationmenu.skills.keyskills.qisight.text": "One of the first skills learnt by all characters.\n \nWhen toggled on, gives the character night vision and allows them to see nearby Qi Sources.",
+
   "cultivationcraft.gui.help.cultivationmenu.cultivate": "Cultivate",
   "cultivationcraft.gui.help.cultivationmenu.cultivate.text": "Control the cultivation of your character",
   "cultivationcraft.gui.help.cultivationmenu.cultivate.bodyforge.select": "Select Body Forge",
@@ -372,6 +470,7 @@
   "cultivationcraft.gui.help.cultivationmenu.cultivate.bodyforge.progress.text": "Whilst forging a body part a progress bar will display on the bottom of the tab, which fills up as you absorb Qi.\n \nYou can also chose to cancel the forge, losing all progress, by pressing the 'Cancel' button in the middle of the screen.",
   "cultivationcraft.gui.help.cultivationmenu.cultivate.bodyforge.quest": "Stabilizing Body Forge",
   "cultivationcraft.gui.help.cultivationmenu.cultivate.bodyforge.quest.text": "Once you have completed infusing your body with the needed Qi you will start stabilizing the body part.\n \nA progress bar and what is required to fill that bar will be displayed at the bottom of the screen, and once filled the body forge will be complete.\n \nAt any point during this process you can discard this body forge by pressing the 'Cancel' button.",
+
   "cultivationcraft.gui.help.cultivationmenu.cultivate.qicondenser.breakthrough": "Breakthrough requirements",
   "cultivationcraft.gui.help.cultivationmenu.cultivate.qicondenser.breakthrough.text": "Displays the requirements to breakthrough to the next stage of cultivation",
   "cultivationcraft.gui.help.cultivationmenu.cultivate.qicondenser.stats": "Stats",
@@ -380,14 +479,17 @@
   "cultivationcraft.gui.help.cultivationmenu.cultivate.qicondenser.reset.text": "Resets all progress in your current stage of cultivation",
   "cultivationcraft.gui.help.cultivationmenu.cultivate.qicondenser.tribulation": "Tribulation",
   "cultivationcraft.gui.help.cultivationmenu.cultivate.qicondenser.tribulation.text": "Tribulations are required to advance to the next level of cultivation once you have progressed through each stage of your current cultivation level.\n \nA tribulation will call down several powerful strikes of lightning against you. If you survive all lightning strikes your cultivation with progress, otherwise your cultivation will drop a stage.",
+
   "cultivationcraft.gui.help.cultivationmenu.bind": "Bind",
   "cultivationcraft.gui.help.cultivationmenu.bind.text": "Bind sword items to you, turning them into Flying Swords you can control when thrown out with an active Flying Sword formation.",
+
   "cultivationcraft.gui.help.qi": "Qi",
   "cultivationcraft.gui.help.qi.text": "The Vital Energy that flows through all living creatures",
   "cultivationcraft.gui.help.qi.source": "Qi Source",
   "cultivationcraft.gui.help.qi.source.text": "Naturally formed locations that produce Qi invisible to the naked eye, vital for cultivators to advance their cultivation.\n \nThe element of the Qi produced depends on the environment around the Qi Source.",
   "cultivationcraft.gui.help.elements": "Elements",
   "cultivationcraft.gui.help.elements.text": "There are 5 main elements of Qi in the world, which a Qi Source can produce if surrounded by enough blocks of the corresponding element.\n \nThese elements suppress each other in the following order:\n§cFire§r > §2Wood§r > §aWind§r > §6Earth§r > §9Water§r > §cFire§r\n \nAdditionally, each element has various mutations that Qi Sources have a very rare chance to instead produce",
+
   "cultivationcraft.gui.help.elements.fire": "Fire",
   "cultivationcraft.gui.help.elements.fire.text": "Mostly found in the Nether, the §cFire§r element is an element related to heat and burning\n \nIt is suppressed by §9Water§r and suppresses §2Wood§r",
   "cultivationcraft.gui.help.elements.wood": "Wood",
@@ -398,14 +500,19 @@
   "cultivationcraft.gui.help.elements.earth.text": "Mostly found underground, the §6Earth§r element is an element related to dirt and stone\n \nIt is suppressed by §aWind§r and suppresses §9Water§r",
   "cultivationcraft.gui.help.elements.water": "Water",
   "cultivationcraft.gui.help.elements.water.text": "Mostly found in the sea, the §9Water§r element is an element related to liquids and sealife\n \nIt is suppressed by §6Earth§r and suppresses §cFire§r",
+
   "cultivationcraft.gui.help.elements.lightning": "Lightning",
   "cultivationcraft.gui.help.elements.lightning.text": "The §eLightning§r element is a rare mutation of the §aWind§r element.\n \nAn element of the heavens, this element both suppresses and is suppressed by all base elements",
   "cultivationcraft.gui.help.elements.ice": "Ice",
   "cultivationcraft.gui.help.elements.ice.text": "Mostly found near frozen water, The §bIce§r element is a slightly rare mutation of the §9Water§r element.\n \nThis element is related to coldness and freezing",
+
+
   "cultivationcraft.gui.help.debug": "Debug",
   "cultivationcraft.gui.help.debug.text": "OP Commands for testing purposes",
+
   "cultivationcraft.gui.help.debug.bodyforge": "cultivation",
   "cultivationcraft.gui.help.debug.bodyforge.text": "Commands relating to Cultivation",
+
   "cultivationcraft.gui.help.debug.bodyforge.completecultivation": "completeCultivation",
   "cultivationcraft.gui.help.debug.bodyforge.completecultivation.text": "§n/cultivation §ncompleteCultivation §n§lplayerName\n \nThis command will give the supplied character all the Qi needed to complete their current cultivation.\nMeditating is still required to complete.",
   "cultivationcraft.gui.help.debug.bodyforge.completequest": "completeQuest",

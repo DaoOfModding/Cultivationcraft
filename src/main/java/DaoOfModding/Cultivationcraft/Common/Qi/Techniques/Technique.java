@@ -6,6 +6,7 @@ import DaoOfModding.Cultivationcraft.Common.Qi.Cultivation.CultivationType;
 import DaoOfModding.Cultivationcraft.Common.Qi.Damage.QiDamageSource;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.PlayerStatModifications;
+import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.TechniqueModifiers.TechniqueModifier;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.TechniqueStats.TechniqueStatModification;
 import DaoOfModding.Cultivationcraft.Network.ClientPacketHandler;
 import DaoOfModding.Cultivationcraft.StaminaHandler;
@@ -52,6 +53,7 @@ public class Technique
     protected String langLocation;
 
     protected ResourceLocation Element;
+    protected ArrayList<ResourceLocation> ElementList = new ArrayList<ResourceLocation>();
     protected boolean active = false;
 
     protected boolean overlayOn = false;
@@ -259,7 +261,11 @@ public class Technique
 
     public ResourceLocation getElement()
     {
-        return Element;
+        if (ElementList.size() == 0)
+            return Element;
+
+        // Return a random element from the element list if there are elements in the list
+        return ElementList.get((int)(Math.random() * (ElementList.size() + 1)));
     }
 
     // Returns whether this technique is currently active or not
@@ -500,6 +506,20 @@ public class Technique
     {
     }
 
+    // Triggers on both client and server side
+    // Applies modifiers from TechniqueModifiers
+    protected void applyTechniqueModifiers(Player player)
+    {
+        // Set all elements from modifiers
+        ElementList.clear();
+
+        for (TechniqueModifier mod : CultivatorStats.getCultivatorStats(player).getCultivation().getModifiers())
+        {
+            if (mod.hasElement())
+                ElementList.add(mod.getElement());
+        }
+    }
+
     // Ticks on server side, only called if Technique is active and owned by the player
     public void tickServer(TickEvent.PlayerTickEvent event)
     {
@@ -510,6 +530,7 @@ public class Technique
         }
 
         addModifiers(event.player);
+        applyTechniqueModifiers(event.player);
 
         // While the key is being held down increase the currentChannel duration
         if (type == useType.Channel)
@@ -533,6 +554,7 @@ public class Technique
         }
 
         addModifiers(event.player);
+        applyTechniqueModifiers(event.player);
 
         // While the key is being held down increase the currentChannel duration
         if (type == useType.Channel)
