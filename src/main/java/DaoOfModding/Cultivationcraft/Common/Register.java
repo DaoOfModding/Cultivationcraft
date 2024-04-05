@@ -10,6 +10,8 @@ import DaoOfModding.Cultivationcraft.Client.Renderers.FlyingSwordRenderer;
 import DaoOfModding.Cultivationcraft.Client.Renderers.QiProjectileRenderer;
 import DaoOfModding.Cultivationcraft.Client.Textures.AlphaOverlayTexture;
 import DaoOfModding.Cultivationcraft.Common.Containers.FlyingSwordContainer;
+import DaoOfModding.Cultivationcraft.Common.Items.FreezeTestItem;
+import DaoOfModding.Cultivationcraft.Common.Items.ModCreativeModeTab;
 import DaoOfModding.Cultivationcraft.Common.Qi.QiProjectile;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import net.minecraft.client.Minecraft;
@@ -22,6 +24,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.event.EntityRenderersEvent;
@@ -46,6 +49,7 @@ public class Register
     public static DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, Cultivationcraft.MODID);
     public static DeferredRegister<MenuType<?>> CONTAINERS = DeferredRegister.create(ForgeRegistries.MENU_TYPES, Cultivationcraft.MODID);
     public static DeferredRegister<ParticleType<?>> PARTICLES = DeferredRegister.create(ForgeRegistries.PARTICLE_TYPES, Cultivationcraft.MODID);
+    public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, Cultivationcraft.MODID);
 
     public static RegistryObject<EntityType<FlyingSwordEntity>> FLYINGSWORD = ENTITY_TYPES.register("flyingsword", () ->
                                                                                 EntityType.Builder.<FlyingSwordEntity>of(FlyingSwordEntity::new, MobCategory.MISC)
@@ -119,11 +123,17 @@ public class Register
                 }
             });
 
-    public static void init(IEventBus bus)
-    {
+    public static final RegistryObject<Item> FREEZE_TEST_ITEM = ITEMS.register("freeze_test_item",
+            () -> new FreezeTestItem(
+                    new Item.Properties().tab(ModCreativeModeTab.CC_DEBUG_TAB)
+            )
+    );
+
+    public static void init(IEventBus bus) {
         ENTITY_TYPES.register(bus);
         CONTAINERS.register(bus);
         PARTICLES.register(bus);
+        ITEMS.register(bus);
         VANILLA_FLUID_TYPES.register(bus);
     }
 

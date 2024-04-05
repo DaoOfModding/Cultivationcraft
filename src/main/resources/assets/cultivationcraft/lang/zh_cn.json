@@ -417,5 +417,5 @@
   "cultivationcraft.gui.help.debug.bodyforge.completeQuest": "完成任务",
   "cultivationcraft.gui.help.debug.bodyforge.completeQuest.text": "§n/bodyforge §ncompleteQuest §n§lplayerName\n \n此命令将完成角色的当前任务。",
   "cultivationcraft.gui.help.debug.bodyforge.reset": "重置",
-  "cultivationcraft.gui.help.debug.bodyforge.reset.text": "§n/bodyforge §nreset §n§lplayerName\n \n此命令将完全重置角色的修炼。",
+  "cultivationcraft.gui.help.debug.bodyforge.reset.text": "§n/bodyforge §nreset §n§lplayerName\n \n此命令将完全重置角色的修炼。"
 }

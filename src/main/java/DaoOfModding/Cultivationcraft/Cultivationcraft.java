@@ -1,7 +1,10 @@
 package DaoOfModding.Cultivationcraft;
 
+import DaoOfModding.Cultivationcraft.Client.Animations.GenericQiPoses;
+import DaoOfModding.Cultivationcraft.Client.ClientItemControl;
 import DaoOfModding.Cultivationcraft.Client.GUI.HelpItems;
 import DaoOfModding.Cultivationcraft.Client.Textures.initTextures;
+import DaoOfModding.Cultivationcraft.Common.Blocks.BlockRegister;
 import DaoOfModding.Cultivationcraft.Common.Config;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartNames;
 import DaoOfModding.Cultivationcraft.Client.Animations.GenericQiPoses;
@@ -49,6 +52,7 @@ public class Cultivationcraft {
         ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, Config.Server.spec, "cultivationcraft.toml");
 
         Register.init(modEventBus);
+        BlockRegister.init(modEventBus);
         BodyPartNames.registerLungLocations();
     }
 
