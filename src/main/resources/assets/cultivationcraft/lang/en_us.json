@@ -522,5 +522,8 @@
   "cultivationcraft.gui.help.debug.bodyforge.reset": "reset",
   "cultivationcraft.gui.help.debug.bodyforge.reset.text": "§n/cultivation §nreset §n§lplayerName\n \nThis command will completely reset the supplied character's cultivation.",
   "cultivationcraft.gui.help.debug.bodyforge.fillqi": "fillQi",
-  "cultivationcraft.gui.help.debug.bodyforge.fillqi.text": "§n/cultivation §nfillQi §n§lplayerName\n \nThis command will completely fill the Qi/Stamina of the supplied character."
+  "cultivationcraft.gui.help.debug.bodyforge.fillqi.text": "§n/cultivation §nfillQi §n§lplayerName\n \nThis command will completely fill the Qi/Stamina of the supplied character.",
+  "item.cultivationcraft.freeze_test_item": "Freeze Test",
+  "itemGroup.cultivationcrafttab": "Cultivation Craft Debug Tab",
+  "block.cultivationcraft.frozen_block": "CC FrozenBlock"
 }

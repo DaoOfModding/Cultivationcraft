@@ -13,7 +13,11 @@ import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import DaoOfModding.Cultivationcraft.Network.Packets.*;
 import DaoOfModding.Cultivationcraft.Network.Packets.CultivatorStats.*;
 import DaoOfModding.Cultivationcraft.Network.Packets.keypressPacket;
+import DaoOfModding.Cultivationcraft.Network.Packets.CultivatorStats.CultivatorStatsPacket;
+import DaoOfModding.Cultivationcraft.Network.Packets.CultivatorStats.CultivatorTypePacket;
+import DaoOfModding.Cultivationcraft.Network.Packets.CultivatorStats.TechniqueStatSelectionPacket;
 import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
@@ -51,6 +55,7 @@ public class PacketHandler
     protected static final byte BODY_MODIFICATIONS = 97;
     protected static final byte CULTIVATOR_TECHNIQUES = 98;
     protected static final byte CULTIVATOR_STATS = 99;
+    protected static final byte FROZEN_BLOCK_RENDER = 100;
     protected static final String PROTOCOL_VERSION = "1";
 
     public static final SimpleChannel channel = NetworkRegistry.newSimpleChannel(
