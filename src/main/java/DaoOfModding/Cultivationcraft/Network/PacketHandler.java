@@ -11,13 +11,14 @@ import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.IC
 import DaoOfModding.Cultivationcraft.Common.Qi.Effects.WindInstance;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import DaoOfModding.Cultivationcraft.Network.Packets.*;
-import DaoOfModding.Cultivationcraft.Network.Packets.CultivatorStats.*;
-import DaoOfModding.Cultivationcraft.Network.Packets.keypressPacket;
+import DaoOfModding.Cultivationcraft.Network.Packets.CultivatorStats.CultivatorStatsPacket;
+import DaoOfModding.Cultivationcraft.Network.Packets.CultivatorStats.CultivatorTypePacket;
+import DaoOfModding.Cultivationcraft.Network.Packets.CultivatorStats.TechniqueStatSelectionPacket;
 import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
@@ -28,8 +29,7 @@ import net.minecraftforge.server.ServerLifecycleHooks;
 
 import java.util.UUID;
 
-public class PacketHandler
-{
+public class PacketHandler {
     protected static final byte KEYPRESS = 03;
     protected static final byte STAMINA_USE = 05;
     protected static final byte ATTACK = 07;
@@ -51,6 +51,7 @@ public class PacketHandler
     protected static final byte BODY_MODIFICATIONS = 97;
     protected static final byte CULTIVATOR_TECHNIQUES = 98;
     protected static final byte CULTIVATOR_STATS = 99;
+    protected static final byte FROZEN_BLOCK_RENDER = 100;
     protected static final String PROTOCOL_VERSION = "1";
 
     public static final SimpleChannel channel = NetworkRegistry.newSimpleChannel(
@@ -60,8 +61,7 @@ public class PacketHandler
             PROTOCOL_VERSION::equals
     );
 
-    public static void init()
-    {
+    public static void init() {
         channel.registerMessage(KEYPRESS, keypressPacket.class, keypressPacket::encode, keypressPacket::decode, keypressPacket::handle);
         channel.registerMessage(ATTACK, AttackPacket.class, AttackPacket::encode, AttackPacket::decode, AttackPacket::handle);
         channel.registerMessage(STAMINA_USE, StaminaUsePacket.class, StaminaUsePacket::encode, StaminaUsePacket::decode, StaminaUsePacket::handle);
@@ -85,66 +85,57 @@ public class PacketHandler
         channel.registerMessage(CULTIVATOR_TECH_STAT, TechniqueStatSelectionPacket.class, TechniqueStatSelectionPacket::encode, TechniqueStatSelectionPacket::decode, TechniqueStatSelectionPacket::handle);
     }
 
-    public static void sendAttackToClient(UUID playerID, HitResult.Type type, Vec3 pos, UUID targetID, Direction direction, int slot)
-    {
+    public static void sendAttackToClient(UUID playerID, HitResult.Type type, Vec3 pos, UUID targetID, Direction direction, int slot) {
         AttackPacket pack = new AttackPacket(playerID, type, pos, targetID, direction, slot);
         channel.send(PacketDistributor.TRACKING_ENTITY.with(() -> ServerLifecycleHooks.getCurrentServer().getPlayerList().getPlayer(playerID)), pack);
     }
 
-    public static void sendBloodSpawnToClient(UUID playerID, Vec3 source, double amount)
-    {
+    public static void sendBloodSpawnToClient(UUID playerID, Vec3 source, double amount) {
         BloodPacket pack = new BloodPacket(playerID, amount, source);
         channel.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> ServerLifecycleHooks.getCurrentServer().getPlayerList().getPlayer(playerID)), pack);
     }
 
-    public static void sendQuestProgressToClient(UUID player, double amount)
-    {
+    public static void sendQuestProgressToClient(UUID player, double amount) {
         QuestPacket packet = new QuestPacket(player, amount);
 
         channel.send(PacketDistributor.PLAYER.with(() -> ServerLifecycleHooks.getCurrentServer().getPlayerList().getPlayer(player)), packet);
     }
 
-    public static void sendChunkQiSourcesToClient(LevelChunk LevelChunk)
-    {
+    public static void sendChunkQiSourcesToClient(LevelChunk LevelChunk) {
         IChunkQiSources sources = ChunkQiSources.getChunkQiSources(LevelChunk);
         ChunkQiSourcesPacket pack = new ChunkQiSourcesPacket(sources);
 
         channel.send(PacketDistributor.TRACKING_CHUNK.with(() -> LevelChunk), pack);
     }
 
-    public static void sendWindInstanceToClients(WindInstance wind, Entity entity)
-    {
+    public static void sendWindInstanceToClients(WindInstance wind, Entity entity) {
         WindPacket pack = new WindPacket(wind, entity.getUUID());
 
         channel.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> entity), pack);
     }
 
-    public static void sendChunkQiSourcesToClient(LevelChunk LevelChunk, ServerPlayer player)
-    {
+    public static void sendChunkQiSourcesToClient(LevelChunk LevelChunk, ServerPlayer player) {
         IChunkQiSources sources = ChunkQiSources.getChunkQiSources(LevelChunk);
         ChunkQiSourcesPacket pack = new ChunkQiSourcesPacket(sources);
 
         channel.send(PacketDistributor.PLAYER.with(() -> player), pack);
     }
 
-    public static void sendCultivatorStatsToClient(Player player)
-    {
+    public static void sendCultivatorStatsToClient(Player player) {
         PacketDistributor.PacketTarget target = PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> player);
 
         sendCultivatorStatsToClient(player, target);
         sendCultivatorTechniquesToClient(player);
     }
 
-    public static void sendCultivatorStatsToSpecificClient(Player player, ServerPlayer toSend)
-    {
+    public static void sendCultivatorStatsToSpecificClient(Player player, ServerPlayer toSend) {
         PacketDistributor.PacketTarget target = PacketDistributor.PLAYER.with(() -> toSend);
 
         sendCultivatorStatsToClient(player, target);
         sendCultivatorTechniquesToSpecificClient(player, toSend);
     }
 
-    protected static void sendCultivatorStatsToClient(Player player, PacketDistributor.PacketTarget distribute)
-    {
+    protected static void sendCultivatorStatsToClient(Player player, PacketDistributor.PacketTarget distribute) {
         ICultivatorStats stats = CultivatorStats.getCultivatorStats(player);
 
         // Send the cultivator's stats to the client
@@ -152,30 +143,26 @@ public class PacketHandler
         channel.send(distribute, pack);
     }
 
-    public static void updateStaminaForClients(float stamina, Player player)
-    {
+    public static void updateStaminaForClients(float stamina, Player player) {
         PacketDistributor.PacketTarget target = PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> player);
 
         StaminaUsePacket pack = new StaminaUsePacket(stamina, player.getUUID());
         channel.send(target, pack);
     }
 
-    public static void sendBodyModificationsToSpecificClient(Player player, ServerPlayer toSend)
-    {
+    public static void sendBodyModificationsToSpecificClient(Player player, ServerPlayer toSend) {
         PacketDistributor.PacketTarget target = PacketDistributor.PLAYER.with(() -> toSend);
 
         sendBodyModificationsToClient(player, target);
     }
 
-    public static void sendBodyModificationsToClient(Player player)
-    {
+    public static void sendBodyModificationsToClient(Player player) {
         PacketDistributor.PacketTarget target = PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> player);
 
         sendBodyModificationsToClient(player, target);
     }
 
-    protected static void sendBodyModificationsToClient(Player player, PacketDistributor.PacketTarget distribute)
-    {
+    protected static void sendBodyModificationsToClient(Player player, PacketDistributor.PacketTarget distribute) {
         IBodyModifications modifications = BodyModifications.getBodyModifications(player);
 
         // Send the cultivator's stats to the client
@@ -183,26 +170,22 @@ public class PacketHandler
         channel.send(distribute, pack);
     }
 
-    public static void sendTechniqueInfoToClients(TechniqueInfoPacket packet, Player except)
-    {
+    public static void sendTechniqueInfoToClients(TechniqueInfoPacket packet, Player except) {
         channel.send(PacketDistributor.TRACKING_ENTITY.with(() -> except), packet);
     }
 
-    public static void sendPartInfoToClients(PartInfoPacket packet, Player except)
-    {
+    public static void sendPartInfoToClients(PartInfoPacket packet, Player except) {
         channel.send(PacketDistributor.TRACKING_ENTITY.with(() -> except), packet);
     }
 
-    public static void sendCultivatorTechniquesToClient(Player player)
-    {
+    public static void sendCultivatorTechniquesToClient(Player player) {
         ICultivatorTechniques techs = CultivatorTechniques.getCultivatorTechniques(player);
 
         CultivatorTechniquesPacket pack = new CultivatorTechniquesPacket(player.getUUID(), techs);
         channel.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> player), pack);
     }
 
-    public static void sendCultivatorTechniquesToSpecificClient(Player player, ServerPlayer toSend)
-    {
+    public static void sendCultivatorTechniquesToSpecificClient(Player player, ServerPlayer toSend) {
         ICultivatorTechniques techs = CultivatorTechniques.getCultivatorTechniques(player);
 
         CultivatorTechniquesPacket pack = new CultivatorTechniquesPacket(player.getUUID(), techs);
