@@ -30,6 +30,8 @@ public class FireElement extends Element
     @Override
     public void effectBlock(Level level, BlockPos pos)
     {
+        pos = pos.above();
+
         if (BaseFireBlock.canBePlacedAt(level, pos, Direction.DOWN))
         {
             level.setBlockAndUpdate(pos, BaseFireBlock.getState(level, pos));

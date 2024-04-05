@@ -6,6 +6,8 @@ import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.ICultiv
 import DaoOfModding.Cultivationcraft.Common.Qi.CultivationTypes;
 import DaoOfModding.Cultivationcraft.Common.Qi.Damage.QiDamageSource;
 import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
+import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
+import DaoOfModding.Cultivationcraft.Common.Qi.Stats.StatIDs;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.Technique;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.TechniqueStats.DefaultTechniqueStatIDs;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.TechniqueStats.TechniqueStatModification;
@@ -94,10 +96,14 @@ public class QiBarrierTechnique extends Technique
     @Override
     public float onDamage(QiDamageSource source, float amount, Player player)
     {
-        if (CultivatorStats.getCultivatorStats(player).getCultivation().consumeQi(player, amount / getTechniqueStat(qiToHealthRatio, player)))
+        float resist = 1 - BodyPartStatControl.getStats(player).getElementalStat(StatIDs.resistanceModifier, source.damageElement) / 100f;
+
+        resist *= amount;
+
+        if (CultivatorStats.getCultivatorStats(player).getCultivation().consumeQi(player, resist / getTechniqueStat(qiToHealthRatio, player)))
         {
             levelUp(player, amount);
-            Elements.getElement(source.getElement()).applyStatusEffect(source, player, (float)(amount - getTechniqueStat(statusResist, player) * amount));
+            Elements.getElement(source.getElement()).applyStatusEffect(source, player, (float)(resist - getTechniqueStat(statusResist, player) * resist));
             return 0;
         }
 

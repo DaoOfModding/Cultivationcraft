@@ -7,6 +7,7 @@
   "cultivationcraft.elements.water": "水",
   "cultivationcraft.elements.ice": "冰",
   "cultivationcraft.elements.lightning": "雷",
+
   "cultivationcraft.stat.weight": "重量",
   "cultivationcraft.stat.weight.text": "角色的重量，更高的重量会增加耐力消耗，并降低移动速度。",
   "cultivationcraft.stat.armor": "护甲",
@@ -65,6 +66,7 @@
   "cultivationcraft.stat.qiabsorbrange.text": "角色吸收气的范围（按方块计算）",
   "cultivationcraft.stat.qicost": "修炼消耗",
   "cultivationcraft.stat.qicost.text": "角色修炼身体部位所消耗的气量",
+
   "cultivationcraft.quest.qisource": "在气源中修炼的秒数",
   "cultivationcraft.quest.damagetaken": "受到伤害",
   "cultivationcraft.quest.damageresisted": "抵抗伤害",
@@ -81,79 +83,114 @@
   "cultivationcraft.quest.heal": "恢复的总生命值",
   "cultivationcraft.quest.drainstamina": "消耗体力",
   "cultivationcraft.quest.bite": "撕咬造成的伤害",
+
+
   "cultivationcraft.technique.example": "示例技艺",
   "cultivationcraft.technique.example.description": "一个示例描述。",
+
   "cultivationcraft.technique.meditate": "冥想",
   "cultivationcraft.technique.meditate.description": "进行冥想，将周围的气引入体内来增强你的修炼。",
+
   "cultivationcraft.technique.divinesense": "气感",
   "cultivationcraft.technique.divinesense.description": "感应你周围的气，使你可以\"看到\" 大量聚集的气。",
+
   "cultivationcraft.technique.icewalk": "冰霜行者",
   "cultivationcraft.technique.icewalk.description": "当开启时，你脚下包括空气在内的方块将会被冻结。",
+
   "cultivationcraft.technique.leap": "飞跃",
   "cultivationcraft.technique.leap.description": "进行一个快速的飞跃",
+
   "cultivationcraft.technique.beam": "吞吐",
   "cultivationcraft.technique.beam.description": "快速喷出肺内的物体，摧毁面前的敌人与方块。",
+
   "cultivationcraft.technique.bite": "撕咬",
   "cultivationcraft.technique.bite.description": "开启后以撕咬替代攻击。",
+
   "cultivationcraft.technique.roll": "滚动",
   "cultivationcraft.technique.roll.description": "开启后以滚动代替行走.\n§c警告: §c不建议在 §c第 §c一 §c人 §c称 §c这 §c样 §c做",
+
   "cultivationcraft.technique.float": "漂浮",
   "cultivationcraft.technique.float.description": "开启后将会以像气球一般向上漂浮的能力代替跳跃。",
+
   "cultivationcraft.technique.jetlegs": "腿部弹射",
   "cultivationcraft.technique.jetlegs.description": "开启后，按住跳跃键将会使用腿部弹射将你送至空中。",
+
   "cultivationcraft.technique.jet": "背部喷射",
   "cultivationcraft.technique.jet.description": "开启后激活背部喷射，显著提升移动速度。",
+
   "cultivationcraft.technique.spread": "展翅",
   "cultivationcraft.technique.spread.description": "开启后将会展开翅膀。在空中按住跳跃键以举起翅膀，松开后将会向下拍打翅膀并向上抬升。",
+
   "cultivationcraft.technique.dart": "猛冲",
   "cultivationcraft.technique.dart.description": "开启后将会展开翅膀。按下跳跃键以向前方冲刺。",
+
   "cultivationcraft.technique.bounce": "弹跳",
   "cultivationcraft.technique.bounce.description": "在空中开启，将自己蜷缩成球，增加落地时的弹性。",
+
   "cultivationcraft.technique.exhale": "吐息",
   "cultivationcraft.technique.exhale.description": "高速喷气并摧毁面前的敌人和方块。",
+
   "cultivationcraft.technique.spinpetal": "旋转花瓣",
   "cultivationcraft.technique.spinpetal.description": "旋转你周围的花瓣并升至空中。",
+
   "cultivationcraft.commands.reset.single": "%s 重置了身体改造状态",
   "cultivationcraft.commands.reset.multiple": "%s 重置了身体改造状态",
+
   "cultivationcraft.commands.completequest.single": "已完成 %s 的任务",
   "cultivationcraft.commands.completequest.multiple": "已完成 %s 的任务",
+
   "cultivationcraft.commands.completeprogress.single": "已完成 %s 的身体改造",
   "cultivationcraft.commands.completeprogress.multiple": "已完成 %s 的身体改造",
+
+
   "cultivationcraft.gui.tab0": "状态",
   "cultivationcraft.gui.tab1": "技能",
   "cultivationcraft.gui.tab2": "修炼",
   "cultivationcraft.gui.tab3": "帮助",
+
   "cultivationcraft.gui.bind": "绑定",
   "cultivationcraft.gui.done": "确定",
   "cultivationcraft.gui.cancel": "取消",
   "cultivationcraft.gui.remaining": "剩余时间: %s秒",
+
   "cultivationcraft.gui.description": "介绍",
   "cultivationcraft.gui.stats": "状态",
+
   "cultivationcraft.gui.technique": "技能",
   "cultivationcraft.gui.notechnique": "无",
+
   "cultivationcraft.gui.bodyforge": "身体改造",
   "cultivationcraft.gui.forge": "改造",
+
   "cultivationcraft.gui.headpart": "头部",
   "cultivationcraft.gui.bodypart": "躯干",
   "cultivationcraft.gui.armpart": "手臂",
   "cultivationcraft.gui.legpart": "腿部",
+
   "cultivationcraft.gui.generic.base": "基础",
   "cultivationcraft.gui.generic.reinforce": "强化",
   "cultivationcraft.gui.generic.reinforce.description": "在不改变其基本结构的情况下加固该身体部位，使其更加坚固。",
+
   "cultivationcraft.gui.generic.location": "位置",
+
   "cultivationcraft.gui.generic.stabilizing": "稳定",
+
   "cultivationcraft.gui.bodypart.expanding": "延展性",
   "cultivationcraft.gui.bodypart.expanding.description": "改造你的身体，使其变得伸缩自如",
+
   "cultivationcraft.gui.bodypart.short": "短小",
   "cultivationcraft.gui.bodypart.short.description": "高度减半，重量减半，血量减半",
+
   "cultivationcraft.gui.bodypart.skin": "皮肤",
   "cultivationcraft.gui.bodypart.bone": "骨骼",
   "cultivationcraft.gui.bodypart.back": "背部",
   "cultivationcraft.gui.bodypart.stomach": "胃",
   "cultivationcraft.gui.bodypart.blood": "血液",
   "cultivationcraft.gui.bodypart.lung": "肺",
+
   "cultivationcraft.gui.bodypart.skin.rubber": "橡皮人",
   "cultivationcraft.gui.bodypart.skin.rubber.description": "将皮肤改造成类似橡胶的质地，富有弹性且可以抵挡雷电伤害。",
+
   "cultivationcraft.gui.bodypart.skin.scale.fire": "炽鳞",
   "cultivationcraft.gui.bodypart.skin.scale.fire.description": "长出可以抵抗火伤的鳞片。",
   "cultivationcraft.gui.bodypart.skin.scale.water": "鱼鳞",
@@ -166,6 +203,7 @@
   "cultivationcraft.gui.bodypart.skin.scale.wood.description": "长出可以抵挡风伤的皮肤",
   "cultivationcraft.gui.bodypart.skin.scale.lightning": "雷肤",
   "cultivationcraft.gui.bodypart.skin.scale.lightning.description": "长出可以抵挡雷伤的皮肤",
+
   "cultivationcraft.gui.bodypart.bone.big": "强骨",
   "cultivationcraft.gui.bodypart.bone.big.description": "增加骨骼的密度，使其可以承受更多伤害，但会增加你的体型和重量。",
   "cultivationcraft.gui.bodypart.bone.structural": "骨骼结构",
@@ -178,6 +216,7 @@
   "cultivationcraft.gui.bodypart.bone.dinosaur.description": "不可思议的庞大骨骼，提供大量护甲和攻击力。",
   "cultivationcraft.gui.bodypart.bone.sharp": "锋利骨骼",
   "cultivationcraft.gui.bodypart.bone.sharp.description": "提供额外伤害的锋利骨骼。",
+
   "cultivationcraft.gui.bodypart.bone.fire": "火注入",
   "cultivationcraft.gui.bodypart.bone.fire.description": "向骨骼注入火元素。\n提供少量护甲和对应抗性。",
   "cultivationcraft.gui.bodypart.bone.water": "水注入",
@@ -190,6 +229,7 @@
   "cultivationcraft.gui.bodypart.bone.wood.description": "向骨骼注入木元素。\n提供少量护甲和对应抗性。",
   "cultivationcraft.gui.bodypart.bone.lightning": "雷注入",
   "cultivationcraft.gui.bodypart.bone.lightning.description": "向骨骼注入雷元素。\n提供少量护甲和对应抗性。",
+
   "cultivationcraft.gui.bodypart.blood.hunger": "原血",
   "cultivationcraft.gui.bodypart.blood.hunger.description": "基础血液，通过消耗饥饿值来恢复生命值。",
   "cultivationcraft.gui.bodypart.blood.qi": "气血",
@@ -198,9 +238,11 @@
   "cultivationcraft.gui.bodypart.blood.burning.description": "沸腾的血液点燃它接触到的一切，包括你。\n允许你打破火焰抗性的上限并能够通过火焰伤害治愈自己。",
   "cultivationcraft.gui.bodypart.blood.water": "鱼血",
   "cultivationcraft.gui.bodypart.blood.water.description": "你充满水元素的血液使你可以在水中快速恢复，。\n允许你打破水抗性的上限并能够通过水伤害治愈自己",
+
   "cultivationcraft.gui.bodypart.lung.default": "肺类型",
   "cultivationcraft.gui.bodypart.lung.left": "左肺",
   "cultivationcraft.gui.bodypart.lung.right": "右肺",
+
   "cultivationcraft.gui.bodypart.lung.reinforce": "强肺",
   "cultivationcraft.gui.bodypart.lung.reinforce.description": "强化肺部，获得更高的肺活量和生命值。",
   "cultivationcraft.gui.bodypart.lung.highpressure": "强压",
@@ -213,73 +255,109 @@
   "cultivationcraft.gui.bodypart.lung.fire.description": "将火焰储存在肺内以供其他部位使用，然而你只能呼吸火焰。",
   "cultivationcraft.gui.bodypart.lung.mixed": "混合",
   "cultivationcraft.gui.bodypart.lung.mixed.description": "使你的两个肺能够以不同的方式呼吸。",
+
   "cultivationcraft.gui.bodypart.skin.stretchy": "弹性",
   "cultivationcraft.gui.bodypart.skin.stretchy.description": "使你的皮肤能够伸展到更大的尺寸。",
+
   "cultivationcraft.gui.bodypart.stomach.expanding": "大胃王",
   "cultivationcraft.gui.bodypart.stomach.expanding.description": "使你的胃能够根据需要伸展，极大地增加你的最大耐力，但会在进食时增加你的体型和体重。",
+
   "cultivationcraft.gui.bodypart.stomach.carnivorous": "肉食主义",
   "cultivationcraft.gui.bodypart.stomach.carnivorous.description": "使你的胃能够从肉中获得更多营养，但你只能吃肉",
+
   "cultivationcraft.gui.bodypart.stomach.herbivorous": "素食主义",
   "cultivationcraft.gui.bodypart.stomach.herbivorous.description": "使你的胃可以消化更多种类的植物，但你无法使用肉类。",
+
   "cultivationcraft.gui.bodypart.back.wings": "翅膀",
   "cultivationcraft.gui.bodypart.back.wings.description": "长出可以飞行的翅膀",
+
   "cultivationcraft.gui.bodypart.back.iwings": "虫翼",
   "cultivationcraft.gui.bodypart.back.iwings.description": "长出精致的昆虫翅膀，使你能够快速冲刺飞行。",
+
   "cultivationcraft.gui.bodypart.back.jet": "助推器",
   "cultivationcraft.gui.bodypart.back.jet.description": "从背部长出喷火式助推器，在向前移动时提高移动速度。",
+
   "cultivationcraft.gui.bodypart.back.dfin": "背鳍",
   "cultivationcraft.gui.bodypart.back.dfin.description": "长出可以提高游泳速度的背鳍，由于某种原因。",
+
   "cultivationcraft.gui.armpart.headarms": "出人头地",
   "cultivationcraft.gui.armpart.headarms.description": "将你的手臂移到头上",
+
   "cultivationcraft.gui.headpart.location.front": "巴头探脑",
   "cultivationcraft.gui.headpart.location.front.description": "将你的头移动到身体前侧",
+
   "cultivationcraft.gui.headpart.jaw": "大嘴",
   "cultivationcraft.gui.headpart.jaw.description": "优化下颚结构，使其能够更大幅度地张开。",
+
   "cultivationcraft.gui.headpart.longneck": "长脖子",
   "cultivationcraft.gui.headpart.longneck.description": "~~~~~TODO~~~~~~",
+
   "cultivationcraft.gui.headpart.eye": "眼睛",
+
   "cultivationcraft.gui.headpart.eye.qisight": "气视觉",
   "cultivationcraft.gui.headpart.eye.qisight.description": "使你的眼睛能够看到聚集的气。",
+
   "cultivationcraft.gui.headpart.mouth": "嘴",
+
   "cultivationcraft.gui.headpart.mouth.flatteeth": "平齿",
   "cultivationcraft.gui.headpart.mouth.flatteeth.description": "长出更大的平齿，让你可以咀嚼并吞咽更多物质。",
   "cultivationcraft.gui.headpart.mouth.sharpteeth": "锐齿",
   "cultivationcraft.gui.headpart.mouth.sharpteeth.description": "长出更长更锐利的牙齿，提供极具破坏性的撕咬攻击",
+
   "cultivationcraft.gui.headpart.top": "头顶",
+
   "cultivationcraft.gui.headpart.top.fin": "鳍",
   "cultivationcraft.gui.headpart.top.fin.description": "长出可以提高游泳速度的鳍，由于某种原因。",
+
   "cultivationcraft.gui.headpart.top.flower": "花",
   "cultivationcraft.gui.headpart.top.flower.description": "当你能从头上长出一朵巨大的花来从阳光中光合作用获取营养物质时，谁还需要胃呢。 ",
+
   "cultivationcraft.gui.headpart.top.petal": "花瓣",
+
   "cultivationcraft.gui.headpart.top.petal.rotating": "旋转花瓣",
   "cultivationcraft.gui.headpart.top.petal.rotating.description": "你的花瓣能够旋转，推动你到空气中",
+
   "cultivationcraft.gui.armpart.short": "短臂",
   "cultivationcraft.gui.armpart.short.description": "有些人需要胳膊肘，你不是那种人。",
+
   "cultivationcraft.gui.armpart.long": "长臂猿",
   "cultivationcraft.gui.armpart.long.description": "增长你的胳膊，增加触及距离",
+
   "cultivationcraft.gui.armpart.flipper": "鳍状肢",
   "cultivationcraft.gui.armpart.flipper.description": "把你的手臂翻展成鳍状肢\n擅长游泳，其他方面都不大好。",
+
   "cultivationcraft.gui.armpart.glide": "滑翔翼",
   "cultivationcraft.gui.armpart.glide.description": "长出一层薄膜，将你的手臂与身体连接起来，为你提供在空中滑翔的能力",
+
   "cultivationcraft.gui.legpart.feet": "脚",
   "cultivationcraft.gui.legpart.feet.description": "去除你的脚和身体之间无用的空间。大大增加了你的腿所能支撑的重量，但降低了移动速度",
+
   "cultivationcraft.gui.legpart.reversejoint": "反向思考",
   "cultivationcraft.gui.legpart.reversejoint.description": "扭转膝盖关节，让你跳得更高",
+
   "cultivationcraft.gui.legpart.hexaLeg": "六腿",
   "cultivationcraft.gui.legpart.hexaLeg.description": "六个更长，更细的腿。动作快，跳得高，紧贴地面，但是无法支撑太多重量。",
+
   "cultivationcraft.gui.legpart.singleLeg": "独脚大仙",
   "cultivationcraft.gui.legpart.singleLeg.description": "去掉多余的一条腿，通过跳跃实现卓越的运动效果，大大提高跳跃高度",
+
   "cultivationcraft.gui.legpart.large": "大 腿",
   "cultivationcraft.gui.legpart.large.description": "更大意味着更好，而它们， 非   常   大。\n缓慢，但能够支持 非 常 多 重量。",
+
   "cultivationcraft.gui.legpart.jet": "弹射",
   "cultivationcraft.gui.legpart.jet.description": "从你的腿上长出助推器，让你通过脚喷出的火焰在天空中飞行",
+
   "cultivationcraft.gui.legpart.long": "大长腿",
   "cultivationcraft.gui.legpart.long.description": "增长你的腿，略微增加移动速度，跳跃高度，跨越高度和体重。",
+
   "cultivationcraft.gui.help": "帮助",
+
   "cultivationcraft.gui.help.cultivationmenu": "修炼菜单",
   "cultivationcraft.gui.help.cultivationmenu.text": "用于查看和控制角色所有与修炼相关的数据。\n \n包含多个选项，这些选项与你修炼的不同方面有关。",
+
   "cultivationcraft.gui.help.cultivationmenu.stats": "数据",
   "cultivationcraft.gui.help.cultivationmenu.stats.text": "查看受修炼影响的角色统计数据",
+
   "cultivationcraft.gui.help.cultivationmenu.skills": "技能",
   "cultivationcraft.gui.help.cultivationmenu.skills.text": "查看并分配角色可用的不同技能",
   "cultivationcraft.gui.help.cultivationmenu.skills.assign": "分配技能",
@@ -294,6 +372,7 @@
   "cultivationcraft.gui.help.cultivationmenu.skills.keyskills.meditate.text": "所有角色都会具有的技能。\n \n当使用时，角色将无法移动并将周围的气引入体内，从而进行修行。",
   "cultivationcraft.gui.help.cultivationmenu.skills.keyskills.qisight": "气视觉",
   "cultivationcraft.gui.help.cultivationmenu.skills.keyskills.qisight.text": "所有角色最先学会的技能之一。\n \n当打开时，会给角色提供夜视功能，并允许他们看到附近的气源。",
+
   "cultivationcraft.gui.help.cultivationmenu.cultivate": "修炼",
   "cultivationcraft.gui.help.cultivationmenu.cultivate.text": "控制角色的修炼",
   "cultivationcraft.gui.help.cultivationmenu.cultivate.bodyforge.select": "选择身体改造",
@@ -302,12 +381,14 @@
   "cultivationcraft.gui.help.cultivationmenu.cultivate.bodyforge.progress.text": "当你进行身体改造时，菜单底部会显示一个进度条，它会在你吸收气时逐渐填充。\n \n你也可以通过按下屏幕中间的取消键来取消改造，但会丢失改造进度。",
   "cultivationcraft.gui.help.cultivationmenu.cultivate.bodyforge.quest": "改造稳定",
   "cultivationcraft.gui.help.cultivationmenu.cultivate.bodyforge.quest.text": "当你获得了足够注入身体的气，你将会开始对身体部位进行稳定。\n \n进度条和填充它所需的任务将会显示在面板底部，一旦填充完毕，身体改造将会完成。\n \n在此过程的任何时候，你都可以按下'取消'键来放弃改造。",
+
   "cultivationcraft.gui.help.qi": "气",
   "cultivationcraft.gui.help.qi.text": "所有生物体内流动的生命能量。",
   "cultivationcraft.gui.help.qi.source": "气源",
   "cultivationcraft.gui.help.qi.source.text": "自然形成的风水宝地，会不断产生不可见的气，对你的修炼至关重要。\n \n气的元素种类取决于其周围的环境。",
   "cultivationcraft.gui.help.elements": "元素",
   "cultivationcraft.gui.help.elements.text": "世界上有五种主要元素，当气源被足够的相应元素块包围，它们就会产生。\n \n这些元素按以下顺序相互克制:\n§c火§r > §2木§r > §a风§r > §6土§r > §9水§r > §c火r\n \n此外，每种元素都有各种各样的变种，而气源却很少有机会产生这些突变。",
+
   "cultivationcraft.gui.help.elements.fire": "火",
   "cultivationcraft.gui.help.elements.fire.text": "主要存在于下界,  §c火§r元素掌管热量与燃烧。\n \n被 §9水§r克制，克制 §2木§r。",
   "cultivationcraft.gui.help.elements.wood": "木",
@@ -318,14 +399,19 @@
   "cultivationcraft.gui.help.elements.earth.text": "主要存在于地下， the §6土§r 元素掌管尘土与岩石\n \n被 §a风§r克制，克制§9水§r。",
   "cultivationcraft.gui.help.elements.water": "水",
   "cultivationcraft.gui.help.elements.water.text": "主要存在于海洋, the §9水§r 元素掌管液体与海洋生命。\n \n被 §6土§r 克制，克制§c火§r。",
+
   "cultivationcraft.gui.help.elements.lightning": "雷",
   "cultivationcraft.gui.help.elements.lightning.text": "§e雷§r 元素是一种§a风§r元素的变种。\n \n天堂的元素，这个元素既克制又被所有基本元素克制",
   "cultivationcraft.gui.help.elements.ice": "冰",
   "cultivationcraft.gui.help.elements.ice.text": "主要在冰水附近存在, §b冰§r 是一种 §9水§r元素的变种。\n \n掌管寒冷与冻结。",
+
+
   "cultivationcraft.gui.help.debug": "Debug",
   "cultivationcraft.gui.help.debug.text": "用于测试目的的OP命令",
+
   "cultivationcraft.gui.help.debug.bodyforge": "身体改造",
   "cultivationcraft.gui.help.debug.bodyforge.text": "与身体改造相关的命令",
+
   "cultivationcraft.gui.help.debug.bodyforge.completeForge": "完成改造",
   "cultivationcraft.gui.help.debug.bodyforge.completeForge.text": "§n/bodyforge §ncompleteForge §n§lplayerName\n \n此命令将为角色提供完成当前改造所需的所有气。\n你仍需要冥想。",
   "cultivationcraft.gui.help.debug.bodyforge.completeQuest": "完成任务",

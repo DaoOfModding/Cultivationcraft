@@ -7,12 +7,15 @@ import DaoOfModding.Cultivationcraft.Common.Qi.CultivationTypes;
 import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
 import DaoOfModding.Cultivationcraft.Common.Qi.QiProjectile;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.Technique;
+import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.TechniqueModifiers.TechniqueModifier;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.TechniqueStats.DefaultTechniqueStatIDs;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.TechniqueStats.TechniqueStatModification;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
+
+import java.util.ArrayList;
 
 public class QiEmission extends Technique
 {
@@ -108,7 +111,7 @@ public class QiEmission extends Technique
             return;
 
         Vec3 pos = PlayerUtils.getPosition(player).add(positionModifier);
-        QiProjectile projectile = new QiProjectile(player.level, player, pos.x, pos.y, pos.z, Element, (int)getTechniqueStat(DefaultTechniqueStatIDs.damage, player), (float)getTechniqueStat(DefaultTechniqueStatIDs.movementSpeed, player), this, (float)getTechniqueStat(DefaultTechniqueStatIDs.lifetime, player));
+        QiProjectile projectile = new QiProjectile(player.level, player, pos.x, pos.y, pos.z, getElement(), (int)getTechniqueStat(DefaultTechniqueStatIDs.damage, player), (float)getTechniqueStat(DefaultTechniqueStatIDs.movementSpeed, player), this, (float)getTechniqueStat(DefaultTechniqueStatIDs.lifetime, player));
         projectile.setDirection(player.getLookAngle());
         player.level.addFreshEntity(projectile);
     }

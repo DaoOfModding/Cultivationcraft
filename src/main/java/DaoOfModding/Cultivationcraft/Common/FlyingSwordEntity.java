@@ -6,6 +6,7 @@ import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.Cultiva
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.ICultivatorStats;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.CultivatorTechniques;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.ICultivatorTechniques;
+import DaoOfModding.Cultivationcraft.Common.Qi.Damage.QiDamageSource;
 import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.QiCondenserTechniques.FlyingSwordFormationTechnique;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.TechniqueStats.DefaultTechniqueStatIDs;
@@ -709,7 +710,7 @@ public class FlyingSwordEntity extends ItemEntity
 
                 // Knockback target
                 Vec3 Vec3 = targetEntity.getDeltaMovement();
-                boolean flag5 = targetEntity.hurt(new EntityDamageSource("player", this), f);
+                boolean flag5 = targetEntity.hurt(new QiDamageSource("player", this, formation.getElement(), true), f);
 
                 formation.levelUp(owner, f);
 
