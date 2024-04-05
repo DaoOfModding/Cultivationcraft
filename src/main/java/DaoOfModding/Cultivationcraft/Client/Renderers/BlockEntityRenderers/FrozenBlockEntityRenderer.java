@@ -12,32 +12,35 @@ import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.entity.ItemRenderer;
-import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.block.BannerBlock;
+import net.minecraft.world.level.block.SkullBlock;
 import net.minecraft.world.level.block.WallBannerBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Objects;
 
 public class FrozenBlockEntityRenderer implements BlockEntityRenderer<FrozenBlockEntity> {
     public FrozenBlockEntityRenderer(BlockEntityRendererProvider.Context context) {
     }
 
     @Override
-    public void render(FrozenBlockEntity pBlockEntity, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBufferSource, int pPackedLight, int pPackedOverlay) {
+    public void render(FrozenBlockEntity pBlockEntity, float pPartialTick, @NotNull PoseStack pPoseStack, @NotNull MultiBufferSource pBufferSource, int pPackedLight, int pPackedOverlay) {
         BlockState blockState = pBlockEntity.getOldBlockState();
         String name = blockState.getBlock().getName().getString();
 
-        if (name.contains("Skull") || name.contains("Head") || name.contains("Banner") || name.contains("Sign")) {
-            renderItem(name, blockState, pBlockEntity, pPoseStack, pBufferSource, pPackedOverlay);
+        if (blockState.getBlock() instanceof SkullBlock || name.contains("Banner") || name.contains("Sign")) {
+            renderItem(blockState, pBlockEntity, pPoseStack, pBufferSource, pPackedOverlay);
         } else {
             renderBlock(name, blockState, pBlockEntity, pPoseStack, pBufferSource, pPackedOverlay);
         }
     }
 
-    private void renderItem(String name, BlockState oldBlockState, FrozenBlockEntity pBlockEntity, PoseStack pPoseStack, MultiBufferSource pBufferSource, int pPackedOverlay) {
+    private void renderItem(BlockState oldBlockState, FrozenBlockEntity pBlockEntity, PoseStack pPoseStack, MultiBufferSource pBufferSource, int pPackedOverlay) {
         ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
         ItemStack itemStack = pBlockEntity.getRenderStack();
 
@@ -48,18 +51,17 @@ public class FrozenBlockEntityRenderer implements BlockEntityRenderer<FrozenBloc
         float f = 0F;
         if (oldBlockState.getBlock() instanceof BannerBlock) {
             f = (float) -oldBlockState.getValue(BannerBlock.ROTATION);
-            pPoseStack.mulPose(Vector3f.YP.rotationDegrees((float) (f * 360) / 16F));
+            pPoseStack.mulPose(Vector3f.YP.rotationDegrees((f * 360) / 16F));
 
         } else if (oldBlockState.getBlock() instanceof WallBannerBlock) {
             f = -oldBlockState.getValue(WallBannerBlock.FACING).toYRot();
-            pPoseStack.mulPose(Vector3f.YP.rotationDegrees((float) -((f * 360) / 16F)));
+            pPoseStack.mulPose(Vector3f.YP.rotationDegrees(-((f * 360) / 16F)));
 
         }
-
         if (!pBlockEntity.isSecondBlock()) {
             itemRenderer.renderStatic(itemStack, ItemTransforms.TransformType.NONE,
-                    getLightLevel(pBlockEntity.getLevel(), pBlockEntity.getBlockPos()),
-                    OverlayTexture.NO_OVERLAY, pPoseStack, pBufferSource, 1);
+                    getLightLevel(Objects.requireNonNull(pBlockEntity.getLevel()), pBlockEntity.getBlockPos()),
+                    pPackedOverlay, pPoseStack, pBufferSource, 1);
         }
         pPoseStack.popPose();
     }
@@ -74,8 +76,8 @@ public class FrozenBlockEntityRenderer implements BlockEntityRenderer<FrozenBloc
         if (name.contains("Chest") || name.contains("Bed")) renderSpecial(pBlockEntity, pPoseStack);
         if (!pBlockEntity.isSecondBlock()) {
             blockRenderer.renderSingleBlock(oldBlockState, pPoseStack, pBufferSource,
-                    getLightLevel(pBlockEntity.getLevel(), pBlockEntity.getBlockPos()),
-                    OverlayTexture.NO_OVERLAY);
+                    getLightLevel(Objects.requireNonNull(pBlockEntity.getLevel()), pBlockEntity.getBlockPos()),
+                    pPackedOverlay);
         }
         pPoseStack.popPose();
     }

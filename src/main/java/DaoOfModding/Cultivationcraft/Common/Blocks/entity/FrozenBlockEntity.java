@@ -89,7 +89,7 @@ public class FrozenBlockEntity extends BlockEntity implements TickableBlockEntit
     }
 
     @Override
-    public CompoundTag getUpdateTag() {
+    public @NotNull CompoundTag getUpdateTag() {
         CompoundTag nbt = super.getUpdateTag();
         saveAdditional(nbt);
         return nbt;
@@ -104,7 +104,6 @@ public class FrozenBlockEntity extends BlockEntity implements TickableBlockEntit
         this.oldBlockState = oldBlockState;
         this.oldBlockEntity = oldBlockEntity;
         this.oldBlockEntityData = oldBlockEntityData;
-
         setChanged();
     }
 
@@ -123,7 +122,6 @@ public class FrozenBlockEntity extends BlockEntity implements TickableBlockEntit
         } else {
             stack = new ItemStack(Blocks.AIR.asItem());
         }
-
         return stack;
     }
 

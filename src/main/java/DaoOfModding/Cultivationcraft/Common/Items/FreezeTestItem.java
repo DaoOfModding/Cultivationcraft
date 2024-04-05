@@ -11,10 +11,15 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.BedBlock;
+import net.minecraft.world.level.block.DoorBlock;
+import net.minecraft.world.level.block.DoublePlantBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.Property;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Objects;
 
 public class FreezeTestItem extends Item {
     public FreezeTestItem(Properties properties) {
@@ -27,21 +32,23 @@ public class FreezeTestItem extends Item {
             BlockPos blockPos = pContext.getClickedPos();
             BlockPos secondBlockPos = getMultiblockPos(blockPos, pContext.getLevel().getBlockState(blockPos));
             Level level = pContext.getLevel();
+
             if (secondBlockPos != null) {
-                createFrozenBlock(level, secondBlockPos, true);
+                createFrozenBlock(level, secondBlockPos);
             }
-            createFrozenBlock(level, blockPos, false);
+            createFrozenBlock(level, blockPos);
             return InteractionResult.SUCCESS;
         }
         return super.useOn(pContext);
     }
 
-    public static void createFrozenBlock(Level world, BlockPos blockPos, boolean isSecondBlock) {
+    public static void createFrozenBlock(Level world, BlockPos blockPos) {
         BlockState oldState = world.getBlockState(blockPos);
         BlockEntity oldBlockEntity = null;
         CompoundTag oldBlockEntityData = null;
         if (oldState.hasBlockEntity()) {
             oldBlockEntity = world.getBlockEntity(blockPos);
+            assert oldBlockEntity != null;
             oldBlockEntityData = oldBlockEntity.serializeNBT();
             world.removeBlockEntity(blockPos);
         }
@@ -49,18 +56,49 @@ public class FreezeTestItem extends Item {
         if (!world.isClientSide()) {
             BlockState FrozenBlock = setFrozenBlock(oldState, handleIsBedSecondBlock(oldState));
             world.setBlockAndUpdate(blockPos, FrozenBlock);
-            ((FrozenBlockEntity) world.getBlockEntity(blockPos)).setOldBlockFields(oldState, oldBlockEntity, oldBlockEntityData);
+            ((FrozenBlockEntity) Objects.requireNonNull(world.getBlockEntity(blockPos))).setOldBlockFields(oldState, oldBlockEntity, oldBlockEntityData);
         }
     }
 
     public static boolean handleIsBedSecondBlock(BlockState oldBlockState) {
         BlockState bed = oldBlockState.getBlock().getName().getString().contains("Bed") ? oldBlockState : null;
         boolean isBed = bed != null;
-        boolean isSecondBlock = isBed && bed.getValue(bed.getBlock().getStateDefinition().getProperty("part")).toString().equals("foot");
-        if (isBed && isSecondBlock) {
-            return true;
+        boolean isSecondBlock = isBed && bed.getValue(Objects.requireNonNull(bed.getBlock().getStateDefinition().getProperty("part"))).toString().equals("foot");
+        return isBed && isSecondBlock;
+    }
+
+    public static BlockPos getMultiblockPos(BlockPos blockPos, BlockState blockState) {
+        String name = blockState.getBlock().getName().getString();
+
+        if (blockState.getBlock() instanceof DoorBlock || blockState.getBlock() instanceof DoublePlantBlock) {
+            Property<?> half = blockState.getBlock().getStateDefinition().getProperty("half");
+            assert half != null;
+            return blockState.getValue(half).toString().equals("upper") ? blockPos.below() : blockPos.above();
+        } else if (name.contains("Piston")) {
+            Property<?> facing = blockState.getBlock().getStateDefinition().getProperty("facing");
+            if (name.equals("Piston Head")) {
+                assert facing != null;
+                return blockPos.relative(((Direction) blockState.getValue(facing)).getOpposite());
+            } else {
+                if (blockState.getValue((Property<Boolean>) blockState.getBlock().getStateDefinition().getProperty("extended"))) {
+                    assert facing != null;
+                    return blockPos.relative((Direction) blockState.getValue(facing));
+                }
+            }
+        } else if (blockState.getBlock() instanceof BedBlock) {
+            Property<?> facing = blockState.getBlock().getStateDefinition().getProperty("facing");
+            Property<?> part = blockState.getBlock().getStateDefinition().getProperty("part");
+            assert part != null;
+            if (blockState.getValue(part).toString().equals("foot")) {
+                assert facing != null;
+                return blockPos.relative((Direction) blockState.getValue(facing));
+            } else {
+                assert facing != null;
+                return blockPos.relative(((Direction) blockState.getValue(facing)).getOpposite());
+            }
         }
-        return false;
+
+        return null;
     }
 
     public static BlockState setFrozenBlock(BlockState oldBlockState, boolean isSecondBlock) {
@@ -74,36 +112,8 @@ public class FreezeTestItem extends Item {
                         && !oldBlockState.getValue(facing).equals(Direction.DOWN)
         ) {
             frozenBlock = frozenBlock.setValue(FrozenBlock.FACING, oldBlockState.getValue(facing));
-            frozenBlock = frozenBlock.setValue(FrozenBlock.IS_SECOND_BLOCK, Boolean.valueOf(isSecondBlock));
+            frozenBlock = frozenBlock.setValue(FrozenBlock.IS_SECOND_BLOCK, isSecondBlock);
         }
         return frozenBlock;
-    }
-
-    public static BlockPos getMultiblockPos(BlockPos blockPos, BlockState blockState) {
-        String name = blockState.getBlock().getName().getString();
-
-        if (name.contains("Door")) {
-            Property<?> half = blockState.getBlock().getStateDefinition().getProperty("half");
-            return blockState.getValue(half).toString().equals("upper") ? blockPos.below() : blockPos.above();
-        } else if (name.contains("Piston")) {
-            Property<?> facing = blockState.getBlock().getStateDefinition().getProperty("facing");
-            if (name.equals("Piston Head")) {
-                return blockPos.relative(((Direction) blockState.getValue(facing)).getOpposite());
-            } else {
-                if (blockState.getValue((Property<Boolean>) blockState.getBlock().getStateDefinition().getProperty("extended"))) {
-                    return blockPos.relative((Direction) blockState.getValue(facing));
-                }
-            }
-        } else if (name.contains("Bed")) {
-            Property<?> facing = blockState.getBlock().getStateDefinition().getProperty("facing");
-            Property<?> part = blockState.getBlock().getStateDefinition().getProperty("part");
-            if (blockState.getValue(part).toString().equals("foot")) {
-                return blockPos.relative((Direction) blockState.getValue(facing));
-            } else {
-                return blockPos.relative(((Direction) blockState.getValue(facing)).getOpposite());
-            }
-        }
-
-        return null;
     }
 }

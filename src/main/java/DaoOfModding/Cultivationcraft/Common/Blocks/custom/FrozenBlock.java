@@ -28,7 +28,7 @@ public class FrozenBlock extends AbstractGlassBlock implements EntityBlock {
         super(properties);
         registerDefaultState(defaultBlockState()
                 .setValue(FACING, Direction.NORTH)
-                .setValue(IS_SECOND_BLOCK, Boolean.valueOf(false)));
+                .setValue(IS_SECOND_BLOCK, Boolean.FALSE));
     }
 
     @Override
