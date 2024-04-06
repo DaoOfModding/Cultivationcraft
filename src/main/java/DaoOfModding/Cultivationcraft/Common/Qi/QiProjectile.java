@@ -35,8 +35,8 @@ public class QiProjectile extends AbstractHurtingProjectile
 {
     private static final EntityDataAccessor<Float> ID_SPEED = SynchedEntityData.defineId(QiProjectile.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Float> ID_LIFE = SynchedEntityData.defineId(QiProjectile.class, EntityDataSerializers.FLOAT);
+    private static final EntityDataAccessor<String> ID_ELEMENT = SynchedEntityData.defineId(QiProjectile.class, EntityDataSerializers.STRING);
 
-    ResourceLocation element = Elements.noElement;
     int damage = 0;
     QiEmission tech;
 
@@ -51,9 +51,9 @@ public class QiProjectile extends AbstractHurtingProjectile
 
         this.setPos(x, y, z);
 
-        element = projectileElement;
         damage = damageOnHit;
 
+        entityData.set(ID_ELEMENT, projectileElement.toString());
         entityData.set(ID_SPEED, movementSpeed / 2f);
         entityData.set(ID_LIFE, lifetime * 20);
 
@@ -63,6 +63,7 @@ public class QiProjectile extends AbstractHurtingProjectile
     protected void defineSynchedData()
     {
         super.defineSynchedData();
+        entityData.define(ID_ELEMENT, Elements.noElement.toString());
         entityData.define(ID_SPEED, 0f);
         entityData.define(ID_LIFE, 0f);
     }
@@ -105,7 +106,7 @@ public class QiProjectile extends AbstractHurtingProjectile
 
     public ResourceLocation getElement()
     {
-        return element;
+        return new ResourceLocation(entityData.get(ID_ELEMENT));
     }
 
     protected void onHitEntity(EntityHitResult hit)
@@ -120,7 +121,7 @@ public class QiProjectile extends AbstractHurtingProjectile
             return;
         }
 
-        CultivatorAttackLogic.attackEntity((Player)getOwner(), hit.getEntity(), -1, damage, null, element, "QiProjectile");
+        CultivatorAttackLogic.attackEntity((Player)getOwner(), hit.getEntity(), -1, damage, null, getElement(), "QiProjectile");
 
         if (tech != null)
             tech.levelUp((Player)getOwner(), damage);

@@ -65,6 +65,9 @@ public class AttackOverrideTechnique extends AttackTechnique
         if (cooldownCount > 0)
             cooldownCount = cooldownCount - 1;
 
+        addModifiers(event.player);
+        applyTechniqueModifiers(event.player);
+
         // Only add the pose if players main hand is empty
         if (event.player.getMainHandItem().isEmpty())
             PoseHandler.addPose(event.player.getUUID(), pose);

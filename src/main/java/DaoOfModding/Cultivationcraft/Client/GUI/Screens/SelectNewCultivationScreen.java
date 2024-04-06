@@ -10,6 +10,7 @@ import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import DaoOfModding.Cultivationcraft.Network.ClientPacketHandler;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -53,7 +54,7 @@ public class SelectNewCultivationScreen extends Screen
 
         description.resetScroll();
 
-        for (CultivationType advance : CultivatorStats.getCultivatorStats(genericClientFunctions.getPlayer()).getCultivation().getAdvancements())
+        for (CultivationType advance : CultivatorStats.getCultivatorStats(genericClientFunctions.getPlayer()).getCultivation().getAdvancements(Minecraft.getInstance().player))
         {
             selection.addSelectable(new SelectableText(advance.getID()));
         }

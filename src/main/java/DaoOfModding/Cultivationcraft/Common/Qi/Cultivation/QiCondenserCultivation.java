@@ -2,6 +2,7 @@ package DaoOfModding.Cultivationcraft.Common.Qi.Cultivation;
 
 import DaoOfModding.Cultivationcraft.Client.GUI.Screens.CultivationTypeScreens.QiCondenserScreen;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStats;
+import DaoOfModding.Cultivationcraft.Common.Qi.Cultivation.CoreForming.FireFormingCultivation;
 import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.PassiveTechniques.CultivationPassives.QiCondenserPassive;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.TechniqueStats.DefaultCultivationStatIDs;
@@ -31,6 +32,9 @@ public class QiCondenserCultivation extends CultivationType
         screen = new QiCondenserScreen();
         tribulation = new Tribulation(maxStage, 50, 0.4f);
 
+        advancements.add(new CoreFormingCultivation());
+        advancements.add(new FireFormingCultivation());
+
         ID = "cultivationcraft.cultivation.qicondensation";
     }
 
@@ -39,12 +43,8 @@ public class QiCondenserCultivation extends CultivationType
         techLevel = 200 + (100 * stage);
     }
 
-    // TEMP whilst no further cultivation
     public boolean canBreakthrough(Player player)
     {
-        if (stage == maxStage)
-            return false;
-
         return super.canBreakthrough(player);
     }
 

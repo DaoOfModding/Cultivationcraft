@@ -107,9 +107,21 @@ public class CultivationType
         return false;
     }
 
-    public ArrayList<CultivationType> getAdvancements()
+    public ArrayList<CultivationType> getAdvancements(Player player)
     {
-        return advancements;
+        ArrayList<CultivationType> playerAdvancements = new ArrayList<>();
+
+        for (CultivationType testAdvance : advancements)
+            if (testAdvance.canCultivate(player))
+                playerAdvancements.add(testAdvance);
+
+        return playerAdvancements;
+    }
+
+    // Returns whether the specified player can cultivate this cultivationType
+    public boolean canCultivate(Player player)
+    {
+        return true;
     }
 
     public void advance(Player player, String advancement)
@@ -484,6 +496,14 @@ public class CultivationType
 
         int i = 0;
 
+        for (TechniqueModifier mod : modifiers)
+        {
+            nbt.putString("MODIFIER"+i, mod.getClass().toString());
+            i++;
+        }
+
+        i = 0;
+
         for (Map.Entry<String, HashMap<ResourceLocation, Double>> tech : statLevels.entrySet())
         {
             nbt.putString("TECH"+i+"CLASS", tech.getKey());
@@ -523,6 +543,16 @@ public class CultivationType
         HashMap<String, HashMap<ResourceLocation, Double>> newTechLevels = new HashMap<>();
 
         int i = 0;
+
+        modifiers = new ArrayList<>();
+
+        while (nbt.contains("MODIFIER"+i))
+        {
+            modifiers.add(ExternalCultivationHandler.getModifier((nbt.getString("MODIFIER"+i))));
+            i++;
+        }
+
+        i = 0;
 
         while (nbt.contains("TECH"+i+"CLASS"))
         {

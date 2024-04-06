@@ -33,7 +33,8 @@ public class BodyforgeCommand
                 .then(Commands.literal("completeQuest").then(Commands.argument("players", EntityArgument.players()).executes(commandContext -> completeQuest(commandContext.getSource(), EntityArgument.getPlayers(commandContext, "players")))))
                 .then(Commands.literal("completeCultivation").then(Commands.argument("players", EntityArgument.players()).executes(commandContext -> completeProgress(commandContext.getSource(), EntityArgument.getPlayers(commandContext, "players")))))
                 .then(Commands.literal("levelSkills").then(Commands.argument("players", EntityArgument.players()).executes(commandContext -> levelSkills(commandContext.getSource(), EntityArgument.getPlayers(commandContext, "players")))))
-                .then(Commands.literal("fillQi").then(Commands.argument("players", EntityArgument.players()).executes(commandContext -> fillQi(commandContext.getSource(), EntityArgument.getPlayers(commandContext, "players")))));
+                .then(Commands.literal("fillQi").then(Commands.argument("players", EntityArgument.players()).executes(commandContext -> fillQi(commandContext.getSource(), EntityArgument.getPlayers(commandContext, "players")))))
+                .then(Commands.literal("revertCultivation").then(Commands.argument("players", EntityArgument.players()).executes(commandContext -> revertCultivation(commandContext.getSource(), EntityArgument.getPlayers(commandContext, "players")))));
 
         dispatcher.register(command);
     }
@@ -120,6 +121,22 @@ public class BodyforgeCommand
             commandSourceStack.sendSuccess(Component.translatable("cultivationcraft.commands.fillqi.single", players.iterator().next().getDisplayName()), true);
         else
             commandSourceStack.sendSuccess(Component.translatable("cultivationcraft.commands.fillqi.multiple", players.size()), true);
+
+        return players.size();
+    }
+
+    protected static int revertCultivation(CommandSourceStack commandSourceStack, Collection<ServerPlayer> players)
+    {
+        for(ServerPlayer serverplayer : players)
+        {
+            CultivatorStats.getCultivatorStats(serverplayer).setCultivation( CultivatorStats.getCultivatorStats(serverplayer).getCultivation().getPreviousCultivation());
+            PacketHandler.sendCultivatorStatsToClient(serverplayer);
+        }
+
+        if (players.size() == 1)
+            commandSourceStack.sendSuccess(Component.translatable("cultivationcraft.commands.revertcultivation.single", players.iterator().next().getDisplayName()), true);
+        else
+            commandSourceStack.sendSuccess(Component.translatable("cultivationcraft.commands.revertcultivation.multiple", players.size()), true);
 
         return players.size();
     }

@@ -5,6 +5,8 @@
   "cultivationcraft.cultivation.qicondensation.text": "Condense your Qi into a single compressed core",
   "cultivationcraft.cultivation.coreforming": "Core Forming",
   "cultivationcraft.cultivation.coreforming.text": "Form additional cores of compressed Qi",
+  "cultivationcraft.cultivation.coreforming.fire": "Flaming Core Forming",
+  "cultivationcraft.cultivation.coreforming.fire.text": "Form additional cores of compressed Fire Qi",
 
   "cultivationcraft.elements.none": "Qi",
   "cultivationcraft.elements.fire": "Fire",
@@ -191,6 +193,9 @@
 
   "cultivationcraft.commands.fillqi.single": "Refilled Qi for %s",
   "cultivationcraft.commands.fillqi.multiple": "Refilled Qi for %s players",
+
+  "cultivationcraft.commands.revertcultivation.single": "Cultivation reverted for %s",
+  "cultivationcraft.commands.revertcultivation.multiple": "Cultivation reverted for %s players",
 
   "cultivationcraft.gui.tab.0.0": "Cultivate",
   "cultivationcraft.gui.tab.0.1": "Skills",

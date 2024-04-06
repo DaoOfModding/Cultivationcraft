@@ -13,7 +13,7 @@ public class TechniqueModifier
 
     public Boolean hasElement()
     {
-        if (Element != null)
+        if (getElement() != null)
             return true;
 
         return false;

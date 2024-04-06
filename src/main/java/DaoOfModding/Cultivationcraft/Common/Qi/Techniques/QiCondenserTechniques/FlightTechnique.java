@@ -62,6 +62,8 @@ public class FlightTechnique extends Technique
     @Override
     public void tickClient(TickEvent.PlayerTickEvent event)
     {
+        super.tickClient(event);
+
         if (!event.player.isOnGround())
         {
             if (!CultivatorStats.getCultivatorStats(event.player).getCultivation().consumeQi(event.player, getTechniqueStat(DefaultTechniqueStatIDs.qiCost, event.player) / 20f)) {
@@ -74,10 +76,8 @@ public class FlightTechnique extends Technique
 
             PoseHandler.addPose(event.player.getUUID(), GenericQiPoses.HandsBehind);
 
-            QiGlowRenderer.setQiVisible(event.player, Elements.getElement(Elements.noElement));
+            QiGlowRenderer.setQiVisible(event.player, Elements.getElement(getElement()));
         }
-
-        super.tickClient(event);
     }
 
     @Override

@@ -265,7 +265,7 @@ public class Technique
             return Element;
 
         // Return a random element from the element list if there are elements in the list
-        return ElementList.get((int)(Math.random() * (ElementList.size() + 1)));
+        return ElementList.get((int)(Math.random() * (ElementList.size())));
     }
 
     // Returns whether this technique is currently active or not
@@ -345,6 +345,8 @@ public class Technique
     {
         if (elytraDisables && player.getItemBySlot(EquipmentSlot.CHEST).getItem() == Items.ELYTRA)
             return;
+
+        applyTechniqueModifiers(player);
 
         active = true;
 
