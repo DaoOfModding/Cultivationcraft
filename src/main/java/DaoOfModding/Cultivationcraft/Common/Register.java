@@ -8,13 +8,9 @@ import DaoOfModding.Cultivationcraft.Client.Particles.WaterParticle.WaterParticl
 import DaoOfModding.Cultivationcraft.Client.Particles.WindParticle.WindParticleType;
 import DaoOfModding.Cultivationcraft.Client.Renderers.FlyingSwordRenderer;
 import DaoOfModding.Cultivationcraft.Client.Renderers.QiProjectileRenderer;
-import DaoOfModding.Cultivationcraft.Client.Textures.AlphaOverlayTexture;
 import DaoOfModding.Cultivationcraft.Common.Containers.FlyingSwordContainer;
-import DaoOfModding.Cultivationcraft.Common.Items.FreezeTestItem;
-import DaoOfModding.Cultivationcraft.Common.Items.ModCreativeModeTab;
 import DaoOfModding.Cultivationcraft.Common.Qi.QiProjectile;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.resources.ResourceLocation;
@@ -122,12 +118,6 @@ public class Register
                     });
                 }
             });
-
-    public static final RegistryObject<Item> FREEZE_TEST_ITEM = ITEMS.register("freeze_test_item",
-            () -> new FreezeTestItem(
-                    new Item.Properties().tab(ModCreativeModeTab.CC_DEBUG_TAB)
-            )
-    );
 
     public static void init(IEventBus bus) {
         ENTITY_TYPES.register(bus);

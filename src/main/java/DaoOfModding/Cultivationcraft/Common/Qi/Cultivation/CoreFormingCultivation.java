@@ -55,7 +55,8 @@ public class CoreFormingCultivation extends CultivationType
             return true;
 
         if (CultivatorStats.getCultivatorStats(player).getCultivation().getClass() == QiCondenserCultivation.class &&
-                ((QiCondenserCultivation)CultivatorStats.getCultivatorStats(player).getCultivation()).getCurrentElementFocus().compareTo(getElement()) == 0)
+                ((((QiCondenserCultivation)CultivatorStats.getCultivatorStats(player).getCultivation()).getCurrentElementFocus().compareTo(getElement()) == 0) ||
+                ((QiCondenserCultivation)CultivatorStats.getCultivatorStats(player).getCultivation()).getCurrentElementFocus().compareTo(Elements.anyElement) == 0))
             return true;
 
         if (CultivatorStats.getCultivatorStats(player).getCultivation().getClass() == CoreFormingCultivation.class &&

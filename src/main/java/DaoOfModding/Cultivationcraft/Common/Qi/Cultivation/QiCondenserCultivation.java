@@ -3,6 +3,7 @@ package DaoOfModding.Cultivationcraft.Common.Qi.Cultivation;
 import DaoOfModding.Cultivationcraft.Client.GUI.Screens.CultivationTypeScreens.QiCondenserScreen;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStats;
 import DaoOfModding.Cultivationcraft.Common.Qi.Cultivation.CoreForming.FireFormingCultivation;
+import DaoOfModding.Cultivationcraft.Common.Qi.Cultivation.CoreForming.IceFormingCultivation;
 import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.PassiveTechniques.CultivationPassives.QiCondenserPassive;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.TechniqueStats.DefaultCultivationStatIDs;
@@ -34,6 +35,7 @@ public class QiCondenserCultivation extends CultivationType
 
         advancements.add(new CoreFormingCultivation());
         advancements.add(new FireFormingCultivation());
+        advancements.add(new IceFormingCultivation());
 
         ID = "cultivationcraft.cultivation.qicondensation";
     }

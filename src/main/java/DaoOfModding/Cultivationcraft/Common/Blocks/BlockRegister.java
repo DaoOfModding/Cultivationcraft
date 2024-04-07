@@ -2,11 +2,9 @@ package DaoOfModding.Cultivationcraft.Common.Blocks;
 
 import DaoOfModding.Cultivationcraft.Common.Blocks.custom.FrozenBlock;
 import DaoOfModding.Cultivationcraft.Common.Blocks.entity.FrozenBlockEntity;
-import DaoOfModding.Cultivationcraft.Common.Items.ModCreativeModeTab;
 import DaoOfModding.Cultivationcraft.Common.Register;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -28,8 +26,7 @@ public class BlockRegister {
 */
 
     public static final RegistryObject<FrozenBlock> FROZEN_BLOCK = registerBlock("frozen_block",
-            () -> new FrozenBlock(BlockBehaviour.Properties.copy(Blocks.ICE).strength(-1.0F, 3600000.0F).noOcclusion()),
-            ModCreativeModeTab.CC_DEBUG_TAB);
+            () -> new FrozenBlock(BlockBehaviour.Properties.copy(Blocks.ICE).strength(-1.0F, 3600000.0F).noOcclusion()));
     public static RegistryObject<BlockEntityType<FrozenBlockEntity>> FROZEN_BLOCK_ENTITY = BLOCK_ENTITIES.register("frozen_block_entity",
             () -> BlockEntityType.Builder.of(
                     FrozenBlockEntity::new,
@@ -42,13 +39,13 @@ public class BlockRegister {
         BLOCK_ENTITIES.register(bus);
     }
 
-    public static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block, CreativeModeTab tab) {
+    public static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block) {
         RegistryObject<T> toReturn = BLOCKS.register(name, block);
-        registerBlockItem(name, toReturn, tab);
+        registerBlockItem(name, toReturn);
         return toReturn;
     }
 
-    public static <T extends Block> RegistryObject<Item> registerBlockItem(String name, RegistryObject<T> block, CreativeModeTab tab) {
-        return Register.ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties().tab(tab)));
+    public static <T extends Block> RegistryObject<Item> registerBlockItem(String name, RegistryObject<T> block) {
+        return Register.ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties()));
     }
 }

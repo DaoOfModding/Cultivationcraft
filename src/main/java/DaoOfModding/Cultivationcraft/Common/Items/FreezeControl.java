@@ -6,10 +6,6 @@ import DaoOfModding.Cultivationcraft.Common.Blocks.entity.FrozenBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BedBlock;
 import net.minecraft.world.level.block.DoorBlock;
@@ -17,32 +13,22 @@ import net.minecraft.world.level.block.DoublePlantBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.Property;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
-public class FreezeTestItem extends Item {
-    public FreezeTestItem(Properties properties) {
-        super(properties);
-    }
+public class FreezeControl
+{
+    public static void Freeze(Level level, BlockPos pos, int duration)
+    {
+        BlockPos secondBlockPos = getMultiblockPos(pos, level.getBlockState(pos));
 
-    @Override
-    public @NotNull InteractionResult useOn(@NotNull UseOnContext pContext) {
-        if (!pContext.getLevel().isClientSide() && pContext.getHand() == InteractionHand.MAIN_HAND) {
-            BlockPos blockPos = pContext.getClickedPos();
-            BlockPos secondBlockPos = getMultiblockPos(blockPos, pContext.getLevel().getBlockState(blockPos));
-            Level level = pContext.getLevel();
-
-            if (secondBlockPos != null) {
-                createFrozenBlock(level, secondBlockPos);
-            }
-            createFrozenBlock(level, blockPos);
-            return InteractionResult.SUCCESS;
+        if (secondBlockPos != null) {
+            createFrozenBlock(level, secondBlockPos, duration);
         }
-        return super.useOn(pContext);
+        createFrozenBlock(level, pos, duration);
     }
 
-    public static void createFrozenBlock(Level world, BlockPos blockPos) {
+    public static void createFrozenBlock(Level world, BlockPos blockPos, int duration) {
         BlockState oldState = world.getBlockState(blockPos);
         BlockEntity oldBlockEntity = null;
         CompoundTag oldBlockEntityData = null;
@@ -54,7 +40,7 @@ public class FreezeTestItem extends Item {
         }
 
         if (!world.isClientSide()) {
-            BlockState FrozenBlock = setFrozenBlock(oldState, handleIsBedSecondBlock(oldState));
+            BlockState FrozenBlock = setFrozenBlock(oldState, handleIsBedSecondBlock(oldState), duration);
             world.setBlockAndUpdate(blockPos, FrozenBlock);
             ((FrozenBlockEntity) Objects.requireNonNull(world.getBlockEntity(blockPos))).setOldBlockFields(oldState, oldBlockEntity, oldBlockEntityData);
         }
@@ -101,7 +87,8 @@ public class FreezeTestItem extends Item {
         return null;
     }
 
-    public static BlockState setFrozenBlock(BlockState oldBlockState, boolean isSecondBlock) {
+    public static BlockState setFrozenBlock(BlockState oldBlockState, boolean isSecondBlock, int duration)
+    {
         BlockState frozenBlock = BlockRegister.FROZEN_BLOCK.get().defaultBlockState();
         Property<Direction> facing = oldBlockState.getBlock().getStateDefinition().getProperty("facing") != null
                 ? (Property<Direction>) oldBlockState.getBlock().getStateDefinition().getProperty("facing")
@@ -114,6 +101,9 @@ public class FreezeTestItem extends Item {
             frozenBlock = frozenBlock.setValue(FrozenBlock.FACING, oldBlockState.getValue(facing));
             frozenBlock = frozenBlock.setValue(FrozenBlock.IS_SECOND_BLOCK, isSecondBlock);
         }
+
+        // TODO: Duration goes here
+
         return frozenBlock;
     }
 }

@@ -2,7 +2,9 @@ package DaoOfModding.Cultivationcraft.Common.Qi;
 
 import DaoOfModding.Cultivationcraft.Common.Qi.Cultivation.*;
 import DaoOfModding.Cultivationcraft.Common.Qi.Cultivation.CoreForming.FireFormingCultivation;
+import DaoOfModding.Cultivationcraft.Common.Qi.Cultivation.CoreForming.IceFormingCultivation;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.TechniqueModifiers.FireModifier;
+import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.TechniqueModifiers.IceModifier;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.TechniqueModifiers.TechniqueModifier;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 
@@ -17,9 +19,11 @@ public class ExternalCultivationHandler
         addCultivation(QiCondenserCultivation.class);
         addCultivation(CoreFormingCultivation.class);
         addCultivation(FireFormingCultivation.class);
+        addCultivation(IceFormingCultivation.class);
 
         addModifier(TechniqueModifier.class);
         addModifier(FireModifier.class);
+        addModifier(IceModifier.class);
     }
 
     // List of all techniques available in the game
