@@ -1,11 +1,8 @@
 package DaoOfModding.Cultivationcraft.Common.Qi;
 
 import DaoOfModding.Cultivationcraft.Common.Qi.Cultivation.*;
-import DaoOfModding.Cultivationcraft.Common.Qi.Cultivation.CoreForming.FireFormingCultivation;
-import DaoOfModding.Cultivationcraft.Common.Qi.Cultivation.CoreForming.IceFormingCultivation;
-import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.TechniqueModifiers.FireModifier;
-import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.TechniqueModifiers.IceModifier;
-import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.TechniqueModifiers.TechniqueModifier;
+import DaoOfModding.Cultivationcraft.Common.Qi.Cultivation.CoreForming.*;
+import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.TechniqueModifiers.*;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 
 import java.util.ArrayList;
@@ -19,11 +16,21 @@ public class ExternalCultivationHandler
         addCultivation(QiCondenserCultivation.class);
         addCultivation(CoreFormingCultivation.class);
         addCultivation(FireFormingCultivation.class);
+        addCultivation(EarthFormingCultivation.class);
+        addCultivation(WindFormingCultivation.class);
+        addCultivation(WoodFormingCultivation.class);
+        addCultivation(WaterFormingCultivation.class);
         addCultivation(IceFormingCultivation.class);
+        addCultivation(LightningFormingCultivation.class);
 
         addModifier(TechniqueModifier.class);
         addModifier(FireModifier.class);
+        addModifier(EarthModifier.class);
+        addModifier(WindModifier.class);
+        addModifier(WoodModifier.class);
+        addModifier(WaterModifier.class);
         addModifier(IceModifier.class);
+        addModifier(LightningModifier.class);
     }
 
     // List of all techniques available in the game

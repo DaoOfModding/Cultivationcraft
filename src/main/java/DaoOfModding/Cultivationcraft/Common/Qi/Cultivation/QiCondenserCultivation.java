@@ -2,12 +2,9 @@ package DaoOfModding.Cultivationcraft.Common.Qi.Cultivation;
 
 import DaoOfModding.Cultivationcraft.Client.GUI.Screens.CultivationTypeScreens.QiCondenserScreen;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStats;
-import DaoOfModding.Cultivationcraft.Common.Qi.Cultivation.CoreForming.FireFormingCultivation;
-import DaoOfModding.Cultivationcraft.Common.Qi.Cultivation.CoreForming.IceFormingCultivation;
+import DaoOfModding.Cultivationcraft.Common.Qi.Cultivation.CoreForming.*;
 import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.PassiveTechniques.CultivationPassives.QiCondenserPassive;
-import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.TechniqueStats.DefaultCultivationStatIDs;
-import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
@@ -35,7 +32,12 @@ public class QiCondenserCultivation extends CultivationType
 
         advancements.add(new CoreFormingCultivation());
         advancements.add(new FireFormingCultivation());
+        advancements.add(new EarthFormingCultivation());
+        advancements.add(new WindFormingCultivation());
+        advancements.add(new WoodFormingCultivation());
+        advancements.add(new WaterFormingCultivation());
         advancements.add(new IceFormingCultivation());
+        advancements.add(new LightningFormingCultivation());
 
         ID = "cultivationcraft.cultivation.qicondensation";
     }
