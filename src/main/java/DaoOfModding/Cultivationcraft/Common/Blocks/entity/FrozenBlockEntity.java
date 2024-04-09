@@ -20,7 +20,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class FrozenBlockEntity extends BlockEntity implements TickableBlockEntity {
     protected int FREEZE_PROGRESS_TICKS = 0;
-    protected static int FREEZE_DURATION_TICKS = 50;
+    protected int FREEZE_DURATION_TICKS;
     protected ItemStack itemStack;
     protected BlockPos blockPos;
     protected BlockState oldBlockState;
@@ -34,12 +34,15 @@ public class FrozenBlockEntity extends BlockEntity implements TickableBlockEntit
         this.oldBlockState = Blocks.AIR.defaultBlockState();
         this.oldBlockEntity = null;
         this.oldBlockEntityData = null;
-
         this.itemStack = new ItemStack(this.oldBlockState.getBlock().asItem());
 
         Property<Boolean> isSecondBlock = (Property<Boolean>) ((FrozenBlock) blockState.getBlock()).getStateDefinition().getProperty("is_second_block");
         assert isSecondBlock != null;
         this.isSecondBlock = blockState.getValue(isSecondBlock);
+
+        Property<Integer> freezeDurationTicks = (Property<Integer>) ((FrozenBlock) blockState.getBlock()).getStateDefinition().getProperty("freeze_duration_ticks");
+        assert freezeDurationTicks != null;
+        this.FREEZE_DURATION_TICKS = blockState.getValue(freezeDurationTicks);
     }
 
     public FrozenBlockEntity(BlockPos blockPos, BlockState blockState, BlockState oldBlockState, BlockEntity oldBlockEntity, CompoundTag oldBlockEntityData, boolean isSecondBlock) {

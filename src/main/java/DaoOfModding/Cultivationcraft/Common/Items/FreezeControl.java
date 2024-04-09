@@ -16,10 +16,8 @@ import net.minecraft.world.level.block.state.properties.Property;
 
 import java.util.Objects;
 
-public class FreezeControl
-{
-    public static void Freeze(Level level, BlockPos pos, int duration)
-    {
+public class FreezeControl {
+    public static void Freeze(Level level, BlockPos pos, int duration) {
         BlockPos secondBlockPos = getMultiblockPos(pos, level.getBlockState(pos));
 
         if (secondBlockPos != null) {
@@ -87,8 +85,7 @@ public class FreezeControl
         return null;
     }
 
-    public static BlockState setFrozenBlock(BlockState oldBlockState, boolean isSecondBlock, int duration)
-    {
+    public static BlockState setFrozenBlock(BlockState oldBlockState, boolean isSecondBlock, int duration) {
         BlockState frozenBlock = BlockRegister.FROZEN_BLOCK.get().defaultBlockState();
         Property<Direction> facing = oldBlockState.getBlock().getStateDefinition().getProperty("facing") != null
                 ? (Property<Direction>) oldBlockState.getBlock().getStateDefinition().getProperty("facing")
@@ -102,6 +99,7 @@ public class FreezeControl
             frozenBlock = frozenBlock.setValue(FrozenBlock.IS_SECOND_BLOCK, isSecondBlock);
         }
 
+        frozenBlock = frozenBlock.setValue(FrozenBlock.FREEZE_DURATION_TICKS, duration);
         // TODO: Duration goes here
 
         return frozenBlock;

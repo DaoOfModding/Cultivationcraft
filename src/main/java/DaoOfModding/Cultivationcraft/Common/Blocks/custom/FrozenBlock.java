@@ -17,23 +17,26 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class FrozenBlock extends AbstractGlassBlock implements EntityBlock {
     public static final DirectionProperty FACING = DirectionalBlock.FACING;
     public static final BooleanProperty IS_SECOND_BLOCK = BooleanProperty.create("is_second_block");
+    public static final IntegerProperty FREEZE_DURATION_TICKS = IntegerProperty.create("freeze_duration_ticks", 0, 1000);
 
     public FrozenBlock(Properties properties) {
         super(properties);
         registerDefaultState(defaultBlockState()
                 .setValue(FACING, Direction.NORTH)
-                .setValue(IS_SECOND_BLOCK, Boolean.FALSE));
+                .setValue(IS_SECOND_BLOCK, Boolean.FALSE)
+                .setValue(FREEZE_DURATION_TICKS, 50));
     }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(FACING, IS_SECOND_BLOCK);
+        builder.add(FACING, IS_SECOND_BLOCK, FREEZE_DURATION_TICKS);
     }
 
     @Nullable
