@@ -8,6 +8,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BedBlock;
+import net.minecraft.world.level.block.CampfireBlock;
 import net.minecraft.world.level.block.DoorBlock;
 import net.minecraft.world.level.block.DoublePlantBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -28,6 +29,19 @@ public class FreezeControl {
 
     public static void createFrozenBlock(Level world, BlockPos blockPos, int duration) {
         BlockState oldState = world.getBlockState(blockPos);
+        if (oldState.getBlock() instanceof CampfireBlock) {
+            Property<Boolean> LIT = oldState.getBlock().getStateDefinition().getProperty("lit") != null
+                    ? (Property<Boolean>) oldState.getBlock().getStateDefinition().getProperty("lit")
+                    : null;
+            if (
+                    LIT != null
+                            && oldState.getValue(LIT).equals(true)
+            ) {
+                oldState = oldState.setValue(LIT, false);
+            }
+        }
+
+
         BlockEntity oldBlockEntity = null;
         CompoundTag oldBlockEntityData = null;
         if (oldState.hasBlockEntity()) {
