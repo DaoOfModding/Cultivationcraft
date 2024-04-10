@@ -90,6 +90,8 @@ public class QiBarrierTechnique extends Technique
             return;
         }
 
+        tickTechniqueModifiers(event.player, event.player.position(), getElement());
+
         super.tickServer(event);
     }
 

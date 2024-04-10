@@ -20,6 +20,7 @@ import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexFormat;
+import com.mojang.math.Vector3f;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.effect.MobEffect;
@@ -32,6 +33,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
@@ -512,14 +514,24 @@ public class Technique
     // Applies modifiers from TechniqueModifiers
     protected void applyTechniqueModifiers(Player player)
     {
+        ArrayList<TechniqueModifier> techmods = CultivatorStats.getCultivatorStats(player).getCultivation().getModifiers();
+
         // Set all elements from modifiers
         ElementList.clear();
 
-        for (TechniqueModifier mod : CultivatorStats.getCultivatorStats(player).getCultivation().getModifiers())
+        for (TechniqueModifier mod : techmods)
         {
             if (mod.hasElement())
                 ElementList.add(mod.getElement());
         }
+    }
+
+    public static void tickTechniqueModifiers(Player player, Vec3 position, ResourceLocation techelement)
+    {
+        ArrayList<TechniqueModifier> techmods = CultivatorStats.getCultivatorStats(player).getCultivation().getModifiers();
+
+        for (TechniqueModifier mod : techmods)
+            mod.tick(player, position, techelement);
     }
 
     // Ticks on server side, only called if Technique is active and owned by the player

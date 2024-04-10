@@ -9,6 +9,7 @@ import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.IC
 import DaoOfModding.Cultivationcraft.Common.Qi.Damage.QiDamageSource;
 import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.QiCondenserTechniques.FlyingSwordFormationTechnique;
+import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.Technique;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.TechniqueStats.DefaultTechniqueStatIDs;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
@@ -490,6 +491,8 @@ public class FlyingSwordEntity extends ItemEntity
                 // Set this entity to radiate Qi for clients
                 if (this.level.isClientSide)
                     QiGlowRenderer.setQiVisible(this, Elements.getElement(formation.getElement()));
+                else
+                    Technique.tickTechniqueModifiers(owner, position(), formation.getElement());
             }
             else
                 fall();

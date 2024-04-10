@@ -97,6 +97,8 @@ public class FlightTechnique extends Technique
             Reflection.allowFlight((ServerPlayer) event.player);
         }
 
+        tickTechniqueModifiers(event.player, event.player.position(), getElement());
+
         super.tickServer(event);
     }
 
