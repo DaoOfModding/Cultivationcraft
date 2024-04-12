@@ -108,6 +108,7 @@ public class FrozenBlockEntity extends BlockEntity implements TickableBlockEntit
         this.oldBlockEntity = oldBlockEntity;
         this.oldBlockEntityData = oldBlockEntityData;
         setChanged();
+        int rotation = 0;
     }
 
     public boolean isSecondBlock() {

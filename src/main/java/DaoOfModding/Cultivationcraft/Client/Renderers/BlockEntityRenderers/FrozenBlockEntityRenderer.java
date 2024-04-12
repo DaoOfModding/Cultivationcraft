@@ -56,8 +56,11 @@ public class FrozenBlockEntityRenderer implements BlockEntityRenderer<FrozenBloc
         } else if (oldBlockState.getBlock() instanceof WallBannerBlock) {
             f = -oldBlockState.getValue(WallBannerBlock.FACING).toYRot();
             pPoseStack.mulPose(Vector3f.YP.rotationDegrees(-((f * 360) / 16F)));
-
+        } else if (oldBlockState.getBlock() instanceof SkullBlock) {
+            f = oldBlockState.getValue(SkullBlock.ROTATION);
+            pPoseStack.mulPose(Vector3f.YP.rotationDegrees(getDirection(f)));
         }
+
         if (!pBlockEntity.isSecondBlock()) {
             itemRenderer.renderStatic(itemStack, ItemTransforms.TransformType.NONE,
                     getLightLevel(Objects.requireNonNull(pBlockEntity.getLevel()), pBlockEntity.getBlockPos()),
@@ -98,5 +101,14 @@ public class FrozenBlockEntityRenderer implements BlockEntityRenderer<FrozenBloc
             case WEST -> pPoseStack.translate(0D, 0D, -1D);
             case EAST -> pPoseStack.translate(-1D, 0D, 0D);
         }
+    }
+
+    public static Float getDirection(float rotation) {
+        Float[] directions = {180f, 157.5f, 135f, 112.5f, 90f,
+                67.5f, 45f, 22.5f, 0f, -22.5f,
+                -45f, -67.5f, -90f, -112.5f, -135f, -157.5f};
+
+        int index = (int) (rotation % 16);
+        return directions[index];
     }
 }

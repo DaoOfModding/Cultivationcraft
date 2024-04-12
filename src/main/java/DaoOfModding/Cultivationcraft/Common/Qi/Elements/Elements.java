@@ -1,19 +1,18 @@
 package DaoOfModding.Cultivationcraft.Common.Qi.Elements;
 
 
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Set;
-
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.Material;
 
-public class Elements
-{
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Set;
+
+public class Elements {
     protected static HashMap<ResourceLocation, Element> Elements = new HashMap<>();
 
     public static final ResourceLocation noElement = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.elements.none");
@@ -31,16 +30,14 @@ public class Elements
     protected static ArrayList<ResourceLocation> defaultElements = new ArrayList<>();
     protected static HashMap<ResourceKey<Level>, ArrayList<ResourceLocation>> dimensionElements = new HashMap<>();
 
-    public static void init()
-    {
+    public static void init() {
         createElements();
         createMaterialElements();
 
         createDimensionRules();
     }
 
-    protected static void createDimensionRules()
-    {
+    protected static void createDimensionRules() {
         addDefaultDimensionRule(noElement);
         addDefaultDimensionRule(fireElement);
         addDefaultDimensionRule(earthElement);
@@ -53,29 +50,25 @@ public class Elements
         addDimensionRule(Level.NETHER, fireElement);
     }
 
-    public static void addDefaultDimensionRule(ResourceLocation element)
-    {
+    public static void addDefaultDimensionRule(ResourceLocation element) {
         defaultElements.add(element);
     }
 
-    public static void addDimensionRule(ResourceKey<Level> dimension, ResourceLocation element)
-    {
+    public static void addDimensionRule(ResourceKey<Level> dimension, ResourceLocation element) {
         if (!dimensionElements.containsKey(dimension))
             dimensionElements.put(dimension, new ArrayList<ResourceLocation>());
 
         dimensionElements.get(dimension).add(element);
     }
 
-    public static ArrayList<ResourceLocation> getDimensionRules(ResourceKey<Level> dimension)
-    {
+    public static ArrayList<ResourceLocation> getDimensionRules(ResourceKey<Level> dimension) {
         if (dimensionElements.containsKey(dimension))
             return dimensionElements.get(dimension);
 
         return defaultElements;
     }
 
-    protected static void createElements()
-    {
+    protected static void createElements() {
         addElement(new Element(noElement, new Color(1f, 1f, 1f), 0));
         addElement(new FireElement(fireElement, new Color(1f, 0, 0), 0.2));
         addElement(new Element(earthElement, new Color(1f, 0.5f, 0), 0.75));
@@ -83,19 +76,18 @@ public class Elements
         addElement(new WindElement(windElement, new Color(0, 1f, 0.25f), 0.8));
         addElement(new WaterElement(waterElement, new Color(0, 0, 1f), 0.2));
 
-        addVariant(waterElement, new IceElement(iceElement, new Color(0, 1f, 1f), 0.5, 0.02));
+        addVariant(waterElement, new IceElement(iceElement, new Color(0, 1f, 1f), 0.5, 100));
         addVariant(windElement, new LightningElement(lightningElement, new Color(1f, 1f, 0), 0, 0.02));
     }
 
-    protected static void createMaterialElements()
-    {
+    protected static void createMaterialElements() {
         BlockElements.addMaterial(Material.AIR, windElement);
 
         BlockElements.addMaterial(Material.BUBBLE_COLUMN, waterElement);
         BlockElements.addMaterial(Material.WATER_PLANT, waterElement);
-        BlockElements.addMaterial(Material.REPLACEABLE_WATER_PLANT , waterElement);
-        BlockElements.addMaterial(Material.WATER , waterElement);
-        BlockElements.addMaterial(Material.SPONGE , waterElement);
+        BlockElements.addMaterial(Material.REPLACEABLE_WATER_PLANT, waterElement);
+        BlockElements.addMaterial(Material.WATER, waterElement);
+        BlockElements.addMaterial(Material.SPONGE, waterElement);
 
         BlockElements.addMaterial(Material.ICE, iceElement);
         BlockElements.addMaterial(Material.ICE_SOLID, iceElement);
@@ -129,27 +121,23 @@ public class Elements
     }
 
     // Adds a new element of the specified resourceLocation to the Elements list
-    public static void addElement(Element element)
-    {
+    public static void addElement(Element element) {
         Elements.put(element.getResourceLocation(), element);
     }
 
     // Adds a new variant of the specified name to the Elements list
-    public static void addVariant(ResourceLocation elementLocation, ElementVariant variant)
-    {
+    public static void addVariant(ResourceLocation elementLocation, ElementVariant variant) {
         Elements.put(variant.getResourceLocation(), variant);
 
         getElement(elementLocation).addVariant(variant);
     }
 
-    public static Set<ResourceLocation> getElements()
-    {
+    public static Set<ResourceLocation> getElements() {
         return Elements.keySet();
     }
 
     // Returns the element of the supplied id
-    public static Element getElement(ResourceLocation element)
-    {
+    public static Element getElement(ResourceLocation element) {
         if (element.compareTo(anyElement) == 0)
             return Elements.get(noElement);
 
