@@ -28,6 +28,8 @@ public class FrozenBlockEntity extends BlockEntity implements TickableBlockEntit
     protected CompoundTag oldBlockEntityData;
     protected boolean isSecondBlock;
 
+    protected FrozenBlockEntity connectedEntity;
+
     public FrozenBlockEntity(BlockPos blockPos, BlockState blockState) {
         super(BlockRegister.FROZEN_BLOCK_ENTITY.get(), blockPos, blockState);
         this.blockPos = blockPos;
@@ -53,6 +55,11 @@ public class FrozenBlockEntity extends BlockEntity implements TickableBlockEntit
         this.oldBlockEntityData = oldBlockEntityData;
         this.itemStack = new ItemStack(this.oldBlockState.getBlock().asItem());
         this.isSecondBlock = isSecondBlock;
+    }
+
+    public void setConnected(FrozenBlockEntity second)
+    {
+        connectedEntity = second;
     }
 
     @Override
@@ -135,7 +142,8 @@ public class FrozenBlockEntity extends BlockEntity implements TickableBlockEntit
 
     public void thawBlock() {
         Level world = this.getLevel();
-        if (world != null && this.oldBlockState != null && this.blockPos != null) {
+        if (world != null && this.oldBlockState != null && this.blockPos != null)
+        {
             // Revert the block to its previous state
             world.setBlockAndUpdate(this.blockPos, this.oldBlockState);
             if (oldBlockEntity != null) {
@@ -143,6 +151,9 @@ public class FrozenBlockEntity extends BlockEntity implements TickableBlockEntit
                 unFrozenEntity.deserializeNBT(oldBlockEntityData);
                 world.setBlockEntity(unFrozenEntity);
             }
+
+            if (connectedEntity != null)
+                connectedEntity.thawBlock();
         }
     }
 
@@ -152,7 +163,8 @@ public class FrozenBlockEntity extends BlockEntity implements TickableBlockEntit
             return;
         }
         this.FREEZE_PROGRESS_TICKS++;
-        if (this.FREEZE_PROGRESS_TICKS >= FREEZE_DURATION_TICKS) {
+        if (this.FREEZE_PROGRESS_TICKS >= FREEZE_DURATION_TICKS)
+        {
             this.thawBlock();
             this.FREEZE_PROGRESS_TICKS = 0;
             setChanged(level, blockPos, blockState);

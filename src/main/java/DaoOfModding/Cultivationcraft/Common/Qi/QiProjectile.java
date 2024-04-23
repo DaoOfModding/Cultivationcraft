@@ -4,6 +4,7 @@ import DaoOfModding.Cultivationcraft.Client.Renderers.QiSourceRenderer;
 import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Element;
 import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.QiCondenserTechniques.QiEmission;
+import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.Technique;
 import DaoOfModding.Cultivationcraft.Common.Register;
 import DaoOfModding.Cultivationcraft.Server.CultivatorAttackLogic;
 import net.minecraft.core.particles.ParticleOptions;
@@ -86,10 +87,14 @@ public class QiProjectile extends AbstractHurtingProjectile
         super.tick();
 
         if (!level.isClientSide)
+        {
             entityData.set(ID_LIFE, entityData.get(ID_LIFE) - 1);
+            Technique.tickTechniqueModifiers((Player)getOwner(), position(), getElement());
+        }
 
         if (entityData.get(ID_LIFE) == 0)
             this.discard();
+
     }
 
     public void setDirection(Vec3 dir)

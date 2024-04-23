@@ -1,10 +1,13 @@
 package DaoOfModding.Cultivationcraft.Common.Qi.Techniques.TechniqueModifiers;
 
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.phys.Vec3;
 
 public class TechniqueModifier
 {
     ResourceLocation Element = null;
+    float power = 1;
 
     public ResourceLocation getElement()
     {
@@ -17,5 +20,10 @@ public class TechniqueModifier
             return true;
 
         return false;
+    }
+
+    public void tick(Player owner, Vec3 position, ResourceLocation element)
+    {
+
     }
 }
