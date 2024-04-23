@@ -17,6 +17,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.block.BannerBlock;
+import net.minecraft.world.level.block.BedBlock;
 import net.minecraft.world.level.block.SkullBlock;
 import net.minecraft.world.level.block.WallBannerBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -77,7 +78,12 @@ public class FrozenBlockEntityRenderer implements BlockEntityRenderer<FrozenBloc
         pPoseStack.scale(0.999F, 0.999F, 0.999F);
 
         if (name.contains("Chest") || name.contains("Bed")) renderSpecial(pBlockEntity, pPoseStack);
-        if (!pBlockEntity.isSecondBlock()) {
+        //render all blocks except beds, or if it is a bed, render the first block only
+        if (!(oldBlockState.getBlock() instanceof BedBlock)) {
+            blockRenderer.renderSingleBlock(oldBlockState, pPoseStack, pBufferSource,
+                    getLightLevel(Objects.requireNonNull(pBlockEntity.getLevel()), pBlockEntity.getBlockPos()),
+                    pPackedOverlay);
+        } else if (!pBlockEntity.isSecondBlock()) {
             blockRenderer.renderSingleBlock(oldBlockState, pPoseStack, pBufferSource,
                     getLightLevel(Objects.requireNonNull(pBlockEntity.getLevel()), pBlockEntity.getBlockPos()),
                     pPackedOverlay);

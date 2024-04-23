@@ -12,60 +12,61 @@ import net.minecraft.world.level.block.CampfireBlock;
 import net.minecraft.world.level.block.DoorBlock;
 import net.minecraft.world.level.block.DoublePlantBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.piston.PistonBaseBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.Property;
 
 import java.util.Objects;
 
-public class FreezeControl
-{
-    public static void Freeze(Level level, BlockPos pos, int duration)
-    {
-        BlockState oldState1 = getCurrentState(level, pos);
-        BlockEntity oldEntity1 = getCurrentEntity(level, pos);
+public class FreezeControl {
+    public static void Freeze(Level level, BlockPos pos, int duration) {
+        if (!level.isClientSide()) {
+            BlockState oldState1 = getCurrentState(level, pos);
+            BlockEntity oldEntity1 = getCurrentEntity(level, pos);
+            if (oldEntity1 != null)
+                level.removeBlockEntity(pos);
 
-        BlockPos secondBlockPos = getMultiblockPos(pos, level.getBlockState(pos));
+            BlockPos secondBlockPos = getMultiblockPos(pos, level.getBlockState(pos));
 
-        // Just freeze this block if it is not part of a Multiblock
-        if (secondBlockPos == null)
-        {
-            createFrozenBlock(level, pos, oldState1, oldEntity1, duration);
-            return;
+            // Just freeze this block if it is not part of a Multiblock
+            if (secondBlockPos == null) {
+                createFrozenBlock(level, pos, oldState1, oldEntity1, duration);
+                return;
+            }
+
+            BlockState oldState2 = getCurrentState(level, secondBlockPos);
+            BlockEntity oldEntity2 = getCurrentEntity(level, secondBlockPos);
+            if (oldEntity2 != null)
+                level.removeBlockEntity(pos);
+
+            FrozenBlockEntity freeze = null;
+            FrozenBlockEntity second = null;
+
+            boolean isSecond = handleIsSecondBlock(level.getBlockState(pos));
+
+            // Make sure you freeze the blocks in the correct order, otherwise an additional item will be spawned
+            if (!isSecond)
+                freeze = createFrozenBlock(level, pos, oldState1, oldEntity1, duration);
+
+            second = createFrozenBlock(level, secondBlockPos, oldState2, oldEntity2, duration);
+
+            if (isSecond)
+                freeze = createFrozenBlock(level, pos, oldState1, oldEntity1, duration);
+
+            if (freeze != null)
+                freeze.setConnected(second);
         }
-
-        BlockState oldState2 = getCurrentState(level, secondBlockPos);
-        BlockEntity oldEntity2 = getCurrentEntity(level, secondBlockPos);
-
-        FrozenBlockEntity freeze = null;
-        FrozenBlockEntity second = null;
-
-        boolean isSecond = handleIsBedSecondBlock(level.getBlockState(pos));
-
-        // Make sure you freeze the blocks in the correct order, otherwise an additional item will be spawned
-        if (!isSecond)
-            freeze = createFrozenBlock(level, pos, oldState1, oldEntity1, duration);
-
-        second = createFrozenBlock(level, secondBlockPos, oldState2, oldEntity2, duration);
-
-        if (isSecond)
-            freeze = createFrozenBlock(level, pos, oldState1, oldEntity1, duration);
-
-        if (freeze != null)
-            freeze.setConnected(second);
     }
 
-    public static BlockState getCurrentState(Level level, BlockPos pos)
-    {
+    public static BlockState getCurrentState(Level level, BlockPos pos) {
         return level.getBlockState(pos);
     }
 
-    public static BlockEntity getCurrentEntity(Level level, BlockPos pos)
-    {
+    public static BlockEntity getCurrentEntity(Level level, BlockPos pos) {
         return level.getBlockEntity(pos);
     }
 
-    public static FrozenBlockEntity createFrozenBlock(Level world, BlockPos blockPos, BlockState oldState, BlockEntity oldBlockEntity, int duration)
-    {
+    public static FrozenBlockEntity createFrozenBlock(Level world, BlockPos blockPos, BlockState oldState, BlockEntity oldBlockEntity, int duration) {
         FrozenBlockEntity frozen = null;
         if (oldState.getBlock() instanceof CampfireBlock) {
             Property<Boolean> LIT = oldState.getBlock().getStateDefinition().getProperty("lit") != null
@@ -82,11 +83,10 @@ public class FreezeControl
         CompoundTag oldBlockEntityData = null;
         if (oldBlockEntity != null) {
             oldBlockEntityData = oldBlockEntity.serializeNBT();
-            world.removeBlockEntity(blockPos);
         }
 
         if (!world.isClientSide()) { //
-            BlockState FrozenBlock = setFrozenBlock(oldState, handleIsBedSecondBlock(oldState), duration);
+            BlockState FrozenBlock = setFrozenBlock(oldState, handleIsSecondBlock(oldState), duration);
             world.setBlockAndUpdate(blockPos, FrozenBlock);
 
             frozen = ((FrozenBlockEntity) Objects.requireNonNull(world.getBlockEntity(blockPos)));
@@ -95,11 +95,21 @@ public class FreezeControl
         return frozen;
     }
 
-    public static boolean handleIsBedSecondBlock(BlockState oldBlockState) {
-        BlockState bed = oldBlockState.getBlock().getName().getString().contains("Bed") ? oldBlockState : null;
-        boolean isBed = bed != null;
-        boolean isSecondBlock = isBed && bed.getValue(Objects.requireNonNull(bed.getBlock().getStateDefinition().getProperty("part"))).toString().equals("foot");
-        return isBed && isSecondBlock;
+    public static boolean handleIsSecondBlock(BlockState oldBlockState) {
+        String blockName = oldBlockState.getBlock().getName().getString();
+
+        if (oldBlockState.getBlock() instanceof BedBlock) {
+            return oldBlockState.getValue(Objects.requireNonNull(oldBlockState.getBlock().getStateDefinition().getProperty("part"))).toString().equals("foot");
+        }
+
+        if (oldBlockState.getBlock() instanceof DoorBlock) {
+            return oldBlockState.getValue(Objects.requireNonNull(oldBlockState.getBlock().getStateDefinition().getProperty("half"))).toString().equals("upper");
+        }
+
+        if (oldBlockState.getBlock() instanceof PistonBaseBlock) {
+            return oldBlockState.getValue(Objects.requireNonNull(oldBlockState.getBlock().getStateDefinition().getProperty("extended"))).toString().equals("true");
+        }
+        return false;
     }
 
     public static BlockPos getMultiblockPos(BlockPos blockPos, BlockState blockState) {
