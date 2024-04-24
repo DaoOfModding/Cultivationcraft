@@ -76,7 +76,7 @@ public class Elements {
         addElement(new WindElement(windElement, new Color(0, 1f, 0.25f), 0.8));
         addElement(new WaterElement(waterElement, new Color(0, 0, 1f), 0.2));
 
-        addVariant(waterElement, new IceElement(iceElement, new Color(0, 1f, 1f), 0.5, 100));
+        addVariant(waterElement, new IceElement(iceElement, new Color(0, 1f, 1f), 0.5, 0.02));
         addVariant(windElement, new LightningElement(lightningElement, new Color(1f, 1f, 0), 0, 0.02));
     }
 
