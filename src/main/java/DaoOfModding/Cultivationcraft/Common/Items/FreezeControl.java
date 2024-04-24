@@ -12,7 +12,7 @@ import net.minecraft.world.level.block.CampfireBlock;
 import net.minecraft.world.level.block.DoorBlock;
 import net.minecraft.world.level.block.DoublePlantBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.piston.PistonBaseBlock;
+import net.minecraft.world.level.block.piston.PistonHeadBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.Property;
 
@@ -96,8 +96,6 @@ public class FreezeControl {
     }
 
     public static boolean handleIsSecondBlock(BlockState oldBlockState) {
-        String blockName = oldBlockState.getBlock().getName().getString();
-
         if (oldBlockState.getBlock() instanceof BedBlock) {
             return oldBlockState.getValue(Objects.requireNonNull(oldBlockState.getBlock().getStateDefinition().getProperty("part"))).toString().equals("foot");
         }
@@ -106,8 +104,8 @@ public class FreezeControl {
             return oldBlockState.getValue(Objects.requireNonNull(oldBlockState.getBlock().getStateDefinition().getProperty("half"))).toString().equals("upper");
         }
 
-        if (oldBlockState.getBlock() instanceof PistonBaseBlock) {
-            return oldBlockState.getValue(Objects.requireNonNull(oldBlockState.getBlock().getStateDefinition().getProperty("extended"))).toString().equals("true");
+        if (oldBlockState.getBlock() instanceof PistonHeadBlock) {
+            return true;
         }
         return false;
     }

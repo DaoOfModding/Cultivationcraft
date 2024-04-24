@@ -12,12 +12,8 @@ import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.BedBlock;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.DoorBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.piston.PistonBaseBlock;
-import net.minecraft.world.level.block.piston.PistonHeadBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.Property;
 import org.jetbrains.annotations.NotNull;
@@ -114,12 +110,6 @@ public class FrozenBlockEntity extends BlockEntity implements TickableBlockEntit
         this.oldBlockEntity = oldBlockEntity;
         this.oldBlockEntityData = oldBlockEntityData;
         setChanged();
-
-        if (oldBlockState.getBlock() instanceof PistonBaseBlock
-                || oldBlockState.getBlock() instanceof PistonHeadBlock
-                || oldBlockState.getBlock() instanceof DoorBlock
-                || oldBlockState.getBlock() instanceof BedBlock)
-            System.out.println("Old Block State: " + oldBlockState + " Pos: " + blockPos);
     }
 
     public void setConnected(FrozenBlockEntity second) {
