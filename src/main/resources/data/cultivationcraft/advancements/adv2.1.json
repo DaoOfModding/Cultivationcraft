@@ -1,0 +1,19 @@
+{
+  "display": {
+    "title": {
+      "text": "This isn't even my final form"
+    },
+    "description": {
+      "text": "Evolve a limb through internal cultivation"
+    },
+    "icon": {
+      "item": "minecraft:bone"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {},
+  "parent": "cultivationcraft:adv2"
+}

@@ -1,0 +1,21 @@
+{
+  "display": {
+    "title": {
+      "text": "Personal Pool",
+      "strikethrough": false,
+      "color": "green"
+    },
+    "description": {
+      "text": "Survived tribulation and achieved Qi Condensing, liquifying the Qi"
+    },
+    "icon": {
+      "item": "minecraft:water_bucket"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {},
+  "parent": "cultivationcraft:adv1.1"
+}

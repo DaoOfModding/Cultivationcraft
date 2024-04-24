@@ -1,0 +1,20 @@
+{
+  "display": {
+    "title": {
+      "text": "Golden Core",
+      "color": "yellow"
+    },
+    "description": {
+      "text": "Survived tribulation and achieved Core Forming, solidifying the Qi into a Core"
+    },
+    "icon": {
+      "item": "minecraft:gold_nugget"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {},
+  "parent": "cultivationcraft:adv1.1.1"
+}

@@ -1,0 +1,20 @@
+{
+  "display": {
+    "title": {
+      "text": "Am I strong yet ?",
+      "color": "blue"
+    },
+    "description": {
+      "text": "Your first breakthrough"
+    },
+    "icon": {
+      "item": "minecraft:light_gray_stained_glass_pane"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {},
+  "parent": "cultivationcraft:adv1"
+}

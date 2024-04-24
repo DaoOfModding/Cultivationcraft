@@ -3,19 +3,14 @@ package DaoOfModding.Cultivationcraft.Common.Qi.Cultivation;
 import DaoOfModding.Cultivationcraft.Client.GUI.Screens.CultivationTypeScreens.FoundationEstablishmentScreen;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStats;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.PassiveTechniques.CultivationPassives.FoundationPassive;
-import DaoOfModding.Cultivationcraft.Cultivationcraft;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 
-public class FoundationEstablishmentCultivation extends CultivationType
-{
-    public FoundationEstablishmentCultivation()
-    {
+public class FoundationEstablishmentCultivation extends CultivationType {
+    public FoundationEstablishmentCultivation() {
         this(1);
     }
 
-    public FoundationEstablishmentCultivation(int cultivationStage)
-    {
+    public FoundationEstablishmentCultivation(int cultivationStage) {
         super(cultivationStage);
 
         passive = new FoundationPassive();
@@ -31,11 +26,10 @@ public class FoundationEstablishmentCultivation extends CultivationType
     }
 
     @Override
-    public void breakthrough(Player player)
-    {
-        if (stage < maxStage)
-        {
-            FoundationEstablishmentCultivation newCultivation = new FoundationEstablishmentCultivation(stage+1);
+    public void breakthrough(Player player) {
+        if (stage < maxStage) {
+            FoundationEstablishmentCultivation newCultivation = new FoundationEstablishmentCultivation(stage + 1);
+
             newCultivation.setPreviousCultivation(this);
 
             CultivatorStats.getCultivatorStats(player).setCultivation(newCultivation);
