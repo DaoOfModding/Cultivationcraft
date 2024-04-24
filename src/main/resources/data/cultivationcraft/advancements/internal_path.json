@@ -1,7 +1,7 @@
 {
   "display": {
     "title": {
-      "text": "External Cultivation"
+      "text": "Internal Cultivation"
     },
     "description": {
       "text": "Strengthen the physical body, develop powerful physiques."
@@ -14,6 +14,19 @@
     "announce_to_chat": true,
     "hidden": false
   },
-  "criteria": {},
-  "parent": "cultivationcraft:root"
+  "parent": "cultivationcraft:root",
+  "criteria": {
+    "choose_internal_path": {
+      "trigger": "cultivationcraft:chose_internal_path",
+      "conditions": {
+        "player": {
+        }
+      }
+    }
+  },
+  "requirements": [
+    [
+      "choose_internal_path"
+    ]
+  ]
 }

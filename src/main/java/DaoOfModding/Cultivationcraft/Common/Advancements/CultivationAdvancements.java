@@ -1,5 +1,8 @@
 package DaoOfModding.Cultivationcraft.Common.Advancements;
 
+import DaoOfModding.Cultivationcraft.Common.Advancements.Triggers.BreakthroughTrigger;
+import DaoOfModding.Cultivationcraft.Common.Advancements.Triggers.ExternalCultivationPathTrigger;
+import DaoOfModding.Cultivationcraft.Common.Advancements.Triggers.InternalCultivationPathTrigger;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.advancements.CriterionTrigger;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -13,10 +16,12 @@ public class CultivationAdvancements {
 
     public static BreakthroughTrigger HAS_BROKENTROUGH;
     public static ExternalCultivationPathTrigger EXTERNAL_CULTIVATION;
+    public static InternalCultivationPathTrigger INTERNAL_CULTIVATION;
 
     public static void init(IEventBus bus) {
-        EXTERNAL_CULTIVATION = (ExternalCultivationPathTrigger) registerAdvancementTrigger(new ExternalCultivationPathTrigger());
         HAS_BROKENTROUGH = (BreakthroughTrigger) registerAdvancementTrigger(new BreakthroughTrigger());
+        EXTERNAL_CULTIVATION = (ExternalCultivationPathTrigger) registerAdvancementTrigger(new ExternalCultivationPathTrigger());
+        INTERNAL_CULTIVATION = (InternalCultivationPathTrigger) registerAdvancementTrigger(new InternalCultivationPathTrigger());
     }
 
 

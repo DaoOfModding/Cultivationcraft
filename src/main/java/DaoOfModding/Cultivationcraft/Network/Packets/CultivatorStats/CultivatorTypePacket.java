@@ -1,7 +1,8 @@
 package DaoOfModding.Cultivationcraft.Network.Packets.CultivatorStats;
 
 import DaoOfModding.Cultivationcraft.Common.Advancements.CultivationAdvancements;
-import DaoOfModding.Cultivationcraft.Common.Advancements.ExternalCultivationPathTrigger;
+import DaoOfModding.Cultivationcraft.Common.Advancements.Triggers.ExternalCultivationPathTrigger;
+import DaoOfModding.Cultivationcraft.Common.Advancements.Triggers.InternalCultivationPathTrigger;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStats;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.PlayerHealthManager;
 import DaoOfModding.Cultivationcraft.Common.Qi.Cultivation.FoundationEstablishmentCultivation;
@@ -94,6 +95,15 @@ public class CultivatorTypePacket extends Packet {
 
             CultivatorStats.getCultivatorStats(ownerEntity).setCultivation(newCultivation);
             PlayerHealthManager.updateFoodStats(ownerEntity);
+        }
+
+        if (cultivationType == CultivationTypes.BODY_CULTIVATOR) {
+            if (ownerEntity instanceof ServerPlayer serverPlayer) {
+                LootContext.Builder bld = new LootContext.Builder(serverPlayer.getLevel())
+                        .withParameter(InternalCultivationPathTrigger.CHOSEN_INTERNAL_PATH, cultivationType);
+                LootContext ctx = bld.create(InternalCultivationPathTrigger.requiredParams);
+                CultivationAdvancements.INTERNAL_CULTIVATION.trigger(serverPlayer, ctx);
+            }
         }
 
         // Send the new player stats to the clients

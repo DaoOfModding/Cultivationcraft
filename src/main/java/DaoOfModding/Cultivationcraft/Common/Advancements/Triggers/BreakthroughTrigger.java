@@ -1,4 +1,4 @@
-package DaoOfModding.Cultivationcraft.Common.Advancements;
+package DaoOfModding.Cultivationcraft.Common.Advancements.Triggers;
 
 import DaoOfModding.Cultivationcraft.Common.Advancements.utils.ICriterionTriggerInstanceTester;
 import DaoOfModding.Cultivationcraft.Common.Advancements.utils.LibCriteriaTrigger;
@@ -11,10 +11,10 @@ import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParam;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSet;
 
-public class ExternalCultivationPathTrigger extends LibCriteriaTrigger<ExternalCultivationPathTrigger.Instance> {
-    public static final ResourceLocation ID = new ResourceLocation(Cultivationcraft.MODID, "chose_external_path");
-    public static LootContextParam<Integer> CHOSEN_EXTERNAL_PATH = new LootContextParam<Integer>(ID);
-    public static LootContextParamSet requiredParams = LootContextParamSet.builder().required(ExternalCultivationPathTrigger.CHOSEN_EXTERNAL_PATH).build();
+public class BreakthroughTrigger extends LibCriteriaTrigger<BreakthroughTrigger.Instance> {
+    public static final ResourceLocation ID = new ResourceLocation(Cultivationcraft.MODID, "has_breakthrough");
+    public static LootContextParam<Boolean> HAS_BROKENTROUGH = new LootContextParam<Boolean>(ID);
+    public static LootContextParamSet requiredParams = LootContextParamSet.builder().required(BreakthroughTrigger.HAS_BROKENTROUGH).build();
 
     @Override
     public ResourceLocation getId() {
@@ -22,17 +22,19 @@ public class ExternalCultivationPathTrigger extends LibCriteriaTrigger<ExternalC
     }
 
     @Override
-    public ExternalCultivationPathTrigger.Instance createInstance(JsonObject json, DeserializationContext context) {
-        return new ExternalCultivationPathTrigger.Instance();
+    public BreakthroughTrigger.Instance createInstance(JsonObject json, DeserializationContext context) {
+        return new BreakthroughTrigger.Instance();
     }
 
     public static class Instance implements ICriterionTriggerInstanceTester {
+        private final Integer currentStage = 0;
+
         public Instance() {
         }
 
         @Override
         public ResourceLocation getCriterion() {
-            return ExternalCultivationPathTrigger.ID;
+            return BreakthroughTrigger.ID;
         }
 
         @Override
@@ -43,7 +45,7 @@ public class ExternalCultivationPathTrigger extends LibCriteriaTrigger<ExternalC
 
         @Override
         public boolean test(LootContext ctx) {
-            return ctx.getParam(CHOSEN_EXTERNAL_PATH) == 0;
+            return ctx.getParam(HAS_BROKENTROUGH);
         }
     }
 }
