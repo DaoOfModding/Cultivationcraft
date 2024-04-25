@@ -8,7 +8,7 @@
       "text": "Survived tribulation and achieved Core Forming, mastering an element and solidifying the Qi into a Core"
     },
     "icon": {
-      "item": "minecraft:magma_cream"
+      "item": "minecraft:white_glazed_terracotta"
     },
     "frame": "challenge",
     "show_toast": true,

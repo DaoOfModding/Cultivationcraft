@@ -1,7 +1,6 @@
 package DaoOfModding.Cultivationcraft.Server;
 
 import DaoOfModding.Cultivationcraft.Common.Advancements.CultivationAdvancements;
-import DaoOfModding.Cultivationcraft.Common.Advancements.Triggers.CultivationPathTrigger;
 import DaoOfModding.Cultivationcraft.Common.Advancements.Triggers.FlyingSwordTrigger;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.FlyingSwordContainerItemStack.FlyingSwordContainerItemStack;
 import DaoOfModding.Cultivationcraft.Common.FlyingSwordBind;
@@ -47,7 +46,7 @@ public class FlyingSwordBindProgresser {
                             if (player instanceof ServerPlayer serverPlayer) {
                                 LootContext.Builder bld = new LootContext.Builder(serverPlayer.getLevel())
                                         .withParameter(FlyingSwordTrigger.HAS_FLYING_SWORD, true);
-                                LootContext ctx = bld.create(CultivationPathTrigger.requiredParams);
+                                LootContext ctx = bld.create(FlyingSwordTrigger.requiredParams);
                                 CultivationAdvancements.HAS_FLYING_SWORD.trigger(serverPlayer, ctx);
                             }
                         }

@@ -130,6 +130,8 @@ public class CultivationType {
         advanceTo.setPreviousCultivation(this);
         CultivatorStats.getCultivatorStats(player).setCultivation(advanceTo);
 
+        tribulation.reset();
+
         //used for Advancement trigger
         if (player instanceof ServerPlayer serverPlayer) {
             LootContext.Builder bld = new LootContext.Builder(serverPlayer.getLevel())
@@ -138,8 +140,6 @@ public class CultivationType {
             LootContext ctx = bld.create(BreakthroughTrigger.requiredParams);
             CultivationAdvancements.HAS_BROKENTROUGH.trigger(serverPlayer, ctx);
         }
-
-        tribulation.reset();
     }
 
     public boolean hasTribulated() {

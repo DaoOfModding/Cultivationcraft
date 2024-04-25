@@ -1,7 +1,6 @@
 package DaoOfModding.Cultivationcraft.Network.Packets;
 
 import DaoOfModding.Cultivationcraft.Common.Advancements.CultivationAdvancements;
-import DaoOfModding.Cultivationcraft.Common.Advancements.Triggers.CultivationPathTrigger;
 import DaoOfModding.Cultivationcraft.Common.Advancements.Triggers.EvolvedLimbTrigger;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.BodyModifications;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.IBodyModifications;
@@ -90,7 +89,7 @@ public class BodyForgeSelectionPacket extends Packet {
         if (player instanceof ServerPlayer serverPlayer) {
             LootContext.Builder bld = new LootContext.Builder(serverPlayer.getLevel())
                     .withParameter(EvolvedLimbTrigger.EVOLVED_LIMB, true);
-            LootContext ctx = bld.create(CultivationPathTrigger.requiredParams);
+            LootContext ctx = bld.create(EvolvedLimbTrigger.requiredParams);
             CultivationAdvancements.EVOLVED_LIMB.trigger(serverPlayer, ctx);
         }
     }

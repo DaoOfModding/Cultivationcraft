@@ -78,8 +78,6 @@ public class CoreFormingCultivation extends CultivationType {
             newCultivation.setPreviousCultivation(this);
 
             CultivatorStats.getCultivatorStats(player).setCultivation(newCultivation);
-
-
         }
     }
 }
