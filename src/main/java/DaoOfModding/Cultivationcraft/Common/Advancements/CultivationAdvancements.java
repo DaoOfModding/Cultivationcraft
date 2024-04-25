@@ -65,7 +65,7 @@ public class CultivationAdvancements {
         try {
             trigger = (T) CriterionRegister.invoke(null, trigger);
         } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-            System.out.println("Failed to register trigger " + trigger.getId() + "!");
+            System.out.println("Failed to register trigger " + trigger.getId() + "! ");
             e.printStackTrace();
         }
         return trigger;
