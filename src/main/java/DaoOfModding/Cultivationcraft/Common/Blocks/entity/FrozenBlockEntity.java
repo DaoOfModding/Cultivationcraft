@@ -20,7 +20,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class FrozenBlockEntity extends BlockEntity implements TickableBlockEntity {
     protected int FREEZE_PROGRESS_TICKS = 0;
-    protected static int FREEZE_DURATION_TICKS = 50;
+    protected int FREEZE_DURATION_TICKS;
     protected ItemStack itemStack;
     protected BlockPos blockPos;
     protected BlockState oldBlockState;
@@ -36,12 +36,15 @@ public class FrozenBlockEntity extends BlockEntity implements TickableBlockEntit
         this.oldBlockState = Blocks.AIR.defaultBlockState();
         this.oldBlockEntity = null;
         this.oldBlockEntityData = null;
-
         this.itemStack = new ItemStack(this.oldBlockState.getBlock().asItem());
 
         Property<Boolean> isSecondBlock = (Property<Boolean>) ((FrozenBlock) blockState.getBlock()).getStateDefinition().getProperty("is_second_block");
         assert isSecondBlock != null;
         this.isSecondBlock = blockState.getValue(isSecondBlock);
+
+        Property<Integer> freezeDurationTicks = (Property<Integer>) ((FrozenBlock) blockState.getBlock()).getStateDefinition().getProperty("freeze_duration_ticks");
+        assert freezeDurationTicks != null;
+        this.FREEZE_DURATION_TICKS = blockState.getValue(freezeDurationTicks);
     }
 
     public FrozenBlockEntity(BlockPos blockPos, BlockState blockState, BlockState oldBlockState, BlockEntity oldBlockEntity, CompoundTag oldBlockEntityData, boolean isSecondBlock) {
@@ -52,11 +55,6 @@ public class FrozenBlockEntity extends BlockEntity implements TickableBlockEntit
         this.oldBlockEntityData = oldBlockEntityData;
         this.itemStack = new ItemStack(this.oldBlockState.getBlock().asItem());
         this.isSecondBlock = isSecondBlock;
-    }
-
-    public void setConnected(FrozenBlockEntity second)
-    {
-        connectedEntity = second;
     }
 
     @Override
@@ -114,6 +112,10 @@ public class FrozenBlockEntity extends BlockEntity implements TickableBlockEntit
         setChanged();
     }
 
+    public void setConnected(FrozenBlockEntity second) {
+        connectedEntity = second;
+    }
+
     public boolean isSecondBlock() {
         return isSecondBlock;
     }
@@ -138,8 +140,7 @@ public class FrozenBlockEntity extends BlockEntity implements TickableBlockEntit
 
     public void thawBlock() {
         Level world = this.getLevel();
-        if (world != null && this.oldBlockState != null && this.blockPos != null)
-        {
+        if (world != null && this.oldBlockState != null && this.blockPos != null) {
             // Revert the block to its previous state
             world.setBlockAndUpdate(this.blockPos, this.oldBlockState);
             if (oldBlockEntity != null) {
@@ -159,8 +160,7 @@ public class FrozenBlockEntity extends BlockEntity implements TickableBlockEntit
             return;
         }
         this.FREEZE_PROGRESS_TICKS++;
-        if (this.FREEZE_PROGRESS_TICKS >= FREEZE_DURATION_TICKS)
-        {
+        if (this.FREEZE_PROGRESS_TICKS >= FREEZE_DURATION_TICKS) {
             this.thawBlock();
             this.FREEZE_PROGRESS_TICKS = 0;
             setChanged(level, blockPos, blockState);
