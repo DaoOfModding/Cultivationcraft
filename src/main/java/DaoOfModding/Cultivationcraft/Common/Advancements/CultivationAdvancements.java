@@ -14,8 +14,27 @@ import java.lang.reflect.Method;
 public class CultivationAdvancements {
     private static Method CriterionRegister;
 
+    /**
+     * Json details:<br>
+     * cultivationcraft:has_brokenthrough {<br>
+     * &nbsp;&nbsp; realm_id:string <br>
+     * &nbsp;&nbsp; current_stage:int<br>
+     * }<br>
+     */
     public static BreakthroughTrigger HAS_BROKENTROUGH;
+    /**
+     * Json details:<br>
+     * cultivationcraft:chose_external_path {<br>
+     * <br>
+     * }<br>
+     */
     public static ExternalCultivationPathTrigger EXTERNAL_CULTIVATION;
+    /**
+     * Json details:<br>
+     * cultivationcraft:chose_internal_path {<br>
+     * <br>
+     * }<br>
+     */
     public static InternalCultivationPathTrigger INTERNAL_CULTIVATION;
 
     public static void init(IEventBus bus) {

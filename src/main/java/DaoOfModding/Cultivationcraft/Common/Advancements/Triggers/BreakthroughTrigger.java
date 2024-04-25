@@ -7,14 +7,16 @@ import com.google.gson.JsonObject;
 import net.minecraft.advancements.critereon.DeserializationContext;
 import net.minecraft.advancements.critereon.SerializationContext;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.GsonHelper;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParam;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSet;
 
 public class BreakthroughTrigger extends LibCriteriaTrigger<BreakthroughTrigger.Instance> {
-    public static final ResourceLocation ID = new ResourceLocation(Cultivationcraft.MODID, "has_breakthrough");
-    public static LootContextParam<Boolean> HAS_BROKENTROUGH = new LootContextParam<Boolean>(ID);
-    public static LootContextParamSet requiredParams = LootContextParamSet.builder().required(BreakthroughTrigger.HAS_BROKENTROUGH).build();
+    public static final ResourceLocation ID = new ResourceLocation(Cultivationcraft.MODID, "has_brokenthrough");
+    public static LootContextParam<String> REALM_ID = new LootContextParam<String>(ID);
+    public static LootContextParam<Integer> REALM_STAGE = new LootContextParam<Integer>(ID);
+    public static LootContextParamSet requiredParams = LootContextParamSet.builder().required(BreakthroughTrigger.REALM_ID).required(BreakthroughTrigger.REALM_STAGE).build();
 
     @Override
     public ResourceLocation getId() {
@@ -23,13 +25,19 @@ public class BreakthroughTrigger extends LibCriteriaTrigger<BreakthroughTrigger.
 
     @Override
     public BreakthroughTrigger.Instance createInstance(JsonObject json, DeserializationContext context) {
-        return new BreakthroughTrigger.Instance();
+        String realmID = GsonHelper.getAsString(json, "realm_id");
+        Integer currentStage = GsonHelper.getAsInt(json, "current_stage");
+        System.out.println("Trigger fired realmID : " + realmID + " - currentStage : " + currentStage);
+        return new BreakthroughTrigger.Instance(realmID, currentStage);
     }
 
     public static class Instance implements ICriterionTriggerInstanceTester {
-        private final Integer currentStage = 0;
+        private final String realmID;
+        private final Integer currentStage;
 
-        public Instance() {
+        public Instance(String realm_id, Integer current_stage) {
+            this.realmID = realm_id;
+            this.currentStage = current_stage;
         }
 
         @Override
@@ -40,12 +48,17 @@ public class BreakthroughTrigger extends LibCriteriaTrigger<BreakthroughTrigger.
         @Override
         public JsonObject serializeToJson(SerializationContext context) {
             JsonObject json = new JsonObject();
+            json.addProperty("realm_id", realmID);
+            json.addProperty("current_stage", currentStage);
             return json;
         }
 
         @Override
         public boolean test(LootContext ctx) {
-            return ctx.getParam(HAS_BROKENTROUGH);
+            if (ctx.getParam(REALM_ID).equals(realmID) && ctx.getParam(REALM_STAGE).equals(currentStage)) {
+                return true;
+            }
+            return false;
         }
     }
 }

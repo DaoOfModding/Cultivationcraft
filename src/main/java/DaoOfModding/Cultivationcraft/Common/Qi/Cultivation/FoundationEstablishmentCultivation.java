@@ -1,9 +1,13 @@
 package DaoOfModding.Cultivationcraft.Common.Qi.Cultivation;
 
 import DaoOfModding.Cultivationcraft.Client.GUI.Screens.CultivationTypeScreens.FoundationEstablishmentScreen;
+import DaoOfModding.Cultivationcraft.Common.Advancements.CultivationAdvancements;
+import DaoOfModding.Cultivationcraft.Common.Advancements.Triggers.BreakthroughTrigger;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStats;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.PassiveTechniques.CultivationPassives.FoundationPassive;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.storage.loot.LootContext;
 
 public class FoundationEstablishmentCultivation extends CultivationType {
     public FoundationEstablishmentCultivation() {
@@ -33,6 +37,14 @@ public class FoundationEstablishmentCultivation extends CultivationType {
             newCultivation.setPreviousCultivation(this);
 
             CultivatorStats.getCultivatorStats(player).setCultivation(newCultivation);
+
+            if (player instanceof ServerPlayer serverPlayer) {
+                LootContext.Builder bld = new LootContext.Builder(serverPlayer.getLevel())
+                        .withParameter(BreakthroughTrigger.REALM_STAGE, stage)
+                        .withParameter(BreakthroughTrigger.REALM_ID, ID);
+                LootContext ctx = bld.create(BreakthroughTrigger.requiredParams);
+                CultivationAdvancements.HAS_BROKENTROUGH.trigger(serverPlayer, ctx);
+            }
         }
     }
 }

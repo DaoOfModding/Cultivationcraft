@@ -16,6 +16,19 @@
     "announce_to_chat": true,
     "hidden": false
   },
-  "criteria": {},
-  "parent": "cultivationcraft:adv1.1"
+  "parent": "cultivationcraft:first_breakthrough",
+  "criteria": {
+    "has_brokenthrough": {
+      "trigger": "cultivationcraft:has_brokenthrough",
+      "conditions": {
+        "realm_id": "cultivationcraft.cultivation.qicondensation",
+        "current_stage": 1
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_brokenthrough"
+    ]
+  ]
 }
