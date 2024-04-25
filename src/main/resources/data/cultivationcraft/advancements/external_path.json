@@ -17,10 +17,9 @@
   "parent": "cultivationcraft:root",
   "criteria": {
     "choose_external_path": {
-      "trigger": "cultivationcraft:chose_external_path",
+      "trigger": "cultivationcraft:chose_path",
       "conditions": {
-        "player": {
-        }
+        "chosen_path": 0
       }
     }
   },

@@ -14,6 +14,16 @@
     "announce_to_chat": true,
     "hidden": false
   },
-  "criteria": {},
-  "parent": "cultivationcraft:adv2"
+  "parent": "cultivationcraft:internal_path",
+  "criteria": {
+    "evolved_a_limb": {
+      "trigger": "cultivationcraft:evolved_limb",
+      "conditions": {}
+    }
+  },
+  "requirements": [
+    [
+      "evolved_a_limb"
+    ]
+  ]
 }

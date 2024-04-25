@@ -11,10 +11,10 @@ import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParam;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSet;
 
-public class InternalCultivationPathTrigger extends LibCriteriaTrigger<InternalCultivationPathTrigger.Instance> {
-    public static final ResourceLocation ID = new ResourceLocation(Cultivationcraft.MODID, "chose_internal_path");
-    public static LootContextParam<Integer> CHOSEN_INTERNAL_PATH = new LootContextParam<Integer>(ID);
-    public static LootContextParamSet requiredParams = LootContextParamSet.builder().required(InternalCultivationPathTrigger.CHOSEN_INTERNAL_PATH).build();
+public class FlyingSwordTrigger extends LibCriteriaTrigger<FlyingSwordTrigger.Instance> {
+    public static final ResourceLocation ID = new ResourceLocation(Cultivationcraft.MODID, "has_flying_sword");
+    public static LootContextParam<Boolean> HAS_FLYING_SWORD = new LootContextParam<Boolean>(ID);
+    public static LootContextParamSet requiredParams = LootContextParamSet.builder().required(FlyingSwordTrigger.HAS_FLYING_SWORD).build();
 
     @Override
     public ResourceLocation getId() {
@@ -22,8 +22,8 @@ public class InternalCultivationPathTrigger extends LibCriteriaTrigger<InternalC
     }
 
     @Override
-    public InternalCultivationPathTrigger.Instance createInstance(JsonObject json, DeserializationContext context) {
-        return new InternalCultivationPathTrigger.Instance();
+    public FlyingSwordTrigger.Instance createInstance(JsonObject json, DeserializationContext context) {
+        return new FlyingSwordTrigger.Instance();
     }
 
     public static class Instance implements ICriterionTriggerInstanceTester {
@@ -32,7 +32,7 @@ public class InternalCultivationPathTrigger extends LibCriteriaTrigger<InternalC
 
         @Override
         public ResourceLocation getCriterion() {
-            return InternalCultivationPathTrigger.ID;
+            return FlyingSwordTrigger.ID;
         }
 
         @Override
@@ -43,7 +43,7 @@ public class InternalCultivationPathTrigger extends LibCriteriaTrigger<InternalC
 
         @Override
         public boolean test(LootContext ctx) {
-            return ctx.getParam(CHOSEN_INTERNAL_PATH) == 1;
+            return ctx.getParam(HAS_FLYING_SWORD);
         }
     }
 }

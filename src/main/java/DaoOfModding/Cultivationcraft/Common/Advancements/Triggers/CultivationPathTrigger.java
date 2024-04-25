@@ -7,14 +7,15 @@ import com.google.gson.JsonObject;
 import net.minecraft.advancements.critereon.DeserializationContext;
 import net.minecraft.advancements.critereon.SerializationContext;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.GsonHelper;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParam;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSet;
 
-public class ExternalCultivationPathTrigger extends LibCriteriaTrigger<ExternalCultivationPathTrigger.Instance> {
-    public static final ResourceLocation ID = new ResourceLocation(Cultivationcraft.MODID, "chose_external_path");
-    public static LootContextParam<Integer> CHOSEN_EXTERNAL_PATH = new LootContextParam<Integer>(ID);
-    public static LootContextParamSet requiredParams = LootContextParamSet.builder().required(ExternalCultivationPathTrigger.CHOSEN_EXTERNAL_PATH).build();
+public class CultivationPathTrigger extends LibCriteriaTrigger<CultivationPathTrigger.Instance> {
+    public static final ResourceLocation ID = new ResourceLocation(Cultivationcraft.MODID, "chose_path");
+    public static LootContextParam<Integer> CHOSEN_PATH = new LootContextParam<Integer>(ID);
+    public static LootContextParamSet requiredParams = LootContextParamSet.builder().required(CultivationPathTrigger.CHOSEN_PATH).build();
 
     @Override
     public ResourceLocation getId() {
@@ -22,28 +23,33 @@ public class ExternalCultivationPathTrigger extends LibCriteriaTrigger<ExternalC
     }
 
     @Override
-    public ExternalCultivationPathTrigger.Instance createInstance(JsonObject json, DeserializationContext context) {
-        return new ExternalCultivationPathTrigger.Instance();
+    public CultivationPathTrigger.Instance createInstance(JsonObject json, DeserializationContext context) {
+        Integer chosenPath = GsonHelper.getAsInt(json, "chosen_path");
+        return new CultivationPathTrigger.Instance(chosenPath);
     }
 
     public static class Instance implements ICriterionTriggerInstanceTester {
-        public Instance() {
+        private final Integer chosenPath;
+
+        public Instance(Integer chosen_path) {
+            this.chosenPath = chosen_path;
         }
 
         @Override
         public ResourceLocation getCriterion() {
-            return ExternalCultivationPathTrigger.ID;
+            return CultivationPathTrigger.ID;
         }
 
         @Override
         public JsonObject serializeToJson(SerializationContext context) {
             JsonObject json = new JsonObject();
+            json.addProperty("chosen_path", chosenPath);
             return json;
         }
 
         @Override
         public boolean test(LootContext ctx) {
-            return ctx.getParam(CHOSEN_EXTERNAL_PATH) == 0;
+            return ctx.getParam(CHOSEN_PATH) == chosenPath;
         }
     }
 }

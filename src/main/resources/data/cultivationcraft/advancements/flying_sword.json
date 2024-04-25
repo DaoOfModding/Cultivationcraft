@@ -14,6 +14,16 @@
     "announce_to_chat": true,
     "hidden": false
   },
-  "criteria": {},
-  "parent": "cultivationcraft:adv1"
+  "parent": "cultivationcraft:external_path",
+  "criteria": {
+    "has_flying_sword": {
+      "trigger": "cultivationcraft:has_flying_sword",
+      "conditions": {}
+    }
+  },
+  "requirements": [
+    [
+      "has_flying_sword"
+    ]
+  ]
 }

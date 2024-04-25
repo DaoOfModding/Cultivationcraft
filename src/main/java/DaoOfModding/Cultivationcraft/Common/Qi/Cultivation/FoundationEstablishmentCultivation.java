@@ -38,6 +38,7 @@ public class FoundationEstablishmentCultivation extends CultivationType {
 
             CultivatorStats.getCultivatorStats(player).setCultivation(newCultivation);
 
+            //used for Advancement trigger
             if (player instanceof ServerPlayer serverPlayer) {
                 LootContext.Builder bld = new LootContext.Builder(serverPlayer.getLevel())
                         .withParameter(BreakthroughTrigger.REALM_STAGE, stage)

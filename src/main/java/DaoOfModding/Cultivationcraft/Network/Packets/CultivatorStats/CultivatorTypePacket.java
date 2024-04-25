@@ -1,8 +1,7 @@
 package DaoOfModding.Cultivationcraft.Network.Packets.CultivatorStats;
 
 import DaoOfModding.Cultivationcraft.Common.Advancements.CultivationAdvancements;
-import DaoOfModding.Cultivationcraft.Common.Advancements.Triggers.ExternalCultivationPathTrigger;
-import DaoOfModding.Cultivationcraft.Common.Advancements.Triggers.InternalCultivationPathTrigger;
+import DaoOfModding.Cultivationcraft.Common.Advancements.Triggers.CultivationPathTrigger;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStats;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.PlayerHealthManager;
 import DaoOfModding.Cultivationcraft.Common.Qi.Cultivation.FoundationEstablishmentCultivation;
@@ -84,12 +83,7 @@ public class CultivatorTypePacket extends Packet {
         CultivatorStats.getCultivatorStats(ownerEntity).setCultivationType(cultivationType);
 
         if (cultivationType == CultivationTypes.QI_CONDENSER) {
-            if (ownerEntity instanceof ServerPlayer serverPlayer) {
-                LootContext.Builder bld = new LootContext.Builder(serverPlayer.getLevel())
-                        .withParameter(ExternalCultivationPathTrigger.CHOSEN_EXTERNAL_PATH, cultivationType);
-                LootContext ctx = bld.create(ExternalCultivationPathTrigger.requiredParams);
-                CultivationAdvancements.EXTERNAL_CULTIVATION.trigger(serverPlayer, ctx);
-            }
+
             FoundationEstablishmentCultivation newCultivation = new FoundationEstablishmentCultivation(1);
             newCultivation.setPreviousCultivation(new NoCultivation());
 
@@ -97,16 +91,15 @@ public class CultivatorTypePacket extends Packet {
             PlayerHealthManager.updateFoodStats(ownerEntity);
         }
 
-        if (cultivationType == CultivationTypes.BODY_CULTIVATOR) {
-            if (ownerEntity instanceof ServerPlayer serverPlayer) {
-                LootContext.Builder bld = new LootContext.Builder(serverPlayer.getLevel())
-                        .withParameter(InternalCultivationPathTrigger.CHOSEN_INTERNAL_PATH, cultivationType);
-                LootContext ctx = bld.create(InternalCultivationPathTrigger.requiredParams);
-                CultivationAdvancements.INTERNAL_CULTIVATION.trigger(serverPlayer, ctx);
-            }
-        }
-
         // Send the new player stats to the clients
         PacketHandler.sendCultivatorStatsToClient(ownerEntity);
+
+        //used for Advancement trigger
+        if (ownerEntity instanceof ServerPlayer serverPlayer) {
+            LootContext.Builder bld = new LootContext.Builder(serverPlayer.getLevel())
+                    .withParameter(CultivationPathTrigger.CHOSEN_PATH, cultivationType);
+            LootContext ctx = bld.create(CultivationPathTrigger.requiredParams);
+            CultivationAdvancements.CULTIVATION_PATH.trigger(serverPlayer, ctx);
+        }
     }
 }

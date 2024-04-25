@@ -130,6 +130,7 @@ public class CultivationType {
         advanceTo.setPreviousCultivation(this);
         CultivatorStats.getCultivatorStats(player).setCultivation(advanceTo);
 
+        //used for Advancement trigger
         if (player instanceof ServerPlayer serverPlayer) {
             LootContext.Builder bld = new LootContext.Builder(serverPlayer.getLevel())
                     .withParameter(BreakthroughTrigger.REALM_STAGE, advanceTo.stage)

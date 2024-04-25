@@ -1,8 +1,9 @@
 package DaoOfModding.Cultivationcraft.Common.Advancements;
 
 import DaoOfModding.Cultivationcraft.Common.Advancements.Triggers.BreakthroughTrigger;
-import DaoOfModding.Cultivationcraft.Common.Advancements.Triggers.ExternalCultivationPathTrigger;
-import DaoOfModding.Cultivationcraft.Common.Advancements.Triggers.InternalCultivationPathTrigger;
+import DaoOfModding.Cultivationcraft.Common.Advancements.Triggers.CultivationPathTrigger;
+import DaoOfModding.Cultivationcraft.Common.Advancements.Triggers.EvolvedLimbTrigger;
+import DaoOfModding.Cultivationcraft.Common.Advancements.Triggers.FlyingSwordTrigger;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.advancements.CriterionTrigger;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -25,22 +26,32 @@ public class CultivationAdvancements {
     /**
      * Json details:<br>
      * cultivationcraft:chose_external_path {<br>
-     * <br>
+     * &nbsp;&nbsp; chosen_path:integer <br>
      * }<br>
+     * where &nbsp;0 = external Cultivation <br>
+     * and &nbsp;&nbsp;&nbsp;&nbsp; 1 = internal Cultivation
      */
-    public static ExternalCultivationPathTrigger EXTERNAL_CULTIVATION;
+    public static CultivationPathTrigger CULTIVATION_PATH;
     /**
      * Json details:<br>
-     * cultivationcraft:chose_internal_path {<br>
+     * cultivationcraft:has_flying_sword {<br>
      * <br>
      * }<br>
      */
-    public static InternalCultivationPathTrigger INTERNAL_CULTIVATION;
+    public static FlyingSwordTrigger HAS_FLYING_SWORD;
+    /**
+     * Json details:<br>
+     * cultivationcraft:evolved_limb {<br>
+     * <br>
+     * }<br>
+     */
+    public static EvolvedLimbTrigger EVOLVED_LIMB;
 
     public static void init(IEventBus bus) {
         HAS_BROKENTROUGH = (BreakthroughTrigger) registerAdvancementTrigger(new BreakthroughTrigger());
-        EXTERNAL_CULTIVATION = (ExternalCultivationPathTrigger) registerAdvancementTrigger(new ExternalCultivationPathTrigger());
-        INTERNAL_CULTIVATION = (InternalCultivationPathTrigger) registerAdvancementTrigger(new InternalCultivationPathTrigger());
+        CULTIVATION_PATH = (CultivationPathTrigger) registerAdvancementTrigger(new CultivationPathTrigger());
+        HAS_FLYING_SWORD = (FlyingSwordTrigger) registerAdvancementTrigger(new FlyingSwordTrigger());
+        EVOLVED_LIMB = (EvolvedLimbTrigger) registerAdvancementTrigger(new EvolvedLimbTrigger());
     }
 
 

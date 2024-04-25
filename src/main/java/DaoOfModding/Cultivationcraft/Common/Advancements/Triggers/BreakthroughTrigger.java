@@ -27,7 +27,6 @@ public class BreakthroughTrigger extends LibCriteriaTrigger<BreakthroughTrigger.
     public BreakthroughTrigger.Instance createInstance(JsonObject json, DeserializationContext context) {
         String realmID = GsonHelper.getAsString(json, "realm_id");
         Integer currentStage = GsonHelper.getAsInt(json, "current_stage");
-        System.out.println("Trigger fired realmID : " + realmID + " - currentStage : " + currentStage);
         return new BreakthroughTrigger.Instance(realmID, currentStage);
     }
 
