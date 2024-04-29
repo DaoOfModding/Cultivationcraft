@@ -9,7 +9,7 @@
       "text": "Survived tribulation and achieved Qi Condensing, liquifying the Qi"
     },
     "icon": {
-      "item": "minecraft:water_bucket"
+      "item": "cultivationcraft:qi_condensing_advancement"
     },
     "frame": "goal",
     "show_toast": true,

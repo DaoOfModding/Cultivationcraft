@@ -7,7 +7,7 @@
       "text": "Harness Qi, and refine it within your body."
     },
     "icon": {
-      "item": "minecraft:red_carpet"
+      "item": "cultivationcraft:external_path_advancement"
     },
     "frame": "task",
     "show_toast": true,

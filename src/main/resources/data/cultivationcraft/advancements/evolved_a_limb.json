@@ -7,7 +7,7 @@
       "text": "Evolve a limb through internal cultivation"
     },
     "icon": {
-      "item": "minecraft:bone"
+      "item": "cultivationcraft:evolved_limb_advancement"
     },
     "frame": "task",
     "show_toast": true,

@@ -7,6 +7,7 @@ import DaoOfModding.Cultivationcraft.Client.Textures.initTextures;
 import DaoOfModding.Cultivationcraft.Common.Advancements.CultivationAdvancements;
 import DaoOfModding.Cultivationcraft.Common.Blocks.BlockRegister;
 import DaoOfModding.Cultivationcraft.Common.Config;
+import DaoOfModding.Cultivationcraft.Common.Items.ItemRegister;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartNames;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Lungs.BreathingHandler;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.DefaultQuests;
@@ -50,6 +51,7 @@ public class Cultivationcraft {
 
         Register.init(modEventBus);
         BlockRegister.init(modEventBus);
+        ItemRegister.init(modEventBus);
         BodyPartNames.registerLungLocations();
         CultivationAdvancements.init(modEventBus);
     }

@@ -7,7 +7,7 @@
       "text": "Strengthen the physical body, develop powerful physiques."
     },
     "icon": {
-      "item": "minecraft:leather_boots"
+      "item": "cultivationcraft:internal_path_advancement"
     },
     "frame": "task",
     "show_toast": true,

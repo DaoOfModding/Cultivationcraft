@@ -7,7 +7,7 @@
       "text": "Bound your first sword"
     },
     "icon": {
-      "item": "minecraft:iron_sword"
+      "item": "cultivationcraft:flying_sword_advancement"
     },
     "frame": "task",
     "show_toast": true,

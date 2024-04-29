@@ -8,7 +8,7 @@
       "text": "Survived tribulation and achieved Core Forming, mastering the earth element and solidifying the Qi into a Core"
     },
     "icon": {
-      "item": "minecraft:brown_glazed_terracotta"
+      "item": "cultivationcraft:earth_forming_advancement"
     },
     "frame": "challenge",
     "show_toast": true,
