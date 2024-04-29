@@ -20,7 +20,6 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.inventory.MenuType;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.event.EntityRenderersEvent;
@@ -38,20 +37,18 @@ import net.minecraftforge.registries.RegistryObject;
 
 import java.util.function.Consumer;
 
-public class Register
-{
-    public enum keyPresses { FLYINGSWORDSCREEN, SKILLHOTBARSWITCH }
+public class Register {
+    public enum keyPresses {FLYINGSWORDSCREEN, SKILLHOTBARSWITCH}
 
     public static DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, Cultivationcraft.MODID);
     public static DeferredRegister<MenuType<?>> CONTAINERS = DeferredRegister.create(ForgeRegistries.MENU_TYPES, Cultivationcraft.MODID);
     public static DeferredRegister<ParticleType<?>> PARTICLES = DeferredRegister.create(ForgeRegistries.PARTICLE_TYPES, Cultivationcraft.MODID);
-    public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, Cultivationcraft.MODID);
 
     public static RegistryObject<EntityType<FlyingSwordEntity>> FLYINGSWORD = ENTITY_TYPES.register("flyingsword", () ->
-                                                                                EntityType.Builder.<FlyingSwordEntity>of(FlyingSwordEntity::new, MobCategory.MISC)
-                                                                                        .sized(0.5f, 0.5f)
-                                                                                        .setUpdateInterval(3)
-                                                                                        .build("flyingsword"));
+            EntityType.Builder.<FlyingSwordEntity>of(FlyingSwordEntity::new, MobCategory.MISC)
+                    .sized(0.5f, 0.5f)
+                    .setUpdateInterval(3)
+                    .build("flyingsword"));
 
     public static RegistryObject<EntityType<QiProjectile>> QIPROJECTILE = ENTITY_TYPES.register("qiprojectile", () ->
             EntityType.Builder.<QiProjectile>of(QiProjectile::new, MobCategory.MISC)
@@ -81,38 +78,31 @@ public class Register
                     .adjacentPathType(null)
                     .sound(SoundActions.BUCKET_FILL, SoundEvents.BUCKET_FILL_LAVA)
                     .sound(SoundActions.BUCKET_EMPTY, SoundEvents.BUCKET_EMPTY_LAVA)
-                    .lightLevel(15))
-            {
+                    .lightLevel(15)) {
                 @Override
-                public double motionScale(Entity entity)
-                {
+                public double motionScale(Entity entity) {
                     return entity.level.dimensionType().ultraWarm() ? 0.007D : 0.0023333333333333335D;
                 }
 
                 @Override
-                public void setItemMovement(ItemEntity entity)
-                {
+                public void setItemMovement(ItemEntity entity) {
                     Vec3 vec3 = entity.getDeltaMovement();
-                    entity.setDeltaMovement(vec3.x * (double)0.95F, vec3.y + (double)(vec3.y < (double)0.06F ? 5.0E-4F : 0.0F), vec3.z * (double)0.95F);
+                    entity.setDeltaMovement(vec3.x * (double) 0.95F, vec3.y + (double) (vec3.y < (double) 0.06F ? 5.0E-4F : 0.0F), vec3.z * (double) 0.95F);
                 }
 
                 @Override
-                public void initializeClient(Consumer<IClientFluidTypeExtensions> consumer)
-                {
-                    consumer.accept(new IClientFluidTypeExtensions()
-                    {
+                public void initializeClient(Consumer<IClientFluidTypeExtensions> consumer) {
+                    consumer.accept(new IClientFluidTypeExtensions() {
                         private static final ResourceLocation LAVA_STILL = new ResourceLocation("block/lava_still"),
                                 LAVA_FLOW = new ResourceLocation("block/lava_flow");
 
                         @Override
-                        public ResourceLocation getStillTexture()
-                        {
+                        public ResourceLocation getStillTexture() {
                             return LAVA_STILL;
                         }
 
                         @Override
-                        public ResourceLocation getFlowingTexture()
-                        {
+                        public ResourceLocation getFlowingTexture() {
                             return LAVA_FLOW;
                         }
                     });
@@ -123,16 +113,13 @@ public class Register
         ENTITY_TYPES.register(bus);
         CONTAINERS.register(bus);
         PARTICLES.register(bus);
-        ITEMS.register(bus);
         VANILLA_FLUID_TYPES.register(bus);
     }
 
-    @Mod.EventBusSubscriber(bus=Mod.EventBusSubscriber.Bus.MOD)
-    public static class RegistryEvents
-    {
+    @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
+    public static class RegistryEvents {
         @SubscribeEvent
-        public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event)
-        {
+        public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
             event.registerEntityRenderer(Register.FLYINGSWORD.get(), FlyingSwordRenderer::new);
             event.registerEntityRenderer(Register.QIPROJECTILE.get(), QiProjectileRenderer::new);
 
@@ -140,8 +127,7 @@ public class Register
         }
 
         @SubscribeEvent
-        public static void register(RegisterEvent event)
-        {
+        public static void register(RegisterEvent event) {
             event.register(ForgeRegistries.Keys.MENU_TYPES, helper -> helper.register("flyingswordcontainer", IForgeMenuType.create(FlyingSwordContainer::createContainerClientSide)));
         }
     }

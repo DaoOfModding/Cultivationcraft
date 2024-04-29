@@ -1,21 +1,20 @@
 package DaoOfModding.Cultivationcraft.Common.Qi.Cultivation;
 
 import DaoOfModding.Cultivationcraft.Client.GUI.Screens.CultivationTypeScreens.FoundationEstablishmentScreen;
+import DaoOfModding.Cultivationcraft.Common.Advancements.CultivationAdvancements;
+import DaoOfModding.Cultivationcraft.Common.Advancements.Triggers.BreakthroughTrigger;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStats;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.PassiveTechniques.CultivationPassives.FoundationPassive;
-import DaoOfModding.Cultivationcraft.Cultivationcraft;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.storage.loot.LootContext;
 
-public class FoundationEstablishmentCultivation extends CultivationType
-{
-    public FoundationEstablishmentCultivation()
-    {
+public class FoundationEstablishmentCultivation extends CultivationType {
+    public FoundationEstablishmentCultivation() {
         this(1);
     }
 
-    public FoundationEstablishmentCultivation(int cultivationStage)
-    {
+    public FoundationEstablishmentCultivation(int cultivationStage) {
         super(cultivationStage);
 
         passive = new FoundationPassive();
@@ -31,14 +30,22 @@ public class FoundationEstablishmentCultivation extends CultivationType
     }
 
     @Override
-    public void breakthrough(Player player)
-    {
-        if (stage < maxStage)
-        {
-            FoundationEstablishmentCultivation newCultivation = new FoundationEstablishmentCultivation(stage+1);
+    public void breakthrough(Player player) {
+        if (stage < maxStage) {
+            FoundationEstablishmentCultivation newCultivation = new FoundationEstablishmentCultivation(stage + 1);
+
             newCultivation.setPreviousCultivation(this);
 
             CultivatorStats.getCultivatorStats(player).setCultivation(newCultivation);
+
+            //used for Advancement trigger
+            if (player instanceof ServerPlayer serverPlayer) {
+                LootContext.Builder bld = new LootContext.Builder(serverPlayer.getLevel())
+                        .withParameter(BreakthroughTrigger.REALM_STAGE, stage)
+                        .withParameter(BreakthroughTrigger.REALM_ID, ID);
+                LootContext ctx = bld.create(BreakthroughTrigger.requiredParams);
+                CultivationAdvancements.HAS_BROKENTROUGH.trigger(serverPlayer, ctx);
+            }
         }
     }
 }

@@ -1,10 +1,11 @@
 package DaoOfModding.Cultivationcraft.Common.Qi.Cultivation;
 
 import DaoOfModding.Cultivationcraft.Client.GUI.Screens.CultivationTypeScreens.CultivationTypeScreen;
+import DaoOfModding.Cultivationcraft.Common.Advancements.CultivationAdvancements;
+import DaoOfModding.Cultivationcraft.Common.Advancements.Triggers.BreakthroughTrigger;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.ChunkQiSources.ChunkQiSources;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStats;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.FoodStats.QiFoodStats;
-import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.FoodStats.QiNotFoodStats;
 import DaoOfModding.Cultivationcraft.Common.Qi.ExternalCultivationHandler;
 import DaoOfModding.Cultivationcraft.Common.Qi.QiSource;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.PassiveTechniques.PassiveTechnique;
@@ -17,15 +18,16 @@ import DaoOfModding.Cultivationcraft.StaminaHandler;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.storage.loot.LootContext;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class CultivationType
-{
+public class CultivationType {
     protected String ID = "cultivationcraft.cultivation.default";
 
     protected int techLevel = 0;
@@ -50,47 +52,39 @@ public class CultivationType
 
     protected ArrayList<CultivationType> advancements = new ArrayList<>();
 
-    public CultivationType(int currentStage)
-    {
+    public CultivationType(int currentStage) {
         stage = currentStage;
         stageCalculations();
     }
 
     // Put anything here that changes based on the stage
-    public void stageCalculations()
-    {
+    public void stageCalculations() {
 
     }
 
-    public String getName()
-    {
+    public String getName() {
         return Component.translatable(ID).getString();
     }
 
-    public String getID()
-    {
+    public String getID() {
         return ID;
     }
 
-    public boolean canCultivate(ResourceLocation element)
-    {
+    public boolean canCultivate(ResourceLocation element) {
         return true;
     }
 
-    public boolean consumeQi(Player player, double qiToConsume)
-    {
-        return StaminaHandler.consumeStamina(player, (float)qiToConsume);
+    public boolean consumeQi(Player player, double qiToConsume) {
+        return StaminaHandler.consumeStamina(player, (float) qiToConsume);
     }
 
-    public ArrayList<TechniqueModifier> getModifiers()
-    {
+    public ArrayList<TechniqueModifier> getModifiers() {
         ArrayList<TechniqueModifier> totalModifiers = new ArrayList<>();
 
         for (TechniqueModifier mod : modifiers)
             totalModifiers.add(mod);
 
-        if (getPreviousCultivation() != null)
-        {
+        if (getPreviousCultivation() != null) {
             for (TechniqueModifier mod : getPreviousCultivation().getModifiers())
                 totalModifiers.add(mod);
         }
@@ -98,8 +92,7 @@ public class CultivationType
         return totalModifiers;
     }
 
-    public boolean canBreakthrough(Player player)
-    {
+    public boolean canBreakthrough(Player player) {
         if (getTechLevelProgressWithoutPrevious(passive.getClass().toString()) >= techLevel)
             if (getMaxedTechs() >= maxedTechsToBreakthrough)
                 return true;
@@ -107,8 +100,7 @@ public class CultivationType
         return false;
     }
 
-    public ArrayList<CultivationType> getAdvancements(Player player)
-    {
+    public ArrayList<CultivationType> getAdvancements(Player player) {
         ArrayList<CultivationType> playerAdvancements = new ArrayList<>();
 
         for (CultivationType testAdvance : advancements)
@@ -119,21 +111,18 @@ public class CultivationType
     }
 
     // Returns whether the specified player can cultivate this cultivationType
-    public boolean canCultivate(Player player)
-    {
+    public boolean canCultivate(Player player) {
         return true;
     }
 
-    public void advance(Player player, String advancement)
-    {
+    public void advance(Player player, String advancement) {
         CultivationType advanceTo = null;
 
         for (CultivationType advance : advancements)
             if (advance.getID().compareTo(advancement) == 0)
                 advanceTo = advance;
 
-        if (advanceTo == null)
-        {
+        if (advanceTo == null) {
             Cultivationcraft.LOGGER.error("Tried to advance to unavailable cultivation type " + advancement);
             return;
         }
@@ -142,73 +131,70 @@ public class CultivationType
         CultivatorStats.getCultivatorStats(player).setCultivation(advanceTo);
 
         tribulation.reset();
+
+        //used for Advancement trigger
+        if (player instanceof ServerPlayer serverPlayer) {
+            LootContext.Builder bld = new LootContext.Builder(serverPlayer.getLevel())
+                    .withParameter(BreakthroughTrigger.REALM_STAGE, advanceTo.stage)
+                    .withParameter(BreakthroughTrigger.REALM_ID, advanceTo.ID);
+            LootContext ctx = bld.create(BreakthroughTrigger.requiredParams);
+            CultivationAdvancements.HAS_BROKENTROUGH.trigger(serverPlayer, ctx);
+        }
     }
 
-    public boolean hasTribulated()
-    {
+    public boolean hasTribulated() {
         return hasTribulated;
     }
 
-    public boolean hasTribulation(Player player)
-    {
+    public boolean hasTribulation(Player player) {
         if (stage == maxStage && canBreakthrough(player))
             return true;
 
         return false;
     }
 
-    public void tick(Player player)
-    {
-        ((QiFoodStats)player.getFoodData()).setFoodLevel(((QiFoodStats)player.getFoodData()).getTrueFoodLevel() + (float)(getCultivationStat(player, DefaultCultivationStatIDs.qiPassiveSpeed) / 20.0));
+    public void tick(Player player) {
+        ((QiFoodStats) player.getFoodData()).setFoodLevel(((QiFoodStats) player.getFoodData()).getTrueFoodLevel() + (float) (getCultivationStat(player, DefaultCultivationStatIDs.qiPassiveSpeed) / 20.0));
 
         if (player.level.isClientSide)
             return;
 
         if (isTribulating() && player.isAlive())
-            if (tribulation.tick(player))
-            {
+            if (tribulation.tick(player)) {
                 isTribulating = false;
                 tribulationComplete(player);
                 PacketHandler.sendCultivatorStatsToClient(player);
             }
     }
 
-    public int getStage()
-    {
+    public int getStage() {
         return stage;
     }
 
-    public int getMaxStage()
-    {
+    public int getMaxStage() {
         return maxStage;
     }
 
-    public void startTribulation()
-    {
+    public void startTribulation() {
         isTribulating = true;
     }
 
-    public boolean isTribulating()
-    {
+    public boolean isTribulating() {
         return isTribulating;
     }
 
-    public void breakthrough(Player player)
-    {
+    public void breakthrough(Player player) {
     }
 
-    public void tribulationComplete(Player player)
-    {
+    public void tribulationComplete(Player player) {
         hasTribulated = true;
     }
 
-    public CultivationTypeScreen getScreen()
-    {
+    public CultivationTypeScreen getScreen() {
         return screen;
     }
 
-    public String breakthroughProgress(Player player)
-    {
+    public String breakthroughProgress(Player player) {
         String progress = Component.translatable("cultivationcraft.gui.cultivationprogress").getString() + ": " + getTechLevelProgressWithoutPrevious(passive.getClass().toString()) + "/" + techLevel;
 
         if (maxedTechsToBreakthrough > 0)
@@ -220,8 +206,7 @@ public class CultivationType
         return progress;
     }
 
-    public int getMaxedTechs()
-    {
+    public int getMaxedTechs() {
         int i = 0;
 
         for (String tech : statLevels.keySet())
@@ -231,13 +216,11 @@ public class CultivationType
         return i;
     }
 
-    public PassiveTechnique getPassive()
-    {
+    public PassiveTechnique getPassive() {
         return passive;
     }
 
-    public double getCultivationStat(Player player, ResourceLocation stat)
-    {
+    public double getCultivationStat(Player player, ResourceLocation stat) {
         double amount = 0;
 
         if (getPassive().hasTechniqueStat(stat))
@@ -246,25 +229,21 @@ public class CultivationType
         return amount;
     }
 
-    public void reset(Player player)
-    {
+    public void reset(Player player) {
         statLevels = new HashMap<>();
     }
 
-    public double absorbFromQiSource(double amount, Player player)
-    {
-        List<QiSource> sources = ChunkQiSources.getQiSourcesInRange(player.level, player.position(), (int)getCultivationStat(player, DefaultCultivationStatIDs.qiAbsorbRange));
+    public double absorbFromQiSource(double amount, Player player) {
+        List<QiSource> sources = ChunkQiSources.getQiSourcesInRange(player.level, player.position(), (int) getCultivationStat(player, DefaultCultivationStatIDs.qiAbsorbRange));
 
         double remaining = amount;
         float toAbsorb = 0;
 
         // Draw Qi from each Qi source available
-        for (QiSource source : sources)
-        {
+        for (QiSource source : sources) {
             // Only absorb from QiSources of the correct element
             if (canCultivate(source.getElement()))
-                if (remaining > 0)
-                {
+                if (remaining > 0) {
                     double absorbed = source.absorbQi(remaining, player);
                     remaining -= absorbed;
 
@@ -281,8 +260,7 @@ public class CultivationType
         return toAbsorb;
     }
 
-    public double absorbFromQiSource(int amount, Player player, QiSource source)
-    {
+    public double absorbFromQiSource(int amount, Player player, QiSource source) {
         double toAbsorb = 0;
 
         toAbsorb = 0;
@@ -300,8 +278,7 @@ public class CultivationType
         return toAbsorb;
     }
 
-    public float progressCultivation(Player player, float Qi, ResourceLocation element)
-    {
+    public float progressCultivation(Player player, float Qi, ResourceLocation element) {
         if (!canCultivate(element))
             return Qi;
 
@@ -317,8 +294,7 @@ public class CultivationType
         float remains = (currentLevel + Qi) - techLevel;
 
         // If cultivating will go over the max, cultivate to the max instead
-        if (remains > 0)
-        {
+        if (remains > 0) {
             getPassive().levelUp(player, remains);
             return Qi - remains;
         }
@@ -328,13 +304,11 @@ public class CultivationType
         return 0;
     }
 
-    public CultivationType getPreviousCultivation()
-    {
+    public CultivationType getPreviousCultivation() {
         return previousCultivation;
     }
 
-    public Double getStatLevelWithoutPrevious(Class tech, ResourceLocation stat)
-    {
+    public Double getStatLevelWithoutPrevious(Class tech, ResourceLocation stat) {
         Double level = 0.0;
 
         if (statLevels.containsKey(tech.toString()) && statLevels.get(tech.toString()).containsKey(stat))
@@ -343,8 +317,7 @@ public class CultivationType
         return level;
     }
 
-    public Double getStatLevel(Class tech, ResourceLocation stat)
-    {
+    public Double getStatLevel(Class tech, ResourceLocation stat) {
         if (tech.toString().compareTo(passive.getClass().toString()) == 0)
             return getPassiveStatLevel(stat);
 
@@ -359,8 +332,7 @@ public class CultivationType
         return level;
     }
 
-    public Double getPassiveStatLevel(ResourceLocation stat)
-    {
+    public Double getPassiveStatLevel(ResourceLocation stat) {
         Double level = 0.0;
 
         String passiveString = getPassive().getClass().toString();
@@ -374,13 +346,11 @@ public class CultivationType
         return level;
     }
 
-    public int getMaxTechLevelWithoutPrevious()
-    {
+    public int getMaxTechLevelWithoutPrevious() {
         return techLevel;
     }
 
-    public int getMaxTechLevel()
-    {
+    public int getMaxTechLevel() {
         int level = techLevel;
 
         if (previousCultivation != null)
@@ -389,35 +359,30 @@ public class CultivationType
         return level;
     }
 
-    public int getTechLevelProgress(Class tech)
-    {
+    public int getTechLevelProgress(Class tech) {
         return getTechLevelProgress(tech.toString());
     }
 
-    public int getTechLevelProgressWithoutPrevious(String tech)
-    {
+    public int getTechLevelProgressWithoutPrevious(String tech) {
         int progress = 0;
 
-        if (statLevels.containsKey(tech))
-        {
+        if (statLevels.containsKey(tech)) {
             for (double value : statLevels.get(tech).values())
-                progress += (int)value;
+                progress += (int) value;
         }
 
         return progress;
     }
 
-    public int getTechLevelProgress(String tech)
-    {
+    public int getTechLevelProgress(String tech) {
         if (tech.compareTo(passive.getClass().toString()) == 0)
             return getPassiveTechLevelProgress();
 
         int progress = 0;
 
-        if (statLevels.containsKey(tech))
-        {
+        if (statLevels.containsKey(tech)) {
             for (double value : statLevels.get(tech).values())
-                progress += (int)value;
+                progress += (int) value;
         }
 
         if (previousCultivation != null)
@@ -426,16 +391,14 @@ public class CultivationType
         return progress;
     }
 
-    public int getPassiveTechLevelProgress()
-    {
+    public int getPassiveTechLevelProgress() {
         int progress = 0;
 
         String tech = getPassive().getClass().toString();
 
-        if (statLevels.containsKey(tech))
-        {
+        if (statLevels.containsKey(tech)) {
             for (double value : statLevels.get(tech).values())
-                progress += (int)value;
+                progress += (int) value;
         }
 
         if (previousCultivation != null)
@@ -444,8 +407,7 @@ public class CultivationType
         return progress;
     }
 
-    public void levelTech(Technique tech, double amount, Player player)
-    {
+    public void levelTech(Technique tech, double amount, Player player) {
         int max = getMaxTechLevel();
         int current = getTechLevelProgress(tech.getClass());
 
@@ -475,17 +437,14 @@ public class CultivationType
         PacketHandler.sendCultivatorStatsToClient(player);
     }
 
-    public void setPreviousCultivation(CultivationType previous)
-    {
+    public void setPreviousCultivation(CultivationType previous) {
         previousCultivation = previous;
     }
 
-    public CompoundTag writeNBT()
-    {
+    public CompoundTag writeNBT() {
         CompoundTag nbt = new CompoundTag();
 
-        if (getPreviousCultivation() != null)
-        {
+        if (getPreviousCultivation() != null) {
             nbt.putString("PREVIOUSCULTNAME", getPreviousCultivation().getClass().toString());
             nbt.put("PREVIOUSCULT", getPreviousCultivation().writeNBT());
         }
@@ -496,24 +455,21 @@ public class CultivationType
 
         int i = 0;
 
-        for (TechniqueModifier mod : modifiers)
-        {
-            nbt.putString("MODIFIER"+i, mod.getClass().toString());
+        for (TechniqueModifier mod : modifiers) {
+            nbt.putString("MODIFIER" + i, mod.getClass().toString());
             i++;
         }
 
         i = 0;
 
-        for (Map.Entry<String, HashMap<ResourceLocation, Double>> tech : statLevels.entrySet())
-        {
-            nbt.putString("TECH"+i+"CLASS", tech.getKey());
+        for (Map.Entry<String, HashMap<ResourceLocation, Double>> tech : statLevels.entrySet()) {
+            nbt.putString("TECH" + i + "CLASS", tech.getKey());
 
             int j = 0;
 
-            for (Map.Entry<ResourceLocation, Double> techEntry : tech.getValue().entrySet())
-            {
-                nbt.putString("TECH"+i+"ENTRY"+j+"NAME", techEntry.getKey().toString());
-                nbt.putDouble("TECH"+i+"ENTRY"+j+"VALUE", techEntry.getValue());
+            for (Map.Entry<ResourceLocation, Double> techEntry : tech.getValue().entrySet()) {
+                nbt.putString("TECH" + i + "ENTRY" + j + "NAME", techEntry.getKey().toString());
+                nbt.putDouble("TECH" + i + "ENTRY" + j + "VALUE", techEntry.getValue());
 
                 j++;
             }
@@ -524,10 +480,8 @@ public class CultivationType
         return nbt;
     }
 
-    public void readNBT(CompoundTag nbt)
-    {
-        if (nbt.contains("PREVIOUSCULTNAME"))
-        {
+    public void readNBT(CompoundTag nbt) {
+        if (nbt.contains("PREVIOUSCULTNAME")) {
             CultivationType newCultivation = ExternalCultivationHandler.getCultivation(nbt.getString("PREVIOUSCULTNAME"));
             newCultivation.readNBT(nbt.getCompound("PREVIOUSCULT"));
 
@@ -546,27 +500,24 @@ public class CultivationType
 
         modifiers = new ArrayList<>();
 
-        while (nbt.contains("MODIFIER"+i))
-        {
-            modifiers.add(ExternalCultivationHandler.getModifier((nbt.getString("MODIFIER"+i))));
+        while (nbt.contains("MODIFIER" + i)) {
+            modifiers.add(ExternalCultivationHandler.getModifier((nbt.getString("MODIFIER" + i))));
             i++;
         }
 
         i = 0;
 
-        while (nbt.contains("TECH"+i+"CLASS"))
-        {
+        while (nbt.contains("TECH" + i + "CLASS")) {
             int j = 0;
 
             HashMap<ResourceLocation, Double> values = new HashMap<>();
 
-            while (nbt.contains("TECH"+i+"ENTRY"+j+"NAME"))
-            {
-                values.put(new ResourceLocation(nbt.getString("TECH"+i+"ENTRY"+j+"NAME")), nbt.getDouble("TECH"+i+"ENTRY"+j+"VALUE"));
+            while (nbt.contains("TECH" + i + "ENTRY" + j + "NAME")) {
+                values.put(new ResourceLocation(nbt.getString("TECH" + i + "ENTRY" + j + "NAME")), nbt.getDouble("TECH" + i + "ENTRY" + j + "VALUE"));
                 j++;
             }
 
-            newTechLevels.put(nbt.getString("TECH"+i+"CLASS"), values);
+            newTechLevels.put(nbt.getString("TECH" + i + "CLASS"), values);
 
             i++;
         }

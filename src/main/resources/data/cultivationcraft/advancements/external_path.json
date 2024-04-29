@@ -1,0 +1,31 @@
+{
+  "display": {
+    "title": {
+      "text": "External Cultivation"
+    },
+    "description": {
+      "text": "Harness Qi, and refine it within your body."
+    },
+    "icon": {
+      "item": "cultivationcraft:external_path_advancement"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": true
+  },
+  "parent": "cultivationcraft:root",
+  "criteria": {
+    "choose_external_path": {
+      "trigger": "cultivationcraft:chose_path",
+      "conditions": {
+        "chosen_path": 0
+      }
+    }
+  },
+  "requirements": [
+    [
+      "choose_external_path"
+    ]
+  ]
+}

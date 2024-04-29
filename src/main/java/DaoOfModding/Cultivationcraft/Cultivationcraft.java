@@ -4,11 +4,11 @@ import DaoOfModding.Cultivationcraft.Client.Animations.GenericQiPoses;
 import DaoOfModding.Cultivationcraft.Client.ClientItemControl;
 import DaoOfModding.Cultivationcraft.Client.GUI.HelpItems;
 import DaoOfModding.Cultivationcraft.Client.Textures.initTextures;
+import DaoOfModding.Cultivationcraft.Common.Advancements.CultivationAdvancements;
 import DaoOfModding.Cultivationcraft.Common.Blocks.BlockRegister;
 import DaoOfModding.Cultivationcraft.Common.Config;
+import DaoOfModding.Cultivationcraft.Common.Items.ItemRegister;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartNames;
-import DaoOfModding.Cultivationcraft.Client.Animations.GenericQiPoses;
-import DaoOfModding.Cultivationcraft.Client.ClientItemControl;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Lungs.BreathingHandler;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.DefaultQuests;
 import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
@@ -19,7 +19,6 @@ import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.TechniqueStats.Default
 import DaoOfModding.Cultivationcraft.Common.Reflection;
 import DaoOfModding.Cultivationcraft.Common.Register;
 import DaoOfModding.Cultivationcraft.Network.PacketHandler;
-import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -42,8 +41,7 @@ public class Cultivationcraft {
 
     protected static final ModList MOD_LIST = ModList.get();
 
-    public Cultivationcraft()
-    {
+    public Cultivationcraft() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
         modEventBus.addListener(this::commonInit);
@@ -53,11 +51,12 @@ public class Cultivationcraft {
 
         Register.init(modEventBus);
         BlockRegister.init(modEventBus);
+        ItemRegister.init(modEventBus);
         BodyPartNames.registerLungLocations();
+        CultivationAdvancements.init(modEventBus);
     }
 
-    protected void commonInit(final FMLCommonSetupEvent event)
-    {
+    protected void commonInit(final FMLCommonSetupEvent event) {
         PacketHandler.init();
 
         QiSourceConfig.init();
@@ -70,8 +69,7 @@ public class Cultivationcraft {
         ExternalCultivationHandler.init();
     }
 
-    protected void clientInit(final FMLClientSetupEvent event)
-    {
+    protected void clientInit(final FMLClientSetupEvent event) {
         ClientItemControl.init(event);
         GenericQiPoses.init();
         HelpItems.setup();

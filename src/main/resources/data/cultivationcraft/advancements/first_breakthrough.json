@@ -1,0 +1,32 @@
+{
+  "display": {
+    "title": {
+      "text": "Am I strong yet ?"
+    },
+    "description": {
+      "text": "Your first breakthrough"
+    },
+    "icon": {
+      "item": "cultivationcraft:first_breakthrough_advancement"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "parent": "cultivationcraft:external_path",
+  "criteria": {
+    "has_brokenthrough": {
+      "trigger": "cultivationcraft:has_brokenthrough",
+      "conditions": {
+        "realm_id": "cultivationcraft.cultivation.foundation",
+        "current_stage": 1
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_brokenthrough"
+    ]
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "display": {
+    "title": {
+      "text": "Thunder Core",
+      "color": "yellow"
+    },
+    "description": {
+      "text": "Survived tribulation and achieved Core Forming, mastering the lightning element and solidifying the Qi into a Core"
+    },
+    "icon": {
+      "item": "cultivationcraft:lightning_forming_advancement"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "parent": "cultivationcraft:qi_condensing",
+  "criteria": {
+    "has_brokenthrough": {
+      "trigger": "cultivationcraft:has_brokenthrough",
+      "conditions": {
+        "realm_id": "cultivationcraft.cultivation.coreforming.lightning",
+        "current_stage": 1
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_brokenthrough"
+    ]
+  ]
+}

@@ -2,7 +2,7 @@ package DaoOfModding.Cultivationcraft.Common.Blocks;
 
 import DaoOfModding.Cultivationcraft.Common.Blocks.custom.FrozenBlock;
 import DaoOfModding.Cultivationcraft.Common.Blocks.entity.FrozenBlockEntity;
-import DaoOfModding.Cultivationcraft.Common.Register;
+import DaoOfModding.Cultivationcraft.Common.Items.ItemRegister;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -46,6 +46,6 @@ public class BlockRegister {
     }
 
     public static <T extends Block> RegistryObject<Item> registerBlockItem(String name, RegistryObject<T> block) {
-        return Register.ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties()));
+        return ItemRegister.ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties()));
     }
 }

@@ -1,0 +1,29 @@
+{
+  "display": {
+    "title": {
+      "text": "This isn't even my final form"
+    },
+    "description": {
+      "text": "Evolve a limb through internal cultivation"
+    },
+    "icon": {
+      "item": "cultivationcraft:evolved_limb_advancement"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "parent": "cultivationcraft:internal_path",
+  "criteria": {
+    "evolved_a_limb": {
+      "trigger": "cultivationcraft:evolved_limb",
+      "conditions": {}
+    }
+  },
+  "requirements": [
+    [
+      "evolved_a_limb"
+    ]
+  ]
+}

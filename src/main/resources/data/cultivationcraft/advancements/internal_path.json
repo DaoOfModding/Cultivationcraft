@@ -1,0 +1,31 @@
+{
+  "display": {
+    "title": {
+      "text": "Internal Cultivation"
+    },
+    "description": {
+      "text": "Strengthen the physical body, develop powerful physiques."
+    },
+    "icon": {
+      "item": "cultivationcraft:internal_path_advancement"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": true
+  },
+  "parent": "cultivationcraft:root",
+  "criteria": {
+    "choose_internal_path": {
+      "trigger": "cultivationcraft:chose_path",
+      "conditions": {
+        "chosen_path": 1
+      }
+    }
+  },
+  "requirements": [
+    [
+      "choose_internal_path"
+    ]
+  ]
+}
