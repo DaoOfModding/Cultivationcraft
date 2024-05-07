@@ -94,12 +94,7 @@ public class CultivatorTypePacket extends Packet {
         // Send the new player stats to the clients
         PacketHandler.sendCultivatorStatsToClient(ownerEntity);
 
-        //used for Advancement trigger
-        if (ownerEntity instanceof ServerPlayer serverPlayer) {
-            LootContext.Builder bld = new LootContext.Builder(serverPlayer.getLevel())
-                    .withParameter(CultivationPathTrigger.CHOSEN_PATH, cultivationType);
-            LootContext ctx = bld.create(CultivationPathTrigger.requiredParams);
-            CultivationAdvancements.CULTIVATION_PATH.trigger(serverPlayer, ctx);
-        }
+        if (ownerEntity instanceof ServerPlayer serverPlayer)
+            CultivationAdvancements.CULTIVATION_PATH.trigger(serverPlayer, cultivationType);
     }
 }

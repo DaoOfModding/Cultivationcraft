@@ -85,12 +85,9 @@ public class BodyForgeSelectionPacket extends Packet {
 
         // Update clients with new selection
         PacketHandler.sendBodyModificationsToClient(player);
-        //used for Advancement trigger
-        if (player instanceof ServerPlayer serverPlayer) {
-            LootContext.Builder bld = new LootContext.Builder(serverPlayer.getLevel())
-                    .withParameter(EvolvedLimbTrigger.EVOLVED_LIMB, true);
-            LootContext ctx = bld.create(EvolvedLimbTrigger.requiredParams);
-            CultivationAdvancements.EVOLVED_LIMB.trigger(serverPlayer, ctx);
-        }
+
+        if (player instanceof ServerPlayer serverPlayer)
+            CultivationAdvancements.EVOLVED_LIMB.trigger(serverPlayer);
+
     }
 }

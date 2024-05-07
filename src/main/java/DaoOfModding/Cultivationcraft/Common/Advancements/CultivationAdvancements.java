@@ -12,7 +12,8 @@ import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-public class CultivationAdvancements {
+public class CultivationAdvancements
+{
     private static Method CriterionRegister;
 
     /**
@@ -47,27 +48,11 @@ public class CultivationAdvancements {
      */
     public static EvolvedLimbTrigger EVOLVED_LIMB;
 
-    public static void init(IEventBus bus) {
-        HAS_BROKENTROUGH = (BreakthroughTrigger) registerAdvancementTrigger(new BreakthroughTrigger());
-        CULTIVATION_PATH = (CultivationPathTrigger) registerAdvancementTrigger(new CultivationPathTrigger());
-        HAS_FLYING_SWORD = (FlyingSwordTrigger) registerAdvancementTrigger(new FlyingSwordTrigger());
-        EVOLVED_LIMB = (EvolvedLimbTrigger) registerAdvancementTrigger(new EvolvedLimbTrigger());
-    }
-
-
-    @SuppressWarnings("unchecked")
-    public static <T extends CriterionTrigger<?>> T registerAdvancementTrigger(T trigger) {
-        if (CriterionRegister == null) {
-            //Class<?> persistentClass = trigger.getClass().getGenericSuperclass().getClass();
-            CriterionRegister = ObfuscationReflectionHelper.findMethod(CriteriaTriggers.class, "register", CriterionTrigger.class);
-            CriterionRegister.setAccessible(true);
-        }
-        try {
-            trigger = (T) CriterionRegister.invoke(null, trigger);
-        } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-            System.out.println("Failed to register trigger " + trigger.getId() + "! ");
-            e.printStackTrace();
-        }
-        return trigger;
+    public static void init(IEventBus bus)
+    {
+        HAS_BROKENTROUGH = CriteriaTriggers.register(new BreakthroughTrigger());
+        CULTIVATION_PATH = CriteriaTriggers.register(new CultivationPathTrigger());
+        HAS_FLYING_SWORD = CriteriaTriggers.register(new FlyingSwordTrigger());
+        EVOLVED_LIMB = CriteriaTriggers.register(new EvolvedLimbTrigger());
     }
 }

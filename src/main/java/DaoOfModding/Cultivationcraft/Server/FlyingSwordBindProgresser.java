@@ -43,12 +43,8 @@ public class FlyingSwordBindProgresser {
                             FlyingSwordController.addFlyingItem(testItem, player.getUUID());
 
                             //used for Advancement trigger
-                            if (player instanceof ServerPlayer serverPlayer) {
-                                LootContext.Builder bld = new LootContext.Builder(serverPlayer.getLevel())
-                                        .withParameter(FlyingSwordTrigger.HAS_FLYING_SWORD, true);
-                                LootContext ctx = bld.create(FlyingSwordTrigger.requiredParams);
-                                CultivationAdvancements.HAS_FLYING_SWORD.trigger(serverPlayer, ctx);
-                            }
+                            if (player instanceof ServerPlayer serverPlayer)
+                                CultivationAdvancements.HAS_FLYING_SWORD.trigger(serverPlayer);
                         }
                     }
                 }

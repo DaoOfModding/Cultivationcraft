@@ -30,22 +30,18 @@ public class FoundationEstablishmentCultivation extends CultivationType {
     }
 
     @Override
-    public void breakthrough(Player player) {
-        if (stage < maxStage) {
+    public void breakthrough(Player player)
+    {
+        if (stage < maxStage)
+        {
             FoundationEstablishmentCultivation newCultivation = new FoundationEstablishmentCultivation(stage + 1);
 
             newCultivation.setPreviousCultivation(this);
 
             CultivatorStats.getCultivatorStats(player).setCultivation(newCultivation);
 
-            //used for Advancement trigger
-            if (player instanceof ServerPlayer serverPlayer) {
-                LootContext.Builder bld = new LootContext.Builder(serverPlayer.getLevel())
-                        .withParameter(BreakthroughTrigger.REALM_STAGE, stage)
-                        .withParameter(BreakthroughTrigger.REALM_ID, ID);
-                LootContext ctx = bld.create(BreakthroughTrigger.requiredParams);
-                CultivationAdvancements.HAS_BROKENTROUGH.trigger(serverPlayer, ctx);
-            }
+            if (player instanceof ServerPlayer)
+                CultivationAdvancements.HAS_BROKENTROUGH.trigger((ServerPlayer) player, ID, stage);
         }
     }
 }

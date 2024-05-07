@@ -1,17 +1,15 @@
 package DaoOfModding.Cultivationcraft.Common.Advancements.Triggers;
 
-import DaoOfModding.Cultivationcraft.Common.Advancements.utils.ICriterionTriggerInstanceTester;
-import DaoOfModding.Cultivationcraft.Common.Advancements.utils.LibCriteriaTrigger;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import com.google.gson.JsonObject;
-import net.minecraft.advancements.critereon.DeserializationContext;
-import net.minecraft.advancements.critereon.SerializationContext;
+import net.minecraft.advancements.critereon.*;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParam;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSet;
 
-public class EvolvedLimbTrigger extends LibCriteriaTrigger<EvolvedLimbTrigger.Instance> {
+public class EvolvedLimbTrigger extends SimpleCriterionTrigger<EvolvedLimbTrigger.Instance> {
     public static final ResourceLocation ID = new ResourceLocation(Cultivationcraft.MODID, "evolved_limb");
     public static LootContextParam<Boolean> EVOLVED_LIMB = new LootContextParam<Boolean>(ID);
     public static LootContextParamSet requiredParams = LootContextParamSet.builder().required(EvolvedLimbTrigger.EVOLVED_LIMB).build();
@@ -21,30 +19,23 @@ public class EvolvedLimbTrigger extends LibCriteriaTrigger<EvolvedLimbTrigger.In
         return ID;
     }
 
-    @Override
-    public EvolvedLimbTrigger.Instance createInstance(JsonObject json, DeserializationContext context) {
-        return new EvolvedLimbTrigger.Instance();
+    public void trigger(ServerPlayer player)
+    {
+        this.trigger(player, (p_61501_) -> {
+            return true;
+        });
     }
 
-    public static class Instance implements ICriterionTriggerInstanceTester {
+    @Override
+    public EvolvedLimbTrigger.Instance createInstance(JsonObject json, EntityPredicate.Composite composite, DeserializationContext context) {
+        return new EvolvedLimbTrigger.Instance(composite);
+    }
 
-        public Instance() {
-        }
+    public static class Instance extends AbstractCriterionTriggerInstance {
 
-        @Override
-        public ResourceLocation getCriterion() {
-            return EvolvedLimbTrigger.ID;
-        }
-
-        @Override
-        public JsonObject serializeToJson(SerializationContext context) {
-            JsonObject json = new JsonObject();
-            return json;
-        }
-
-        @Override
-        public boolean test(LootContext ctx) {
-            return ctx.getParam(EVOLVED_LIMB);
+        public Instance(EntityPredicate.Composite composite)
+        {
+            super(ID, composite);
         }
     }
 }

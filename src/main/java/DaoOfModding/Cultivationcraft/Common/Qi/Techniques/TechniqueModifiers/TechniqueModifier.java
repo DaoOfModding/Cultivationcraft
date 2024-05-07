@@ -26,4 +26,9 @@ public class TechniqueModifier
     {
 
     }
+
+    public boolean canUse(Player player)
+    {
+        return false;
+    }
 }
