@@ -11,8 +11,6 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParamSet;
 
 public class EvolvedLimbTrigger extends SimpleCriterionTrigger<EvolvedLimbTrigger.Instance> {
     public static final ResourceLocation ID = new ResourceLocation(Cultivationcraft.MODID, "evolved_limb");
-    public static LootContextParam<Boolean> EVOLVED_LIMB = new LootContextParam<Boolean>(ID);
-    public static LootContextParamSet requiredParams = LootContextParamSet.builder().required(EvolvedLimbTrigger.EVOLVED_LIMB).build();
 
     @Override
     public ResourceLocation getId() {

@@ -17,7 +17,6 @@ public class BreakthroughTrigger extends SimpleCriterionTrigger<BreakthroughTrig
     public static final ResourceLocation ID = new ResourceLocation(Cultivationcraft.MODID, "has_brokenthrough");
     public static LootContextParam<String> REALM_ID = new LootContextParam<String>(ID);
     public static LootContextParam<Integer> REALM_STAGE = new LootContextParam<Integer>(ID);
-    public static LootContextParamSet requiredParams = LootContextParamSet.builder().required(BreakthroughTrigger.REALM_ID).required(BreakthroughTrigger.REALM_STAGE).build();
 
     @Override
     public ResourceLocation getId() {

@@ -17,7 +17,6 @@ public class CultivationPathTrigger extends SimpleCriterionTrigger<CultivationPa
 {
     public static final ResourceLocation ID = new ResourceLocation(Cultivationcraft.MODID, "chose_path");
     public static LootContextParam<Integer> CHOSEN_PATH = new LootContextParam<Integer>(ID);
-    public static LootContextParamSet requiredParams = LootContextParamSet.builder().required(CultivationPathTrigger.CHOSEN_PATH).build();
 
     @Override
     public ResourceLocation getId() {

@@ -12,8 +12,6 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParamSet;
 public class FlyingSwordTrigger extends SimpleCriterionTrigger<FlyingSwordTrigger.Instance>
 {
     public static final ResourceLocation ID = new ResourceLocation(Cultivationcraft.MODID, "has_flying_sword");
-    public static LootContextParam<Boolean> HAS_FLYING_SWORD = new LootContextParam<Boolean>(ID);
-    public static LootContextParamSet requiredParams = LootContextParamSet.builder().required(FlyingSwordTrigger.HAS_FLYING_SWORD).build();
 
     @Override
     public ResourceLocation getId() {
