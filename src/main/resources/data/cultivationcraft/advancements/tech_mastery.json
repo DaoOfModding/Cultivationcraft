@@ -1,0 +1,26 @@
+{
+  "display": {
+    "title": {
+      "translate": "cultivationcraft.advancments.techmastery"
+    },
+    "description": {
+      "translate": "cultivationcraft.advancments.techmastery.desc"
+    },
+    "icon": {
+      "item": "cultivationcraft:tech_mastery_advancement"
+    },
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "parent": "cultivationcraft:meditate",
+  "criteria": {
+    "tech_maxed": {
+      "trigger": "cultivationcraft:techuse",
+      "conditions": {
+        "techid": "",
+        "conditional": 2
+      }
+    }
+  }
+}

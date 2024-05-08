@@ -41,7 +41,7 @@ public class FoundationEstablishmentCultivation extends CultivationType {
             CultivatorStats.getCultivatorStats(player).setCultivation(newCultivation);
 
             if (player instanceof ServerPlayer)
-                CultivationAdvancements.HAS_BROKENTROUGH.trigger((ServerPlayer) player, ID, stage);
+                CultivationAdvancements.HAS_BROKENTROUGH.trigger((ServerPlayer) player, false);
         }
     }
 }

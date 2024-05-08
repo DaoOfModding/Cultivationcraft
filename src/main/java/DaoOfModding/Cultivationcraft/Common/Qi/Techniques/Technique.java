@@ -1,6 +1,7 @@
 package DaoOfModding.Cultivationcraft.Common.Qi.Techniques;
 
 import DaoOfModding.Cultivationcraft.Client.genericClientFunctions;
+import DaoOfModding.Cultivationcraft.Common.Advancements.CultivationAdvancements;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStats;
 import DaoOfModding.Cultivationcraft.Common.Qi.Cultivation.CultivationType;
 import DaoOfModding.Cultivationcraft.Common.Qi.Damage.QiDamageSource;
@@ -23,6 +24,7 @@ import com.mojang.blaze3d.vertex.VertexFormat;
 import com.mojang.math.Vector3f;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -351,6 +353,9 @@ public class Technique
         applyTechniqueModifiers(player);
 
         active = true;
+
+        if (player instanceof ServerPlayer)
+            CultivationAdvancements.TECH_USE.trigger((ServerPlayer) player, this.getClass().getName(), 0);
 
         addModifiers(player);
     }

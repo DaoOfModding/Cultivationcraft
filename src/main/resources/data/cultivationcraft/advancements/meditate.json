@@ -1,0 +1,26 @@
+{
+  "display": {
+    "title": {
+      "translate": "cultivationcraft.advancments.meditate"
+    },
+    "description": {
+      "translate": "cultivationcraft.advancments.meditate.desc"
+    },
+    "icon": {
+      "item": "cultivationcraft:meditate_advancement"
+    },
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "parent": "cultivationcraft:qi_sight",
+  "criteria": {
+    "mediate_in_qi": {
+      "trigger": "cultivationcraft:techuse",
+      "conditions": {
+        "techid": "DaoOfModding.Cultivationcraft.Common.Qi.Techniques.MeditateTechnique",
+        "conditional": 1
+      }
+    }
+  }
+}

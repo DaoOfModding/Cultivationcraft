@@ -2,6 +2,7 @@ package DaoOfModding.Cultivationcraft.Common.Qi.Techniques;
 
 import DaoOfModding.Cultivationcraft.Client.Animations.GenericQiPoses;
 import DaoOfModding.Cultivationcraft.Client.genericClientFunctions;
+import DaoOfModding.Cultivationcraft.Common.Advancements.CultivationAdvancements;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.BodyModifications;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.IBodyModifications;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.ChunkQiSources.ChunkQiSources;
@@ -27,6 +28,7 @@ import DaoOfModding.Cultivationcraft.Server.BodyPartControl;
 import DaoOfModding.Cultivationcraft.Server.ServerListeners;
 import DaoOfModding.Cultivationcraft.debug;
 import DaoOfModding.mlmanimator.Client.Poses.PoseHandler;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.event.TickEvent;
@@ -82,6 +84,10 @@ public class MeditateTechnique extends MovementOverrideTechnique
 
             List<QiSource> sources = ChunkQiSources.getQiSourcesInRange(event.player.level, event.player.position(), (int)cultivation.getCultivationStat(event.player, DefaultCultivationStatIDs.qiAbsorbRange));
 
+            // If meditating in a Qi Source, give advancement
+            if (sources.size() > 0 && event.side == LogicalSide.SERVER)
+                    CultivationAdvancements.TECH_USE.trigger((ServerPlayer) event.player, this.getClass().getName(), 1);
+
             // absorb Qi through blood first
             double remaining = cultivation.getCultivationStat(event.player, DefaultCultivationStatIDs.qiAbsorbSpeed) / 20.0;
 
@@ -106,7 +112,7 @@ public class MeditateTechnique extends MovementOverrideTechnique
 
             // If meditating in a Qi Source, increase the quest by 1 second
             if (sources.size() > 0)
-                QuestHandler.progressQuest(event.player, Quest.QI_SOURCE_MEDITATION, 1.0/20.0);
+                QuestHandler.progressQuest(event.player, Quest.QI_SOURCE_MEDITATION, 1.0 / 20.0);
 
             // absorb Qi through blood first
             double remaining = (int)BodyPartStatControl.getPlayerStatControl(event.player).getStats().getStat(StatIDs.qiAbsorb);

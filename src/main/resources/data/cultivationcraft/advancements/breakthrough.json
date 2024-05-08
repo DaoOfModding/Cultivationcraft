@@ -1,10 +1,10 @@
 {
   "display": {
     "title": {
-      "text": "Am I strong yet ?"
+      "translate": "cultivationcraft.advancments.breakthrough"
     },
     "description": {
-      "text": "Your first breakthrough"
+      "translate": "cultivationcraft.advancments.breakthrough.desc"
     },
     "icon": {
       "item": "cultivationcraft:first_breakthrough_advancement"
@@ -14,19 +14,13 @@
     "announce_to_chat": true,
     "hidden": false
   },
-  "parent": "cultivationcraft:external_path",
+  "parent": "cultivationcraft:tech_mastery",
   "criteria": {
     "has_brokenthrough": {
       "trigger": "cultivationcraft:has_brokenthrough",
       "conditions": {
-        "realm_id": "cultivationcraft.cultivation.foundation",
-        "current_stage": 1
+        "tribulation": false
       }
     }
-  },
-  "requirements": [
-    [
-      "has_brokenthrough"
-    ]
-  ]
+  }
 }

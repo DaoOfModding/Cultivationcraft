@@ -1,0 +1,26 @@
+{
+  "display": {
+    "title": {
+      "translate": "cultivationcraft.advancments.tribulation"
+    },
+    "description": {
+      "translate": "cultivationcraft.advancments.tribulation.desc"
+    },
+    "icon": {
+      "item": "cultivationcraft:tribulation_advancement"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "parent": "cultivationcraft:breakthrough",
+  "criteria": {
+    "has_brokenthrough": {
+      "trigger": "cultivationcraft:has_brokenthrough",
+      "conditions": {
+        "tribulation": true
+      }
+    }
+  }
+}

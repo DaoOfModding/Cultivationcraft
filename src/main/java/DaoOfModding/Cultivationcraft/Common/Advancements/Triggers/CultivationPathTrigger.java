@@ -16,7 +16,6 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParamSet;
 public class CultivationPathTrigger extends SimpleCriterionTrigger<CultivationPathTrigger.Instance>
 {
     public static final ResourceLocation ID = new ResourceLocation(Cultivationcraft.MODID, "chose_path");
-    public static LootContextParam<Integer> CHOSEN_PATH = new LootContextParam<Integer>(ID);
 
     @Override
     public ResourceLocation getId() {

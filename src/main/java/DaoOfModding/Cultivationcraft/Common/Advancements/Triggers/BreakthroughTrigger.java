@@ -15,8 +15,6 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParamSet;
 public class BreakthroughTrigger extends SimpleCriterionTrigger<BreakthroughTrigger.Instance>
 {
     public static final ResourceLocation ID = new ResourceLocation(Cultivationcraft.MODID, "has_brokenthrough");
-    public static LootContextParam<String> REALM_ID = new LootContextParam<String>(ID);
-    public static LootContextParam<Integer> REALM_STAGE = new LootContextParam<Integer>(ID);
 
     @Override
     public ResourceLocation getId() {
@@ -26,41 +24,37 @@ public class BreakthroughTrigger extends SimpleCriterionTrigger<BreakthroughTrig
     @Override
     public BreakthroughTrigger.Instance createInstance(JsonObject json, EntityPredicate.Composite composite, DeserializationContext context)
     {
-        String realmID = GsonHelper.getAsString(json, "realm_id");
-        Integer currentStage = GsonHelper.getAsInt(json, "current_stage");
-        return new BreakthroughTrigger.Instance(composite, realmID, currentStage);
+        boolean tribulation = GsonHelper.getAsBoolean(json, "tribulation");
+        return new BreakthroughTrigger.Instance(composite, tribulation);
     }
 
-    public void trigger(ServerPlayer player, String realm, int stage)
+    public void trigger(ServerPlayer player, boolean tribulation)
     {
         this.trigger(player, (p_61501_) -> {
-            return p_61501_.matches(realm, stage);
+            return p_61501_.matches(tribulation);
         });
     }
 
     public static class Instance extends AbstractCriterionTriggerInstance
     {
-        private final String realmID;
-        private final Integer currentStage;
+        private final Boolean tribulation;
 
-        public Instance(EntityPredicate.Composite composite, String realm_id, Integer current_stage)
+        public Instance(EntityPredicate.Composite composite, boolean trib)
         {
             super(ID, composite);
-            this.realmID = realm_id;
-            this.currentStage = current_stage;
+            this.tribulation = trib;
         }
 
-        public boolean matches(String ID, int stage)
+        public boolean matches(boolean trib)
         {
-            return (realmID.matches(ID) && stage == currentStage);
+            return (tribulation == trib);
         }
 
         @Override
         public JsonObject serializeToJson(SerializationContext context)
         {
             JsonObject json = super.serializeToJson(context);
-            json.addProperty("realm_id", realmID);
-            json.addProperty("current_stage", currentStage);
+            json.addProperty("tribulation", tribulation);
             return json;
         }
     }

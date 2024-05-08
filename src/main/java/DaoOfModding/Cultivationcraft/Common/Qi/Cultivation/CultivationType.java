@@ -131,9 +131,6 @@ public class CultivationType {
         CultivatorStats.getCultivatorStats(player).setCultivation(advanceTo);
 
         tribulation.reset();
-
-        if (player instanceof ServerPlayer)
-            CultivationAdvancements.HAS_BROKENTROUGH.trigger((ServerPlayer) player, advanceTo.ID, advanceTo.stage);
     }
 
     public boolean hasTribulated() {
@@ -180,8 +177,12 @@ public class CultivationType {
     public void breakthrough(Player player) {
     }
 
-    public void tribulationComplete(Player player) {
+    public void tribulationComplete(Player player)
+    {
         hasTribulated = true;
+
+        if (player instanceof ServerPlayer)
+            CultivationAdvancements.HAS_BROKENTROUGH.trigger((ServerPlayer) player, true);
     }
 
     public CultivationTypeScreen getScreen() {
@@ -401,17 +402,29 @@ public class CultivationType {
         return progress;
     }
 
-    public void levelTech(Technique tech, double amount, Player player) {
+    public void levelTech(Technique tech, double amount, Player player)
+    {
         int max = getMaxTechLevel();
         int current = getTechLevelProgress(tech.getClass());
 
         if (max == current)
+        {
+            // If this technique is maxed then trigger the appropriate achievements
+            if (player instanceof ServerPlayer)
+                CultivationAdvancements.TECH_USE.trigger((ServerPlayer) player, tech.getClass().getName(), 2);
+
             return;
+        }
 
         double amountToLevel = max - current;
 
         if (amount > amountToLevel)
+        {
             amount = amountToLevel;
+
+            if (player instanceof ServerPlayer)
+                CultivationAdvancements.TECH_USE.trigger((ServerPlayer) player, tech.getClass().getName(), 2);
+        }
 
         ResourceLocation toLevel = CultivatorStats.getCultivatorStats(player).getTechniqueFocus(tech.getClass());
 

@@ -1,9 +1,6 @@
 package DaoOfModding.Cultivationcraft.Common.Advancements;
 
-import DaoOfModding.Cultivationcraft.Common.Advancements.Triggers.BreakthroughTrigger;
-import DaoOfModding.Cultivationcraft.Common.Advancements.Triggers.CultivationPathTrigger;
-import DaoOfModding.Cultivationcraft.Common.Advancements.Triggers.EvolvedLimbTrigger;
-import DaoOfModding.Cultivationcraft.Common.Advancements.Triggers.FlyingSwordTrigger;
+import DaoOfModding.Cultivationcraft.Common.Advancements.Triggers.*;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.advancements.CriterionTrigger;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -14,39 +11,11 @@ import java.lang.reflect.Method;
 
 public class CultivationAdvancements
 {
-    private static Method CriterionRegister;
-
-    /**
-     * Json details:<br>
-     * cultivationcraft:has_brokenthrough {<br>
-     * &nbsp;&nbsp; realm_id:string <br>
-     * &nbsp;&nbsp; current_stage:int<br>
-     * }<br>
-     */
     public static BreakthroughTrigger HAS_BROKENTROUGH;
-    /**
-     * Json details:<br>
-     * cultivationcraft:chose_external_path {<br>
-     * &nbsp;&nbsp; chosen_path:integer <br>
-     * }<br>
-     * where &nbsp;0 = external Cultivation <br>
-     * and &nbsp;&nbsp;&nbsp;&nbsp; 1 = internal Cultivation
-     */
     public static CultivationPathTrigger CULTIVATION_PATH;
-    /**
-     * Json details:<br>
-     * cultivationcraft:has_flying_sword {<br>
-     * <br>
-     * }<br>
-     */
     public static FlyingSwordTrigger HAS_FLYING_SWORD;
-    /**
-     * Json details:<br>
-     * cultivationcraft:evolved_limb {<br>
-     * <br>
-     * }<br>
-     */
     public static EvolvedLimbTrigger EVOLVED_LIMB;
+    public static TechUseTrigger TECH_USE;
 
     public static void init(IEventBus bus)
     {
@@ -54,5 +23,6 @@ public class CultivationAdvancements
         CULTIVATION_PATH = CriteriaTriggers.register(new CultivationPathTrigger());
         HAS_FLYING_SWORD = CriteriaTriggers.register(new FlyingSwordTrigger());
         EVOLVED_LIMB = CriteriaTriggers.register(new EvolvedLimbTrigger());
+        TECH_USE = CriteriaTriggers.register(new TechUseTrigger());
     }
 }

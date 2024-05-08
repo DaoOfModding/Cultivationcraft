@@ -1,0 +1,26 @@
+{
+  "display": {
+    "title": {
+      "translate": "cultivationcraft.advancments.qisight"
+    },
+    "description": {
+      "translate": "cultivationcraft.advancments.qisight.desc"
+    },
+    "icon": {
+      "item": "cultivationcraft:qi_sight_advancement"
+    },
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "parent": "cultivationcraft:external_cultivation",
+  "criteria": {
+    "qi_sight_use": {
+      "trigger": "cultivationcraft:techuse",
+      "conditions": {
+        "techid": "DaoOfModding.Cultivationcraft.Common.Qi.Techniques.DivineSenseTechnique",
+        "conditional": 0
+      }
+    }
+  }
+}

@@ -19,6 +19,7 @@
   "cultivationcraft.cultivation.coreforming.ice.text": "Form additional cores of compressed Ice Qi",
   "cultivationcraft.cultivation.coreforming.lightning": "Electric Core Forming",
   "cultivationcraft.cultivation.coreforming.lightning.text": "Form additional cores of compressed Lightning Qi",
+
   "cultivationcraft.elements.none": "Qi",
   "cultivationcraft.elements.fire": "Fire",
   "cultivationcraft.elements.earth": "Earth",
@@ -27,6 +28,7 @@
   "cultivationcraft.elements.water": "Water",
   "cultivationcraft.elements.ice": "Ice",
   "cultivationcraft.elements.lightning": "Lightning",
+
   "cultivationcraft.stat.weight": "Weight",
   "cultivationcraft.stat.weight.text": "How much the character weights, a higher weight increases stamina costs and can decrease movement speed",
   "cultivationcraft.stat.armor": "Armor",
@@ -85,11 +87,13 @@
   "cultivationcraft.stat.qiabsorbrange.text": "The range (in blocks) this character can absorb Qi from",
   "cultivationcraft.stat.qicost": "Qi Cost for Forge",
   "cultivationcraft.stat.qicost.text": "The amount of Qi needed for this character to forge their next body part",
+
   "cultivationcraft.cstat.maxqi": "Max Qi",
   "cultivationcraft.cstat.absorbrange": "Qi Absorb Range",
   "cultivationcraft.cstat.absorbspeed": "Qi Absorb Speed",
   "cultivationcraft.cstat.passiveabsorb": "Ambient Qi Absorb Speed",
   "cultivationcraft.cstat.passiveqi": "Qi Regen",
+
   "cultivationcraft.tstat.qicost": "Qi Cost",
   "cultivationcraft.tstat.staminacost": "Stamina Cost",
   "cultivationcraft.tstat.breathcost": "Breath Cost",
@@ -103,6 +107,7 @@
   "cultivationcraft.tstat.fsmaxspeed": "Max Speed",
   "cultivationcraft.tstat.fsturnspeed": "Turn Speed",
   "cultivationcraft.tstat.qihealthratio": "Qi to Health Conversion",
+
   "cultivationcraft.quest.qisource": "Seconds spent cultivating from a QiSource",
   "cultivationcraft.quest.damagetaken": "Damage taken",
   "cultivationcraft.quest.damageresisted": "Damage resisted",
@@ -119,6 +124,7 @@
   "cultivationcraft.quest.heal": "Health healed",
   "cultivationcraft.quest.drainstamina": "Stamina used",
   "cultivationcraft.quest.bite": "Bite damage dealt",
+
   "cultivationcraft.technique.example": "Example Technique",
   "cultivationcraft.technique.example.description": "This is an example description",
   "cultivationcraft.technique.meditate": "Meditate",
@@ -161,6 +167,7 @@
   "cultivationcraft.technique.exhale.description": "Exhale your breath at high speed to damage enemies and break blocks",
   "cultivationcraft.technique.spinpetal": "Spin Petals",
   "cultivationcraft.technique.spinpetal.description": "Spin your petals around to propel yourself into the air",
+
   "cultivationcraft.commands.reset.single": "%s had their bodyforge status reset",
   "cultivationcraft.commands.reset.multiple": "%s players had their bodyforge status reset",
   "cultivationcraft.commands.completequest.single": "Completed quest for %s",
@@ -173,6 +180,7 @@
   "cultivationcraft.commands.fillqi.multiple": "Refilled Qi for %s players",
   "cultivationcraft.commands.revertcultivation.single": "Cultivation reverted for %s",
   "cultivationcraft.commands.revertcultivation.multiple": "Cultivation reverted for %s players",
+
   "cultivationcraft.gui.tab.0.0": "Cultivate",
   "cultivationcraft.gui.tab.0.1": "Skills",
   "cultivationcraft.gui.tab.0.2": "Bind",
@@ -181,6 +189,7 @@
   "cultivationcraft.gui.tab.1.1": "Skills",
   "cultivationcraft.gui.tab.1.2": "Forge",
   "cultivationcraft.gui.tab.1.3": "Help",
+
   "cultivationcraft.gui.cultivationselection": "Cultivation Type Selection",
   "cultivationcraft.gui.cultivationtype.0": "Become a Qi Cultivator\n \nCultivate Qi inside your body and expel it to affect your environment.",
   "cultivationcraft.gui.cultivationtype.1": "Become a Body Forger\n \nUse Qi to transform various different parts of your body into different, more specialized forms.",
@@ -433,5 +442,19 @@
   "cultivationcraft.gui.help.debug.bodyforge.fillqi": "fillQi",
   "cultivationcraft.gui.help.debug.bodyforge.fillqi.text": "§n/cultivation §nfillQi §n§lplayerName\n \nThis command will completely fill the Qi/Stamina of the supplied character.",
 
-  "cultivationcraft.advancments.root": "TEST"
+  "cultivationcraft.advancments.external": "Become a Qi Cultivator",
+  "cultivationcraft.advancments.external.desc": "Chose to become a Qi Cultivator.",
+  "cultivationcraft.advancments.internal": "Become a Body Forger",
+  "cultivationcraft.advancments.internal.desc": "Chose to become a Body Forger.",
+
+  "cultivationcraft.advancments.qisight": "Activate Divine Sense",
+  "cultivationcraft.advancments.qisight.desc": "Activated Divine Sense to enable the vision of Qi",
+  "cultivationcraft.advancments.meditate": "Meditate in a Qi Source",
+  "cultivationcraft.advancments.meditate.desc": "Started your cultivation journey by absorbing Qi from a Qi Source",
+  "cultivationcraft.advancments.techmastery": "Master a Technique",
+  "cultivationcraft.advancments.techmastery.desc": "Used a technique until it achieved the maximum mastery possible",
+  "cultivationcraft.advancments.breakthrough": "Cultivation Breakthrough",
+  "cultivationcraft.advancments.breakthrough.desc": "Broke through to the next tier of cultivation",
+  "cultivationcraft.advancments.tribulation": "Survive Tribulation",
+  "cultivationcraft.advancments.tribulation.desc": "Survived a tribulation and advanced to the next stage of cultivation"
 }
