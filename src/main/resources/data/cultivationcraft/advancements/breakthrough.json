@@ -7,7 +7,7 @@
       "translate": "cultivationcraft.advancments.breakthrough.desc"
     },
     "icon": {
-      "item": "cultivationcraft:first_breakthrough_advancement"
+      "item": "cultivationcraft:breakthrough_advancement"
     },
     "frame": "task",
     "show_toast": true,

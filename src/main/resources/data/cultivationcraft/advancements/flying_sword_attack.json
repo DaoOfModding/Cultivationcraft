@@ -1,0 +1,26 @@
+{
+  "display": {
+    "title": {
+      "translate": "cultivationcraft.advancments.sword.attack"
+    },
+    "description": {
+      "translate": "cultivationcraft.advancments.sword.attack.desc"
+    },
+    "icon": {
+      "item": "cultivationcraft:flying_sword_advancement"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "parent": "cultivationcraft:flying_sword_deploy",
+  "criteria": {
+    "has_flying_sword": {
+      "trigger": "cultivationcraft:flying_sword_attack_advancement",
+      "conditions": {
+        "killed": false
+      }
+    }
+  }
+}

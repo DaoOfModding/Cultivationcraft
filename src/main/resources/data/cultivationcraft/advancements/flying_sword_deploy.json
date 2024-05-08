@@ -1,0 +1,26 @@
+{
+  "display": {
+    "title": {
+      "translate": "cultivationcraft.advancments.sword.deploy"
+    },
+    "description": {
+      "translate": "cultivationcraft.advancments.sword.deploy.desc"
+    },
+    "icon": {
+      "item": "cultivationcraft:flying_sword_advancement"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "parent": "cultivationcraft:flying_sword_bind",
+  "criteria": {
+    "has_flying_sword": {
+      "trigger": "cultivationcraft:has_flying_sword",
+      "conditions": {
+        "deployed": true
+      }
+    }
+  }
+}

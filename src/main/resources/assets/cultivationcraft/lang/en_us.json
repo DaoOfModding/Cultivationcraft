@@ -456,5 +456,14 @@
   "cultivationcraft.advancments.breakthrough": "Cultivation Breakthrough",
   "cultivationcraft.advancments.breakthrough.desc": "Broke through to the next tier of cultivation",
   "cultivationcraft.advancments.tribulation": "Survive Tribulation",
-  "cultivationcraft.advancments.tribulation.desc": "Survived a tribulation and advanced to the next stage of cultivation"
+  "cultivationcraft.advancments.tribulation.desc": "Survived a tribulation and advanced to the next stage of cultivation",
+
+  "cultivationcraft.advancments.sword.bind": "Bind Flying Sword",
+  "cultivationcraft.advancments.sword.bind.desc": "Bound a flying sword to yourself",
+  "cultivationcraft.advancments.sword.deploy": "Deploy Flying Sword",
+  "cultivationcraft.advancments.sword.deploy.desc": "Threw out a flying sword whilst Flying Sword Formation was active",
+  "cultivationcraft.advancments.sword.attack": "Attack with Flying Sword",
+  "cultivationcraft.advancments.sword.attack.desc": "Attacked a mob whilst a flying sword was deployed",
+  "cultivationcraft.advancments.sword.kill": "Kill with Flying Sword",
+  "cultivationcraft.advancments.sword.kill.desc": "Killed a mob with a flying sword"
 }

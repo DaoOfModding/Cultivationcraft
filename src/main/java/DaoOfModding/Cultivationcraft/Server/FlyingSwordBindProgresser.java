@@ -44,7 +44,7 @@ public class FlyingSwordBindProgresser {
 
                             //used for Advancement trigger
                             if (player instanceof ServerPlayer serverPlayer)
-                                CultivationAdvancements.HAS_FLYING_SWORD.trigger(serverPlayer);
+                                CultivationAdvancements.HAS_FLYING_SWORD.trigger(serverPlayer, false);
                         }
                     }
                 }

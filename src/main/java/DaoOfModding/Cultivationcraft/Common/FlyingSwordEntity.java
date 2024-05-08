@@ -2,6 +2,7 @@ package DaoOfModding.Cultivationcraft.Common;
 
 import DaoOfModding.Cultivationcraft.Client.Renderer;
 import DaoOfModding.Cultivationcraft.Client.Renderers.QiGlowRenderer;
+import DaoOfModding.Cultivationcraft.Common.Advancements.CultivationAdvancements;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStats;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.ICultivatorStats;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.CultivatorTechniques;
@@ -236,7 +237,6 @@ public class FlyingSwordEntity extends ItemEntity
     {
         Double angle = Math.asin(direction.cross(newDirection).length());
 
-        // TODO: NEEDS TO BE LOOKED AT, causing desyncs with server (I think it's fixed now)
         if (angle != 0)
         {
             double theta = getTurnSpeed();
@@ -493,6 +493,9 @@ public class FlyingSwordEntity extends ItemEntity
                     QiGlowRenderer.setQiVisible(this, Elements.getElement(formation.getElement()));
                 else
                     Technique.tickTechniqueModifiers(owner, position(), formation.getElement());
+
+                if (owner instanceof ServerPlayer serverPlayer)
+                    CultivationAdvancements.HAS_FLYING_SWORD.trigger(serverPlayer, true);
             }
             else
                 fall();
@@ -740,7 +743,7 @@ public class FlyingSwordEntity extends ItemEntity
 
                     owner.setLastHurtMob(targetEntity);
 
-                    // Ignore enchantmnets for now
+                    // Ignore enchantments for now
                     /*
                     if (targetEntity instanceof LivingEntity) {
                          EnchantmentHelper.applyThornEnchantments((LivingEntity)targetEntity, owner);
@@ -756,6 +759,9 @@ public class FlyingSwordEntity extends ItemEntity
                     {
                         float f5 = 0 - ((LivingEntity)targetEntity).getHealth();
                         owner.awardStat(Stats.DAMAGE_DEALT, Math.round(f5 * 10.0F));
+
+                        if (owner instanceof ServerPlayer)
+                            CultivationAdvancements.FLYING_SWORD_ATTACk.trigger((ServerPlayer) owner, ((LivingEntity) targetEntity).getHealth() <= 0);
 
                         if (owner.level instanceof ServerLevel && f5 > 2.0F)
                         {

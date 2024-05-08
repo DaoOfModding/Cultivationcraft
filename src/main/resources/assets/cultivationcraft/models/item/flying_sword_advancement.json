@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "cultivationcraft:item/flying_sword_advancement"
+    "layer0": "cultivationcraft:techniques/icons/flyingsword"
   }
 }

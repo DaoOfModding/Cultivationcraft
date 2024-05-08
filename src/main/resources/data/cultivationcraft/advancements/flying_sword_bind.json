@@ -1,13 +1,13 @@
 {
   "display": {
     "title": {
-      "text": "Sword Cultivator"
+      "translate": "cultivationcraft.advancments.sword.bind"
     },
     "description": {
-      "text": "Bound your first sword"
+      "translate": "cultivationcraft.advancments.sword.bind.desc"
     },
     "icon": {
-      "item": "cultivationcraft:flying_sword_advancement"
+      "item": "minecraft:iron_sword"
     },
     "frame": "task",
     "show_toast": true,
@@ -18,12 +18,9 @@
   "criteria": {
     "has_flying_sword": {
       "trigger": "cultivationcraft:has_flying_sword",
-      "conditions": {}
+      "conditions": {
+        "deployed": false
+      }
     }
-  },
-  "requirements": [
-    [
-      "has_flying_sword"
-    ]
-  ]
+  }
 }
