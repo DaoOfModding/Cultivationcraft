@@ -52,6 +52,8 @@ public class CultivationType {
 
     protected ArrayList<CultivationType> advancements = new ArrayList<>();
 
+    protected boolean statLeveling = true;
+
     public CultivationType(int currentStage) {
         stage = currentStage;
         stageCalculations();
@@ -60,6 +62,11 @@ public class CultivationType {
     // Put anything here that changes based on the stage
     public void stageCalculations() {
 
+    }
+
+    public boolean statsCanLevel()
+    {
+        return statLeveling;
     }
 
     public String getName() {
@@ -345,8 +352,12 @@ public class CultivationType {
         return techLevel;
     }
 
-    public int getMaxTechLevel() {
-        int level = techLevel;
+    public int getMaxTechLevel()
+    {
+        int level = 0;
+
+        if (statsCanLevel())
+            level = techLevel;
 
         if (previousCultivation != null)
             level += getPreviousCultivation().getMaxTechLevel();

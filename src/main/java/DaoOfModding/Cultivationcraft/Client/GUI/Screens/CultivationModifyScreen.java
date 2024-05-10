@@ -22,22 +22,24 @@ public class CultivationModifyScreen extends TechniqueModifyScreen
     @Override
     protected void drawStats(PoseStack PoseStack, int mouseX, int mouseY)
     {
-        TechniqueStatModification modifications = getStatModification();
-
-        stats = new ArrayList<>();
-        for (ResourceLocation stat : cultivation.getPassive().getTechniqueStats())
-            stats.add(stat);
-
-        for (int stat = 0; stat < stats.size(); stat++)
+        if (cultivation.statsCanLevel())
         {
-            ResourceLocation statLocation = stats.get(stat);
+            TechniqueStatModification modifications = getStatModification();
 
-            double value = modifications.getStatChange(statLocation);
-            drawStatChanges(PoseStack, stat, stats.get(stat), value);
+            stats = new ArrayList<>();
+            for (ResourceLocation stat : cultivation.getPassive().getTechniqueStats())
+                stats.add(stat);
 
-            // Only draw button if this stat can level
-            if (selectedTech.getStatChangesPerLevel(statLocation) != null)
-                drawButton(PoseStack, stat, mouseX, mouseY);
+            for (int stat = 0; stat < stats.size(); stat++) {
+                ResourceLocation statLocation = stats.get(stat);
+
+                double value = modifications.getStatChange(statLocation);
+                drawStatChanges(PoseStack, stat, stats.get(stat), value);
+
+                // Only draw button if this stat can level
+                if (selectedTech.getStatChangesPerLevel(statLocation) != null)
+                    drawButton(PoseStack, stat, mouseX, mouseY);
+            }
         }
 
         drawStats(cultivation, PoseStack, new ArrayList<>(), 0);

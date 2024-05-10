@@ -27,7 +27,7 @@ public class QiCondenserCultivation extends CultivationType {
         screen = new QiCondenserScreen();
         tribulation = new Tribulation(maxStage, 50, 0.4f);
 
-        advancements.add(new CoreFormingCultivation());
+        advancements.add(new QiFormingCultivation());
         advancements.add(new FireFormingCultivation());
         advancements.add(new EarthFormingCultivation());
         advancements.add(new WindFormingCultivation());
@@ -54,8 +54,6 @@ public class QiCondenserCultivation extends CultivationType {
             newCultivation.setPreviousCultivation(this);
 
             CultivatorStats.getCultivatorStats(player).setCultivation(newCultivation);
-
-
         }
     }
 

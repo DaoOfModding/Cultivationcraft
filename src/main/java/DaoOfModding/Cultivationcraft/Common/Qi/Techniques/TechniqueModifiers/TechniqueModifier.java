@@ -31,4 +31,14 @@ public class TechniqueModifier
     {
         return false;
     }
+
+    public boolean canLearn(Player player)
+    {
+        return false;
+    }
+
+    public boolean hasLearnt(Player player)
+    {
+        return false;
+    }
 }

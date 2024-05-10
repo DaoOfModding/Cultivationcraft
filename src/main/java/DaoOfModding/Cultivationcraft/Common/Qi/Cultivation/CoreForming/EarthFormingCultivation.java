@@ -6,7 +6,6 @@ import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.TechniqueModifiers.Ear
 
 public class EarthFormingCultivation extends CoreFormingCultivation
 {
-
     public EarthFormingCultivation()
     {
         super();

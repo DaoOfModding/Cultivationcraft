@@ -14,7 +14,7 @@ public class ExternalCultivationHandler
         addCultivation(NoCultivation.class);
         addCultivation(FoundationEstablishmentCultivation.class);
         addCultivation(QiCondenserCultivation.class);
-        addCultivation(CoreFormingCultivation.class);
+        addCultivation(QiFormingCultivation.class);
         addCultivation(FireFormingCultivation.class);
         addCultivation(EarthFormingCultivation.class);
         addCultivation(WindFormingCultivation.class);

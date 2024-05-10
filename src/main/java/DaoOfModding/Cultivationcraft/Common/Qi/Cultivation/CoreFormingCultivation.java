@@ -1,9 +1,11 @@
 package DaoOfModding.Cultivationcraft.Common.Qi.Cultivation;
 
-import DaoOfModding.Cultivationcraft.Client.GUI.Screens.CultivationTypeScreens.FoundationEstablishmentScreen;
+import DaoOfModding.Cultivationcraft.Client.GUI.Screens.CultivationTypeScreens.CoreFormingScreen;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStats;
 import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
-import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.PassiveTechniques.CultivationPassives.FoundationPassive;
+import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.PassiveTechniques.CultivationPassives.BasePassive;
+import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.PassiveTechniques.CultivationPassives.QiCondenserPassive;
+import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.TechniqueModifiers.TechniqueModifier;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 
@@ -17,11 +19,12 @@ public class CoreFormingCultivation extends CultivationType {
     public CoreFormingCultivation(int cultivationStage) {
         super(cultivationStage);
         maxedTechsToBreakthrough = 0;
-        maxStage = 8;
+        maxStage = 9;
         // TEMP
-        passive = new FoundationPassive();
-        screen = new FoundationEstablishmentScreen();
+        passive = new QiCondenserPassive();
+        screen = new CoreFormingScreen();
         tribulation = new Tribulation(maxStage, 75, 0.6f);
+        statLeveling = false;
 
         ID = "cultivationcraft.cultivation.coreforming";
     }
@@ -32,6 +35,11 @@ public class CoreFormingCultivation extends CultivationType {
 
     public ResourceLocation getElement() {
         return myElement;
+    }
+
+    public TechniqueModifier getFocus()
+    {
+        return modifiers.get(0);
     }
 
     @Override
@@ -59,8 +67,9 @@ public class CoreFormingCultivation extends CultivationType {
         return false;
     }
 
-    public void stageCalculations() {
-        techLevel = 200 + (100 * stage);
+    public void stageCalculations()
+    {
+        techLevel = 1000;
     }
 
     // TEMP whilst no further cultivation
