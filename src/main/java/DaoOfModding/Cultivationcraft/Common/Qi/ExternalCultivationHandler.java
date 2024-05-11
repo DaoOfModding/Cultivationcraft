@@ -4,6 +4,8 @@ import DaoOfModding.Cultivationcraft.Common.Qi.Cultivation.*;
 import DaoOfModding.Cultivationcraft.Common.Qi.Cultivation.CoreForming.*;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.TechniqueModifiers.*;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
+import net.minecraft.resources.ResourceLocation;
+import org.checkerframework.checker.units.qual.A;
 
 import java.util.ArrayList;
 
@@ -23,7 +25,7 @@ public class ExternalCultivationHandler
         addCultivation(IceFormingCultivation.class);
         addCultivation(LightningFormingCultivation.class);
 
-        addModifier(TechniqueModifier.class);
+        addModifier(QiModifier.class);
         addModifier(FireModifier.class);
         addModifier(EarthModifier.class);
         addModifier(WindModifier.class);
@@ -31,6 +33,7 @@ public class ExternalCultivationHandler
         addModifier(WaterModifier.class);
         addModifier(IceModifier.class);
         addModifier(LightningModifier.class);
+        addModifier(AuraModifier.class);
     }
 
     // List of all techniques available in the game
@@ -77,9 +80,46 @@ public class ExternalCultivationHandler
         }
         catch (IllegalAccessException | InstantiationException e)
         {
-            Cultivationcraft.LOGGER.error("Error " + e + " whilst getting technique modifier of ID " + className);
+            Cultivationcraft.LOGGER.error("Error " + e + " whilst getting technique modifier of class " + className);
         }
 
         return new TechniqueModifier();
+    }
+
+    public static TechniqueModifier getModifier(ResourceLocation ID)
+    {
+        try
+        {
+            for (Class<? extends TechniqueModifier> modifier : cultivationModifiers)
+            {
+                if (modifier.newInstance().ID.compareTo(ID) == 0)
+                    return modifier.newInstance();
+            }
+        }
+        catch (IllegalAccessException | InstantiationException e)
+        {
+            Cultivationcraft.LOGGER.error("Error " + e + " whilst getting technique modifier of ID " + ID);
+        }
+
+        return new TechniqueModifier();
+    }
+
+    public static ArrayList<TechniqueModifier> getModifiers()
+    {
+        ArrayList<TechniqueModifier> modifiers = new ArrayList<>();
+
+        try
+        {
+            for (Class<? extends TechniqueModifier> cultivation : cultivationModifiers)
+            {
+                modifiers.add(cultivation.newInstance());
+            }
+        }
+        catch (IllegalAccessException | InstantiationException e)
+        {
+            Cultivationcraft.LOGGER.error("Error " + e + " whilst getting technique modifiers");
+        }
+
+        return modifiers;
     }
 }

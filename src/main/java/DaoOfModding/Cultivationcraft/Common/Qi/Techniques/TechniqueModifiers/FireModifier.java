@@ -9,6 +9,9 @@ public class FireModifier extends TechniqueModifier
 {
     public FireModifier()
     {
+        ID = new ResourceLocation(Cultivationcraft.MODID, "concept.fire");
+        CATEGORY = new ResourceLocation(Cultivationcraft.MODID, "concept.category.elemental");
+
         Element = Elements.fireElement;
         coreTexture = new animatedTexture(new ResourceLocation(Cultivationcraft.MODID, "textures/gui/orbfillingfire.png"), 32);
     }

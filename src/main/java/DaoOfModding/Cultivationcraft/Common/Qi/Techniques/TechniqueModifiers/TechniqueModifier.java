@@ -8,9 +8,18 @@ import net.minecraft.world.phys.Vec3;
 
 public class TechniqueModifier
 {
+    public ResourceLocation ID;
+    public ResourceLocation CATEGORY;
+
     animatedTexture coreTexture = new animatedTexture(new ResourceLocation(Cultivationcraft.MODID, "textures/cores/blank.png"));
     ResourceLocation Element = null;
     float power = 1;
+
+    public TechniqueModifier()
+    {
+        ID = new ResourceLocation(Cultivationcraft.MODID, "concept.example");
+        CATEGORY = new ResourceLocation(Cultivationcraft.MODID, "concept.category.example");
+    }
 
     public ResourceLocation getElement()
     {
@@ -42,7 +51,7 @@ public class TechniqueModifier
 
     public boolean canLearn(Player player)
     {
-        return false;
+        return true;
     }
 
     public boolean hasLearnt(Player player)

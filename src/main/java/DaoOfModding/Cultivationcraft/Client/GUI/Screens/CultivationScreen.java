@@ -52,6 +52,9 @@ public class CultivationScreen extends GenericTabScreen
 
         CultivationType cultivation = CultivatorStats.getCultivatorStats(minecraft.player).getCultivation();
 
+        if (cultivation.getScreen().mouseClicked(mouseX, mouseY, buttonPressed))
+            return true;
+
         if (stats.mouseClick((int)mouseX, (int)mouseY, buttonPressed))
         {
             Minecraft.getInstance().forceSetScreen(new CultivationModifyScreen(cultivation, 0));
@@ -126,6 +129,7 @@ public class CultivationScreen extends GenericTabScreen
 
         breakthrough.render(this, font, PoseStack, mouseX, mouseY);
 
+        cultivation.getScreen().renderButtons(PoseStack, edgeSpacingX, edgeSpacingY, mouseX, mouseY, this);
         cultivation.getScreen().render(PoseStack, partialTicks, edgeSpacingX + 159, edgeSpacingY + 32, this, cultivation, font);
 
         stats.setPos(edgeSpacingX + statsXPos, edgeSpacingY + statsYPos);

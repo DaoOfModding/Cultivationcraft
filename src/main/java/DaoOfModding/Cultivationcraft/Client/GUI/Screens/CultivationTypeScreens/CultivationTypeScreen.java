@@ -5,6 +5,7 @@ import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.resources.ResourceLocation;
 
@@ -14,6 +15,16 @@ public class CultivationTypeScreen
 
     int xSize = 1;
     int ySize = 1;
+
+    public void renderButtons(PoseStack poseStack, int xPos, int yPos, int mouseX, int mouseY, GuiComponent gui)
+    {
+
+    }
+
+    public boolean mouseClicked(double mouseX, double mouseY, int buttonPressed)
+    {
+        return false;
+    }
 
     public void render(PoseStack PoseStack, float partialTicks, int xPos, int yPos, Screen screen, CultivationType cultivation, Font font)
     {

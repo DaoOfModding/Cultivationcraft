@@ -2,6 +2,7 @@ package DaoOfModding.Cultivationcraft.Common.Advancements.Triggers;
 
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import com.google.gson.JsonObject;
+import net.minecraft.advancements.CriterionTrigger;
 import net.minecraft.advancements.critereon.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
