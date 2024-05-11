@@ -3,7 +3,6 @@ package DaoOfModding.Cultivationcraft.Common.Qi.Cultivation;
 import DaoOfModding.Cultivationcraft.Client.GUI.Screens.CultivationTypeScreens.CoreFormingScreen;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStats;
 import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
-import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.PassiveTechniques.CultivationPassives.BasePassive;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.PassiveTechniques.CultivationPassives.QiCondenserPassive;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.TechniqueModifiers.TechniqueModifier;
 import net.minecraft.resources.ResourceLocation;

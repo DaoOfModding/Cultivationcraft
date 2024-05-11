@@ -1,17 +1,25 @@
 package DaoOfModding.Cultivationcraft.Common.Qi.Techniques.TechniqueModifiers;
 
+import DaoOfModding.Cultivationcraft.Client.GUI.animatedTexture;
+import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 
 public class TechniqueModifier
 {
+    animatedTexture coreTexture = new animatedTexture(new ResourceLocation(Cultivationcraft.MODID, "textures/cores/blank.png"));
     ResourceLocation Element = null;
     float power = 1;
 
     public ResourceLocation getElement()
     {
         return Element;
+    }
+
+    public animatedTexture getCoreTexture()
+    {
+        return coreTexture;
     }
 
     public Boolean hasElement()
