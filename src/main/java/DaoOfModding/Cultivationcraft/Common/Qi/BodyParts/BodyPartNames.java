@@ -18,8 +18,8 @@ import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Lungs.LungConnection.Lu
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Lungs.LungConnection.RightLungConnection;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Lungs.MixedLungs;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Lungs.QiLungs;
-import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.DefaultQuests;
-import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.Quest;
+import DaoOfModding.Cultivationcraft.Common.Qi.Quests.DefaultQuests;
+import DaoOfModding.Cultivationcraft.Common.Qi.Quests.Quest;
 import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.DefaultPlayerBodyPartWeights;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.StatIDs;

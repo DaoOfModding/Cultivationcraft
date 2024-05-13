@@ -1,4 +1,4 @@
-package DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests;
+package DaoOfModding.Cultivationcraft.Common.Qi.Quests;
 
 import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.BodyModifications;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.IBodyModifications;
@@ -9,11 +9,13 @@ import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPart;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartNames;
 import DaoOfModding.Cultivationcraft.Common.Qi.CultivationTypes;
 import DaoOfModding.Cultivationcraft.Common.Qi.Damage.QiDamageSource;
+import DaoOfModding.Cultivationcraft.Common.Qi.ExternalCultivationHandler;
+import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.TechniqueModifiers.TechniqueModifier;
 import DaoOfModding.Cultivationcraft.Network.ClientPacketHandler;
 import DaoOfModding.Cultivationcraft.Network.PacketHandler;
 import DaoOfModding.Cultivationcraft.debug;
+import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 
 import java.util.HashMap;
@@ -74,6 +76,11 @@ public class QuestHandler
 
     public static void progressQuest(Player player, ResourceLocation mode, double amount)
     {
+        progressQuest(player, mode, amount, null);
+    }
+
+    public static void progressQuest(Player player, ResourceLocation mode, double amount, ResourceLocation extra)
+    {
         // Don't do anything if this is client side and the player is not the player character
         if (player.level.isClientSide && !PlayerUtils.isClientPlayerCharacter(player))
             return;
@@ -83,9 +90,40 @@ public class QuestHandler
         ICultivatorStats stats = CultivatorStats.getCultivatorStats(player);
 
         // Do nothing if not a body cultivator
-        if (stats.getCultivationType() != CultivationTypes.BODY_CULTIVATOR)
-            return;
+        if (stats.getCultivationType() == CultivationTypes.BODY_CULTIVATOR)
+            progressQuestInternal(player, mode, amount, extra);
+        else if (stats.getCultivationType() == CultivationTypes.QI_CONDENSER)
+            progressQuestExternal(player, mode, amount, extra);
+    }
 
+    public static void progressQuestExternal(Player player, ResourceLocation mode, double amount, ResourceLocation extra)
+    {
+        ICultivatorStats stats = CultivatorStats.getCultivatorStats(player);
+
+        for (TechniqueModifier modifier : ExternalCultivationHandler.getModifiers())
+        {
+            if (modifier.canUse(Minecraft.getInstance().player) && !modifier.hasLearnt(player) && modifier.canLearn(Minecraft.getInstance().player))
+            {
+                double progress = modifier.getUnlockQuest().progress(mode, amount, extra);
+
+                if (progress > 0)
+                {
+                    progress += stats.getConceptProgress(modifier.ID);
+
+                    stats.setConceptProgress(modifier.ID, progress);
+
+                    if (modifier.hasLearnt(player))
+                    {
+                        // TODO: Message concept has been learnt
+                    }
+                }
+            }
+        }
+
+    }
+
+    public static void progressQuestInternal(Player player, ResourceLocation mode, double amount, ResourceLocation extra)
+    {
         IBodyModifications modifications = BodyModifications.getBodyModifications(player);
 
         // Do nothing if nothing is set as the last forged modification
@@ -103,9 +141,9 @@ public class QuestHandler
             return;
         }
 
-        double progress = quest.progress(mode, amount);
+        double progress = quest.progress(mode, amount, extra);
 
-        // Do nothing is quest doesn't progress
+        // Do nothing if quest doesn't progress
         if (progress == 0 && !debug.skipQuest)
             return;
 

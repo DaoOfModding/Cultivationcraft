@@ -2,7 +2,7 @@ package DaoOfModding.Cultivationcraft.Network.Packets;
 
 
 import DaoOfModding.Cultivationcraft.Client.genericClientFunctions;
-import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.QuestHandler;
+import DaoOfModding.Cultivationcraft.Common.Qi.Quests.QuestHandler;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;

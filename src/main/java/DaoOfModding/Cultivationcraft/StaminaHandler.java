@@ -1,8 +1,8 @@
 package DaoOfModding.Cultivationcraft;
 
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.FoodStats.QiFoodStats;
-import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.Quest;
-import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.QuestHandler;
+import DaoOfModding.Cultivationcraft.Common.Qi.Quests.Quest;
+import DaoOfModding.Cultivationcraft.Common.Qi.Quests.QuestHandler;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.StatIDs;
 import net.minecraft.world.entity.player.Player;

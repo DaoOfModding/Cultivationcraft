@@ -1,7 +1,6 @@
 package DaoOfModding.Cultivationcraft.Common.Qi.Techniques;
 
 import DaoOfModding.Cultivationcraft.Client.Animations.GenericQiPoses;
-import DaoOfModding.Cultivationcraft.Client.genericClientFunctions;
 import DaoOfModding.Cultivationcraft.Common.Advancements.CultivationAdvancements;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.BodyModifications;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.IBodyModifications;
@@ -11,23 +10,19 @@ import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.ICultiv
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartNames;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.FoodStats.QiFoodStats;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.PlayerHealthManager;
-import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.Quest;
-import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.QuestHandler;
+import DaoOfModding.Cultivationcraft.Common.Qi.Quests.Quest;
+import DaoOfModding.Cultivationcraft.Common.Qi.Quests.QuestHandler;
 import DaoOfModding.Cultivationcraft.Common.Qi.Cultivation.CultivationType;
 import DaoOfModding.Cultivationcraft.Common.Qi.CultivationTypes;
 import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
-import DaoOfModding.Cultivationcraft.Common.Qi.ExternalCultivationHandler;
 import DaoOfModding.Cultivationcraft.Common.Qi.QiSource;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
-import DaoOfModding.Cultivationcraft.Common.Qi.Stats.PlayerStatControl;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.StatIDs;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.TechniqueStats.DefaultCultivationStatIDs;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import DaoOfModding.Cultivationcraft.Network.PacketHandler;
 import DaoOfModding.Cultivationcraft.Server.BodyPartControl;
-import DaoOfModding.Cultivationcraft.Server.ServerListeners;
 import DaoOfModding.Cultivationcraft.debug;
-import DaoOfModding.mlmanimator.Client.Poses.PoseHandler;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.resources.ResourceLocation;
@@ -88,6 +83,13 @@ public class MeditateTechnique extends MovementOverrideTechnique
             if (sources.size() > 0 && event.side == LogicalSide.SERVER)
                     CultivationAdvancements.TECH_USE.trigger((ServerPlayer) event.player, this.getClass().getName(), 1);
 
+            // If meditating in a Qi Source, increase the quest by 1 second
+            if (sources.size() > 0)
+                QuestHandler.progressQuest(event.player, Quest.QI_SOURCE_MEDITATION, 1.0 / 20.0);
+
+            for (QiSource source : sources)
+                QuestHandler.progressQuest(event.player, Quest.QI_SOURCE_MEDITATION, 1.0 / 20.0, source.getElement());
+
             // absorb Qi through blood first
             double remaining = cultivation.getCultivationStat(event.player, DefaultCultivationStatIDs.qiAbsorbSpeed) / 20.0;
 
@@ -113,6 +115,9 @@ public class MeditateTechnique extends MovementOverrideTechnique
             // If meditating in a Qi Source, increase the quest by 1 second
             if (sources.size() > 0)
                 QuestHandler.progressQuest(event.player, Quest.QI_SOURCE_MEDITATION, 1.0 / 20.0);
+
+            for (QiSource source : sources)
+                QuestHandler.progressQuest(event.player, Quest.QI_SOURCE_MEDITATION, 1.0 / 20.0, source.getElement());
 
             // absorb Qi through blood first
             double remaining = (int)BodyPartStatControl.getPlayerStatControl(event.player).getStats().getStat(StatIDs.qiAbsorb);

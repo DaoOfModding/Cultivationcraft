@@ -51,7 +51,7 @@ public class ConceptScreen extends GenericTabScreen
 
         for (TechniqueModifier modifier : ExternalCultivationHandler.getModifiers())
         {
-            if (modifier.canLearn(Minecraft.getInstance().player))
+            if (modifier.canUse(Minecraft.getInstance().player) && modifier.hasLearnt(Minecraft.getInstance().player))
             {
                 if (!categories.containsKey(modifier.CATEGORY))
                     categories.put(modifier.CATEGORY, new ArrayList<>());
@@ -120,11 +120,8 @@ public class ConceptScreen extends GenericTabScreen
 
         if (selectText.getSelected() != null)
         {
-            String name = selectText.getSelected().getName() + " " + Component.translatable("cultivationcraft.gui.concept");
+            String name = Component.translatable(selectText.getSelected().getName()) + " " + Component.translatable("cultivationcraft.gui.concept");
             font.draw(PoseStack, name, edgeSpacingX + (int) (this.xSize / 2) - (int) (font.width(name) / 2), edgeSpacingY + nameTextY, Color.darkGray.getRGB());
-
-            // TODO: Unlock progress here
-            // text += "\n \ntest";
         }
 
         conceptText.setPos(edgeSpacingX + conceptTextX, edgeSpacingY + conceptTextY);

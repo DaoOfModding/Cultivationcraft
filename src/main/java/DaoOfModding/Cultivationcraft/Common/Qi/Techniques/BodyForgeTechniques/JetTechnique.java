@@ -7,7 +7,7 @@ import DaoOfModding.Cultivationcraft.Common.PlayerUtils;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartNames;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Lungs.Breath.Breath;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.PlayerHealthManager;
-import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.QuestHandler;
+import DaoOfModding.Cultivationcraft.Common.Qi.Quests.QuestHandler;
 import DaoOfModding.Cultivationcraft.Common.Qi.CultivationTypes;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.PlayerStatModifications;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.MovementOverrideTechnique;

@@ -1,4 +1,4 @@
-package DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests;
+package DaoOfModding.Cultivationcraft.Common.Qi.Quests;
 
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.BodyForgeTechniques.BiteTechnique;
 

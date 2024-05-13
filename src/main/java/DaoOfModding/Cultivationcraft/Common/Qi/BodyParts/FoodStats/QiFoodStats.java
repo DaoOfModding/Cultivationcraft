@@ -1,17 +1,13 @@
 package DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.FoodStats;
 
 import DaoOfModding.Cultivationcraft.Client.GUI.animatedTexture;
-import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStats;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.PlayerHealthManager;
-import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.Quest;
-import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.QuestHandler;
-import DaoOfModding.Cultivationcraft.Common.Qi.QiSource;
+import DaoOfModding.Cultivationcraft.Common.Qi.Quests.Quest;
+import DaoOfModding.Cultivationcraft.Common.Qi.Quests.QuestHandler;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.StatIDs;
-import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.TechniqueStats.DefaultCultivationStatIDs;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import DaoOfModding.Cultivationcraft.StaminaHandler;
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.math.Vector3f;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.damagesource.DamageSource;
@@ -21,9 +17,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.level.block.state.BlockState;
-
-import java.awt.*;
-import java.util.List;
 
 public class QiFoodStats extends FoodData
 {

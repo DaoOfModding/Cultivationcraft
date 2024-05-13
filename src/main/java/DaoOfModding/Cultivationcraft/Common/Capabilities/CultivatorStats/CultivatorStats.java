@@ -16,6 +16,7 @@ public class CultivatorStats implements ICultivatorStats
     protected int cultivationType = CultivationTypes.NO_CULTIVATION;
     protected CultivationType cultivation = new NoCultivation();
     protected HashMap<String, ResourceLocation> techFocus = new HashMap<>();
+    protected HashMap<ResourceLocation, Double> conceptProgress = new HashMap<>();
 
     protected boolean disconnected = false;
 
@@ -49,6 +50,19 @@ public class CultivatorStats implements ICultivatorStats
         techFocus.put(tech, focus);
     }
 
+    public double getConceptProgress(ResourceLocation ID)
+    {
+        if (!conceptProgress.containsKey(ID))
+            conceptProgress.put(ID, 0.0);
+
+        return conceptProgress.get(ID);
+    }
+
+    public void setConceptProgress(ResourceLocation ID, double amount)
+    {
+        conceptProgress.put(ID, amount);
+    }
+
     public void setDisconnected(boolean value) {
         disconnected = value;
     }
@@ -62,6 +76,7 @@ public class CultivatorStats implements ICultivatorStats
         cultivationType = CultivationTypes.NO_CULTIVATION;
         cultivation = new NoCultivation();
         techFocus = new HashMap<>();
+        conceptProgress = new HashMap<>();
     }
 
     public CompoundTag writeNBT()
@@ -77,6 +92,16 @@ public class CultivatorStats implements ICultivatorStats
         {
             nbt.putString("TECH"+i+"NAME", techEntry.getKey());
             nbt.putString("TECH"+i+"VALUE", techEntry.getValue().toString());
+
+            i++;
+        }
+
+        i = 0;
+
+        for (Map.Entry<ResourceLocation, Double> entry : conceptProgress.entrySet())
+        {
+            nbt.putString("CONCEPT"+i+"ID", entry.getKey().toString());
+            nbt.putDouble("CONCEPT"+i+"VALUE", entry.getValue());
 
             i++;
         }
@@ -101,8 +126,18 @@ public class CultivatorStats implements ICultivatorStats
             i++;
         }
 
+        HashMap<ResourceLocation, Double> newConceptFocus = new HashMap<>();
+
+        i = 0;
+        while (nbt.contains("CONCEPT"+i+"ID"))
+        {
+            newConceptFocus.put(new ResourceLocation(nbt.getString("CONCEPT"+i+"ID")), nbt.getDouble("CONCEPT"+i+"VALUE"));
+            i++;
+        }
+
         techFocus = newTechFocus;
         cultivation = newCultivation;
+        conceptProgress = newConceptFocus;
     }
 
     public static boolean isCultivator(Player player)

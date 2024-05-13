@@ -1,10 +1,8 @@
-package DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests;
+package DaoOfModding.Cultivationcraft.Common.Qi.Quests;
 
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-
-import java.util.HashMap;
 
 public class Quest
 {
@@ -24,16 +22,25 @@ public class Quest
 
     public final ResourceLocation mode;
     public final double complete;
+    public final ResourceLocation extra;
 
     public Quest(ResourceLocation questMode, double questMax)
     {
         mode = questMode;
         complete = questMax;
+        extra = null;
     }
 
-    public double progress(ResourceLocation progressMode, double amount)
+    public Quest(ResourceLocation questMode, double questMax, ResourceLocation extraRequirement)
     {
-        if (mode.compareTo(progressMode) == 0)
+        mode = questMode;
+        complete = questMax;
+        extra = extraRequirement;
+    }
+
+    public double progress(ResourceLocation progressMode, double amount, ResourceLocation extraRequirement)
+    {
+        if (mode.compareTo(progressMode) == 0 && ((extra == null && extraRequirement == null) || (extraRequirement != null && extra.compareTo(extraRequirement) == 0)))
             return amount;
 
         return 0;

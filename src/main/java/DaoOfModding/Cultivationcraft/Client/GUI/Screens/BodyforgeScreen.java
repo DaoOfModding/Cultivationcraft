@@ -8,8 +8,8 @@ import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.BodyM
 import DaoOfModding.Cultivationcraft.Common.Capabilities.BodyModifications.IBodyModifications;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPart;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartOption;
-import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.Quest;
-import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.QuestHandler;
+import DaoOfModding.Cultivationcraft.Common.Qi.Quests.Quest;
+import DaoOfModding.Cultivationcraft.Common.Qi.Quests.QuestHandler;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.StatIDs;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
@@ -18,7 +18,6 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.protocol.game.ClientboundMoveEntityPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 

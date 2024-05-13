@@ -1,11 +1,10 @@
 package DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyForgeParts;
 
-import DaoOfModding.Cultivationcraft.Client.KeybindingControl;
 import DaoOfModding.Cultivationcraft.Client.genericClientFunctions;
 import DaoOfModding.Cultivationcraft.Client.Animations.BodyPartModelNames;
 import DaoOfModding.Cultivationcraft.Client.Physics;
-import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.Quest;
-import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.QuestHandler;
+import DaoOfModding.Cultivationcraft.Common.Qi.Quests.Quest;
+import DaoOfModding.Cultivationcraft.Common.Qi.Quests.QuestHandler;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import DaoOfModding.mlmanimator.Client.Poses.GenericPoses;

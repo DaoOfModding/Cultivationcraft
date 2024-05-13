@@ -1,7 +1,7 @@
 package DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Blood;
 
-import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.Quest;
-import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.QuestHandler;
+import DaoOfModding.Cultivationcraft.Common.Qi.Quests.Quest;
+import DaoOfModding.Cultivationcraft.Common.Qi.Quests.QuestHandler;
 import DaoOfModding.Cultivationcraft.Common.Qi.QiSource;
 import DaoOfModding.Cultivationcraft.Common.Qi.QiSourceConfig;
 import com.mojang.math.Vector3f;

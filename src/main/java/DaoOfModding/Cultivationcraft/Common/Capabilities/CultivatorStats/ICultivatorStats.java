@@ -19,6 +19,8 @@ public interface ICultivatorStats
     public void setCultivation(CultivationType newCultivation);
     public ResourceLocation getTechniqueFocus(Class tech);
     public void setTechniqueFocus(String tech, ResourceLocation focus);
+    public double getConceptProgress(ResourceLocation ID);
+    public void setConceptProgress(ResourceLocation ID, double amount);
 
     public void reset();
 

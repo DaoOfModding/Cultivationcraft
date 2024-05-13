@@ -10,7 +10,7 @@ import DaoOfModding.Cultivationcraft.Common.Config;
 import DaoOfModding.Cultivationcraft.Common.Items.ItemRegister;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartNames;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Lungs.BreathingHandler;
-import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.DefaultQuests;
+import DaoOfModding.Cultivationcraft.Common.Qi.Quests.DefaultQuests;
 import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
 import DaoOfModding.Cultivationcraft.Common.Qi.ExternalCultivationHandler;
 import DaoOfModding.Cultivationcraft.Common.Qi.QiSourceConfig;

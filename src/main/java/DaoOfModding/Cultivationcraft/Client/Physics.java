@@ -1,21 +1,14 @@
 package DaoOfModding.Cultivationcraft.Client;
 
-import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.Quest;
-import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.QuestHandler;
+import DaoOfModding.Cultivationcraft.Common.Qi.Quests.Quest;
+import DaoOfModding.Cultivationcraft.Common.Qi.Quests.QuestHandler;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.PlayerStatControl;
-import DaoOfModding.Cultivationcraft.Common.Qi.Stats.PlayerStatModifications;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.StatIDs;
 import DaoOfModding.mlmanimator.Client.Poses.PoseHandler;
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
-import net.minecraft.tags.FluidTags;
 import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.MoverType;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
-import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.HashMap;

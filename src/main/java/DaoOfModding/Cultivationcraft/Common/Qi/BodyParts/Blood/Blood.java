@@ -2,12 +2,10 @@ package DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Blood;
 
 import DaoOfModding.Cultivationcraft.Client.GUI.animatedTexture;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.FoodStats.QiFoodStats;
-import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.Quest;
-import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Quests.QuestHandler;
+import DaoOfModding.Cultivationcraft.Common.Qi.Quests.Quest;
+import DaoOfModding.Cultivationcraft.Common.Qi.Quests.QuestHandler;
 import DaoOfModding.Cultivationcraft.Common.Qi.QiSource;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
-import net.minecraft.client.particle.Particle;
-import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import com.mojang.math.Vector3f;
