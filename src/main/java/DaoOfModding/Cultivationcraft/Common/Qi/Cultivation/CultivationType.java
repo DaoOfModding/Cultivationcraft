@@ -54,6 +54,7 @@ public class CultivationType {
     protected ArrayList<CultivationType> advancements = new ArrayList<>();
 
     protected boolean statLeveling = true;
+    protected double qiLevel = 0;
 
     protected Quest quest;
     protected double questProgress = 0;
@@ -137,7 +138,7 @@ public class CultivationType {
 
     public boolean canBreakthrough(Player player)
     {
-        if (getTechLevelProgressWithoutPrevious(passive.getClass().toString()) >= techLevel)
+        if (qiLevel >= techLevel || getTechLevelProgressWithoutPrevious(passive.getClass().toString()) >= techLevel)
             if (getMaxedTechs() >= maxedTechsToBreakthrough)
                 if (getQuest() == null || getQuestProgress() >= getQuest().complete)
                     return true;
@@ -234,8 +235,14 @@ public class CultivationType {
         return screen;
     }
 
-    public String breakthroughProgress(Player player) {
-        String progress = Component.translatable("cultivationcraft.gui.cultivationprogress").getString() + ": " + getTechLevelProgressWithoutPrevious(passive.getClass().toString()) + "/" + techLevel;
+    public String breakthroughProgress(Player player)
+    {
+        String progress = Component.translatable("cultivationcraft.gui.cultivationprogress").getString();
+
+        if (statsCanLevel())
+            progress = progress + ": " + getTechLevelProgressWithoutPrevious(passive.getClass().toString()) + "/" + techLevel;
+        else
+            progress = progress + ": " + getQiLevelProgress() + "/" + techLevel;
 
         if (maxedTechsToBreakthrough > 0)
             progress += "\n" + Component.translatable("cultivationcraft.gui.completedtech").getString() + ": " + getMaxedTechs() + "/" + maxedTechsToBreakthrough;
@@ -276,7 +283,8 @@ public class CultivationType {
         statLevels = new HashMap<>();
     }
 
-    public double absorbFromQiSource(double amount, Player player) {
+    public double absorbFromQiSource(double amount, Player player)
+    {
         List<QiSource> sources = ChunkQiSources.getQiSourcesInRange(player.level, player.position(), (int) getCultivationStat(player, DefaultCultivationStatIDs.qiAbsorbRange));
 
         double remaining = amount;
@@ -321,7 +329,8 @@ public class CultivationType {
         return toAbsorb;
     }
 
-    public float progressCultivation(Player player, float Qi, ResourceLocation element) {
+    public float progressCultivation(Player player, float Qi, ResourceLocation element)
+    {
         if (!canCultivate(element))
             return Qi;
 
@@ -338,13 +347,21 @@ public class CultivationType {
 
         // If cultivating will go over the max, cultivate to the max instead
         if (remains > 0) {
-            getPassive().levelUp(player, remains);
+            increaseCultivationLevel(player, remains);
             return Qi - remains;
         }
 
         // Cultivate all the supplied Qi
-        getPassive().levelUp(player, Qi);
+        increaseCultivationLevel(player, Qi);
         return 0;
+    }
+
+    public void increaseCultivationLevel(Player player, float amount)
+    {
+        if (statsCanLevel())
+            getPassive().levelUp(player, amount);
+        else
+            qiLevel += amount;
     }
 
     public CultivationType getPreviousCultivation() {
@@ -375,13 +392,19 @@ public class CultivationType {
         return level;
     }
 
-    public Double getPassiveStatLevel(ResourceLocation stat) {
+    public Double getPassiveStatLevel(ResourceLocation stat)
+    {
         Double level = 0.0;
 
-        String passiveString = getPassive().getClass().toString();
+        if (statsCanLevel())
+        {
+            String passiveString = getPassive().getClass().toString();
 
-        if (statLevels.containsKey(passiveString) && statLevels.get(passiveString).containsKey(stat))
-            level += statLevels.get(passiveString).get(stat);
+            if (statLevels.containsKey(passiveString) && statLevels.get(passiveString).containsKey(stat))
+                level += statLevels.get(passiveString).get(stat);
+        }
+        else
+            level += qiLevel;
 
         if (previousCultivation != null)
             level += previousCultivation.getPassiveStatLevel(stat);
@@ -408,6 +431,14 @@ public class CultivationType {
 
     public int getTechLevelProgress(Class tech) {
         return getTechLevelProgress(tech.toString());
+    }
+
+    public int getQiLevelProgress()
+    {
+        if (qiLevel >= techLevel)
+            return techLevel;
+
+        return (int)qiLevel;
     }
 
     public int getTechLevelProgressWithoutPrevious(String tech) {
@@ -438,7 +469,8 @@ public class CultivationType {
         return progress;
     }
 
-    public int getPassiveTechLevelProgress() {
+    public int getPassiveTechLevelProgress()
+    {
         int progress = 0;
 
         String tech = getPassive().getClass().toString();
@@ -537,6 +569,7 @@ public class CultivationType {
         }
 
         nbt.putDouble("QUESTPROGRESS", questProgress);
+        nbt.putDouble("QIPROGRESS", qiLevel);
 
         return nbt;
     }
@@ -586,5 +619,6 @@ public class CultivationType {
         statLevels = newTechLevels;
 
         questProgress = nbt.getDouble("QUESTPROGRESS");
+        qiLevel = nbt.getDouble("QIPROGRESS");
     }
 }
