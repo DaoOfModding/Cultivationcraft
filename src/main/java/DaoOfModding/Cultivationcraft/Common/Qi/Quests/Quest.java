@@ -8,6 +8,7 @@ public class Quest
 {
     public static final ResourceLocation QI_SOURCE_MEDITATION = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.quest.qisource");
     public static final ResourceLocation DAMAGE_TAKEN = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.quest.damagetaken");
+    public static final ResourceLocation DAMAGE_DEALT = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.quest.damagedealt");
     public static final ResourceLocation DAMAGE_RESISTED = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.quest.damageresisted");
     public static final ResourceLocation DAMAGE_ABSORBED = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.quest.damageabsorbbed");
     public static final ResourceLocation TIME_ALIVE = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.quest.alive");
@@ -48,6 +49,11 @@ public class Quest
 
     public String getDescription()
     {
-        return Component.translatable(mode.getPath()).getString();
+        String description = Component.translatable(mode.getPath()).getString();
+
+        if (extra != null)
+            description = Component.translatable(extra.getPath()).getString() + " " + description;
+
+        return description;
     }
 }

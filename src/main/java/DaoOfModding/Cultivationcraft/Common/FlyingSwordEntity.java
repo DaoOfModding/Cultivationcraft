@@ -9,6 +9,8 @@ import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.Cu
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.ICultivatorTechniques;
 import DaoOfModding.Cultivationcraft.Common.Qi.Damage.QiDamageSource;
 import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
+import DaoOfModding.Cultivationcraft.Common.Qi.Quests.Quest;
+import DaoOfModding.Cultivationcraft.Common.Qi.Quests.QuestHandler;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.QiCondenserTechniques.FlyingSwordFormationTechnique;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.Technique;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.TechniqueStats.DefaultTechniqueStatIDs;
@@ -693,6 +695,11 @@ public class FlyingSwordEntity extends ItemEntity
         {
             if (!targetEntity.skipAttackInteraction(this))
             {
+                float entityHealth = 0;
+
+                if (targetEntity instanceof LivingEntity)
+                    entityHealth = ((LivingEntity) targetEntity).getHealth();
+
                 // Get the amount of damage to deal
                 float f = 1;
                 if (getItem().getItem() instanceof SwordItem)
@@ -751,21 +758,23 @@ public class FlyingSwordEntity extends ItemEntity
 
                     EnchantmentHelper.applyArthropodEnchantments(owner, targetEntity);*/
 
-                    Entity entity = targetEntity;
                     if (targetEntity instanceof EnderDragonPart)
-                        entity = ((EnderDragonPart)targetEntity).parentMob;
+                        targetEntity = ((EnderDragonPart)targetEntity).parentMob;
 
                     if (targetEntity instanceof LivingEntity)
                     {
-                        float f5 = 0 - ((LivingEntity)targetEntity).getHealth();
-                        owner.awardStat(Stats.DAMAGE_DEALT, Math.round(f5 * 10.0F));
+                        float rawDamage = entityHealth - ((LivingEntity)targetEntity).getHealth();
+                        owner.awardStat(Stats.DAMAGE_DEALT, Math.round(rawDamage * 10.0F));
+
+                        QuestHandler.progressQuest(owner, Quest.DAMAGE_DEALT, rawDamage);
+                        QuestHandler.progressQuest(owner, Quest.DAMAGE_DEALT, rawDamage, formation.getElement());
 
                         if (owner instanceof ServerPlayer)
                             CultivationAdvancements.FLYING_SWORD_ATTACk.trigger((ServerPlayer) owner, ((LivingEntity) targetEntity).getHealth() <= 0);
 
-                        if (owner.level instanceof ServerLevel && f5 > 2.0F)
+                        if (owner.level instanceof ServerLevel && rawDamage > 2.0F)
                         {
-                            int k = (int)((double)f5 * 0.5D);
+                            int k = (int)((double)rawDamage * 0.5D);
                             ((ServerLevel)owner.level).sendParticles(ParticleTypes.DAMAGE_INDICATOR, targetEntity.getX(), targetEntity.getY(0.5D), targetEntity.getZ(), k, 0.1D, 0.0D, 0.1D, 0.2D);
                         }
                     }

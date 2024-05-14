@@ -8,14 +8,16 @@ import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.TechniqueModifiers.Tec
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 
-public class CoreFormingCultivation extends CultivationType {
+public class CoreFormingCultivation extends CultivationType
+{
     ResourceLocation myElement = Elements.noElement;
 
     public CoreFormingCultivation() {
         this(1);
     }
 
-    public CoreFormingCultivation(int cultivationStage) {
+    public CoreFormingCultivation(int cultivationStage)
+    {
         super(cultivationStage);
         maxedTechsToBreakthrough = 0;
         maxStage = 9;
@@ -26,6 +28,12 @@ public class CoreFormingCultivation extends CultivationType {
         statLeveling = false;
 
         ID = "cultivationcraft.cultivation.coreforming";
+    }
+
+    public void setCore(TechniqueModifier mod)
+    {
+        modifiers.add(mod);
+        setQuest(mod.getStabaliseQuest());
     }
 
     public void setElement(ResourceLocation element) {

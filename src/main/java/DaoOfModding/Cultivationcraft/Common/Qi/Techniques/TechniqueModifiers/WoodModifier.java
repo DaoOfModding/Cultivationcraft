@@ -11,10 +11,11 @@ public class WoodModifier extends TechniqueModifier
     public WoodModifier()
     {
         ID = new ResourceLocation(Cultivationcraft.MODID, "concept.wood");
-        CATEGORY = new ResourceLocation(Cultivationcraft.MODID, "concept.category.elemental");
+        CATEGORY = ELEMENTAL_CATEGORY;
 
         Element = Elements.woodElement;
 
-        unlockQuest = new Quest(Quest.QI_SOURCE_MEDITATION, 1, Elements.woodElement);
+        unlockQuest = new Quest(Quest.QI_SOURCE_MEDITATION, 1, Element);
+        stabiliseQuest = new Quest(Quest.DAMAGE_DEALT, 1000, Element);
     }
 }

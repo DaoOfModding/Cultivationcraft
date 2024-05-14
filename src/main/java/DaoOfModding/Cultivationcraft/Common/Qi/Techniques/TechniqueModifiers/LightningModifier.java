@@ -10,10 +10,11 @@ public class LightningModifier extends TechniqueModifier
     public LightningModifier()
     {
         ID = new ResourceLocation(Cultivationcraft.MODID, "concept.lightning");
-        CATEGORY = new ResourceLocation(Cultivationcraft.MODID, "concept.category.elemental");
+        CATEGORY = ELEMENTAL_CATEGORY;
 
         Element = Elements.lightningElement;
 
-        unlockQuest = new Quest(Quest.QI_SOURCE_MEDITATION, 1, Elements.lightningElement);
+        unlockQuest = new Quest(Quest.QI_SOURCE_MEDITATION, 1, Element);
+        stabiliseQuest = new Quest(Quest.DAMAGE_DEALT, 1000, Element);
     }
 }

@@ -102,7 +102,7 @@ public class QuestHandler
 
         for (TechniqueModifier modifier : ExternalCultivationHandler.getModifiers())
         {
-            if (modifier.canUse(Minecraft.getInstance().player) && !modifier.hasLearnt(player) && modifier.canLearn(Minecraft.getInstance().player))
+            if (modifier.canUse(player) && !modifier.hasLearnt(player) && modifier.canLearn(player))
             {
                 double progress = modifier.getUnlockQuest().progress(mode, amount, extra);
 
@@ -120,6 +120,10 @@ public class QuestHandler
             }
         }
 
+        // Try to progress the Cultivation quest if it exists, sending progress to clients if it progresses
+        if (stats.getCultivation().getQuest() != null)
+            if (stats.getCultivation().progressQuest(stats.getCultivation().getQuest().progress(mode, amount, extra)))
+                PacketHandler.sendCultivatorStatsToClient(player);
     }
 
     public static void progressQuestInternal(Player player, ResourceLocation mode, double amount, ResourceLocation extra)

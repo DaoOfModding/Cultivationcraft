@@ -10,10 +10,11 @@ public class WaterModifier extends TechniqueModifier
     public WaterModifier()
     {
         ID = new ResourceLocation(Cultivationcraft.MODID, "concept.water");
-        CATEGORY = new ResourceLocation(Cultivationcraft.MODID, "concept.category.elemental");
+        CATEGORY = ELEMENTAL_CATEGORY;
 
         Element = Elements.waterElement;
 
-        unlockQuest = new Quest(Quest.QI_SOURCE_MEDITATION, 1, Elements.waterElement);
+        unlockQuest = new Quest(Quest.QI_SOURCE_MEDITATION, 1, Element);
+        stabiliseQuest = new Quest(Quest.DAMAGE_DEALT, 1000, Element);
     }
 }

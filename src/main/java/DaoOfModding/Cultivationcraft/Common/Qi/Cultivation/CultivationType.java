@@ -8,6 +8,7 @@ import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.Cultiva
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.FoodStats.QiFoodStats;
 import DaoOfModding.Cultivationcraft.Common.Qi.ExternalCultivationHandler;
 import DaoOfModding.Cultivationcraft.Common.Qi.QiSource;
+import DaoOfModding.Cultivationcraft.Common.Qi.Quests.Quest;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.PassiveTechniques.PassiveTechnique;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.Technique;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.TechniqueModifiers.TechniqueModifier;
@@ -54,6 +55,9 @@ public class CultivationType {
 
     protected boolean statLeveling = true;
 
+    protected Quest quest;
+    protected double questProgress = 0;
+
     public CultivationType(int currentStage) {
         stage = currentStage;
         stageCalculations();
@@ -62,6 +66,38 @@ public class CultivationType {
     // Put anything here that changes based on the stage
     public void stageCalculations() {
 
+    }
+
+    public Quest getQuest()
+    {
+        return quest;
+    }
+
+    public void setQuest(Quest newQuest)
+    {
+        quest = newQuest;
+    }
+
+    public boolean progressQuest(double amount)
+    {
+        if (questProgress == quest.complete || amount == 0)
+            return false;
+
+        questProgress += amount;
+
+        if (questProgress >= quest.complete)
+        {
+            questProgress = quest.complete;
+
+            // TODO: Cultivation quest has been completed
+        }
+
+        return true;
+    }
+
+    public double getQuestProgress()
+    {
+        return questProgress;
     }
 
     public boolean statsCanLevel()
@@ -99,10 +135,12 @@ public class CultivationType {
         return totalModifiers;
     }
 
-    public boolean canBreakthrough(Player player) {
+    public boolean canBreakthrough(Player player)
+    {
         if (getTechLevelProgressWithoutPrevious(passive.getClass().toString()) >= techLevel)
             if (getMaxedTechs() >= maxedTechsToBreakthrough)
-                return true;
+                if (getQuest() == null || getQuestProgress() >= getQuest().complete)
+                    return true;
 
         return false;
     }
@@ -204,6 +242,9 @@ public class CultivationType {
 
         if (hasTribulation(player))
             progress += "\n" + Component.translatable("cultivationcraft.gui.tribulationpending").getString();
+
+        if (getQuest() != null)
+            progress += "\n" + (int)questProgress + "/" + (int)getQuest().complete + " " + getQuest().getDescription();
 
         return progress;
     }
@@ -495,6 +536,8 @@ public class CultivationType {
             i++;
         }
 
+        nbt.putDouble("QUESTPROGRESS", questProgress);
+
         return nbt;
     }
 
@@ -541,5 +584,7 @@ public class CultivationType {
         }
 
         statLevels = newTechLevels;
+
+        questProgress = nbt.getDouble("QUESTPROGRESS");
     }
 }

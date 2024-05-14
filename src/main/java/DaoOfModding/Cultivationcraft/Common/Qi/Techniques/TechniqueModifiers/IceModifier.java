@@ -10,10 +10,11 @@ public class IceModifier extends TechniqueModifier
     public IceModifier()
     {
         ID = new ResourceLocation(Cultivationcraft.MODID, "concept.ice");
-        CATEGORY = new ResourceLocation(Cultivationcraft.MODID, "concept.category.elemental");
+        CATEGORY = ELEMENTAL_CATEGORY;
 
         Element = Elements.iceElement;
 
-        unlockQuest = new Quest(Quest.QI_SOURCE_MEDITATION, 1, Elements.iceElement);
+        unlockQuest = new Quest(Quest.QI_SOURCE_MEDITATION, 1, Element);
+        stabiliseQuest = new Quest(Quest.DAMAGE_DEALT, 1000, Element);
     }
 }

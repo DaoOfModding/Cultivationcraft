@@ -110,6 +110,7 @@
 
   "cultivationcraft.quest.qisource": "Seconds spent cultivating from a QiSource",
   "cultivationcraft.quest.damagetaken": "Damage taken",
+  "cultivationcraft.quest.damagedealt": "Damage Dealt",
   "cultivationcraft.quest.damageresisted": "Damage resisted",
   "cultivationcraft.quest.damageabsorbed": "Damage absorbed",
   "cultivationcraft.quest.bounce": "Height bounced",
@@ -129,6 +130,8 @@
   "cultivationcraft.concept.category.example.text": "This is an example description",
   "cultivationcraft.concept.category.elemental": "Elemental",
   "cultivationcraft.concept.category.elemental.text": "Change the element of your Qi",
+  "cultivationcraft.concept.category.modifier": "Modifier",
+  "cultivationcraft.concept.category.modifier.text": "Change the way your techniques work",
 
   "cultivationcraft.concept.example": "Example concept",
   "cultivationcraft.concept.example.text": "This is an example description",
@@ -148,6 +151,8 @@
   "cultivationcraft.concept.ice.text": "Imbue your Qi with Ice",
   "cultivationcraft.concept.lightning": "Lightning",
   "cultivationcraft.concept.lightning.text": "Imbue your Qi with Lightning",
+  "cultivationcraft.concept.aura": "Aura",
+  "cultivationcraft.concept.aura.text": "Modify your techniques to radiate their elemental effects",
 
   "cultivationcraft.technique.example": "Example Technique",
   "cultivationcraft.technique.example.description": "This is an example description",

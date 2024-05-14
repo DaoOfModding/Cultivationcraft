@@ -10,13 +10,18 @@ import net.minecraft.world.phys.Vec3;
 
 public class TechniqueModifier
 {
+    public static final ResourceLocation ELEMENTAL_CATEGORY = new ResourceLocation(Cultivationcraft.MODID, "concept.category.elemental");
+    public static final ResourceLocation MODIFIER_CATEGORY = new ResourceLocation(Cultivationcraft.MODID, "concept.category.modifier");
+
     public ResourceLocation ID;
     public ResourceLocation CATEGORY;
 
     animatedTexture coreTexture = new animatedTexture(new ResourceLocation(Cultivationcraft.MODID, "textures/cores/blank.png"));
     ResourceLocation Element = null;
     float power = 1;
+    boolean allowSameCategory = false;
     Quest unlockQuest;
+    Quest stabiliseQuest;
 
     public TechniqueModifier()
     {
@@ -52,8 +57,19 @@ public class TechniqueModifier
         return unlockQuest;
     }
 
+    public Quest getStabaliseQuest()
+    {
+        return stabiliseQuest;
+    }
+
     public boolean canUse(Player player)
     {
+        // This modifier cannot be used if allowSameCategory is false and a technique of the same category is already active
+        if (!allowSameCategory)
+            for (TechniqueModifier modifier : CultivatorStats.getCultivatorStats(player).getCultivation().getModifiers())
+                if (modifier.CATEGORY.compareTo(CATEGORY) == 0)
+                    return false;
+
         return true;
     }
 

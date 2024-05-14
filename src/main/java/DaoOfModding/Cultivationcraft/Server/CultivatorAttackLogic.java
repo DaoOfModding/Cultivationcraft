@@ -1,6 +1,8 @@
 package DaoOfModding.Cultivationcraft.Server;
 
 import DaoOfModding.Cultivationcraft.Common.Qi.Damage.QiDamageSource;
+import DaoOfModding.Cultivationcraft.Common.Qi.Quests.Quest;
+import DaoOfModding.Cultivationcraft.Common.Qi.Quests.QuestHandler;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.protocol.game.ClientboundSetEntityMotionPacket;
 import net.minecraft.resources.ResourceLocation;
@@ -107,6 +109,9 @@ public class CultivatorAttackLogic
         {
             float rawDamage = entityHealth - ((LivingEntity) toAttack).getHealth();
             player.awardStat(Stats.DAMAGE_DEALT, Math.round(rawDamage * 10.0F));
+
+            QuestHandler.progressQuest(player, Quest.DAMAGE_DEALT, rawDamage);
+            QuestHandler.progressQuest(player, Quest.DAMAGE_DEALT, rawDamage, element);
 
             if (player.level instanceof ServerLevel && rawDamage > 2.0F) {
                 int k = (int) ((double) rawDamage * 0.5D);
