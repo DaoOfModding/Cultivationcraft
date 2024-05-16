@@ -1,7 +1,6 @@
 package DaoOfModding.Cultivationcraft.Common.Qi;
 
 import DaoOfModding.Cultivationcraft.Common.Qi.Cultivation.*;
-import DaoOfModding.Cultivationcraft.Common.Qi.Cultivation.CoreForming.*;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.TechniqueModifiers.*;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import net.minecraft.resources.ResourceLocation;
@@ -16,14 +15,7 @@ public class ExternalCultivationHandler
         addCultivation(NoCultivation.class);
         addCultivation(FoundationEstablishmentCultivation.class);
         addCultivation(QiCondenserCultivation.class);
-        addCultivation(QiFormingCultivation.class);
-        addCultivation(FireFormingCultivation.class);
-        addCultivation(EarthFormingCultivation.class);
-        addCultivation(WindFormingCultivation.class);
-        addCultivation(WoodFormingCultivation.class);
-        addCultivation(WaterFormingCultivation.class);
-        addCultivation(IceFormingCultivation.class);
-        addCultivation(LightningFormingCultivation.class);
+        addCultivation(CoreFormingCultivation.class);
 
         addModifier(QiModifier.class);
         addModifier(FireModifier.class);
@@ -74,7 +66,7 @@ public class ExternalCultivationHandler
         {
             for (Class<? extends TechniqueModifier> modifier : cultivationModifiers)
             {
-                if (modifier.toString().compareTo(className) == 0)
+                if (modifier.getName().toString().compareTo(className) == 0)
                     return modifier.newInstance();
             }
         }

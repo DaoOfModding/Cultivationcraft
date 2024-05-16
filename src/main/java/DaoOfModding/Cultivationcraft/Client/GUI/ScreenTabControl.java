@@ -3,6 +3,7 @@ package DaoOfModding.Cultivationcraft.Client.GUI;
 import DaoOfModding.Cultivationcraft.Client.GUI.Screens.*;
 import DaoOfModding.Cultivationcraft.Client.genericClientFunctions;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStats;
+import DaoOfModding.Cultivationcraft.Common.Qi.Cultivation.CultivationType;
 import DaoOfModding.Cultivationcraft.Common.Qi.CultivationTypes;
 import DaoOfModding.Cultivationcraft.Common.Register;
 import DaoOfModding.Cultivationcraft.Network.ClientPacketHandler;
@@ -90,14 +91,23 @@ public class ScreenTabControl
             Minecraft.getInstance().forceSetScreen(new CultivationSelectionScreen());
         else
         {
-            if (cultivationType == CultivationTypes.QI_CONDENSER && CultivatorStats.getCultivatorStats(genericClientFunctions.getPlayer()).getCultivation().hasTribulated())
-            {
-                Minecraft.getInstance().forceSetScreen(new SelectNewCultivationScreen());
-            }
-            else if (selectedScreen == 0)
+            if (selectedScreen == 0)
             {
                 if (cultivationType == CultivationTypes.QI_CONDENSER)
-                    Minecraft.getInstance().forceSetScreen(new CultivationScreen());
+                {
+                    CultivationType cultivation = CultivatorStats.getCultivatorStats(genericClientFunctions.getPlayer()).getCultivation();
+
+                    if (cultivationType == CultivationTypes.QI_CONDENSER && cultivation.getAdvancingCultivation() != null)
+                    {
+                        Minecraft.getInstance().forceSetScreen(cultivation.getAdvancingCultivation().getAdvancmentOptionScreen());
+                    }
+                    else if (cultivationType == CultivationTypes.QI_CONDENSER && cultivation.hasTribulated())
+                    {
+                        Minecraft.getInstance().forceSetScreen(new SelectNewCultivationScreen());
+                    }
+                    else
+                        Minecraft.getInstance().forceSetScreen(new CultivationScreen());
+                }
                 else if (cultivationType == CultivationTypes.BODY_CULTIVATOR)
                     Minecraft.getInstance().forceSetScreen(new StatScreen());
             }

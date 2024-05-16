@@ -26,18 +26,27 @@ public class BreakthroughPacket extends Packet
 {
     protected boolean downgrade = false;
     protected String cultivationString = "";
+    protected String extraString = "";
 
     public BreakthroughPacket(boolean down, String cult)
     {
+        this(down, cult, "");
+    }
+
+    public BreakthroughPacket(boolean down, String cult, String extra)
+    {
         downgrade = down;
         cultivationString = cult;
+        extraString = extra;
     }
+
 
     @Override
     public void encode(FriendlyByteBuf buffer)
     {
         buffer.writeBoolean(downgrade);
         buffer.writeUtf(cultivationString);
+        buffer.writeUtf(extraString);
     }
 
     public static BreakthroughPacket decode(FriendlyByteBuf buffer)
@@ -47,8 +56,9 @@ public class BreakthroughPacket extends Packet
             // Read in the send values
             Boolean down = buffer.readBoolean();
             String cult = buffer.readUtf();
+            String extra = buffer.readUtf();
 
-            return new BreakthroughPacket(down, cult);
+            return new BreakthroughPacket(down, cult, extra);
 
         }
         catch (IllegalArgumentException | IndexOutOfBoundsException e)
@@ -92,10 +102,18 @@ public class BreakthroughPacket extends Packet
                 if (cultivation.hasTribulated())
                     cultivation.advance(player, cultivationString);
             }
-            if (cultivation.hasTribulation(player))
-                cultivation.startTribulation();
+            else if (extraString.length() > 0)
+            {
+                if (cultivation.hasTribulated())
+                    cultivation.advanceExtra(player, extraString);
+            }
             else
-                cultivation.breakthrough(player);
+            {
+                if (cultivation.hasTribulation(player))
+                    cultivation.startTribulation();
+                else
+                    cultivation.breakthrough(player);
+            }
 
             PacketHandler.sendCultivatorStatsToClient(player);
         }

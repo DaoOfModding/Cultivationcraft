@@ -14,6 +14,7 @@ public class QiModifier extends TechniqueModifier
         CATEGORY = ELEMENTAL_CATEGORY;
 
         stabiliseQuest = new Quest(Quest.DAMAGE_DEALT, 1000, Element);
+        unlockQuest = new Quest(Quest.QI_SOURCE_MEDITATION, 1, Element);
     }
 }
 

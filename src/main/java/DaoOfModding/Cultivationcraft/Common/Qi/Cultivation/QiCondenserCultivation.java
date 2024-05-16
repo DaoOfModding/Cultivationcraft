@@ -2,9 +2,9 @@ package DaoOfModding.Cultivationcraft.Common.Qi.Cultivation;
 
 import DaoOfModding.Cultivationcraft.Client.GUI.Screens.CultivationTypeScreens.QiCondenserScreen;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStats;
-import DaoOfModding.Cultivationcraft.Common.Qi.Cultivation.CoreForming.*;
 import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.PassiveTechniques.CultivationPassives.QiCondenserPassive;
+import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
@@ -27,16 +27,9 @@ public class QiCondenserCultivation extends CultivationType {
         screen = new QiCondenserScreen();
         tribulation = new Tribulation(maxStage, 50, 0.4f);
 
-        advancements.add(new QiFormingCultivation());
-        advancements.add(new FireFormingCultivation());
-        advancements.add(new EarthFormingCultivation());
-        advancements.add(new WindFormingCultivation());
-        advancements.add(new WoodFormingCultivation());
-        advancements.add(new WaterFormingCultivation());
-        advancements.add(new IceFormingCultivation());
-        advancements.add(new LightningFormingCultivation());
+        advancements.add(new CoreFormingCultivation());
 
-        ID = "cultivationcraft.cultivation.qicondensation";
+        ID = new ResourceLocation(Cultivationcraft.MODID, "cultivation.qicondensation");
     }
 
     public void stageCalculations() {
@@ -48,7 +41,8 @@ public class QiCondenserCultivation extends CultivationType {
     }
 
     @Override
-    public void breakthrough(Player player) {
+    public void breakthrough(Player player)
+    {
         if (stage < maxStage) {
             QiCondenserCultivation newCultivation = new QiCondenserCultivation(stage + 1);
             newCultivation.setPreviousCultivation(this);

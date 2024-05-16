@@ -1,11 +1,13 @@
 package DaoOfModding.Cultivationcraft.Common.Qi.Cultivation;
 
 import DaoOfModding.Cultivationcraft.Client.GUI.Screens.CultivationTypeScreens.CultivationTypeScreen;
+import DaoOfModding.Cultivationcraft.Client.GUI.Screens.GenericTabScreen;
 import DaoOfModding.Cultivationcraft.Common.Advancements.CultivationAdvancements;
 import DaoOfModding.Cultivationcraft.Common.Advancements.Triggers.BreakthroughTrigger;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.ChunkQiSources.ChunkQiSources;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStats;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.FoodStats.QiFoodStats;
+import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
 import DaoOfModding.Cultivationcraft.Common.Qi.ExternalCultivationHandler;
 import DaoOfModding.Cultivationcraft.Common.Qi.QiSource;
 import DaoOfModding.Cultivationcraft.Common.Qi.Quests.Quest;
@@ -29,7 +31,7 @@ import java.util.List;
 import java.util.Map;
 
 public class CultivationType {
-    protected String ID = "cultivationcraft.cultivation.default";
+    protected ResourceLocation ID = new ResourceLocation(Cultivationcraft.MODID, "cultivation.default");
 
     protected int techLevel = 0;
     protected int maxedTechsToBreakthrough = 0;
@@ -59,6 +61,8 @@ public class CultivationType {
     protected Quest quest;
     protected double questProgress = 0;
 
+    protected CultivationType advancingCultivation = null;
+
     public CultivationType(int currentStage) {
         stage = currentStage;
         stageCalculations();
@@ -77,6 +81,20 @@ public class CultivationType {
     public void setQuest(Quest newQuest)
     {
         quest = newQuest;
+    }
+
+    public ArrayList<ResourceLocation> getElements()
+    {
+        ArrayList<ResourceLocation> ElementList = new ArrayList<>();
+
+        for (TechniqueModifier mod : getModifiers())
+            if (mod.hasElement())
+                ElementList.add(mod.getElement());
+
+        if (ElementList.size() == 0)
+            ElementList.add(Elements.noElement);
+
+        return ElementList;
     }
 
     public boolean progressQuest(double amount)
@@ -107,10 +125,10 @@ public class CultivationType {
     }
 
     public String getName() {
-        return Component.translatable(ID).getString();
+        return Component.translatable(ID.toLanguageKey()).getString();
     }
 
-    public String getID() {
+    public ResourceLocation getID() {
         return ID;
     }
 
@@ -146,7 +164,8 @@ public class CultivationType {
         return false;
     }
 
-    public ArrayList<CultivationType> getAdvancements(Player player) {
+    public ArrayList<CultivationType> getAdvancements(Player player)
+    {
         ArrayList<CultivationType> playerAdvancements = new ArrayList<>();
 
         for (CultivationType testAdvance : advancements)
@@ -161,11 +180,29 @@ public class CultivationType {
         return true;
     }
 
-    public void advance(Player player, String advancement) {
+    public void advanceExtra(Player player, String extra)
+    {
+        if (advancingCultivation == null)
+            return;
+
+        CultivationType advancing = advancingCultivation;
+        advancingCultivation = null;
+
+        advancing.setPreviousCultivation(this);
+        if(!advancing.doPostAdvancementActions(player, extra))
+        {
+            Cultivationcraft.LOGGER.error("Error progressing cultivation to " + advancingCultivation.getID() + " with " + extra);
+            return;
+        }
+        CultivatorStats.getCultivatorStats(player).setCultivation(advancing);
+    }
+
+    public void advance(Player player, String advancement)
+    {
         CultivationType advanceTo = null;
 
         for (CultivationType advance : advancements)
-            if (advance.getID().compareTo(advancement) == 0)
+            if (advance.getID().toString().compareTo(advancement) == 0)
                 advanceTo = advance;
 
         if (advanceTo == null) {
@@ -173,10 +210,42 @@ public class CultivationType {
             return;
         }
 
-        advanceTo.setPreviousCultivation(this);
-        CultivatorStats.getCultivatorStats(player).setCultivation(advanceTo);
+        advanceTo.doPreAdvancementActions(this, player);
+
+        if (!advanceTo.hasAdvancementOptions())
+        {
+            advanceTo.setPreviousCultivation(this);
+            CultivatorStats.getCultivatorStats(player).setCultivation(advanceTo);
+        }
+        else
+            advancingCultivation = advanceTo;
 
         tribulation.reset();
+    }
+
+    public void doPreAdvancementActions(CultivationType advancingFrom, Player player)
+    {
+
+    }
+
+    public boolean doPostAdvancementActions(Player player, String extra)
+    {
+        return true;
+    }
+
+    public CultivationType getAdvancingCultivation()
+    {
+        return advancingCultivation;
+    }
+
+    public GenericTabScreen getAdvancmentOptionScreen()
+    {
+        return null;
+    }
+
+    public boolean hasAdvancementOptions()
+    {
+        return false;
     }
 
     public boolean hasTribulated() {
@@ -571,11 +640,19 @@ public class CultivationType {
         nbt.putDouble("QUESTPROGRESS", questProgress);
         nbt.putDouble("QIPROGRESS", qiLevel);
 
+        if (advancingCultivation != null)
+        {
+            nbt.putString("ADVANCINGNAME", advancingCultivation.getClass().toString());
+            nbt.put("ADVANCING", advancingCultivation.writeNBT());
+        }
+
         return nbt;
     }
 
-    public void readNBT(CompoundTag nbt) {
-        if (nbt.contains("PREVIOUSCULTNAME")) {
+    public void readNBT(CompoundTag nbt)
+    {
+        if (nbt.contains("PREVIOUSCULTNAME"))
+        {
             CultivationType newCultivation = ExternalCultivationHandler.getCultivation(nbt.getString("PREVIOUSCULTNAME"));
             newCultivation.readNBT(nbt.getCompound("PREVIOUSCULT"));
 
@@ -620,5 +697,13 @@ public class CultivationType {
 
         questProgress = nbt.getDouble("QUESTPROGRESS");
         qiLevel = nbt.getDouble("QIPROGRESS");
+
+        if (nbt.contains("ADVANCING"))
+        {
+            CultivationType newCultivation = ExternalCultivationHandler.getCultivation(nbt.getString("ADVANCINGNAME"));
+            newCultivation.readNBT(nbt.getCompound("ADVANCING"));
+
+            advancingCultivation = newCultivation;
+        }
     }
 }

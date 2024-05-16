@@ -43,6 +43,12 @@ public class ClientPacketHandler
         PacketHandler.channel.sendToServer(pack);
     }
 
+    public static void sendBreakthroughExtraToServer( String extra)
+    {
+        BreakthroughPacket pack = new BreakthroughPacket(false, "", extra);
+        PacketHandler.channel.sendToServer(pack);
+    }
+
     public static void sendTechniqueUseToServer(int slot, boolean keyDown)
     {
         TechniqueUsePacket pack = new TechniqueUsePacket(slot, keyDown);

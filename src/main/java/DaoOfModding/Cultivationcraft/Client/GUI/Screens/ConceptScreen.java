@@ -1,11 +1,13 @@
 package DaoOfModding.Cultivationcraft.Client.GUI.Screens;
 
-import DaoOfModding.Cultivationcraft.Client.GUI.HelpItems;
+import DaoOfModding.Cultivationcraft.Client.GUI.GUIButton;
 import DaoOfModding.Cultivationcraft.Client.GUI.SelectableTextField;
 import DaoOfModding.Cultivationcraft.Client.GUI.TextField;
+import DaoOfModding.Cultivationcraft.Common.Qi.Cultivation.CoreFormingCultivation;
 import DaoOfModding.Cultivationcraft.Common.Qi.ExternalCultivationHandler;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.TechniqueModifiers.TechniqueModifier;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
+import DaoOfModding.Cultivationcraft.Network.ClientPacketHandler;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
@@ -33,13 +35,32 @@ public class ConceptScreen extends GenericTabScreen
     protected TextField conceptText = new TextField();
     protected SelectableTextField selectText = new SelectableTextField();
 
+    protected boolean selectable = false;
+
+    protected GUIButton select;
+
+    protected int selectButtonX = 127;
+    protected int selectButtonY = 160;
+
     public ConceptScreen()
+    {
+        this(false);
+    }
+
+    public ConceptScreen(boolean choose)
     {
         super(0, Component.translatable("cultivationcraft.gui.concept"), new ResourceLocation(Cultivationcraft.MODID, "textures/gui/stats.png"));
 
         generateText();
 
         selectText.setSize(selectTextWidth, selectTextHeight);
+        selectable = choose;
+
+        if (selectable)
+        {
+            select = new GUIButton("select", Component.translatable("cultivationcraft.gui.select").getString());
+            select.disable();
+        }
     }
 
     public void generateText()
@@ -62,10 +83,10 @@ public class ConceptScreen extends GenericTabScreen
 
         for (Map.Entry<ResourceLocation, ArrayList<ResourceLocation>> entry : categories.entrySet())
         {
-            SelectableText category = new SelectableText(entry.getKey().toShortLanguageKey());
+            SelectableText category = new SelectableText(entry.getKey());
 
             for (ResourceLocation location : entry.getValue())
-                category.addItem(new SelectableText(location.toShortLanguageKey()));
+                category.addItem(new SelectableText(location));
 
             selectText.addSelectable(category);
         }
@@ -76,6 +97,14 @@ public class ConceptScreen extends GenericTabScreen
     {
         if (super.mouseClicked(mouseX, mouseY, buttonPressed))
             return true;
+
+        if (selectable && select.mouseClick((int)mouseX , (int)mouseY, buttonPressed))
+        {
+            ClientPacketHandler.sendBreakthroughExtraToServer(selectText.getSelected().getID().toString());
+            this.onClose();
+
+            return true;
+        }
 
         int edgeSpacingX = (this.width - this.xSize) / 2;
         int edgeSpacingY = (this.height - this.ySize) / 2;
@@ -118,10 +147,23 @@ public class ConceptScreen extends GenericTabScreen
 
         String text = selectText.getText();
 
+        if (selectable)
+            select.disable();
+
         if (selectText.getSelected() != null)
         {
-            String name = Component.translatable(selectText.getSelected().getName()) + " " + Component.translatable("cultivationcraft.gui.concept");
+            String name = Component.translatable(selectText.getSelected().getName()).getString();
             font.draw(PoseStack, name, edgeSpacingX + (int) (this.xSize / 2) - (int) (font.width(name) / 2), edgeSpacingY + nameTextY, Color.darkGray.getRGB());
+
+            // Only allow the select button to be pressed if a concept is selected and not a category
+            if (selectable)
+            {
+                select.enable();
+
+                for (SelectableText test : selectText.getSelectables())
+                    if (test == selectText.getSelected())
+                        select.disable();
+            }
         }
 
         conceptText.setPos(edgeSpacingX + conceptTextX, edgeSpacingY + conceptTextY);
@@ -131,5 +173,11 @@ public class ConceptScreen extends GenericTabScreen
 
         selectText.setPos(edgeSpacingX +selectTextX, edgeSpacingY + selectTextY);
         selectText.render(this, font, PoseStack, mouseX, mouseY);
+
+        if (selectable)
+        {
+            select.setPos(edgeSpacingX + selectButtonX - select.width / 2, selectButtonY + edgeSpacingY);
+            select.render(PoseStack, mouseX, mouseY, this);
+        }
     }
 }

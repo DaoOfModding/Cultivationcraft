@@ -55,6 +55,11 @@ public class SelectableTextField
         y = yPos;
     }
 
+    public ArrayList<SelectableText> getSelectables()
+    {
+        return selectables;
+    }
+
     public int getWidth()
     {
         return width;

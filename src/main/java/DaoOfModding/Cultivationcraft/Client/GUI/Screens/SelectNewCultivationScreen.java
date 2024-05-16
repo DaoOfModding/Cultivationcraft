@@ -73,7 +73,7 @@ public class SelectNewCultivationScreen extends Screen
 
         if (select.mouseClick((int)mouseX , (int)mouseY, buttonPressed))
         {
-            ClientPacketHandler.sendBreakthroughToServer(selection.getSelected().getID());
+            ClientPacketHandler.sendBreakthroughToServer(selection.getSelected().getID().toString());
             this.onClose();
 
             return true;
