@@ -32,7 +32,7 @@ public class FoundationEstablishmentCultivation extends CultivationType {
     }
 
     @Override
-    public void breakthrough(Player player)
+    public void breakthrough(Player player, String conditionals)
     {
         if (stage < maxStage)
         {

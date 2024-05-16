@@ -1,6 +1,7 @@
 package DaoOfModding.Cultivationcraft.Common.Qi.Quests;
 
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 
@@ -55,5 +56,21 @@ public class Quest
             description = Component.translatable(extra.getPath()).getString() + " " + description;
 
         return description;
+    }
+
+    public CompoundTag writeNBT()
+    {
+        CompoundTag nbt = new CompoundTag();
+
+        nbt.putString("mode", mode.toString());
+        nbt.putDouble("complete", complete);
+        nbt.putString("extra", extra.toString());
+
+        return nbt;
+    }
+
+    public static Quest readNBT(CompoundTag nbt)
+    {
+        return new Quest(new ResourceLocation(nbt.getString("mode")), nbt.getDouble("complete"), new ResourceLocation(nbt.getString("extra")));
     }
 }

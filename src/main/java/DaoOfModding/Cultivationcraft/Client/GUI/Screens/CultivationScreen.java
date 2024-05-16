@@ -63,7 +63,9 @@ public class CultivationScreen extends GenericTabScreen
 
         if (cultivation.canBreakthrough(Minecraft.getInstance().player) && breakthroughButton.mouseClick((int)mouseX, (int)mouseY, buttonPressed))
         {
-            ClientPacketHandler.sendBreakthroughToServer(false);
+            if (cultivation.clientPreBreakthrough(minecraft.player))
+                ClientPacketHandler.sendBreakthroughToServer(false);
+
             return true;
         }
 

@@ -9,13 +9,12 @@ import DaoOfModding.Cultivationcraft.Common.Qi.ExternalCultivationHandler;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.PassiveTechniques.CultivationPassives.QiCondenserPassive;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.TechniqueModifiers.*;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
+import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 
 public class CoreFormingCultivation extends CultivationType
 {
-    ResourceLocation myElement = Elements.noElement;
-
     public CoreFormingCultivation() {
         this(1);
     }
@@ -133,12 +132,30 @@ public class CoreFormingCultivation extends CultivationType
     }
 
     @Override
-    public void breakthrough(Player player) {
-        if (stage < maxStage) {
-            CoreFormingCultivation newCultivation = new CoreFormingCultivation(stage + 1);
-            newCultivation.setPreviousCultivation(this);
+    public boolean clientPreBreakthrough(Player player)
+    {
+        Minecraft.getInstance().forceSetScreen(new ConceptScreen(true));
 
-            CultivatorStats.getCultivatorStats(player).setCultivation(newCultivation);
+        return false;
+    }
+
+    @Override
+    public void breakthrough(Player player, String conditionals)
+    {
+        if (stage < maxStage)
+        {
+            if (conditionals.length() == 0)
+            {
+                Cultivationcraft.LOGGER.error("Tried to advance cultivation without providing a core");
+            }
+            else
+            {
+                CoreFormingCultivation newCultivation = new CoreFormingCultivation(stage + 1);
+                newCultivation.setCore(ExternalCultivationHandler.getModifier(new ResourceLocation(conditionals)));
+                newCultivation.setPreviousCultivation(this);
+
+                CultivatorStats.getCultivatorStats(player).setCultivation(newCultivation);
+            }
         }
     }
 }

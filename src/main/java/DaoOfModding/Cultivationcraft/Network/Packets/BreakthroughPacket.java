@@ -97,14 +97,11 @@ public class BreakthroughPacket extends Packet
         }
         else if (cultivation.canBreakthrough(player))
         {
-            if (cultivationString.length() > 0)
+            if (cultivation.hasTribulated())
             {
-                if (cultivation.hasTribulated())
+                if (cultivationString.length() > 0)
                     cultivation.advance(player, cultivationString);
-            }
-            else if (extraString.length() > 0)
-            {
-                if (cultivation.hasTribulated())
+               else if (extraString.length() > 0)
                     cultivation.advanceExtra(player, extraString);
             }
             else
@@ -112,7 +109,7 @@ public class BreakthroughPacket extends Packet
                 if (cultivation.hasTribulation(player))
                     cultivation.startTribulation();
                 else
-                    cultivation.breakthrough(player);
+                    cultivation.breakthrough(player, extraString);
             }
 
             PacketHandler.sendCultivatorStatsToClient(player);

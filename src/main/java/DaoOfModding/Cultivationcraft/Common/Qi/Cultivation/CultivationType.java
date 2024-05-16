@@ -289,7 +289,15 @@ public class CultivationType {
         return isTribulating;
     }
 
-    public void breakthrough(Player player) {
+    // Calls on client side before breakingthrough
+    // Returns wether to breakthrough or not
+    public boolean clientPreBreakthrough(Player player)
+    {
+        return true;
+    }
+
+    public void breakthrough(Player player, String conditionals)
+    {
     }
 
     public void tribulationComplete(Player player)
@@ -601,7 +609,8 @@ public class CultivationType {
         previousCultivation = previous;
     }
 
-    public CompoundTag writeNBT() {
+    public CompoundTag writeNBT()
+    {
         CompoundTag nbt = new CompoundTag();
 
         if (getPreviousCultivation() != null) {
@@ -616,9 +625,12 @@ public class CultivationType {
         int i = 0;
 
         for (TechniqueModifier mod : modifiers) {
-            nbt.putString("MODIFIER" + i, mod.getClass().toString());
+            nbt.putString("MODIFIER" + i, mod.getID().toString());
             i++;
         }
+
+        if (quest != null)
+            nbt.put("QUEST", quest.writeNBT());
 
         i = 0;
 
@@ -672,9 +684,12 @@ public class CultivationType {
         modifiers = new ArrayList<>();
 
         while (nbt.contains("MODIFIER" + i)) {
-            modifiers.add(ExternalCultivationHandler.getModifier((nbt.getString("MODIFIER" + i))));
+            modifiers.add(ExternalCultivationHandler.getModifier(new ResourceLocation(nbt.getString("MODIFIER" + i))));
             i++;
         }
+
+        if (nbt.contains("QUEST"))
+        quest = Quest.readNBT(nbt.getCompound("QUEST"));
 
         i = 0;
 
