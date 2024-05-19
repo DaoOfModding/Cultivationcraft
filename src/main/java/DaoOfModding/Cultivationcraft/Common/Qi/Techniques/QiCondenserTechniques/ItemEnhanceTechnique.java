@@ -7,6 +7,7 @@ import DaoOfModding.Cultivationcraft.Common.Qi.Damage.QiDamageSource;
 import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.AttackTechnique;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.Technique;
+import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.TechniqueModifiers.TechniqueModifier;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.TechniqueStats.DefaultTechniqueStatIDs;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.TechniqueStats.TechniqueStatModification;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
@@ -85,8 +86,13 @@ public class ItemEnhanceTechnique extends AttackTechnique
         // Make a new QiDamageSource of this techniques element
         QiDamageSource newSource = new QiDamageSource(event.getSource().getMsgId(), event.getSource().getEntity(), getElement(), true);
 
+        float damage = event.getAmount() + (float)getTechniqueStat(DefaultTechniqueStatIDs.damage, attackingPlayer);
+
+        for (TechniqueModifier mod : CultivatorStats.getCultivatorStats(attackingPlayer).getCultivation().getModifiers())
+            mod.onHitEntity(attackingPlayer, newSource.getEntity(), damage, getElement(), newSource.getEntity().position());
+
         // Hurt the target entity with the new damage source and increased damage
-        event.getEntity().hurt(newSource, event.getAmount() + (float)getTechniqueStat(DefaultTechniqueStatIDs.damage, attackingPlayer));
+        event.getEntity().hurt(newSource, damage);
 
         levelUp(attackingPlayer, (float)getTechniqueStat(DefaultTechniqueStatIDs.damage, attackingPlayer));
 

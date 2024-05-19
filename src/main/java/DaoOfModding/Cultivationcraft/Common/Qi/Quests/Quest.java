@@ -12,6 +12,8 @@ public class Quest
     public static final ResourceLocation DAMAGE_DEALT = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.quest.damagedealt");
     public static final ResourceLocation DAMAGE_RESISTED = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.quest.damageresisted");
     public static final ResourceLocation DAMAGE_ABSORBED = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.quest.damageabsorbbed");
+    public static final ResourceLocation ELEMENTALY_EFFECTED = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.quest.elementalyeffected");
+    public static final ResourceLocation ELEMENTAL_EFFECT_APPLIED = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.quest.elementaleffectapplied");
     public static final ResourceLocation TIME_ALIVE = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.quest.alive");
     public static final ResourceLocation LIVE = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.quest.live");
     public static final ResourceLocation BOUNCE = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.quest.bounce");
@@ -64,7 +66,9 @@ public class Quest
 
         nbt.putString("mode", mode.toString());
         nbt.putDouble("complete", complete);
-        nbt.putString("extra", extra.toString());
+
+        if (nbt.contains("extra"))
+            nbt.putString("extra", extra.toString());
 
         return nbt;
     }

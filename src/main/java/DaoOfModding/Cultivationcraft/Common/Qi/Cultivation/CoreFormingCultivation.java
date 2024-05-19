@@ -102,6 +102,9 @@ public class CoreFormingCultivation extends CultivationType
     @Override
     public boolean canCultivate(ResourceLocation element)
     {
+        if (element.compareTo(Elements.anyElement) == 0)
+            return true;
+
         for (ResourceLocation testElement : getElements())
             if (testElement.compareTo(element) == 0 || testElement.compareTo(Elements.noElement) == 0 || testElement.compareTo(Elements.anyElement) == 0)
                 return true;

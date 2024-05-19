@@ -1,8 +1,10 @@
 package DaoOfModding.Cultivationcraft.Common.Qi.Techniques.TechniqueModifiers;
 
+import DaoOfModding.Cultivationcraft.Client.GUI.animatedTexture;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStats;
 import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
 import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Element;
+import DaoOfModding.Cultivationcraft.Common.Qi.Quests.Quest;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
@@ -15,6 +17,11 @@ public class AuraModifier extends TechniqueModifier
     {
         ID = new ResourceLocation(Cultivationcraft.MODID, "concept.aura");
         CATEGORY = MODIFIER_CATEGORY;
+
+        unlockQuest = new Quest(Quest.ELEMENTALY_EFFECTED, 1);
+        stabiliseQuest = new Quest(Quest.ELEMENTAL_EFFECT_APPLIED, 10000);
+
+        coreTexture = new animatedTexture(new ResourceLocation(Cultivationcraft.MODID, "textures/cores/aura.png"), 4);
 
         allowSameCategory = true;
     }
@@ -39,7 +46,6 @@ public class AuraModifier extends TechniqueModifier
         for (TechniqueModifier modifier : CultivatorStats.getCultivatorStats(player).getCultivation().getModifiers())
             if (modifier.CATEGORY.compareTo(ELEMENTAL_CATEGORY) == 0 && modifier.ID.compareTo(QiModifier.QI_ID) != 0)
                 return true;
-
 
         return false;
     }

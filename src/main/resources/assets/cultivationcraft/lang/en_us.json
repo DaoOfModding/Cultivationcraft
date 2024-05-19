@@ -111,6 +111,8 @@
   "cultivationcraft.quest.heal": "Health healed",
   "cultivationcraft.quest.drainstamina": "Stamina used",
   "cultivationcraft.quest.bite": "Bite damage dealt",
+  "cultivationcraft.quest.elementalyeffected": "Elemental effects suffered",
+  "cultivationcraft.quest.elementaleffectapplied": "Elemental effects applied",
 
   "cultivationcraft.concept.category.example": "Example category",
   "cultivationcraft.concept.category.example.text": "This is an example description",
@@ -139,6 +141,8 @@
   "cultivationcraft.concept.lightning.text": "Imbue your Qi with Lightning",
   "cultivationcraft.concept.aura": "Aura",
   "cultivationcraft.concept.aura.text": "Modify your techniques to radiate their elemental effects",
+  "cultivationcraft.concept.explosion": "Explosion",
+  "cultivationcraft.concept.explosion.text": "Modify your techniques to explode on hit",
 
   "cultivationcraft.technique.example": "Example Technique",
   "cultivationcraft.technique.example.description": "This is an example description",

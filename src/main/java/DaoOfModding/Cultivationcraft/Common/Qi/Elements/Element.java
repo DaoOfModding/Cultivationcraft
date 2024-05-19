@@ -2,6 +2,8 @@ package DaoOfModding.Cultivationcraft.Common.Qi.Elements;
 
 import DaoOfModding.Cultivationcraft.Common.Qi.Damage.QiDamageSource;
 import DaoOfModding.Cultivationcraft.Common.Qi.QiSource;
+import DaoOfModding.Cultivationcraft.Common.Qi.Quests.Quest;
+import DaoOfModding.Cultivationcraft.Common.Qi.Quests.QuestHandler;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.PlayerStatModifications;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.StatIDs;
@@ -54,6 +56,20 @@ public class Element
 
     public void applyStatusEffect(QiDamageSource source, Entity target, float damageAmount)
     {
+        if (damageAmount > 0 && effectTickChance > 0)
+        {
+            if (target instanceof Player)
+            {
+                QuestHandler.progressQuest((Player) target, Quest.ELEMENTALY_EFFECTED, 1);
+                QuestHandler.progressQuest((Player) target, Quest.ELEMENTALY_EFFECTED, 1, name);
+            }
+
+            if (source.getEntity() instanceof Player)
+            {;
+                QuestHandler.progressQuest((Player) source.getEntity(), Quest.ELEMENTAL_EFFECT_APPLIED, 1);
+                QuestHandler.progressQuest((Player) source.getEntity(), Quest.ELEMENTAL_EFFECT_APPLIED, 1, name);
+            }
+        }
     }
 
     public void effectBlock(Level level, BlockPos pos)

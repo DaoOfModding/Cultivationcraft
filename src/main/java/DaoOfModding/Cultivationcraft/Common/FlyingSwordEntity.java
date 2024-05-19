@@ -13,6 +13,7 @@ import DaoOfModding.Cultivationcraft.Common.Qi.Quests.Quest;
 import DaoOfModding.Cultivationcraft.Common.Qi.Quests.QuestHandler;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.QiCondenserTechniques.FlyingSwordFormationTechnique;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.Technique;
+import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.TechniqueModifiers.TechniqueModifier;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.TechniqueStats.DefaultTechniqueStatIDs;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
@@ -715,6 +716,10 @@ public class FlyingSwordEntity extends ItemEntity
                     f1 = EnchantmentHelper.getDamageBonus(this.getItem(), MobType.UNDEFINED);
 
                 f = f + f1;
+
+
+                for (TechniqueModifier mod : CultivatorStats.getCultivatorStats(owner).getCultivation().getModifiers())
+                    mod.onHitEntity(owner, targetEntity, f, formation.getElement(), position());
 
                 // Knockback
                 int i = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.KNOCKBACK, getItem());

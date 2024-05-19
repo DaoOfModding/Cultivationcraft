@@ -30,8 +30,8 @@ public class CoreFormingScreen extends CultivationTypeScreen
 
     public CoreFormingScreen()
     {
-        xSize = 8;
-        ySize = 8;
+        xSize = 12;
+        ySize = 12;
 
         conceptButton = new GUIButton("CONCEPT", Component.translatable("cultivationcraft.gui.concept").getString());
     }

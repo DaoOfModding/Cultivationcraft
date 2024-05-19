@@ -105,7 +105,10 @@ public class QiBarrierTechnique extends Technique
         if (CultivatorStats.getCultivatorStats(player).getCultivation().consumeQi(player, resist / getTechniqueStat(qiToHealthRatio, player)))
         {
             levelUp(player, amount);
-            Elements.getElement(source.getElement()).applyStatusEffect(source, player, (float)(resist - getTechniqueStat(statusResist, player) * resist));
+
+            if (source.doStatusEffect())
+                Elements.getElement(source.getElement()).applyStatusEffect(source, player, (float)(resist - getTechniqueStat(statusResist, player) * resist));
+
             return 0;
         }
 

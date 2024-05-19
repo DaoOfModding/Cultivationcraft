@@ -69,8 +69,18 @@ public class BodyforgeCommand
     {
         for(ServerPlayer serverplayer : players)
         {
-            BodyModifications.getBodyModifications(serverplayer).setLastForged("");
-            PacketHandler.sendBodyModificationsToClient(serverplayer);
+            ICultivatorStats stats = CultivatorStats.getCultivatorStats(serverplayer);
+
+            if (stats.getCultivationType() == CultivationTypes.BODY_CULTIVATOR)
+            {
+                BodyModifications.getBodyModifications(serverplayer).setLastForged("");
+                PacketHandler.sendBodyModificationsToClient(serverplayer);
+            }
+            else if (stats.getCultivationType() == CultivationTypes.QI_CONDENSER)
+            {
+                stats.getCultivation().progressQuest(stats.getCultivation().getQuest().complete);
+                PacketHandler.sendCultivatorStatsToClient(serverplayer);
+            }
         }
 
         if (players.size() == 1)

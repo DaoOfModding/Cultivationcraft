@@ -25,6 +25,8 @@ public class FireElement extends Element
     public void applyStatusEffect(QiDamageSource source, Entity target, float damageAmount)
     {
         target.setSecondsOnFire((int)damageAmount);
+
+        super.applyStatusEffect(source, target, damageAmount);
     }
 
     @Override

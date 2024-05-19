@@ -414,7 +414,10 @@ public class CultivationType {
         if (Qi < 0)
             return 0;
 
-        int currentLevel = getTechLevelProgressWithoutPrevious(getPassive().getClass().toString());
+        int currentLevel = (int)qiLevel;
+
+        if (statsCanLevel())
+            currentLevel = getTechLevelProgressWithoutPrevious(getPassive().getClass().toString());
 
         // Don't cultivate if already at the max
         if (currentLevel >= techLevel)

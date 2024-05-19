@@ -37,6 +37,8 @@ public class LightningElement extends ElementVariant
             BlockPos blockpos = Reflection.findLightningTargetAround((ServerLevel) target.level, target.level.getBlockRandomPos(pos.getX(), pos.getY(), pos.getZ(), 10));
             effectBlock(target.level, blockpos);
         }
+
+        super.applyStatusEffect(source, target, damageAmount);
     }
 
     @Override

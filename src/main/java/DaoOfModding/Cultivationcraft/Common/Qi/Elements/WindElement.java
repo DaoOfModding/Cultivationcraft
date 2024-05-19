@@ -14,6 +14,8 @@ public class WindElement extends Element
     public WindElement(ResourceLocation resourcelocation, Color elementColor, double newDensity)
     {
         super(resourcelocation, elementColor, newDensity);
+
+        effectTickChance = 1;
     }
 
     public void applyStatusEffect(QiDamageSource source, Entity target, float damageAmount)
@@ -23,5 +25,7 @@ public class WindElement extends Element
 
         Vec3 direction = target.position().subtract(source.getSourcePosition()).normalize();
         Wind.addWindEffect(target, new WindInstance(direction, damageAmount * 0.025f, damageAmount/5f));
+
+        super.applyStatusEffect(source, target, damageAmount);
     }
 }

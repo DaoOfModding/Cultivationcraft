@@ -1,10 +1,12 @@
 package DaoOfModding.Cultivationcraft.Common.Qi;
 
 import DaoOfModding.Cultivationcraft.Client.Renderers.QiSourceRenderer;
+import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStats;
 import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Element;
 import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.QiCondenserTechniques.QiEmission;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.Technique;
+import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.TechniqueModifiers.TechniqueModifier;
 import DaoOfModding.Cultivationcraft.Common.Register;
 import DaoOfModding.Cultivationcraft.Server.CultivatorAttackLogic;
 import net.minecraft.core.particles.ParticleOptions;
@@ -117,7 +119,7 @@ public class QiProjectile extends AbstractHurtingProjectile
     protected void onHitEntity(EntityHitResult hit)
     {
         // Do nothing if this is hitting its owner or another projectile
-        if (this.ownedBy(hit.getEntity()) || hit.getEntity() instanceof QiProjectile)
+        if (this.ownedBy(hit.getEntity()) || hit.getEntity() instanceof QiProjectile || !hit.getEntity().isAlive())
             return;
 
         if (getOwner() == null)
@@ -125,6 +127,9 @@ public class QiProjectile extends AbstractHurtingProjectile
             this.discard();
             return;
         }
+
+        for (TechniqueModifier mod : CultivatorStats.getCultivatorStats((Player)getOwner()).getCultivation().getModifiers())
+            mod.onHitEntity((Player)getOwner(), hit.getEntity(), damage, getElement(), position());
 
         CultivatorAttackLogic.attackEntity((Player)getOwner(), hit.getEntity(), -1, damage, null, getElement(), "QiProjectile");
 
@@ -136,6 +141,15 @@ public class QiProjectile extends AbstractHurtingProjectile
 
     protected void onHitBlock(BlockHitResult hit)
     {
+        if (getOwner() == null)
+        {
+            this.discard();
+            return;
+        }
+
+        for (TechniqueModifier mod : CultivatorStats.getCultivatorStats((Player)getOwner()).getCultivation().getModifiers())
+            mod.onHitBlock((Player)getOwner(), hit.getBlockPos(), damage, getElement(), position());
+
         BlockState blockstate = this.level.getBlockState(hit.getBlockPos());
         blockstate.onProjectileHit(this.level, blockstate, hit, this);
 

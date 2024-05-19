@@ -7,7 +7,9 @@ import DaoOfModding.Cultivationcraft.Common.Qi.Cultivation.CultivationType;
 import DaoOfModding.Cultivationcraft.Common.Qi.Quests.Quest;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import DaoOfModding.Cultivationcraft.Network.PacketHandler;
+import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 
@@ -60,6 +62,20 @@ public class TechniqueModifier
 
     }
 
+    public void onHitEntity(Player owner, Entity hit, float damage, ResourceLocation element, Vec3 pos)
+    {
+        onHitAll(owner, pos, damage, element);
+    }
+
+    public void onHitBlock(Player owner, BlockPos blockPos, float damage, ResourceLocation element, Vec3 pos)
+    {
+        onHitAll(owner, pos, damage, element);
+    }
+
+    public void onHitAll(Player owner, Vec3 pos, float damage, ResourceLocation element)
+    {
+    }
+
     public Quest getUnlockQuest()
     {
         return unlockQuest;
@@ -74,11 +90,16 @@ public class TechniqueModifier
     {
         CultivationType cultivation = CultivatorStats.getCultivatorStats(player).getCultivation();
 
-        // This modifier cannot be used if allowSameCategory is false and a technique of the same category is already active
-        if (!allowSameCategory)
-            for (TechniqueModifier modifier : cultivation.getModifiers())
-                if (modifier.CATEGORY.compareTo(CATEGORY) == 0)
-                    return false;
+        for (TechniqueModifier modifier : cultivation.getModifiers())
+        {
+            // Cannot have multiple copies of the same modifier
+            if (modifier.ID.compareTo(this.ID) == 0)
+                return false;
+
+            // Cannot be the same category as another active modifier if allowSameCategory is false
+            if (!allowSameCategory && modifier.CATEGORY.compareTo(CATEGORY) == 0)
+                return false;
+        }
 
         return true;
     }
