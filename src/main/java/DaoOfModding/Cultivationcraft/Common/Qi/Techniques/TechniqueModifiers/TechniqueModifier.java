@@ -76,6 +76,11 @@ public class TechniqueModifier
     {
     }
 
+    public void onHitTaken(Player owner, float damage, ResourceLocation defensiveElement)
+    {
+
+    }
+
     public Quest getUnlockQuest()
     {
         return unlockQuest;

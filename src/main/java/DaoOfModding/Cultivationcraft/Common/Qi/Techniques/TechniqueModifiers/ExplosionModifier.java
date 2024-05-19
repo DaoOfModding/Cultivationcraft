@@ -1,5 +1,6 @@
 package DaoOfModding.Cultivationcraft.Common.Qi.Techniques.TechniqueModifiers;
 
+import DaoOfModding.Cultivationcraft.Client.GUI.animatedTexture;
 import DaoOfModding.Cultivationcraft.Common.Qi.Damage.QiDamageSource;
 import DaoOfModding.Cultivationcraft.Common.Qi.Quests.Quest;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
@@ -22,6 +23,8 @@ public class ExplosionModifier extends TechniqueModifier
         unlockQuest = new Quest(Quest.DAMAGE_DEALT, 1);
         stabiliseQuest = new Quest(Quest.ELEMENTAL_EFFECT_APPLIED, 10000);
 
+        coreTexture = new animatedTexture(new ResourceLocation(Cultivationcraft.MODID, "textures/cores/explosion.png"), 4, 4);
+
         allowSameCategory = true;
     }
 
@@ -34,6 +37,22 @@ public class ExplosionModifier extends TechniqueModifier
         // Temp radius calculation
         float radius = 1 + damage / 5f;
 
+        explode(owner, pos, element, radius);
+    }
+
+    public void onHitTaken(Player owner, float damage, ResourceLocation defensiveElement)
+    {
+        if (owner.level.isClientSide)
+            return;
+
+        // Temp radius calculation
+        float radius = 1 + damage / 5f;
+
+        explode(owner, owner.position(), defensiveElement, radius);
+    }
+
+    public void explode(Player owner, Vec3 pos, ResourceLocation element, float radius)
+    {
         Explosion explosion = new Explosion(owner.level, owner, new QiDamageSource("explosion.player", owner, element, true), null, pos.x, pos.y, pos.z, radius, false, Explosion.BlockInteraction.BREAK);
 
         explosion.explode();

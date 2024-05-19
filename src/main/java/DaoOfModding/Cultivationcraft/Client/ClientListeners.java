@@ -246,7 +246,7 @@ public class ClientListeners
     {
         if (event.phase == TickEvent.Phase.END)
         {
-            tick = (tick + 1) % 1800;
+            tick = (tick + 1) % 14400;
 
             if(ClientItemControl.hasLoaded)
             {

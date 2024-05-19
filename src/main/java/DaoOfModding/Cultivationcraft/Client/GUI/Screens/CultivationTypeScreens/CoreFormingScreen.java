@@ -20,7 +20,7 @@ public class CoreFormingScreen extends CultivationTypeScreen
     protected GUIButton conceptButton;
 
     final int midX = 38;
-    final int midY = 57;
+    final int midY = 56;
 
     final float coreRotationDiameter = 12;
     final float coreRotationSpeed = 0.25f;
@@ -30,8 +30,8 @@ public class CoreFormingScreen extends CultivationTypeScreen
 
     public CoreFormingScreen()
     {
-        xSize = 12;
-        ySize = 12;
+        xSize = 10;
+        ySize = 10;
 
         conceptButton = new GUIButton("CONCEPT", Component.translatable("cultivationcraft.gui.concept").getString());
     }

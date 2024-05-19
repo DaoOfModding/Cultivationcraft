@@ -465,9 +465,9 @@
   "cultivationcraft.gui.help.debug.bodyforge.fillqi": "fillQi",
   "cultivationcraft.gui.help.debug.bodyforge.fillqi.text": "§n/cultivation §nfillQi §n§lplayerName\n \nThis command will completely fill the Qi/Stamina of the supplied character.",
 
-  "cultivationcraft.advancments.external": "Become a Qi Cultivator",
+  "cultivationcraft.advancments.external": "Qi Cultivation",
   "cultivationcraft.advancments.external.desc": "Chose to become a Qi Cultivator.",
-  "cultivationcraft.advancments.internal": "Become a Body Forger",
+  "cultivationcraft.advancments.internal": "Body Forging",
   "cultivationcraft.advancments.internal.desc": "Chose to become a Body Forger.",
 
   "cultivationcraft.advancments.qisight": "Activate Divine Sense",

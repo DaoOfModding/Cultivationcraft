@@ -21,7 +21,7 @@ public class AuraModifier extends TechniqueModifier
         unlockQuest = new Quest(Quest.ELEMENTALY_EFFECTED, 1);
         stabiliseQuest = new Quest(Quest.ELEMENTAL_EFFECT_APPLIED, 10000);
 
-        coreTexture = new animatedTexture(new ResourceLocation(Cultivationcraft.MODID, "textures/cores/aura.png"), 4);
+        coreTexture = new animatedTexture(new ResourceLocation(Cultivationcraft.MODID, "textures/cores/aura.png"), 4, 2);
 
         allowSameCategory = true;
     }

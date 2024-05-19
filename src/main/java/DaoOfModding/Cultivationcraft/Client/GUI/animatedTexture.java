@@ -14,6 +14,7 @@ public class animatedTexture
 {
     protected ResourceLocation texture;
     protected int frames = 1;
+    protected int speedModifier = 1;
 
     public animatedTexture(ResourceLocation textureLocation)
     {
@@ -24,6 +25,13 @@ public class animatedTexture
     {
         texture = textureLocation;
         frames = numberOfFrames;
+    }
+
+    public animatedTexture(ResourceLocation textureLocation, int numberOfFrames, int speed)
+    {
+        texture = textureLocation;
+        frames = numberOfFrames;
+        speedModifier = speed;
     }
 
     public void render(float x, float y, int width, int height)
@@ -63,7 +71,7 @@ public class animatedTexture
             u2 = 0;
         }
 
-        int tick = ClientListeners.tick % frames;
+        int tick = (ClientListeners.tick / speedModifier) % frames;
 
         float yPos = (1f / frames) * tick;
         texHeight = texHeight / frames;

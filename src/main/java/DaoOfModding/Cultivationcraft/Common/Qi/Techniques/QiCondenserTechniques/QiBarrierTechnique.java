@@ -9,6 +9,7 @@ import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.StatIDs;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.Technique;
+import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.TechniqueModifiers.TechniqueModifier;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.TechniqueStats.DefaultTechniqueStatIDs;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.TechniqueStats.TechniqueStatModification;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
@@ -105,6 +106,9 @@ public class QiBarrierTechnique extends Technique
         if (CultivatorStats.getCultivatorStats(player).getCultivation().consumeQi(player, resist / getTechniqueStat(qiToHealthRatio, player)))
         {
             levelUp(player, amount);
+
+            for (TechniqueModifier mod : CultivatorStats.getCultivatorStats(player).getCultivation().getModifiers())
+                mod.onHitTaken(player, resist, getElement());
 
             if (source.doStatusEffect())
                 Elements.getElement(source.getElement()).applyStatusEffect(source, player, (float)(resist - getTechniqueStat(statusResist, player) * resist));
