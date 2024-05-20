@@ -19,9 +19,8 @@ public class ExplosionModifier extends TechniqueModifier
         ID = new ResourceLocation(Cultivationcraft.MODID, "concept.explosion");
         CATEGORY = MODIFIER_CATEGORY;
 
-        // TEMP
-        unlockQuest = new Quest(Quest.DAMAGE_DEALT, 1);
-        stabiliseQuest = new Quest(Quest.ELEMENTAL_EFFECT_APPLIED, 10000);
+        unlockQuest = new Quest(Quest.EXPLOSION_DAMAGE_TAKEN, 1);
+        stabiliseQuest = new Quest(Quest.EXPLOSION_DAMAGE_DEALT, 10000);
 
         coreTexture = new animatedTexture(new ResourceLocation(Cultivationcraft.MODID, "textures/cores/explosion.png"), 4, 4);
 

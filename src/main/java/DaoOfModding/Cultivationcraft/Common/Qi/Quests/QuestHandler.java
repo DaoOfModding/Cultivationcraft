@@ -100,6 +100,8 @@ public class QuestHandler
     {
         ICultivatorStats stats = CultivatorStats.getCultivatorStats(player);
 
+        boolean update = false;
+
         for (TechniqueModifier modifier : ExternalCultivationHandler.getModifiers())
         {
             if (modifier.canUse(player) && !modifier.hasLearnt(player) && modifier.canLearn(player))
@@ -108,6 +110,8 @@ public class QuestHandler
 
                 if (progress > 0)
                 {
+                    update = true;
+
                     progress += stats.getConceptProgress(modifier.ID);
 
                     stats.setConceptProgress(modifier.ID, progress);
@@ -120,10 +124,13 @@ public class QuestHandler
             }
         }
 
-        // Try to progress the Cultivation quest if it exists, sending progress to clients if it progresses
+        // Try to progress the Cultivation quest if it exists
         if (stats.getCultivation().getQuest() != null)
             if (stats.getCultivation().progressQuest(stats.getCultivation().getQuest().progress(mode, amount, extra)))
-                PacketHandler.sendCultivatorStatsToClient(player);
+                update = true;
+
+        if (update)
+            PacketHandler.sendCultivatorStatsToClient(player);
     }
 
     public static void progressQuestInternal(Player player, ResourceLocation mode, double amount, ResourceLocation extra)

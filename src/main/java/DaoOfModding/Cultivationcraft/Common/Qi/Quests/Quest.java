@@ -12,6 +12,8 @@ public class Quest
     public static final ResourceLocation DAMAGE_DEALT = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.quest.damagedealt");
     public static final ResourceLocation DAMAGE_RESISTED = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.quest.damageresisted");
     public static final ResourceLocation DAMAGE_ABSORBED = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.quest.damageabsorbbed");
+    public static final ResourceLocation EXPLOSION_DAMAGE_TAKEN = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.quest.explosiondamagetaken");
+    public static final ResourceLocation EXPLOSION_DAMAGE_DEALT = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.quest.explosiondamagedealt");
     public static final ResourceLocation ELEMENTALY_EFFECTED = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.quest.elementalyeffected");
     public static final ResourceLocation ELEMENTAL_EFFECT_APPLIED = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.quest.elementaleffectapplied");
     public static final ResourceLocation TIME_ALIVE = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.quest.alive");
@@ -75,6 +77,9 @@ public class Quest
 
     public static Quest readNBT(CompoundTag nbt)
     {
-        return new Quest(new ResourceLocation(nbt.getString("mode")), nbt.getDouble("complete"), new ResourceLocation(nbt.getString("extra")));
+        if (nbt.contains("extra"))
+            return new Quest(new ResourceLocation(nbt.getString("mode")), nbt.getDouble("complete"), new ResourceLocation(nbt.getString("extra")));
+
+        return new Quest(new ResourceLocation(nbt.getString("mode")), nbt.getDouble("complete"));
     }
 }

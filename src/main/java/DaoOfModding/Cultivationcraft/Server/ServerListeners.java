@@ -13,6 +13,7 @@ import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPart;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartOption;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.FoodStats.QiFoodStats;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.PlayerHealthManager;
+import DaoOfModding.Cultivationcraft.Common.Qi.Damage.QiDamageSource;
 import DaoOfModding.Cultivationcraft.Common.Qi.Quests.Quest;
 import DaoOfModding.Cultivationcraft.Common.Qi.Quests.QuestHandler;
 import DaoOfModding.Cultivationcraft.Common.Qi.CultivationTypes;
@@ -229,7 +230,7 @@ public class ServerListeners
     }
 
     @SubscribeEvent
-    public static void onPlayerHurtInitial(LivingAttackEvent event)
+    public static void onLivingAttack(LivingAttackEvent event)
     {
         // Cycle through all active AttackTechniques if this attack is coming from a player and check if this attack has been canceled
         if (event.getSource().getEntity() != null && event.getSource().getEntity() instanceof Player)
@@ -288,6 +289,17 @@ public class ServerListeners
         {
             event.setAmount(Damage.damageEntity(event));
             Damage.applyStatusEffects(event);
+        }
+
+        if (event.getSource().getEntity() instanceof Player)
+        {
+            QuestHandler.progressQuest((Player)event.getSource().getEntity(), Quest.DAMAGE_DEALT, event.getAmount());
+
+            if (event.getSource().getMsgId().matches("explosion.player"))
+                QuestHandler.progressQuest((Player) event.getSource().getEntity(), Quest.EXPLOSION_DAMAGE_DEALT, event.getAmount());
+
+            if (event.getSource() instanceof QiDamageSource)
+                QuestHandler.progressQuest((Player)event.getSource().getEntity(), Quest.DAMAGE_DEALT, event.getAmount(), ((QiDamageSource)event.getSource()).getElement());
         }
     }
 }

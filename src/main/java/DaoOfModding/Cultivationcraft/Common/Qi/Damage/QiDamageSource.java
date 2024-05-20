@@ -64,6 +64,9 @@ public class QiDamageSource extends DamageSource
         if (source.isFire())
             doStatusEffect = false;
 
+        if (source.isExplosion())
+            setExplosion();
+
         if (getMsgId().compareTo(DamageSource.DRAGON_BREATH.getMsgId()) == 0)
             element = Elements.fireElement;
         else if (getMsgId().compareTo(DamageSource.LIGHTNING_BOLT.getMsgId()) == 0)

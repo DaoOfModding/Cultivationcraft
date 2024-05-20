@@ -125,6 +125,10 @@ public class Damage
         if (event.getEntity().hurtTime == 0 && event.getEntity().isAlive())
         {
             QuestHandler.progressQuest((Player) event.getEntity(), Quest.DAMAGE_TAKEN, resistedDamage);
+
+            if (source.isExplosion())
+                QuestHandler.progressQuest((Player) event.getEntity(), Quest.EXPLOSION_DAMAGE_TAKEN, resistedDamage);
+
             QuestHandler.progressQuest((Player) event.getEntity(), Quest.DAMAGE_RESISTED, event.getAmount() - resistedDamage);
         }
 

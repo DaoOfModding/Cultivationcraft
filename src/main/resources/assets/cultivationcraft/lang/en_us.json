@@ -113,6 +113,8 @@
   "cultivationcraft.quest.bite": "Bite damage dealt",
   "cultivationcraft.quest.elementalyeffected": "Elemental effects suffered",
   "cultivationcraft.quest.elementaleffectapplied": "Elemental effects applied",
+  "cultivationcraft.quest.explosiondamagetaken": "Explosive damage taken",
+  "cultivationcraft.quest.explosiondamagedealt": "Explosive damage Dealt",
 
   "cultivationcraft.concept.category.example": "Example category",
   "cultivationcraft.concept.category.example.text": "This is an example description",

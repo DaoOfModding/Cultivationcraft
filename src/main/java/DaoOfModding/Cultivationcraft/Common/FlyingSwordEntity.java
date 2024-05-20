@@ -771,9 +771,6 @@ public class FlyingSwordEntity extends ItemEntity
                         float rawDamage = entityHealth - ((LivingEntity)targetEntity).getHealth();
                         owner.awardStat(Stats.DAMAGE_DEALT, Math.round(rawDamage * 10.0F));
 
-                        QuestHandler.progressQuest(owner, Quest.DAMAGE_DEALT, rawDamage);
-                        QuestHandler.progressQuest(owner, Quest.DAMAGE_DEALT, rawDamage, formation.getElement());
-
                         if (owner instanceof ServerPlayer)
                             CultivationAdvancements.FLYING_SWORD_ATTACk.trigger((ServerPlayer) owner, ((LivingEntity) targetEntity).getHealth() <= 0);
 

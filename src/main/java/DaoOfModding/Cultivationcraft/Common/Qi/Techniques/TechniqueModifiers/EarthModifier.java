@@ -17,5 +17,7 @@ public class EarthModifier extends TechniqueModifier
 
         unlockQuest = new Quest(Quest.QI_SOURCE_MEDITATION, 1, Element);
         stabiliseQuest = new Quest(Quest.DAMAGE_DEALT, 1000, Element);
+
+        coreTexture = new animatedTexture(new ResourceLocation(Cultivationcraft.MODID, "textures/cores/earth.png"));
     }
 }

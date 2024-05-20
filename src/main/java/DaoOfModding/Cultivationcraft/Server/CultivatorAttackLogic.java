@@ -110,9 +110,6 @@ public class CultivatorAttackLogic
             float rawDamage = entityHealth - ((LivingEntity) toAttack).getHealth();
             player.awardStat(Stats.DAMAGE_DEALT, Math.round(rawDamage * 10.0F));
 
-            QuestHandler.progressQuest(player, Quest.DAMAGE_DEALT, rawDamage);
-            QuestHandler.progressQuest(player, Quest.DAMAGE_DEALT, rawDamage, element);
-
             if (player.level instanceof ServerLevel && rawDamage > 2.0F) {
                 int k = (int) ((double) rawDamage * 0.5D);
                 ((ServerLevel) player.level).sendParticles(ParticleTypes.DAMAGE_INDICATOR, toAttack.getX(), toAttack.getY(0.5D), toAttack.getZ(), k, 0.1D, 0.0D, 0.1D, 0.2D);
