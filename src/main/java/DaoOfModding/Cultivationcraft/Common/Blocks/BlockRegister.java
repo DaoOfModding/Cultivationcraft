@@ -3,6 +3,7 @@ package DaoOfModding.Cultivationcraft.Common.Blocks;
 import DaoOfModding.Cultivationcraft.Common.Blocks.custom.FrozenBlock;
 import DaoOfModding.Cultivationcraft.Common.Blocks.custom.SpiritualPlant;
 import DaoOfModding.Cultivationcraft.Common.Blocks.entity.FrozenBlockEntity;
+import DaoOfModding.Cultivationcraft.Common.Items.CCCTab;
 import DaoOfModding.Cultivationcraft.Common.Items.ItemRegister;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import net.minecraft.world.item.BlockItem;
@@ -22,9 +23,7 @@ public class BlockRegister {
 
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, Cultivationcraft.MODID);
     public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, Cultivationcraft.MODID);
-/*
-    public static final DeferredRegister<ConfiguredFeature<?, ?>> CONFIGURED_FEATURE = DeferredRegister.create(Registry.CONFIGURED_FEATURE_REGISTRY, Cultivationcraft.MODID);
-*/
+
 
     public static final RegistryObject<FrozenBlock> FROZEN_BLOCK = registerBlock("frozen_block",
             () -> new FrozenBlock(BlockBehaviour.Properties.copy(Blocks.ICE).strength(-1.0F, 3600000.0F).noOcclusion()));
@@ -35,11 +34,9 @@ public class BlockRegister {
             ).build(null)
     );
 
-    public static RegistryObject<SpiritualPlant> registerSpiritualPlant(String name, int stemColor, int foliageColor, int fruitsColor, int spiritualPlantQi) {
-        RegistryObject<SpiritualPlant> toReturn = registerBlock(name,
-                () -> new SpiritualPlant(BlockBehaviour.Properties.copy(Blocks.POPPY), name, stemColor, foliageColor, fruitsColor, spiritualPlantQi));
-        return toReturn;
-    }
+    public static final RegistryObject<SpiritualPlant> SPIRITUAL_PLANT = registerBlock("spiritual_plant",
+            () -> new SpiritualPlant(BlockBehaviour.Properties.copy(Blocks.POPPY)));
+
 
     public static void init(IEventBus bus) {
         BLOCKS.register(bus);
@@ -52,7 +49,7 @@ public class BlockRegister {
         return toReturn;
     }
 
-    public static <T extends Block> void registerBlockItem(String name, RegistryObject<T> block) {
-        ItemRegister.ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties()));
+    public static <T extends Block> RegistryObject<Item> registerBlockItem(String name, RegistryObject<T> block) {
+        return ItemRegister.ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties().tab(CCCTab.instance)));
     }
 }
