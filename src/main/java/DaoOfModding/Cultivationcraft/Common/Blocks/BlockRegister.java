@@ -1,7 +1,9 @@
 package DaoOfModding.Cultivationcraft.Common.Blocks;
 
 import DaoOfModding.Cultivationcraft.Common.Blocks.custom.FrozenBlock;
+import DaoOfModding.Cultivationcraft.Common.Blocks.custom.SpiritualPlant;
 import DaoOfModding.Cultivationcraft.Common.Blocks.entity.FrozenBlockEntity;
+import DaoOfModding.Cultivationcraft.Common.Items.CCCTab;
 import DaoOfModding.Cultivationcraft.Common.Items.ItemRegister;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import net.minecraft.world.item.BlockItem;
@@ -33,6 +35,8 @@ public class BlockRegister {
                     FROZEN_BLOCK.get()
             ).build(null)
     );
+    public static final RegistryObject<SpiritualPlant> SPIRITUAL_PLANT = registerBlock("spiritual_plant",
+            () -> new SpiritualPlant(BlockBehaviour.Properties.copy(Blocks.POPPY)));
 
     public static void init(IEventBus bus) {
         BLOCKS.register(bus);
@@ -46,6 +50,6 @@ public class BlockRegister {
     }
 
     public static <T extends Block> RegistryObject<Item> registerBlockItem(String name, RegistryObject<T> block) {
-        return ItemRegister.ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties()));
+        return ItemRegister.ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties().tab(CCCTab.instance)));
     }
 }

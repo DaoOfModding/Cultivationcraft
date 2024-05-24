@@ -10,14 +10,17 @@ import DaoOfModding.Cultivationcraft.Common.Config;
 import DaoOfModding.Cultivationcraft.Common.Items.ItemRegister;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.BodyPartNames;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Lungs.BreathingHandler;
-import DaoOfModding.Cultivationcraft.Common.Qi.Quests.DefaultQuests;
 import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
 import DaoOfModding.Cultivationcraft.Common.Qi.ExternalCultivationHandler;
 import DaoOfModding.Cultivationcraft.Common.Qi.QiSourceConfig;
+import DaoOfModding.Cultivationcraft.Common.Qi.Quests.DefaultQuests;
 import DaoOfModding.Cultivationcraft.Common.Qi.TechniqueControl;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.TechniqueStats.DefaultTechniqueStatIDs;
 import DaoOfModding.Cultivationcraft.Common.Reflection;
 import DaoOfModding.Cultivationcraft.Common.Register;
+import DaoOfModding.Cultivationcraft.Common.World.ModConfiguredFeatures;
+import DaoOfModding.Cultivationcraft.Common.World.ModPlacedFeatures;
+import DaoOfModding.Cultivationcraft.Common.World.PlantGeneration.PlantNames;
 import DaoOfModding.Cultivationcraft.Network.PacketHandler;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModList;
@@ -49,6 +52,9 @@ public class Cultivationcraft {
 
         ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, Config.Server.spec, "cultivationcraft.toml");
 
+        ModConfiguredFeatures.init(modEventBus);
+        ModPlacedFeatures.init(modEventBus);
+
         Register.init(modEventBus);
         BlockRegister.init(modEventBus);
         ItemRegister.init(modEventBus);
@@ -60,6 +66,7 @@ public class Cultivationcraft {
         PacketHandler.init();
 
         QiSourceConfig.init();
+        PlantNames.init();
         Elements.init();
         TechniqueControl.init();
         BodyPartNames.init();
