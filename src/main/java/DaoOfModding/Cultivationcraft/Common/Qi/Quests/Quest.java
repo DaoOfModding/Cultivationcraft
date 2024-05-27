@@ -28,7 +28,7 @@ public class Quest
 
     public final ResourceLocation mode;
     public final double complete;
-    public final ResourceLocation extra;
+    public final String extra;
 
     public Quest(ResourceLocation questMode, double questMax)
     {
@@ -37,14 +37,14 @@ public class Quest
         extra = null;
     }
 
-    public Quest(ResourceLocation questMode, double questMax, ResourceLocation extraRequirement)
+    public Quest(ResourceLocation questMode, double questMax, String extraRequirement)
     {
         mode = questMode;
         complete = questMax;
         extra = extraRequirement;
     }
 
-    public double progress(ResourceLocation progressMode, double amount, ResourceLocation extraRequirement)
+    public double progress(ResourceLocation progressMode, double amount, String extraRequirement)
     {
         if (mode.compareTo(progressMode) == 0 && ((extra == null && extraRequirement == null) || (extraRequirement != null && extra.compareTo(extraRequirement) == 0)))
             return amount;
@@ -57,7 +57,7 @@ public class Quest
         String description = Component.translatable(mode.getPath()).getString();
 
         if (extra != null)
-            description = Component.translatable(extra.getPath()).getString() + " " + description;
+            description = extra + " " + description;
 
         return description;
     }
@@ -70,7 +70,7 @@ public class Quest
         nbt.putDouble("complete", complete);
 
         if (nbt.contains("extra"))
-            nbt.putString("extra", extra.toString());
+            nbt.putString("extra", extra);
 
         return nbt;
     }
@@ -78,7 +78,7 @@ public class Quest
     public static Quest readNBT(CompoundTag nbt)
     {
         if (nbt.contains("extra"))
-            return new Quest(new ResourceLocation(nbt.getString("mode")), nbt.getDouble("complete"), new ResourceLocation(nbt.getString("extra")));
+            return new Quest(new ResourceLocation(nbt.getString("mode")), nbt.getDouble("complete"), nbt.getString("extra"));
 
         return new Quest(new ResourceLocation(nbt.getString("mode")), nbt.getDouble("complete"));
     }

@@ -441,7 +441,12 @@ public class CultivationType {
         if (statsCanLevel())
             getPassive().levelUp(player, amount);
         else
+        {
             qiLevel += amount;
+
+            if (qiLevel > getMaxTechLevel())
+                qiLevel = getMaxTechLevel();
+        }
     }
 
     public CultivationType getPreviousCultivation() {
@@ -483,8 +488,8 @@ public class CultivationType {
             if (statLevels.containsKey(passiveString) && statLevels.get(passiveString).containsKey(stat))
                 level += statLevels.get(passiveString).get(stat);
         }
-        else
-            level += qiLevel;
+        /*else
+            level += qiLevel;*/
 
         if (previousCultivation != null)
             level += previousCultivation.getPassiveStatLevel(stat);

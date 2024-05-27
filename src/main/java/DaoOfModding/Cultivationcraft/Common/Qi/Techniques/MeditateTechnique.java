@@ -88,7 +88,7 @@ public class MeditateTechnique extends MovementOverrideTechnique
                 QuestHandler.progressQuest(event.player, Quest.QI_SOURCE_MEDITATION, 1.0 / 20.0);
 
             for (QiSource source : sources)
-                QuestHandler.progressQuest(event.player, Quest.QI_SOURCE_MEDITATION, 1.0 / 20.0, source.getElement());
+                QuestHandler.progressQuest(event.player, Quest.QI_SOURCE_MEDITATION, 1.0 / 20.0, source.getElement().toString());
 
             // absorb Qi through blood first
             double remaining = cultivation.getCultivationStat(event.player, DefaultCultivationStatIDs.qiAbsorbSpeed) / 20.0;
@@ -117,7 +117,7 @@ public class MeditateTechnique extends MovementOverrideTechnique
                 QuestHandler.progressQuest(event.player, Quest.QI_SOURCE_MEDITATION, 1.0 / 20.0);
 
             for (QiSource source : sources)
-                QuestHandler.progressQuest(event.player, Quest.QI_SOURCE_MEDITATION, 1.0 / 20.0, source.getElement());
+                QuestHandler.progressQuest(event.player, Quest.QI_SOURCE_MEDITATION, 1.0 / 20.0, source.getElement().toString());
 
             // absorb Qi through blood first
             double remaining = (int)BodyPartStatControl.getPlayerStatControl(event.player).getStats().getStat(StatIDs.qiAbsorb);

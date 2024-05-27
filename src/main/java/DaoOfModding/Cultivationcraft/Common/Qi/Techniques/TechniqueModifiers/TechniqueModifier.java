@@ -5,6 +5,7 @@ import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.Cultiva
 import DaoOfModding.Cultivationcraft.Common.Qi.Cultivation.CoreFormingCultivation;
 import DaoOfModding.Cultivationcraft.Common.Qi.Cultivation.CultivationType;
 import DaoOfModding.Cultivationcraft.Common.Qi.Quests.Quest;
+import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.Technique;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import DaoOfModding.Cultivationcraft.Network.PacketHandler;
 import net.minecraft.core.BlockPos;
@@ -28,6 +29,8 @@ public class TechniqueModifier
     Quest unlockQuest;
     Quest stabiliseQuest;
 
+    float damageMult = 1;
+
     public TechniqueModifier()
     {
         ID = new ResourceLocation(Cultivationcraft.MODID, "concept.example");
@@ -47,6 +50,11 @@ public class TechniqueModifier
     public animatedTexture getCoreTexture()
     {
         return coreTexture;
+    }
+
+    public float getDamageMultiplier(Technique tech)
+    {
+        return damageMult;
     }
 
     public Boolean hasElement()
@@ -130,6 +138,11 @@ public class TechniqueModifier
             return true;
 
         return false;
+    }
+
+    public Vec3 modifyMovement(Vec3 move)
+    {
+        return move;
     }
 
     // Instantly learn this modifier

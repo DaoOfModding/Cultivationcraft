@@ -299,7 +299,7 @@ public class ServerListeners
                 QuestHandler.progressQuest((Player) event.getSource().getEntity(), Quest.EXPLOSION_DAMAGE_DEALT, event.getAmount());
 
             if (event.getSource() instanceof QiDamageSource)
-                QuestHandler.progressQuest((Player)event.getSource().getEntity(), Quest.DAMAGE_DEALT, event.getAmount(), ((QiDamageSource)event.getSource()).getElement());
+                QuestHandler.progressQuest((Player)event.getSource().getEntity(), Quest.DAMAGE_DEALT, event.getAmount(), ((QiDamageSource)event.getSource()).getElement().toString());
         }
     }
 }

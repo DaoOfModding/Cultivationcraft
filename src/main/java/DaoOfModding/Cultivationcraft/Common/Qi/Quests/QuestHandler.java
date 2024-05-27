@@ -79,7 +79,7 @@ public class QuestHandler
         progressQuest(player, mode, amount, null);
     }
 
-    public static void progressQuest(Player player, ResourceLocation mode, double amount, ResourceLocation extra)
+    public static void progressQuest(Player player, ResourceLocation mode, double amount, String extra)
     {
         // Don't do anything if this is client side and the player is not the player character
         if (player.level.isClientSide && !PlayerUtils.isClientPlayerCharacter(player))
@@ -96,7 +96,7 @@ public class QuestHandler
             progressQuestExternal(player, mode, amount, extra);
     }
 
-    public static void progressQuestExternal(Player player, ResourceLocation mode, double amount, ResourceLocation extra)
+    public static void progressQuestExternal(Player player, ResourceLocation mode, double amount, String extra)
     {
         ICultivatorStats stats = CultivatorStats.getCultivatorStats(player);
 
@@ -133,7 +133,7 @@ public class QuestHandler
             PacketHandler.sendCultivatorStatsToClient(player);
     }
 
-    public static void progressQuestInternal(Player player, ResourceLocation mode, double amount, ResourceLocation extra)
+    public static void progressQuestInternal(Player player, ResourceLocation mode, double amount, String extra)
     {
         IBodyModifications modifications = BodyModifications.getBodyModifications(player);
 

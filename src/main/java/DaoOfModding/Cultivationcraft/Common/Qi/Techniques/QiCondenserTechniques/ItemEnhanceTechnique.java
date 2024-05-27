@@ -89,7 +89,10 @@ public class ItemEnhanceTechnique extends AttackTechnique
         float damage = event.getAmount() + (float)getTechniqueStat(DefaultTechniqueStatIDs.damage, attackingPlayer);
 
         for (TechniqueModifier mod : CultivatorStats.getCultivatorStats(attackingPlayer).getCultivation().getModifiers())
+        {
             mod.onHitEntity(attackingPlayer, newSource.getEntity(), damage, getElement(), newSource.getEntity().position());
+            damage *= mod.getDamageMultiplier(this);
+        }
 
         // Hurt the target entity with the new damage source and increased damage
         event.getEntity().hurt(newSource, damage);

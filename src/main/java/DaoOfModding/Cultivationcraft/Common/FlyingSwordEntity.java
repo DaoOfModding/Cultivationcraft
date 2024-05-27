@@ -127,10 +127,15 @@ public class FlyingSwordEntity extends ItemEntity
 
     public float getDamageModifier()
     {
-        if (formation != null)
-            return (float)formation.getTechniqueStat(DefaultTechniqueStatIDs.damage, owner);
+        if (formation == null)
+            return defaultdamage;
 
-        return defaultdamage;
+        float damage = (float)formation.getTechniqueStat(DefaultTechniqueStatIDs.damage, owner);
+
+        for (TechniqueModifier mod : CultivatorStats.getCultivatorStats(owner).getCultivation().getModifiers())
+            damage *= mod.getDamageMultiplier(formation);
+
+        return damage;
     }
 
     public float getMaxSpeed()

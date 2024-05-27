@@ -61,13 +61,13 @@ public class Element
             if (target instanceof Player)
             {
                 QuestHandler.progressQuest((Player) target, Quest.ELEMENTALY_EFFECTED, 1);
-                QuestHandler.progressQuest((Player) target, Quest.ELEMENTALY_EFFECTED, 1, name);
+                QuestHandler.progressQuest((Player) target, Quest.ELEMENTALY_EFFECTED, 1, name.toString());
             }
 
             if (source.getEntity() instanceof Player)
             {;
                 QuestHandler.progressQuest((Player) source.getEntity(), Quest.ELEMENTAL_EFFECT_APPLIED, 1);
-                QuestHandler.progressQuest((Player) source.getEntity(), Quest.ELEMENTAL_EFFECT_APPLIED, 1, name);
+                QuestHandler.progressQuest((Player) source.getEntity(), Quest.ELEMENTAL_EFFECT_APPLIED, 1, name.toString());
             }
         }
     }

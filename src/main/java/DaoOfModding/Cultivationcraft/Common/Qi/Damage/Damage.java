@@ -126,6 +126,8 @@ public class Damage
         {
             QuestHandler.progressQuest((Player) event.getEntity(), Quest.DAMAGE_TAKEN, resistedDamage);
 
+            QuestHandler.progressQuest((Player) event.getEntity(), Quest.DAMAGE_TAKEN, resistedDamage, source.msgId);
+
             if (source.isExplosion())
                 QuestHandler.progressQuest((Player) event.getEntity(), Quest.EXPLOSION_DAMAGE_TAKEN, resistedDamage);
 

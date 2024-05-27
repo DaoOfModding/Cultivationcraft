@@ -82,9 +82,25 @@ public class QiProjectile extends AbstractHurtingProjectile
 
     public void tick()
     {
+        if (getOwner() == null)
+        {
+            this.discard();
+            return;
+        }
+
         QiSourceRenderer.element = Elements.getElement(getElement());
         QiSourceRenderer.qisource = null;
         QiSourceRenderer.target = null;
+
+        // Apply technique modifier movement modifiers to this projectile
+        Vec3 move = getDeltaMovement();
+
+        if (getOwner() instanceof Player)
+            for (TechniqueModifier mod : CultivatorStats.getCultivatorStats((Player)getOwner()).getCultivation().getModifiers())
+                move = mod.modifyMovement(move);
+
+        setDeltaMovement(move);
+
 
         super.tick();
 
@@ -129,7 +145,10 @@ public class QiProjectile extends AbstractHurtingProjectile
         }
 
         for (TechniqueModifier mod : CultivatorStats.getCultivatorStats((Player)getOwner()).getCultivation().getModifiers())
-            mod.onHitEntity((Player)getOwner(), hit.getEntity(), damage, getElement(), position());
+        {
+            mod.onHitEntity((Player) getOwner(), hit.getEntity(), damage, getElement(), position());
+            damage *= mod.getDamageMultiplier(new QiEmission());
+        }
 
         CultivatorAttackLogic.attackEntity((Player)getOwner(), hit.getEntity(), -1, damage, null, getElement(), "QiProjectile");
 

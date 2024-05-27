@@ -27,6 +27,7 @@ public class ExternalCultivationHandler
         addModifier(LightningModifier.class);
         addModifier(AuraModifier.class);
         addModifier(ExplosionModifier.class);
+        addModifier(FallModifier.class);
     }
 
     // List of all techniques available in the game
