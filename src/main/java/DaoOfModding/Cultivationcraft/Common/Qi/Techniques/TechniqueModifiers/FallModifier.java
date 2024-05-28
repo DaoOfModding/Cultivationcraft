@@ -1,5 +1,7 @@
 package DaoOfModding.Cultivationcraft.Common.Qi.Techniques.TechniqueModifiers;
 
+import DaoOfModding.Cultivationcraft.Common.FlyingSwordEntity;
+import DaoOfModding.Cultivationcraft.Common.Qi.Damage.QiDamageSource;
 import DaoOfModding.Cultivationcraft.Common.Qi.Quests.Quest;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.QiCondenserTechniques.FlyingSwordFormationTechnique;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.QiCondenserTechniques.QiEmission;
@@ -7,6 +9,8 @@ import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.Technique;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 
 public class FallModifier extends TechniqueModifier
@@ -41,10 +45,26 @@ public class FallModifier extends TechniqueModifier
         return move;
     }
 
-    // TODO: Modify flying sword movement
-    // Function to assign location relative to target flying sword should move to before attacking?
+    public void onHitTaken(Player owner, float damage, ResourceLocation defensiveElement, QiDamageSource source)
+    {
+        if (source.msgId.compareTo(DamageSource.FALL.getMsgId()) != 0 || damage <= 0)
+            return;
 
-    // TODO: Flight modification
-    // Deal AOE damage on landing based on... height? Speed? something.
+
+        // TODO: Create a shockwave dealing AOE damage  based on fall damage.
+    }
+
+    public Vec3 flyingSwordMovementOverride(FlyingSwordEntity sword, Entity target, Vec3 targetPos)
+    {
+        // Make the sword fall faster if it is currently above the entity
+        if (Math.abs(target.position().x - sword.position().x) < 1 && Math.abs(target.position().z - sword.position().z) < 1)
+        {
+            sword.movement = modifyMovement(sword.movement);
+            return targetPos;
+        }
+
+        // Move the sword above the entity
+        return targetPos.add(0, 5, 0);
+    }
 }
 

@@ -108,7 +108,7 @@ public class QiBarrierTechnique extends Technique
             levelUp(player, amount);
 
             for (TechniqueModifier mod : CultivatorStats.getCultivatorStats(player).getCultivation().getModifiers())
-                mod.onHitTaken(player, resist, getElement());
+                mod.onHitTaken(player, resist, getElement(), source);
 
             if (source.doStatusEffect())
                 Elements.getElement(source.getElement()).applyStatusEffect(source, player, (float)(resist - getTechniqueStat(statusResist, player) * resist));

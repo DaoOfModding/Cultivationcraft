@@ -288,6 +288,9 @@ public class FlyingSwordEntity extends ItemEntity
     {
         Vec3 targetPos = formation.getTarget().position();
 
+        for (TechniqueModifier mod : CultivatorStats.getCultivatorStats(owner).getCultivation().getModifiers())
+            targetPos = mod.flyingSwordMovementOverride(this, formation.getTarget(), targetPos);
+
         // Check how far away the item is to the target
         double distX = getX() - targetPos.x;
         double distY = getY() - targetPos.y;

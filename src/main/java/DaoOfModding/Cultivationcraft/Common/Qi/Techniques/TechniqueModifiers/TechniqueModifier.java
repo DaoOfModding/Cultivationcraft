@@ -2,8 +2,10 @@ package DaoOfModding.Cultivationcraft.Common.Qi.Techniques.TechniqueModifiers;
 
 import DaoOfModding.Cultivationcraft.Client.GUI.animatedTexture;
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStats;
+import DaoOfModding.Cultivationcraft.Common.FlyingSwordEntity;
 import DaoOfModding.Cultivationcraft.Common.Qi.Cultivation.CoreFormingCultivation;
 import DaoOfModding.Cultivationcraft.Common.Qi.Cultivation.CultivationType;
+import DaoOfModding.Cultivationcraft.Common.Qi.Damage.QiDamageSource;
 import DaoOfModding.Cultivationcraft.Common.Qi.Quests.Quest;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.Technique;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
@@ -84,9 +86,14 @@ public class TechniqueModifier
     {
     }
 
-    public void onHitTaken(Player owner, float damage, ResourceLocation defensiveElement)
+    public void onHitTaken(Player owner, float damage, ResourceLocation defensiveElement, QiDamageSource source)
     {
 
+    }
+
+    public Vec3 flyingSwordMovementOverride(FlyingSwordEntity sword, Entity target, Vec3 targetPos)
+    {
+        return targetPos;
     }
 
     public Quest getUnlockQuest()

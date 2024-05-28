@@ -39,7 +39,7 @@ public class ExplosionModifier extends TechniqueModifier
         explode(owner, pos, element, radius);
     }
 
-    public void onHitTaken(Player owner, float damage, ResourceLocation defensiveElement)
+    public void onHitTaken(Player owner, float damage, ResourceLocation defensiveElement, QiDamageSource source)
     {
         if (owner.level.isClientSide)
             return;
