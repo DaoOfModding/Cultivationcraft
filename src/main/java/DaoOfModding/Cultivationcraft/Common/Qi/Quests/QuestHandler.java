@@ -81,8 +81,8 @@ public class QuestHandler
 
     public static void progressQuest(Player player, ResourceLocation mode, double amount, String extra)
     {
-        // Don't do anything if this is client side and the player is not the player character
-        if (player.level.isClientSide && !PlayerUtils.isClientPlayerCharacter(player))
+        // Don't do anything if this is client side
+        if (player.level.isClientSide)
             return;
 
         amount *= debug.questProgressSpeed;

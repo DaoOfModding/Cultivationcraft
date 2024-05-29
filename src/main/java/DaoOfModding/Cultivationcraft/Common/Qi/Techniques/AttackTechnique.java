@@ -1,7 +1,6 @@
 package DaoOfModding.Cultivationcraft.Common.Qi.Techniques;
 
 import DaoOfModding.Cultivationcraft.Client.CultivatorAttackLogicClient;
-import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.TechniqueStats.DefaultTechniqueStatIDs;
 import DaoOfModding.Cultivationcraft.Server.CultivatorAttackLogic;
 import DaoOfModding.mlmanimator.Client.Poses.PoseHandler;
@@ -9,14 +8,12 @@ import DaoOfModding.mlmanimator.Client.Poses.PlayerPose;
 import DaoOfModding.Cultivationcraft.Network.ClientPacketHandler;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
@@ -24,7 +21,6 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
 
-import java.util.ArrayList;
 import java.util.UUID;
 
 public class AttackTechnique extends Technique

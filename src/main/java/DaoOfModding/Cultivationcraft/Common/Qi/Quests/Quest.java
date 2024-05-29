@@ -25,6 +25,7 @@ public class Quest
     public static final ResourceLocation JUMP = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.quest.jump");
     public static final ResourceLocation HEAL = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.quest.heal");
     public static final ResourceLocation DRAIN_STAMINA = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.quest.drainstamina");
+    public static final ResourceLocation ENDER_TELEPORT = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.quest.endertp");
 
     public final ResourceLocation mode;
     public final double complete;

@@ -11,6 +11,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
 public class FallModifier extends TechniqueModifier
@@ -51,10 +52,20 @@ public class FallModifier extends TechniqueModifier
             return;
 
 
-        // TODO: Create a shockwave dealing AOE damage  based on fall damage.
+        // Deal damage to entities standing on ground at the same level as the player
+        // Range and damage based on fall damage taken
+        float range = 1 + damage / 4;
+
+        for (Entity hit : owner.level.getEntities(owner, new AABB(owner.position().x - range, owner.position().y, owner.position().z - range, owner.position().x + range, owner.position().y, owner.position().z + range)))
+        {
+            if (hit.isOnGround())
+                hit.hurt(new QiDamageSource(ID.toString(), owner, defensiveElement, false), damage);
+        }
+
+        // TODO: Create a shockwave particle effect
     }
 
-    public Vec3 flyingSwordMovementOverride(FlyingSwordEntity sword, Entity target, Vec3 targetPos)
+    public Vec3 flyingSwordTargetOverride(FlyingSwordEntity sword, Entity target, Vec3 targetPos)
     {
         // Make the sword fall faster if it is currently above the entity
         if (Math.abs(target.position().x - sword.position().x) < 1 && Math.abs(target.position().z - sword.position().z) < 1)
@@ -66,5 +77,7 @@ public class FallModifier extends TechniqueModifier
         // Move the sword above the entity
         return targetPos.add(0, 5, 0);
     }
+
+    // TODO: Slowly fall when flying
 }
 

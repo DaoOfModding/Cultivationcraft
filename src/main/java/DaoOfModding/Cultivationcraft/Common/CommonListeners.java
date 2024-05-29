@@ -36,6 +36,7 @@ import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.entity.EntityTeleportEvent;
 import net.minecraftforge.event.entity.living.*;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
@@ -80,6 +81,13 @@ public class CommonListeners
 
 
         clearStatus(event.player);
+    }
+
+    @SubscribeEvent
+    public static void teleportEvent(EntityTeleportEvent.EnderPearl event)
+    {
+        if (event.getEntity() instanceof Player)
+            QuestHandler.progressQuest(event.getPlayer(), Quest.ENDER_TELEPORT, 1);
     }
 
     @SubscribeEvent

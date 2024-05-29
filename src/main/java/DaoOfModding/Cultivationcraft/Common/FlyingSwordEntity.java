@@ -65,6 +65,8 @@ public class FlyingSwordEntity extends ItemEntity
     protected ICultivatorStats stats = null;
     protected FlyingSwordFormationTechnique formation = null;
 
+    protected Vec3 target = new Vec3(0, 0, 0);
+
     protected boolean recall = false;
 
     private final float defaultspeed = 0.02f;
@@ -88,6 +90,11 @@ public class FlyingSwordEntity extends ItemEntity
     {
         super(worldIn, x, y, z, stack);
         init();
+    }
+
+    public Player getOwningPlayer()
+    {
+        return owner;
     }
 
     protected void init()
@@ -275,6 +282,15 @@ public class FlyingSwordEntity extends ItemEntity
     // Move flying sword forwards in specified direction
     protected void moveForwards()
     {
+        boolean canceled = false;
+
+        for (TechniqueModifier mod : CultivatorStats.getCultivatorStats(owner).getCultivation().getModifiers())
+            if (mod.flyingSwordMovementOverride(this, target))
+                canceled = true;
+
+        if (canceled)
+            return;
+
         Vec3 toMove = movement.add(direction.scale(getSpeed()));
 
         // If the movement vector is going faster than the item's max speed, lower it to the max speed
@@ -289,7 +305,9 @@ public class FlyingSwordEntity extends ItemEntity
         Vec3 targetPos = formation.getTarget().position();
 
         for (TechniqueModifier mod : CultivatorStats.getCultivatorStats(owner).getCultivation().getModifiers())
-            targetPos = mod.flyingSwordMovementOverride(this, formation.getTarget(), targetPos);
+            targetPos = mod.flyingSwordTargetOverride(this, formation.getTarget(), targetPos);
+
+        target = targetPos;
 
         // Check how far away the item is to the target
         double distX = getX() - targetPos.x;
@@ -313,6 +331,8 @@ public class FlyingSwordEntity extends ItemEntity
         double oPosX = owner.getX();
         double oPosY = owner.getY() + (owner.getBbHeight() / 2.0);
         double oPosZ = owner.getZ();
+
+        target = new Vec3(oPosX, oPosY, oPosZ);
 
         // Check how far away the item is to the owner
         double distX = getX() - oPosX;

@@ -6,6 +6,7 @@ import DaoOfModding.Cultivationcraft.Common.FlyingSwordEntity;
 import DaoOfModding.Cultivationcraft.Common.Qi.Cultivation.CoreFormingCultivation;
 import DaoOfModding.Cultivationcraft.Common.Qi.Cultivation.CultivationType;
 import DaoOfModding.Cultivationcraft.Common.Qi.Damage.QiDamageSource;
+import DaoOfModding.Cultivationcraft.Common.Qi.QiProjectile;
 import DaoOfModding.Cultivationcraft.Common.Qi.Quests.Quest;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.Technique;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
@@ -14,6 +15,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.phys.Vec3;
 
 public class TechniqueModifier
@@ -91,9 +93,19 @@ public class TechniqueModifier
 
     }
 
-    public Vec3 flyingSwordMovementOverride(FlyingSwordEntity sword, Entity target, Vec3 targetPos)
+    public Vec3 flyingSwordTargetOverride(FlyingSwordEntity sword, Entity target, Vec3 targetPos)
     {
         return targetPos;
+    }
+
+    public boolean flyingSwordMovementOverride(FlyingSwordEntity sword, Vec3 targetPos)
+    {
+        return false;
+    }
+
+    public Entity QiProjectileSpawnOverride(Player owner, Entity inputProjectile)
+    {
+        return inputProjectile;
     }
 
     public Quest getUnlockQuest()

@@ -115,6 +115,7 @@
   "cultivationcraft.quest.elementaleffectapplied": "Elemental effects applied",
   "cultivationcraft.quest.explosiondamagetaken": "Explosive damage taken",
   "cultivationcraft.quest.explosiondamagedealt": "Explosive damage Dealt",
+  "cultivationcraft.quest.endertp": "Times teleported",
 
   "cultivationcraft.concept.category.example": "Example category",
   "cultivationcraft.concept.category.example.text": "This is an example description",
@@ -147,6 +148,8 @@
   "cultivationcraft.concept.explosion.text": "Make your Qi explosive",
   "cultivationcraft.concept.fall": "Falling",
   "cultivationcraft.concept.fall.text": "Modify your Qi to be more effected by gravity, increasing it's damage",
+  "cultivationcraft.concept.warp": "Teleporting",
+  "cultivationcraft.concept.warp.text": "Utilise your Qi to teleport",
 
   "cultivationcraft.technique.example": "Example Technique",
   "cultivationcraft.technique.example.description": "This is an example description",

@@ -13,6 +13,7 @@ import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.TechniqueStats.Default
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.TechniqueStats.TechniqueStatModification;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.TickEvent;
@@ -113,8 +114,12 @@ public class QiEmission extends Technique
             return;
 
         Vec3 pos = PlayerUtils.getPosition(player).add(positionModifier);
-        QiProjectile projectile = new QiProjectile(player.level, player, pos.x, pos.y, pos.z, getElement(), (int)getTechniqueStat(DefaultTechniqueStatIDs.damage, player), (float)getTechniqueStat(DefaultTechniqueStatIDs.movementSpeed, player), this, (float)getTechniqueStat(DefaultTechniqueStatIDs.lifetime, player));
-        projectile.setDirection(player.getLookAngle());
+        Entity projectile = new QiProjectile(player.level, player, pos.x, pos.y, pos.z, getElement(), (int)getTechniqueStat(DefaultTechniqueStatIDs.damage, player), (float)getTechniqueStat(DefaultTechniqueStatIDs.movementSpeed, player), this, (float)getTechniqueStat(DefaultTechniqueStatIDs.lifetime, player));
+        ((QiProjectile)projectile).setDirection(player.getLookAngle());
+
+        for (TechniqueModifier mod : CultivatorStats.getCultivatorStats(player).getCultivation().getModifiers())
+            projectile = mod.QiProjectileSpawnOverride(player, projectile);
+
         player.level.addFreshEntity(projectile);
     }
 }
