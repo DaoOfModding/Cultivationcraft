@@ -32,10 +32,13 @@ import DaoOfModding.Cultivationcraft.Server.SkillHotbarServer;
 import com.mojang.brigadier.CommandDispatcher;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.block.SlimeBlock;
 import net.minecraft.world.level.chunk.LevelChunk;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.VanillaGameEvent;
 import net.minecraftforge.event.entity.EntityTeleportEvent;
 import net.minecraftforge.event.entity.living.*;
 import net.minecraftforge.event.entity.player.PlayerEvent;
@@ -81,6 +84,18 @@ public class CommonListeners
 
 
         clearStatus(event.player);
+    }
+
+    @SubscribeEvent
+    public static void vanillaEvent(VanillaGameEvent event)
+    {
+        if (event.getVanillaEvent() == GameEvent.HIT_GROUND && event.getCause() instanceof Player)
+        {
+            if (event.getContext().affectedState().getBlock() instanceof SlimeBlock)
+            {
+                QuestHandler.progressQuest((Player)event.getCause(), Quest.BOUNCE, 1);
+            }
+        }
     }
 
     @SubscribeEvent

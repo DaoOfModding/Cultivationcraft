@@ -60,11 +60,8 @@ public class Physics
 
     public static void Bounce(Player player)
     {
+        Vec3 delta = getDelta(player);
         float bounceHeight = BodyPartStatControl.getStats(player).getStat(StatIDs.bounceHeight) * getBlockJumpFactor(player);
-
-        // Do nothing if the player has no bounce stat
-        if (bounceHeight == 0)
-            return;
 
         // Do nothing if the player is in water
         if (player.isInWater())
@@ -73,27 +70,8 @@ public class Physics
             return;
         }
 
-        Vec3 delta = getDelta(player);
-
-        // If the player is on the ground then bounce if they have been falling, otherwise do nothing
-        if (player.isOnGround())
-        {
-            if (fallSpeed.containsKey(player.getUUID()))
-            {
-                double bounce = fallSpeed.get(player.getUUID()) * -bounceHeight;
-
-                // Only bounce if above a certain threshold, to stop infinite micro-bounces
-                if (bounce > 0.25)
-                {
-                    QuestHandler.progressQuest(player, Quest.BOUNCE, bounce);
-                    player.setDeltaMovement(delta.x, bounce, delta.z);
-                }
-
-                fallSpeed.remove(player.getUUID());
-            }
-
-            return;
-        }
+        if (bounceHeight > 0 && player.isOnGround())
+            Bounce(player, bounceHeight);
 
         // If the player is falling place their fall speed into the fallSpeed hashmap
         double fall = delta.y;
@@ -102,6 +80,26 @@ public class Physics
             fallSpeed.put(player.getUUID(), fall);
         else
             fallSpeed.remove(player.getUUID());
+    }
+
+    public static void Bounce(Player player, float bounceHeight)
+    {
+        Vec3 delta = getDelta(player);
+
+        // If the player is on the ground then bounce if they have been falling, otherwise do nothing
+        if (fallSpeed.containsKey(player.getUUID()))
+        {
+            double bounce = fallSpeed.get(player.getUUID()) * -bounceHeight;
+
+            // Only bounce if above a certain threshold, to stop infinite micro-bounces
+            if (bounce > 0.25)
+            {
+                QuestHandler.progressQuest(player, Quest.BOUNCE, bounce);
+                player.setDeltaMovement(delta.x, bounce, delta.z);
+            }
+
+            fallSpeed.remove(player.getUUID());
+        }
     }
 
     // Increase the distance you can fall without taking damage by the fall height

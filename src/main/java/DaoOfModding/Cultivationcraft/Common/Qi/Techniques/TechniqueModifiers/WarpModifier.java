@@ -12,6 +12,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
@@ -45,7 +46,7 @@ public class WarpModifier extends TechniqueModifier
 
     public void onHitTaken(Player owner, float damage, ResourceLocation defensiveElement, QiDamageSource source)
     {
-        if (damage <= 0)
+        if (damage <= 0 || source.isInternal() || source.msgId.compareTo(DamageSource.FALL.getMsgId()) == 0)
             return;
 
         float rand = (float)Math.random();
