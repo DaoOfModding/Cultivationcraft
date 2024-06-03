@@ -5,6 +5,8 @@ import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
 import DaoOfModding.Cultivationcraft.Common.Qi.Quests.Quest;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.block.state.BlockState;
 
 public class EarthModifier extends TechniqueModifier
 {
@@ -19,5 +21,15 @@ public class EarthModifier extends TechniqueModifier
         stabiliseQuest = new Quest(Quest.DAMAGE_DEALT, 1000, Element.toString());
 
         coreTexture = new animatedTexture(new ResourceLocation(Cultivationcraft.MODID, "textures/cores/earth.png"));
+
+        flyingMount = true;
+    }
+
+    public BlockState getMountSource(Player owner)
+    {
+        if (owner.isOnGround())
+            return owner.getFeetBlockState();
+
+        return null;
     }
 }

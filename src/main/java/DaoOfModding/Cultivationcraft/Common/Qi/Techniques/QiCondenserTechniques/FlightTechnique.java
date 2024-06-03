@@ -8,6 +8,7 @@ import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.ICultiv
 import DaoOfModding.Cultivationcraft.Common.Qi.CultivationTypes;
 import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.Technique;
+import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.TechniqueModifiers.TechniqueModifier;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.TechniqueStats.DefaultTechniqueStatIDs;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.TechniqueStats.TechniqueStatModification;
 import DaoOfModding.Cultivationcraft.Common.Reflection;
@@ -16,6 +17,7 @@ import DaoOfModding.mlmanimator.Client.Poses.PoseHandler;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.event.TickEvent;
 
 public class FlightTechnique extends Technique
@@ -109,5 +111,38 @@ public class FlightTechnique extends Technique
         player.getAbilities().flying = false;
 
         super.deactivate(player);
+    }
+
+    @Override
+    public void activate(Player player)
+    {
+        // Do nothing if the player is already a passenger
+        if (player.isPassenger())
+            return;
+
+        boolean mount = false;
+
+        for (TechniqueModifier mod : CultivatorStats.getCultivatorStats(player).getCultivation().getModifiers())
+            if (mod.hasMount())
+                mount = true;
+
+        if (mount)
+        {
+            BlockState source = null;
+
+            for (TechniqueModifier mod : CultivatorStats.getCultivatorStats(player).getCultivation().getModifiers())
+            {
+                if ((source = mod.getMountSource(player)) != null)
+                    break;
+            }
+
+            // TEMP - flying can still work if there is a set FORM that works without a source
+            if (source == null)
+                return;
+
+            // TODO - Flying mount entity creation
+        }
+
+        super.activate(player);
     }
 }

@@ -16,6 +16,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 
 public class TechniqueModifier
@@ -32,6 +33,7 @@ public class TechniqueModifier
     boolean allowSameCategory = false;
     Quest unlockQuest;
     Quest stabiliseQuest;
+    boolean flyingMount = false;
 
     float damageMult = 1;
 
@@ -67,6 +69,16 @@ public class TechniqueModifier
             return true;
 
         return false;
+    }
+
+    public Boolean hasMount()
+    {
+        return flyingMount;
+    }
+
+    public BlockState getMountSource(Player owner)
+    {
+        return null;
     }
 
     public void tick(Player owner, Vec3 position, ResourceLocation element)
