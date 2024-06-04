@@ -7,7 +7,10 @@ import DaoOfModding.Cultivationcraft.Common.Qi.Quests.Quest;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.Vec3;
 
 public class BounceModifier extends TechniqueModifier
 {
@@ -23,7 +26,27 @@ public class BounceModifier extends TechniqueModifier
     }
 
     // TODO: Qi consumption reduced on damage taken
-    // TODO: Qi Emissions bounce off blocks
+
+    public boolean onHitBlock(Player owner, BlockHitResult hit, float damage, ResourceLocation element, Entity projectile)
+    {
+        super.onHitBlock(owner, hit, damage, element, projectile);
+
+        Vec3 bounceDirection = bounce(projectile.getDeltaMovement().normalize(), new Vec3(hit.getDirection().getNormal().getX(), hit.getDirection().getNormal().getY(), hit.getDirection().getNormal().getZ()));
+
+        // Set the new delta movement of the projectile to be the bounce direction multiplied by the previous speed
+        projectile.setDeltaMovement(bounceDirection.scale(projectile.getDeltaMovement().length()));
+
+        return true;
+    }
+
+    protected Vec3 bounce(Vec3 direction, Vec3 normal)
+    {
+        Vec3 bounce = normal.scale(normal.dot(direction) * 2);
+        bounce = bounce.subtract(direction);
+        bounce = bounce.scale(-1);
+
+        return bounce;
+    }
 
     public void onHitTaken(Player owner, float damage, ResourceLocation defensiveElement, QiDamageSource source)
     {

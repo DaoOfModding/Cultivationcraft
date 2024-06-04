@@ -166,8 +166,11 @@ public class QiProjectile extends AbstractHurtingProjectile
             return;
         }
 
+        boolean survive = false;
+
         for (TechniqueModifier mod : CultivatorStats.getCultivatorStats((Player)getOwner()).getCultivation().getModifiers())
-            mod.onHitBlock((Player)getOwner(), hit.getBlockPos(), damage, getElement(), position());
+            if(mod.onHitBlock((Player)getOwner(), hit, damage, getElement(), this))
+                survive = true;
 
         BlockState blockstate = this.level.getBlockState(hit.getBlockPos());
         blockstate.onProjectileHit(this.level, blockstate, hit, this);
@@ -175,7 +178,8 @@ public class QiProjectile extends AbstractHurtingProjectile
         Elements.getElement(getElement()).effectBlock(this.level, hit.getBlockPos());
 
         // Destroy this projectile if it hits a block
-        this.discard();
+        if (!survive)
+            this.discard();
     }
 
     public boolean hurt(DamageSource p_36910_, float p_36911_) {

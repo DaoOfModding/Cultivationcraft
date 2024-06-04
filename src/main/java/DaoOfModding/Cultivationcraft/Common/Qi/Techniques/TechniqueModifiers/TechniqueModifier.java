@@ -17,6 +17,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 
 public class TechniqueModifier
@@ -91,9 +92,12 @@ public class TechniqueModifier
         onHitAll(owner, pos, damage, element);
     }
 
-    public void onHitBlock(Player owner, BlockPos blockPos, float damage, ResourceLocation element, Vec3 pos)
+    // Return whether the projectile survives the hit
+    public boolean onHitBlock(Player owner, BlockHitResult hit, float damage, ResourceLocation element, Entity projectile)
     {
-        onHitAll(owner, pos, damage, element);
+        onHitAll(owner, projectile.position(), damage, element);
+
+        return false;
     }
 
     public void onHitAll(Player owner, Vec3 pos, float damage, ResourceLocation element)
