@@ -19,6 +19,8 @@ public class Quest
     public static final ResourceLocation TIME_ALIVE = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.quest.alive");
     public static final ResourceLocation LIVE = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.quest.live");
     public static final ResourceLocation BOUNCE = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.quest.bounce");
+    public static final ResourceLocation GROWPLANT = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.quest.growplant");
+    public static final ResourceLocation GROW = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.quest.grow");
     public static final ResourceLocation FLIGHT = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.quest.fly");
     public static final ResourceLocation WALK = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.quest.walk");
     public static final ResourceLocation SWIM = new ResourceLocation(Cultivationcraft.MODID, "cultivationcraft.quest.swim");

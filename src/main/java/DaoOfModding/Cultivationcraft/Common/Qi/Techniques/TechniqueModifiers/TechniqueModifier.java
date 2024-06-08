@@ -8,9 +8,13 @@ import DaoOfModding.Cultivationcraft.Common.Qi.Cultivation.CultivationType;
 import DaoOfModding.Cultivationcraft.Common.Qi.Damage.QiDamageSource;
 import DaoOfModding.Cultivationcraft.Common.Qi.QiProjectile;
 import DaoOfModding.Cultivationcraft.Common.Qi.Quests.Quest;
+import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.QiCondenserTechniques.FlightTechnique;
+import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.QiCondenserTechniques.QiBarrierTechnique;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.Technique;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
 import DaoOfModding.Cultivationcraft.Network.PacketHandler;
+import DaoOfModding.mlmanimator.Client.Poses.PlayerPose;
+import DaoOfModding.mlmanimator.Client.Poses.PoseHandler;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
@@ -20,10 +24,13 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 
+import java.util.HashMap;
+
 public class TechniqueModifier
 {
     public static final ResourceLocation ELEMENTAL_CATEGORY = new ResourceLocation(Cultivationcraft.MODID, "concept.category.elemental");
     public static final ResourceLocation MODIFIER_CATEGORY = new ResourceLocation(Cultivationcraft.MODID, "concept.category.modifier");
+    public static final ResourceLocation SIZE_CATEGORY = new ResourceLocation(Cultivationcraft.MODID, "concept.category.size");
 
     public ResourceLocation ID;
     public ResourceLocation CATEGORY;
@@ -35,6 +42,11 @@ public class TechniqueModifier
     Quest unlockQuest;
     Quest stabiliseQuest;
     boolean flyingMount = false;
+
+    Vec3 size = new Vec3(1, 1, 1);
+    Vec3 itemSize = new Vec3(1, 1, 1);
+
+    HashMap<String, PlayerPose> poses = new HashMap<>();
 
     float damageMult = 1;
 
@@ -85,6 +97,27 @@ public class TechniqueModifier
     public void tick(Player owner, Vec3 position, ResourceLocation element)
     {
 
+    }
+
+    public Vec3 getItemSize(Technique tech)
+    {
+        return itemSize;
+    }
+
+    public void doResize(Player owner, Technique tech)
+    {
+        if (tech instanceof QiBarrierTechnique || tech instanceof FlightTechnique)
+            PoseHandler.getPlayerPoseHandler(owner.getUUID()).resize(size);
+    }
+
+    public void tickClient(Player owner, Technique tech)
+    {
+        doResize(owner, tech);
+
+        if (!poses.containsKey(tech.getClass().toString()))
+            return;
+
+        PoseHandler.addPose(owner.getUUID(), poses.get(tech.getClass().toString()));
     }
 
     public void onHitEntity(Player owner, Entity hit, float damage, ResourceLocation element, Vec3 pos)

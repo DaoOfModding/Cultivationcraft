@@ -581,6 +581,9 @@ public class Technique
                 currentChannel++;
 
         PoseHandler.addPose(event.player.getUUID(), pose);
+
+        for (TechniqueModifier mod : CultivatorStats.getCultivatorStats(event.player).getCultivation().getModifiers())
+            mod.tickClient(event.player, this);
     }
 
     public void tickInactiveClient(TickEvent.PlayerTickEvent event)

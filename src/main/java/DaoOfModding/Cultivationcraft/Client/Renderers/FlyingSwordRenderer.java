@@ -20,6 +20,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import com.mojang.math.Vector3f;
+import net.minecraft.world.phys.Vec3;
 
 public class FlyingSwordRenderer extends EntityRenderer<FlyingSwordEntity>
 {
@@ -67,8 +68,10 @@ public class FlyingSwordRenderer extends EntityRenderer<FlyingSwordEntity>
         if (entityIn.canControl())
             f1 = shouldBob() ? Mth.sin(((float)entityIn.getAge() + partialTicks) / 10.0F + entityIn.bobOffs) * 0.1F + 0.1F : 0;
 
+        Vec3 resizer = entityIn.getSize();
+        PoseStackIn.scale((float)resizer.x, (float)resizer.y, (float)resizer.z);
 
-        float f2 = ibakedmodel.getTransforms().getTransform(ItemTransforms.TransformType.GROUND).scale.y();
+        float f2 = ibakedmodel.getTransforms().getTransform(ItemTransforms.TransformType.GROUND).scale.y() * (float)resizer.y;
         PoseStackIn.translate(0.0D, (double)(f1 + 0.25F * f2), 0.0D);
 
 

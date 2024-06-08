@@ -61,6 +61,7 @@ public class FlyingSwordEntity extends ItemEntity
     protected int age = 0;
     public Vec3 direction = new Vec3(1, 0, 0);
     public Vec3 movement = new Vec3(0, 0 ,0);
+    public Vec3 size = new Vec3(1, 1 ,1);
     protected Player owner = null;
     protected ICultivatorStats stats = null;
     protected FlyingSwordFormationTechnique formation = null;
@@ -106,6 +107,11 @@ public class FlyingSwordEntity extends ItemEntity
             this.noPhysics = true;
 
         generateDecay();
+    }
+
+    public Vec3 getSize()
+    {
+        return size;
     }
 
     public float getControlRange()
@@ -495,6 +501,8 @@ public class FlyingSwordEntity extends ItemEntity
             // If the flying sword is in range of it's owner then do normal movement, otherwise fall to the ground
             if (canControl() && CultivatorStats.getCultivatorStats(owner).getCultivation().consumeQi(owner, formation.getTechniqueStat(DefaultTechniqueStatIDs.qiCost, owner) / 20f))
             {
+                size = formation.getSize(owner);
+
                 canPickup = false;
 
                 this.baseTick();
@@ -529,7 +537,10 @@ public class FlyingSwordEntity extends ItemEntity
                     CultivationAdvancements.HAS_FLYING_SWORD.trigger(serverPlayer, true);
             }
             else
+            {
+                size = new Vec3(1, 1 ,1);
                 fall();
+            }
 
             // Calculate the item's motion based on it's movement vectors
             updateMotion();

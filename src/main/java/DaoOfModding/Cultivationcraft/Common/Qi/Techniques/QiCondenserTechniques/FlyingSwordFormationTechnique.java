@@ -5,6 +5,7 @@ import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.ICultiv
 import DaoOfModding.Cultivationcraft.Common.Qi.CultivationTypes;
 import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.AttackOverrideTechnique;
+import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.TechniqueModifiers.TechniqueModifier;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.TechniqueStats.DefaultTechniqueStatIDs;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.TechniqueStats.TechniqueStatModification;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
@@ -15,7 +16,10 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.TickEvent;
+
+import java.util.ArrayList;
 
 public class FlyingSwordFormationTechnique extends AttackOverrideTechnique
 {
@@ -116,6 +120,18 @@ public class FlyingSwordFormationTechnique extends AttackOverrideTechnique
             return true;
 
         return false;
+    }
+
+    public Vec3 getSize(Player player)
+    {
+        Vec3 size = new Vec3(1, 1, 1);
+
+        ArrayList<TechniqueModifier> techmods = CultivatorStats.getCultivatorStats(player).getCultivation().getModifiers();
+
+        for (TechniqueModifier mod : techmods)
+            size = size.multiply(mod.getSize(this));
+
+        return size;
     }
 
     public Entity getTarget()

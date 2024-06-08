@@ -32,6 +32,7 @@ import DaoOfModding.Cultivationcraft.Server.SkillHotbarServer;
 import com.mojang.brigadier.CommandDispatcher;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.block.BonemealableBlock;
 import net.minecraft.world.level.block.SlimeBlock;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.gameevent.GameEvent;
@@ -41,11 +42,13 @@ import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.VanillaGameEvent;
 import net.minecraftforge.event.entity.EntityTeleportEvent;
 import net.minecraftforge.event.entity.living.*;
+import net.minecraftforge.event.entity.player.BonemealEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.level.ChunkEvent;
 import net.minecraftforge.event.level.ChunkWatchEvent;
 import net.minecraftforge.event.level.LevelEvent;
+import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.common.Mod;
@@ -237,6 +240,17 @@ public class CommonListeners
         if (source.countQiSources() > 0)
             if (!tickingQiSources.contains(source))
                 tickingQiSources.add(source);
+    }
+
+    @SubscribeEvent
+    public static void BonemealEvent(BonemealEvent event)
+    {
+        if (event.getLevel().isClientSide)
+            return;
+
+        if (event.getBlock().getBlock() instanceof BonemealableBlock)
+            if (((BonemealableBlock)event.getBlock().getBlock()).isValidBonemealTarget(event.getLevel(), event.getPos(), event.getBlock(), event.getLevel().isClientSide))
+                QuestHandler.progressQuest(event.getEntity(), Quest.GROWPLANT, 1);
     }
 
     @SubscribeEvent

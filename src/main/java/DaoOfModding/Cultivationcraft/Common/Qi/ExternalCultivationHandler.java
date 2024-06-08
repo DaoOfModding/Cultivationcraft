@@ -30,6 +30,7 @@ public class ExternalCultivationHandler
         addModifier(FallModifier.class);
         addModifier(WarpModifier.class);
         addModifier(BounceModifier.class);
+        addModifier(GrowModifier.class);
     }
 
     // List of all techniques available in the game
