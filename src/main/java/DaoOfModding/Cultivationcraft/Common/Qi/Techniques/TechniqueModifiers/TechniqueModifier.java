@@ -9,6 +9,7 @@ import DaoOfModding.Cultivationcraft.Common.Qi.Damage.QiDamageSource;
 import DaoOfModding.Cultivationcraft.Common.Qi.QiProjectile;
 import DaoOfModding.Cultivationcraft.Common.Qi.Quests.Quest;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.QiCondenserTechniques.FlightTechnique;
+import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.QiCondenserTechniques.ItemEnhanceTechnique;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.QiCondenserTechniques.QiBarrierTechnique;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.Technique;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
@@ -108,6 +109,8 @@ public class TechniqueModifier
     {
         if (tech instanceof QiBarrierTechnique || tech instanceof FlightTechnique)
             PoseHandler.getPlayerPoseHandler(owner.getUUID()).resize(size);
+        else if (tech instanceof ItemEnhanceTechnique)
+            PoseHandler.getPlayerPoseHandler(owner.getUUID()).getPlayerModel().scaleItem(itemSize);
     }
 
     public void tickClient(Player owner, Technique tech)

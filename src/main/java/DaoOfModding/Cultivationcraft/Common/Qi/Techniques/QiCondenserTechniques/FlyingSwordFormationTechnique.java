@@ -129,7 +129,7 @@ public class FlyingSwordFormationTechnique extends AttackOverrideTechnique
         ArrayList<TechniqueModifier> techmods = CultivatorStats.getCultivatorStats(player).getCultivation().getModifiers();
 
         for (TechniqueModifier mod : techmods)
-            size = size.multiply(mod.getSize(this));
+            size = size.multiply(mod.getItemSize(this));
 
         return size;
     }

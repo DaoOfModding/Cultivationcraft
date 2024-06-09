@@ -20,7 +20,6 @@ public class GrowModifier extends TechniqueModifier
         itemSize = new Vec3(2, 2, 2);
     }
 
-    // TODO: Hand item resize
     // TODO: FlyingSword hitbox resizing
     // TODO: QiProjectile size
     // TODO: Qi cost increase x2
