@@ -77,7 +77,7 @@ public class ItemEnhanceTechnique extends AttackTechnique
         Player attackingPlayer = (Player)event.getSource().getEntity();
 
         // Do nothing if player does not have enough Qi to use this technique
-        if (!CultivatorStats.getCultivatorStats(attackingPlayer).getCultivation().consumeQi(attackingPlayer, getTechniqueStat(DefaultTechniqueStatIDs.qiCost, attackingPlayer)))
+        if (!spendExternalQi(attackingPlayer, 1))
         {
             deactivate(attackingPlayer);
             return false;

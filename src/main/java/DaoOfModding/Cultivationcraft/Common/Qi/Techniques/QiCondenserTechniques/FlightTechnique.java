@@ -68,7 +68,8 @@ public class FlightTechnique extends Technique
 
         if (!event.player.isOnGround())
         {
-            if (!CultivatorStats.getCultivatorStats(event.player).getCultivation().consumeQi(event.player, getTechniqueStat(DefaultTechniqueStatIDs.qiCost, event.player) / 20f)) {
+            if (!spendExternalQi(event.player, 0.05))
+            {
                 deactivate(event.player);
                 return;
             }
@@ -87,7 +88,8 @@ public class FlightTechnique extends Technique
     {
         if (!event.player.isOnGround())
         {
-            if (!CultivatorStats.getCultivatorStats(event.player).getCultivation().consumeQi(event.player, getTechniqueStat(DefaultTechniqueStatIDs.qiCost, event.player) / 20f)) {
+            if (!spendExternalQi(event.player, 0.05))
+            {
                 deactivate(event.player);
                 return;
             }

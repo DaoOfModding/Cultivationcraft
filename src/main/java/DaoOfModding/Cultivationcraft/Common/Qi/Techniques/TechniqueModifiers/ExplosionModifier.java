@@ -25,6 +25,7 @@ public class ExplosionModifier extends TechniqueModifier
         coreTexture = new animatedTexture(new ResourceLocation(Cultivationcraft.MODID, "textures/cores/explosion.png"), 4, 4);
 
         allowSameCategory = true;
+        qiMult = 2;
     }
 
     @Override

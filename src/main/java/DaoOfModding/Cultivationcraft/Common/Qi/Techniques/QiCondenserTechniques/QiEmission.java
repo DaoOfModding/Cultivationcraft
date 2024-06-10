@@ -110,7 +110,7 @@ public class QiEmission extends Technique
     {
         // Try to consume Qi for this projectile, doing nothing if there is not enough Qi to do so
         // Happens once per projectile spawned
-        if (!CultivatorStats.getCultivatorStats(player).getCultivation().consumeQi(player, getTechniqueStat(DefaultTechniqueStatIDs.qiCost, player)))
+        if (!spendExternalQi(player, 1))
             return;
 
         Vec3 pos = PlayerUtils.getPosition(player).add(positionModifier);

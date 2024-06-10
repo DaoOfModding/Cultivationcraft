@@ -24,6 +24,7 @@ public class AuraModifier extends TechniqueModifier
         coreTexture = new animatedTexture(new ResourceLocation(Cultivationcraft.MODID, "textures/cores/aura.png"), 4, 2);
 
         allowSameCategory = true;
+        qiMult = 2;
     }
 
     public void tick(Player owner, Vec3 position, ResourceLocation element)

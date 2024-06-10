@@ -71,7 +71,7 @@ public class QiBarrierTechnique extends Technique
     @Override
     public void tickClient(TickEvent.PlayerTickEvent event)
     {
-        if (!CultivatorStats.getCultivatorStats(event.player).getCultivation().consumeQi(event.player, getTechniqueStat(DefaultTechniqueStatIDs.qiCost, event.player) / 20f))
+        if (!spendExternalQi(event.player, 0.05))
         {
             deactivate(event.player);
             return;
@@ -85,7 +85,7 @@ public class QiBarrierTechnique extends Technique
     @Override
     public void tickServer(TickEvent.PlayerTickEvent event)
     {
-        if (!CultivatorStats.getCultivatorStats(event.player).getCultivation().consumeQi(event.player, getTechniqueStat(DefaultTechniqueStatIDs.qiCost, event.player) / 20f))
+        if (!spendExternalQi(event.player, 0.05))
         {
             deactivate(event.player);
             return;

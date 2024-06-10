@@ -8,6 +8,7 @@ import DaoOfModding.Cultivationcraft.Common.Qi.Damage.QiDamageSource;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.BodyPartStatControl;
 import DaoOfModding.Cultivationcraft.Common.Qi.Stats.PlayerStatModifications;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.TechniqueModifiers.TechniqueModifier;
+import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.TechniqueStats.DefaultTechniqueStatIDs;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.TechniqueStats.TechniqueStatModification;
 import DaoOfModding.Cultivationcraft.Network.ClientPacketHandler;
 import DaoOfModding.Cultivationcraft.StaminaHandler;
@@ -114,6 +115,16 @@ public class Technique
 
         if (canLevel && changePerLevel != null)
             statChangesPerLevel.put(stat, changePerLevel);
+    }
+
+    public boolean spendExternalQi(Player player, double modifier)
+    {
+        double cost = getTechniqueStat(DefaultTechniqueStatIDs.qiCost, player) * modifier;
+
+        for (TechniqueModifier mod : CultivatorStats.getCultivatorStats(player).getCultivation().getModifiers())
+            cost *= mod.getQiCostModifier(this);
+
+        return CultivatorStats.getCultivatorStats(player).getCultivation().consumeQi(player, cost);
     }
 
     protected void addMinTechniqueStat(ResourceLocation stat, double amount)

@@ -23,6 +23,7 @@ public class BounceModifier extends TechniqueModifier
         stabiliseQuest = new Quest(Quest.BOUNCE, 1000);
 
         allowSameCategory = true;
+        qiMult = 1.5f;
     }
 
     // TODO: Qi consumption reduced on damage taken

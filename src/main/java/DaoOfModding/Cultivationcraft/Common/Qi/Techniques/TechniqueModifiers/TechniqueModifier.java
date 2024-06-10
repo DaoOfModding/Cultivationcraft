@@ -45,11 +45,12 @@ public class TechniqueModifier
     boolean flyingMount = false;
 
     Vec3 size = new Vec3(1, 1, 1);
-    Vec3 itemSize = new Vec3(1, 1, 1);
+    float itemSize = 1;
 
     HashMap<String, PlayerPose> poses = new HashMap<>();
 
     float damageMult = 1;
+    float qiMult = 1;
 
     public TechniqueModifier()
     {
@@ -77,6 +78,11 @@ public class TechniqueModifier
         return damageMult;
     }
 
+    public float getQiCostModifier(Technique tech)
+    {
+        return qiMult;
+    }
+
     public Boolean hasElement()
     {
         if (getElement() != null)
@@ -100,17 +106,17 @@ public class TechniqueModifier
 
     }
 
-    public Vec3 getItemSize(Technique tech)
+    public float getItemSize()
     {
         return itemSize;
     }
 
     public void doResize(Player owner, Technique tech)
     {
-        if (tech instanceof QiBarrierTechnique || tech instanceof FlightTechnique)
+        if (tech instanceof QiBarrierTechnique)
             PoseHandler.getPlayerPoseHandler(owner.getUUID()).resize(size);
         else if (tech instanceof ItemEnhanceTechnique)
-            PoseHandler.getPlayerPoseHandler(owner.getUUID()).getPlayerModel().scaleItem(itemSize);
+            PoseHandler.getPlayerPoseHandler(owner.getUUID()).getPlayerModel().scaleItem(new Vec3(itemSize, itemSize, itemSize));
     }
 
     public void tickClient(Player owner, Technique tech)

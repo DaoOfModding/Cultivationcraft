@@ -19,9 +19,7 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractHurtingProjectile;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
@@ -70,7 +68,6 @@ public class QiProjectile extends AbstractHurtingProjectile
         entityData.define(ID_SPEED, 0f);
         entityData.define(ID_LIFE, 0f);
     }
-
 
     public float getAlpha()
     {
