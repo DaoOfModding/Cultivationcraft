@@ -45,5 +45,4 @@ public class GrowModifier extends TechniqueModifier
     }
 
     // TODO: FlyingSword hitbox resizing
-    // TODO: QiProjectile size
 }

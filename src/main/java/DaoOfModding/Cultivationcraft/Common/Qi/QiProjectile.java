@@ -129,6 +129,17 @@ public class QiProjectile extends AbstractHurtingProjectile
         return new ResourceLocation(entityData.get(ID_ELEMENT));
     }
 
+    public float getSize()
+    {
+        float size = 1;
+        for (TechniqueModifier mod : CultivatorStats.getCultivatorStats((Player)getOwner()).getCultivation().getModifiers())
+        {
+            size *= mod.getItemSize();
+        }
+
+        return size;
+    }
+
     protected void onHitEntity(EntityHitResult hit)
     {
         // Do nothing if this is hitting its owner or another projectile

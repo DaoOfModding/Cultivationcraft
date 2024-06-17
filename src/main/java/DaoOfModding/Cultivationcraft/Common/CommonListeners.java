@@ -17,6 +17,7 @@ import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.FoodStats.QiFoodStats;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Lungs.Lung.Lung;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.Lungs.Lungs;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.PlayerHealthManager;
+import DaoOfModding.Cultivationcraft.Common.Qi.QiProjectile;
 import DaoOfModding.Cultivationcraft.Common.Qi.Quests.Quest;
 import DaoOfModding.Cultivationcraft.Common.Qi.Quests.QuestHandler;
 import DaoOfModding.Cultivationcraft.Common.Qi.CultivationTypes;
@@ -40,6 +41,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.VanillaGameEvent;
+import net.minecraftforge.event.entity.EntityEvent;
 import net.minecraftforge.event.entity.EntityTeleportEvent;
 import net.minecraftforge.event.entity.living.*;
 import net.minecraftforge.event.entity.player.BonemealEvent;
@@ -233,6 +235,13 @@ public class CommonListeners
         }
 
         checkQiSourceIsTicking(sources);
+    }
+
+    @SubscribeEvent
+    public static void entitySizeEvent(EntityEvent.Size event)
+    {
+        if (event.getEntity() instanceof QiProjectile && ((QiProjectile) event.getEntity()).getOwner() != null)
+            event.setNewSize(event.getOldSize().scale(((QiProjectile)event.getEntity()).getSize()));
     }
 
     public static void checkQiSourceIsTicking(IChunkQiSources source)

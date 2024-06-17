@@ -31,11 +31,12 @@ public class QiProjectileRenderer extends EntityRenderer<QiProjectile>
     public void render(QiProjectile p_114080_, float p_114081_, float p_114082_, PoseStack p_114083_, MultiBufferSource p_114084_, int p_114085_)
     {
         int alpha = (int)(p_114080_.getAlpha() * 255f);
+        float size = p_114080_.getSize();
 
         Color color = Elements.getElement(p_114080_.getElement()).color;
 
         p_114083_.pushPose();
-        p_114083_.scale(1.0F, 1.0F, 1.0F);
+        p_114083_.scale(size, size, size);
         p_114083_.mulPose(this.entityRenderDispatcher.cameraOrientation());
         p_114083_.mulPose(Vector3f.YP.rotationDegrees(180.0F));
         PoseStack.Pose posestack$pose = p_114083_.last();
