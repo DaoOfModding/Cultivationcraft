@@ -1,0 +1,17 @@
+{
+  "title": "{pill}",
+  "titles": [
+    "Spirit Reservoir Method",
+    "Notes on Boundless River",
+    "{pill}: Recipe"
+  ],
+  "text": "Immediately restores 35% of maximum Qi. Cooldown: 20 seconds, shared with its effect family.\n\n\nIt remains usable outside its intended realm; effectiveness halves for each major realm above Core Formation.",
+  "recipe": "cultivationcraft:spirit_reservoir",
+  "loot_weights": {
+    "village": 0.001,
+    "common": 0.02,
+    "rare": 1,
+    "stronghold": 5,
+    "end_city": 18
+  }
+}

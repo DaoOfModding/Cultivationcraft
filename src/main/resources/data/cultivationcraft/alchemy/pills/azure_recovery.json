@@ -1,0 +1,20 @@
+{
+  "tier": 2,
+  "complexity": 2,
+  "effect": "QI",
+  "refinement_qi": 150,
+  "elements": {
+    "water": 120,
+    "fire": 60
+  },
+  "minimum_score": 0,
+  "amount": 0.2,
+  "duration_seconds": 0,
+  "cooldown_seconds": 15,
+  "color": "5DABE3",
+  "names": [
+    "Azure Recovery Pill",
+    "Flowing Meridian Pill",
+    "Clear River Pill"
+  ]
+}

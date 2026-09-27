@@ -1,6 +1,6 @@
 {
   "title": "Give Plants",
-  "text": "/cultivation giveplant id <player> <id> [host] [count]\n\n/cultivation giveplant filter <player> <element> [tier] [host] [count]\n\nTab suggests plant IDs with names, elements and tiers. Host defaults to false; true adds source data to eligible T3 plants. Count: 1-64, default 1. Optional arguments must be supplied in order.",
+  "text": "/cultivation giveplant id <player> <id> [host] [count]\n\n\n/cultivation giveplant filter <player> <element> [tier] [host] [count]\n\n\nTab suggests plant IDs with names, elements and tiers. Host defaults to false; true adds source data to eligible T3 plants.\n\n\nCount: 1-64, default 1. Optional arguments must be supplied in order.",
   "translation_key": "cultivationcraft.gui.help.debug.giveplant",
   "category": [
     "Debug"

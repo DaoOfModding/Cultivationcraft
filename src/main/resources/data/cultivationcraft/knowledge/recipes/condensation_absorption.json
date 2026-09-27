@@ -1,0 +1,17 @@
+{
+  "title": "{pill}",
+  "titles": [
+    "Condensation Absorption Method",
+    "Notes on Meridian Breathing",
+    "{pill}: Recipe"
+  ],
+  "text": "Adds 3 to Qi absorption for 240 seconds in Qi Condensation, with a Qi Absorption status. Retains the batch's dominant element.\n\n\nCooldown: 10 minutes.",
+  "recipe": "cultivationcraft:condensation_absorption",
+  "loot_weights": {
+    "village": 0.02,
+    "common": 0.2,
+    "rare": 6,
+    "stronghold": 10,
+    "end_city": 4
+  }
+}

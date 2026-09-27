@@ -1,0 +1,20 @@
+{
+  "tier": 3,
+  "complexity": 3,
+  "effect": "HEAL_OVER_TIME",
+  "refinement_qi": 400,
+  "elements": {
+    "wood": 1600,
+    "wind": 600
+  },
+  "minimum_score": 0,
+  "amount": 0.75,
+  "duration_seconds": 20,
+  "cooldown_seconds": 20,
+  "color": "4CCD8B",
+  "names": [
+    "Ancient Spring Pill",
+    "Evergreen Renewal Pill",
+    "Deep Root Vitality Pill"
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "title": "{pill}",
+  "titles": [
+    "Jade Mending Method",
+    "Notes on Marrow Mending",
+    "{pill}: Recipe"
+  ],
+  "text": "Immediately restores 35% of maximum health. Cooldown: 15 seconds, shared with its effect family.\n\n\nIt remains usable outside its intended realm; effectiveness halves for each major realm above Qi Condensation.",
+  "recipe": "cultivationcraft:jade_mending",
+  "loot_weights": {
+    "village": 0.02,
+    "common": 0.2,
+    "rare": 6,
+    "stronghold": 10,
+    "end_city": 4
+  }
+}

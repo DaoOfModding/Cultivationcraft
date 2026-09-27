@@ -1,6 +1,6 @@
 {
   "title": "levelSkills",
-  "text": "§n/cultivation §nlevelSkills §n§lplayerName\n \nThis command will completely level all skills for the supplied character.",
+  "text": "§n/cultivation §nlevelSkills §n§lplayerName\n\n\nThis command will completely level all skills for the supplied character.",
   "translation_key": "cultivationcraft.gui.help.debug.bodyforge.levelskills",
   "category": [
     "Debug",

@@ -1,6 +1,6 @@
 {
   "title": "completeCultivation",
-  "text": "§n/cultivation §ncompleteCultivation §n§lplayerName\n \nThis command will give the supplied character all the Qi needed to complete their current cultivation.\nMeditating is still required to complete.",
+  "text": "§n/cultivation §ncompleteCultivation §n§lplayerName\n\n\nThis command will give the supplied character all the Qi needed to complete their current cultivation.\nMeditating is still required to complete.",
   "translation_key": "cultivationcraft.gui.help.debug.bodyforge.completecultivation",
   "category": [
     "Debug",

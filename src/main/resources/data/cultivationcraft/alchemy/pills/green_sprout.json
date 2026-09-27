@@ -1,4 +1,5 @@
 {
+  "tier": 1,
   "effect": "HEAL_OVER_TIME",
   "complexity": 1,
   "refinement_qi": 50,

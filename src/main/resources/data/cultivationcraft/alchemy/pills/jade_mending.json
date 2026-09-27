@@ -1,0 +1,20 @@
+{
+  "tier": 2,
+  "complexity": 2,
+  "effect": "HEAL",
+  "refinement_qi": 150,
+  "elements": {
+    "wood": 120,
+    "earth": 60
+  },
+  "minimum_score": 0,
+  "amount": 0.35,
+  "duration_seconds": 0,
+  "cooldown_seconds": 15,
+  "color": "CD7079",
+  "names": [
+    "Jade Mending Pill",
+    "Marrow Mending Pill",
+    "Crimson Renewal Pill"
+  ]
+}

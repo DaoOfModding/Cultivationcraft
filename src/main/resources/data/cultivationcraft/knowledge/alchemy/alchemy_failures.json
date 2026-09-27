@@ -1,0 +1,19 @@
+{
+  "title": "Failure and Recipe Difficulty",
+  "titles": [
+    "An Alchemist's Thousandth Failure",
+    "Why the Cauldron Exploded",
+    "Lessons from a Thousand Ruined Pills"
+  ],
+  "text": "First, meet the recipe. Every required elemental score and the minimum plant tier must be present.\n\n\nMissing a requirement always ruins the batch, regardless of luck. Extra Qi sent to the cauldron cannot replace missing ingredients.\n\n\nDifficulty belongs to the recipe, not the number of plants or occupied slots. Current T1, T2 and T3 recipes have difficulty 1, 2 and 3.\n\n\nA single suitable plant is enough if it meets every requirement.\n\n\nFor a valid batch, failure chance (%) is:\n5 + 8 x (D - 1) + 8 x (D - C) + 6 x I - 3 x N\n\n\nD is recipe difficulty. C is cauldron tier; the current jade cauldron is tier 1.\n\n\nI is the fraction of the ingredient score counted as impurity, from 0 to 1. N is the neutral-base bonus, from 0 to 1.\n\n\nThese are fractions: 50% impurity means I = 0.5, adding 3 percentage points, not 300. The displayed pill purity is a separate result, not the value to insert for I.\n\n\nWithout impurity or a neutral bonus, the starter cauldron fails 5% of difficulty-1 batches, 21% of difficulty-2 batches, and 37% of difficulty-3 batches.\n\n\nA perfect optional neutral base lowers these to 2%, 18% and 34%. For example, difficulty 2 with I = 0.5 and N = 1 has 21 + 3 - 3 = 21% failure chance.\n\n\nThe result is limited to 2-90% for valid recipes. There is always some risk, and a 21% chance does not mean exactly 21 failures in every 100 attempts.\n\n\nEach batch rolls separately. The 90% limit does not rescue a batch with missing requirements: that still fails every time.\n\n\nEach increase in difficulty adds 16 percentage points on the same cauldron. Each increase in cauldron tier would remove 8 points; only the starter cauldron is currently available.\n\n\nHigher difficulty also makes failed batches explode harder and over a larger area. They damage nearby creatures and hit the refiner harder, but never destroy blocks.\n\n\nA ruined batch consumes its ingredients and produces 10 alchemy remnants.\n\n\nTo improve your chances, meet the scores without a large excess and add a modest neutral base where the recipe permits one. The Alchemy and Impurities teaching explains that balance.\n\n\nSpending more refinement Qi does not improve the roll.",
+  "category": [
+    "Alchemy"
+  ],
+  "loot_weights": {
+    "village": 5,
+    "common": 9,
+    "rare": 5,
+    "stronghold": 7,
+    "end_city": 2
+  }
+}

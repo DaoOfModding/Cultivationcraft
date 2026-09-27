@@ -1,0 +1,20 @@
+{
+  "tier": 2,
+  "complexity": 2,
+  "effect": "QI_OVER_TIME",
+  "refinement_qi": 180,
+  "elements": {
+    "water": 160,
+    "wind": 60
+  },
+  "minimum_score": 0,
+  "amount": 0.3,
+  "duration_seconds": 15,
+  "cooldown_seconds": 15,
+  "color": "76D6D2",
+  "names": [
+    "Spring Tide Pill",
+    "Lingering Stream Pill",
+    "Meridian Spring Pill"
+  ]
+}

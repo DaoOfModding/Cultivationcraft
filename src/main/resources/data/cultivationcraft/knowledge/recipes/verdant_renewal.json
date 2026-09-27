@@ -1,0 +1,17 @@
+{
+  "title": "{pill}",
+  "titles": [
+    "Verdant Renewal Method",
+    "Notes on Returning Spring",
+    "{pill}: Recipe"
+  ],
+  "text": "Restores 55% of maximum health over 15 seconds. Cooldown: 15 seconds, shared with its effect family.\n\n\nIt remains usable outside its intended realm; effectiveness halves for each major realm above Qi Condensation.",
+  "recipe": "cultivationcraft:verdant_renewal",
+  "loot_weights": {
+    "village": 0.02,
+    "common": 0.2,
+    "rare": 6,
+    "stronghold": 10,
+    "end_city": 4
+  }
+}

@@ -442,8 +442,10 @@ public class CultivationType {
         {
             qiLevel += amount;
 
-            if (qiLevel > getMaxTechLevel())
-                qiLevel = getMaxTechLevel();
+            // Qi-based realms have their own stage cap; inherited technique levels
+            // must not truncate Core Formation progress from pills or spirit stones.
+            if (qiLevel > techLevel)
+                qiLevel = techLevel;
         }
     }
 

@@ -5,7 +5,7 @@
     "A Small Spring Formula",
     "{pill}: Recipe"
   ],
-  "text": "A starter pill that restores Qi gradually, with a Qi Restoration status.",
+  "text": "Restores 15% of maximum Qi over 10 seconds for external cultivators, with a Qi Restoration status. Cooldown: 10 seconds, shared with the Qi-restoration family.\n\n\nThere is no realm restriction. Effectiveness halves for each major realm above Foundation Establishment: 50% effectiveness in Qi Condensation and 25% in Core Formation.",
   "recipe": "cultivationcraft:dewdrop",
   "loot_weights": {
     "village": 1,

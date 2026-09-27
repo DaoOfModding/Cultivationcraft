@@ -1,6 +1,6 @@
 {
   "title": "Earth",
-  "text": "Mostly found underground, the §6Earth§r element is an element related to dirt and stone\n \nIt is suppressed by §aWind§r and suppresses §9Water§r",
+  "text": "Mostly found underground, the §6Earth§r element is an element related to dirt and stone\n\n\nIt is suppressed by §aWind§r and suppresses §9Water§r",
   "translation_key": "cultivationcraft.gui.help.elements.earth",
   "category": [
     "Qi",

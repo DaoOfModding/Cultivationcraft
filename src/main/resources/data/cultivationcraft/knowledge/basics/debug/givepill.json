@@ -1,6 +1,6 @@
 {
   "title": "Give Pills",
-  "text": "/cultivation givepill <player> <family> <id> <purity> <quantity> [affinity]\n\nFamilies: healing, qi, cultivation, food. Tab suggests matching pill IDs and names. Purity: 0-100; quantity: 1-1024; stacks hold 16. Optional affinity selects a cultivation pill element (default Wood). Given pills remain unidentified.",
+  "text": "/cultivation givepill <player> <family> <id> <purity> <quantity> [affinity]\n\n\nFamilies: healing, qi, cultivation, food. Tab suggests matching pill IDs and names.\n\n\nPurity: 0-100; quantity: 1-1024; stacks hold 16. Optional affinity selects a cultivation pill element (default Wood).\n\n\nGiven pills remain unidentified.",
   "translation_key": "cultivationcraft.gui.help.debug.givepill",
   "category": [
     "Debug"

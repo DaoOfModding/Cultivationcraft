@@ -2,7 +2,6 @@ package DaoOfModding.Cultivationcraft.Common.Alchemy;
 
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorStats.CultivatorStats;
 import DaoOfModding.Cultivationcraft.Common.Qi.BodyParts.FoodStats.QiFoodStats;
-import DaoOfModding.Cultivationcraft.Common.Qi.Cultivation.FoundationEstablishmentCultivation;
 import DaoOfModding.Cultivationcraft.Common.Qi.CultivationTypes;
 import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
@@ -73,9 +72,13 @@ public final class PillEffects {
     }
 
     public static double absorptionBonus(Player player) {
-        if (!(CultivatorStats.getCultivatorStats(player).getCultivation() instanceof FoundationEstablishmentCultivation)) return 0;
         CompoundTag data = data(player);
+        if (!PillPotency.canCultivate(player, absorptionTier(data))) return 0;
         return player.hasEffect(AlchemyEffects.QI_ABSORPTION.get()) && data.getLong("AbsorptionUntil") > now(player) ? data.getDouble("AbsorptionAmount") : 0;
+    }
+
+    private static int absorptionTier(CompoundTag data) {
+        return data.contains("AbsorptionTier") ? data.getInt("AbsorptionTier") : 1;
     }
 
     public static boolean consume(ServerPlayer player, ItemStack stack) {
@@ -89,8 +92,8 @@ public final class PillEffects {
         long time = now(player);
         String cooldown = "Cooldown:" + definition.group();
         if (data.getLong(cooldown) > time) return reject(player, "cooldown", (data.getLong(cooldown) - time + 19) / 20);
-        if (definition.cultivation() && !(cultivation instanceof FoundationEstablishmentCultivation))
-            return reject(player, "foundation_only");
+        if (definition.cultivation() && !PillPotency.canCultivate(player, definition.tier()))
+            return reject(player, "realm_only", PillPotency.realmName(definition.tier()));
         if (definition.effect() == PillDefinition.Effect.FOOD && stats.getCultivationType() != CultivationTypes.BODY_CULTIVATOR)
             return reject(player, "body_only");
         if (definition.group().equals("qi") && (stats.getCultivationType() != CultivationTypes.QI_CONDENSER
@@ -100,7 +103,7 @@ public final class PillEffects {
             return reject(player, "affinity_mismatch");
         double amount = definition.amount();
         if (definition.group().equals("healing") || definition.group().equals("qi"))
-            amount *= PillPotency.restorationMultiplier(player, tag.getInt("Tier"));
+            amount *= PillPotency.restorationMultiplier(player, definition.tier());
         // Cooldowns are per effect family and persisted in the player's capability.
         // Purity describes batch quality; potency changes need separate balancing.
         switch (definition.effect()) {
@@ -129,6 +132,7 @@ public final class PillEffects {
                 showStatus(player, AlchemyEffects.QI_ABSORPTION.get(), definition.duration() * 20,
                         Math.max(0, (int) definition.amount() - 1));
                 data.putDouble("AbsorptionAmount", definition.amount());
+                data.putInt("AbsorptionTier", definition.tier());
                 data.putLong("AbsorptionUntil", time + Math.max(1, definition.duration() * 20L));
             }
             case FOOD -> {
@@ -165,7 +169,7 @@ public final class PillEffects {
             data.putBoolean("StatusEffectsMigrated", true);
         }
         reconcileOne(player, AlchemyEffects.QI_RESTORATION.get(), data.getLong("QiEnd") - time + 1);
-        if (!(CultivatorStats.getCultivatorStats(player).getCultivation() instanceof FoundationEstablishmentCultivation)
+        if (!PillPotency.canCultivate(player, absorptionTier(data))
                 && player.hasEffect(AlchemyEffects.QI_ABSORPTION.get())) player.removeEffect(AlchemyEffects.QI_ABSORPTION.get());
         reconcileOne(player, AlchemyEffects.QI_ABSORPTION.get(), data.getLong("AbsorptionUntil") - time);
         if (!player.hasEffect(AlchemyEffects.QI_RESTORATION.get())) data.putInt("QiPulses", 0);

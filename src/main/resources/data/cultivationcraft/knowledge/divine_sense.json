@@ -5,7 +5,7 @@
     "The Unseen Garden",
     "Listening to Hidden Roots"
   ],
-  "text": "Divine Sense reveals nearby spiritual plants and spirit stone ore through obstacles. Detection radius and the highlight limit grow with cultivation; major realm breakthroughs grant much larger gains.\n\nThe skill stats show its radius and highlight limit. Highlights strengthen inside detection range and fade at very close distances to keep dense gardens and ore deposits readable.",
+  "text": "Divine Sense reveals nearby spiritual plants and spirit stone ore through obstacles.\n\n\nDetection radius and the shared highlight limit grow with cultivation; major realm breakthroughs grant much larger gains.\n\n\nPlants appear as small three-dimensional crosses with two-pixel-wide lines.\n\n\nThe hue follows their element: Fire red, Earth orange, Wood dark green, Wind bright green, Water blue, Ice cyan and Lightning yellow. Neutral plants remain white.\n\n\nAt zero spiritual growth, the cross is pure white. Color strengthens quickly at low spiritual growth, then increases more gradually as growth rises, reaching the full element color at the maximum growth of 9,999.\n\n\nThis shows the plant's growth, not its Qi-source reserve. Spirit stone ore keeps its block outline.\n\n\nThe skill stats show radius and highlight limit.\n\n\nHighlights reach their strongest opacity three blocks inside detection range and fade at very close distances to keep dense gardens and ore deposits readable.",
   "category": [
     "Cultivation Menu",
     "Skills",

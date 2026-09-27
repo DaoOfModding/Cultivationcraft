@@ -1,0 +1,20 @@
+{
+  "tier": 2,
+  "complexity": 2,
+  "effect": "HEAL_OVER_TIME",
+  "refinement_qi": 180,
+  "elements": {
+    "wood": 160,
+    "wind": 60
+  },
+  "minimum_score": 0,
+  "amount": 0.55,
+  "duration_seconds": 15,
+  "cooldown_seconds": 15,
+  "color": "65BC68",
+  "names": [
+    "Verdant Renewal Pill",
+    "Returning Spring Pill",
+    "Jade Leaf Pill"
+  ]
+}

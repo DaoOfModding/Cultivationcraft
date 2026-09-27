@@ -1,6 +1,6 @@
 {
   "title": "completeQuest",
-  "text": "§n/cultivation §ncompleteQuest §n§lplayerName\n \nThis command will complete the current quest for the supplied character.",
+  "text": "§n/cultivation §ncompleteQuest §n§lplayerName\n\n\nThis command will complete the current quest for the supplied character.",
   "translation_key": "cultivationcraft.gui.help.debug.bodyforge.completequest",
   "category": [
     "Debug",

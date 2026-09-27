@@ -41,7 +41,7 @@ public final class PillCommands {
                                 if (!pill.group().equals(family)) continue;
                                 String name = PillCatalog.get(level).name(pill, level);
                                 if (pill.id().toString().contains(remaining) || name.toLowerCase(Locale.ROOT).contains(remaining))
-                                    builder.suggest(pill.id().toString(), Component.literal("T1 | " + name));
+                                    builder.suggest(pill.id().toString(), Component.literal("T" + pill.tier() + " | " + name));
                             }
                             return builder.buildFuture();
                         }).then(number("purity", 0, 100, "Purity percent (0-100)", 25, 50, 75, 95, 100)

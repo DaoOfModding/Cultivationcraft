@@ -1,6 +1,6 @@
 {
   "title": "reset",
-  "text": "§n/cultivation §nreset §n§lplayerName\n \nThis command will completely reset the supplied character's cultivation.",
+  "text": "§n/cultivation §nreset §n§lplayerName\n\n\nThis command will completely reset the supplied character's cultivation.",
   "translation_key": "cultivationcraft.gui.help.debug.bodyforge.reset",
   "category": [
     "Debug",

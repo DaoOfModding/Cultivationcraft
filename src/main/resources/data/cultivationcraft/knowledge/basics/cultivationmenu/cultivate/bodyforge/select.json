@@ -1,6 +1,6 @@
 {
   "title": "Select Body Forge",
-  "text": "When no forge is in progress three dropdown menus will be displayed.\n \nThe top menu lets you select the body part to forge, the middle menu lets you select which aspect of that body part to forge and the last dropdown menu lets you select what to forge it to.\n \nAs you forge different body parts, more options become available.",
+  "text": "When no forge is in progress three dropdown menus will be displayed.\n\n\nThe top menu lets you select the body part to forge, the middle menu lets you select which aspect of that body part to forge and the last dropdown menu lets you select what to forge it to.\n\n\nAs you forge different body parts, more options become available.",
   "translation_key": "cultivationcraft.gui.help.cultivationmenu.cultivate.bodyforge.select",
   "category": [
     "Cultivation Menu",

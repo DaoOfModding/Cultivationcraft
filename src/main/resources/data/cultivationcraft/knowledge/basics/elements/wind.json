@@ -1,6 +1,6 @@
 {
   "title": "Wind",
-  "text": "Mostly found in the sky, the §aWind§r element is an element related to movement and the sky\n \nIt is suppressed by §2Wood§r and suppresses §6Earth§r",
+  "text": "Mostly found in the sky, the §aWind§r element is an element related to movement and the sky\n\n\nIt is suppressed by §2Wood§r and suppresses §6Earth§r",
   "translation_key": "cultivationcraft.gui.help.elements.wind",
   "category": [
     "Qi",

@@ -1,0 +1,17 @@
+{
+  "title": "{pill}",
+  "titles": [
+    "Ancient Spring Method",
+    "Notes on Evergreen Renewal",
+    "{pill}: Recipe"
+  ],
+  "text": "Restores 75% of maximum health over 20 seconds. Cooldown: 20 seconds, shared with its effect family.\n\n\nIt remains usable outside its intended realm; effectiveness halves for each major realm above Core Formation.",
+  "recipe": "cultivationcraft:ancient_spring",
+  "loot_weights": {
+    "village": 0.001,
+    "common": 0.02,
+    "rare": 1,
+    "stronghold": 5,
+    "end_city": 18
+  }
+}

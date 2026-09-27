@@ -1,6 +1,6 @@
 {
   "title": "Leveling Skills",
-  "text": "Some skills will display a 'modify' button when selected. Pressing this button will bring up a screen showing the skill's stats and allowing you to select which stat will increase with the skills level. Skills level through active use.",
+  "text": "Some skills will display a 'modify' button when selected.\n\n\nPressing this button will bring up a screen showing the skill's stats and allowing you to select which stat will increase with the skills level. Skills level through active use.",
   "translation_key": "cultivationcraft.gui.help.cultivationmenu.skills.level",
   "category": [
     "Cultivation Menu",

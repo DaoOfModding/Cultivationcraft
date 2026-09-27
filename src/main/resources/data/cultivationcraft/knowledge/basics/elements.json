@@ -1,6 +1,6 @@
 {
   "title": "Elements",
-  "text": "There are 5 main elements of Qi in the world, which a Qi Source can produce if surrounded by enough blocks of the corresponding element.\n \nThese elements suppress each other in the following order:\n§cFire§r > §2Wood§r > §aWind§r > §6Earth§r > §9Water§r > §cFire§r\n \nAdditionally, each element has various mutations that Qi Sources have a very rare chance to instead produce",
+  "text": "There are 5 main elements of Qi in the world, which a Qi Source can produce if surrounded by enough blocks of the corresponding element.\n\n\nThese elements suppress each other in the following order:\n§cFire§r > §2Wood§r > §aWind§r > §6Earth§r > §9Water§r > §cFire§r\n\n\nAdditionally, each element has various mutations that Qi Sources have a very rare chance to instead produce",
   "translation_key": "cultivationcraft.gui.help.elements",
   "category": [
     "Qi"

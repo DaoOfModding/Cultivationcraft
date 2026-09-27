@@ -1,0 +1,17 @@
+{
+  "title": "{pill}",
+  "titles": [
+    "Core Nourishing Method",
+    "Notes on Core Formation",
+    "{pill}: Recipe"
+  ],
+  "text": "Supplies 1,000 cultivation progress in Core Formation. Retains the batch's dominant element.\n\n\nCooldown: 15 minutes.",
+  "recipe": "cultivationcraft:core_nourishing",
+  "loot_weights": {
+    "village": 0.001,
+    "common": 0.02,
+    "rare": 1,
+    "stronghold": 5,
+    "end_city": 18
+  }
+}

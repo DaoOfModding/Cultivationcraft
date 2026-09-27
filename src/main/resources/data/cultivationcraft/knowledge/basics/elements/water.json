@@ -1,6 +1,6 @@
 {
   "title": "Water",
-  "text": "Mostly found in the sea, the §9Water§r element is an element related to liquids and sealife\n \nIt is suppressed by §6Earth§r and suppresses §cFire§r",
+  "text": "Mostly found in the sea, the §9Water§r element is an element related to liquids and sealife\n\n\nIt is suppressed by §6Earth§r and suppresses §cFire§r",
   "translation_key": "cultivationcraft.gui.help.elements.water",
   "category": [
     "Qi",

@@ -1,6 +1,6 @@
 {
   "title": "Qi Sources",
-  "text": "/cultivation qisource here <element> [size] [storage_fraction] [regen_ticks]\n\n/cultivation qisource at <x> <y> <z> <element> [size] [storage_fraction] [regen_ticks]\n\nSize is radius in blocks. Storage fraction scales capacity from 0 to 1. Regen ticks are the full refill duration; 20 ticks = 1 second. Omitted values are randomized. Tab suggests values; ~ coordinates are supported.",
+  "text": "/cultivation qisource here <element> [size] [storage_fraction] [regen_ticks]\n\n\n/cultivation qisource at <x> <y> <z> <element> [size] [storage_fraction] [regen_ticks]\n\n\nSize is radius in blocks. Storage fraction scales capacity from 0 to 1.\n\n\nRegen ticks are the full refill duration; 20 ticks = 1 second. Omitted values are randomized.\n\n\nTab suggests values; ~ coordinates are supported.",
   "translation_key": "cultivationcraft.gui.help.debug.qisource",
   "category": [
     "Debug"

@@ -52,6 +52,17 @@ public class ModBiomeModifiers {
                 );
             });
 
+    public static final RegistryObject<BiomeModifier> ORES_IN_OVERWORLD =
+            BIOME_MODIFIERS.register("add_ores", () -> new AddFeaturesBiomeModifier(
+                    BuiltinRegistries.BIOME.getOrCreateTag(BiomeTags.IS_OVERWORLD),
+                    HolderSet.direct(
+                            ModWorldgen.PF_JADE_ORE.getHolder().orElseThrow(),
+                            ModWorldgen.PF_JADE_ORE_MIDDLE.getHolder().orElseThrow(),
+                            ModWorldgen.PF_SPIRIT_STONE_SMALL.getHolder().orElseThrow(),
+                            ModWorldgen.PF_SPIRIT_STONE_BURIED.getHolder().orElseThrow(),
+                            ModWorldgen.PF_SPIRIT_STONE_LARGE.getHolder().orElseThrow()),
+                    GenerationStep.Decoration.UNDERGROUND_ORES));
+
     public static void init() {
         BIOME_MODIFIERS.register(FMLJavaModLoadingContext.get().getModEventBus());
     }

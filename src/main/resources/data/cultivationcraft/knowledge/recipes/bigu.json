@@ -5,7 +5,7 @@
     "Grain Without Hunger",
     "{pill}: Recipe"
   ],
-  "text": "A simple sustenance recipe for body cultivators.",
+  "text": "Restores 4 hunger for body cultivators. Cooldown: 30 seconds.",
   "recipe": "cultivationcraft:bigu",
   "loot_weights": {
     "village": 35,

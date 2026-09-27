@@ -15,6 +15,10 @@ import com.mojang.blaze3d.vertex.VertexFormat;
 import com.mojang.math.Matrix4f;
 
 import DaoOfModding.Cultivationcraft.Common.Capabilities.CultivatorTechniques.CultivatorTechniques;
+import DaoOfModding.Cultivationcraft.Common.Blocks.Plants.ProceduralPlantBlock;
+import DaoOfModding.Cultivationcraft.Common.Blocks.Plants.entity.ProceduralPlantBlockEntity;
+import DaoOfModding.Cultivationcraft.Common.Blocks.Plants.world.ClientPlantCatalog;
+import DaoOfModding.Cultivationcraft.Common.Qi.Elements.Elements;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.DivineSenseTechnique;
 import DaoOfModding.Cultivationcraft.Common.Qi.Techniques.DivineSenseTechnique.SenseProfile;
 import DaoOfModding.Cultivationcraft.Cultivationcraft;
@@ -28,6 +32,7 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.chunk.ChunkStatus;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
@@ -54,6 +59,7 @@ public final class DivineSenseBlockRenderer {
     private static final int SCAN_INTERVAL = 10;
     private static final List<BlockPos> nearby = new ArrayList<>();
     private static final BufferBuilder BUFFER = new BufferBuilder(32768);
+    private static final BufferBuilder PLANT_BUFFER = new BufferBuilder(16384);
     private static ClientLevel scannedLevel;
     private static int scanTicks;
 
@@ -215,6 +221,7 @@ public final class DivineSenseBlockRenderer {
         RenderSystem.lineWidth(1);
         try {
             BUFFER.begin(VertexFormat.Mode.DEBUG_LINES, DefaultVertexFormat.POSITION_COLOR);
+            PLANT_BUFFER.begin(VertexFormat.Mode.DEBUG_LINES, DefaultVertexFormat.POSITION_COLOR);
             int highlighted = 0;
             for (BlockPos pos : nearby) {
                 if (highlighted >= current.maxHighlights()) break;
@@ -236,9 +243,15 @@ public final class DivineSenseBlockRenderer {
                 if (alpha == 0) continue;
                 highlighted++;
                 // Subtract in double precision before sending positions to the GPU.
-                outline(pose.last().pose(), bounds.move(-camera.x, -camera.y, -camera.z), alpha);
+                AABB relativeBounds = bounds.move(-camera.x, -camera.y, -camera.z);
+                if (state.getBlock() instanceof ProceduralPlantBlock)
+                    cross(pose.last().pose(), relativeBounds, plantColor(mc.level, pos, state), alpha);
+                else outline(pose.last().pose(), relativeBounds, 0x91DCCD, alpha);
             }
             BufferUploader.drawWithShader(BUFFER.end());
+            // Width is a draw state: use a separate batch to keep ore outlines thin.
+            RenderSystem.lineWidth(2);
+            BufferUploader.drawWithShader(PLANT_BUFFER.end());
         } finally {
             modelView.popPose();
             RenderSystem.applyModelViewMatrix();
@@ -253,20 +266,57 @@ public final class DivineSenseBlockRenderer {
         }
     }
 
-    private static void outline(Matrix4f matrix, AABB box, int alpha) {
+    private static int plantColor(ClientLevel level, BlockPos pos, BlockState state) {
+        var entry = ClientPlantCatalog.get(state.getValue(ProceduralPlantBlock.SPECIES));
+        if (entry == null) return 0xFFFFFF;
+        ResourceLocation elementId = ResourceLocation.tryParse(entry.element);
+        var element = elementId == null ? null : Elements.getElement(elementId);
+        if (element == null) return 0xFFFFFF;
+
+        // The block state supplies a stable fallback while block-entity data arrives.
+        int growth = switch (state.getValue(ProceduralPlantBlock.TIER)) {
+            case 3 -> 1000;
+            case 2 -> 100;
+            default -> 0;
+        };
+        if (level.getBlockEntity(pos) instanceof ProceduralPlantBlockEntity plant)
+            growth = plant.getSpiritualGrowth();
+        // A logarithmic curve gives low-growth plants noticeable color quickly,
+        // with diminishing gains toward full element color at maximum growth.
+        double clampedGrowth = Mth.clamp((double) growth, 0, ProceduralPlantBlockEntity.MAX_SPIRITUAL_GROWTH);
+        float strength = (float) (Math.log1p(clampedGrowth)
+                / Math.log1p(ProceduralPlantBlockEntity.MAX_SPIRITUAL_GROWTH));
+        int red = Math.round(Mth.lerp(strength, 255f, element.color.getRed()));
+        int green = Math.round(Mth.lerp(strength, 255f, element.color.getGreen()));
+        int blue = Math.round(Mth.lerp(strength, 255f, element.color.getBlue()));
+        return (red << 16) | (green << 8) | blue;
+    }
+
+    private static void cross(Matrix4f matrix, AABB box, int color, int alpha) {
+        // Three intersecting world-space axes, rather than a camera-facing marker.
+        double x = (box.minX + box.maxX) * .5;
+        double y = (box.minY + box.maxY) * .5;
+        double z = (box.minZ + box.maxZ) * .5;
+        line(PLANT_BUFFER, matrix, box.minX, y, z, box.maxX, y, z, color, alpha);
+        line(PLANT_BUFFER, matrix, x, box.minY, z, x, box.maxY, z, color, alpha);
+        line(PLANT_BUFFER, matrix, x, y, box.minZ, x, y, box.maxZ, color, alpha);
+    }
+
+    private static void outline(Matrix4f matrix, AABB box, int color, int alpha) {
         for (int corner = 0; corner < 8; corner++) {
             double x = (corner & 1) == 0 ? box.minX : box.maxX;
             double y = (corner & 2) == 0 ? box.minY : box.maxY;
             double z = (corner & 4) == 0 ? box.minZ : box.maxZ;
-            if ((corner & 1) == 0) line(matrix, x, y, z, box.maxX, y, z, alpha);
-            if ((corner & 2) == 0) line(matrix, x, y, z, x, box.maxY, z, alpha);
-            if ((corner & 4) == 0) line(matrix, x, y, z, x, y, box.maxZ, alpha);
+            if ((corner & 1) == 0) line(BUFFER, matrix, x, y, z, box.maxX, y, z, color, alpha);
+            if ((corner & 2) == 0) line(BUFFER, matrix, x, y, z, x, box.maxY, z, color, alpha);
+            if ((corner & 4) == 0) line(BUFFER, matrix, x, y, z, x, y, box.maxZ, color, alpha);
         }
     }
 
-    private static void line(Matrix4f matrix, double x, double y, double z,
-                             double endX, double endY, double endZ, int alpha) {
-        BUFFER.vertex(matrix, (float) x, (float) y, (float) z).color(145, 220, 205, alpha).endVertex();
-        BUFFER.vertex(matrix, (float) endX, (float) endY, (float) endZ).color(145, 220, 205, alpha).endVertex();
+    private static void line(BufferBuilder buffer, Matrix4f matrix, double x, double y, double z,
+                             double endX, double endY, double endZ, int color, int alpha) {
+        int red = (color >> 16) & 255, green = (color >> 8) & 255, blue = color & 255;
+        buffer.vertex(matrix, (float) x, (float) y, (float) z).color(red, green, blue, alpha).endVertex();
+        buffer.vertex(matrix, (float) endX, (float) endY, (float) endZ).color(red, green, blue, alpha).endVertex();
     }
 }

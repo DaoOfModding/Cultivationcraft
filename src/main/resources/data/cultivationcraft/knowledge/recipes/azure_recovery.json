@@ -1,0 +1,17 @@
+{
+  "title": "{pill}",
+  "titles": [
+    "Azure Recovery Method",
+    "Notes on Flowing Meridian",
+    "{pill}: Recipe"
+  ],
+  "text": "Immediately restores 20% of maximum Qi. Cooldown: 15 seconds, shared with its effect family.\n\n\nIt remains usable outside its intended realm; effectiveness halves for each major realm above Qi Condensation.",
+  "recipe": "cultivationcraft:azure_recovery",
+  "loot_weights": {
+    "village": 0.02,
+    "common": 0.2,
+    "rare": 6,
+    "stronghold": 10,
+    "end_city": 4
+  }
+}

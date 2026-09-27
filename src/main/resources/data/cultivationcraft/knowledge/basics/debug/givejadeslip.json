@@ -1,6 +1,6 @@
 {
   "title": "Give Jade Slips",
-  "text": "/cultivation givejadeslip <player> <entry>\n\nTab suggests available knowledge IDs, including recipes. The command gives one unread slip; it does not unlock knowledge directly. Refine the slip to learn its entry.\n\nExample:\n/cultivation givejadeslip @s cultivationcraft:refinement\n\nRecipe example:\n/cultivation givejadeslip @s cultivationcraft:recipes/spirit_recovery\n\nTab can search spirit_recovery or a generated pill name. Unique short IDs are also accepted.",
+  "text": "/cultivation givejadeslip <player> <entry>\n\n\nTab suggests available knowledge IDs, including recipes. The command gives one unread slip; it does not unlock knowledge directly.\n\n\nRefine the slip to learn its entry.\n\n\nExample:\n/cultivation givejadeslip @s cultivationcraft:refinement\n\n\nRecipe example:\n/cultivation givejadeslip @s cultivationcraft:recipes/spirit_recovery\n\n\nTab can search spirit_recovery or a generated pill name. Unique short IDs are also accepted.",
   "translation_key": "cultivationcraft.gui.help.debug.givejadeslip",
   "category": [
     "Debug"

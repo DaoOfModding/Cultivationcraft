@@ -1,0 +1,17 @@
+{
+  "tier": 3,
+  "complexity": 3,
+  "effect": "ABSORPTION",
+  "refinement_qi": 550,
+  "elements": {},
+  "minimum_score": 3500,
+  "amount": 6,
+  "duration_seconds": 300,
+  "cooldown_seconds": 900,
+  "color": "CD99E5",
+  "names": [
+    "Core Absorption Pill",
+    "Core Breathing Pill",
+    "Inner Sea Absorption Pill"
+  ]
+}

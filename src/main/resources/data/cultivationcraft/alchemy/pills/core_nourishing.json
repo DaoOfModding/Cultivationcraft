@@ -1,0 +1,17 @@
+{
+  "tier": 3,
+  "complexity": 3,
+  "effect": "CULTIVATION",
+  "refinement_qi": 500,
+  "elements": {},
+  "minimum_score": 2500,
+  "amount": 1000,
+  "duration_seconds": 0,
+  "cooldown_seconds": 900,
+  "color": "F2CC77",
+  "names": [
+    "Core Nourishing Pill",
+    "Core Formation Pill",
+    "Golden Core Seed Pill"
+  ]
+}

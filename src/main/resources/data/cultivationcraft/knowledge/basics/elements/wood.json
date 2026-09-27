@@ -1,6 +1,6 @@
 {
   "title": "Wood",
-  "text": "Mostly found in forests, The §2Wood§r element is an element related to growth and plant life\n \nIt is suppressed by §cFire§r and suppresses §aWind§r",
+  "text": "Mostly found in forests, The §2Wood§r element is an element related to growth and plant life\n\n\nIt is suppressed by §cFire§r and suppresses §aWind§r",
   "translation_key": "cultivationcraft.gui.help.elements.wood",
   "category": [
     "Qi",

@@ -1,0 +1,17 @@
+{
+  "tier": 2,
+  "complexity": 2,
+  "effect": "ABSORPTION",
+  "refinement_qi": 225,
+  "elements": {},
+  "minimum_score": 350,
+  "amount": 3,
+  "duration_seconds": 240,
+  "cooldown_seconds": 600,
+  "color": "B39CDE",
+  "names": [
+    "Condensation Absorption Pill",
+    "Meridian Breathing Pill",
+    "Condensed Dew Pill"
+  ]
+}

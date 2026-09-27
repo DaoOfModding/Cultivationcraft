@@ -5,7 +5,7 @@
     "Dew Along the Meridians",
     "{pill}: Recipe"
   ],
-  "text": "A Foundation cultivation pill that temporarily improves Qi absorption, with a Qi Absorption status.",
+  "text": "Adds 1 to Qi absorption for 180 seconds in Foundation Establishment, with a Qi Absorption status. Retains the batch's dominant element.\n\n\nCooldown: 5 minutes, shared with cultivation and absorption pills.",
   "recipe": "cultivationcraft:foundation_absorption",
   "loot_weights": {
     "village": 0.25,

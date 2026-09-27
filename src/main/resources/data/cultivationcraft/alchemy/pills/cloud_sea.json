@@ -1,0 +1,20 @@
+{
+  "tier": 3,
+  "complexity": 3,
+  "effect": "QI_OVER_TIME",
+  "refinement_qi": 400,
+  "elements": {
+    "water": 1600,
+    "wind": 600
+  },
+  "minimum_score": 0,
+  "amount": 0.5,
+  "duration_seconds": 20,
+  "cooldown_seconds": 20,
+  "color": "98D8F0",
+  "names": [
+    "Cloud Sea Pill",
+    "Gathering Mist Pill",
+    "Flowing Cloud Pill"
+  ]
+}

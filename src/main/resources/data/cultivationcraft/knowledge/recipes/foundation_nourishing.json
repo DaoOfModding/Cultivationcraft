@@ -5,7 +5,7 @@
     "A Foundation Nourishing Method",
     "{pill}: Recipe"
   ],
-  "text": "A Foundation cultivation pill that supplies 50 cultivation progress and retains the batch's dominant element.",
+  "text": "Supplies 50 cultivation progress in Foundation Establishment. Retains the batch's dominant element.\n\n\nCooldown: 5 minutes, shared with cultivation and absorption pills.",
   "recipe": "cultivationcraft:foundation_nourishing",
   "loot_weights": {
     "village": 0.25,

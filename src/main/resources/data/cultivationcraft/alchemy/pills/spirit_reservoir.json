@@ -1,0 +1,20 @@
+{
+  "tier": 3,
+  "complexity": 3,
+  "effect": "QI",
+  "refinement_qi": 350,
+  "elements": {
+    "water": 1200,
+    "fire": 600
+  },
+  "minimum_score": 0,
+  "amount": 0.35,
+  "duration_seconds": 0,
+  "cooldown_seconds": 20,
+  "color": "637CEA",
+  "names": [
+    "Spirit Reservoir Pill",
+    "Boundless River Pill",
+    "Deep Meridian Pill"
+  ]
+}

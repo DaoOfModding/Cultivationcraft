@@ -5,7 +5,7 @@
     "The Quiet Crystal Method",
     "A Primer on Spirit Stone Refinement"
   ],
-  "text": "External cultivators can place spirit stones in the cultivation menu's refinement slot. Each five-second cycle consumes one stone and supplies 5 cultivation progress and 50 Qi, up to the cultivator's current limits.\n\nThe stone floats before the cultivator while its Qi flows into their chest. A stack is refined one stone at a time, even after closing the menu. Refinement pauses without consuming stones when both cultivation progress and stored Qi are full.",
+  "text": "External cultivators can place spirit stones in the cultivation menu's refinement slot.\n\n\nEach five-second cycle consumes one stone and supplies 5 cultivation progress and 50 Qi, up to the cultivator's current limits.\n\n\nThe stone floats before the cultivator while its Qi flows into their chest. A stack is refined one stone at a time, even after closing the menu.\n\n\nRefinement pauses without consuming stones when both cultivation progress and stored Qi are full.\n\n\nA full cultivation-progress bar does not prevent refining another stone when you still need Qi.",
   "category": [
     "Cultivation Menu",
     "Item Refinement"

@@ -1,0 +1,17 @@
+{
+  "title": "{pill}",
+  "titles": [
+    "Cloud Sea Method",
+    "Notes on Gathering Mist",
+    "{pill}: Recipe"
+  ],
+  "text": "Restores 50% of maximum Qi over 20 seconds, with a Qi Restoration status. Cooldown: 20 seconds, shared with its effect family.\n\n\nIt remains usable outside its intended realm; effectiveness halves for each major realm above Core Formation.",
+  "recipe": "cultivationcraft:cloud_sea",
+  "loot_weights": {
+    "village": 0.001,
+    "common": 0.02,
+    "rare": 1,
+    "stronghold": 5,
+    "end_city": 18
+  }
+}

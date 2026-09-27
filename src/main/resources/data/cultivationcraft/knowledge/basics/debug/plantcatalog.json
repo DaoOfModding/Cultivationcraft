@@ -1,6 +1,6 @@
 {
   "title": "Plant Catalog",
-  "text": "/cultivation plantcatalog\nLists plant IDs, names, elements and tiers. Click a chat result to prepare giveplant.\n\nFilters:\n/cultivation plantcatalog element <element>\n/cultivation plantcatalog tier <tier>\n/cultivation plantcatalog filter <element> <tier>\n\nTiers: 1-3. Press Tab to suggest registered elements.",
+  "text": "/cultivation plantcatalog\nLists plant IDs, names, elements and tiers. Click a chat result to prepare giveplant.\n\n\nFilters:\n/cultivation plantcatalog element <element>\n/cultivation plantcatalog tier <tier>\n/cultivation plantcatalog filter <element> <tier>\n\n\nTiers: 1-3. Press Tab to suggest registered elements.",
   "translation_key": "cultivationcraft.gui.help.debug.plantcatalog",
   "category": [
     "Debug"

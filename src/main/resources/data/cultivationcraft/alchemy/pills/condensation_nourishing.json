@@ -1,0 +1,17 @@
+{
+  "tier": 2,
+  "complexity": 2,
+  "effect": "CULTIVATION",
+  "refinement_qi": 200,
+  "elements": {},
+  "minimum_score": 250,
+  "amount": 250,
+  "duration_seconds": 0,
+  "cooldown_seconds": 600,
+  "color": "DFC165",
+  "names": [
+    "Condensation Nourishing Pill",
+    "Condensed Spirit Pill",
+    "Qi Condensation Pill"
+  ]
+}

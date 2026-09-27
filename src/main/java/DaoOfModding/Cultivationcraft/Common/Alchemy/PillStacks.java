@@ -16,7 +16,7 @@ public final class PillStacks {
         tag.putString("Pill", definition.id().toString());
         tag.putString("Entry", catalog.key(definition));
         tag.putString("PillName", catalog.name(definition, level));
-        tag.putInt("Tier", 1);
+        tag.putInt("Tier", definition.tier());
         tag.putInt("Purity", Mth.clamp(purity, 0, 100));
         tag.putInt("Color", definition.color());
         tag.putString("Effect", definition.effect().name());

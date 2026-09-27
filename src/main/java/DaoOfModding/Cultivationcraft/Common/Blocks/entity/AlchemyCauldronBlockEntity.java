@@ -56,7 +56,8 @@ public class AlchemyCauldronBlockEntity extends BaseContainerBlockEntity {
         // Reserve both possible outputs before rolling, so a full output cannot discard
         // waste or repeatedly reroll the batch without consuming its ingredients.
         if (batch.valid() && waste > 0 && wasteOutput < 0) return;
-        ItemStack result = batch.refine(server, 1);
+        int tier = ((AlchemyCauldronBlock) getBlockState().getBlock()).getAlchemyTier(getBlockState());
+        ItemStack result = batch.refine(server, tier);
         // Validate capacity before rolling or consuming anything. Commit on the server thread.
         for (int i = 0; i < SLOT_COUNT; i++) items.set(i, ItemStack.EMPTY);
         items.set(output, result);

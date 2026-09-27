@@ -43,6 +43,11 @@ public class AlchemyCauldronBlock extends BaseEntityBlock {
         return new AlchemyCauldronBlockEntity(pos, state);
     }
 
+    // Used by recipe difficulty scaling; higher-tier cauldrons can override this.
+    public int getAlchemyTier(BlockState state) {
+        return 1;
+    }
+
     // Future higher-tier cauldrons can increase this interval to retain Qi longer.
     public int getQiDecayIntervalTicks(BlockState state) {
         return 100;

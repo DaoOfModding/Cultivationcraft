@@ -1,0 +1,17 @@
+{
+  "title": "{pill}",
+  "titles": [
+    "Condensation Nourishing Method",
+    "Notes on Condensed Spirit",
+    "{pill}: Recipe"
+  ],
+  "text": "Supplies 250 cultivation progress in Qi Condensation. Retains the batch's dominant element.\n\n\nCooldown: 10 minutes.",
+  "recipe": "cultivationcraft:condensation_nourishing",
+  "loot_weights": {
+    "village": 0.02,
+    "common": 0.2,
+    "rare": 6,
+    "stronghold": 10,
+    "end_city": 4
+  }
+}

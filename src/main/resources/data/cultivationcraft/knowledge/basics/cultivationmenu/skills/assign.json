@@ -1,6 +1,6 @@
 {
   "title": "Assigning Skills",
-  "text": "On the skills tab there is a dropdown menu containing all of the skills your character can use and a selectable hotbar.\n \nYou can assign skills by clicking a slot on the hotbar and selecting the skill you wish to assign to that slot from the dropdown menu",
+  "text": "On the skills tab there is a dropdown menu containing all of the skills your character can use and a selectable hotbar.\n\n\nYou can assign skills by clicking a slot on the hotbar and selecting the skill you wish to assign to that slot from the dropdown menu",
   "translation_key": "cultivationcraft.gui.help.cultivationmenu.skills.assign",
   "category": [
     "Cultivation Menu",

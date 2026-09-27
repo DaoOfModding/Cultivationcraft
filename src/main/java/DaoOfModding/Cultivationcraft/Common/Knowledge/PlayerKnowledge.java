@@ -115,14 +115,17 @@ public final class PlayerKnowledge {
     }
 
     private static String recipeText(PillDefinition pill) {
-        StringBuilder text = new StringBuilder("\n\nRequired scores:");
+        StringBuilder text = new StringBuilder("\n\n\nPill tier: ").append(pill.tier())
+                .append("\nRecipe difficulty: ").append(pill.complexity())
+                .append("\nRequired plant: at least one T").append(pill.tier()).append(" or higher")
+                .append("\n\n\nRequired scores:");
         if (pill.cultivation()) text.append("\nNon-neutral total: ").append(pill.minimumScore());
         for (int i = 0; i < pill.targets().length; i++) {
             if (pill.targets()[i] <= 0) continue;
             String element = AlchemyQi.ELEMENTS.get(i).getPath();
             text.append("\n").append(element.substring(element.lastIndexOf('.') + 1)).append(": ").append(pill.targets()[i]);
         }
-        text.append("\n\nQi to channel: ").append(pill.qi());
+        text.append("\n\n\nQi to channel: ").append(pill.qi());
         return text.toString();
     }
 

@@ -26,12 +26,14 @@ public final class SpiritStoneRefinement implements RefinementHandler {
         if (stack.isEmpty() || !(player.getFoodData() instanceof QiFoodStats food)) return false;
         var stats = CultivatorStats.getCultivatorStats(player);
         if (stats.getCultivationType() != CultivationTypes.QI_CONDENSER) return false;
+        // Qi restoration remains available even when this stage's cultivation is full.
+        if (food.getTrueFoodLevel() < food.getMaxFood()) return true;
         var cultivation = stats.getCultivation();
         int progress = cultivation.statsCanLevel()
                 ? cultivation.getTechLevelProgressWithoutPrevious(cultivation.getPassive().getClass().toString())
                 : cultivation.getQiLevelProgress();
         // Do not consume stones when neither reward can be used.
-        return food.getTrueFoodLevel() < food.getMaxFood() || progress < cultivation.getMaxTechLevelWithoutPrevious();
+        return progress < cultivation.getMaxTechLevelWithoutPrevious();
     }
 
     @Override public float progress(Player player, ItemStack stack) { return timers.getOrDefault(player, 0L) / (float) DURATION; }

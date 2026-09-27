@@ -5,7 +5,7 @@
     "Notes on Red Herbs",
     "{pill}: Recipe"
   ],
-  "text": "A starter pill that immediately restores a portion of maximum health.",
+  "text": "Immediately restores 25% of maximum health. Cooldown: 8 seconds, shared with the healing family.\n\n\nThere is no realm restriction. Effectiveness halves for each major realm above Foundation Establishment: 50% effectiveness in Qi Condensation and 25% in Core Formation.",
   "recipe": "cultivationcraft:blood_mending",
   "loot_weights": {
     "village": 3,

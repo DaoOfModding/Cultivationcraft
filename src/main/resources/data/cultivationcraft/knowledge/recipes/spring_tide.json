@@ -1,0 +1,17 @@
+{
+  "title": "{pill}",
+  "titles": [
+    "Spring Tide Method",
+    "Notes on Lingering Stream",
+    "{pill}: Recipe"
+  ],
+  "text": "Restores 30% of maximum Qi over 15 seconds, with a Qi Restoration status. Cooldown: 15 seconds, shared with its effect family.\n\n\nIt remains usable outside its intended realm; effectiveness halves for each major realm above Qi Condensation.",
+  "recipe": "cultivationcraft:spring_tide",
+  "loot_weights": {
+    "village": 0.02,
+    "common": 0.2,
+    "rare": 6,
+    "stronghold": 10,
+    "end_city": 4
+  }
+}

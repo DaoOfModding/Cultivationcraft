@@ -5,7 +5,7 @@
     "A Clear Spirit Method",
     "{pill}: Recipe"
   ],
-  "text": "A starter pill that immediately restores a portion of the Qi reserve.",
+  "text": "Immediately restores 10% of maximum Qi for external cultivators. Cooldown: 10 seconds, shared with the Qi-restoration family.\n\n\nThere is no realm restriction. Effectiveness halves for each major realm above Foundation Establishment: 50% effectiveness in Qi Condensation and 25% in Core Formation.",
   "recipe": "cultivationcraft:spirit_recovery",
   "loot_weights": {
     "village": 3,

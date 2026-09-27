@@ -1,6 +1,6 @@
 {
   "title": "Stabilizing Body Forge",
-  "text": "Once you have completed infusing your body with the needed Qi you will start stabilizing the body part.\n \nA progress bar and what is required to fill that bar will be displayed at the bottom of the screen, and once filled the body forge will be complete.\n \nAt any point during this process you can discard this body forge by pressing the 'Cancel' button.",
+  "text": "Once you have completed infusing your body with the needed Qi you will start stabilizing the body part.\n\n\nA progress bar and what is required to fill that bar will be displayed at the bottom of the screen, and once filled the body forge will be complete.\n\n\nAt any point during this process you can discard this body forge by pressing the 'Cancel' button.",
   "translation_key": "cultivationcraft.gui.help.cultivationmenu.cultivate.bodyforge.quest",
   "category": [
     "Cultivation Menu",

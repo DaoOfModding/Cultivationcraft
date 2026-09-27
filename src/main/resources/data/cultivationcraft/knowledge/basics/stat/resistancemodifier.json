@@ -1,6 +1,6 @@
 {
   "title": "Resistance",
-  "text": "Percentage of damage that is resisted by this character\n \nTied to specific elements, by default cannot go over 100%\n \nCertain options allow increases over 100%, which heals the character by the excess reduction",
+  "text": "Percentage of damage that is resisted by this character\n\n\nTied to specific elements, by default cannot go over 100%\n\n\nCertain options allow increases over 100%, which heals the character by the excess reduction",
   "translation_key": "cultivationcraft.stat.resistancemodifier",
   "category": [
     "Cultivation Menu",

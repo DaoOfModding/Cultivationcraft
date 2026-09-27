@@ -1,0 +1,20 @@
+{
+  "tier": 3,
+  "complexity": 3,
+  "effect": "HEAL",
+  "refinement_qi": 350,
+  "elements": {
+    "wood": 1200,
+    "earth": 600
+  },
+  "minimum_score": 0,
+  "amount": 0.5,
+  "duration_seconds": 0,
+  "cooldown_seconds": 20,
+  "color": "E34C70",
+  "names": [
+    "Crimson Rejuvenation Pill",
+    "Jade Marrow Renewal Pill",
+    "Scarlet Vitality Pill"
+  ]
+}

@@ -5,7 +5,7 @@
     "On Elemental Measures",
     "A Novice Refiner's Notes"
   ],
-  "text": "A batch can use a single plant or several, as long as it meets the recipe requirements. There is no general minimum or maximum number of species. Starter T1 recipes require at least one T1 or higher plant.\n\nEach plant contributes its spiritual growth multiplied by stack count to its element's score. Qi-source reserves do not count toward these scores. Every input stack is consumed when the batch finishes.\n\nMissing mandatory requirements ruins the batch. Even a correct recipe can fail. Failed batches cause a small explosion that damages nearby creatures and the refiner, without breaking blocks or starting fires.",
+  "text": "A batch can use a single plant or several, as long as it meets the recipe requirements. There is no general minimum or maximum number of species.\n\n\nT1, T2 and T3 recipes require at least one plant of their tier or higher.\n\n\nStacking lower-tier plants cannot satisfy this requirement: each plant's own spiritual growth determines its tier (T2: 100; T3: 1,000).\n\n\nEach plant contributes its spiritual growth multiplied by stack count to its element's score. Qi-source reserves do not count toward these scores.\n\n\nEvery input stack is consumed when the batch finishes.\n\n\nMissing mandatory requirements ruins the batch. Even a correct recipe can fail.\n\n\nFailed batches cause a small explosion that damages nearby creatures and the refiner, without breaking blocks or starting fires.\n\n\nEach recipe also has its own refinement Qi cost and difficulty. Read Failure and Recipe Difficulty for the success calculation; plant count alone does not raise difficulty.",
   "category": [
     "Alchemy"
   ],

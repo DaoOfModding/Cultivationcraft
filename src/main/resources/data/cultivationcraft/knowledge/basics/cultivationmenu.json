@@ -1,6 +1,6 @@
 {
   "title": "Cultivation Menu",
-  "text": "The screen for viewing and controlling all cultivation related aspects of your character.\n \nContains multiple different tabs relating to the different aspects of your cultivation",
+  "text": "The screen for viewing and controlling all cultivation related aspects of your character.\n\n\nContains multiple different tabs relating to the different aspects of your cultivation",
   "translation_key": "cultivationcraft.gui.help.cultivationmenu",
   "category": [],
   "unlocked_by_default": true

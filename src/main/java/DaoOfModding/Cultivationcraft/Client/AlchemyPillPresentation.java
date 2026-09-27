@@ -67,7 +67,8 @@ public final class AlchemyPillPresentation {
         ResourceLocation affinity = ResourceLocation.tryParse(tag.getString("Affinity"));
         if (affinity != null && (effect.equals("cultivation") || effect.equals("absorption"))) {
             lines.add(Component.translatable("cultivationcraft.pill.affinity", Component.translatable(affinity.getPath())));
-            lines.add(Component.translatable("cultivationcraft.pill.foundation_only").withStyle(ChatFormatting.GRAY));
+            lines.add(Component.translatable("cultivationcraft.pill.realm_only",
+                    DaoOfModding.Cultivationcraft.Common.Alchemy.PillPotency.realmName(tag.getInt("Tier"))).withStyle(ChatFormatting.GRAY));
         }
         if (effect.equals("food")) lines.add(Component.translatable("cultivationcraft.pill.body_only").withStyle(ChatFormatting.GRAY));
         if (effect.equals("qi") || effect.equals("qi_over_time"))

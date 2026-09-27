@@ -59,7 +59,7 @@ public class ProceduralPlantItem extends BlockItem {
         int growth = extractGrowth(stack);
         if (growth >= 0) {
             int dynTier = ProceduralPlantBlockEntity.growthToTier(growth);
-            String stars = "*".repeat(dynTier);
+            String stars = "⭐".repeat(dynTier);
             tooltip.add(Component.literal("Tier: " + dynTier + "  " + stars).withStyle(s -> s.withColor(0xFFD700)));
             tooltip.add(Component.literal("Growth: " + growth).withStyle(s -> s.withColor(0x7FC8FF)));
         }

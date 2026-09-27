@@ -1,6 +1,6 @@
 {
   "title": "Progress Body Forge",
-  "text": "Whilst forging a body part a progress bar will display on the bottom of the tab, which fills up as you absorb Qi.\n \nYou can also chose to cancel the forge, losing all progress, by pressing the 'Cancel' button in the middle of the screen.",
+  "text": "Whilst forging a body part a progress bar will display on the bottom of the tab, which fills up as you absorb Qi.\n\n\nYou can also chose to cancel the forge, losing all progress, by pressing the 'Cancel' button in the middle of the screen.",
   "translation_key": "cultivationcraft.gui.help.cultivationmenu.cultivate.bodyforge.progress",
   "category": [
     "Cultivation Menu",

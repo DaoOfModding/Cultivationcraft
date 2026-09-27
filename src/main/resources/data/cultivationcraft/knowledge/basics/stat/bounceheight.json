@@ -1,6 +1,6 @@
 {
   "title": "Bounce Amount",
-  "text": "How bouncy this character is\n \nWith a value of 1 this character would bounce 6 blocks high after falling 6 blocks\nWith a value of 0.5 this character would bounce 3 blocks high after falling 3 blocks\nWith a value of 0 this character won't bounce",
+  "text": "How bouncy this character is\n\n\nWith a value of 1 this character would bounce 6 blocks high after falling 6 blocks\nWith a value of 0.5 this character would bounce 3 blocks high after falling 3 blocks\nWith a value of 0 this character won't bounce",
   "translation_key": "cultivationcraft.stat.bounceheight",
   "category": [
     "Cultivation Menu",

@@ -1,6 +1,6 @@
 {
   "title": "Activating Skills",
-  "text": "Skills are generally activated by selecting them in the hotbar and right clicking.\n \nSome skills are toggled on and off by selecting them, whilst others are simply activated.\nMost skills drain Qi\\Stamina whilst active.",
+  "text": "Skills are generally activated by selecting them in the hotbar and right clicking.\n\n\nSome skills are toggled on and off by selecting them, whilst others are simply activated.\nMost skills drain Qi\\Stamina whilst active.",
   "translation_key": "cultivationcraft.gui.help.cultivationmenu.skills.activation",
   "category": [
     "Cultivation Menu",

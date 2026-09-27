@@ -1,0 +1,17 @@
+{
+  "title": "{pill}",
+  "titles": [
+    "Core Absorption Method",
+    "Notes on Core Breathing",
+    "{pill}: Recipe"
+  ],
+  "text": "Adds 6 to Qi absorption for 300 seconds in Core Formation, with a Qi Absorption status. Retains the batch's dominant element.\n\n\nCooldown: 15 minutes.",
+  "recipe": "cultivationcraft:core_absorption",
+  "loot_weights": {
+    "village": 0.001,
+    "common": 0.02,
+    "rare": 1,
+    "stronghold": 5,
+    "end_city": 18
+  }
+}

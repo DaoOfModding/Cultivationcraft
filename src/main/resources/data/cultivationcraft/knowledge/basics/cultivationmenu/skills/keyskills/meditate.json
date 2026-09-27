@@ -1,6 +1,6 @@
 {
   "title": "Meditate",
-  "text": "All characters always have access to the meditate skill.\n \nWhen toggled on, the character cannot move but absorbs any nearby Qi, progressing their cultivation.",
+  "text": "All characters always have access to the meditate skill.\n\n\nWhen toggled on, the character cannot move but absorbs any nearby Qi, progressing their cultivation.",
   "translation_key": "cultivationcraft.gui.help.cultivationmenu.skills.keyskills.meditate",
   "category": [
     "Cultivation Menu",

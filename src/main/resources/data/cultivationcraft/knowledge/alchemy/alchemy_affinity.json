@@ -5,7 +5,7 @@
     "Threads of a Cultivation Pill",
     "On Balanced Affinities"
   ],
-  "text": "When refining a cultivation pill, the highest non-neutral elemental score determines its affinity. If several elements tie for the highest score, each has an equal chance of becoming the pill's affinity.",
+  "text": "When refining a cultivation pill, the highest non-neutral elemental score determines its affinity.\n\n\nIf several elements tie for the highest score, each has an equal chance of becoming the pill's affinity.\n\n\nThis applies to both cultivation-progress and Qi-absorption pills. Their affinity must be compatible with your cultivation.\n\n\nT1 versions are for Foundation Establishment, T2 for Qi Condensation, and T3 for Core Formation. A pill from another realm cannot be used for cultivation.\n\n\nThese two effects share the cultivation-family cooldown, so switching between them does not bypass it.",
   "category": [
     "Alchemy"
   ],
